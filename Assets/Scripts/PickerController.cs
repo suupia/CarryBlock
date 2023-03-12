@@ -10,6 +10,7 @@ using Vector3 = UnityEngine.Vector3;
 
 public interface IPickerContext
 {
+    public IPickerState CurrentState();
     public void ChangeState(IPickerState state);
 }
 
@@ -28,7 +29,7 @@ public class PickerController : MonoBehaviour
 
     // Pure
     private PickerInfo pickerInfo;
-    private PickerContext pickerContext;
+    private IPickerContext pickerContext;
 
 
     // Components
@@ -60,11 +61,11 @@ public class PickerController : MonoBehaviour
     {
         if (!isInitialized) return;
 
-        pickerContext.currentState.Process(pickerContext);
-        if (pickerContext.currentState.CanSwitchState())
+        pickerContext.CurrentState().Process(pickerContext);
+        if (pickerContext.CurrentState().CanSwitchState())
         {
-            pickerContext.currentState.SwitchState(pickerContext);
-            pickerContext.currentState.InitProcess();
+            pickerContext.CurrentState().SwitchState(pickerContext);
+            pickerContext.CurrentState().InitProcess();
         }
     }
 
@@ -156,6 +157,11 @@ public class PickerContext : IPickerContext
     public PickerContext(IPickerState initState)
     {
         this.currentState = initState;
+    }
+
+    public IPickerState CurrentState()
+    {
+        return currentState;
     }
 
     public void ChangeState(IPickerState state)

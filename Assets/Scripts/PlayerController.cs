@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform pickersParent;
     [SerializeField] GameObject pickerPrefab;
 
+    [SerializeField] GameObject rangeCircleObj;
+    [SerializeField] GameObject playerObj;
+
     Rigidbody playerRd;
     float acceleration = 10f;
     float maxVelocity = 15;
@@ -22,12 +25,13 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        playerRd = GetComponent<Rigidbody>();
-        Debug.Log($"{playerRd}");
 
-        var rangeCircleGameObj = GameObject.Find("RangeCircle");
-        var onTriggerEnterComponent = rangeCircleGameObj.GetComponent<OnTriggerEnterComponent>();
+        playerRd  = playerObj.GetComponent<Rigidbody>();
+
+        var rangeCircleGameObj = rangeCircleObj;
         rangeCircleGameObj.transform.localScale = new Vector3(rangeRadius*2,rangeRadius*2,rangeRadius * 2); // localScale sets the diameter
+        var onTriggerEnterComponent = rangeCircleGameObj.GetComponent<OnTriggerEnterComponent>();
+        Debug.Log($"onTriggerEnterComponent:{onTriggerEnterComponent}");
         onTriggerEnterComponent.SetOnTriggerEnterAction(OnTriggerRangeCircle);
     }
 
@@ -60,7 +64,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            var bulletInitPos = bulletOffset * (other.gameObject.transform.position - transform.position).normalized + transform.position;
+            var bulletInitPos = bulletOffset * (other.gameObject.transform.position - playerObj.transform.position).normalized + playerObj.transform.position;
             var bullet = Instantiate(bulletPrefab, bulletInitPos, Quaternion.identity, bulletsParent).GetComponent<BulletController>();
             bullet.Init(other.gameObject);
         }
@@ -68,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
     private void LaunchPicker()
     {
-        var picker = Instantiate(pickerPrefab,transform.position,Quaternion.identity,pickersParent).transform.Find("Picker").GetComponent<PickerController>();
-        picker.Init(this.gameObject, rangeRadius);
+        var picker = Instantiate(pickerPrefab, playerObj.transform.position,Quaternion.identity,pickersParent).transform.Find("Picker").GetComponent<PickerController>();
+        picker.Init(playerObj.gameObject, rangeRadius);
     }
 }
