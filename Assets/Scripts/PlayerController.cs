@@ -69,6 +69,6 @@ public class PlayerController : MonoBehaviour
     private void LaunchPicker()
     {
         var picker = Instantiate(pickerPrefab,transform.position,Quaternion.identity,pickersParent).transform.Find("Picker").GetComponent<PickerController>();
-        picker.Init(rangeRadius);
+        picker.Init(this.gameObject, rangeRadius);
     }
 }
