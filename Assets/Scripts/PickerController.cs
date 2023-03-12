@@ -8,43 +8,25 @@ public class PickerController : MonoBehaviour
     bool isInitialized = false;
 
     // Pure
-    PickerInfo pickerInfo = new ();
+    PickerInfo pickerInfo;
     IPickerState pickerState;
 
-    // Componets
-    Rigidbody pickerRd;
+    // Components
     GameObject targetResourceObj;
     GameObject headquartersObj;
     float detectionRange;
 
-    float collectionRange = 1;
-    float collectionTime = 2f;
-    float collectOffset = 1;
-    Vector3 collectInitPos;
-    Vector3 deltaVector;
-
-    float timer = 0;
-
-    public enum PickerState
-    {
-        NotFound, Approach, Collect, Return
-    }
-
-    public PickerState state = PickerState.Approach;
 
     public void Init(float rangeRadius)
     {
         Debug.Log($"PickerController.Init() rangeRadius:{rangeRadius}");
 
-        pickerRd = GetComponent<Rigidbody>();
         detectionRange = rangeRadius;
         headquartersObj = GameObject.Find("Headquarters");
 
+        pickerInfo = new PickerInfo(this.gameObject);
 
         Search();
-
-        pickerState = new PickerApproachState(pickerInfo, this.gameObject, targetResourceObj);
-        pickerState.InitProcess();
 
 
         isInitialized = true;
@@ -53,32 +35,10 @@ public class PickerController : MonoBehaviour
     private void Update()
     {
         if (!isInitialized) return;
-        //switch (state)
-        //{
-        //    case PickerState.NotFound:
-
-        //        break;
-        //    case PickerState.Approach:
-        //        //ApproachProcess();
-        //        //if (CanSwitchToCollect()) SwitchToCollect();
-        //        pickerState.Process();
-        //        if(pickerState.CanSwitchState()) pickerState = new PickerCollectionState(pickerInfo, this.gameObject, targetResourceObj);
-        //        break;
-        //    case PickerState.Collect:
-        //        pickerState.Process();
-        //        if (pickerState.CanSwitchState()) pickerState = new PickerReturnState(pickerInfo, this.gameObject, targetResourceObj,headquartersObj);
-        //        break;
-        //    case PickerState.Return:
-        //        //ReturnProcess();
-        //        pickerState.Process();
-        //        if (pickerState.CanSwitchState()) pickerState = new PickerApproachState(pickerInfo, this.gameObject, targetResourceObj);
-        //        break;
-        //}
 
         pickerState.Process();
         if (pickerState.CanSwitchState())
         {
-            Debug.Log($"pickerState.GetType():{pickerState.GetType()}");
             if (pickerState.GetType() == typeof(PickerApproachState)) {
                 pickerState = new PickerCollectionState(pickerInfo, this.gameObject, targetResourceObj);
                 pickerState.InitProcess();
@@ -103,88 +63,16 @@ public class PickerController : MonoBehaviour
         if (resources.Any())
         {
             targetResourceObj = resources.ElementAt(0);
-            state = PickerState.Approach;
+            pickerInfo.SetTargetResourceObj(targetResourceObj);
+            pickerState = new PickerApproachState(pickerInfo, this.gameObject, targetResourceObj);
+            pickerState.InitProcess();
         }
         else
         {
-            state = PickerState.NotFound;
-
+            pickerState = new PickerNotFoundState(pickerInfo);
+            pickerState.InitProcess();
         }
 
-    }
-
-
-    private void SearchAgain()
-    {
-        //最初にターゲットにしていた資源が回収された時に呼び出される
-
-    }
-
-    private void NotFoundProcess()
-    {
-        //タンクに戻る
-    }
-
-    // Approace State
-    private void ApproachProcess()
-    {
-        Debug.Log($"ApproachProcess()");
-        var directionVec = Utility.SetYToZero(targetResourceObj.transform.position - transform.position).normalized;
-        pickerRd.AddForce(pickerInfo.acceleration * directionVec, ForceMode.Acceleration);
-        if (pickerRd.velocity.magnitude >= pickerInfo.maxVelocity) pickerRd.velocity = pickerInfo.maxVelocity * pickerRd.velocity.normalized;
-    }
-
-    private bool CanSwitchToCollect()
-    {
-        var vector = Utility.SetYToZero(targetResourceObj.transform.position - transform.position);
-        return vector.magnitude <= collectionRange ;
-    }
-
-    private void SwitchToCollect()
-    {
-        pickerRd.velocity = Vector3.zero;
-        collectInitPos = transform.position;
-        deltaVector = targetResourceObj.transform.position - collectInitPos;
-        state = PickerState.Collect;
-    }
-
-    // Collect State
-    private void CollectProcess()
-    {
-        Debug.Log($"CollectProcess()");
-        timer += Time.deltaTime;
-        if (timer < collectionTime)
-        {
-            var coefficient = 2 * Mathf.PI / collectionTime;
-            var progress = -Mathf.Cos(coefficient * timer) + 1f;
-            transform.position = progress * deltaVector + collectInitPos;
-        }
-        else
-        {
-            targetResourceObj.transform.position = transform.position - new Vector3(0, collectOffset, 0);
-            targetResourceObj.transform.parent = transform;
-        }
-
-    }
-
-    private bool CanSwitchToReturn()
-    {
-       return timer >= collectionTime;
-    }
-
-    private void SwitchToReturn()
-    {
-        state = PickerState.Return;
-    }
-
-    // Return State
-
-    private void ReturnProcess()
-    {
-        Debug.Log($"ReturnProcess()");
-        var directionVec = Utility.SetYToZero(headquartersObj.transform.position - transform.position).normalized;
-        pickerRd.AddForce(pickerInfo.acceleration * directionVec, ForceMode.Acceleration);
-        if (pickerRd.velocity.magnitude >= pickerInfo.maxVelocity) pickerRd.velocity = pickerInfo.maxVelocity * pickerRd.velocity.normalized;
     }
 
     // Debug
@@ -200,15 +88,74 @@ public class PickerController : MonoBehaviour
 
 public class PickerInfo
 {
-    public float acceleration { get; private set; } = 10f;
-    public float maxVelocity { get; private set; } = 30;
+    public readonly float acceleration = 10f;
+    public readonly float maxVelocity = 30;
 
+    public readonly float collectionRange = 1;
+    public readonly float collectionTime = 1.5f;
+    public readonly float collectOffset = 1;
 
-   public float collectionRange { get; private set; } = 1;
-   public float collectionTime { get; private set; } = 2f;
-   public float collectOffset { get; private set; } = 1;
+    public readonly float returnRange = 1;
+
+    public GameObject pickerObj { get; private set;}
+    public Rigidbody pickerRd { get; private set;}
+    public GameObject targetResourceObj { get; private set;}
+    public GameObject headquartersObj { get; private set;}
+
+    public  PickerInfo(GameObject pickerObj)
+    {
+        this.pickerObj = pickerObj;
+        this.pickerRd = pickerObj.GetComponent<Rigidbody>();
+    }
+
+    public void SetTargetResourceObj(GameObject targetResourceObj)
+    {
+        this.targetResourceObj = targetResourceObj;
+    }
+
+    public void SetHeadquartersObj(GameObject headquartersObj)
+    {
+        this.headquartersObj = headquartersObj;
+    }
 }
 
+public abstract class PickerAbstractState : IPickerState
+{
+    PickerInfo info;
+    GameObject targetResourceObj;
+    GameObject headquartersObj;
+
+    public PickerAbstractState(PickerInfo info)
+    {
+        this.info = info;
+    }
+
+    public abstract void InitProcess();
+    public abstract void Process();
+    public abstract bool CanSwitchState();
+}
+public class PickerNotFoundState: PickerAbstractState
+{
+
+    public PickerNotFoundState(PickerInfo info):base(info)
+    {
+
+    }
+
+    public override void InitProcess()
+    {
+
+    }
+    public override void Process()
+    {
+    }
+
+    public override bool CanSwitchState()
+    {
+        return false;
+    }
+
+}
 
 public class PickerApproachState : IPickerState
 {
@@ -230,10 +177,6 @@ public class PickerApproachState : IPickerState
     }
     public void Process()
     {
-        Debug.Log($"ApproachProcess()");
-        Debug.Log($"targetResourceObj:{targetResourceObj}");
-        Debug.Log($"pickerObj:{pickerObj}");
-
         var directionVec = Utility.SetYToZero(targetResourceObj.transform.position - pickerObj.transform.position).normalized;
         pickerRd.AddForce(info.acceleration * directionVec, ForceMode.Acceleration);
         if (pickerRd.velocity.magnitude >= info.maxVelocity) pickerRd.velocity = info.maxVelocity * pickerRd.velocity.normalized;
@@ -287,7 +230,7 @@ public class PickerCollectionState : IPickerState
         }
         else
         {
-            Debug.Log("Collectしました！！");
+            Debug.Log("complete collect");
             targetResourceObj.transform.position = pickerObj. transform.position - new Vector3(0,info. collectOffset, 0);
             targetResourceObj.transform.parent = pickerObj. transform;
         }
@@ -339,7 +282,8 @@ public class PickerReturnState : IPickerState
 
     public bool CanSwitchState()
     {
-        return false;
+        var vector = Utility.SetYToZero(headquartersObj.transform.position - pickerObj.transform.position);
+        return vector.magnitude <= info.returnRange;
     }
 
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Rigidbody))]
-public class OnTriggerEnterComponet : MonoBehaviour
+public class OnTriggerEnterComponent : MonoBehaviour
 {
     Collider collider;
     Rigidbody rigidbody;

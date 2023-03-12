@@ -26,9 +26,9 @@ public class PlayerController : MonoBehaviour
         Debug.Log($"{playerRd}");
 
         var rangeCircleGameObj = GameObject.Find("RangeCircle");
-        var onTriggerEnterComponet = rangeCircleGameObj.GetComponent<OnTriggerEnterComponet>();
+        var onTriggerEnterComponent = rangeCircleGameObj.GetComponent<OnTriggerEnterComponent>();
         rangeCircleGameObj.transform.localScale = new Vector3(rangeRadius*2,rangeRadius*2,rangeRadius * 2); // localScale sets the diameter
-        onTriggerEnterComponet.SetOnTriggerEnterAction(OnTriggerRangeCircle);
+        onTriggerEnterComponent.SetOnTriggerEnterAction(OnTriggerRangeCircle);
     }
 
     void Update()
