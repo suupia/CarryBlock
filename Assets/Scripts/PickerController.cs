@@ -44,16 +44,12 @@ public class PickerController : MonoBehaviour
         detectionRange = rangeRadius;
 
         pickerInfo = new PickerInfo(this.gameObject,detectionRange);
-        pickerContext = new PickerContext();
-
-
+        pickerContext = new PickerContext(pickerInfo.searchState);
 
         pickerInfo.SetPlayerObj(playerObj);
 
         headquartersObj = GameObject.Find("Headquarters");
         pickerInfo.SetHeadquartersObj(headquartersObj);
-
-        Search();
 
 
         isInitialized = true;
@@ -72,28 +68,6 @@ public class PickerController : MonoBehaviour
         }
     }
 
-
-    private void Search()
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRange);
-        var resources = colliders.
-            Where(collider => collider.CompareTag("Resource")).
-            Select(collider => collider.gameObject);
-        if (resources.Any())
-        {
-            targetResourceObj = resources.ElementAt(0);
-            pickerInfo.SetTargetResourceObj(targetResourceObj);
-            pickerContext.ChangeState(pickerInfo.approachState);
-            pickerContext.currentState.InitProcess();
-        }
-        else
-        {
-            pickerContext.ChangeState(pickerInfo.returnToPlayerState);
-            pickerContext.currentState.InitProcess();
-        }
-
-    }
-
     // Debug
     void OnDrawGizmos()
     {
@@ -109,7 +83,9 @@ public class PickerInfo
 {
     // constant fields
     public readonly float acceleration = 10f;
-    public readonly float maxVelocity = 30;
+    public readonly float normalMaxVelocity = 50;
+    public readonly float carryingMaxVelocity = 25;
+
 
     public readonly float collectionRange = 1;
     public readonly float collectionTime = 1.5f;
@@ -119,6 +95,7 @@ public class PickerInfo
     public readonly float returnToPlayerRange = 2;
 
     // singletons
+    public IPickerState searchState { get; private set; }
     public IPickerState approachState { get; private set; }
     public IPickerState collectionState { get; private set; }
     public IPickerState returnToHeadquartersState { get; private set; }
@@ -129,6 +106,7 @@ public class PickerInfo
     public GameObject pickerObj { get; private set; }
     public Rigidbody pickerRd { get; private set; }
     public GameObject playerObj { get; private set; }
+    public Rigidbody playerRd { get; private set; }
     public GameObject targetResourceObj { get; private set; }
     public GameObject headquartersObj { get; private set; }
 
@@ -141,6 +119,7 @@ public class PickerInfo
         this.pickerObj = pickerObj;
         this.pickerRd = pickerObj.GetComponent<Rigidbody>();
 
+        searchState = new PickerSearchState(this);
         approachState = new PickerApproachState(this);
         collectionState = new PickerCollectionState(this);
         returnToHeadquartersState = new PickerReturnToHeadquartersState(this);
@@ -152,6 +131,7 @@ public class PickerInfo
     public void SetPlayerObj(GameObject playerObj)
     {
         this.playerObj = playerObj;
+        this.playerRd = playerObj.gameObject.GetComponent<Rigidbody>();
     }
 
 
@@ -172,6 +152,10 @@ public class PickerContext : IPickerContext
 {
     public IPickerState currentState { get; private set; }
 
+    public PickerContext(IPickerState initState)
+    {
+        this.currentState = initState;
+    }
 
     public void ChangeState(IPickerState state)
     {
@@ -192,25 +176,35 @@ public abstract class PickerAbstractState : IPickerState
     public abstract void Process(IPickerContext context);
     public abstract bool CanSwitchState();
     public abstract void SwitchState(IPickerContext context);
-    protected void Move(Vector3 startPos, Vector3 endPos)
-    {
-        var directionVec = Utility.SetYToZero(endPos - startPos).normalized;
-        info.pickerRd.AddForce(info.acceleration * directionVec, ForceMode.Acceleration);
-        if (info.pickerRd.velocity.magnitude >= info.maxVelocity) info.pickerRd.velocity = info.maxVelocity * info.pickerRd.velocity.normalized;
-    }
 
-    protected void Move(Vector3 moveVector)
+    protected void MoveCarrying(Vector3 moveVector)
     {
         var directionVec = Utility.SetYToZero(moveVector).normalized;
         info.pickerRd.AddForce(info.acceleration * directionVec, ForceMode.Acceleration);
-        if (info.pickerRd.velocity.magnitude >= info.maxVelocity) info.pickerRd.velocity = info.maxVelocity * info.pickerRd.velocity.normalized;
+        if (info.pickerRd.velocity.magnitude >= info.carryingMaxVelocity) info.pickerRd.velocity = info.carryingMaxVelocity * info.pickerRd.velocity.normalized;
     }
+    protected void MoveCarrying(Vector3 startPos, Vector3 endPos)
+    {
+        MoveCarrying(endPos - startPos);
+    }
+
+    protected void MoveNormal(Vector3 moveVector)
+    {
+        var directionVec = Utility.SetYToZero(moveVector).normalized;
+        info.pickerRd.AddForce(info.acceleration * directionVec, ForceMode.Acceleration);
+        if (info.pickerRd.velocity.magnitude >= info.normalMaxVelocity) info.pickerRd.velocity = info.normalMaxVelocity * info.pickerRd.velocity.normalized;
+    }
+    protected void MoveNormal(Vector3 startPos, Vector3 endPos)
+    {
+        MoveCarrying(endPos - startPos);
+    }
+
 }
 
 public class PickerSearchState : PickerAbstractState
 {
     private float timer = 0;
-    private readonly float minSpawnTime = 1;
+    private readonly float minSpawnTime = 0.5f;
     public PickerSearchState(PickerInfo info) : base(info)
     {
     }
@@ -222,10 +216,12 @@ public class PickerSearchState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         timer += Time.deltaTime;
-        var moveVector = info.pickerObj.transform.forward;
-        Move(moveVector);
 
-        //‚à‚µresource‚ðŒ©‚Â‚¯‚½‚çó‘Ô‚ð•ÏX
+        // move in the direction the player is facing
+        var moveVector = info.playerRd.velocity;
+        MoveNormal(moveVector);
+
+        // change state when picker detect resources
         Collider[] colliders = Physics.OverlapSphere(info.pickerObj.transform.position, info.detectionRange);
         var resources = colliders.
             Where(collider => collider.CompareTag("Resource")).
@@ -266,7 +262,7 @@ public class PickerReturnToPlayerState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         timer += Time.deltaTime;
-        Move(info.pickerObj.transform.position, info.playerObj.transform.position);
+        MoveNormal(info.pickerObj.transform.position, info.playerObj.transform.position);
     }
 
     public override bool CanSwitchState()
@@ -294,7 +290,7 @@ public class PickerApproachState : PickerAbstractState
     }
     public override void Process(IPickerContext context)
     {
-        Move(info.pickerObj.transform.position, info.targetResourceObj.transform.position);
+        MoveNormal(info.pickerObj.transform.position, info.targetResourceObj.transform.position);
     }
 
     public override bool CanSwitchState()
@@ -374,7 +370,7 @@ public class PickerReturnToHeadquartersState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         Debug.Log($"ReturnProcess()");
-        Move(info.pickerObj.transform.position, info.headquartersObj.transform.position);
+        MoveCarrying(info.pickerObj.transform.position, info.headquartersObj.transform.position);
     }
 
     public override bool CanSwitchState()
