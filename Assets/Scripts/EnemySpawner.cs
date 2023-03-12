@@ -7,6 +7,7 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] GameObject enemyPrefab;
     [SerializeField] int spawnNumber;
+    float spawnRadius = 100;
     Collider shootRangeCollider;
 
     void Start()
@@ -15,18 +16,13 @@ public class EnemySpawner : MonoBehaviour
 
         for(int i = 0;i< spawnNumber; i++)
         {
-            var x = Random.Range(-30, 30);
-            var z = Random.Range(-30, 30);
-            Instantiate(enemyPrefab, new Vector3(x, 0.5f, z),Quaternion.identity);
+            var x = Random.Range(-spawnRadius, spawnRadius);
+            var z = Random.Range(-spawnRadius, spawnRadius);
+            var enemy= Instantiate(enemyPrefab, new Vector3(x, 0.5f, z),Quaternion.identity).GetComponent<EnemyController>();
         }
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnTriggerEnter(Collider other)
     {

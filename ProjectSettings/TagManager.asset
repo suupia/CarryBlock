@@ -6,6 +6,9 @@ TagManager:
   tags:
   - GameController
   - Enemy
+  - Obstacle
+  - Resource
+  - Picker
   layers:
   - Default
   - TransparentFX

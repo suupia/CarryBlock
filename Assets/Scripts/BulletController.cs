@@ -5,19 +5,12 @@ using UnityEngine;
 public class BulletController : MonoBehaviour
 {
     GameObject targetGameObj;
-    float speed = 30;
     Rigidbody bulletRd;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    float speed = 30;
+    float lifeTime = 8;
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
+    float timer = 0;
 
     public void Init(GameObject targetGameObj)
     {
@@ -27,13 +20,24 @@ public class BulletController : MonoBehaviour
         bulletRd.AddForce(speed*directionVec , ForceMode.Impulse);
     }
 
+    private void Update()
+    {
+        timer += Time.deltaTime;
+        if (timer > lifeTime) DestroyBullet();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
-            Destroy(other.gameObject);
-            Destroy(this.gameObject);
+            var enemy = other.GetComponent<EnemyController>();
+            enemy.OnDefeated();
+            DestroyBullet();
         }
+    }
+
+    private void DestroyBullet()
+    {
+        Destroy(this.gameObject);
     }
 }
