@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
 
 
     //range
-    float rangeRadius = 10.5f;
+    float rangeRadius = 12.0f;
 
     void Start()
     {
