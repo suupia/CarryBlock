@@ -5,6 +5,8 @@ using UnityEngine;
 public class ObstacleSpawner : MonoBehaviour
 {
     [SerializeField] GameObject obstaclePrefab;
+    [SerializeField] Transform obstaclesParent;
+
     [SerializeField] int spawnNumber;
     float spawnRadius = 100;
 
@@ -14,7 +16,7 @@ public class ObstacleSpawner : MonoBehaviour
         {
             var x = Random.Range(-spawnRadius, spawnRadius);
             var z = Random.Range(-spawnRadius, spawnRadius);
-            Instantiate(obstaclePrefab, new Vector3(x, 0.5f, z), Quaternion.identity);
+            Instantiate(obstaclePrefab, new Vector3(x, 0.5f, z), Quaternion.identity,obstaclesParent.transform);
         }
     }
 

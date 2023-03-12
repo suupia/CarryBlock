@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] Transform bulletsParent;
     [SerializeField] GameObject bulletPrefab;
+    [SerializeField] Transform pickersParent;
     [SerializeField] GameObject pickerPrefab;
 
     Rigidbody playerRd;
@@ -15,7 +18,7 @@ public class PlayerController : MonoBehaviour
 
 
     //range
-    float rangeRadius = 20.5f;
+    float rangeRadius = 10.5f;
 
     void Start()
     {
@@ -24,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
         var rangeCircleGameObj = GameObject.Find("RangeCircle");
         var onTriggerEnterComponet = rangeCircleGameObj.GetComponent<OnTriggerEnterComponet>();
+        rangeCircleGameObj.transform.localScale = new Vector3(rangeRadius*2,rangeRadius*2,rangeRadius * 2); // localScale sets the diameter
         onTriggerEnterComponet.SetOnTriggerEnterAction(OnTriggerRangeCircle);
     }
 
@@ -57,13 +61,14 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             var bulletInitPos = bulletOffset * (other.gameObject.transform.position - transform.position).normalized + transform.position;
-            var bullet = Instantiate(bulletPrefab, bulletInitPos, Quaternion.identity).GetComponent<BulletController>();
+            var bullet = Instantiate(bulletPrefab, bulletInitPos, Quaternion.identity, bulletsParent).GetComponent<BulletController>();
             bullet.Init(other.gameObject);
         }
     }
 
     private void LaunchPicker()
     {
-        Instantiate(pickerPrefab, transform.position, Quaternion.identity);
+        var picker = Instantiate(pickerPrefab,transform.position,Quaternion.identity,pickersParent).transform.Find("Picker").GetComponent<PickerController>();
+        picker.Init(rangeRadius);
     }
 }
