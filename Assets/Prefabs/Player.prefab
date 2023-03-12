@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 4316843539711024871}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -340,5 +340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e23fb2ce28c9410c869668ddd2d410d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletsParent: {fileID: 0}
   bulletPrefab: {fileID: 4316843539711024874, guid: 62dd7ffbf75754090a7dace68b8dd1fa, type: 3}
+  pickersParent: {fileID: 0}
   pickerPrefab: {fileID: 5489803120460951805, guid: 8926f92aa92bff244b565510169a9cfa, type: 3}

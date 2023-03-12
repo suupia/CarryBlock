@@ -262,6 +262,8 @@ public class PickerReturnToPlayerState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         timer += Time.deltaTime;
+        if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
+
         MoveNormal(info.pickerObj.transform.position, info.playerObj.transform.position);
     }
 
@@ -290,6 +292,7 @@ public class PickerApproachState : PickerAbstractState
     }
     public override void Process(IPickerContext context)
     {
+        if(info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // ìríÜÇ≈nullÇ…Ç»ÇÈâ¬î\ê´Ç™Ç†ÇÈ
         MoveNormal(info.pickerObj.transform.position, info.targetResourceObj.transform.position);
     }
 
@@ -328,6 +331,8 @@ public class PickerCollectionState : PickerAbstractState
     {
         Debug.Log($"CollectProcess()");
         timer += Time.deltaTime;
+        if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
+
         if (timer < info.collectionTime)
         {
             var coefficient = 2 * Mathf.PI / info.collectionTime;
