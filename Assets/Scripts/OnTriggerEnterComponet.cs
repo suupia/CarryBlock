@@ -24,7 +24,7 @@ public class OnTriggerEnterComponet : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"OnTriggerEnterComponet collide gameObject.name:{other.gameObject.name}");
+        //Debug.Log($"OnTriggerEnterComponet collide gameObject.name:{other.gameObject.name}");
         action(other);
     }
 }
