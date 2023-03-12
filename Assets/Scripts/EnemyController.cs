@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
     private Rigidbody enemyRd;
 
     private float acceleration = 15f;
-    private float maxVelocity = 20f;
+    private float maxVelocity = 10f;
 
     public enum EnemyState
     {

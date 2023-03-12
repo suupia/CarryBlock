@@ -186,7 +186,6 @@ MonoBehaviour:
   resourcesParent: {fileID: 1637802959}
   enemyPrefab: {fileID: 7032550982954681208, guid: 02a0e1de266d44643981f7cfcc742c23, type: 3}
   enemiesParent: {fileID: 1775079354}
-  spawnNumber: 20
 --- !u!4 &691937535
 Transform:
   m_ObjectHideFlags: 0
@@ -746,18 +745,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4316843539711024871, guid: 9f406d785116b43cb8c99ec17b91aa34, type: 3}
-      propertyPath: bulletsParent
-      value: 
-      objectReference: {fileID: 815564191}
-    - target: {fileID: 4316843539711024871, guid: 9f406d785116b43cb8c99ec17b91aa34, type: 3}
-      propertyPath: pickersParent
-      value: 
-      objectReference: {fileID: 1867014717}
     - target: {fileID: 4316843539711024874, guid: 9f406d785116b43cb8c99ec17b91aa34, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4316843539711024875, guid: 9f406d785116b43cb8c99ec17b91aa34, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f406d785116b43cb8c99ec17b91aa34, type: 3}

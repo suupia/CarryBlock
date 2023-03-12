@@ -82,17 +82,18 @@ public class PickerController : MonoBehaviour
 public class PickerInfo
 {
     // constant fields
-    public readonly float acceleration = 10f;
+    public readonly float normalAcceleration = 1f;
+    public readonly float carryingAcceleration = 10f;
     public readonly float normalMaxVelocity = 50;
     public readonly float carryingMaxVelocity = 25;
 
 
-    public readonly float collectionRange = 1;
-    public readonly float collectionTime = 1.5f;
+    public readonly float collectionRange = 2.0f;
+    public readonly float collectionTime = 1.2f;
     public readonly float collectOffset = 1;
 
     public readonly float returnToHeadquartersRange = 1;
-    public readonly float returnToPlayerRange = 2;
+    public readonly float returnToPlayerRange = 2.5f;
 
     // singletons
     public IPickerState searchState { get; private set; }
@@ -180,7 +181,7 @@ public abstract class PickerAbstractState : IPickerState
     protected void MoveCarrying(Vector3 moveVector)
     {
         var directionVec = Utility.SetYToZero(moveVector).normalized;
-        info.pickerRd.AddForce(info.acceleration * directionVec, ForceMode.Acceleration);
+        info.pickerRd.AddForce(info.carryingAcceleration * directionVec, ForceMode.Acceleration);
         if (info.pickerRd.velocity.magnitude >= info.carryingMaxVelocity) info.pickerRd.velocity = info.carryingMaxVelocity * info.pickerRd.velocity.normalized;
     }
     protected void MoveCarrying(Vector3 startPos, Vector3 endPos)
@@ -191,12 +192,12 @@ public abstract class PickerAbstractState : IPickerState
     protected void MoveNormal(Vector3 moveVector)
     {
         var directionVec = Utility.SetYToZero(moveVector).normalized;
-        info.pickerRd.AddForce(info.acceleration * directionVec, ForceMode.Acceleration);
+        info.pickerRd.AddForce(info.normalAcceleration * directionVec, ForceMode.Impulse);
         if (info.pickerRd.velocity.magnitude >= info.normalMaxVelocity) info.pickerRd.velocity = info.normalMaxVelocity * info.pickerRd.velocity.normalized;
     }
     protected void MoveNormal(Vector3 startPos, Vector3 endPos)
     {
-        MoveCarrying(endPos - startPos);
+        MoveNormal(endPos - startPos);
     }
 
 }
@@ -204,7 +205,7 @@ public abstract class PickerAbstractState : IPickerState
 public class PickerSearchState : PickerAbstractState
 {
     private float timer = 0;
-    private readonly float minSpawnTime = 0.5f;
+    private readonly float minSpawnTime = 0.3f;
     public PickerSearchState(PickerInfo info) : base(info)
     {
     }
@@ -248,7 +249,6 @@ public class PickerSearchState : PickerAbstractState
 
 public class PickerReturnToPlayerState : PickerAbstractState
 {
-    private float timer = 0;
     private readonly float minSpawnTime = 1;
 
     public PickerReturnToPlayerState(PickerInfo info) : base(info)
@@ -257,11 +257,9 @@ public class PickerReturnToPlayerState : PickerAbstractState
 
     public override void InitProcess()
     {
-        timer = 0;
     }
     public override void Process(IPickerContext context)
     {
-        timer += Time.deltaTime;
         if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
 
         MoveNormal(info.pickerObj.transform.position, info.playerObj.transform.position);
@@ -270,7 +268,7 @@ public class PickerReturnToPlayerState : PickerAbstractState
     public override bool CanSwitchState()
     {
         var vector = Utility.SetYToZero(info.playerObj.transform.position - info.pickerObj.transform.position);
-        return vector.magnitude <= info.returnToPlayerRange && timer > minSpawnTime;
+        return vector.magnitude <= info.returnToPlayerRange;
     }
 
     public override void SwitchState(IPickerContext context)

@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] Transform resourcesParent;
     [SerializeField] GameObject enemyPrefab;
     [SerializeField] Transform enemiesParent;
-    private int spawnNumber = 20;
+    private int spawnNumber = 50;
     private float spawnInterval = 3f;
     float spawnRadius = 100;
     Collider shootRangeCollider;

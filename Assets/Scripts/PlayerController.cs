@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody playerRd;
     float acceleration = 10f;
-    float maxVelocity = 30;
+    float maxVelocity = 15;
     float bulletOffset = 1;
     float resistance = 0.99f;
 
