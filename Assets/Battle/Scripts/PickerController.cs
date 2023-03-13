@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using UnityEditor;
 using UnityEngine.XR;
+using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
 
@@ -57,7 +58,7 @@ public class PickerController : MonoBehaviour
     }
 
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (!isInitialized) return;
 
@@ -83,10 +84,12 @@ public class PickerController : MonoBehaviour
 public class PickerInfo
 {
     // constant fields
-    public readonly float normalAcceleration = 1f;
-    public readonly float carryingAcceleration = 10f;
+    public readonly float normalAcceleration = 300f;
+    public readonly float carryingAcceleration = 150f;
     public readonly float normalMaxVelocity = 50;
     public readonly float carryingMaxVelocity = 25;
+    public readonly float decelerationRange = 0;
+    public readonly float estimatedStopTime = 0.3f; // Estimated time to decelerate to a stop
 
 
     public readonly float collectRange = 2.0f;
@@ -182,27 +185,168 @@ public abstract class PickerAbstractState : IPickerState
     public abstract bool CanSwitchState();
     public abstract void SwitchState(IPickerContext context);
 
-    protected void MoveCarrying(Vector3 moveVector)
+
+    protected void Move(Vector3 moveVector,float acceleration, float maxVelocity)
     {
         var directionVec = Utility.SetYToZero(moveVector).normalized;
-        info.pickerRd.AddForce(info.carryingAcceleration * directionVec, ForceMode.Acceleration);
-        if (info.pickerRd.velocity.magnitude >= info.carryingMaxVelocity) info.pickerRd.velocity = info.carryingMaxVelocity * info.pickerRd.velocity.normalized;
-    }
-    protected void MoveCarrying(Vector3 startPos, Vector3 endPos)
-    {
-        MoveCarrying(endPos - startPos);
+        info.pickerRd.AddForce(acceleration * directionVec, ForceMode.Acceleration);
+        if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
     }
 
-    protected void MoveNormal(Vector3 moveVector)
+
+    //Vector3 prevVelocity = Vector3.zero;
+    //Vector3 toEndVector = Vector3.zero;
+    //bool isFirstMoveTo = true;
+    //Vector3 prevEndPos = Vector3.zero;
+
+    //float restrictionVelocity = float.MaxValue;
+    //bool isReaching = false;
+
+    //protected void MoveTo(Vector3 endPos, float acceleration, float maxVelocity)
+    //{
+    //    var startPos = info.pickerObj.transform.position;
+    //    var directionVec = Utility.SetYToZero(endPos - startPos).normalized;
+    //    var distance = Utility.SetYToZero(endPos - startPos).magnitude;
+
+    //    if (isFirstMoveTo)
+    //    {
+    //        isFirstMoveTo = false;
+    //        prevVelocity = info.pickerRd.velocity;
+    //        prevEndPos = endPos;
+    //        toEndVector = endPos - startPos;
+    //    }
+
+    //    //EndPosが動いていない場合
+    //    if (Mathf.Approximately((prevEndPos - endPos).magnitude ,0))
+    //    {
+    //        //等速円運動をしないように減速
+    //        //つまり速度は単調減少
+    //        if (distance <= info.decelerationRange && isReaching == false)
+    //        {
+    //            isReaching = true;
+    //            prevEndPos = endPos;
+    //            toEndVector = endPos - startPos;
+    //        }
+
+    //        if (!isReaching)
+    //        {
+    //            var deltaVelocity = directionVec; // 本当は deltaVelocity = (directionVec * prevVelocity.magnitude - prevVelocity); だけど誤差が出るので近似した
+    //            Debug.Log($"deltaVelocity:{deltaVelocity}");
+    //            var accelerationDirection = (deltaVelocity / Time.fixedDeltaTime).normalized;
+    //            if (accelerationDirection.magnitude < 1.0f) accelerationDirection = directionVec;
+    //            Debug.Log($"accelerationDirection:{accelerationDirection}");
+    //            var accelerationVector = acceleration * accelerationDirection;
+    //            Debug.Log($"accelerationVector:{accelerationVector}");
+    //            info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
+    //            if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
+
+    //        }
+    //        else
+    //        {
+
+    //            var preAccelerationVector = (2 / Mathf.Pow(info.estimatedStopTime, 2)) * (toEndVector - prevVelocity * info.estimatedStopTime); //定数であることに注意
+    //            var accelerationVector = Utility.SetYToZero(preAccelerationVector);
+    //            //restrictionVelocity = Mathf.Min(restrictionVelocity,info.pickerRd.velocity.magnitude);
+    //            Debug.Log($"accelerationVector:{accelerationVector}");
+    //            info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
+    //        }
+
+    //    }
+    //    else
+    //    {
+    //        //EndPosが動いている場合は突っ込んで着地でOK
+    //        //等速円運動をしないように減速
+    //        //if (distance > info.decelerationRange)
+    //        //{
+    //        //    var deltaVelocity = directionVec; // 本当は deltaVelocity = (directionVec * prevVelocity.magnitude - prevVelocity); だけど誤差が出るので近似した
+    //        //    Debug.Log($"deltaVelocity:{deltaVelocity}");
+    //        //    var accelerationDirection = (deltaVelocity / Time.fixedDeltaTime).normalized;
+    //        //    if (accelerationDirection.magnitude < 1.0f) accelerationDirection = directionVec;
+    //        //    Debug.Log($"accelerationDirection:{accelerationDirection}");
+    //        //    var accelerationVector = acceleration * accelerationDirection;
+    //        //    Debug.Log($"accelerationVector:{accelerationVector}");
+    //        //    info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
+    //        //    if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
+
+    //        //}
+    //        //else
+    //        //{
+
+    //        //    //prevVelocity = info.pickerRd.velocity;
+    //        //    //toEndVector = endPos - startPos;
+    //        //    var preAccelerationVector = (2 / Mathf.Pow(info.estimatedStopTime, 2)) * (toEndVector - prevVelocity * info.estimatedStopTime); //定数であることに注意
+    //        //    Debug.Log($"(2 / Mathf.Pow(info.stopTime, 2)):{(2 / Mathf.Pow(info.estimatedStopTime, 2))}");
+    //        //    Debug.Log($"(toEndVector - prevVector * info.stopTime)):{(toEndVector - prevVelocity * info.estimatedStopTime)}");
+    //        //    Debug.Log($"preAccelerationVector:{preAccelerationVector}");
+
+    //        //    var accelerationVector = Utility.SetYToZero(preAccelerationVector);
+    //        //    Debug.Log($"accelerationVector:{accelerationVector}");
+    //        //    info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
+    //        //}
+    //    }
+    //}
+
+    float t = 0;
+    Vector3 startVVV = Vector3.zero;
+
+    protected void TMoveToFiexedPos(Vector3 endPos, float acceleration, float maxVelocity)
     {
-        var directionVec = Utility.SetYToZero(moveVector).normalized;
-        info.pickerRd.AddForce(info.normalAcceleration * directionVec, ForceMode.Impulse);
-        if (info.pickerRd.velocity.magnitude >= info.normalMaxVelocity) info.pickerRd.velocity = info.normalMaxVelocity * info.pickerRd.velocity.normalized;
+        var pickerPos = info.pickerObj.transform.position;
+        var pickerVelocity = info.pickerRd.velocity;
+        var deltaVector = endPos - pickerPos;
+        var distance = deltaVector.magnitude;
+        if (/*distance > info.decelerationRange*/true)
+        {
+            // endPosをestimatedStopTime秒後に現在の速度を折り返した速度ベクトルで通過するようにする
+
+            t += Time.fixedDeltaTime;
+
+            var startVelocity = Utility.SetYToZero( pickerVelocity);
+            if (startVVV == Vector3.zero) startVVV = startVelocity;
+            deltaVector = Utility.SetYToZero( endPos - startVVV);
+            var endVelocity = Utility.ReflectVectorYZero(startVVV, deltaVector);
+            if (endVelocity.magnitude < 1.0f) endVelocity = maxVelocity * deltaVector.normalized;
+            var m = (6 * (endVelocity + startVVV) * info.estimatedStopTime - 12 * deltaVector) / Mathf.Pow(info.estimatedStopTime,3);
+            var n = (-2 * (endVelocity + 2 * startVVV) * info.estimatedStopTime + 6 * deltaVector) /
+                    Mathf.Pow(info.estimatedStopTime, 2);
+            // a = m t + n
+            var tmpAcceleration = m * Time.fixedDeltaTime;
+            //Debug.Log($"tmpAcceleration:{tmpAcceleration}, deltaVector:{deltaVector}");
+            //if (tmpAcceleration.magnitude < 1.0f) tmpAcceleration = Utility.SetYToZero(deltaVector);
+            //var accelerationMagnitude =
+            //    tmpAcceleration.magnitude > acceleration ? acceleration : tmpAcceleration.magnitude ; 
+            //Debug.Log($"accelerationMagnitude:{accelerationMagnitude}");
+            //var accelerationVector = accelerationMagnitude * tmpAcceleration.normalized;
+            var accelerationVector =  tmpAcceleration;
+
+
+            Debug.Log($"accelerationVector:{accelerationVector}, accelerationVector.magnitude:{accelerationVector.magnitude}");
+            info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
+            if (info.pickerRd.velocity.magnitude > maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
+        }
+        else
+        {
+            Debug.Log($"着陸態勢に入ります");
+            //var preAccelerationVector = (2 / Mathf.Pow(info.estimatedStopTime, 2)) * (toEndVector - prevVelocity * info.estimatedStopTime); //定数であることに注意
+            //var accelerationVector = Utility.SetYToZero(preAccelerationVector);
+            ////restrictionVelocity = Mathf.Min(restrictionVelocity,info.pickerRd.velocity.magnitude);
+            //Debug.Log($"accelerationVector:{accelerationVector}");
+            //info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
+        }
+
+
     }
-    protected void MoveNormal(Vector3 startPos, Vector3 endPos)
+
+    protected void TMoveToMovingPos(Vector3 endPos, float acceleration, float maxVelocity)
     {
-        MoveNormal(endPos - startPos);
+
     }
+
+    protected void TMoveNormal(Vector3 moveVector){Move(moveVector,info.normalAcceleration,info.normalMaxVelocity);}
+    protected void TMoveToFixedPosNormal(Vector3 endPos) { TMoveToFiexedPos(endPos, info.normalAcceleration, info.normalMaxVelocity); }
+    protected void TMoveToMovingPosNormal(Vector3 endPos){ TMoveToMovingPos(endPos, info.normalAcceleration, info.normalMaxVelocity); }
+    protected void TMoveToFixedPosCarrying(Vector3 endPos) { TMoveToFiexedPos(endPos, info.carryingAcceleration, info.carryingMaxVelocity); }
+
 
 }
 
@@ -220,11 +364,11 @@ public class PickerSearchState : PickerAbstractState
     }
     public override void Process(IPickerContext context)
     {
-        timer += Time.deltaTime;
+        timer += Time.fixedDeltaTime;
 
         // move in the direction the player is facing
-        var moveVector = info.playerRd.velocity;
-        MoveNormal(moveVector);
+        var moveVector = info.playerObj.transform.forward;
+        TMoveNormal(moveVector);
 
         // search for available resources
         var resource = FindAvailableResource();
@@ -285,7 +429,7 @@ public class PickerReturnToPlayerState : PickerAbstractState
     {
         if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
 
-        MoveNormal(info.pickerObj.transform.position, info.playerObj.transform.position);
+        TMoveToMovingPosNormal(info.playerObj.transform.position);
     }
 
     public override bool CanSwitchState()
@@ -314,7 +458,7 @@ public class PickerApproachState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // 途中でnullになる可能性がある
-        MoveNormal(info.pickerObj.transform.position, info.targetResourceObj.transform.position);
+        TMoveToFixedPosNormal(info.targetResourceObj.transform.position);
     }
 
     public override bool CanSwitchState()
@@ -351,7 +495,7 @@ public class PickerCollectState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         Debug.Log($"CollectProcess()");
-        timer += Time.deltaTime;
+        timer += Time.fixedDeltaTime;
         if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
 
         if (timer < info.collectTime)
@@ -396,7 +540,7 @@ public class PickerReturnToMainBaseState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         Debug.Log($"ReturnProcess()");
-        MoveCarrying(info.pickerObj.transform.position, info.mainBaseObj.transform.position);
+        TMoveToFixedPosCarrying(info.mainBaseObj.transform.position);
     }
 
     public override bool CanSwitchState()

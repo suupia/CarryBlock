@@ -22,7 +22,7 @@ public class BulletController : MonoBehaviour
 
     private void Update()
     {
-        timer += Time.deltaTime;
+        timer += Time.fixedDeltaTime;
         if (timer > lifeTime) DestroyBullet();
     }
 
