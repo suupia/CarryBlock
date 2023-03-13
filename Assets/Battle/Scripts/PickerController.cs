@@ -44,7 +44,7 @@ public class PickerController : MonoBehaviour
 
         detectionRange = rangeRadius;
 
-        pickerInfo = new PickerInfo(this.gameObject,detectionRange);
+        pickerInfo = new PickerInfo(this.gameObject, detectionRange);
         pickerContext = new PickerContext(pickerInfo.searchState);
 
         pickerInfo.SetPlayerObj(playerObj);
@@ -113,7 +113,7 @@ public class PickerInfo
     public GameObject headquartersObj { get; private set; }
 
     // injected fields
-    public  float detectionRange { get; private set; }
+    public float detectionRange { get; private set; }
 
     public PickerInfo(GameObject pickerObj, float detectionRange)
     {
@@ -226,17 +226,38 @@ public class PickerSearchState : PickerAbstractState
         var moveVector = info.playerRd.velocity;
         MoveNormal(moveVector);
 
-        // change state when picker detect resources
+        // search for available resources
+        var resource = FindAvailableResource();
+        if (resource != null)
+        {
+            TakeResource(context,resource);
+        }
+    }
+
+    GameObject FindAvailableResource()
+    {
         Collider[] colliders = Physics.OverlapSphere(info.pickerObj.transform.position, info.detectionRange);
         var resources = colliders.
             Where(collider => collider.CompareTag("Resource")).
+            Where(collider => collider.gameObject.GetComponent<ResourceController>().isOwned == false).
             Select(collider => collider.gameObject);
+
         if (resources.Any())
         {
-            info.SetTargetResourceObj(resources.ElementAt(0));
-            context.ChangeState(info.approachState);
+            return resources.ElementAt(0);
+        }
+        else
+        {
+            return null;
         }
 
+    }
+
+    void TakeResource(IPickerContext context, GameObject resource)
+    {
+        resource.GetComponent<ResourceController>().isOwned = true;
+        info.SetTargetResourceObj(resource);
+        context.ChangeState(info.approachState);
     }
 
     public override bool CanSwitchState()
@@ -253,8 +274,6 @@ public class PickerSearchState : PickerAbstractState
 
 public class PickerReturnToPlayerState : PickerAbstractState
 {
-    readonly float minSpawnTime = 1;
-
     public PickerReturnToPlayerState(PickerInfo info) : base(info)
     {
     }
@@ -294,7 +313,7 @@ public class PickerApproachState : PickerAbstractState
     }
     public override void Process(IPickerContext context)
     {
-        if(info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // ìríÜÇ≈nullÇ…Ç»ÇÈâ¬î\ê´Ç™Ç†ÇÈ
+        if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // ìríÜÇ≈nullÇ…Ç»ÇÈâ¬î\ê´Ç™Ç†ÇÈ
         MoveNormal(info.pickerObj.transform.position, info.targetResourceObj.transform.position);
     }
 
