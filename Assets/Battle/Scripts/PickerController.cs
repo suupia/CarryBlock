@@ -186,6 +186,8 @@ public abstract class PickerAbstractState : IPickerState
     public abstract void Process(IPickerContext context);
     public abstract bool CanSwitchState();
     public abstract void SwitchState(IPickerContext context);
+    
+    // TODO Move関連のメソッドを別のクラスに切り出す
 
     protected void AddForceByLimitVelocity(Vector3 accelerationVector, float maxVelocity)
     {
@@ -229,7 +231,7 @@ public abstract class PickerAbstractState : IPickerState
     bool isFirstReach = true;
     Vector3 prevVelocity;
     Vector3 toEndVector;
-    protected void TMoveToFiexedPos(Vector3 endPos, float acceleration, float maxVelocity)
+    protected void MoveToFiexedPos(Vector3 endPos, float acceleration, float maxVelocity)
     {
         var pickerPos = Utility.SetYToZero(info.pickerObj.transform.position);
         var pickerVelocity = Utility.SetYToZero( info.pickerRd.velocity);
@@ -264,15 +266,15 @@ public abstract class PickerAbstractState : IPickerState
         }
     }
 
-    protected void TMoveToMovingPos(Vector3 endPos, float acceleration, float maxVelocity)
+    protected void MoveToMovingPos(Vector3 endPos, float acceleration, float maxVelocity)
     {
         AccelerateMove(endPos, acceleration, maxVelocity);
     }
 
-    protected void TMoveNormal(Vector3 moveVector){Move(moveVector,info.normalAcceleration,info.normalMaxVelocity);}
-    protected void TMoveToFixedPosNormal(Vector3 endPos) { TMoveToFiexedPos(endPos, info.normalAcceleration, info.normalMaxVelocity); }
-    protected void TMoveToMovingPosNormal(Vector3 endPos){ TMoveToMovingPos(endPos, info.normalAcceleration, info.normalMaxVelocity); }
-    protected void TMoveToFixedPosCarrying(Vector3 endPos) { TMoveToFiexedPos(endPos, info.carryingAcceleration, info.carryingMaxVelocity); }
+    protected void MoveNormal(Vector3 moveVector){Move(moveVector,info.normalAcceleration,info.normalMaxVelocity);}
+    protected void MoveToFixedPosNormal(Vector3 endPos) { MoveToFiexedPos(endPos, info.normalAcceleration, info.normalMaxVelocity); }
+    protected void MoveToMovingPosNormal(Vector3 endPos){ MoveToMovingPos(endPos, info.normalAcceleration, info.normalMaxVelocity); }
+    protected void MoveToFixedPosCarrying(Vector3 endPos) { MoveToFiexedPos(endPos, info.carryingAcceleration, info.carryingMaxVelocity); }
 
 
 }
@@ -295,7 +297,7 @@ public class PickerSearchState : PickerAbstractState
 
         // move in the direction the player is facing
         var moveVector = info.playerObj.transform.forward;
-        TMoveNormal(moveVector);
+        MoveNormal(moveVector);
 
         // search for available resources
         var resource = FindAvailableResource();
@@ -356,7 +358,7 @@ public class PickerReturnToPlayerState : PickerAbstractState
     {
         if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
 
-        TMoveToMovingPosNormal(info.playerObj.transform.position);
+        MoveToMovingPosNormal(info.playerObj.transform.position);
     }
 
     public override bool CanSwitchState()
@@ -385,7 +387,7 @@ public class PickerApproachState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // 途中でnullになる可能性がある
-        TMoveToFixedPosNormal(info.targetResourceObj.transform.position);
+        MoveToFixedPosNormal(info.targetResourceObj.transform.position);
     }
 
     public override bool CanSwitchState()
@@ -467,7 +469,7 @@ public class PickerReturnToMainBaseState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         Debug.Log($"ReturnProcess()");
-        TMoveToFixedPosCarrying(info.mainBaseObj.transform.position);
+        MoveToFixedPosCarrying(info.mainBaseObj.transform.position);
     }
 
     public override bool CanSwitchState()
