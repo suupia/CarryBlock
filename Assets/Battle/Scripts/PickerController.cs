@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System.Numerics;
 using UnityEditor;
+using UnityEditor.TextCore.Text;
 using UnityEngine.XR;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
@@ -217,6 +218,9 @@ public abstract class PickerAbstractState : IPickerState
         if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
     }
 
+    bool isPast = false;
+    bool isFirstMove = true;
+    Vector3 initDeltaVector;
     bool isReach = false;
     bool isFirstReach = true;
     Vector3 prevVelocity;
@@ -227,8 +231,16 @@ public abstract class PickerAbstractState : IPickerState
         var pickerVelocity = Utility.SetYToZero( info.pickerRd.velocity);
         var deltaVector = Utility.SetYToZero(endPos - pickerPos); // This vector is assumed to not be zero
         var distance = deltaVector.magnitude;
+
+        if (isFirstMove)
+        {
+            isFirstMove = false;
+            initDeltaVector = deltaVector;
+        }
+
+        if (Mathf.Abs(Vector3.Angle(initDeltaVector, deltaVector)) >= 90) isPast = true;
         if (distance < info.decelerationRange) isReach = true;
-        if (!isReach)
+        if (!isReach && ! isPast)
         {
             AccelerateMove(endPos,acceleration,maxVelocity);
         }
