@@ -89,8 +89,8 @@ public class PickerInfo
     public readonly float carryingMaxVelocity = 25;
 
 
-    public readonly float collectionRange = 2.0f;
-    public readonly float collectionTime = 1.2f;
+    public readonly float collectRange = 2.0f;
+    public readonly float collectTime = 1.2f;
     public readonly float collectOffset = 1;
 
     public readonly float returnToMainBaseRange = 1;
@@ -99,7 +99,7 @@ public class PickerInfo
     // singletons
     public IPickerState searchState { get; private set; }
     public IPickerState approachState { get; private set; }
-    public IPickerState collectionState { get; private set; }
+    public IPickerState collectState { get; private set; }
     public IPickerState returnToMainBaseState { get; private set; }
     public IPickerState returnToPlayerState { get; private set; }
     public IPickerState completeState { get; private set; }
@@ -122,7 +122,7 @@ public class PickerInfo
 
         searchState = new PickerSearchState(this);
         approachState = new PickerApproachState(this);
-        collectionState = new PickerCollectionState(this);
+        collectState = new PickerCollectState(this);
         returnToMainBaseState = new PickerReturnToMainBaseState(this);
         returnToPlayerState = new PickerReturnToPlayerState(this);
         completeState = new PickerCompleteState(this);
@@ -320,25 +320,25 @@ public class PickerApproachState : PickerAbstractState
     public override bool CanSwitchState()
     {
         var vector = Utility.SetYToZero(info.targetResourceObj.transform.position - info.pickerObj.transform.position);
-        return vector.magnitude <= info.collectionRange;
+        return vector.magnitude <= info.collectRange;
     }
     public override void SwitchState(IPickerContext context)
     {
-        context.ChangeState(info.collectionState);
+        context.ChangeState(info.collectState);
     }
 
 }
 
 
 
-public class PickerCollectionState : PickerAbstractState
+public class PickerCollectState : PickerAbstractState
 {
     Vector3 initPos;
     Vector3 deltaVector;
 
     float timer = 0;
 
-    public PickerCollectionState(PickerInfo info) : base(info)
+    public PickerCollectState(PickerInfo info) : base(info)
     {
     }
 
@@ -354,9 +354,9 @@ public class PickerCollectionState : PickerAbstractState
         timer += Time.deltaTime;
         if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
 
-        if (timer < info.collectionTime)
+        if (timer < info.collectTime)
         {
-            var coefficient = 2 * Mathf.PI / info.collectionTime;
+            var coefficient = 2 * Mathf.PI / info.collectTime;
             var progress = -Mathf.Cos(coefficient * timer) + 1f;
             info.pickerObj.transform.position = progress * deltaVector + initPos;
         }
@@ -371,7 +371,7 @@ public class PickerCollectionState : PickerAbstractState
 
     public override bool CanSwitchState()
     {
-        return timer >= info.collectionTime;
+        return timer >= info.collectTime;
     }
 
     public override void SwitchState(IPickerContext context)
