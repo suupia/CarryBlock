@@ -45,10 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e23fb2ce28c9410c869668ddd2d410d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletsParent: {fileID: 0}
   bulletPrefab: {fileID: 4316843539711024874, guid: 62dd7ffbf75754090a7dace68b8dd1fa, type: 3}
-  pickersParent: {fileID: 0}
-  pickerPrefab: {fileID: 5489803120460951805, guid: 8926f92aa92bff244b565510169a9cfa, type: 3}
+  pickerPrefab: {fileID: 6712527461274197768, guid: 8926f92aa92bff244b565510169a9cfa, type: 3}
   rangeCircleObj: {fileID: 50112498490323797}
   playerObj: {fileID: 5633423620299556856}
 --- !u!1001 &1659999812359380087

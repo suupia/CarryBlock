@@ -23,6 +23,10 @@ public class PlayerController : MonoBehaviour
     //range
     float rangeRadius = 12.0f;
 
+    //picker
+    float pickerHeight = 5.0f;
+
+
     void Start()
     {
         bulletsParent = GameObject.Find("BulletsParent").transform;
@@ -75,7 +79,8 @@ public class PlayerController : MonoBehaviour
 
     private void LaunchPicker()
     {
-        var picker = Instantiate(pickerPrefab, playerObj.transform.position,Quaternion.identity,pickersParent).transform.Find("Picker").GetComponent<PickerController>();
+        var pickerPos = playerObj.transform.position + new Vector3(0, pickerHeight, 0);
+        var picker = Instantiate(pickerPrefab, pickerPos, Quaternion.identity,pickersParent).GetComponent<PickerController>();
         picker.Init(playerObj.gameObject, rangeRadius);
     }
 }
