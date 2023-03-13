@@ -34,7 +34,7 @@ public class PickerController : MonoBehaviour
 
     // Components
     GameObject targetResourceObj;
-    GameObject headquartersObj;
+    GameObject mainBaseObj;
     float detectionRange;
 
 
@@ -49,8 +49,8 @@ public class PickerController : MonoBehaviour
 
         pickerInfo.SetPlayerObj(playerObj);
 
-        headquartersObj = GameObject.Find("Headquarters");
-        pickerInfo.SetHeadquartersObj(headquartersObj);
+        mainBaseObj = GameObject.Find("MainBase");
+        pickerInfo.SetMainBaseObj(mainBaseObj);
 
 
         isInitialized = true;
@@ -93,14 +93,14 @@ public class PickerInfo
     public readonly float collectionTime = 1.2f;
     public readonly float collectOffset = 1;
 
-    public readonly float returnToHeadquartersRange = 1;
+    public readonly float returnToMainBaseRange = 1;
     public readonly float returnToPlayerRange = 2.5f;
 
     // singletons
     public IPickerState searchState { get; private set; }
     public IPickerState approachState { get; private set; }
     public IPickerState collectionState { get; private set; }
-    public IPickerState returnToHeadquartersState { get; private set; }
+    public IPickerState returnToMainBaseState { get; private set; }
     public IPickerState returnToPlayerState { get; private set; }
     public IPickerState completeState { get; private set; }
 
@@ -110,7 +110,7 @@ public class PickerInfo
     public GameObject playerObj { get; private set; }
     public Rigidbody playerRd { get; private set; }
     public GameObject targetResourceObj { get; private set; }
-    public GameObject headquartersObj { get; private set; }
+    public GameObject mainBaseObj { get; private set; }
 
     // injected fields
     public float detectionRange { get; private set; }
@@ -123,7 +123,7 @@ public class PickerInfo
         searchState = new PickerSearchState(this);
         approachState = new PickerApproachState(this);
         collectionState = new PickerCollectionState(this);
-        returnToHeadquartersState = new PickerReturnToHeadquartersState(this);
+        returnToMainBaseState = new PickerReturnToMainBaseState(this);
         returnToPlayerState = new PickerReturnToPlayerState(this);
         completeState = new PickerCompleteState(this);
 
@@ -141,9 +141,9 @@ public class PickerInfo
         this.targetResourceObj = targetResourceObj;
     }
 
-    public void SetHeadquartersObj(GameObject headquartersObj)
+    public void SetMainBaseObj(GameObject mainBaseObj)
     {
-        this.headquartersObj = headquartersObj;
+        this.mainBaseObj = mainBaseObj;
     }
 }
 
@@ -376,16 +376,16 @@ public class PickerCollectionState : PickerAbstractState
 
     public override void SwitchState(IPickerContext context)
     {
-        context.ChangeState(info.returnToHeadquartersState);
+        context.ChangeState(info.returnToMainBaseState);
     }
 
 
 }
 
-public class PickerReturnToHeadquartersState : PickerAbstractState
+public class PickerReturnToMainBaseState : PickerAbstractState
 {
 
-    public PickerReturnToHeadquartersState(PickerInfo info) : base(info)
+    public PickerReturnToMainBaseState(PickerInfo info) : base(info)
     {
     }
 
@@ -396,13 +396,13 @@ public class PickerReturnToHeadquartersState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         Debug.Log($"ReturnProcess()");
-        MoveCarrying(info.pickerObj.transform.position, info.headquartersObj.transform.position);
+        MoveCarrying(info.pickerObj.transform.position, info.mainBaseObj.transform.position);
     }
 
     public override bool CanSwitchState()
     {
-        var vector = Utility.SetYToZero(info.headquartersObj.transform.position - info.pickerObj.transform.position);
-        return vector.magnitude <= info.returnToHeadquartersRange;
+        var vector = Utility.SetYToZero(info.mainBaseObj.transform.position - info.pickerObj.transform.position);
+        return vector.magnitude <= info.returnToMainBaseRange;
     }
     public override void SwitchState(IPickerContext context)
     {

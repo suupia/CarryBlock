@@ -10,7 +10,7 @@
 //    private GameObject playerObj;
 //    private GameObject pickerObj;
 //    private GameObject resourceObj;
-//    private GameObject headquartersObj;
+//    private GameObject mainBaseObj;
 
 //    [SetUp]
 //    public void Setup()
@@ -28,7 +28,7 @@
 //        resourceObj.tag = "Resource";
 
 //        // Create headquarters object
-//        headquartersObj = new GameObject("Headquarters");
+//        mainBaseObj = new GameObject("Headquarters");
 
 //        // Set up PickerController
 //        var pickerController = pickerObj.AddComponent<PickerController>();
@@ -42,7 +42,7 @@
 //        Object.Destroy(playerObj);
 //        Object.Destroy(pickerObj);
 //        Object.Destroy(resourceObj);
-//        Object.Destroy(headquartersObj);
+//        Object.Destroy(mainBaseObj);
 //    }
 
 //    [Test]
@@ -51,7 +51,7 @@
 //        // Set up PickerInfo
 //        var pickerInfo = new PickerInfo(pickerObj, 5f);
 //        pickerInfo.SetPlayerObj(playerObj);
-//        pickerInfo.SetHeadquartersObj(headquartersObj);
+//        pickerInfo.SetHeadquartersObj(mainBaseObj);
 
 //        // Set up PickerContext
 //        var pickerContext = new PickerContext(pickerInfo.searchState);
@@ -89,7 +89,7 @@
 //        // Set up PickerInfo
 //        var pickerInfo = new PickerInfo(pickerObj, 5f);
 //        pickerInfo.SetPlayerObj(playerObj);
-//        pickerInfo.SetHeadquartersObj(headquartersObj);
+//        pickerInfo.SetHeadquartersObj(mainBaseObj);
 
 //        // Set up PickerContext
 //        var pickerContext = new PickerContext(pickerInfo.approachState);
