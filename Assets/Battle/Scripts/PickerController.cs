@@ -16,10 +16,10 @@ public interface IPickerContext
 
 public interface IPickerState
 {
-    public abstract void InitProcess();
-    public abstract void Process(IPickerContext state);
-    public abstract bool CanSwitchState();
-    public abstract void SwitchState(IPickerContext state);
+    public void InitProcess();
+    public void Process(IPickerContext state);
+    public bool CanSwitchState();
+    public void SwitchState(IPickerContext state);
 }
 
 
@@ -28,8 +28,8 @@ public class PickerController : MonoBehaviour
     bool isInitialized = false;
 
     // Pure
-    private PickerInfo pickerInfo;
-    private IPickerContext pickerContext;
+    PickerInfo pickerInfo;
+    IPickerContext pickerContext;
 
 
     // Components
@@ -113,7 +113,6 @@ public class PickerInfo
     public GameObject headquartersObj { get; private set; }
 
     // injected fields
-
     public  float detectionRange { get; private set; }
 
     public PickerInfo(GameObject pickerObj, float detectionRange)
@@ -178,7 +177,6 @@ public abstract class PickerAbstractState : IPickerState
         this.info = info;
     }
 
-
     public abstract void InitProcess();
     public abstract void Process(IPickerContext context);
     public abstract bool CanSwitchState();
@@ -210,8 +208,8 @@ public abstract class PickerAbstractState : IPickerState
 
 public class PickerSearchState : PickerAbstractState
 {
-    private float timer = 0;
-    private readonly float minSpawnTime = 0.3f;
+    float timer = 0;
+    readonly float minSpawnTime = 0.3f;
     public PickerSearchState(PickerInfo info) : base(info)
     {
     }
@@ -255,7 +253,7 @@ public class PickerSearchState : PickerAbstractState
 
 public class PickerReturnToPlayerState : PickerAbstractState
 {
-    private readonly float minSpawnTime = 1;
+    readonly float minSpawnTime = 1;
 
     public PickerReturnToPlayerState(PickerInfo info) : base(info)
     {

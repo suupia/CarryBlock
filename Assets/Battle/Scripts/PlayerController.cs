@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] Transform bulletsParent;
+    Transform bulletsParent;
     [SerializeField] GameObject bulletPrefab;
-    [SerializeField] Transform pickersParent;
+    Transform pickersParent;
     [SerializeField] GameObject pickerPrefab;
 
     [SerializeField] GameObject rangeCircleObj;
@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        bulletsParent = GameObject.Find("BulletsParent").transform;
+        pickersParent = GameObject.Find("PickersParent").transform;
+
 
         playerRd  = playerObj.GetComponent<Rigidbody>();
 
