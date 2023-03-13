@@ -88,7 +88,7 @@ public class PickerInfo
     public readonly float carryingAcceleration = 150f;
     public readonly float normalMaxVelocity = 50;
     public readonly float carryingMaxVelocity = 25;
-    public readonly float decelerationRange = 0;
+    public readonly float decelerationRange = 6;
     public readonly float estimatedStopTime = 0.3f; // Estimated time to decelerate to a stop
 
 
@@ -286,54 +286,54 @@ public abstract class PickerAbstractState : IPickerState
     //    }
     //}
 
-    float t = 0;
-    Vector3 startVVV = Vector3.zero;
-
+    bool isReach = false;
+    bool isFirstReach = true;
+    Vector3 prevVelocity;
+    Vector3 toEndVector;
     protected void TMoveToFiexedPos(Vector3 endPos, float acceleration, float maxVelocity)
     {
-        var pickerPos = info.pickerObj.transform.position;
-        var pickerVelocity = info.pickerRd.velocity;
-        var deltaVector = endPos - pickerPos;
+        var pickerPos = Utility.SetYToZero(info.pickerObj.transform.position);
+        var pickerVelocity = Utility.SetYToZero( info.pickerRd.velocity);
+        var deltaVector = Utility.SetYToZero(endPos - pickerPos); // This vector is assumed to not be zero
         var distance = deltaVector.magnitude;
-        if (/*distance > info.decelerationRange*/true)
+        if (distance < info.decelerationRange) isReach = true;
+        if (!isReach)
         {
-            // endPosをestimatedStopTime秒後に現在の速度を折り返した速度ベクトルで通過するようにする
+            var directionVec = Utility.SetYToZero(deltaVector).normalized;
+            var nextVelocity = pickerVelocity.magnitude * directionVec.normalized; // Calculate the acceleration so that the velocity in the next frame aligns with the direction of deltaVector
+            var accelerationVector = (nextVelocity - pickerVelocity) / Time.fixedDeltaTime;
+            if (accelerationVector.magnitude < 1.0f)
+            {
+                //Debug.Log($"accelerationVector.magnitude is small");
+                accelerationVector = acceleration * deltaVector.normalized;
+            }
+            else if (accelerationVector.magnitude > acceleration)
+            {
+                //Debug.Log($"accelerationVector.magnitude is large");
+                accelerationVector = acceleration * deltaVector.normalized;
+            }
+            else
+            {
+                //Debug.Log($"accelerationVector.magnitude is calculated correctly");
+            }
+            Debug.Log($"acceleration:{accelerationVector}, accelerationVector QQWr.:{accelerationVector.magnitude}");
 
-            t += Time.fixedDeltaTime;
-
-            var startVelocity = Utility.SetYToZero( pickerVelocity);
-            if (startVVV == Vector3.zero) startVVV = startVelocity;
-            deltaVector = Utility.SetYToZero( endPos - startVVV);
-            var endVelocity = Utility.ReflectVectorYZero(startVVV, deltaVector);
-            if (endVelocity.magnitude < 1.0f) endVelocity = maxVelocity * deltaVector.normalized;
-            var m = (6 * (endVelocity + startVVV) * info.estimatedStopTime - 12 * deltaVector) / Mathf.Pow(info.estimatedStopTime,3);
-            var n = (-2 * (endVelocity + 2 * startVVV) * info.estimatedStopTime + 6 * deltaVector) /
-                    Mathf.Pow(info.estimatedStopTime, 2);
-            // a = m t + n
-            var tmpAcceleration = m * Time.fixedDeltaTime;
-            //Debug.Log($"tmpAcceleration:{tmpAcceleration}, deltaVector:{deltaVector}");
-            //if (tmpAcceleration.magnitude < 1.0f) tmpAcceleration = Utility.SetYToZero(deltaVector);
-            //var accelerationMagnitude =
-            //    tmpAcceleration.magnitude > acceleration ? acceleration : tmpAcceleration.magnitude ; 
-            //Debug.Log($"accelerationMagnitude:{accelerationMagnitude}");
-            //var accelerationVector = accelerationMagnitude * tmpAcceleration.normalized;
-            var accelerationVector =  tmpAcceleration;
-
-
-            Debug.Log($"accelerationVector:{accelerationVector}, accelerationVector.magnitude:{accelerationVector.magnitude}");
             info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
-            if (info.pickerRd.velocity.magnitude > maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
+            if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
         }
         else
         {
-            Debug.Log($"着陸態勢に入ります");
-            //var preAccelerationVector = (2 / Mathf.Pow(info.estimatedStopTime, 2)) * (toEndVector - prevVelocity * info.estimatedStopTime); //定数であることに注意
-            //var accelerationVector = Utility.SetYToZero(preAccelerationVector);
-            ////restrictionVelocity = Mathf.Min(restrictionVelocity,info.pickerRd.velocity.magnitude);
-            //Debug.Log($"accelerationVector:{accelerationVector}");
-            //info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
+            //Debug.Log($"going into landing gear");
+            if (isFirstReach)
+            {
+                isFirstReach = false;
+                prevVelocity = info.pickerRd.velocity;
+                toEndVector = endPos - pickerPos;
+            }
+            var preAccelerationVector = (2 / Mathf.Pow(info.estimatedStopTime, 2)) * (toEndVector - prevVelocity * info.estimatedStopTime); // Note that it is a constant.
+            var accelerationVector = Utility.SetYToZero(preAccelerationVector);
+            info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
         }
-
 
     }
 
