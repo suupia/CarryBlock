@@ -115,6 +115,7 @@ public class PickerInfo
     public GameObject targetResourceObj { get; private set; }
     public GameObject mainBaseObj { get; private set; }
 
+
     // injected fields
     public float detectionRange { get; private set; }
 
@@ -185,7 +186,6 @@ public abstract class PickerAbstractState : IPickerState
     public abstract bool CanSwitchState();
     public abstract void SwitchState(IPickerContext context);
 
-
     protected void Move(Vector3 moveVector,float acceleration, float maxVelocity)
     {
         var directionVec = Utility.SetYToZero(moveVector).normalized;
@@ -193,98 +193,29 @@ public abstract class PickerAbstractState : IPickerState
         if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
     }
 
+    protected void AccelerateMove(Vector3 endPos, float acceleration, float maxVelocity)
+    {
+        var pickerPos = Utility.SetYToZero(info.pickerObj.transform.position);
+        var pickerVelocity = Utility.SetYToZero(info.pickerRd.velocity);
 
-    //Vector3 prevVelocity = Vector3.zero;
-    //Vector3 toEndVector = Vector3.zero;
-    //bool isFirstMoveTo = true;
-    //Vector3 prevEndPos = Vector3.zero;
+        var deltaVector = Utility.SetYToZero(endPos - pickerPos); // This vector is assumed to not be zero
 
-    //float restrictionVelocity = float.MaxValue;
-    //bool isReaching = false;
-
-    //protected void MoveTo(Vector3 endPos, float acceleration, float maxVelocity)
-    //{
-    //    var startPos = info.pickerObj.transform.position;
-    //    var directionVec = Utility.SetYToZero(endPos - startPos).normalized;
-    //    var distance = Utility.SetYToZero(endPos - startPos).magnitude;
-
-    //    if (isFirstMoveTo)
-    //    {
-    //        isFirstMoveTo = false;
-    //        prevVelocity = info.pickerRd.velocity;
-    //        prevEndPos = endPos;
-    //        toEndVector = endPos - startPos;
-    //    }
-
-    //    //EndPosÇ™ìÆÇ¢ÇƒÇ¢Ç»Ç¢èÍçá
-    //    if (Mathf.Approximately((prevEndPos - endPos).magnitude ,0))
-    //    {
-    //        //ìôë¨â~â^ìÆÇÇµÇ»Ç¢ÇÊÇ§Ç…å∏ë¨
-    //        //Ç¬Ç‹ÇËë¨ìxÇÕíPí≤å∏è≠
-    //        if (distance <= info.decelerationRange && isReaching == false)
-    //        {
-    //            isReaching = true;
-    //            prevEndPos = endPos;
-    //            toEndVector = endPos - startPos;
-    //        }
-
-    //        if (!isReaching)
-    //        {
-    //            var deltaVelocity = directionVec; // ñ{ìñÇÕ deltaVelocity = (directionVec * prevVelocity.magnitude - prevVelocity); ÇæÇØÇ«åÎç∑Ç™èoÇÈÇÃÇ≈ãﬂéóÇµÇΩ
-    //            Debug.Log($"deltaVelocity:{deltaVelocity}");
-    //            var accelerationDirection = (deltaVelocity / Time.fixedDeltaTime).normalized;
-    //            if (accelerationDirection.magnitude < 1.0f) accelerationDirection = directionVec;
-    //            Debug.Log($"accelerationDirection:{accelerationDirection}");
-    //            var accelerationVector = acceleration * accelerationDirection;
-    //            Debug.Log($"accelerationVector:{accelerationVector}");
-    //            info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
-    //            if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
-
-    //        }
-    //        else
-    //        {
-
-    //            var preAccelerationVector = (2 / Mathf.Pow(info.estimatedStopTime, 2)) * (toEndVector - prevVelocity * info.estimatedStopTime); //íËêîÇ≈Ç†ÇÈÇ±Ç∆Ç…íçà”
-    //            var accelerationVector = Utility.SetYToZero(preAccelerationVector);
-    //            //restrictionVelocity = Mathf.Min(restrictionVelocity,info.pickerRd.velocity.magnitude);
-    //            Debug.Log($"accelerationVector:{accelerationVector}");
-    //            info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
-    //        }
-
-    //    }
-    //    else
-    //    {
-    //        //EndPosÇ™ìÆÇ¢ÇƒÇ¢ÇÈèÍçáÇÕìÀÇ¡çûÇÒÇ≈íÖínÇ≈OK
-    //        //ìôë¨â~â^ìÆÇÇµÇ»Ç¢ÇÊÇ§Ç…å∏ë¨
-    //        //if (distance > info.decelerationRange)
-    //        //{
-    //        //    var deltaVelocity = directionVec; // ñ{ìñÇÕ deltaVelocity = (directionVec * prevVelocity.magnitude - prevVelocity); ÇæÇØÇ«åÎç∑Ç™èoÇÈÇÃÇ≈ãﬂéóÇµÇΩ
-    //        //    Debug.Log($"deltaVelocity:{deltaVelocity}");
-    //        //    var accelerationDirection = (deltaVelocity / Time.fixedDeltaTime).normalized;
-    //        //    if (accelerationDirection.magnitude < 1.0f) accelerationDirection = directionVec;
-    //        //    Debug.Log($"accelerationDirection:{accelerationDirection}");
-    //        //    var accelerationVector = acceleration * accelerationDirection;
-    //        //    Debug.Log($"accelerationVector:{accelerationVector}");
-    //        //    info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
-    //        //    if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
-
-    //        //}
-    //        //else
-    //        //{
-
-    //        //    //prevVelocity = info.pickerRd.velocity;
-    //        //    //toEndVector = endPos - startPos;
-    //        //    var preAccelerationVector = (2 / Mathf.Pow(info.estimatedStopTime, 2)) * (toEndVector - prevVelocity * info.estimatedStopTime); //íËêîÇ≈Ç†ÇÈÇ±Ç∆Ç…íçà”
-    //        //    Debug.Log($"(2 / Mathf.Pow(info.stopTime, 2)):{(2 / Mathf.Pow(info.estimatedStopTime, 2))}");
-    //        //    Debug.Log($"(toEndVector - prevVector * info.stopTime)):{(toEndVector - prevVelocity * info.estimatedStopTime)}");
-    //        //    Debug.Log($"preAccelerationVector:{preAccelerationVector}");
-
-    //        //    var accelerationVector = Utility.SetYToZero(preAccelerationVector);
-    //        //    Debug.Log($"accelerationVector:{accelerationVector}");
-    //        //    info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
-    //        //}
-    //    }
-    //}
+        var directionVec = Utility.SetYToZero(deltaVector).normalized;
+        var nextVelocity = maxVelocity * directionVec; // Calculate the acceleration so that the velocity in the next frame aligns with the direction of deltaVector
+        var accelerationVector = (nextVelocity - pickerVelocity) / Time.fixedDeltaTime;
+        if (accelerationVector.magnitude > acceleration)
+        {
+            //Debug.Log($"accelerationVector.magnitude is large");
+            accelerationVector = acceleration * deltaVector.normalized;
+        }
+        else
+        {
+            //Debug.Log($"accelerationVector.magnitude is calculated correctly");
+        }
+        //Debug.Log($"accelerationVector:{accelerationVector}, accelerationVector.magnitude:{accelerationVector.magnitude}");
+        info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
+        if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
+    }
 
     bool isReach = false;
     bool isFirstReach = true;
@@ -299,27 +230,7 @@ public abstract class PickerAbstractState : IPickerState
         if (distance < info.decelerationRange) isReach = true;
         if (!isReach)
         {
-            var directionVec = Utility.SetYToZero(deltaVector).normalized;
-            var nextVelocity = pickerVelocity.magnitude * directionVec.normalized; // Calculate the acceleration so that the velocity in the next frame aligns with the direction of deltaVector
-            var accelerationVector = (nextVelocity - pickerVelocity) / Time.fixedDeltaTime;
-            if (accelerationVector.magnitude < 1.0f)
-            {
-                //Debug.Log($"accelerationVector.magnitude is small");
-                accelerationVector = acceleration * deltaVector.normalized;
-            }
-            else if (accelerationVector.magnitude > acceleration)
-            {
-                //Debug.Log($"accelerationVector.magnitude is large");
-                accelerationVector = acceleration * deltaVector.normalized;
-            }
-            else
-            {
-                //Debug.Log($"accelerationVector.magnitude is calculated correctly");
-            }
-            Debug.Log($"acceleration:{accelerationVector}, accelerationVector QQWr.:{accelerationVector.magnitude}");
-
-            info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
-            if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
+            AccelerateMove(endPos,acceleration,maxVelocity);
         }
         else
         {
@@ -332,14 +243,14 @@ public abstract class PickerAbstractState : IPickerState
             }
             var preAccelerationVector = (2 / Mathf.Pow(info.estimatedStopTime, 2)) * (toEndVector - prevVelocity * info.estimatedStopTime); // Note that it is a constant.
             var accelerationVector = Utility.SetYToZero(preAccelerationVector);
+            //Debug.Log($"accelerationVector:{accelerationVector}, accelerationVector.magnitude:{accelerationVector.magnitude}");
             info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
         }
-
     }
 
     protected void TMoveToMovingPos(Vector3 endPos, float acceleration, float maxVelocity)
     {
-
+        AccelerateMove(endPos, acceleration, maxVelocity);
     }
 
     protected void TMoveNormal(Vector3 moveVector){Move(moveVector,info.normalAcceleration,info.normalMaxVelocity);}
