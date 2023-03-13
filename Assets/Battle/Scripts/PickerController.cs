@@ -187,11 +187,16 @@ public abstract class PickerAbstractState : IPickerState
     public abstract bool CanSwitchState();
     public abstract void SwitchState(IPickerContext context);
 
+    protected void AddForceByLimitVelocity(Vector3 accelerationVector, float maxVelocity)
+    {
+        info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
+        if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
+    }
     protected void Move(Vector3 moveVector,float acceleration, float maxVelocity)
     {
         var directionVec = Utility.SetYToZero(moveVector).normalized;
-        info.pickerRd.AddForce(acceleration * directionVec, ForceMode.Acceleration);
-        if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
+        AddForceByLimitVelocity(acceleration * directionVec, maxVelocity);
+
     }
 
     protected void AccelerateMove(Vector3 endPos, float acceleration, float maxVelocity)
@@ -214,8 +219,7 @@ public abstract class PickerAbstractState : IPickerState
             //Debug.Log($"accelerationVector.magnitude is calculated correctly");
         }
         //Debug.Log($"accelerationVector:{accelerationVector}, accelerationVector.magnitude:{accelerationVector.magnitude}");
-        info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
-        if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
+        AddForceByLimitVelocity(accelerationVector,maxVelocity);
     }
 
     bool isPast = false;
