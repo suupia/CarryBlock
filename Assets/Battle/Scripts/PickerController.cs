@@ -194,14 +194,60 @@ public abstract class PickerAbstractState : IPickerState
 public class PickerMover
 {
     PickerInfo info;
+    MoveState state;
+
+    // These fields are used in MoveToFixedPos()
+    Vector3 initDeltaVector;
+    bool isPast = false;
+    bool isReach = false;
+    bool isFirstReach = true;
+    Vector3 prevVelocity;
+    Vector3 toEndVector;
+
     public PickerMover(PickerInfo info)
     {
         this.info = info;
     }
-    public void MoveForwardNormal(Vector3 moveVector) { Move(moveVector, info.normalAcceleration, info.normalMaxVelocity); }
-    public void MoveToFixedPosNormal(Vector3 endPos) { MoveToFixedPos(endPos, info.normalAcceleration, info.normalMaxVelocity); }
-    public void MoveToMovingPosNormal(Vector3 endPos) { MoveToMovingPos(endPos, info.normalAcceleration, info.normalMaxVelocity); }
-    public void MoveToFixedPosCarrying(Vector3 endPos) { MoveToFixedPos(endPos, info.carryingAcceleration, info.carryingMaxVelocity); }
+
+    enum MoveState
+    {
+        ForwardNormal,ToFixedPosNormal,ToMovingPosNormal,ToFixedPosCarrying
+    }
+
+    public void MoveForwardNormal(Vector3 moveVector)
+    {
+        if (state != MoveState.ForwardNormal)
+        {
+            var dummyEndPos = Utility.SetYToZero(info.pickerObj.transform.position) + moveVector;
+            Reset(MoveState.ForwardNormal, dummyEndPos);
+        }
+        Move(moveVector, info.normalAcceleration, info.normalMaxVelocity);
+    }
+
+    public void MoveToFixedPosNormal(Vector3 endPos)
+    {
+        if (state != MoveState.ToFixedPosNormal) Reset(MoveState.ToFixedPosNormal,endPos);
+        MoveToFixedPos(endPos, info.normalAcceleration, info.normalMaxVelocity);
+    }
+
+    public void MoveToMovingPosNormal(Vector3 endPos)
+    {
+        if (state != MoveState.ToMovingPosNormal) Reset(MoveState.ToMovingPosNormal,endPos);
+        MoveToMovingPos(endPos, info.normalAcceleration, info.normalMaxVelocity);
+    }
+
+    public void MoveToFixedPosCarrying(Vector3 endPos)
+    {
+        if (state != MoveState.ToFixedPosCarrying) Reset(MoveState.ToFixedPosCarrying, endPos);
+        MoveToFixedPos(endPos, info.carryingAcceleration, info.carryingMaxVelocity);
+    }
+
+    void Reset(MoveState state, Vector3 endPos)
+    {
+        this.state = state;
+        var pickerPos = Utility.SetYToZero(info.pickerObj.transform.position);
+        initDeltaVector = Utility.SetYToZero(endPos - pickerPos); // This vector is assumed to not be zero
+    }
 
     void Move(Vector3 moveVector, float acceleration, float maxVelocity)
     {
@@ -232,25 +278,13 @@ public class PickerMover
         AddForceByLimitVelocity(accelerationVector, maxVelocity);
     }
 
-    bool isPast = false;
-    bool isFirstMove = true;
-    Vector3 initDeltaVector;
-    bool isReach = false;
-    bool isFirstReach = true;
-    Vector3 prevVelocity;
-    Vector3 toEndVector;
+
     void MoveToFixedPos(Vector3 endPos, float acceleration, float maxVelocity)
     {
         var pickerPos = Utility.SetYToZero(info.pickerObj.transform.position);
         var pickerVelocity = Utility.SetYToZero(info.pickerRd.velocity);
         var deltaVector = Utility.SetYToZero(endPos - pickerPos); // This vector is assumed to not be zero
         var distance = deltaVector.magnitude;
-
-        if (isFirstMove)
-        {
-            isFirstMove = false;
-            initDeltaVector = deltaVector;
-        }
 
         if (Mathf.Abs(Vector3.Angle(initDeltaVector, deltaVector)) >= 90) isPast = true;
         if (distance < info.decelerationRange) isReach = true;
