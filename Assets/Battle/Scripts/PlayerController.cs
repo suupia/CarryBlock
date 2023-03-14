@@ -61,19 +61,8 @@ public class PlayerController : MonoBehaviour
         }
 
         var targetEnemy = playerUnit.FindEnemy();
-        //playerUnit.ShootEnemy(targetEnemy);
-        playerUnit.AShootEnemy(targetEnemy);
+        playerUnit.ShootEnemy(targetEnemy);
     }
-
-    void InitRangeCircleObj(GameObject rangeCircleObj)
-    {
-        rangeCircleObj.transform.localScale = new Vector3(rangeRadius * 2, rangeRadius * 2, rangeRadius * 2); // localScale sets the diameter
-        var onTriggerEnterComponent = rangeCircleObj.GetComponent<OnTriggerEnterComponent>();
-        Debug.Log($"onTriggerEnterComponent:{onTriggerEnterComponent}");
-        onTriggerEnterComponent.SetOnTriggerEnterAction(playerUnit.OnTriggerRangeCircle);
-
-    }
-
 }
 
 [Serializable]
@@ -137,22 +126,14 @@ public abstract class PlayerUnit
         return enemys.Any() ? enemys.First() : null;
     }
 
-    public void ShootEnemy(GameObject targetEnemy)
-    {
-        if(targetEnemy==null)return;
-        var bulletInitPos = info.bulletOffset * (targetEnemy.gameObject.transform.position - info.playerObj.transform.position).normalized + info.playerObj.transform.position;
-        var bullet = Object.Instantiate(info.bulletPrefab, bulletInitPos, Quaternion.identity, info.bulletsParent).GetComponent<BulletController>();
-        bullet.Init(targetEnemy.gameObject);
-    }
-
-    public async void AShootEnemy(GameObject targetEnemy)
+    public async void ShootEnemy(GameObject targetEnemy)
     {
         if (targetEnemy == null) return;
 
         if (isShooting)return;
         isShooting = true;
 
-        Debug.Log($"ShootEnemy() targetEnemy:{targetEnemy}");
+        // Debug.Log($"ShootEnemy() targetEnemy:{targetEnemy}");
         var bulletInitPos = info.bulletOffset * (targetEnemy.gameObject.transform.position - info.playerObj.transform.position).normalized + info.playerObj.transform.position;
         var bullet = Object.Instantiate(info.bulletPrefab, bulletInitPos, Quaternion.identity, info.bulletsParent).GetComponent<BulletController>();
         bullet.Init(targetEnemy.gameObject);
