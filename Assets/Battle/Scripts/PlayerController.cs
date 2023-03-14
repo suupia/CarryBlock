@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -17,12 +18,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] UnitType unitType;
 
-    GameObject playerObj;
-    Rigidbody playerRd;
-    float acceleration = 10f;
-    float maxVelocity = 15;
-    float bulletOffset = 1;
-    float resistance = 0.99f;
+    [SerializeField] PlayerInfo info;
 
 
     //range
@@ -42,7 +38,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        playerObj = Instantiate(unitPrefabs[(int)unitType],gameObject.transform);
+        var playerObj = Instantiate(unitPrefabs[(int)unitType],gameObject.transform);
 
         Instantiate(cameraPrefab, playerObj.transform);
         var rangeCircleGameObj = Instantiate(rangeCirclePrefab, playerObj.transform);
@@ -52,21 +48,16 @@ public class PlayerController : MonoBehaviour
         pickersParent = GameObject.Find("PickersParent").transform;
 
 
-        playerRd  = playerObj.GetComponent<Rigidbody>();
+        info.Init(playerObj);
+        playerUnit = new PlayerTank(info);
+
 
         rangeCircleGameObj.transform.localScale = new Vector3(rangeRadius*2,rangeRadius*2,rangeRadius * 2); // localScale sets the diameter
         var onTriggerEnterComponent = rangeCircleGameObj.GetComponent<OnTriggerEnterComponent>();
         Debug.Log($"onTriggerEnterComponent:{onTriggerEnterComponent}");
-        onTriggerEnterComponent.SetOnTriggerEnterAction(OnTriggerRangeCircle);
+        onTriggerEnterComponent.SetOnTriggerEnterAction(playerUnit.OnTriggerRangeCircle);
 
 
-
-        var info = new PlayerInfo(playerObj);
-        info.SetBulletsParent(bulletsParent);
-        info.SetPickerParent(pickersParent);
-        info.SetBulletPrefab(bulletPrefab);
-        info.SetPickerPrefab(pickerPrefab);
-        playerUnit = new PlayerTank(info);
         
     }
 
@@ -74,50 +65,42 @@ public class PlayerController : MonoBehaviour
     {
         var horizontalInput = Input.GetAxisRaw("Horizontal");
         var verticalInput = Input.GetAxisRaw("Vertical");
-        var directionVec = Vector3.Normalize(new Vector3(horizontalInput, 0, verticalInput));
+        var direction = Vector3.Normalize(new Vector3(horizontalInput, 0, verticalInput));
 
 
         // related to movement
 
-        //transform.position = speed * directionVec + transform.position;
-        playerRd.AddForce(acceleration * directionVec, ForceMode.Acceleration);
-        if (playerRd.velocity.magnitude >= maxVelocity) playerRd.velocity = maxVelocity * playerRd.velocity.normalized;
+        ////transform.position = speed * directionVec + transform.position;
+        //playerRd.AddForce(acceleration * directionVec, ForceMode.Acceleration);
+        //if (playerRd.velocity.magnitude >= maxVelocity) playerRd.velocity = maxVelocity * playerRd.velocity.normalized;
 
-        if (directionVec == Vector3.zero) playerRd.velocity = resistance * playerRd.velocity; //Decelerate when there is no key input
+        //if (directionVec == Vector3.zero) playerRd.velocity = resistance * playerRd.velocity; //Decelerate when there is no key input
+
+        playerUnit.MoveUnit(direction);
 
         // related to action
 
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("Left mouse button is clicked.");
-            //LaunchPicker();
             playerUnit.UnitAction();
         }
     }
 
 
-    void OnTriggerRangeCircle(Collider other)
-    {
-        if (other.CompareTag("Enemy"))
-        {
-            var bulletInitPos = bulletOffset * (other.gameObject.transform.position - playerObj.transform.position).normalized + playerObj.transform.position;
-            var bullet = Instantiate(bulletPrefab, bulletInitPos, Quaternion.identity, bulletsParent).GetComponent<BulletController>();
-            bullet.Init(other.gameObject);
-        }
-    }
+    //void OnTriggerRangeCircle(Collider other)
+    //{
+    //    if (other.CompareTag("Enemy"))
+    //    {
+    //        var bulletInitPos = bulletOffset * (other.gameObject.transform.position - playerObj.transform.position).normalized + playerObj.transform.position;
+    //        var bullet = Instantiate(bulletPrefab, bulletInitPos, Quaternion.identity, bulletsParent).GetComponent<BulletController>();
+    //        bullet.Init(other.gameObject);
+    //    }
+    //}
 
-    void LaunchPicker()
-    {
-        var pickerPos = playerObj.transform.position + new Vector3(0, pickerHeight, 0);
-        var picker = Instantiate(pickerPrefab, pickerPos, Quaternion.identity,pickersParent).GetComponent<PickerController>();
-        picker.Init(playerObj.gameObject, rangeRadius);
-    }
-
-    void CollectResource()
-    {
-
-    }
 }
+
+[Serializable]
 public class PlayerInfo
 {
     // constant fields
@@ -130,11 +113,8 @@ public class PlayerInfo
 
 
     // components
-    public readonly GameObject playerObj;
-    public readonly Rigidbody playerRd;
-
-    // injected fields
-    // ..
+    [NonSerialized] public GameObject playerObj;
+    [NonSerialized] public Rigidbody playerRd;
 
     // parents
     public Transform bulletsParent;
@@ -144,31 +124,12 @@ public class PlayerInfo
     public GameObject bulletPrefab;
     public GameObject pickerPrefab;
 
+    public PlayerInfo(){ } // A serializable class requires a default constructor
 
-
-    public PlayerInfo(GameObject playerObj)
+    public void Init(GameObject playerObj)
     {
         this.playerObj = playerObj;
         this.playerRd = playerObj.GetComponent<Rigidbody>();
-    }
-
-    public void  SetBulletsParent(Transform bulletsParent)
-    {
-        this.bulletsParent = bulletsParent;
-    }
-    public void SetPickerParent(Transform pickersParent)
-    {
-        this.pickersParent = pickersParent;
-    }
-
-    public void SetBulletPrefab(GameObject bulletPrefab)
-    {
-        this.bulletPrefab = bulletPrefab;
-    }
-
-    public void SetPickerPrefab(GameObject pickerPrefab)
-    {
-        this.pickerPrefab = pickerPrefab;
     }
 
 }
@@ -182,7 +143,11 @@ public abstract class PlayerUnit
     {
         this.info = info;
     }
+
+    public abstract void MoveUnit(Vector3 direction);
     public abstract void UnitAction();
+
+    public abstract void OnTriggerRangeCircle(Collider other);
 }
 
 public class PlayerTank : PlayerUnit
@@ -194,12 +159,28 @@ public class PlayerTank : PlayerUnit
 
     }
 
+    public override void MoveUnit(Vector3 direction)
+    {
+        info. playerRd.AddForce(info.acceleration * direction, ForceMode.Acceleration);
+        if (info.playerRd.velocity.magnitude >= info.maxVelocity) info.playerRd.velocity = info.maxVelocity * info.playerRd.velocity.normalized;
+        if (direction == Vector3.zero) info.playerRd.velocity = info.resistance * info.playerRd.velocity; //Decelerate when there is no key input
+    }
     public override void UnitAction()
     {
         // Launch a picker.
         var pickerPos = info. playerObj.transform.position + new Vector3(0, pickerHeight, 0);
         var picker = MonoBehaviour.Instantiate(info.pickerPrefab, pickerPos, Quaternion.identity, info.pickersParent).GetComponent<PickerController>();
         picker.Init(info.playerObj.gameObject, info.rangeRadius);
+        Debug.Log($"rangeRadius:{info.rangeRadius}");
+    }
+    public override void OnTriggerRangeCircle(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            var bulletInitPos = info. bulletOffset * (other.gameObject.transform.position - info.playerObj.transform.position).normalized + info.playerObj.transform.position;
+            var bullet = MonoBehaviour.Instantiate(info.bulletPrefab, bulletInitPos, Quaternion.identity, info.bulletsParent).GetComponent<BulletController>();
+            bullet.Init(other.gameObject);
+        }
     }
 }
 
@@ -209,8 +190,19 @@ public class PlayerPlane : PlayerUnit
     {
 
     }
+    public override void MoveUnit(Vector3 direction)
+    {
+        info.playerRd.AddForce(info.acceleration * direction, ForceMode.Acceleration);
+        if (info.playerRd.velocity.magnitude >= info.maxVelocity) info.playerRd.velocity = info.maxVelocity * info.playerRd.velocity.normalized;
+        if (direction == Vector3.zero) info.playerRd.velocity = info.resistance * info.playerRd.velocity; //Decelerate when there is no key input
+    }
 
     public override void UnitAction()
+    {
+
+    }
+
+    public override void OnTriggerRangeCircle(Collider other)
     {
 
     }

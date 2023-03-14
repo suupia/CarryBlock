@@ -52,3 +52,10 @@ MonoBehaviour:
   - {fileID: 6423384208636730255, guid: d04d8e7d5c713f043b2de124c360a9b6, type: 3}
   - {fileID: 224889089598137619, guid: e2418ded70a70b24fae16b10a4548a18, type: 3}
   unitType: 0
+  info:
+    playerObj: {fileID: 0}
+    playerRd: {fileID: 0}
+    bulletsParent: {fileID: 0}
+    pickersParent: {fileID: 0}
+    bulletPrefab: {fileID: 4316843539711024874, guid: 62dd7ffbf75754090a7dace68b8dd1fa, type: 3}
+    pickerPrefab: {fileID: 6712527461274197768, guid: 8926f92aa92bff244b565510169a9cfa, type: 3}
