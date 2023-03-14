@@ -348,7 +348,7 @@ public class PickerSearchState : PickerAbstractState
 
     GameObject FindAvailableResource()
     {
-        Collider[] colliders = Physics.OverlapSphere(info.pickerObj.transform.position, info.detectionRange);
+        Collider[] colliders = Physics.OverlapSphere(Utility.SetYToZero(info.pickerObj.transform.position), info.detectionRange);
         var resources = colliders.
             Where(collider => collider.CompareTag("Resource")).
             Where(collider => collider.gameObject.GetComponent<ResourceController>().isOwned == false).

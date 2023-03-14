@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
         {
             UnitType.Tank => new PlayerTank(info),
             UnitType.Plane => new PlayerPlane(info),
+            _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
         };
     }
 
