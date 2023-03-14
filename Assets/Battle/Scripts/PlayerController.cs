@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using System.Linq;
+using Cysharp.Threading.Tasks;
+using UnityEditor.Experimental.GraphView;
 
 public class PlayerController : MonoBehaviour
 {
@@ -41,7 +44,7 @@ public class PlayerController : MonoBehaviour
         info.Init(playerObj);
         playerUnit = new PlayerTank(info);
 
-        InitRangeCircleObj(rangeCircleObj);
+     //   InitRangeCircleObj(rangeCircleObj);
     }
 
     void Update()
@@ -56,6 +59,10 @@ public class PlayerController : MonoBehaviour
         {
             playerUnit.UnitAction();
         }
+
+        var targetEnemy = playerUnit.FindEnemy();
+        //playerUnit.ShootEnemy(targetEnemy);
+        playerUnit.AShootEnemy(targetEnemy);
     }
 
     void InitRangeCircleObj(GameObject rangeCircleObj)
@@ -108,6 +115,9 @@ public abstract class PlayerUnit
 {
     protected PlayerInfo info;
 
+    float shootInterval = 0.5f;
+    bool isShooting;
+
     protected PlayerUnit(PlayerInfo info)
     {
         this.info = info;
@@ -116,6 +126,41 @@ public abstract class PlayerUnit
     public abstract void MoveUnit(Vector3 direction);
     public abstract void UnitAction();
     public abstract void OnTriggerRangeCircle(Collider other);
+
+    public GameObject FindEnemy()
+    {
+        Collider[] colliders = Physics.OverlapSphere(info.playerObj.transform.position, info.rangeRadius);
+        var enemys = colliders.
+            Where(collider => collider.CompareTag("Enemy")).
+            Select(collider => collider.gameObject);
+
+        return enemys.Any() ? enemys.First() : null;
+    }
+
+    public void ShootEnemy(GameObject targetEnemy)
+    {
+        if(targetEnemy==null)return;
+        var bulletInitPos = info.bulletOffset * (targetEnemy.gameObject.transform.position - info.playerObj.transform.position).normalized + info.playerObj.transform.position;
+        var bullet = Object.Instantiate(info.bulletPrefab, bulletInitPos, Quaternion.identity, info.bulletsParent).GetComponent<BulletController>();
+        bullet.Init(targetEnemy.gameObject);
+    }
+
+    public async void AShootEnemy(GameObject targetEnemy)
+    {
+        if (targetEnemy == null) return;
+
+        if (isShooting)return;
+        isShooting = true;
+
+        Debug.Log($"ShootEnemy() targetEnemy:{targetEnemy}");
+        var bulletInitPos = info.bulletOffset * (targetEnemy.gameObject.transform.position - info.playerObj.transform.position).normalized + info.playerObj.transform.position;
+        var bullet = Object.Instantiate(info.bulletPrefab, bulletInitPos, Quaternion.identity, info.bulletsParent).GetComponent<BulletController>();
+        bullet.Init(targetEnemy.gameObject);
+
+        for (float t = 0 ; t< shootInterval; t+=Time.deltaTime) await UniTask.Yield();
+        isShooting = false;
+
+    }
 }
 
 public class PlayerTank : PlayerUnit

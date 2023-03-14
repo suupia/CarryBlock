@@ -9,7 +9,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class OnTriggerEnterComponent : MonoBehaviour
 {
-    Action<Collider> action/* = other => {}*/;
+    Action<Collider> action = other => { };
 
     public void SetOnTriggerEnterAction(Action<Collider> action)
     {

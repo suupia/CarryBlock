@@ -344,10 +344,7 @@ public class PickerSearchState : PickerAbstractState
 
         // search for available resources
         var resource = FindAvailableResource();
-        if (resource != null)
-        {
-            TakeResource(context,resource);
-        }
+        TakeResource(context,resource);
     }
 
     GameObject FindAvailableResource()
@@ -358,19 +355,13 @@ public class PickerSearchState : PickerAbstractState
             Where(collider => collider.gameObject.GetComponent<ResourceController>().isOwned == false).
             Select(collider => collider.gameObject);
 
-        if (resources.Any())
-        {
-            return resources.ElementAt(0);
-        }
-        else
-        {
-            return null;
-        }
+        return resources.Any() ? resources.First() : null;
 
     }
 
     void TakeResource(IPickerContext context, GameObject resource)
     {
+        if(resource == null) return;
         resource.GetComponent<ResourceController>().isOwned = true;
         info.SetTargetResourceObj(resource);
         context.ChangeState(info.approachState);
