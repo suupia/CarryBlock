@@ -8,6 +8,7 @@ using UnityEditor.TextCore.Text;
 using UnityEngine.XR;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
+using Cysharp.Threading.Tasks;
 
 
 public interface IPickerContext
@@ -63,12 +64,13 @@ public class PickerController : MonoBehaviour
     {
         if (!isInitialized) return;
 
-        pickerContext.CurrentState().Process(pickerContext);
-        if (pickerContext.CurrentState().CanSwitchState())
+        if (pickerContext.CurrentState().CanSwitchState()) // Check if the current state of the picker can switch to another state before Process().
         {
             pickerContext.CurrentState().SwitchState(pickerContext);
             pickerContext.CurrentState().InitProcess();
         }
+        pickerContext.CurrentState().Process(pickerContext);
+
     }
 
     // Debug
@@ -450,7 +452,8 @@ public class PickerCollectState : PickerAbstractState
     Vector3 initPos;
     Vector3 deltaVector;
 
-    float timer = 0;
+    bool isCollecting;
+    bool isComplete;
 
     public PickerCollectState(PickerInfo info) : base(info)
     {
@@ -465,27 +468,13 @@ public class PickerCollectState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         Debug.Log($"CollectProcess()");
-        timer += Time.fixedDeltaTime;
-        if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
-
-        if (timer < info.collectTime)
-        {
-            var coefficient = 2 * Mathf.PI / info.collectTime;
-            var progress = -Mathf.Cos(coefficient * timer) + 1f;
-            info.pickerObj.transform.position = progress * deltaVector + initPos;
-        }
-        else
-        {
-            Debug.Log("complete collect");
-            info.targetResourceObj.transform.position = info.pickerObj.transform.position - new Vector3(0, info.collectOffset, 0);
-            info.targetResourceObj.transform.parent = info.pickerObj.transform;
-        }
+        if(!isCollecting) CollectResource(context);
 
     }
 
     public override bool CanSwitchState()
     {
-        return timer >= info.collectTime;
+        return isComplete;
     }
 
     public override void SwitchState(IPickerContext context)
@@ -493,6 +482,28 @@ public class PickerCollectState : PickerAbstractState
         context.ChangeState(info.returnToMainBaseState);
     }
 
+    async void CollectResource(IPickerContext context)
+    {
+        isCollecting = true;
+        for (float t = 0; t < info.collectTime; t += Time.deltaTime)
+        {
+            if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
+
+            var coefficient = 2 * Mathf.PI / info.collectTime;
+            var progress = -Mathf.Cos(coefficient * t) + 1f;
+            info.pickerObj.transform.position = progress * deltaVector + initPos;
+
+            await UniTask.Yield();
+        }
+
+        Debug.Log("complete collect");
+        info.targetResourceObj.transform.position = info.pickerObj.transform.position - new Vector3(0, info.collectOffset, 0);
+        info.targetResourceObj.transform.parent = info.pickerObj.transform;
+        isComplete = true;
+
+
+        isCollecting = false;
+    }
 
 }
 
