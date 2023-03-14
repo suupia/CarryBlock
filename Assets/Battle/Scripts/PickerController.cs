@@ -176,32 +176,40 @@ public class PickerContext : IPickerContext
 public abstract class PickerAbstractState : IPickerState
 {
     protected PickerInfo info;
+    protected PickerMover mover;
 
     protected PickerAbstractState(PickerInfo info)
     {
         this.info = info;
+        this.mover = new PickerMover(info);
     }
 
     public abstract void InitProcess();
     public abstract void Process(IPickerContext context);
     public abstract bool CanSwitchState();
     public abstract void SwitchState(IPickerContext context);
-    
-    // TODO Move関連のメソッドを別のクラスに切り出す
 
-    protected void AddForceByLimitVelocity(Vector3 accelerationVector, float maxVelocity)
+}
+
+public class PickerMover
+{
+    PickerInfo info;
+    public PickerMover(PickerInfo info)
     {
-        info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
-        if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
+        this.info = info;
     }
-    protected void Move(Vector3 moveVector,float acceleration, float maxVelocity)
+    public void MoveForwardNormal(Vector3 moveVector) { Move(moveVector, info.normalAcceleration, info.normalMaxVelocity); }
+    public void MoveToFixedPosNormal(Vector3 endPos) { MoveToFixedPos(endPos, info.normalAcceleration, info.normalMaxVelocity); }
+    public void MoveToMovingPosNormal(Vector3 endPos) { MoveToMovingPos(endPos, info.normalAcceleration, info.normalMaxVelocity); }
+    public void MoveToFixedPosCarrying(Vector3 endPos) { MoveToFixedPos(endPos, info.carryingAcceleration, info.carryingMaxVelocity); }
+
+    void Move(Vector3 moveVector, float acceleration, float maxVelocity)
     {
         var directionVec = Utility.SetYToZero(moveVector).normalized;
         AddForceByLimitVelocity(acceleration * directionVec, maxVelocity);
-
     }
 
-    protected void AccelerateMove(Vector3 endPos, float acceleration, float maxVelocity)
+    void AccelerateMove(Vector3 endPos, float acceleration, float maxVelocity)
     {
         var pickerPos = Utility.SetYToZero(info.pickerObj.transform.position);
         var pickerVelocity = Utility.SetYToZero(info.pickerRd.velocity);
@@ -221,7 +229,7 @@ public abstract class PickerAbstractState : IPickerState
             //Debug.Log($"accelerationVector.magnitude is calculated correctly");
         }
         //Debug.Log($"accelerationVector:{accelerationVector}, accelerationVector.magnitude:{accelerationVector.magnitude}");
-        AddForceByLimitVelocity(accelerationVector,maxVelocity);
+        AddForceByLimitVelocity(accelerationVector, maxVelocity);
     }
 
     bool isPast = false;
@@ -231,10 +239,10 @@ public abstract class PickerAbstractState : IPickerState
     bool isFirstReach = true;
     Vector3 prevVelocity;
     Vector3 toEndVector;
-    protected void MoveToFiexedPos(Vector3 endPos, float acceleration, float maxVelocity)
+    void MoveToFixedPos(Vector3 endPos, float acceleration, float maxVelocity)
     {
         var pickerPos = Utility.SetYToZero(info.pickerObj.transform.position);
-        var pickerVelocity = Utility.SetYToZero( info.pickerRd.velocity);
+        var pickerVelocity = Utility.SetYToZero(info.pickerRd.velocity);
         var deltaVector = Utility.SetYToZero(endPos - pickerPos); // This vector is assumed to not be zero
         var distance = deltaVector.magnitude;
 
@@ -246,9 +254,9 @@ public abstract class PickerAbstractState : IPickerState
 
         if (Mathf.Abs(Vector3.Angle(initDeltaVector, deltaVector)) >= 90) isPast = true;
         if (distance < info.decelerationRange) isReach = true;
-        if (!isReach && ! isPast)
+        if (!isReach && !isPast)
         {
-            AccelerateMove(endPos,acceleration,maxVelocity);
+            AccelerateMove(endPos, acceleration, maxVelocity);
         }
         else
         {
@@ -266,16 +274,15 @@ public abstract class PickerAbstractState : IPickerState
         }
     }
 
-    protected void MoveToMovingPos(Vector3 endPos, float acceleration, float maxVelocity)
+    void MoveToMovingPos(Vector3 endPos, float acceleration, float maxVelocity)
     {
         AccelerateMove(endPos, acceleration, maxVelocity);
     }
-
-    protected void MoveNormal(Vector3 moveVector){Move(moveVector,info.normalAcceleration,info.normalMaxVelocity);}
-    protected void MoveToFixedPosNormal(Vector3 endPos) { MoveToFiexedPos(endPos, info.normalAcceleration, info.normalMaxVelocity); }
-    protected void MoveToMovingPosNormal(Vector3 endPos){ MoveToMovingPos(endPos, info.normalAcceleration, info.normalMaxVelocity); }
-    protected void MoveToFixedPosCarrying(Vector3 endPos) { MoveToFiexedPos(endPos, info.carryingAcceleration, info.carryingMaxVelocity); }
-
+    void AddForceByLimitVelocity(Vector3 accelerationVector, float maxVelocity)
+    {
+        info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
+        if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
+    }
 
 }
 
@@ -297,7 +304,7 @@ public class PickerSearchState : PickerAbstractState
 
         // move in the direction the player is facing
         var moveVector = info.playerObj.transform.forward;
-        MoveNormal(moveVector);
+        mover.MoveForwardNormal(moveVector);
 
         // search for available resources
         var resource = FindAvailableResource();
@@ -358,7 +365,7 @@ public class PickerReturnToPlayerState : PickerAbstractState
     {
         if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
 
-        MoveToMovingPosNormal(info.playerObj.transform.position);
+        mover.MoveToMovingPosNormal(info.playerObj.transform.position);
     }
 
     public override bool CanSwitchState()
@@ -387,7 +394,7 @@ public class PickerApproachState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // 途中でnullになる可能性がある
-        MoveToFixedPosNormal(info.targetResourceObj.transform.position);
+        mover.MoveToFixedPosNormal(info.targetResourceObj.transform.position);
     }
 
     public override bool CanSwitchState()
@@ -469,7 +476,7 @@ public class PickerReturnToMainBaseState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         Debug.Log($"ReturnProcess()");
-        MoveToFixedPosCarrying(info.mainBaseObj.transform.position);
+        mover.MoveToFixedPosCarrying(info.mainBaseObj.transform.position);
     }
 
     public override bool CanSwitchState()
