@@ -43,8 +43,6 @@ public class PlayerController : MonoBehaviour
 
         info.Init(playerObj);
         playerUnit = new PlayerTank(info);
-
-     //   InitRangeCircleObj(rangeCircleObj);
     }
 
     void Update()
