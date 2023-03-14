@@ -100,7 +100,6 @@ public abstract class PlayerUnit
 {
     protected PlayerInfo info;
 
-
     protected PlayerUnit(PlayerInfo info)
     {
         this.info = info;
@@ -183,7 +182,9 @@ public class PlayerPlane : PlayerUnit
     float collectOffset = 0.5f; // determine how much to place the resource below.
     float detectionRange = 3f;
 
+    float submitResourceRange = 3f;
 
+    IList<GameObject> heldResources = new List<GameObject>();
 
     public PlayerPlane(PlayerInfo info) : base(info)
     {
@@ -201,6 +202,7 @@ public class PlayerPlane : PlayerUnit
         // Collect resource.
         var resource = FindAvailableResource();
         CollectResource(resource);
+        SubmitResource();
     }
     GameObject FindAvailableResource()
     {
@@ -234,8 +236,30 @@ public class PlayerPlane : PlayerUnit
         Debug.Log("complete collect");
         resource.transform.position = info.playerObj.transform.position - new Vector3(0, collectOffset, 0);
         resource.transform.parent = info.playerObj.transform;
-
+        heldResources.Add(resource);
         isCollecting = false;
     }
 
+    void SubmitResource()
+    {
+        if(!heldResources.Any())return;
+        if(!IsNearMainBase())return;
+
+        foreach (var resource in heldResources)
+        {
+            Object.Destroy(resource);
+            Debug.Log($"submit resource");
+        }
+        heldResources = new List<GameObject>();
+    }
+
+    bool IsNearMainBase()
+    {
+        Collider[] colliders = Physics.OverlapSphere(Utility.SetYToZero(info.playerObj.transform.position), submitResourceRange);
+        var mainBases = colliders.
+            Where(collider => collider.CompareTag("MainBase")).
+            Select(collider => collider.gameObject);
+        Debug.Log($"IsNearMainBase():{mainBases.Any()}");
+        return mainBases.Any();
+    }
 }

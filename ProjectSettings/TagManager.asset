@@ -9,6 +9,7 @@ TagManager:
   - Obstacle
   - Resource
   - Picker
+  - MainBase
   layers:
   - Default
   - TransparentFX
