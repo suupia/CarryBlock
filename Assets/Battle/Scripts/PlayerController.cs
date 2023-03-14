@@ -33,7 +33,11 @@ public class PlayerController : MonoBehaviour
         var rangeCircleObj = Instantiate(rangeCirclePrefab, playerObj.transform);
 
         info.Init(playerObj);
-        playerUnit = new PlayerTank(info);
+        playerUnit = unitType switch
+        {
+            UnitType.Tank => new PlayerTank(info),
+            UnitType.Plane => new PlayerPlane(info),
+        };
     }
 
     void Update()
@@ -103,8 +107,9 @@ public abstract class PlayerUnit
 
     public abstract void MoveUnit(Vector3 direction);
     public abstract void UnitAction();
-    public abstract void OnTriggerRangeCircle(Collider other);
 
+
+    // TODO: EnemyÇ÷ÇÃçUåÇä÷åWÇÃèàóùÇÃêÿÇËèoÇµ
     public GameObject FindEnemy()
     {
         Collider[] colliders = Physics.OverlapSphere(info.playerObj.transform.position, info.rangeRadius);
@@ -155,19 +160,17 @@ public class PlayerTank : PlayerUnit
         var picker = Object.Instantiate(info.pickerPrefab, pickerPos, Quaternion.identity, info.pickersParent).GetComponent<PickerController>();
         picker.Init(info.playerObj.gameObject, info.rangeRadius);
     }
-    public override void OnTriggerRangeCircle(Collider other)
-    {
-        if (other.CompareTag("Enemy"))
-        {
-            var bulletInitPos = info. bulletOffset * (other.gameObject.transform.position - info.playerObj.transform.position).normalized + info.playerObj.transform.position;
-            var bullet = Object.Instantiate(info.bulletPrefab, bulletInitPos, Quaternion.identity, info.bulletsParent).GetComponent<BulletController>();
-            bullet.Init(other.gameObject);
-        }
-    }
 }
 
 public class PlayerPlane : PlayerUnit
 {
+    bool isCollecting;
+    float collectTime = 1f;
+    float collectOffset = 0.5f; // determine how much to place the resource below.
+    float detectionRange = 3f;
+
+
+
     public PlayerPlane(PlayerInfo info) : base(info)
     {
 
@@ -181,11 +184,44 @@ public class PlayerPlane : PlayerUnit
 
     public override void UnitAction()
     {
-
+        // Collect resource.
+        var resource = FindAvailableResource();
+        CollectResource(resource);
     }
-
-    public override void OnTriggerRangeCircle(Collider other)
+    GameObject FindAvailableResource()
     {
-
+        Collider[] colliders = Physics.OverlapSphere(Utility.SetYToZero( info.playerObj.transform.position), detectionRange);
+        var resources = colliders.
+            Where(collider => collider.CompareTag("Resource")).
+            Where(collider => collider.gameObject.GetComponent<ResourceController>().isOwned == false).
+            Select(collider => collider.gameObject);
+        return resources.Any() ? resources.First() : null;
     }
+    async void CollectResource(GameObject resource)
+    {
+        if(resource == null)return;
+        if (isCollecting) return;
+
+        var initPos = info.playerObj.transform.position;
+        var deltaVector = resource.transform.position - initPos;
+
+        isCollecting = true;
+
+        for (float t = 0; t < collectTime; t += Time.deltaTime)
+        {
+            var coefficient = 2 * Mathf.PI / collectTime;
+            var progress = -Mathf.Cos(coefficient * t) + 1f;
+
+            info.playerObj.transform.position = progress * deltaVector + initPos;
+
+            await UniTask.Yield();
+        }
+
+        Debug.Log("complete collect");
+        resource.transform.position = info.playerObj.transform.position - new Vector3(0, collectOffset, 0);
+        resource.transform.parent = info.playerObj.transform;
+
+        isCollecting = false;
+    }
+
 }
