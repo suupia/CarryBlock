@@ -461,7 +461,7 @@ public class PickerCollectState : PickerAbstractState
 
     public override void InitProcess()
     {
-        info.pickerRd.velocity = Vector3.zero;
+        //info.pickerRd.velocity = Vector3.zero;
         initPos = info.pickerObj.transform.position;
         deltaVector = info.targetResourceObj.transform.position - initPos;
     }
@@ -485,6 +485,8 @@ public class PickerCollectState : PickerAbstractState
     async void CollectResource(IPickerContext context)
     {
         isCollecting = true;
+
+
         for (float t = 0; t < info.collectTime; t += Time.deltaTime)
         {
             if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
