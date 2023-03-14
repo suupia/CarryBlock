@@ -56,8 +56,7 @@ public class PlayerController : MonoBehaviour
             playerUnit.UnitAction();
         }
 
-        var targetEnemy = shooter.FindEnemy();
-        shooter.ShootEnemy(targetEnemy);
+        shooter.AttemptShootEnemy();
     }
 }
 
@@ -95,6 +94,7 @@ public class PlayerInfo
 
 }
 
+#nullable enable
 
 public abstract class PlayerUnit
 {
@@ -122,20 +122,19 @@ public class PlayerShooter
         this.info = info;
     }
 
-    public GameObject FindEnemy()
+    public void AttemptShootEnemy()
     {
         Collider[] colliders = Physics.OverlapSphere(info.playerObj.transform.position, info.rangeRadius);
         var enemys = colliders.
             Where(collider => collider.CompareTag("Enemy")).
             Select(collider => collider.gameObject);
 
-        return enemys.Any() ? enemys.First() : null;
+        if (enemys.Any()) ShootEnemy(enemys.First());
+
     }
 
-    public async void ShootEnemy(GameObject targetEnemy)
+    async void ShootEnemy(GameObject targetEnemy)
     {
-        if (targetEnemy == null) return;
-
         if (isShooting) return;
         isShooting = true;
 
@@ -148,6 +147,8 @@ public class PlayerShooter
         isShooting = false;
 
     }
+
+
 }
 
 
@@ -200,18 +201,17 @@ public class PlayerPlane : PlayerUnit
     public override void UnitAction()
     {
         // Collect resource.
-        var resource = FindAvailableResource();
-        CollectResource(resource);
+        AttemptCollectResource();
         SubmitResource();
     }
-    GameObject FindAvailableResource()
+    public void AttemptCollectResource()
     {
         Collider[] colliders = Physics.OverlapSphere(Utility.SetYToZero( info.playerObj.transform.position), detectionRange);
         var resources = colliders.
             Where(collider => collider.CompareTag("Resource")).
             Where(collider => collider.gameObject.GetComponent<ResourceController>().isOwned == false).
             Select(collider => collider.gameObject);
-        return resources.Any() ? resources.First() : null;
+        if(resources.Any())CollectResource(resources.First());
     }
     async void CollectResource(GameObject resource)
     {
