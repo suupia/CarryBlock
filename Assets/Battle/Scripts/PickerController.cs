@@ -153,8 +153,7 @@ public class PickerInfo
     }
 }
 
-
-
+#nullable enable
 public class PickerContext : IPickerContext
 {
     public IPickerState currentState { get; private set; }
@@ -341,12 +340,11 @@ public class PickerSearchState : PickerAbstractState
         var moveVector = info.playerObj.transform.forward;
         mover.MoveForwardNormal(moveVector);
 
-        // search for available resources
-        var resource = FindAvailableResource();
-        TakeResource(context,resource);
+        // try to take available resource
+        AttemptTakeResource(context);
     }
 
-    GameObject FindAvailableResource()
+    void AttemptTakeResource(IPickerContext context)
     {
         Collider[] colliders = Physics.OverlapSphere(Utility.SetYToZero(info.pickerObj.transform.position), info.detectionRange);
         var resources = colliders.
@@ -354,7 +352,7 @@ public class PickerSearchState : PickerAbstractState
             Where(collider => collider.gameObject.GetComponent<ResourceController>().isOwned == false).
             Select(collider => collider.gameObject);
 
-        return resources.Any() ? resources.First() : null;
+        if( resources.Any())TakeResource(context, resources.First());
 
     }
 
@@ -419,7 +417,7 @@ public class PickerApproachState : PickerAbstractState
     }
     public override void Process(IPickerContext context)
     {
-        if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // ìríÜÇ≈nullÇ…Ç»ÇÈâ¬î\ê´Ç™Ç†ÇÈ
+        //if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // A flag has been added, so there is no longer a possibility of null during execution
         mover.MoveToFixedPosNormal(info.targetResourceObj.transform.position);
     }
 
@@ -480,7 +478,7 @@ public class PickerCollectState : PickerAbstractState
 
         for (float t = 0; t < info.collectTime; t += Time.deltaTime)
         {
-            if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
+           // if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // A flag has been added, so there is no longer a possibility of null during execution
 
             var coefficient = 2 * Mathf.PI / info.collectTime;
             var progress = -Mathf.Cos(coefficient * t) + 1f;
