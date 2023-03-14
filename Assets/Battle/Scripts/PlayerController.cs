@@ -5,14 +5,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
+    [SerializeField] GameObject cameraPrefab;
+    [SerializeField] GameObject rangeCirclePrefab;
+
     Transform bulletsParent;
     [SerializeField] GameObject bulletPrefab;
     Transform pickersParent;
     [SerializeField] GameObject pickerPrefab;
 
-    [SerializeField] GameObject rangeCircleObj;
-    [SerializeField] GameObject playerObj;
+    [SerializeField] GameObject[] unitPrefabs;
 
+    [SerializeField] UnitType unitType;
+
+    GameObject playerObj;
     Rigidbody playerRd;
     float acceleration = 10f;
     float maxVelocity = 15;
@@ -26,16 +32,27 @@ public class PlayerController : MonoBehaviour
     //picker
     float pickerHeight = 5.0f;
 
+    public enum UnitType
+    {
+        Tank, Plane,
+    }
+
 
     void Start()
     {
+
+        playerObj = Instantiate(unitPrefabs[(int)unitType]);
+
+        Instantiate(cameraPrefab, playerObj.transform);
+        var rangeCircleGameObj = Instantiate(rangeCirclePrefab, playerObj.transform);
+
+
         bulletsParent = GameObject.Find("BulletsParent").transform;
         pickersParent = GameObject.Find("PickersParent").transform;
 
 
         playerRd  = playerObj.GetComponent<Rigidbody>();
 
-        var rangeCircleGameObj = rangeCircleObj;
         rangeCircleGameObj.transform.localScale = new Vector3(rangeRadius*2,rangeRadius*2,rangeRadius * 2); // localScale sets the diameter
         var onTriggerEnterComponent = rangeCircleGameObj.GetComponent<OnTriggerEnterComponent>();
         Debug.Log($"onTriggerEnterComponent:{onTriggerEnterComponent}");
