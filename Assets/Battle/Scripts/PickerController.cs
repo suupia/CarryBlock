@@ -36,7 +36,6 @@ public class PickerController : MonoBehaviour
 
 
     // Components
-    GameObject targetResourceObj;
     GameObject mainBaseObj;
     float detectionRange;
 
@@ -459,7 +458,7 @@ public class PickerCollectState : PickerAbstractState
     public override void Process(IPickerContext context)
     {
         Debug.Log($"CollectProcess()");
-        if(!isCollecting) CollectResource(context);
+        CollectResource(context);
 
     }
 
@@ -475,8 +474,9 @@ public class PickerCollectState : PickerAbstractState
 
     async void CollectResource(IPickerContext context)
     {
-        isCollecting = true;
+        if(isCollecting)return;
 
+        isCollecting = true;
 
         for (float t = 0; t < info.collectTime; t += Time.deltaTime)
         {
@@ -493,7 +493,6 @@ public class PickerCollectState : PickerAbstractState
         info.targetResourceObj.transform.position = info.pickerObj.transform.position - new Vector3(0, info.collectOffset, 0);
         info.targetResourceObj.transform.parent = info.pickerObj.transform;
         isComplete = true;
-
 
         isCollecting = false;
     }
