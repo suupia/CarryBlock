@@ -19,21 +19,12 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] PlayerInfo info;
 
-
-    //range
-    float rangeRadius = 12.0f;
-
-    //picker
-    float pickerHeight = 5.0f;
-
-
     PlayerUnit playerUnit;
 
     public enum UnitType
     {
         Tank, Plane,
     }
-
 
     void Start()
     {
