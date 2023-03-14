@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerInfo info;
 
     PlayerUnit playerUnit;
+    PlayerShooter shooter;
 
     public enum UnitType
     {
@@ -39,6 +40,7 @@ public class PlayerController : MonoBehaviour
             UnitType.Plane => new PlayerPlane(info),
             _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
         };
+        shooter = new PlayerShooter(info);
     }
 
     void Update()
@@ -54,8 +56,8 @@ public class PlayerController : MonoBehaviour
             playerUnit.UnitAction();
         }
 
-        var targetEnemy = playerUnit.FindEnemy();
-        playerUnit.ShootEnemy(targetEnemy);
+        var targetEnemy = shooter.FindEnemy();
+        shooter.ShootEnemy(targetEnemy);
     }
 }
 
@@ -98,8 +100,6 @@ public abstract class PlayerUnit
 {
     protected PlayerInfo info;
 
-    float shootInterval = 0.5f;
-    bool isShooting;
 
     protected PlayerUnit(PlayerInfo info)
     {
@@ -109,8 +109,20 @@ public abstract class PlayerUnit
     public abstract void MoveUnit(Vector3 direction);
     public abstract void UnitAction();
 
+}
 
-    // TODO: EnemyÇ÷ÇÃçUåÇä÷åWÇÃèàóùÇÃêÿÇËèoÇµ
+public class PlayerShooter
+{
+    PlayerInfo info;
+
+    bool isShooting;
+    float shootInterval = 0.5f;
+
+    public PlayerShooter(PlayerInfo info)
+    {
+        this.info = info;
+    }
+
     public GameObject FindEnemy()
     {
         Collider[] colliders = Physics.OverlapSphere(info.playerObj.transform.position, info.rangeRadius);
@@ -125,7 +137,7 @@ public abstract class PlayerUnit
     {
         if (targetEnemy == null) return;
 
-        if (isShooting)return;
+        if (isShooting) return;
         isShooting = true;
 
         // Debug.Log($"ShootEnemy() targetEnemy:{targetEnemy}");
@@ -133,11 +145,12 @@ public abstract class PlayerUnit
         var bullet = Object.Instantiate(info.bulletPrefab, bulletInitPos, Quaternion.identity, info.bulletsParent).GetComponent<BulletController>();
         bullet.Init(targetEnemy.gameObject);
 
-        for (float t = 0 ; t< shootInterval; t+=Time.deltaTime) await UniTask.Yield();
+        for (float t = 0; t < shootInterval; t += Time.deltaTime) await UniTask.Yield();
         isShooting = false;
 
     }
 }
+
 
 public class PlayerTank : PlayerUnit
 {
