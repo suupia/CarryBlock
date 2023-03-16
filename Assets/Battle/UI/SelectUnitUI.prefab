@@ -184,7 +184,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fbef0201f5e49e4a8a04742e1a95bef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectUnitUIObj: {fileID: 5695003959912600168}
   selectUnitButtonsParent: {fileID: 3923681326039152208}
+  playerSpawner: {fileID: 0}
 --- !u!1 &5695003959912600168
 GameObject:
   m_ObjectHideFlags: 0
