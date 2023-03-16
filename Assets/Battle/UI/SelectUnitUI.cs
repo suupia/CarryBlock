@@ -7,10 +7,11 @@ public class SelectUnitUI : MonoBehaviour
 {
     [SerializeField] GameObject selectUnitUIObj;
     [SerializeField] Transform selectUnitButtonsParent;
-    [SerializeField] PlayerSpawner playerSpawner;
+    PlayerSpawner playerSpawner;
 
     void Start()
     {
+        playerSpawner = new PlayerSpawner();
 
         var buttons = selectUnitButtonsParent.GetComponentsInChildren<Button>();
         for (int i = 0; i < buttons.Length; i++)
