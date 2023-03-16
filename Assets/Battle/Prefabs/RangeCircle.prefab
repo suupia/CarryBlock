@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5269762293031905826}
   - component: {fileID: 7554730583435717248}
   - component: {fileID: 6079571602241161748}
-  - component: {fileID: 6167953550081467785}
   - component: {fileID: 2952157416366770093}
   m_Layer: 0
   m_Name: RangeCircle
@@ -99,18 +98,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6167953550081467785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6079571602241161750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0acf6f2b5e1e0c04ca414d0b7c1d1fd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &2952157416366770093
 Rigidbody:
   m_ObjectHideFlags: 0

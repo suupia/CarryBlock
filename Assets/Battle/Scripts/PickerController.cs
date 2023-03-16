@@ -8,6 +8,7 @@ using UnityEditor.TextCore.Text;
 using UnityEngine.XR;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
+using Cysharp.Threading.Tasks;
 
 
 public interface IPickerContext
@@ -35,7 +36,6 @@ public class PickerController : MonoBehaviour
 
 
     // Components
-    GameObject targetResourceObj;
     GameObject mainBaseObj;
     float detectionRange;
 
@@ -63,12 +63,13 @@ public class PickerController : MonoBehaviour
     {
         if (!isInitialized) return;
 
-        pickerContext.CurrentState().Process(pickerContext);
-        if (pickerContext.CurrentState().CanSwitchState())
+        if (pickerContext.CurrentState().CanSwitchState()) // Check if the current state of the picker can switch to another state before Process().
         {
             pickerContext.CurrentState().SwitchState(pickerContext);
             pickerContext.CurrentState().InitProcess();
         }
+        pickerContext.CurrentState().Process(pickerContext);
+
     }
 
     // Debug
@@ -152,8 +153,7 @@ public class PickerInfo
     }
 }
 
-
-
+#nullable enable
 public class PickerContext : IPickerContext
 {
     public IPickerState currentState { get; private set; }
@@ -340,35 +340,25 @@ public class PickerSearchState : PickerAbstractState
         var moveVector = info.playerObj.transform.forward;
         mover.MoveForwardNormal(moveVector);
 
-        // search for available resources
-        var resource = FindAvailableResource();
-        if (resource != null)
-        {
-            TakeResource(context,resource);
-        }
+        // try to take available resource
+        AttemptTakeResource(context);
     }
 
-    GameObject FindAvailableResource()
+    void AttemptTakeResource(IPickerContext context)
     {
-        Collider[] colliders = Physics.OverlapSphere(info.pickerObj.transform.position, info.detectionRange);
+        Collider[] colliders = Physics.OverlapSphere(Utility.SetYToZero(info.pickerObj.transform.position), info.detectionRange);
         var resources = colliders.
             Where(collider => collider.CompareTag("Resource")).
             Where(collider => collider.gameObject.GetComponent<ResourceController>().isOwned == false).
             Select(collider => collider.gameObject);
 
-        if (resources.Any())
-        {
-            return resources.ElementAt(0);
-        }
-        else
-        {
-            return null;
-        }
+        if( resources.Any())TakeResource(context, resources.First());
 
     }
 
     void TakeResource(IPickerContext context, GameObject resource)
     {
+        if(resource == null) return;
         resource.GetComponent<ResourceController>().isOwned = true;
         info.SetTargetResourceObj(resource);
         context.ChangeState(info.approachState);
@@ -427,7 +417,7 @@ public class PickerApproachState : PickerAbstractState
     }
     public override void Process(IPickerContext context)
     {
-        if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // ìríÜÇ≈nullÇ…Ç»ÇÈâ¬î\ê´Ç™Ç†ÇÈ
+        //if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // A flag has been added, so there is no longer a possibility of null during execution
         mover.MoveToFixedPosNormal(info.targetResourceObj.transform.position);
     }
 
@@ -450,7 +440,8 @@ public class PickerCollectState : PickerAbstractState
     Vector3 initPos;
     Vector3 deltaVector;
 
-    float timer = 0;
+    bool isCollecting;
+    bool isComplete;
 
     public PickerCollectState(PickerInfo info) : base(info)
     {
@@ -458,34 +449,20 @@ public class PickerCollectState : PickerAbstractState
 
     public override void InitProcess()
     {
-        info.pickerRd.velocity = Vector3.zero;
+        //info.pickerRd.velocity = Vector3.zero;
         initPos = info.pickerObj.transform.position;
         deltaVector = info.targetResourceObj.transform.position - initPos;
     }
     public override void Process(IPickerContext context)
     {
         Debug.Log($"CollectProcess()");
-        timer += Time.fixedDeltaTime;
-        if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
-
-        if (timer < info.collectTime)
-        {
-            var coefficient = 2 * Mathf.PI / info.collectTime;
-            var progress = -Mathf.Cos(coefficient * timer) + 1f;
-            info.pickerObj.transform.position = progress * deltaVector + initPos;
-        }
-        else
-        {
-            Debug.Log("complete collect");
-            info.targetResourceObj.transform.position = info.pickerObj.transform.position - new Vector3(0, info.collectOffset, 0);
-            info.targetResourceObj.transform.parent = info.pickerObj.transform;
-        }
+        CollectResource(context);
 
     }
 
     public override bool CanSwitchState()
     {
-        return timer >= info.collectTime;
+        return isComplete;
     }
 
     public override void SwitchState(IPickerContext context)
@@ -493,6 +470,30 @@ public class PickerCollectState : PickerAbstractState
         context.ChangeState(info.returnToMainBaseState);
     }
 
+    async void CollectResource(IPickerContext context)
+    {
+        if(isCollecting)return;
+
+        isCollecting = true;
+
+        for (float t = 0; t < info.collectTime; t += Time.deltaTime)
+        {
+           // if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // A flag has been added, so there is no longer a possibility of null during execution
+
+            var coefficient = 2 * Mathf.PI / info.collectTime;
+            var progress = -Mathf.Cos(coefficient * t) + 1f;
+            info.pickerObj.transform.position = progress * deltaVector + initPos;
+
+            await UniTask.Yield();
+        }
+
+        Debug.Log("complete collect");
+        info.targetResourceObj.transform.position = info.pickerObj.transform.position - new Vector3(0, info.collectOffset, 0);
+        info.targetResourceObj.transform.parent = info.pickerObj.transform;
+        isComplete = true;
+
+        isCollecting = false;
+    }
 
 }
 

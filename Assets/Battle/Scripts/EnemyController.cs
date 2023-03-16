@@ -56,7 +56,7 @@ public class EnemyController : MonoBehaviour
             Select(collider => collider.gameObject);
         if (players.Any())
         {
-            targetPlayerObj = players.ElementAt(0);
+            targetPlayerObj = players.First();
             state = EnemyState.chasingPlayer;
         }
         else

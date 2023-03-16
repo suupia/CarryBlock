@@ -9,6 +9,7 @@ TagManager:
   - Obstacle
   - Resource
   - Picker
+  - MainBase
   layers:
   - Default
   - TransparentFX
@@ -16,9 +17,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - Picker
   - 
   - 
   - 
