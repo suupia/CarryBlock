@@ -3,11 +3,11 @@ name: Discord Message Notify
 on:
   push:
     branches: 
-    - master
+    - main
     - dev
   pull_request:
     branches:
-    - master
+    - main
     - dev
 jobs:
   build:
