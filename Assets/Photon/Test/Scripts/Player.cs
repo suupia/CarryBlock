@@ -1,6 +1,8 @@
 using Fusion;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Player : NetworkBehaviour
@@ -9,13 +11,56 @@ public class Player : NetworkBehaviour
 
     NetworkCharacterControllerPrototype cc;
     Vector3 forward;
+    Material m_Material;
+    TMP_Text messages;
 
     [Networked] TickTimer delay { get; set; }
+    [Networked(OnChanged = nameof(OnBallSpawned))]
+
+    public NetworkBool spawned { get; set; }
+
+    Material material
+    {
+        get
+        {
+            if (m_Material == null)
+            {
+                m_Material = GetComponentInChildren<MeshRenderer>().material;
+            }
+            return m_Material;
+
+        }
+    }
+
+    public override void Render()
+    {
+        material.color = Color.Lerp(material.color, Color.blue, Time.deltaTime);
+    }
+
+    public static void OnBallSpawned(Changed<Player> changed)
+    {
+        changed.Behaviour.material.color = Color.white;
+    }
 
     private void Awake()
     {
         cc = GetComponent<NetworkCharacterControllerPrototype>();
+        messages = FindObjectOfType<TMP_Text>();
         forward = transform.forward;
+    }
+
+    private void Update()
+    {
+        if (Object.HasInputAuthority && Input.GetKeyDown(KeyCode.R))
+        {
+            RPC_SendMessage("Hey Mate!");
+        }
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    private void RPC_SendMessage(string message, RpcInfo info = default)
+    {
+        messages.text += $"{(info.IsInvokeLocal ? "You said" : "Some other player said")}: {message}\n";
     }
 
     public override void FixedUpdateNetwork()
@@ -48,6 +93,7 @@ public class Player : NetworkBehaviour
                             obj.GetComponent<Ball>().Init();
                         }
                     );
+                    spawned = !spawned;
                 }
             }
 
