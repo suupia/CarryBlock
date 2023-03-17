@@ -4,7 +4,6 @@ using UnityEngine;
 using System.Linq;
 using System.Numerics;
 using UnityEditor;
-using UnityEditor.TextCore.Text;
 using UnityEngine.XR;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
