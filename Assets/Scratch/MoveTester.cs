@@ -9,7 +9,10 @@ public class MoveTester : MonoBehaviour
     PickerInfo info;
     void Start()
     {
-       info = new PickerInfo(this.gameObject, detectionRange);
+        var playerInfo = new PlayerInfo();
+        var infoWrapper = new PlayerInfoWrapper(playerInfo);
+
+       info = new PickerInfo(this.gameObject,infoWrapper);
 
        info.pickerRd.velocity = new Vector3(10,0,10);
     }

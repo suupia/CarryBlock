@@ -32,21 +32,20 @@ public class PickerController : MonoBehaviour
 
     // Pure
     PickerInfo pickerInfo;
+    PlayerInfoWrapper playerInfoWrapper;
     IPickerContext pickerContext;
 
 
     // Components
     GameObject mainBaseObj;
-    float detectionRange;
 
 
     public void Init(GameObject playerObj, PlayerInfoWrapper infoWrapper)
     {
-        Debug.Log($"PickerController.Init() rangeRadius:{infoWrapper.RangeRadius}");
+        this.playerInfoWrapper = infoWrapper;
+        Debug.Log($"infoWrapper.RangeRadius:{infoWrapper.RangeRadius}");
 
-        detectionRange = infoWrapper.RangeRadius;
-
-        pickerInfo = new PickerInfo(this.gameObject, detectionRange);
+        pickerInfo = new PickerInfo(this.gameObject,infoWrapper);
         pickerInfo.SetPlayerObj(playerObj);
         mainBaseObj = GameObject.Find("MainBase");
         pickerInfo.SetMainBaseObj(mainBaseObj);
@@ -74,6 +73,7 @@ public class PickerController : MonoBehaviour
     // Debug
     void OnDrawGizmos()
     {
+        var detectionRange = playerInfoWrapper.RangeRadius;
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
     }
@@ -120,7 +120,7 @@ public class PickerInfo
     // injected fields
     public float detectionRange { get; private set; }
 
-    public PickerInfo(GameObject pickerObj, float detectionRange)
+    public PickerInfo(GameObject pickerObj,PlayerInfoWrapper infoWrapper)
     {
         this.pickerObj = pickerObj;
         this.pickerRd = pickerObj.GetComponent<Rigidbody>();
@@ -132,7 +132,7 @@ public class PickerInfo
         returnToPlayerState = new PickerReturnToPlayerState(this);
         completeState = new PickerCompleteState(this);
 
-        this.detectionRange = detectionRange;
+        this.detectionRange = infoWrapper.RangeRadius;
     }
     public void SetPlayerObj(GameObject playerObj)
     {

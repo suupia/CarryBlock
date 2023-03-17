@@ -43,7 +43,10 @@ public class PickerControllerTests
     [Test]
     public void TestSearchState()
     {
-        var pickerInfo = new PickerInfo(pickerObj, 5f);
+        var playerInfo = new PlayerInfo();
+        var infoWrapper = new PlayerInfoWrapper(playerInfo);
+
+        var pickerInfo = new PickerInfo(pickerObj, infoWrapper);
         pickerInfo.SetPlayerObj(playerObj);
         pickerInfo.SetMainBaseObj(mainBaseObj);
 
@@ -79,9 +82,10 @@ public class PickerControllerTests
     [Test]
     public void TestApproachState()
     {
-        var  detectionRange = 5.0f;
+        var playerInfo = new PlayerInfo();
+        var infoWrapper = new PlayerInfoWrapper(playerInfo);
 
-        var  pickerInfo = new PickerInfo(pickerObj, detectionRange);
+        var  pickerInfo = new PickerInfo(pickerObj, infoWrapper);
         pickerInfo.SetPlayerObj(playerObj);
         pickerInfo.SetMainBaseObj(mainBaseObj);
 
