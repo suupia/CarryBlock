@@ -125,15 +125,34 @@ public class PlayerInfo
     public GameObject bulletPrefab;
     public GameObject pickerPrefab;
 
+    //pure
+    public PlayerInfoWrapper playerInfoWrapper;
+
     public PlayerInfo(){ } // A serializable class requires a default constructor
 
     public void Init(GameObject playerObj)
     {
         this.playerObj = playerObj;
         this.playerRd = playerObj.GetComponent<Rigidbody>();
+        this.playerInfoWrapper = new PlayerInfoWrapper(this);
     }
 
 }
+
+
+[Serializable]
+public class PlayerInfoWrapper
+{
+    public float RangeRadius => info.rangeRadius;
+    PlayerInfo info;
+
+    public PlayerInfoWrapper(PlayerInfo info)
+    {
+        this.info = info;
+    }
+
+}
+
 
 #nullable enable
 
@@ -213,7 +232,7 @@ public class PlayerTank : PlayerUnit
         // Launch a picker.
         var pickerPos = info. playerObj.transform.position + new Vector3(0, pickerHeight, 0);
         var picker = Object.Instantiate(info.pickerPrefab, pickerPos, Quaternion.identity, info.pickersParent).GetComponent<PickerController>();
-        picker.Init(info.playerObj.gameObject, info.rangeRadius);
+        picker.Init(info.playerObj.gameObject, info.playerInfoWrapper);
     }
 }
 

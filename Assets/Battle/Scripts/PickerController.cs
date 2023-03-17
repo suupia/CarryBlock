@@ -40,19 +40,18 @@ public class PickerController : MonoBehaviour
     float detectionRange;
 
 
-    public void Init(GameObject playerObj, float rangeRadius)
+    public void Init(GameObject playerObj, PlayerInfoWrapper infoWrapper)
     {
-        Debug.Log($"PickerController.Init() rangeRadius:{rangeRadius}");
+        Debug.Log($"PickerController.Init() rangeRadius:{infoWrapper.RangeRadius}");
 
-        detectionRange = rangeRadius;
+        detectionRange = infoWrapper.RangeRadius;
 
         pickerInfo = new PickerInfo(this.gameObject, detectionRange);
-        pickerContext = new PickerContext(pickerInfo.searchState);
-
         pickerInfo.SetPlayerObj(playerObj);
-
         mainBaseObj = GameObject.Find("MainBase");
         pickerInfo.SetMainBaseObj(mainBaseObj);
+
+        pickerContext = new PickerContext(pickerInfo.searchState);
 
 
         isInitialized = true;
