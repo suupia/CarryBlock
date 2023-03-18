@@ -9,8 +9,7 @@ public class MoveTester : MonoBehaviour
     PickerInfo info;
     void Start()
     {
-        var playerInfo = new PlayerInfo();
-        var infoWrapper = new PlayerInfoWrapper(playerInfo);
+        var infoWrapper = new PlayerInfoWrapper(new PlayerInfo());
 
        info = new PickerInfo(this.gameObject,infoWrapper);
 

@@ -313,6 +313,7 @@ public class PickerMover
     }
     void AddForceByLimitVelocity(Vector3 accelerationVector, float maxVelocity)
     {
+        Debug.Log($"accelerationVector:{accelerationVector}");
         info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
         if (info.pickerRd.velocity.magnitude >= maxVelocity) info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
     }
@@ -336,11 +337,15 @@ public class PickerSearchState : PickerAbstractState
         timer += Time.fixedDeltaTime;
 
         // move in the direction the player is facing
+        Debug.Log($"info.playerObj:{info.playerObj}");
         var moveVector = info.playerObj.transform.forward;
         mover.MoveForwardNormal(moveVector);
+        Debug.Log($"info.playerObj:{info.playerObj}");
 
         // try to take available resource
         AttemptTakeResource(context);
+        Debug.Log($"info.playerObj:{info.playerObj}");
+
     }
 
     void AttemptTakeResource(IPickerContext context)
