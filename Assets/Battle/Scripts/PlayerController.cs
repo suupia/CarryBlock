@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
 
     PlayerUnit playerUnit;
     PlayerShooter shooter;
+    ReturnGauge returnGauge;
 
     bool isInitialized;
 
@@ -29,9 +30,9 @@ public class PlayerController : MonoBehaviour
         Tank, Plane,
     }
 
-    public void Initialize(UnitType InjectedType)
+    public void Initialize(UnitType injectedType)
     {
-        unitType = InjectedType;
+        unitType = injectedType;
         playerUnit = unitType switch
         {
             UnitType.Tank => new PlayerTank(info),
@@ -46,6 +47,9 @@ public class PlayerController : MonoBehaviour
         info.Init(playerObj);
 
         shooter = new PlayerShooter(info);
+        
+        returnGauge = new ReturnGauge(playerUnit.ReturnToMainBase,2.0f);
+
 
         isInitialized = true;
 
@@ -56,31 +60,9 @@ public class PlayerController : MonoBehaviour
         if(!isInitialized)return;
 
         BattlingUnit();
-
-
-        //switch (stateManager.State)
-        //{
-        //    case PlayerStateManager.PlayerState.SelectingUnit:
-        //        SelectingUnit();
-        //        break;
-        //    case PlayerStateManager.PlayerState.BattlingUnit:
-        //        BattlingUnit();
-        //        break;
-        //    case PlayerStateManager.PlayerState.ReturningUnit:
-        //        ReturningUnit();
-        //        break;
-        //    default:
-        //        throw new InvalidOperationException("Invalid player phase.");
-        //}
-
-
+        
     }
-
-    void SelectingUnit()
-    {
-
-    }
-
+    
     void BattlingUnit()
     {
         var horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -91,14 +73,17 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             playerUnit.UnitAction();
+        }   else if (Input.GetKey(KeyCode.LeftShift))
+        {
+            returnGauge.FillGauge();
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            returnGauge.ResetGauge();
         }
         shooter.AttemptShootEnemy();
     }
 
-    void ReturningUnit()
-    {
-
-    }
 }
 
 [Serializable]
@@ -167,7 +152,11 @@ public abstract class PlayerUnit
 
     public abstract void MoveUnit(Vector3 direction);
     public abstract void UnitAction();
-
+    public void ReturnToMainBase()
+    {
+        // メインベースに戻る処理を記述する
+        Debug.Log($"return to main base");
+    }
 }
 
 public class PlayerShooter
@@ -321,5 +310,34 @@ public class PlayerPlane : PlayerUnit
             Select(collider => collider.gameObject);
         Debug.Log($"IsNearMainBase():{mainBases.Any()}");
         return mainBases.Any();
+    }
+}
+
+public class ReturnGauge
+{
+    public float CurrentValue => time/ fillTime;
+    Action action;
+    float fillTime = 3.0f; 
+    float time = 0f;
+
+    public ReturnGauge(Action action, float fillTime)
+    {
+        this.action = action;
+        this.fillTime = fillTime;
+    }
+    public void FillGauge()
+    {
+        time += Time.deltaTime;
+
+        if (time >= fillTime)
+        {
+            action();
+            ResetGauge();
+        }
+    }
+
+    public void ResetGauge()
+    {
+        time = 0f;
     }
 }
