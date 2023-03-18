@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
         var direction = Vector3.Normalize(new Vector3(horizontalInput, 0, verticalInput));
 
         playerUnit.MoveUnit(direction);
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             playerUnit.UnitAction();
         }
