@@ -7,6 +7,7 @@ using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
+using UnityEditor.VersionControl;
 using UnityEngine.SceneManagement;
 
 
@@ -20,8 +21,7 @@ public class PickerControllerTests
 
     public void Setup()
     {
-        playerObj = new GameObject("Player");
-        playerObj.AddComponent<Rigidbody>();
+        playerObj = Object.Instantiate( Resources.Load<GameObject>("Prefabs/Player"));
         playerInfo = new PlayerInfo();
         playerInfo.Init(playerObj);
 
@@ -67,7 +67,6 @@ public class PickerControllerTests
         for (double t = 0; t < 0.1f; t += Time.deltaTime)
         {
             Debug.Log($"time:{Time.time}");
-            searchState.InitProcess();
             searchState.Process(pickerContext);
             await UniTask.Yield();
         }
@@ -83,8 +82,8 @@ public class PickerControllerTests
         Setup();
 
         // SetUp scene
-        var startPosition = new Vector3(0, 0, 0);
-        var endPosition = new Vector3(0, 0, 0);
+        var startPosition = new Vector3(0, 0, 10);
+        var endPosition = new Vector3(0, 0, 10);
         pickerObj.transform.position = startPosition;
         resourceObj.transform.position = endPosition;
 
@@ -92,18 +91,19 @@ public class PickerControllerTests
         var pickerInfo = new PickerInfo(pickerObj, new PlayerInfoWrapper(playerInfo));
         pickerInfo.SetPlayerObj(playerObj);
         pickerInfo.SetMainBaseObj(mainBaseObj);
-        var searchState = new PickerSearchState(pickerInfo);
         var pickerContext = new PickerContext(new PickerSearchState(pickerInfo)); // Not used in testing.
 
 
         // Check if picker moves different position.
         for (double t = 0; t < 0.1f; t += Time.deltaTime)
         {
-            searchState.Process(pickerContext);
+            Debug.Log($"CurrentState;{pickerContext.CurrentState()}");
+            pickerContext.CurrentState().Process(pickerContext);
             await UniTask.Yield();
         }
 
-        Assert.AreNotEqual(startPosition, pickerObj.transform.position);
+        Assert.That(pickerContext.CurrentState(),Is.EqualTo(pickerInfo.ApproachState));
+       
 
         Teardown();
     });
