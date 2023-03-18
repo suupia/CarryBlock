@@ -17,9 +17,7 @@ public class PickerControllerTests
     GameObject resourceObj;
     GameObject mainBaseObj;
     PlayerInfo playerInfo;
-    bool isFixedUpdating;
 
-    [SetUp]
     public void Setup()
     {
         playerObj = new GameObject("Player");
@@ -37,21 +35,20 @@ public class PickerControllerTests
         pickerObj.AddComponent<Rigidbody>();
     }
 
-    [TearDown]
     public void Teardown()
     {
-        GameObject[] objects = SceneManager.GetActiveScene().GetRootGameObjects();
-
-        foreach (var obj in objects)
-        {
-            Object.Destroy(obj);
-        }
+        Object.Destroy(playerObj);
+        Object.Destroy(resourceObj);
+        Object.Destroy(mainBaseObj);
+        Object.Destroy(pickerObj);
     }
 
 
     [UnityTest]
     public IEnumerator SearchProcess_FixUpdate_ShouldMovePicker() => UniTask.ToCoroutine(async () =>
     {
+        Setup();
+
         // SetUp scene
         var startPosition = new Vector3(0, 0, 0);
         var endPosition = new Vector3(0, 0, 10);
@@ -77,62 +74,37 @@ public class PickerControllerTests
 
         Assert.AreNotEqual(startPosition, pickerObj.transform.position);
 
+        Teardown();
     });
 
-    //[Test]
-    //public void TestApproachState()
-    //{
-    //    var playerInfo = new PlayerInfo();
-    //    var infoWrapper = new PlayerInfoWrapper(playerInfo);
-
-    //    var  pickerInfo = new PickerInfo(pickerObj, infoWrapper);
-    //    pickerInfo.SetPlayerObj(playerObj);
-    //    pickerInfo.SetMainBaseObj(mainBaseObj);
-
-    //    var pickerContext = new PickerContext(pickerInfo.searchState);
-
-
-
-
-    //    // Set up approach state
-    //    var approachState = new PickerApproachState(pickerInfo);
-
-    //    // Set up test variables
-    //    var startPosition = pickerObj.transform.position;
-    //    var endPosition = resourceObj.transform.position;
-
-    //    // Call InitProcess
-    //    approachState.InitProcess();
-
-    //    // Call Process
-    //    pickerContext.CurrentState().Process(pickerContext);
-
-    //    // Check if picker moves towards resource
-    //    Assert.AreNotEqual(startPosition, pickerObj.transform.position);
-
-    //    // Move picker to resource object
-    //    pickerObj.transform.position = endPosition;
-
-    //    // Call Process again
-    //    pickerContext.CurrentState().Process(pickerContext);
-
-    //    // Check if picker detects resource and changes state
-    //    //Assert.AreEqual(pickerInfo.collectionState, pickerContext.CurrentState());
-    //}
-
-    void StartFixedUpdate(Action action, float time)
+    [UnityTest]
+    public IEnumerator SearchProcess_ReachResource_ShouldChangeStateApproach() => UniTask.ToCoroutine(async () =>
     {
-        TestFixedUpdate(action, time);
-    }
+        Setup();
 
-    async void TestFixedUpdate(Action action, float time)
-    {
-        isFixedUpdating = true;
-        for (double t = 0; t < time; t += Time.deltaTime)
+        // SetUp scene
+        var startPosition = new Vector3(0, 0, 0);
+        var endPosition = new Vector3(0, 0, 0);
+        pickerObj.transform.position = startPosition;
+        resourceObj.transform.position = endPosition;
+
+        // SetUp domain
+        var pickerInfo = new PickerInfo(pickerObj, new PlayerInfoWrapper(playerInfo));
+        pickerInfo.SetPlayerObj(playerObj);
+        pickerInfo.SetMainBaseObj(mainBaseObj);
+        var searchState = new PickerSearchState(pickerInfo);
+        var pickerContext = new PickerContext(new PickerSearchState(pickerInfo)); // Not used in testing.
+
+
+        // Check if picker moves different position.
+        for (double t = 0; t < 0.1f; t += Time.deltaTime)
         {
-            action();
+            searchState.Process(pickerContext);
             await UniTask.Yield();
         }
-        isFixedUpdating = false;
-    }
+
+        Assert.AreNotEqual(startPosition, pickerObj.transform.position);
+
+        Teardown();
+    });
 }

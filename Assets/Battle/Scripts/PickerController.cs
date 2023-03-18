@@ -21,8 +21,6 @@ public interface IPickerState
 {
     public void InitProcess();
     public void Process(IPickerContext state);
-    public bool CanSwitchState();
-    public void SwitchState(IPickerContext state);
 }
 
 
@@ -61,11 +59,6 @@ public class PickerController : MonoBehaviour
     {
         if (!isInitialized) return;
 
-        if (pickerContext.CurrentState().CanSwitchState()) // Check if the current state of the picker can switch to another state before Process().
-        {
-            pickerContext.CurrentState().SwitchState(pickerContext);
-            pickerContext.CurrentState().InitProcess();
-        }
         pickerContext.CurrentState().Process(pickerContext);
 
     }
@@ -185,8 +178,6 @@ public abstract class PickerAbstractState : IPickerState
 
     public abstract void InitProcess();
     public abstract void Process(IPickerContext context);
-    public abstract bool CanSwitchState();
-    public abstract void SwitchState(IPickerContext context);
 
 }
 
@@ -346,6 +337,16 @@ public class PickerSearchState : PickerAbstractState
         AttemptTakeResource(context);
         Debug.Log($"info.playerObj:{info.playerObj}");
 
+        if (CanSwitchState())
+        {
+            context.ChangeState(info.returnToPlayerState);
+            info.returnToPlayerState.InitProcess();
+        }
+
+    }
+    bool CanSwitchState()
+    {
+        return timer > minSpawnTime;
     }
 
     void AttemptTakeResource(IPickerContext context)
@@ -368,15 +369,7 @@ public class PickerSearchState : PickerAbstractState
         context.ChangeState(info.approachState);
     }
 
-    public override bool CanSwitchState()
-    {
-        return timer > minSpawnTime;
-    }
 
-    public override void SwitchState(IPickerContext context)
-    {
-        context.ChangeState(info.returnToPlayerState);
-    }
 
 }
 
@@ -394,19 +387,19 @@ public class PickerReturnToPlayerState : PickerAbstractState
         if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
 
         mover.MoveToMovingPosNormal(info.playerObj.transform.position);
+
+        if (CanSwitchState())
+        {
+            context.ChangeState(info.completeState);
+            info.completeState.InitProcess();
+        }
     }
 
-    public override bool CanSwitchState()
+    bool CanSwitchState()
     {
         var vector = Utility.SetYToZero(info.playerObj.transform.position - info.pickerObj.transform.position);
         return vector.magnitude <= info.returnToPlayerRange;
     }
-
-    public override void SwitchState(IPickerContext context)
-    {
-        context.ChangeState(info.completeState);
-    }
-
 }
 
 public class PickerApproachState : PickerAbstractState
@@ -423,16 +416,18 @@ public class PickerApproachState : PickerAbstractState
     {
         //if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // A flag has been added, so there is no longer a possibility of null during execution
         mover.MoveToFixedPosNormal(info.targetResourceObj.transform.position);
+
+        if (CanSwitchState())
+        {
+            context.ChangeState(info.collectState);
+            info.collectState.InitProcess();
+        }
     }
 
-    public override bool CanSwitchState()
+    bool CanSwitchState()
     {
         var vector = Utility.SetYToZero(info.targetResourceObj.transform.position - info.pickerObj.transform.position);
         return vector.magnitude <= info.collectRange;
-    }
-    public override void SwitchState(IPickerContext context)
-    {
-        context.ChangeState(info.collectState);
     }
 
 }
@@ -462,16 +457,17 @@ public class PickerCollectState : PickerAbstractState
         Debug.Log($"CollectProcess()");
         CollectResource(context);
 
+        if (CanSwitchState())
+        {
+            context.ChangeState(info.returnToMainBaseState);
+            info.returnToMainBaseState.InitProcess();;
+        }
+
     }
 
-    public override bool CanSwitchState()
+    bool CanSwitchState()
     {
         return isComplete;
-    }
-
-    public override void SwitchState(IPickerContext context)
-    {
-        context.ChangeState(info.returnToMainBaseState);
     }
 
     async void CollectResource(IPickerContext context)
@@ -516,17 +512,20 @@ public class PickerReturnToMainBaseState : PickerAbstractState
     {
         Debug.Log($"ReturnProcess()");
         mover.MoveToFixedPosCarrying(info.mainBaseObj.transform.position);
+
+        if (CanSwitchState())
+        {
+            context.ChangeState(info.completeState);
+            info.completeState.InitProcess();
+        }
     }
 
-    public override bool CanSwitchState()
+    bool CanSwitchState()
     {
         var vector = Utility.SetYToZero(info.mainBaseObj.transform.position - info.pickerObj.transform.position);
         return vector.magnitude <= info.returnToMainBaseRange;
     }
-    public override void SwitchState(IPickerContext context)
-    {
-        context.ChangeState(info.completeState);
-    }
+
 }
 
 
@@ -545,15 +544,8 @@ public class PickerCompleteState : PickerAbstractState
     {
         Debug.Log($"CompleteProcess()");
         Object.Destroy(info.pickerObj);
-    }
 
-    public override bool CanSwitchState()
-    {
-        return false;
-    }
-    public override void SwitchState(IPickerContext context)
-    {
-        Debug.LogWarning($"PickerCompleteState.SwitchState(context:{context})");
+
     }
 
 }
