@@ -21,41 +21,82 @@ public class PlayerController : MonoBehaviour
     PlayerUnit playerUnit;
     PlayerShooter shooter;
 
+    bool isInitialized;
+
     public enum UnitType
     {
         Tank, Plane,
     }
 
-    void Start()
+    public void Initialize(UnitType InjectedType)
     {
-        var playerObj = Instantiate(unitPrefabs[(int)unitType],gameObject.transform);
-        var playerCamera  = Instantiate(cameraPrefab, playerObj.transform);
-        var rangeCircleObj = Instantiate(rangeCirclePrefab, playerObj.transform);
-
-        info.Init(playerObj);
+        unitType = InjectedType;
         playerUnit = unitType switch
         {
             UnitType.Tank => new PlayerTank(info),
             UnitType.Plane => new PlayerPlane(info),
             _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
         };
+
+        var playerObj = Instantiate(unitPrefabs[(int)unitType],gameObject.transform);
+        var playerCamera  = Instantiate(cameraPrefab, playerObj.transform);
+        var rangeCircleObj = Instantiate(rangeCirclePrefab, playerObj.transform);
+
+        info.Init(playerObj);
+
         shooter = new PlayerShooter(info);
+
+        isInitialized = true;
+
     }
 
     void Update()
+    {
+        if(!isInitialized)return;
+
+        BattlingUnit();
+
+
+        //switch (stateManager.State)
+        //{
+        //    case PlayerStateManager.PlayerState.SelectingUnit:
+        //        SelectingUnit();
+        //        break;
+        //    case PlayerStateManager.PlayerState.BattlingUnit:
+        //        BattlingUnit();
+        //        break;
+        //    case PlayerStateManager.PlayerState.ReturningUnit:
+        //        ReturningUnit();
+        //        break;
+        //    default:
+        //        throw new InvalidOperationException("Invalid player phase.");
+        //}
+
+
+    }
+
+    void SelectingUnit()
+    {
+
+    }
+
+    void BattlingUnit()
     {
         var horizontalInput = Input.GetAxisRaw("Horizontal");
         var verticalInput = Input.GetAxisRaw("Vertical");
         var direction = Vector3.Normalize(new Vector3(horizontalInput, 0, verticalInput));
 
         playerUnit.MoveUnit(direction);
-
         if (Input.GetMouseButtonDown(0))
         {
             playerUnit.UnitAction();
         }
-
         shooter.AttemptShootEnemy();
+    }
+
+    void ReturningUnit()
+    {
+
     }
 }
 
