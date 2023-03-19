@@ -1,10 +1,17 @@
 using Fusion;
 using UnityEngine;
 
-public struct NetworkInputData: INetworkInput
+public enum PlayerOperations
 {
-    public const byte MOUSEBUTTON1 = 0x1;
+    Attack = 0,
+    Forward,
+    Backward,
+    Left,
+    Right,
+}
+
+public struct NetworkInputData : INetworkInput
+{
     //Fusion は入力を圧縮し、実際に変化するデータのみを送信する仕組みになっている
-    public Vector3 direction;
-    public byte buttons;
+    public NetworkButtons buttons;
 }

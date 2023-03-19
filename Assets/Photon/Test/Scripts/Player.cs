@@ -68,18 +68,30 @@ public class Player : NetworkBehaviour
         if (GetInput(out NetworkInputData data))
         {
             //チートの防止などの理由から正規化する
-            data.direction.Normalize();
+            Vector3 direction = new();
+
+            if (data.buttons.IsSet(PlayerOperations.Forward))
+                direction += Vector3.forward;
+
+            if (data.buttons.IsSet(PlayerOperations.Backward))
+                direction += Vector3.back;
+
+            if (data.buttons.IsSet(PlayerOperations.Left))
+                direction += Vector3.left;
+
+            if (data.buttons.IsSet(PlayerOperations.Right))
+                direction += Vector3.right;
 
             //ネットワーク上のDeltaTimeを考慮する。Time.deltaTimeの代わり
             //逆にTime.deltaTimeは使ってはいけない
-            cc.Move(5 * Runner.DeltaTime * data.direction);
+            cc.Move(5 * Runner.DeltaTime * direction);
 
-            if (data.direction.sqrMagnitude > 0 )
-                forward = data.direction;
+            if (direction.sqrMagnitude > 0 )
+                forward = direction;
 
             if (delay.ExpiredOrNotRunning(Runner))
             {
-                if ((data.buttons & NetworkInputData.MOUSEBUTTON1) == 1)
+                if (data.buttons.IsSet(PlayerOperations.Attack))
                 {
                     //頻度を制限
                     delay = TickTimer.CreateFromSeconds(Runner, 0.5f);

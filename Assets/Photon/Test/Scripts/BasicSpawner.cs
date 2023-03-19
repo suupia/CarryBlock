@@ -10,8 +10,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
     [SerializeField] NetworkPrefabRef playerPrefab;
 
+    NetworkInputData data = default;
     NetworkRunner runner;
-    bool mouseButton;
     readonly Dictionary<PlayerRef, NetworkObject> spawnedCharacters = new();
 
     // Start is called before the first frame update
@@ -22,8 +22,13 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     // Update is called once per frame
     void Update()
     {
-        mouseButton |= Input.GetMouseButtonDown(0);
+        if (Input.GetMouseButtonDown(0)) 
+            data.buttons.Set(PlayerOperations.Attack, true);
 
+        data.buttons.Set(PlayerOperations.Forward, Input.GetKey(KeyCode.W));
+        data.buttons.Set(PlayerOperations.Backward, Input.GetKey(KeyCode.S));
+        data.buttons.Set(PlayerOperations.Left, Input.GetKey(KeyCode.A));
+        data.buttons.Set(PlayerOperations.Right, Input.GetKey(KeyCode.D));
     }
 
     void OnGUI()
@@ -83,28 +88,9 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        var data = new NetworkInputData();
-
-        if (Input.GetKey(KeyCode.W))
-            data.direction += Vector3.forward;
-
-        if (Input.GetKey(KeyCode.S))
-            data.direction += Vector3.back;
-
-        if (Input.GetKey(KeyCode.A))
-            data.direction += Vector3.left;
-
-        if (Input.GetKey(KeyCode.D))
-            data.direction += Vector3.right;
-
-        if (mouseButton)
-        {
-            data.buttons |= NetworkInputData.MOUSEBUTTON1;
-        }
-
-        mouseButton = false;
-
         input.Set(data);
+
+        data = default;
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
