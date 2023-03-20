@@ -19,10 +19,7 @@ public interface IPickerContext
 
 public interface IPickerState
 {
-    public void InitProcess();
     public void Process(IPickerContext state);
-    public bool CanSwitchState();
-    public void SwitchState(IPickerContext state);
 }
 
 
@@ -32,27 +29,25 @@ public class PickerController : MonoBehaviour
 
     // Pure
     PickerInfo pickerInfo;
+    PlayerInfoWrapper playerInfoWrapper;
     IPickerContext pickerContext;
 
 
     // Components
     GameObject mainBaseObj;
-    float detectionRange;
 
 
-    public void Init(GameObject playerObj, float rangeRadius)
+    public void Init(GameObject playerObj, PlayerInfoWrapper infoWrapper)
     {
-        Debug.Log($"PickerController.Init() rangeRadius:{rangeRadius}");
+        this.playerInfoWrapper = infoWrapper;
+        Debug.Log($"infoWrapper.RangeRadius:{infoWrapper.RangeRadius}");
 
-        detectionRange = rangeRadius;
-
-        pickerInfo = new PickerInfo(this.gameObject, detectionRange);
-        pickerContext = new PickerContext(pickerInfo.searchState);
-
+        pickerInfo = new PickerInfo(this.gameObject, infoWrapper);
         pickerInfo.SetPlayerObj(playerObj);
-
         mainBaseObj = GameObject.Find("MainBase");
         pickerInfo.SetMainBaseObj(mainBaseObj);
+
+        pickerContext = new PickerContext(pickerInfo.SearchState);
 
 
         isInitialized = true;
@@ -63,11 +58,6 @@ public class PickerController : MonoBehaviour
     {
         if (!isInitialized) return;
 
-        if (pickerContext.CurrentState().CanSwitchState()) // Check if the current state of the picker can switch to another state before Process().
-        {
-            pickerContext.CurrentState().SwitchState(pickerContext);
-            pickerContext.CurrentState().InitProcess();
-        }
         pickerContext.CurrentState().Process(pickerContext);
 
     }
@@ -75,6 +65,7 @@ public class PickerController : MonoBehaviour
     // Debug
     void OnDrawGizmos()
     {
+        var detectionRange = playerInfoWrapper.RangeRadius;
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
     }
@@ -102,12 +93,12 @@ public class PickerInfo
     public readonly float returnToPlayerRange = 2.5f;
 
     // singletons
-    public IPickerState searchState { get; private set; }
-    public IPickerState approachState { get; private set; }
-    public IPickerState collectState { get; private set; }
-    public IPickerState returnToMainBaseState { get; private set; }
-    public IPickerState returnToPlayerState { get; private set; }
-    public IPickerState completeState { get; private set; }
+    public IPickerState SearchState => new PickerSearchState(this);
+    public IPickerState ApproachState => new PickerApproachState(this);
+    public IPickerState CollectState => new PickerCollectState(this);
+    public IPickerState ReturnToMainBaseState => new PickerReturnToMainBaseState(this);
+    public IPickerState ReturnToPlayerState => new PickerReturnToPlayerState(this);
+    public IPickerState CompleteState => new PickerCompleteState(this);
 
     // components
     public GameObject pickerObj { get; private set; }
@@ -121,19 +112,12 @@ public class PickerInfo
     // injected fields
     public float detectionRange { get; private set; }
 
-    public PickerInfo(GameObject pickerObj, float detectionRange)
+    public PickerInfo(GameObject pickerObj, PlayerInfoWrapper infoWrapper)
     {
         this.pickerObj = pickerObj;
         this.pickerRd = pickerObj.GetComponent<Rigidbody>();
 
-        searchState = new PickerSearchState(this);
-        approachState = new PickerApproachState(this);
-        collectState = new PickerCollectState(this);
-        returnToMainBaseState = new PickerReturnToMainBaseState(this);
-        returnToPlayerState = new PickerReturnToPlayerState(this);
-        completeState = new PickerCompleteState(this);
-
-        this.detectionRange = detectionRange;
+        this.detectionRange = infoWrapper.RangeRadius;
     }
     public void SetPlayerObj(GameObject playerObj)
     {
@@ -184,10 +168,7 @@ public abstract class PickerAbstractState : IPickerState
         this.mover = new PickerMover(info);
     }
 
-    public abstract void InitProcess();
     public abstract void Process(IPickerContext context);
-    public abstract bool CanSwitchState();
-    public abstract void SwitchState(IPickerContext context);
 
 }
 
@@ -211,7 +192,7 @@ public class PickerMover
 
     enum MoveState
     {
-        ForwardNormal,ToFixedPosNormal,ToMovingPosNormal,ToFixedPosCarrying
+        ForwardNormal, ToFixedPosNormal, ToMovingPosNormal, ToFixedPosCarrying
     }
 
     public void MoveForwardNormal(Vector3 moveVector)
@@ -226,13 +207,13 @@ public class PickerMover
 
     public void MoveToFixedPosNormal(Vector3 endPos)
     {
-        if (state != MoveState.ToFixedPosNormal) Reset(MoveState.ToFixedPosNormal,endPos);
+        if (state != MoveState.ToFixedPosNormal) Reset(MoveState.ToFixedPosNormal, endPos);
         MoveToFixedPos(endPos, info.normalAcceleration, info.normalMaxVelocity);
     }
 
     public void MoveToMovingPosNormal(Vector3 endPos)
     {
-        if (state != MoveState.ToMovingPosNormal) Reset(MoveState.ToMovingPosNormal,endPos);
+        if (state != MoveState.ToMovingPosNormal) Reset(MoveState.ToMovingPosNormal, endPos);
         MoveToMovingPos(endPos, info.normalAcceleration, info.normalMaxVelocity);
     }
 
@@ -328,20 +309,30 @@ public class PickerSearchState : PickerAbstractState
     {
     }
 
-    public override void InitProcess()
-    {
-        timer = 0;
-    }
     public override void Process(IPickerContext context)
     {
         timer += Time.fixedDeltaTime;
 
-        // move in the direction the player is facing
-        var moveVector = info.playerObj.transform.forward;
-        mover.MoveForwardNormal(moveVector);
 
-        // try to take available resource
-        AttemptTakeResource(context);
+        if (CanSwitchState())
+        {
+            context.ChangeState(info.ReturnToPlayerState);
+        }
+        else
+        {
+            // move in the direction the player is facing
+            var moveVector = info.playerObj.transform.forward;
+            mover.MoveForwardNormal(moveVector);
+
+            // try to take available resource
+            AttemptTakeResource(context);
+        }
+
+
+    }
+    bool CanSwitchState()
+    {
+        return timer > minSpawnTime;
     }
 
     void AttemptTakeResource(IPickerContext context)
@@ -352,27 +343,19 @@ public class PickerSearchState : PickerAbstractState
             Where(collider => collider.gameObject.GetComponent<ResourceController>().isOwned == false).
             Select(collider => collider.gameObject);
 
-        if( resources.Any())TakeResource(context, resources.First());
+        if (resources.Any()) TakeResource(context, resources.First());
 
     }
 
     void TakeResource(IPickerContext context, GameObject resource)
     {
-        if(resource == null) return;
+        if (resource == null) return;
         resource.GetComponent<ResourceController>().isOwned = true;
         info.SetTargetResourceObj(resource);
-        context.ChangeState(info.approachState);
+        context.ChangeState(info.ApproachState);
     }
 
-    public override bool CanSwitchState()
-    {
-        return timer > minSpawnTime;
-    }
 
-    public override void SwitchState(IPickerContext context)
-    {
-        context.ChangeState(info.returnToPlayerState);
-    }
 
 }
 
@@ -382,27 +365,28 @@ public class PickerReturnToPlayerState : PickerAbstractState
     {
     }
 
-    public override void InitProcess()
-    {
-    }
     public override void Process(IPickerContext context)
     {
-        if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState);
+        if (info.targetResourceObj == null) context.ChangeState(info.ReturnToPlayerState);
 
-        mover.MoveToMovingPosNormal(info.playerObj.transform.position);
+        if (CanSwitchState())
+        {
+            context.ChangeState(info.CompleteState);
+        }
+        else
+        {
+            mover.MoveToMovingPosNormal(info.playerObj.transform.position);
+        }
+
+
+
     }
 
-    public override bool CanSwitchState()
+    bool CanSwitchState()
     {
         var vector = Utility.SetYToZero(info.playerObj.transform.position - info.pickerObj.transform.position);
         return vector.magnitude <= info.returnToPlayerRange;
     }
-
-    public override void SwitchState(IPickerContext context)
-    {
-        context.ChangeState(info.completeState);
-    }
-
 }
 
 public class PickerApproachState : PickerAbstractState
@@ -411,24 +395,23 @@ public class PickerApproachState : PickerAbstractState
     {
     }
 
-    public override void InitProcess()
-    {
-
-    }
     public override void Process(IPickerContext context)
     {
-        //if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // A flag has been added, so there is no longer a possibility of null during execution
-        mover.MoveToFixedPosNormal(info.targetResourceObj.transform.position);
+        if (CanSwitchState())
+        {
+            context.ChangeState(info.CollectState);
+        }
+        else
+        {
+            //if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // A flag has been added, so there is no longer a possibility of null during execution
+            mover.MoveToFixedPosNormal(info.targetResourceObj.transform.position);
+        }
     }
 
-    public override bool CanSwitchState()
+    bool CanSwitchState()
     {
         var vector = Utility.SetYToZero(info.targetResourceObj.transform.position - info.pickerObj.transform.position);
         return vector.magnitude <= info.collectRange;
-    }
-    public override void SwitchState(IPickerContext context)
-    {
-        context.ChangeState(info.collectState);
     }
 
 }
@@ -445,40 +428,38 @@ public class PickerCollectState : PickerAbstractState
 
     public PickerCollectState(PickerInfo info) : base(info)
     {
-    }
-
-    public override void InitProcess()
-    {
-        //info.pickerRd.velocity = Vector3.zero;
         initPos = info.pickerObj.transform.position;
         deltaVector = info.targetResourceObj.transform.position - initPos;
     }
+
+
     public override void Process(IPickerContext context)
     {
-        Debug.Log($"CollectProcess()");
-        CollectResource(context);
+        // Debug.Log($"CollectProcess()");
+        if (CanSwitchState())
+        {
+            context.ChangeState(info.ReturnToMainBaseState);
+        }
+        else
+        {
+            CollectResource(context);
+        }
 
     }
 
-    public override bool CanSwitchState()
+    bool CanSwitchState()
     {
         return isComplete;
     }
 
-    public override void SwitchState(IPickerContext context)
-    {
-        context.ChangeState(info.returnToMainBaseState);
-    }
-
     async void CollectResource(IPickerContext context)
     {
-        if(isCollecting)return;
-
+        if (isCollecting) return;
         isCollecting = true;
 
         for (float t = 0; t < info.collectTime; t += Time.deltaTime)
         {
-           // if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // A flag has been added, so there is no longer a possibility of null during execution
+            // if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // A flag has been added, so there is no longer a possibility of null during execution
 
             var coefficient = 2 * Mathf.PI / info.collectTime;
             var progress = -Mathf.Cos(coefficient * t) + 1f;
@@ -487,12 +468,11 @@ public class PickerCollectState : PickerAbstractState
             await UniTask.Yield();
         }
 
-        Debug.Log("complete collect");
         info.targetResourceObj.transform.position = info.pickerObj.transform.position - new Vector3(0, info.collectOffset, 0);
         info.targetResourceObj.transform.parent = info.pickerObj.transform;
-        isComplete = true;
 
         isCollecting = false;
+        isComplete = true;
     }
 
 }
@@ -504,25 +484,29 @@ public class PickerReturnToMainBaseState : PickerAbstractState
     {
     }
 
-    public override void InitProcess()
-    {
-
-    }
     public override void Process(IPickerContext context)
     {
-        Debug.Log($"ReturnProcess()");
-        mover.MoveToFixedPosCarrying(info.mainBaseObj.transform.position);
+        //Debug.Log($"ReturnProcess()");
+
+        if (CanSwitchState())
+        {
+            context.ChangeState(info.CompleteState);
+        }
+        else
+        {
+            mover.MoveToFixedPosCarrying(info.mainBaseObj.transform.position);
+
+        }
+
+
     }
 
-    public override bool CanSwitchState()
+    bool CanSwitchState()
     {
         var vector = Utility.SetYToZero(info.mainBaseObj.transform.position - info.pickerObj.transform.position);
         return vector.magnitude <= info.returnToMainBaseRange;
     }
-    public override void SwitchState(IPickerContext context)
-    {
-        context.ChangeState(info.completeState);
-    }
+
 }
 
 
@@ -533,23 +517,12 @@ public class PickerCompleteState : PickerAbstractState
     {
     }
 
-    public override void InitProcess()
-    {
-
-    }
     public override void Process(IPickerContext context)
     {
-        Debug.Log($"CompleteProcess()");
+        //Debug.Log($"CompleteProcess()");
         Object.Destroy(info.pickerObj);
-    }
 
-    public override bool CanSwitchState()
-    {
-        return false;
-    }
-    public override void SwitchState(IPickerContext context)
-    {
-        Debug.LogWarning($"PickerCompleteState.SwitchState(context:{context})");
+
     }
 
 }
