@@ -65,21 +65,21 @@ public class Player : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (GetInput(out NetworkInputData data))
+        if (GetInput(out TestNetworkInputData data))
         {
             //チートの防止などの理由から正規化する
             Vector3 direction = new();
 
-            if (data.buttons.IsSet(PlayerOperations.Forward))
+            if (data.buttons.IsSet(TestPlayerOperations.Forward))
                 direction += Vector3.forward;
 
-            if (data.buttons.IsSet(PlayerOperations.Backward))
+            if (data.buttons.IsSet(TestPlayerOperations.Backward))
                 direction += Vector3.back;
 
-            if (data.buttons.IsSet(PlayerOperations.Left))
+            if (data.buttons.IsSet(TestPlayerOperations.Left))
                 direction += Vector3.left;
 
-            if (data.buttons.IsSet(PlayerOperations.Right))
+            if (data.buttons.IsSet(TestPlayerOperations.Right))
                 direction += Vector3.right;
 
             //ネットワーク上のDeltaTimeを考慮する。Time.deltaTimeの代わり
@@ -91,7 +91,7 @@ public class Player : NetworkBehaviour
 
             if (delay.ExpiredOrNotRunning(Runner))
             {
-                if (data.buttons.IsSet(PlayerOperations.Attack))
+                if (data.buttons.IsSet(TestPlayerOperations.Attack))
                 {
                     //頻度を制限
                     delay = TickTimer.CreateFromSeconds(Runner, 0.5f);

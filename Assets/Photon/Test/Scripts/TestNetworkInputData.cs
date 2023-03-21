@@ -1,7 +1,7 @@
 using Fusion;
-using UnityEngine;
 
-public enum PlayerOperations
+
+public enum TestPlayerOperations
 {
     Attack = 0,
     Forward,
@@ -10,7 +10,7 @@ public enum PlayerOperations
     Right,
 }
 
-public struct NetworkInputData : INetworkInput
+public struct TestNetworkInputData : INetworkInput
 {
     //Fusion は入力を圧縮し、実際に変化するデータのみを送信する仕組みになっている
     public NetworkButtons buttons;

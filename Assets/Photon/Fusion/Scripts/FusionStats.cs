@@ -1020,9 +1020,9 @@ public class FusionStats : Fusion.Behaviour {
     _titleText   = _titleRT.AddText(_runner ? _runner.name : "Disconnected", TextAnchor.UpperCenter, _fontColor);
     _titleText.raycastTarget = true;
 
-    // PlayerOperations
+    // TestPlayerOperations
     _buttonsRT = _headerRT
-      .CreateRectTransform("PlayerOperations")
+      .CreateRectTransform("TestPlayerOperations")
       .SetAnchors(0.0f, 1.0f, 0.0f, 0.75f)
       .SetOffsets(MARGIN, -MARGIN, MARGIN, 0);
 

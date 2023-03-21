@@ -10,7 +10,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
     [SerializeField] NetworkPrefabRef playerPrefab;
 
-    NetworkInputData data = default;
+    TestNetworkInputData data = default;
     NetworkRunner runner;
     readonly Dictionary<PlayerRef, NetworkObject> spawnedCharacters = new();
 
@@ -23,12 +23,12 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     void Update()
     {
         if (Input.GetMouseButtonDown(0)) 
-            data.buttons.Set(PlayerOperations.Attack, true);
+            data.buttons.Set(TestPlayerOperations.Attack, true);
 
-        data.buttons.Set(PlayerOperations.Forward, Input.GetKey(KeyCode.W));
-        data.buttons.Set(PlayerOperations.Backward, Input.GetKey(KeyCode.S));
-        data.buttons.Set(PlayerOperations.Left, Input.GetKey(KeyCode.A));
-        data.buttons.Set(PlayerOperations.Right, Input.GetKey(KeyCode.D));
+        data.buttons.Set(TestPlayerOperations.Forward, Input.GetKey(KeyCode.W));
+        data.buttons.Set(TestPlayerOperations.Backward, Input.GetKey(KeyCode.S));
+        data.buttons.Set(TestPlayerOperations.Left, Input.GetKey(KeyCode.A));
+        data.buttons.Set(TestPlayerOperations.Right, Input.GetKey(KeyCode.D));
     }
 
     void OnGUI()
