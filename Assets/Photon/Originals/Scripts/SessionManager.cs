@@ -14,7 +14,6 @@ public class SessionManager : MonoBehaviour
     public static readonly string lobbySceneName = "LobbyScene";
 
     NetworkRunner runner;
-    NetworkSceneManagerBase sceneManager;
 
     //Get roomName from UI component.
     public string RoomName { get; set; }
@@ -25,9 +24,6 @@ public class SessionManager : MonoBehaviour
         //Init NetworkRunner. Allow player's inputs.
         runner = gameObject.AddComponent<NetworkRunner>();
         runner.ProvideInput = true;
-
-        //Init SceneManager
-        sceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>();
     }
 
     async void StartGame(GameMode mode, string roomName)
@@ -40,7 +36,7 @@ public class SessionManager : MonoBehaviour
             GameMode = mode,
             SessionName = roomName,
             Scene = SceneManager.GetActiveScene().buildIndex,
-            SceneManager = sceneManager
+            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
 
         runner.SetActiveScene(lobbySceneName);

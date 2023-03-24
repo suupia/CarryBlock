@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class LobbyManager : NetworkBehaviour
 {
-    MyFusion.PlayerSpawner playerManager;
+    MyFusion.PlayerSpawner playerSpawner;
     public override void Spawned()
     {
-        playerManager = FindObjectOfType<MyFusion.PlayerSpawner>();
+        playerSpawner = FindObjectOfType<MyFusion.PlayerSpawner>();
 
         if (Object.HasStateAuthority)
         {
-            playerManager.RespawnAllPlayer();
+            playerSpawner.RespawnAllPlayer();
         }
     }
 }

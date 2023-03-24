@@ -33,6 +33,7 @@ namespace MyFusion
         {
             foreach (var player in Runner.ActivePlayers)
             {
+                DespawnPlayer(player);
                 SpawnPlayer(player);
             }
         }
@@ -43,6 +44,7 @@ namespace MyFusion
             var spawnPosition = new Vector3(0, 1, 0);
             var playerObject = Runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
             Runner.SetPlayerObject(player, playerObject);
+            //TODO: Set AoI
         }
 
         void DespawnPlayer(PlayerRef player)
