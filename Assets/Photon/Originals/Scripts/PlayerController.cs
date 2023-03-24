@@ -20,11 +20,7 @@ namespace MyFusion
             //Spawn init player unit
             if (Object.HasStateAuthority)
             {
-                var prefab = playerUnits[0];
-                var position = new Vector3(0, 1, 0);
-                var rotation = Quaternion.identity;
-
-                NowUnit = Runner.Spawn(prefab, position, rotation, Runner.LocalPlayer);
+                NowUnit = SpawnPlayerUnit(0);
             }
             
         }
@@ -39,6 +35,12 @@ namespace MyFusion
                     IsReady = !IsReady;
                     Debug.Log($"Toggled Ready -> {IsReady}");
                 }
+
+                if (input.buttons.GetPressed(PreButtons).IsSet(PlayerOperation.ChangeUnit))
+                {
+                    //Tmp
+                    RPC_ChangeUnit(1);
+                }
                 
                 var direction = new Vector3(input.horizontal, 0, input.vertical).normalized;
 
@@ -50,7 +52,26 @@ namespace MyFusion
             }
         }
 
+        //Deal as RPC for changing unit
+        [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
+        public void RPC_ChangeUnit(int index)
+        {
+            if (NowUnit != null)
+            {
+                Runner.Despawn(NowUnit.Object);
 
-    }
+            }
+            NowUnit = SpawnPlayerUnit(index);
+        }
+
+        NetworkPlayerUnit SpawnPlayerUnit(int index)
+        {
+            var prefab = playerUnits[index];
+            var position = new Vector3(0, 1, 0);
+            var rotation = Quaternion.identity;
+
+            return Runner.Spawn(prefab, position, rotation, Runner.LocalPlayer);
+        }
+     }
 }
 

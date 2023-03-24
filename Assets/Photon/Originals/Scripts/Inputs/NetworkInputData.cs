@@ -3,7 +3,8 @@ using Fusion;
 public enum PlayerOperation
 {
     MainAction = 0,
-    Ready = 1,
+    Ready,
+    ChangeUnit,
 }
 
 public struct NetworkInputData : INetworkInput

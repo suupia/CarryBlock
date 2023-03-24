@@ -48,6 +48,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   playerUnits:
   - {fileID: 6410531739398357134, guid: 3e617250fe2faeb429c30e5d618aa013, type: 3}
+  - {fileID: 129457298326952264, guid: a302a749f7736b148b56ee79b6af8253, type: 3}
 --- !u!114 &6353211947961749652
 MonoBehaviour:
   m_ObjectHideFlags: 0

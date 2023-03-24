@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour, INetworkRunnerCallbacks
         data.vertical = Input.GetAxisRaw("Vertical");
         data.buttons.Set(PlayerOperation.MainAction, Input.GetButton("Fire1"));
         data.buttons.Set(PlayerOperation.Ready, Input.GetKey(KeyCode.R));
+        data.buttons.Set(PlayerOperation.ChangeUnit, Input.GetKey(KeyCode.C));
 
         input.Set(data);
 
