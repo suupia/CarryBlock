@@ -25,6 +25,14 @@ namespace MyFusion
             
         }
 
+        public override void Despawned(NetworkRunner runner, bool hasState)
+        {
+            if (Object.HasStateAuthority)
+            {
+                Runner.Despawn(NowUnit.Object); 
+            }
+        }
+
         public override void FixedUpdateNetwork()
         {
             if (GetInput(out NetworkInputData input))

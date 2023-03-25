@@ -7,29 +7,13 @@ using UnityEngine;
 
 namespace MyFusion
 {
-    public class PlayerSpawner : SimulationBehaviour, IPlayerJoined, IPlayerLeft
+    public class PlayerSpawner : SimulationBehaviour
     {
         [SerializeField] NetworkPrefabRef playerPrefab;
 
         List<PlayerController> playerControllers = new();
 
         public PlayerController[] PlayerControllers => playerControllers.ToArray();
-
-        public void PlayerJoined(PlayerRef player)
-        {
-            if (Runner.IsServer)
-            {
-                SpawnPlayer(player);
-            }
-        }
-
-        public void PlayerLeft(PlayerRef player)
-        {
-            if (Runner.IsServer)
-            {
-                DespawnPlayer(player);
-            }
-        }
 
         //Will be called outer NetworkBehaviour
         public void RespawnAllPlayer()
@@ -41,7 +25,7 @@ namespace MyFusion
             }
         }
 
-        void SpawnPlayer(PlayerRef player)
+        public void SpawnPlayer(PlayerRef player)
         {
             Debug.Log("Spawning Player");
             var spawnPosition = new Vector3(0, 1, 0);
@@ -52,7 +36,7 @@ namespace MyFusion
             playerControllers.Add(playerObject.GetComponent<PlayerController>());
         }
 
-        void DespawnPlayer(PlayerRef player)
+        public void DespawnPlayer(PlayerRef player)
         {
             if (Runner.TryGetPlayerObject(player, out var networkObject))
             {

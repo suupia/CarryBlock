@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NetworkManager : NetworkBehaviour
+public class NetworkManager : NetworkBehaviour, IPlayerJoined, IPlayerLeft
 {
     protected MyFusion.PlayerSpawner playerSpawner;
     protected MyFusion.EnemySpawner enemySpawner;
@@ -21,4 +21,20 @@ public class NetworkManager : NetworkBehaviour
             playerSpawner.RespawnAllPlayer();
         }
     }
+    public void PlayerJoined(PlayerRef player)
+    {
+        if (Runner.IsServer)
+        {
+            playerSpawner.SpawnPlayer(player);
+        }
+    }
+
+    public void PlayerLeft(PlayerRef player)
+    {
+        if (Runner.IsServer)
+        {
+            playerSpawner.DespawnPlayer(player);
+        }
+    }
+
 }
