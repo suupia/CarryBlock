@@ -8,11 +8,16 @@ using WebSocketSharp;
 /// <summary>
 /// This code is entry point of Fusion.
 /// </summary>
+/// 
+
+public static class SceneName
+{
+    public static string GameScene = "GameScene";
+    public static string LobbyScene = "LobbyScene";
+}
 
 public class SessionManager : MonoBehaviour
 {
-    public static readonly string lobbySceneName = "LobbyScene";
-
     NetworkRunner runner;
 
     //Get roomName from UI component.
@@ -39,7 +44,7 @@ public class SessionManager : MonoBehaviour
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
 
-        runner.SetActiveScene(lobbySceneName);
+        runner.SetActiveScene(SceneName.LobbyScene);
     }
 
     //Will be called by UI component

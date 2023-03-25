@@ -12,7 +12,7 @@ namespace MyFusion
         [SerializeField] NetworkPlayerUnit[] playerUnits;
 
         [Networked] NetworkButtons PreButtons { get; set; }
-        [Networked] NetworkBool IsReady { get; set; }
+        [Networked] public NetworkBool IsReady { get; set; }
         [Networked] NetworkPlayerUnit NowUnit { get; set; }
 
         public override void Spawned()

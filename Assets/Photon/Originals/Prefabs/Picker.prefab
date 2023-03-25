@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 2915190494148252779}
   - component: {fileID: 824460754387716253}
   - component: {fileID: 1319453451342267330}
-  - component: {fileID: 6596716814723302961}
+  - component: {fileID: 1885701790062825995}
   m_Layer: 0
   m_Name: Picker
   m_TagString: Untagged
@@ -186,9 +186,9 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 824460754387716253}
-  - {fileID: 6596716814723302961}
+  - {fileID: 1885701790062825995}
   SimulationBehaviours: []
---- !u!114 &6596716814723302961
+--- !u!114 &1885701790062825995
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

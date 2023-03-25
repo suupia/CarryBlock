@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NetworkPicker : NetworkBehaviour
+public class Picker : NetworkBehaviour
 {
     [Networked] TickTimer Life { get; set; }
 

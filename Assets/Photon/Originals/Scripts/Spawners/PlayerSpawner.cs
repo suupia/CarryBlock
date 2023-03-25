@@ -11,6 +11,9 @@ namespace MyFusion
     {
         [SerializeField] NetworkPrefabRef playerPrefab;
 
+        List<PlayerController> playerControllers = new();
+
+        public PlayerController[] PlayerControllers => playerControllers.ToArray();
 
         public void PlayerJoined(PlayerRef player)
         {
@@ -45,12 +48,16 @@ namespace MyFusion
             var playerObject = Runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
             Runner.SetPlayerObject(player, playerObject);
             //TODO: Set AoI
+
+            playerControllers.Add(playerObject.GetComponent<PlayerController>());
         }
 
         void DespawnPlayer(PlayerRef player)
         {
             if (Runner.TryGetPlayerObject(player, out var networkObject))
             {
+                var pc = networkObject.GetComponent<PlayerController>();
+                playerControllers.Remove(pc);
                 Runner.Despawn(networkObject);
                 Runner.SetPlayerObject(player, null);
             }
