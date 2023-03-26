@@ -9,16 +9,17 @@ public class LobbyManager : NetworkManager
     public override void Spawned()
     {
         base.Spawned();
-        
+        if (Object.HasStateAuthority)
+        {
+            var _ = enemySpawner.StartSimpleSpawner(0, 3f);
+        }
     }
 
     public void SetActiveGameScene()
     {
         if (Object.HasStateAuthority)
         {
-            var canStartGame = playerSpawner.PlayerControllers.All(pc => pc.IsReady);
-
-            if (canStartGame)
+            if (playerSpawner.IsAllReady)
             {
                 phaseManager.SetPhase(Phase.Starting);
             }

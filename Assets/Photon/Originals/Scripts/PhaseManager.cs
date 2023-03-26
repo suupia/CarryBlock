@@ -27,11 +27,6 @@ public class PhaseManager : NetworkBehaviour, ISceneLoadDone
 
     [Networked] TickTimer Timer { get; set; }
 
-    public override void Spawned()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
     public override void FixedUpdateNetwork()
     {
         if (Object.HasStateAuthority)
