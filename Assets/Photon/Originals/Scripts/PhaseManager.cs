@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[Serializable]
 public enum Phase
 {
     Matching,
@@ -14,6 +13,13 @@ public enum Phase
     Ending,
     Result,
 }
+
+/// <summary>
+/// Phase will be set
+/// - SetPhase
+/// - OnTimeExpired
+/// - SceneLoadDone
+/// </summary>
 
 public class PhaseManager : NetworkBehaviour, ISceneLoadDone
 {

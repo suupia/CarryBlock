@@ -51,6 +51,8 @@ MonoBehaviour:
   _interpolationDataSource: 0
   picker:
     RawGuidValue: 6e8806391f8963a4daf9ddc261c5cd34
+  bullet:
+    RawGuidValue: 937c049da4cf2394995462738a7fcdf4
 --- !u!114 &1000059774105050651
 MonoBehaviour:
   m_ObjectHideFlags: 0
