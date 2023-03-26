@@ -12,9 +12,6 @@ public class Tank : NetworkPlayerUnit
 
     [Networked] TickTimer ReloadTimer { get; set; }
 
-    [Networked] float Speed { get; set; } = 10f;
-
-
     NetworkCharacterControllerPrototype cc;
 
     public override void Spawned()
@@ -25,7 +22,7 @@ public class Tank : NetworkPlayerUnit
 
     public override void Move(Vector3 direction)
     {
-        cc.Move(direction * Speed);
+        cc.Move(direction);
 
     }
 
