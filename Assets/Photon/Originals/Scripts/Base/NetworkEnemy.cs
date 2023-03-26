@@ -1,8 +1,53 @@
 using Fusion;
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using System.Linq;
 using UnityEngine;
 
 public class NetworkEnemy : NetworkBehaviour
 {
+
+    NetworkCharacterControllerPrototype cc;
+
+    [Networked] protected Vector3 Direction { get; set; }
+    [Networked] protected float Speed { get; set; } = 5f;
+
+    public Action OnDespawn = () => { };
+
+    public override void Spawned()
+    {
+        cc = GetComponent<NetworkCharacterControllerPrototype>();
+
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        cc.Move(Direction * Speed);
+    }
+
+    //一旦簡単なモデルで実装する
+    //これはNetworkManagerによって呼ばれ、自身の進むべき方向を決める
+    //変える可能性が高い
+    public void SetDirection(NetworkPlayerUnit[] playerUnits)
+    {
+        //とりあえず、一番近いプレイヤーに向かう。やや重たい処理になるか
+        int minIndex = 0;
+        float min = float.MaxValue;
+        for (int i = 0; i < playerUnits.Length; i++)
+        {
+            var _min = Vector3.Distance(playerUnits[i].transform.position, transform.position);
+            if (_min < min )
+            {
+                min = _min;
+                minIndex = i;
+            }
+        }
+        
+        var target = playerUnits[minIndex].transform.position;
+        Direction = target - transform.position;
+    }
+
+    public override void Despawned(NetworkRunner runner, bool hasState)
+    {
+        OnDespawn.Invoke();
+    }
 }

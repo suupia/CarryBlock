@@ -11,7 +11,8 @@ public class LobbyManager : NetworkManager
         base.Spawned();
         if (Object.HasStateAuthority)
         {
-            var _ = enemySpawner.StartSimpleSpawner(0, 3f);
+            enemySpawner.MaxEnemyCount = 5;
+            var _ = enemySpawner.StartSimpleSpawner(0, 5f);
         }
     }
 

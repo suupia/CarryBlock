@@ -11,6 +11,7 @@ public class GameManager : NetworkManager
         if (Object.HasStateAuthority)
         {
             phaseManager.SetPhase(Phase.Ending);
+            enemySpawner.MaxEnemyCount = 128;
         }
     }
 }

@@ -1,6 +1,8 @@
 using Fusion;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class NetworkManager : NetworkBehaviour, IPlayerJoined, IPlayerLeft
@@ -21,6 +23,14 @@ public class NetworkManager : NetworkBehaviour, IPlayerJoined, IPlayerLeft
             playerSpawner.RespawnAllPlayer();
         }
     }
+
+    public override void FixedUpdateNetwork()
+    {
+        //後でキャッシュを取るようにして動作改善か、そもそもの仕様を変える
+        var playerUnits = playerSpawner.PlayerControllers.Map(pc => pc.NowUnit);
+        Array.ForEach(enemySpawner.Enemies, e => e.SetDirection(playerUnits));
+    }
+
     public void PlayerJoined(PlayerRef player)
     {
         if (Runner.IsServer)

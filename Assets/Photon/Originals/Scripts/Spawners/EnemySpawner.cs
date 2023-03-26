@@ -1,6 +1,7 @@
 using Fusion;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace MyFusion
@@ -10,11 +11,21 @@ namespace MyFusion
     {
         [SerializeField] NetworkEnemy[] enemyPrefabs;
 
+        List<NetworkEnemy> enemies = new();
+
+        public NetworkEnemy[] Enemies => enemies.ToArray();
+        public int MaxEnemyCount { get; set; } = 128;
 
         public void SpawnEnemy(int index)
         {
-            var position = new Vector3(0, 1, 0);
-            Runner.Spawn(enemyPrefabs[index], position, Quaternion.identity, PlayerRef.None);
+            if (MaxEnemyCount > enemies.Count)
+            {
+                var position = new Vector3(0, 1, 0);
+                var no = Runner.Spawn(enemyPrefabs[index], position, Quaternion.identity, PlayerRef.None);
+                var enemy = no.GetComponent<NetworkEnemy>();
+                enemy.OnDespawn += () => enemies.Remove(enemy);
+                enemies.Add(enemy);
+            }
         }
 
         IEnumerator SimpleSpawner(int index, float interval)
