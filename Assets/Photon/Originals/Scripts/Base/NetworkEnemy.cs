@@ -8,8 +8,10 @@ public class NetworkEnemy : NetworkBehaviour
 
     NetworkCharacterControllerPrototype cc;
 
-    [Networked] protected Vector3 Direction { get; set; }
+    [Networked] protected Vector2 Direction { get; set; }
     [Networked] protected float Speed { get; set; } = 5f;
+
+    [Networked] protected int Hp { get; set; } = 1;
 
     public Action OnDespawn = () => { };
 
@@ -21,7 +23,12 @@ public class NetworkEnemy : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        cc.Move(Direction * Speed);
+        if (Hp <= 0)
+        {
+            Runner.Despawn(Object);
+            return;
+        }
+        cc.Move(new Vector3(Direction.x, 0, Direction.y) * Speed);
     }
 
     //ˆê’UŠÈ’P‚Èƒ‚ƒfƒ‹‚ÅŽÀ‘•‚·‚é
@@ -35,19 +42,29 @@ public class NetworkEnemy : NetworkBehaviour
         for (int i = 0; i < playerUnits.Length; i++)
         {
             var _min = Vector3.Distance(playerUnits[i].transform.position, transform.position);
-            if (_min < min )
+            if (_min < min)
             {
                 min = _min;
                 minIndex = i;
             }
         }
-        
+
         var target = playerUnits[minIndex].transform.position;
-        Direction = target - transform.position;
+        var direction = target - transform.position;
+        Direction = new Vector2(direction.x, direction.z);
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState)
     {
         OnDespawn.Invoke();
+    }
+
+    
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.gameObject.CompareTag("Harmful"))
+        {
+            Hp -= 1;
+        }
     }
 }

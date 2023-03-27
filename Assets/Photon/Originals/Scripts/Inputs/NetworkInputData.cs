@@ -3,7 +3,6 @@ using Fusion;
 public enum PlayerOperation
 {
     MainAction = 0,
-    Fire,
     Ready,
     ChangeUnit,
 }
