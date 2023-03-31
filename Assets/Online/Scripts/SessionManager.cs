@@ -18,6 +18,7 @@ public static class SceneName
 
 public class SessionManager : MonoBehaviour
 {
+    [SerializeField] GameObject phaseManager;
     NetworkRunner runner;
 
     //Get roomName from UI component.
@@ -43,6 +44,8 @@ public class SessionManager : MonoBehaviour
             Scene = SceneManager.GetActiveScene().buildIndex,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
+
+        runner.Spawn(phaseManager);
 
         runner.SetActiveScene(SceneName.LobbyScene);
     }

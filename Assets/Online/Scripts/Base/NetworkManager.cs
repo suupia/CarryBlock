@@ -2,6 +2,7 @@ using Fusion;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ public class NetworkManager : NetworkBehaviour, IPlayerJoined, IPlayerLeft
     public override void FixedUpdateNetwork()
     {
         //後でキャッシュを取るようにして動作改善か、そもそもの仕様を変える
-        var playerUnits = playerSpawner.PlayerControllers.Map(pc => pc.NowUnit);
+        var playerUnits = playerSpawner.PlayerControllers.Map(pc => pc.NowUnit).Where(unit => unit != null).ToArray();
         Array.ForEach(enemySpawner.Enemies, e => e.SetDirection(playerUnits));
     }
 

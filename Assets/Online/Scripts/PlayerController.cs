@@ -15,7 +15,7 @@ namespace MyFusion
         [Networked] public NetworkBool IsReady { get; set; }
         [Networked] NetworkPlayerUnit Unit { get; set; }
 
-        public NetworkPlayerUnit NowUnit => Unit;
+        public NetworkPlayerUnit NowUnit => Object != null ? Unit : null;
 
         public override void Spawned()
         {
@@ -24,14 +24,17 @@ namespace MyFusion
             {
                 Unit = SpawnPlayerUnit(0);
             }
-            
+
         }
 
         public override void Despawned(NetworkRunner runner, bool hasState)
         {
             if (Object.HasStateAuthority)
             {
-                Runner.Despawn(Unit.Object); 
+                if (Unit != null && Unit.Object != null)
+                {
+                    Runner.Despawn(Unit.Object);
+                }
             }
         }
 
@@ -51,7 +54,7 @@ namespace MyFusion
                     //Tmp
                     RPC_ChangeUnit(1);
                 }
-                
+
                 var direction = new Vector3(input.horizontal, 0, input.vertical).normalized;
 
                 //Apply input
@@ -82,6 +85,6 @@ namespace MyFusion
 
             return Runner.Spawn(prefab, position, rotation, Runner.LocalPlayer);
         }
-     }
+    }
 }
 
