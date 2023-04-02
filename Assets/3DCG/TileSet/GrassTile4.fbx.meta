@@ -3,7 +3,12 @@ guid: 7be54783cbad8844087a44465483592a
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bird_dash_material
+    second: {fileID: 2100000, guid: b303a5eca11e31745ab75c55e4468411, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
