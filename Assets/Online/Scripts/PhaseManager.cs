@@ -60,6 +60,7 @@ public class PhaseManager : NetworkBehaviour, ISceneLoadDone
         if (Object.HasStateAuthority)
         {
             Phase = phase;
+            Debug.Log(Phase);
 
             switch (Phase)
             {
