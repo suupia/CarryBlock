@@ -92,7 +92,7 @@ public class UniTaskTester : MonoBehaviour
         Debug.Log($"log");
     }
 
-    // 1•b‘Ò‹@‚·‚éUniTask  
+    // 1ç§’å¾…æ©Ÿã™ã‚‹UniTask  
     async UniTask Wait1Sec()
     {
         await UniTask.Delay(1000);

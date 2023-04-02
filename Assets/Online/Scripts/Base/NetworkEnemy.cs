@@ -31,12 +31,12 @@ public class NetworkEnemy : NetworkBehaviour
         cc.Move(new Vector3(Direction.x, 0, Direction.y) * Speed);
     }
 
-    //��U�ȒP�ȃ��f���Ŏ�������
-    //�����NetworkManager�ɂ���ČĂ΂�A���g�̐i�ނׂ����������߂�
-    //�ς���\��������
+    //一旦簡単なモデルで実装する
+    //これはNetworkManagerによって呼ばれ、自身の進むべき方向を決める
+    //変える可能性が高い
     public void SetDirection(NetworkPlayerUnit[] playerUnits)
     {
-        //�Ƃ肠�����A��ԋ߂��v���C���[�Ɍ������B���d���������ɂȂ邩
+        //とりあえず、一番近いプレイヤーに向かう。やや重たい処理になるか
         int minIndex = 0;
         float min = float.MaxValue;
         for (int i = 0; i < playerUnits.Length; i++)

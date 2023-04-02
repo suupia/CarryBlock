@@ -35,7 +35,7 @@ public class MoveTester : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Œ¸‘¬‚µ‚Ü‚·");
+            Debug.Log($"Å’Â¸â€˜Â¬â€šÂµâ€šÃœâ€šÂ·");
             var weight = distance / info.decelerationRange;
             var accelerationVector = ((weight * directionVec - info.pickerRd.velocity) / Time.fixedDeltaTime); // The solution obtained by solving the equation.
             //var accelerationWeight = distance / info.decelerationRange;

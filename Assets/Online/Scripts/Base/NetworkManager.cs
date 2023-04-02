@@ -27,7 +27,7 @@ public class NetworkManager : NetworkBehaviour, IPlayerJoined, IPlayerLeft
 
     public override void FixedUpdateNetwork()
     {
-        //Œã‚ÅƒLƒƒƒbƒVƒ…‚ðŽæ‚é‚æ‚¤‚É‚µ‚Ä“®ì‰ü‘P‚©A‚»‚à‚»‚à‚ÌŽd—l‚ð•Ï‚¦‚é
+        //å¾Œã§ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’å–ã‚‹ã‚ˆã†ã«ã—ã¦å‹•ä½œæ”¹å–„ã‹ã€ãã‚‚ãã‚‚ã®ä»•æ§˜ã‚’å¤‰ãˆã‚‹
         var playerUnits = playerSpawner.PlayerControllers.Map(pc => pc.NowUnit).Where(unit => unit != null).ToArray();
         Array.ForEach(enemySpawner.Enemies, e => e.SetDirection(playerUnits));
     }

@@ -34,47 +34,47 @@ public class Utility
 
     /// <summary>
     /// <para>
-    ///  ƒKƒEƒXƒUƒCƒfƒ‹–@iGauss-Seidel methodj
+    ///  ã‚¬ã‚¦ã‚¹ï¼ã‚¶ã‚¤ãƒ‡ãƒ«æ³•ï¼ˆGauss-Seidel methodï¼‰
     /// </para>
     /// <para>
-    /// ‰ğ‚ªû‘©‚·‚é‚Ì‚Í
-    ///    E‘ÎŠp—L—˜(diagonal dominant, ‘ÎŠp—v‘f‚Ìâ‘Î’l>‚»‚Ìs‚Ì‘¼‚Ì—v‘f‚Ìâ‘Î’l‚Ì˜a)
-    ///    EŒW”s—ñ‚ª‘ÎÌ(symmetric)‚©‚Â³’è(positive definite)
-    ///    Eƒ°_j |a_ij/a_ii| &lt; 1 (i = 1`n, j != i) 
+    /// è§£ãŒåæŸã™ã‚‹ã®ã¯
+    ///    ãƒ»å¯¾è§’æœ‰åˆ©(diagonal dominant, å¯¾è§’è¦ç´ ã®çµ¶å¯¾å€¤>ãã®è¡Œã®ä»–ã®è¦ç´ ã®çµ¶å¯¾å€¤ã®å’Œ)
+    ///    ãƒ»ä¿‚æ•°è¡Œåˆ—ãŒå¯¾ç§°(symmetric)ã‹ã¤æ­£å®š(positive definite)
+    ///    ãƒ»Î£_j |a_ij/a_ii| &lt; 1 (i = 1ï½n, j != i) 
     /// </para>
     /// </summary>
-    /// <param name="squareMatrix">n~n‚ÌŒW”s—ñ</param>
-    /// <param name="constantVector">n~1‚Ì’è”€(b)‚Ìs—ñ(’è”€ƒxƒNƒgƒ‹)</param>
-    /// <param name="maxIterator">Å‘å”½•œ”</param>
-    /// <param name="eps">‹–—eŒë·</param>
-    /// <param name="AbsoluteError">[option]û‘©”»’è‚Åâ‘ÎŒë·‚Æ‘Š‘ÎŒë·‚Ì‚Ç‚¿‚ç‚ğ—p‚¢‚é‚©¦‚·B
-    /// ^‚Ì‚Æ‚«‚Íâ‘ÎŒë·A‹U‚Ì‚Æ‚«‚Í‘Š‘ÎŒë·‚ğ—p‚¢‚éB</param>
-    /// <returns>‰ğ‚Ìs—ñ</returns>
+    /// <param name="squareMatrix">nÃ—nã®ä¿‚æ•°è¡Œåˆ—</param>
+    /// <param name="constantVector">nÃ—1ã®å®šæ•°é …(b)ã®è¡Œåˆ—(å®šæ•°é …ãƒ™ã‚¯ãƒˆãƒ«)</param>
+    /// <param name="maxIterator">æœ€å¤§åå¾©æ•°</param>
+    /// <param name="eps">è¨±å®¹èª¤å·®</param>
+    /// <param name="AbsoluteError">[option]åæŸåˆ¤å®šã§çµ¶å¯¾èª¤å·®ã¨ç›¸å¯¾èª¤å·®ã®ã©ã¡ã‚‰ã‚’ç”¨ã„ã‚‹ã‹ç¤ºã™ã€‚
+    /// çœŸã®ã¨ãã¯çµ¶å¯¾èª¤å·®ã€å½ã®ã¨ãã¯ç›¸å¯¾èª¤å·®ã‚’ç”¨ã„ã‚‹ã€‚</param>
+    /// <returns>è§£ã®è¡Œåˆ—</returns>
     public static IterativeResult GaussSeidel(double[,] squareMatrix, double[] constantVector, int maxIterator, double eps, bool AbsoluteError = true)
     {
         if (squareMatrix.GetLength(0) != squareMatrix.GetLength(1))
         {
-            throw new ArgumentException("ˆø‚«”‚ÌŒW”s—ñ‚ª³•ûs—ñ‚Å‚ ‚è‚Ü‚¹‚ñB", "A");
+            throw new ArgumentException("å¼•ãæ•°ã®ä¿‚æ•°è¡Œåˆ—ãŒæ­£æ–¹è¡Œåˆ—ã§ã‚ã‚Šã¾ã›ã‚“ã€‚", "A");
         }
         if (squareMatrix.GetLength(0) != constantVector.Length)
         {
-            throw new ArgumentException("ˆø‚«”‚Ì’è”€s—ñ‚ªŒW”s—ñ‚Ì‘å‚«‚³‚Æˆê’v‚µ‚Ü‚¹‚ñB");
+            throw new ArgumentException("å¼•ãæ•°ã®å®šæ•°é …è¡Œåˆ—ãŒä¿‚æ•°è¡Œåˆ—ã®å¤§ãã•ã¨ä¸€è‡´ã—ã¾ã›ã‚“ã€‚");
         }
 
-        // s—ñ‚Ì‘å‚«‚³
+        // è¡Œåˆ—ã®å¤§ãã•
         int n = squareMatrix.GetLength(0);
-        // ‰ğB‰Šú’l‚Í‚·‚×‚Ä0
+        // è§£ã€‚åˆæœŸå€¤ã¯ã™ã¹ã¦0
         double[] solution = new double[n];
-        // Œë·
+        // èª¤å·®
         double e = 0.0;
-        // Œ»İ‚Ì”½•œ‰ñ”
+        // ç¾åœ¨ã®åå¾©å›æ•°
         int k;
 
         double tmp;
 
         for (k = 0; k < maxIterator; ++k)
         {
-            // Œ»İ‚Ì’l‚ğ‘ã“ü‚µ‚ÄŸ‚Ì‰ğŒó•â‚ğŒvZ
+            // ç¾åœ¨ã®å€¤ã‚’ä»£å…¥ã—ã¦æ¬¡ã®è§£å€™è£œã‚’è¨ˆç®—
             e = 0.0;
             for (int i = 0; i < n; ++i)
             {
@@ -88,16 +88,16 @@ public class Utility
 
                 if (AbsoluteError)
                 {
-                    // â‘ÎŒë·
+                    // çµ¶å¯¾èª¤å·®
                     e += Math.Abs(tmp - solution[i]);
                 }
                 else
                 {
-                    // ‘Š‘ÎŒë·
+                    // ç›¸å¯¾èª¤å·®
                     e += Math.Abs((tmp - solution[i]) / tmp);
                 }
             }
-            // û‘©”»’è
+            // åæŸåˆ¤å®š
             if (e <= eps)
             {
                 break;
@@ -118,17 +118,17 @@ public class Utility
         }
 
         /// <summary>
-        /// ‰ğ
+        /// è§£
         /// </summary>
         public double[] Solution { get; set; }
 
         /// <summary>
-        /// ”½•œ‰ñ”
+        /// åå¾©å›æ•°
         /// </summary>
         public int Iterator { get; set; }
 
         /// <summary>
-        /// Œë·
+        /// èª¤å·®
         /// </summary>
         public double Error { get; set; }
     }

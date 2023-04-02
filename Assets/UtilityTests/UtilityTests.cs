@@ -27,12 +27,12 @@ public class UtilityTests
     [Test]
     public void TestGaussSeidel()
     {
-        // •û’ö®
+        // æ–¹ç¨‹å¼
         // 3x + 2y + z = 10 
         // x + 4y + z = 12
         // 2x + 2y + 5z = 21
 
-        // ‰ğ 
+        // è§£ 
         // (x, y, z) = (1, 2, 3)
 
         var matrix = new double[,] {

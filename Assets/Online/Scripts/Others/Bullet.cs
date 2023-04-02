@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ‚Æ‚è‚ ‚¦‚¸NetworkObject‚Æ‚·‚éB
-/// ‚à‚µd‚©‚Á‚½‚èA–³—¿˜g‚ğ’´‚¦‚é‚æ‚¤‚È‚çATickAligned‚ÌRPC‚ÅƒgƒŠƒK[‚¾‚¯’ÊM‚·‚é•û®‚É‚·‚é
-/// QlFhttps://docs.google.com/presentation/d/1kGN7ZEleBgpXuXnUin8y67LmXrmQuAtbgu4rz3QSY6U/edit#slide=id.g1592fa1edef_0_25
+/// ã¨ã‚Šã‚ãˆãšNetworkObjectã¨ã™ã‚‹ã€‚
+/// ã‚‚ã—é‡ã‹ã£ãŸã‚Šã€ç„¡æ–™æ ã‚’è¶…ãˆã‚‹ã‚ˆã†ãªã‚‰ã€TickAlignedã®RPCã§ãƒˆãƒªã‚¬ãƒ¼ã ã‘é€šä¿¡ã™ã‚‹æ–¹å¼ã«ã™ã‚‹
+/// å‚è€ƒï¼šhttps://docs.google.com/presentation/d/1kGN7ZEleBgpXuXnUin8y67LmXrmQuAtbgu4rz3QSY6U/edit#slide=id.g1592fa1edef_0_25
 /// </summary>
 public class Bullet : NetworkBehaviour
 {

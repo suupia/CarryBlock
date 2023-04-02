@@ -35,16 +35,16 @@ public class Tank : NetworkPlayerUnit
         if (ReloadTimer.ExpiredOrNotRunning(Runner))
         {
             //Auto Aim
-            //ˆê’Uƒ^ƒO‚Å¯•ÊAŠO•”‚ÌƒXƒNƒŠƒvƒg‚ÅƒgƒŠƒK[ŠÇ—BˆË‘¶ŠÖŒW‚ğŒ¸‚ç‚µ‚½‚¢‚È‚çPhysicsŒn‚ğg‚Á‚Ä‚à—Ç‚³‚»‚¤
-            //‚»‚Ìê‡‚ÍLayer•ª‚¯‚à‚µ‚Á‚©‚è‚µ‚Ä‚¢‚«‚½‚¢
-            //‚¢‚¸‚ê‚±‚Ìˆ—‚Í‘‚«Š·‚¦‚é‚×‚«
+            //ä¸€æ—¦ã‚¿ã‚°ã§è­˜åˆ¥ã€å¤–éƒ¨ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã§ãƒˆãƒªã‚¬ãƒ¼ç®¡ç†ã€‚ä¾å­˜é–¢ä¿‚ã‚’æ¸›ã‚‰ã—ãŸã„ãªã‚‰Physicsç³»ã‚’ä½¿ã£ã¦ã‚‚è‰¯ã•ãã†
+            //ãã®å ´åˆã¯Layeråˆ†ã‘ã‚‚ã—ã£ã‹ã‚Šã—ã¦ã„ããŸã„
+            //ã„ãšã‚Œã“ã®å‡¦ç†ã¯æ›¸ãæ›ãˆã‚‹ã¹ã
             var enemies =  rangeDetector.GameObjects.Where(o => o != null && o.CompareTag("Enemy")).ToArray();
             if (enemies.Length > 0)
             {
                 Target = enemies.First().GetComponent<NetworkObject>();
 
-                //ˆê“I‚É’e‚Ì”­ËˆÊ’u‚Ì‚½‚ß‚ÉƒIƒtƒZƒbƒg‚ğ“K—p
-                //«—ˆ“I‚É‚ÍAíÔ‚ğã•”‚Æ‰º•”‚Å•Ê‚É‚µ‚ÄAã•”‚ª”­ËˆÊ’u‚ğŠÇ—‚·‚é‚æ‚¤‚É‚µ‚æ‚¤‚©‚È
+                //ä¸€æ™‚çš„ã«å¼¾ã®ç™ºå°„ä½ç½®ã®ãŸã‚ã«ã‚ªãƒ•ã‚»ãƒƒãƒˆã‚’é©ç”¨
+                //å°†æ¥çš„ã«ã¯ã€æˆ¦è»Šã‚’ä¸Šéƒ¨ã¨ä¸‹éƒ¨ã§åˆ¥ã«ã—ã¦ã€ä¸Šéƒ¨ãŒç™ºå°„ä½ç½®ã‚’ç®¡ç†ã™ã‚‹ã‚ˆã†ã«ã—ã‚ˆã†ã‹ãª
                 var offset = new Vector3(0, 1.2f, 0);
                 Runner.Spawn(bullet, transform.position + offset, transform.rotation, PlayerRef.None, OnBeforeSpawnBullet);
                 ReloadTimer = TickTimer.CreateFromSeconds(Runner, 2f);

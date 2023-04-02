@@ -9,7 +9,7 @@ public enum PlayerOperation
 
 public struct NetworkInputData : INetworkInput
 {
-    //Œã‚Å•Ï‚¦‚éBfloat‚Ì‚â‚èæ‚è‚Í‚µ‚½‚­‚È‚¢
+    //å¾Œã§å¤‰ãˆã‚‹ã€‚floatã®ã‚„ã‚Šå–ã‚Šã¯ã—ãŸããªã„
     public float horizontal;
     public float vertical;
     public NetworkButtons buttons;

@@ -36,7 +36,7 @@ public class SessionManager : MonoBehaviour
     {
         if (roomName.IsNullOrEmpty()) roomName = "TestRoom";
 
-        //SceneManager ‚ÍAƒV[ƒ“‚É’¼Ú”z’u‚³‚ê‚é NetworkObjects ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‰»‚ğˆ—‚·‚é
+        //SceneManager ã¯ã€ã‚·ãƒ¼ãƒ³ã«ç›´æ¥é…ç½®ã•ã‚Œã‚‹ NetworkObjects ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–ã‚’å‡¦ç†ã™ã‚‹
         await runner.StartGame(new StartGameArgs()
         {
             GameMode = mode,
