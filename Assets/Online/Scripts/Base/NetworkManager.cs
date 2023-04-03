@@ -6,20 +6,25 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class NetworkManager : NetworkBehaviour, IPlayerJoined, IPlayerLeft
+public class NetworkManager : SimulationBehaviour, IPlayerJoined, IPlayerLeft
 {
     protected MyFusion.PlayerSpawner playerSpawner;
     protected MyFusion.EnemySpawner enemySpawner;
     protected PhaseManager phaseManager;
 
-    public override void Spawned()
+    
+    // SimulationBehaviorにする
+    // もしNetworkRunnerがない場合はモックを作ってテストできるようにする
+    
+    // public override void Spawned()
+    void Start()
     {
         playerSpawner = FindObjectOfType<MyFusion.PlayerSpawner>();
         enemySpawner = FindObjectOfType<MyFusion.EnemySpawner>();
         phaseManager = FindObjectOfType<PhaseManager>();
 
 
-        if (Object.HasStateAuthority)
+        if (Runner.IsServer)
         {
             playerSpawner.RespawnAllPlayer();
         }
