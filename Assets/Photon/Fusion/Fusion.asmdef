@@ -1,0 +1,16 @@
+{
+    "name": "Fusion",
+    "rootNamespace": "",
+    "references": [
+        "GUID:4d449a4732e064d26a3069f2cfd88917"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -8,9 +8,9 @@ using UnityEngine.SceneManagement;
 public enum Phase
 {
     Matching,
-    Starting,
+    Starting, //カウントダウン中
     Gaming,
-    Ending,
+    Ending, //リザルトに行く前の何か
     Result,
 }
 
@@ -21,7 +21,7 @@ public enum Phase
 /// - SceneLoadDone
 /// </summary>
 
-public class PhaseManager : NetworkBehaviour, ISceneLoadDone
+public class PhaseManager : SimulationBehaviour, ISceneLoadDone
 {
     [Networked] Phase Phase { get; set; }
 
@@ -29,7 +29,7 @@ public class PhaseManager : NetworkBehaviour, ISceneLoadDone
 
     public override void FixedUpdateNetwork()
     {
-        if (Object.HasStateAuthority)
+        if (Runner.IsServer)
         {
             OnTimerExpired();
         }
@@ -57,7 +57,7 @@ public class PhaseManager : NetworkBehaviour, ISceneLoadDone
 
     public void SetPhase(Phase phase)
     {
-        if (Object.HasStateAuthority)
+        if (Runner.IsServer)
         {
             Phase = phase;
             Debug.Log(Phase);

@@ -3,25 +3,36 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class NetworkManager : NetworkBehaviour, IPlayerJoined, IPlayerLeft
+[DisallowMultipleComponent]
+public class LobbyManager : NetworkSceneManager
 {
-    protected MyFusion.PlayerSpawner playerSpawner;
-    protected MyFusion.EnemySpawner enemySpawner;
-    protected PhaseManager phaseManager;
-
-    public override void Spawned()
+    async void Start()
     {
-        playerSpawner = FindObjectOfType<MyFusion.PlayerSpawner>();
-        enemySpawner = FindObjectOfType<MyFusion.EnemySpawner>();
-        phaseManager = FindObjectOfType<PhaseManager>();
+        await base.Init();
 
-
-        if (Object.HasStateAuthority)
+        if (Runner.IsServer)
         {
             playerSpawner.RespawnAllPlayer();
+        }
+
+        if (Runner.IsServer)
+        {
+            enemySpawner.MaxEnemyCount = 5;
+            var _ = enemySpawner.StartSimpleSpawner(0, 5f);
+        }
+    }
+
+    // ボタンから呼び出す
+    public void SetActiveGameScene()
+    {
+        if (Runner.IsServer)
+        {
+            if (playerSpawner.IsAllReady)
+            {
+                phaseManager.SetPhase(Phase.Starting);
+            }
         }
     }
 
@@ -44,8 +55,7 @@ public class NetworkManager : NetworkBehaviour, IPlayerJoined, IPlayerLeft
     {
         if (Runner.IsServer)
         {
-            playerSpawner.DespawnPlayer(player);
+            playerSpawner.DeSpawnPlayer(player);
         }
     }
-
 }

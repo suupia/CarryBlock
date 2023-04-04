@@ -26,7 +26,7 @@ namespace MyFusion
             }
             foreach (var player in Runner.ActivePlayers)
             {
-                DespawnPlayer(player);
+                DeSpawnPlayer(player);
                 SpawnPlayer(player);
             }
         }
@@ -42,7 +42,7 @@ namespace MyFusion
             playerControllers.Add(playerObject.GetComponent<PlayerController>());
         }
 
-        public void DespawnPlayer(PlayerRef player)
+        public void DeSpawnPlayer(PlayerRef player)
         {
             if (Runner.TryGetPlayerObject(player, out var networkObject))
             {
