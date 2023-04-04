@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 9209282993185821242}
   - component: {fileID: 5413966621388716893}
   - component: {fileID: -5769145101562873616}
-  - component: {fileID: -1622826786567710375}
   - component: {fileID: 7533116939043866967}
   m_Layer: 0
   m_Name: FusionContainer
@@ -72,19 +71,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3177e072b237bbf459a679bede40102c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-1622826786567710375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2809280702630408735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f40e3b2e143a9a48bb348162620cbe6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerControllerPrefab: {fileID: 5883042663122797409, guid: e97864d62ccf2ae40a38e5ad95272ab8, type: 3}
 --- !u!114 &7533116939043866967
 MonoBehaviour:
   m_ObjectHideFlags: 0

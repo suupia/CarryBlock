@@ -9,7 +9,7 @@ using UnityEngine;
 public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, IPlayerLeft
 {
     [SerializeField] protected NetworkRunnerManager runnerManager;
-    protected NetworkPlayerContainer networkPlayerContainer;
+    protected NetworkPlayerContainer networkPlayerContainer = new();
     protected NetworkEnemyContainer networkEnemyContainer;
     protected PhaseManager phaseManager;
     protected NetworkPlayerSpawner playerSpawner;
@@ -24,11 +24,9 @@ public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, 
         runnerManager.Runner.AddSimulationBehaviour(this); // Runnerに登録
         Debug.Log($"Runner:{Runner}");
 
-        networkPlayerContainer = FindObjectOfType<NetworkPlayerContainer>();
         networkEnemyContainer = FindObjectOfType<NetworkEnemyContainer>();
         phaseManager = FindObjectOfType<PhaseManager>();
 
-        Runner.AddSimulationBehaviour(networkPlayerContainer);
         Runner.AddSimulationBehaviour(networkEnemyContainer);
         Runner.AddSimulationBehaviour(phaseManager);
         
