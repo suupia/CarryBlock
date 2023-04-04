@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Fusion;
+using System.Threading.Tasks;
 
-interface INetworkRunnerAccessor
-{
-    public NetworkRunner AccessRunner();
-}
 
+// 全てのシーンにこれを配置しておけば、NetworkRunnerを使える
 // TitleシーンならSessionNameを受け取ってからRunnerをインスタンス
 // その他のシーンならStart()でRunnerをインスタンス
 public class NetworkRunnerManager : MonoBehaviour
 {
     [SerializeField] NetworkRunner runnerPrefab;
+    public NetworkRunner Runner => runner;
+
+    NetworkRunner runner;
 
     //Get roomName from UI component.
     public string RoomName { get; set; }
 
-    // Start is called before the first frame update
-    void Start()
+    
+    public async Task StartScene()
     {
         //Init NetworkRunner. Allow player's inputs.
         
@@ -28,25 +29,26 @@ public class NetworkRunnerManager : MonoBehaviour
         var sceneName = activeScene.name;
         if (sceneName == "TitleScene")
         {
-            StartTitleScene();
+            await StartTitleScene();
         }
         else
         {
-            StartOtherScene();
+            await StartOtherScene();
         }
 
     }
 
-    void StartTitleScene()
+    async Task StartTitleScene()
     {
         // すぐにはRunnerをインスタンス化しない
         // セッション名が入力されてからインスタンス化
         // ToDo: TitleSceneの時の初期化処理を書く
+          await Task.Delay(1000); // 1秒待つ
     }
 
-    async void StartOtherScene()
+    async Task StartOtherScene()
     {
-        var runner = Instantiate(runnerPrefab);
+        runner = Instantiate(runnerPrefab);
         DontDestroyOnLoad(runner);
         
         await runner.StartGame(new StartGameArgs()
@@ -56,6 +58,7 @@ public class NetworkRunnerManager : MonoBehaviour
             Scene = SceneManager.GetActiveScene().buildIndex,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
+        
     }
 
     // async void StartGame(GameMode mode, string roomName)

@@ -8,50 +8,58 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class LobbyManager : SimulationBehaviour, IPlayerJoined, IPlayerLeft
 {
-    protected MyFusion.PlayerSpawner playerSpawner;
-    protected MyFusion.EnemySpawner enemySpawner;
-    protected PhaseManager phaseManager;
-    
-    
-    private NetworkRunner networkRunner;
+    [SerializeField] NetworkRunnerManager runnerManager;
+    MyFusion.PlayerSpawner playerSpawner;
+    MyFusion.EnemySpawner enemySpawner;
+    PhaseManager phaseManager;
 
-    protected override void OnStartRunning()
+    // protected override void OnStartRunning()
+    // {
+    //     base.OnStartRunning();
+    //
+    //     // FusionManager クラスを取得
+    //     FusionManager fusionManager = GameObject.FindObjectOfType<FusionManager>();
+    //     if (fusionManager == null)
+    //     {
+    //         Debug.LogError("FusionManager not found.");
+    //         return;
+    //     }
+    //
+    //     // NetworkRunner を取得
+    //     networkRunner = fusionManager.NetworkRunner;
+    //     if (networkRunner == null)
+    //     {
+    //         Debug.LogError("NetworkRunner not found.");
+    //         return;
+    //     }
+    //
+    //     // NetworkRunner にアクセスする処理を実行
+    //     // 例：ロビーシーンに移行する
+    //     networkRunner.LoadScene("LobbyScene");
+    // }
+
+    async void Start()
     {
-        base.OnStartRunning();
+        await runnerManager.StartScene();
 
-        // FusionManager クラスを取得
-        FusionManager fusionManager = GameObject.FindObjectOfType<FusionManager>();
-        if (fusionManager == null)
-        {
-            Debug.LogError("FusionManager not found.");
-            return;
-        }
+        Debug.Log($"Runner:{Runner}");
+        runnerManager.Runner.AddSimulationBehaviour(this); // Runnerに登録
+        Debug.Log($"Runner:{Runner}");
 
-        // NetworkRunner を取得
-        networkRunner = fusionManager.NetworkRunner;
-        if (networkRunner == null)
-        {
-            Debug.LogError("NetworkRunner not found.");
-            return;
-        }
 
-        // NetworkRunner にアクセスする処理を実行
-        // 例：ロビーシーンに移行する
-        networkRunner.LoadScene("LobbyScene");
-    }
-    
-    void Start()
-    {
         playerSpawner = FindObjectOfType<MyFusion.PlayerSpawner>();
         enemySpawner = FindObjectOfType<MyFusion.EnemySpawner>();
         phaseManager = FindObjectOfType<PhaseManager>();
 
+        Runner.AddSimulationBehaviour(playerSpawner);
+        Runner.AddSimulationBehaviour(enemySpawner);
+        Runner.AddSimulationBehaviour(phaseManager);
 
         if (Runner.IsServer)
         {
             playerSpawner.RespawnAllPlayer();
         }
-        
+
         if (Runner.IsServer)
         {
             enemySpawner.MaxEnemyCount = 5;
@@ -81,7 +89,7 @@ public class LobbyManager : SimulationBehaviour, IPlayerJoined, IPlayerLeft
             playerSpawner.DespawnPlayer(player);
         }
     }
-    
+
     // ボタンから呼び出す
     public void SetActiveGameScene()
     {
@@ -93,6 +101,4 @@ public class LobbyManager : SimulationBehaviour, IPlayerJoined, IPlayerLeft
             }
         }
     }
-    
-    
 }

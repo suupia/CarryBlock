@@ -16,7 +16,7 @@ namespace MyFusion
         public NetworkEnemy[] Enemies => enemies.ToArray();
         public int MaxEnemyCount { get; set; } = 128;
 
-        public void SpawnEnemy(int index)
+        void SpawnEnemy(int index)
         {
             if (MaxEnemyCount > enemies.Count)
             {
