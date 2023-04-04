@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Fusion;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 
 // 全てのシーンにこれを配置しておけば、NetworkRunnerを使える
@@ -14,7 +15,7 @@ public class NetworkRunnerManager : MonoBehaviour
     [SerializeField] NetworkRunner runnerPrefab;
     public NetworkRunner Runner => runner;
 
-    NetworkRunner runner;
+    [CanBeNull] NetworkRunner runner;
 
     //Get roomName from UI component.
     public string RoomName { get; set; }
@@ -48,16 +49,22 @@ public class NetworkRunnerManager : MonoBehaviour
 
     async Task StartOtherScene()
     {
-        runner = Instantiate(runnerPrefab);
-        DontDestroyOnLoad(runner);
-        
-        await runner.StartGame(new StartGameArgs()
+        runner = FindObjectOfType<NetworkRunner>();
+        if (runner == null)
         {
-            GameMode = GameMode.AutoHostOrClient,
-            SessionName = "TestRoom",
-            Scene = SceneManager.GetActiveScene().buildIndex,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-        });
+            runner = Instantiate(runnerPrefab);
+            DontDestroyOnLoad(runner);
+        
+            await runner.StartGame(new StartGameArgs()
+            {
+                GameMode = GameMode.AutoHostOrClient,
+                SessionName = "TestRoom",
+                Scene = SceneManager.GetActiveScene().buildIndex,
+                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+            });
+        }
+        
+
         
     }
 

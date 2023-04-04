@@ -57,7 +57,7 @@ public class PhaseManager : SimulationBehaviour, ISceneLoadDone
 
     public void SetPhase(Phase phase)
     {
-        if (Object.HasStateAuthority)
+        if (Runner.IsServer)
         {
             Phase = phase;
             Debug.Log(Phase);
