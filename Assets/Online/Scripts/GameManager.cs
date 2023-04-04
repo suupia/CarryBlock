@@ -13,7 +13,7 @@ public class GameManager : SimulationBehaviour
     {
         await runnerManager.StartScene();
 
-        Debug.Log($"Runner:{Runner}");
+        Debug.Log($"Runner:{Runner}, runnerManager.Runner:{runnerManager.Runner}");
         runnerManager.Runner.AddSimulationBehaviour(this); // Runnerに登録
         Debug.Log($"Runner:{Runner}");
 

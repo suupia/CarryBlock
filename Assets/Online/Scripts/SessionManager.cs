@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using WebSocketSharp;
 
 /// <summary>
 /// This code is entry point of Fusion.
@@ -34,7 +33,7 @@ public class SessionManager : MonoBehaviour
 
     async void StartGame(GameMode mode, string roomName)
     {
-        if (roomName.IsNullOrEmpty()) roomName = "TestRoom";
+        if (string.IsNullOrEmpty(roomName)) roomName = "TestRoom";
 
         //SceneManager は、シーンに直接配置される NetworkObjects のインスタンス化を処理する
         await runner.StartGame(new StartGameArgs()
