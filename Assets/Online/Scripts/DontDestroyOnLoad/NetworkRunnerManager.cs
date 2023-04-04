@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using Fusion;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-
+using Cysharp.Threading.Tasks;
 
 // 全てのシーンにこれを配置しておけば、NetworkRunnerを使える
 // TitleシーンならSessionNameを受け取ってからRunnerをインスタンス
@@ -21,7 +21,7 @@ public class NetworkRunnerManager : MonoBehaviour
     public string RoomName { get; set; }
 
     
-    public async Task StartScene()
+    public async UniTask StartScene()
     {
         //Init NetworkRunner. Allow player's inputs.
         
@@ -39,7 +39,7 @@ public class NetworkRunnerManager : MonoBehaviour
 
     }
 
-    async Task StartTitleScene()
+    async UniTask StartTitleScene()
     {
         // すぐにはRunnerをインスタンス化しない
         // セッション名が入力されてからインスタンス化
@@ -47,7 +47,7 @@ public class NetworkRunnerManager : MonoBehaviour
           await Task.Delay(1000); // 1秒待つ
     }
 
-    async Task StartOtherScene()
+    async UniTask StartOtherScene()
     {
         runner = FindObjectOfType<NetworkRunner>();
         if (runner == null)
