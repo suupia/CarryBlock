@@ -14,13 +14,14 @@ public class LobbyManager : NetworkSceneManager
 
         if (Runner.IsServer)
         {
-            playerSpawner.RespawnAllPlayer();
+            // networkPlayerContainer.RespawnAllPlayer();
+            playerSpawner.RespawnAllPlayer(networkPlayerContainer);
         }
 
         if (Runner.IsServer)
         {
-            enemySpawner.MaxEnemyCount = 5;
-            var _ = enemySpawner.StartSimpleSpawner(0, 5f);
+            networkEnemyContainer.MaxEnemyCount = 5;
+            var _ = networkEnemyContainer.StartSimpleSpawner(0, 5f);
         }
     }
 
@@ -29,7 +30,7 @@ public class LobbyManager : NetworkSceneManager
     {
         if (Runner.IsServer)
         {
-            if (playerSpawner.IsAllReady)
+            if (networkPlayerContainer.IsAllReady)
             {
                 phaseManager.SetPhase(Phase.Starting);
             }
@@ -39,23 +40,8 @@ public class LobbyManager : NetworkSceneManager
     public override void FixedUpdateNetwork()
     {
         //後でキャッシュを取るようにして動作改善か、そもそもの仕様を変える
-        var playerUnits = playerSpawner.PlayerControllers.Map(pc => pc.NowUnit).Where(unit => unit != null).ToArray();
-        Array.ForEach(enemySpawner.Enemies, e => e.SetDirection(playerUnits));
+        var playerUnits = networkPlayerContainer.PlayerControllers.Map(pc => pc.NowUnit).Where(unit => unit != null).ToArray();
+        Array.ForEach(networkEnemyContainer.Enemies, e => e.SetDirection(playerUnits));
     }
-
-    public void PlayerJoined(PlayerRef player)
-    {
-        if (Runner.IsServer)
-        {
-            playerSpawner.SpawnPlayer(player);
-        }
-    }
-
-    public void PlayerLeft(PlayerRef player)
-    {
-        if (Runner.IsServer)
-        {
-            playerSpawner.DeSpawnPlayer(player);
-        }
-    }
+    
 }

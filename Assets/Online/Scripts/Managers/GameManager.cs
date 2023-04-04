@@ -15,7 +15,7 @@ public class GameManager : NetworkSceneManager
         if (Runner.IsServer)
         {
             phaseManager.SetPhase(Phase.Ending);
-            enemySpawner.MaxEnemyCount = 128;
+            networkEnemyContainer.MaxEnemyCount = 128;
         }
     }
 }

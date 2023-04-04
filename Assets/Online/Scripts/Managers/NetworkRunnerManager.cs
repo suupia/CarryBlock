@@ -6,13 +6,14 @@ using Fusion;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Cysharp.Threading.Tasks;
+using UnityEngine.Serialization;
 
 // 全てのシーンにこれを配置しておけば、NetworkRunnerを使える
 // TitleシーンならSessionNameを受け取ってからRunnerをインスタンス
 // その他のシーンならStart()でRunnerをインスタンス
 public class NetworkRunnerManager : MonoBehaviour
 {
-    [SerializeField] NetworkRunner runnerPrefab;
+    [SerializeField] NetworkRunner fusionContainer;
     public NetworkRunner Runner => runner;
 
     [CanBeNull] NetworkRunner runner;
@@ -49,7 +50,7 @@ public class NetworkRunnerManager : MonoBehaviour
         runner = FindObjectOfType<NetworkRunner>();
           if (runner == null)
           {
-              runner = Instantiate(runnerPrefab);
+              runner = Instantiate(fusionContainer);
               DontDestroyOnLoad(runner);
         
               await runner.StartGame(new StartGameArgs()
@@ -67,7 +68,7 @@ public class NetworkRunnerManager : MonoBehaviour
         runner = FindObjectOfType<NetworkRunner>();
         if (runner == null)
         {
-            runner = Instantiate(runnerPrefab);
+            runner = Instantiate(fusionContainer);
             DontDestroyOnLoad(runner);
         
             await runner.StartGame(new StartGameArgs()

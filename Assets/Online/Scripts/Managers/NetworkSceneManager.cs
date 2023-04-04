@@ -9,9 +9,11 @@ using UnityEngine;
 public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, IPlayerLeft
 {
     [SerializeField] protected NetworkRunnerManager runnerManager;
-    protected MyFusion.PlayerSpawner playerSpawner;
-    protected MyFusion.EnemySpawner enemySpawner;
+    protected NetworkPlayerContainer networkPlayerContainer;
+    protected NetworkEnemyContainer networkEnemyContainer;
     protected PhaseManager phaseManager;
+    protected NetworkPlayerSpawner playerSpawner;
+
     
     protected async UniTask Init()
     {
@@ -22,21 +24,25 @@ public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, 
         runnerManager.Runner.AddSimulationBehaviour(this); // Runnerに登録
         Debug.Log($"Runner:{Runner}");
 
-        playerSpawner = FindObjectOfType<MyFusion.PlayerSpawner>();
-        enemySpawner = FindObjectOfType<MyFusion.EnemySpawner>();
+        networkPlayerContainer = FindObjectOfType<NetworkPlayerContainer>();
+        networkEnemyContainer = FindObjectOfType<NetworkEnemyContainer>();
         phaseManager = FindObjectOfType<PhaseManager>();
 
-        Runner.AddSimulationBehaviour(playerSpawner);
-        Runner.AddSimulationBehaviour(enemySpawner);
+        Runner.AddSimulationBehaviour(networkPlayerContainer);
+        Runner.AddSimulationBehaviour(networkEnemyContainer);
         Runner.AddSimulationBehaviour(phaseManager);
         
+        // Domain
+        playerSpawner = new NetworkPlayerSpawner(Runner);
+
     }
 
     public void PlayerJoined(PlayerRef player)
     {
         if (Runner.IsServer)
         {
-            playerSpawner.SpawnPlayer(player);
+            // networkPlayerContainer.SpawnPlayer(player);
+            playerSpawner.SpawnPlayer(player,networkPlayerContainer);
         }
     }
 
@@ -44,7 +50,8 @@ public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, 
     {
         if (Runner.IsServer)
         {
-            playerSpawner.DeSpawnPlayer(player);
+            // networkPlayerContainer.DeSpawnPlayer(player);
+            playerSpawner.DeSpawnPlayer(player,networkPlayerContainer);
         }
     }
 }
