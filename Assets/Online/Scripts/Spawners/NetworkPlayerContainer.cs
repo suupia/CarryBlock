@@ -11,8 +11,8 @@ using UnityEngine.Serialization;
 public class NetworkPlayerContainer
 {
     List<NetworkPlayerController> playerControllers = new();
-    public NetworkPlayerController[] PlayerControllers => playerControllers.ToArray();
-    public bool IsAllReady => PlayerControllers.All(pc => pc.IsReady);
+    public IEnumerable<NetworkPlayerController> PlayerControllers => playerControllers;
+    public bool IsAllReady => playerControllers.All(pc => pc.IsReady);
 
     public void AddPlayer(NetworkPlayerController playerController)
     {

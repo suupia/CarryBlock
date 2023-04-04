@@ -40,7 +40,8 @@ public class LobbyManager : NetworkSceneManager
     public override void FixedUpdateNetwork()
     {
         //後でキャッシュを取るようにして動作改善か、そもそもの仕様を変える
-        var playerUnits = networkPlayerContainer.PlayerControllers.Map(pc => pc.NowUnit).Where(unit => unit != null).ToArray();
+        // var playerUnits = networkPlayerContainer.PlayerControllers.Map(pc => pc.NowUnit).Where(unit => unit != null).ToArray();
+        var playerUnits = networkPlayerContainer.PlayerControllers.Select(playerController => playerController.NowUnit).ToArray(); // TODO: ToArray()を消す　あと、e.SetDirectionの引数も変える
         Array.ForEach(networkEnemyContainer.Enemies, e => e.SetDirection(playerUnits));
     }
     
