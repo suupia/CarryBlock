@@ -44,7 +44,22 @@ public class NetworkRunnerManager : MonoBehaviour
         // すぐにはRunnerをインスタンス化しない
         // セッション名が入力されてからインスタンス化
         // ToDo: TitleSceneの時の初期化処理を書く
-          await Task.Delay(1000); // 1秒待つ
+        // とりあえずは他のシーンと同じ
+
+        runner = FindObjectOfType<NetworkRunner>();
+          if (runner == null)
+          {
+              runner = Instantiate(runnerPrefab);
+              DontDestroyOnLoad(runner);
+        
+              await runner.StartGame(new StartGameArgs()
+              {
+                  GameMode = GameMode.AutoHostOrClient,
+                  SessionName = "TestRoom",
+                  Scene = SceneManager.GetActiveScene().buildIndex,
+                  SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+              });
+          }
     }
 
     async UniTask StartOtherScene()
@@ -63,9 +78,7 @@ public class NetworkRunnerManager : MonoBehaviour
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
         }
-        
 
-        
     }
 
     // async void StartGame(GameMode mode, string roomName)
