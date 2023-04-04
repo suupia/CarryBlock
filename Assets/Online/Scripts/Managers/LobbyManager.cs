@@ -55,7 +55,7 @@ public class LobbyManager : NetworkSceneManager
     {
         if (Runner.IsServer)
         {
-            playerSpawner.DespawnPlayer(player);
+            playerSpawner.DeSpawnPlayer(player);
         }
     }
 }
