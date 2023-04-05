@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 [DisallowMultipleComponent]
 public class LobbyManager : NetworkSceneManager
@@ -12,9 +13,11 @@ public class LobbyManager : NetworkSceneManager
     {
         await base.Init();
 
+        Debug.Log($"IsInitialized:{IsInitialized}");
+        await UniTask.WaitUntil(() => IsInitialized, cancellationToken: token); //このawait意味ない上と同じ、　シーンの読み込みを待つawaitにする（それかRunnerの初期化だけど、これはさずがに大丈夫なはず）
+        
         if (Runner.IsServer)
         {
-            // networkPlayerContainer.RespawnAllPlayer();
             playerSpawner.RespawnAllPlayer(networkPlayerContainer);
         }
 

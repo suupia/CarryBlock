@@ -328,8 +328,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SessionManager, Assembly-CSharp
+      - m_Target: {fileID: 1110987110}
+        m_TargetAssemblyTypeName: TitleManger, OnlineScripts
         m_MethodName: StartGameWithRoomName
         m_Mode: 1
         m_Arguments:

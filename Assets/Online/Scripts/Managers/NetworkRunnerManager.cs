@@ -22,49 +22,12 @@ public class NetworkRunnerManager : MonoBehaviour
     public string RoomName { get; set; }
 
     
-    public async UniTask StartScene()
+    public async UniTask StartScene(string sessionName = "TestRoom")
     {
-        //Init NetworkRunner. Allow player's inputs.
-        
         // シーンを識別
-        var activeScene = SceneManager.GetActiveScene();
-        var sceneName = activeScene.name;
-        if (sceneName == "TitleScene")
-        {
-            await StartTitleScene();
-        }
-        else
-        {
-            await StartOtherScene();
-        }
-
-    }
-
-    async UniTask StartTitleScene()
-    {
-        // すぐにはRunnerをインスタンス化しない
-        // セッション名が入力されてからインスタンス化
-        // ToDo: TitleSceneの時の初期化処理を書く
-        // とりあえずは他のシーンと同じ
-
-        runner = FindObjectOfType<NetworkRunner>();
-          if (runner == null)
-          {
-              runner = Instantiate(fusionContainer);
-              DontDestroyOnLoad(runner);
+        // var activeScene = SceneManager.GetActiveScene();
+        // var sceneName = activeScene.name;
         
-              await runner.StartGame(new StartGameArgs()
-              {
-                  GameMode = GameMode.AutoHostOrClient,
-                  SessionName = "TestRoom",
-                  Scene = SceneManager.GetActiveScene().buildIndex,
-                  SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-              });
-          }
-    }
-
-    async UniTask StartOtherScene()
-    {
         runner = FindObjectOfType<NetworkRunner>();
         if (runner == null)
         {
@@ -74,13 +37,50 @@ public class NetworkRunnerManager : MonoBehaviour
             await runner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.AutoHostOrClient,
-                SessionName = "TestRoom",
+                SessionName = sessionName,
                 Scene = SceneManager.GetActiveScene().buildIndex,
                 SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
             });
         }
 
     }
+
+    // async UniTask StartTitleScene(string sessionName)
+    // {
+    //     runner = FindObjectOfType<NetworkRunner>();
+    //       if (runner == null)
+    //       {
+    //           runner = Instantiate(fusionContainer);
+    //           DontDestroyOnLoad(runner);
+    //     
+    //           await runner.StartGame(new StartGameArgs()
+    //           {
+    //               GameMode = GameMode.AutoHostOrClient,
+    //               SessionName = sessionName,
+    //               Scene = SceneManager.GetActiveScene().buildIndex,
+    //               SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+    //           });
+    //       }
+    // }
+    //
+    // async UniTask StartOtherScene(string sessionName)
+    // {
+    //     runner = FindObjectOfType<NetworkRunner>();
+    //     if (runner == null)
+    //     {
+    //         runner = Instantiate(fusionContainer);
+    //         DontDestroyOnLoad(runner);
+    //     
+    //         await runner.StartGame(new StartGameArgs()
+    //         {
+    //             GameMode = GameMode.AutoHostOrClient,
+    //             SessionName = sessionName,
+    //             Scene = SceneManager.GetActiveScene().buildIndex,
+    //             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+    //         });
+    //     }
+    //
+    // }
 
     // async void StartGame(GameMode mode, string roomName)
     // {
