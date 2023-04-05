@@ -21,7 +21,7 @@ public class LobbyManager : NetworkSceneManager
         if (Runner.IsServer)
         {
             networkEnemyContainer.MaxEnemyCount = 5;
-            enemySpawner.StartSimpleSpawner(0, 5f,networkEnemyContainer);
+            var _ = enemySpawner.StartSimpleSpawner(0, 5f,networkEnemyContainer);
         }
     }
 

@@ -38,7 +38,7 @@ public class NetworkEnemySpawner
         token = cts.Token;
     }
     
-    public async void StartSimpleSpawner(int index, float interval, NetworkEnemyContainer enemyContainer)
+    public async UniTask StartSimpleSpawner(int index, float interval, NetworkEnemyContainer enemyContainer)
     {
         while (true)
         {
