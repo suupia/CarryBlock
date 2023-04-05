@@ -32,6 +32,7 @@ public class LobbyManager : NetworkSceneManager
         {
             if (networkPlayerContainer.IsAllReady)
             {
+                enemySpawner.CancelSpawning();
                 phaseManager.SetPhase(Phase.Starting);
             }
         }

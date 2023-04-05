@@ -37,13 +37,18 @@ public class NetworkEnemySpawner
         this.runner = runner;
         token = cts.Token;
     }
+
+    public void CancelSpawning()
+    {
+        cts.Cancel();
+    }
     
     public async UniTask StartSimpleSpawner(int index, float interval, NetworkEnemyContainer enemyContainer)
     {
         while (true)
         {
             SpawnEnemy(index,enemyContainer);
-            await UniTask.Delay(TimeSpan.FromSeconds(interval));
+            await UniTask.Delay(TimeSpan.FromSeconds(interval),cancellationToken: token);
         }
     }
     void SpawnEnemy(int index, NetworkEnemyContainer enemyContainer)
@@ -56,5 +61,6 @@ public class NetworkEnemySpawner
         enemy.OnDespawn += () => enemyContainer.RemoveEnemy(enemy);
         enemyContainer.AddEnemy(enemy);
     }
+    
 
 }
