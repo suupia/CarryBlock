@@ -10,9 +10,10 @@ public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, 
 {
     [SerializeField] protected NetworkRunnerManager runnerManager;
     protected NetworkPlayerContainer networkPlayerContainer = new();
-    protected NetworkEnemyContainer networkEnemyContainer;
+    protected NetworkEnemyContainer networkEnemyContainer = new();
     protected PhaseManager phaseManager;
     protected NetworkPlayerSpawner playerSpawner;
+    protected NetworkEnemySpawner enemySpawner;
 
     
     protected async UniTask Init()
@@ -24,14 +25,15 @@ public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, 
         runnerManager.Runner.AddSimulationBehaviour(this); // Runnerに登録
         Debug.Log($"Runner:{Runner}");
 
-        networkEnemyContainer = FindObjectOfType<NetworkEnemyContainer>();
+        // networkEnemyContainer = FindObjectOfType<NetworkEnemyContainer>();
         phaseManager = FindObjectOfType<PhaseManager>();
 
-        Runner.AddSimulationBehaviour(networkEnemyContainer);
+        // Runner.AddSimulationBehaviour(networkEnemyContainer);
         Runner.AddSimulationBehaviour(phaseManager);
         
         // Domain
         playerSpawner = new NetworkPlayerSpawner(Runner);
+        enemySpawner = new NetworkEnemySpawner(Runner);
 
     }
 

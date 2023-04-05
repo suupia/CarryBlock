@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-public class NetworkEnemyContainer : SimulationBehaviour
+public class NetworkEnemyContainer
 {
     // [SerializeField] NetworkEnemy[] enemyPrefabs;
 
@@ -20,18 +20,7 @@ public class NetworkEnemyContainer : SimulationBehaviour
 
     public IEnumerable<NetworkEnemy> Enemies2 => enemies;
 
-    void SpawnEnemy(int index)
-    {
-        if (MaxEnemyCount > enemies.Count)
-        {
-            var position = new Vector3(0, 1, 0);
-            var enemyPrefabs = Resources.LoadAll<NetworkEnemy>("Prefabs/Enemys");
-            var no = Runner.Spawn(enemyPrefabs[index], position, Quaternion.identity, PlayerRef.None);
-            var enemy = no.GetComponent<NetworkEnemy>();
-            enemy.OnDespawn += () => enemies.Remove(enemy);
-            enemies.Add(enemy);
-        }
-    }
+
 
     // IEnumerator SimpleSpawner(int index, float interval)
     // {
@@ -48,14 +37,7 @@ public class NetworkEnemyContainer : SimulationBehaviour
     //     StartCoroutine(spawner);
     // }
     
-    public async void StartSimpleSpawner(int index, float interval)
-    {
-        while (true)
-        {
-            SpawnEnemy(index);
-            await UniTask.Delay(TimeSpan.FromSeconds(interval));
-        }
-    }
+
 
     public void AddEnemy(NetworkEnemy enemy)
     {
@@ -79,9 +61,18 @@ public class NetworkEnemySpawner
         this.runner = runner;
         token = cts.Token;
     }
-
+    
+    public async void StartSimpleSpawner(int index, float interval, NetworkEnemyContainer enemyContainer)
+    {
+        while (true)
+        {
+            SpawnEnemy(index,enemyContainer);
+            await UniTask.Delay(TimeSpan.FromSeconds(interval));
+        }
+    }
     void SpawnEnemy(int index, NetworkEnemyContainer enemyContainer)
     {
+        if(enemyContainer.Enemies2.Count() >= enemyContainer.MaxEnemyCount)return;;
         var position = new Vector3(0, 1, 0);
         var enemyPrefabs = Resources.LoadAll<NetworkEnemy>("Prefabs/Enemys");
         var networkObject = runner.Spawn(enemyPrefabs[index], position, Quaternion.identity, PlayerRef.None);
@@ -89,8 +80,5 @@ public class NetworkEnemySpawner
         enemy.OnDespawn += () => enemyContainer.RemoveEnemy(enemy);
         enemyContainer.AddEnemy(enemy);
     }
-    
-
-
 
 }
