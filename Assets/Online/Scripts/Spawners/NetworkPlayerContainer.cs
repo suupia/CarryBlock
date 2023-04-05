@@ -10,7 +10,7 @@ using UnityEngine.Serialization;
 
 public class NetworkPlayerContainer
 {
-    List<NetworkPlayerController> playerControllers = new();
+    readonly List<NetworkPlayerController> playerControllers = new();
     public IEnumerable<NetworkPlayerController> PlayerControllers => playerControllers;
     public bool IsAllReady => playerControllers.All(pc => pc.IsReady);
 
@@ -28,7 +28,7 @@ public class NetworkPlayerContainer
 
 public class NetworkPlayerSpawner
 {
-    NetworkRunner runner;
+    readonly NetworkRunner runner;
     public  NetworkPlayerSpawner(NetworkRunner runner)
     {
         this.runner = runner;
