@@ -42,7 +42,11 @@ public class LobbyManager : NetworkSceneManager
         //後でキャッシュを取るようにして動作改善か、そもそもの仕様を変える
         // var playerUnits = networkPlayerContainer.PlayerControllers.Map(pc => pc.NowUnit).Where(unit => unit != null).ToArray();
         var playerUnits = networkPlayerContainer.PlayerControllers.Select(playerController => playerController.NowUnit).ToArray(); // TODO: ToArray()を消す　あと、e.SetDirectionの引数も変える
-        Array.ForEach(networkEnemyContainer.Enemies, e => e.SetDirection(playerUnits));
+        // Array.ForEach(networkEnemyContainer.Enemies, e => e.SetDirection(playerUnits));
+        foreach (var networkEnemy in networkEnemyContainer.Enemies)
+        {
+            networkEnemy.SetDirection(playerUnits);
+        }
     }
     
 }

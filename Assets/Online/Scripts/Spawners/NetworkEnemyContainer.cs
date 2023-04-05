@@ -11,33 +11,9 @@ using UnityEngine.UIElements;
 
 public class NetworkEnemyContainer
 {
-    // [SerializeField] NetworkEnemy[] enemyPrefabs;
-
     List<NetworkEnemy> enemies = new();
-
-    public NetworkEnemy[] Enemies => enemies.ToArray();
     public int MaxEnemyCount { get; set; } = 128;
-
-    public IEnumerable<NetworkEnemy> Enemies2 => enemies;
-
-
-
-    // IEnumerator SimpleSpawner(int index, float interval)
-    // {
-    //     while (true)
-    //     {
-    //         SpawnEnemy(index);
-    //         yield return new WaitForSeconds(interval);
-    //     }
-    // }
-    //
-    // public void StartSimpleSpawner(int index, float interval)
-    // {
-    //     var spawner = SimpleSpawner(index, interval);
-    //     StartCoroutine(spawner);
-    // }
-    
-
+    public IEnumerable<NetworkEnemy> Enemies => enemies;
 
     public void AddEnemy(NetworkEnemy enemy)
     {
@@ -72,7 +48,7 @@ public class NetworkEnemySpawner
     }
     void SpawnEnemy(int index, NetworkEnemyContainer enemyContainer)
     {
-        if(enemyContainer.Enemies2.Count() >= enemyContainer.MaxEnemyCount)return;;
+        if(enemyContainer.Enemies.Count() >= enemyContainer.MaxEnemyCount)return;;
         var position = new Vector3(0, 1, 0);
         var enemyPrefabs = Resources.LoadAll<NetworkEnemy>("Prefabs/Enemys");
         var networkObject = runner.Spawn(enemyPrefabs[index], position, Quaternion.identity, PlayerRef.None);
