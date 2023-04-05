@@ -1,7 +1,10 @@
+using System;
 using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -30,20 +33,28 @@ public class NetworkEnemyContainer : SimulationBehaviour
         }
     }
 
-    IEnumerator SimpleSpawner(int index, float interval)
+    // IEnumerator SimpleSpawner(int index, float interval)
+    // {
+    //     while (true)
+    //     {
+    //         SpawnEnemy(index);
+    //         yield return new WaitForSeconds(interval);
+    //     }
+    // }
+    //
+    // public void StartSimpleSpawner(int index, float interval)
+    // {
+    //     var spawner = SimpleSpawner(index, interval);
+    //     StartCoroutine(spawner);
+    // }
+    
+    public async void StartSimpleSpawner(int index, float interval)
     {
         while (true)
         {
             SpawnEnemy(index);
-            yield return new WaitForSeconds(interval);
+            await UniTask.Delay(TimeSpan.FromSeconds(interval));
         }
-    }
-
-    public void StartSimpleSpawner(int index, float interval)
-    {
-        var spawner = SimpleSpawner(index, interval);
-        StartCoroutine(spawner);
-        // return spawner;
     }
 
     public void AddEnemy(NetworkEnemy enemy)
@@ -60,10 +71,13 @@ public class NetworkEnemyContainer : SimulationBehaviour
 public class NetworkEnemySpawner
 {
     readonly NetworkRunner runner;
+    readonly CancellationTokenSource cts = new();
+    readonly CancellationToken token;
 
     public NetworkEnemySpawner(NetworkRunner runner)
     {
         this.runner = runner;
+        token = cts.Token;
     }
 
     void SpawnEnemy(int index, NetworkEnemyContainer enemyContainer)
@@ -76,21 +90,7 @@ public class NetworkEnemySpawner
         enemyContainer.AddEnemy(enemy);
     }
     
-    // public IEnumerator StartSimpleSpawner(int index, float interval)
-    // {
-    //     var spawner = SimpleSpawner(index, interval);
-    //     StartCoroutine(spawner);
-    //     return spawner;
-    // }
-    //
-    // IEnumerator SimpleSpawner(int index, float interval)
-    // {
-    //     while (true)
-    //     {
-    //         SpawnEnemy(index);
-    //         yield return new WaitForSeconds(interval);
-    //     }
-    // }
+
 
 
 }
