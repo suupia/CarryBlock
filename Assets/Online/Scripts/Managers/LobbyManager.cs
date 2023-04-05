@@ -7,14 +7,23 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 
 [DisallowMultipleComponent]
-public class LobbyManager : NetworkSceneManager
+public class LobbyManager : NetworkSceneManager,ISceneLoadStart
 {
-    async void Start()
+    // public void  SceneLoadStart()
+    // {
+    //     var _ = AAA();
+    // }
+    async void  Start()
     {
         await base.Init();
 
         Debug.Log($"IsInitialized:{IsInitialized}");
-        await UniTask.WaitUntil(() => IsInitialized, cancellationToken: token); //このawait意味ない上と同じ、　シーンの読み込みを待つawaitにする（それかRunnerの初期化だけど、これはさずがに大丈夫なはず）
+        // await UniTask.WaitUntil(() => IsInitialized, cancellationToken: token); //このawait意味ない上と同じ、　シーンの読み込みを待つawaitにする（それかRunnerの初期化だけど、これはさずがに大丈夫なはず）
+        Debug.Log($"IsReady:{Runner.SceneManager.IsReady(Runner)}");
+        // await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: token); 
+        Debug.Log($"IsReady:{Runner.SceneManager.IsReady(Runner)}");
+
+
         
         if (Runner.IsServer)
         {

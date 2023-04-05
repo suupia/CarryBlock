@@ -53,7 +53,7 @@ public class NetworkPlayerController : NetworkBehaviour
             }
 
             var direction = new Vector3(input.horizontal, 0, input.vertical).normalized;
-            Debug.Log($"Direction:{direction}");
+            // Debug.Log($"Direction:{direction}");
             //Apply input
             Unit.Move(direction);
             Unit.Action(input.buttons, PreButtons);

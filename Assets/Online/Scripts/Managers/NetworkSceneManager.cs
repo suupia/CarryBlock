@@ -6,8 +6,9 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, IPlayerLeft
+public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, IPlayerLeft, ISceneLoadDone, ISceneLoadStart
 {
     [SerializeField] protected NetworkRunnerManager runnerManager;
     protected NetworkPlayerContainer networkPlayerContainer = new();
@@ -25,6 +26,7 @@ public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, 
     
     protected async UniTask Init()
     {
+        Debug.Log($"Start {SceneManager.GetActiveScene().name} Init");
         await runnerManager.StartScene();
 
         Debug.Log($"Runner:{Runner}, runnerManager.Runner:{runnerManager.Runner}");
@@ -44,6 +46,8 @@ public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, 
         this.token = cts.Token;
 
         IsInitialized = true;
+        Debug.Log($"Finish {SceneManager.GetActiveScene().name} Init");
+
     }
 
     public void PlayerJoined(PlayerRef player)
@@ -75,6 +79,17 @@ public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, 
             // IsInitializedがtrueになってからスポーンさせる
             playerSpawner.DeSpawnPlayer(player,networkPlayerContainer);
         }
+    }
+
+    public void SceneLoadStart()
+    {
+        Debug.Log($"SceneLoadStart()");
+    }
+
+    public void SceneLoadDone()
+    {
+        // AddSimulationBehaviour()でRunnerにコールバックが登録されているはずだから呼ばれるはず
+        Debug.Log($"SceneLoadDone()");
     }
 }
 
