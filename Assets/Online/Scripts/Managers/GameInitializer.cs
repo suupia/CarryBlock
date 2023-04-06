@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : NetworkSceneManager
+public class GameInitializer : NetworkSceneInitializer
 {
     async void Start()
     {

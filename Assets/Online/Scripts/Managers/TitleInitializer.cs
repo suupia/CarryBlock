@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TitleManger : NetworkSceneManager
+public class TitleInitializer : NetworkSceneInitializer
 {
     
     //Get roomName from UI component.

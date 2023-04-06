@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
-public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, IPlayerLeft
+public abstract class NetworkSceneInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
 {
     [SerializeField] protected NetworkRunnerManager runnerManager;
     protected NetworkPlayerContainer networkPlayerContainer = new();
@@ -61,7 +61,7 @@ public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, 
     {
         if (Runner.IsServer)
         {
-            playerSpawner.DeSpawnPlayer(player,networkPlayerContainer);
+            playerSpawner.DespawnPlayer(player,networkPlayerContainer);
         }
     }
 

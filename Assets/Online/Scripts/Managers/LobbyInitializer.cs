@@ -7,12 +7,8 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 
 [DisallowMultipleComponent]
-public class LobbyManager : NetworkSceneManager
+public class LobbyInitializer : NetworkSceneInitializer
 {
-    // public void  SceneLoadStart()
-    // {
-    //     var _ = AAA();
-    // }
     async void  Start()
     {
         await base.Init();

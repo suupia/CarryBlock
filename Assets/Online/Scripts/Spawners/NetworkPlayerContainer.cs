@@ -38,7 +38,7 @@ public class NetworkPlayerSpawner
     {
         foreach (var player in runner.ActivePlayers)
         {
-            DeSpawnPlayer(player,playerContainer);
+            DespawnPlayer(player,playerContainer);
             SpawnPlayer(player,playerContainer);
         }
     }
@@ -49,7 +49,6 @@ public class NetworkPlayerSpawner
         var spawnPosition = new Vector3(0, 1, 0);
         var playerControllerPrefab = Resources.Load<NetworkPlayerController>("Prefabs/PlayerController");
         var playerController = runner.Spawn(playerControllerPrefab, spawnPosition, Quaternion.identity, player);
-        // var playerController = playerObject.GetComponent<NetworkPlayerController>();
         Debug.Log($"playerControllerPrefab:{playerControllerPrefab}");
         Debug.Log($"runner:{runner}");
         Debug.Log($"playerController:{playerController}");
@@ -57,7 +56,7 @@ public class NetworkPlayerSpawner
         playerContainer.AddPlayer(playerController);
     }
 
-    public void DeSpawnPlayer(PlayerRef player,NetworkPlayerContainer playerContainer)
+    public void DespawnPlayer(PlayerRef player,NetworkPlayerContainer playerContainer)
     {
         if (runner.TryGetPlayerObject(player, out var networkObject))
         {
