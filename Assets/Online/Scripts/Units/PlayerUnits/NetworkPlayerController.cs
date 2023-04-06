@@ -11,9 +11,9 @@ public class NetworkPlayerController : NetworkBehaviour
 
     [Networked] NetworkButtons PreButtons { get; set; }
     [Networked] public NetworkBool IsReady { get; set; }
-    NetworkPlayerUnit Unit { get; set; }
+    [Networked] public NetworkPlayerUnit Unit { get; set; }
 
-    public NetworkPlayerUnit NowUnit => Object != null ? Unit : null;
+    // public NetworkPlayerUnit NowUnit => Object != null ? Unit : null;
 
     public override void Spawned()
     {
