@@ -49,7 +49,6 @@ public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, 
     {
         if (Runner.IsServer)
         {
-            // IsInitializedがtrueになってからスポーンさせる
             // var _= AsyncSpawnPlayer(player, token);
             playerSpawner.SpawnPlayer(player,networkPlayerContainer);
 
@@ -62,7 +61,6 @@ public abstract class NetworkSceneManager : SimulationBehaviour, IPlayerJoined, 
     {
         if (Runner.IsServer)
         {
-            // IsInitializedがtrueになってからスポーンさせる
             playerSpawner.DeSpawnPlayer(player,networkPlayerContainer);
         }
     }
