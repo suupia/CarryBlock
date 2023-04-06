@@ -40,25 +40,25 @@ public class NetworkPlayerController : NetworkBehaviour
         if (GetInput(out NetworkInputData input))
         {
             //TODO: Check phase
-            if (input.buttons.GetPressed(PreButtons).IsSet(PlayerOperation.Ready))
+            if (input.Buttons.GetPressed(PreButtons).IsSet(PlayerOperation.Ready))
             {
                 IsReady = !IsReady;
                 Debug.Log($"Toggled Ready -> {IsReady}");
             }
 
-            if (input.buttons.GetPressed(PreButtons).IsSet(PlayerOperation.ChangeUnit))
+            if (input.Buttons.GetPressed(PreButtons).IsSet(PlayerOperation.ChangeUnit))
             {
                 //Tmp
                 RPC_ChangeUnit(1);
             }
 
-            var direction = new Vector3(input.horizontal, 0, input.vertical).normalized;
+            var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
             // Debug.Log($"Direction:{direction}");
             //Apply input
             Unit.Move(direction);
-            Unit.Action(input.buttons, PreButtons);
+            Unit.Action(input.Buttons, PreButtons);
 
-            PreButtons = input.buttons;
+            PreButtons = input.Buttons;
         }
     }
 
