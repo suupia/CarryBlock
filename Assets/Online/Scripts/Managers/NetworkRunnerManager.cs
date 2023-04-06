@@ -13,7 +13,7 @@ using UnityEngine.Serialization;
 // その他のシーンならStart()でRunnerをインスタンス
 public class NetworkRunnerManager : MonoBehaviour
 {
-    [SerializeField] NetworkRunner fusionContainer;
+    [SerializeField] GameObject fusionContainer;
     public NetworkRunner Runner => runner;
 
     [CanBeNull] NetworkRunner runner;
@@ -24,14 +24,11 @@ public class NetworkRunnerManager : MonoBehaviour
     
     public async UniTask StartScene(string sessionName = "TestRoom")
     {
-        // シーンを識別
-        // var activeScene = SceneManager.GetActiveScene();
-        // var sceneName = activeScene.name;
-        
         runner = FindObjectOfType<NetworkRunner>();
         if (runner == null)
         {
-            runner = Instantiate(fusionContainer);
+            var fusionContainerObj = Instantiate(fusionContainer);
+            runner = fusionContainerObj.GetComponent<NetworkRunner>();
             DontDestroyOnLoad(runner);
         
             await runner.StartGame(new StartGameArgs()
@@ -39,7 +36,7 @@ public class NetworkRunnerManager : MonoBehaviour
                 GameMode = GameMode.AutoHostOrClient,
                 SessionName = sessionName,
                 Scene = SceneManager.GetActiveScene().buildIndex,
-                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+                SceneManager = fusionContainerObj.AddComponent<NetworkSceneManagerDefault>()
             });
         }
 
