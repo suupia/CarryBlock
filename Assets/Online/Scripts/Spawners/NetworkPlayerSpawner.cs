@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Object = UnityEngine.Object;
 
 
 public class NetworkPlayerSpawner
@@ -36,6 +37,8 @@ public class NetworkPlayerSpawner
         // Debug.Log($"playerController:{playerController}");
         runner.SetPlayerObject(player, playerController.Object);
         playerContainer.AddPlayer(playerController);
+        
+
     }
 
     public void DespawnPlayer(PlayerRef player,NetworkPlayerContainer playerContainer)

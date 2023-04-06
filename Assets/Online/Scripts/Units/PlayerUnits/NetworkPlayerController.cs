@@ -7,13 +7,14 @@ using UnityEngine;
 /// </summary>
 public class NetworkPlayerController : NetworkBehaviour
 {
+    [SerializeField] GameObject cameraPrefab;
+
     [SerializeField] NetworkPlayerUnit[] playerUnitPrefabs;
 
     [Networked] NetworkButtons PreButtons { get; set; }
     [Networked] public NetworkBool IsReady { get; set; }
     [Networked] public NetworkPlayerUnit Unit { get; set; }
-
-    // public NetworkPlayerUnit NowUnit => Object != null ? Unit : null;
+    
 
     public override void Spawned()
     {
@@ -21,6 +22,12 @@ public class NetworkPlayerController : NetworkBehaviour
         if (Object.HasStateAuthority)
         {
             Unit = SpawnPlayerUnit(0);
+            Unit.Object.transform.SetParent(Object.transform);
+            
+                    
+            // spawn camera
+            var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
+           followtarget.SetTarget(Unit.Object.transform);
         }
     }
 
