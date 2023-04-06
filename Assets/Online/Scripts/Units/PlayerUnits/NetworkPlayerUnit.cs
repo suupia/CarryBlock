@@ -11,7 +11,6 @@ public interface IPlayerUnit
 
 public class NetworkPlayerUnit : NetworkBehaviour, IPlayerUnit
 {
-
     public virtual void Action(NetworkButtons buttons, NetworkButtons preButtons)
     {
         throw new System.NotImplementedException();
