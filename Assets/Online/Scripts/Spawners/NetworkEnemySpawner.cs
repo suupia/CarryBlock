@@ -9,23 +9,6 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-public class NetworkEnemyContainer
-{
-    List<NetworkEnemy> enemies = new();
-    public int MaxEnemyCount { get; set; } = 128;
-    public IEnumerable<NetworkEnemy> Enemies => enemies;
-
-    public void AddEnemy(NetworkEnemy enemy)
-    {
-        enemies.Add(enemy);
-    }
-
-    public void RemoveEnemy(NetworkEnemy enemy)
-    {
-        enemies.Remove(enemy);
-    }
-}
-
 public class NetworkEnemySpawner
 {
     readonly NetworkRunner runner;
@@ -63,4 +46,21 @@ public class NetworkEnemySpawner
     }
     
 
+}
+
+public class NetworkEnemyContainer
+{
+    List<NetworkEnemy> enemies = new();
+    public int MaxEnemyCount { get; set; } = 128;
+    public IEnumerable<NetworkEnemy> Enemies => enemies;
+
+    public void AddEnemy(NetworkEnemy enemy)
+    {
+        enemies.Add(enemy);
+    }
+
+    public void RemoveEnemy(NetworkEnemy enemy)
+    {
+        enemies.Remove(enemy);
+    }
 }

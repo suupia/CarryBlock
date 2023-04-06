@@ -8,24 +8,6 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 
-public class NetworkPlayerContainer
-{
-    readonly List<NetworkPlayerController> playerControllers = new();
-    public IEnumerable<NetworkPlayerController> PlayerControllers => playerControllers;
-    public bool IsAllReady => playerControllers.All(pc => pc.IsReady);
-
-    public void AddPlayer(NetworkPlayerController playerController)
-    {
-        playerControllers.Add(playerController);
-    }
-
-    public void RemovePlayer(NetworkPlayerController playerController)
-    {
-        playerControllers.Remove(playerController);
-    }
-    
-}
-
 public class NetworkPlayerSpawner
 {
     readonly NetworkRunner runner;
@@ -49,9 +31,9 @@ public class NetworkPlayerSpawner
         var spawnPosition = new Vector3(0, 1, 0);
         var playerControllerPrefab = Resources.Load<NetworkPlayerController>("Prefabs/PlayerController");
         var playerController = runner.Spawn(playerControllerPrefab, spawnPosition, Quaternion.identity, player);
-        Debug.Log($"playerControllerPrefab:{playerControllerPrefab}");
-        Debug.Log($"runner:{runner}");
-        Debug.Log($"playerController:{playerController}");
+        // Debug.Log($"playerControllerPrefab:{playerControllerPrefab}");
+        // Debug.Log($"runner:{runner}");
+        // Debug.Log($"playerController:{playerController}");
         runner.SetPlayerObject(player, playerController.Object);
         playerContainer.AddPlayer(playerController);
     }
@@ -67,4 +49,22 @@ public class NetworkPlayerSpawner
             runner.SetPlayerObject(player, null);
         }
     }
+}
+
+public class NetworkPlayerContainer
+{
+    readonly List<NetworkPlayerController> playerControllers = new();
+    public IEnumerable<NetworkPlayerController> PlayerControllers => playerControllers;
+    public bool IsAllReady => playerControllers.All(pc => pc.IsReady);
+
+    public void AddPlayer(NetworkPlayerController playerController)
+    {
+        playerControllers.Add(playerController);
+    }
+
+    public void RemovePlayer(NetworkPlayerController playerController)
+    {
+        playerControllers.Remove(playerController);
+    }
+    
 }
