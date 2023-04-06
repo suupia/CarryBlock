@@ -14,18 +14,7 @@ using UnityEngine;
  }
 
 
- public struct NetworkInputData : INetworkInput
- { 
-     [Networked] public float Horizontal { get; set; }
-     [Networked]public float Vertical { get; set; }
-     public NetworkButtons Buttons;
-
-     public NetworkBool IsSpaceDown { get; set; }
-     public NetworkBool IsShiftDown{ get; set; }
-     public NetworkBool IsShiftUp{ get; set; }
- }
-
-public class LocalInputPoller : MonoBehaviour, INetworkRunnerCallbacks
+public class LocalInputPoller : INetworkRunnerCallbacks
 {
     public void OnInput(NetworkRunner runner, Fusion.NetworkInput input)
     {
@@ -104,3 +93,15 @@ public class LocalInputPoller : MonoBehaviour, INetworkRunnerCallbacks
     #endregion
 
 }
+ 
+
+ public struct NetworkInputData : INetworkInput
+ { 
+     [Networked] public float Horizontal { get; set; }
+     [Networked]public float Vertical { get; set; }
+     public NetworkButtons Buttons;
+
+     public NetworkBool IsSpaceDown { get; set; }
+     public NetworkBool IsShiftDown{ get; set; }
+     public NetworkBool IsShiftUp{ get; set; }
+ }

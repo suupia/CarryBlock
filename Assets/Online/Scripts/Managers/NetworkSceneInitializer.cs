@@ -12,6 +12,7 @@ using UnityEngine.Events;
 public abstract class NetworkSceneInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
 {
     [SerializeField] protected NetworkRunnerManager runnerManager;
+    protected LocalInputPoller localInputPoller = new();
     protected NetworkPlayerContainer networkPlayerContainer = new();
     protected NetworkEnemyContainer networkEnemyContainer = new();
     protected PhaseManager phaseManager;
@@ -29,6 +30,7 @@ public abstract class NetworkSceneInitializer : SimulationBehaviour, IPlayerJoin
 
         Debug.Log($"Runner:{Runner}\nrunnerManager.Runner:{runnerManager.Runner}");
         runnerManager.Runner.AddSimulationBehaviour(this); // Runnerに登録
+        runnerManager.Runner.AddCallbacks(localInputPoller);
         Debug.Log($"Runner:{Runner}");
 
         phaseManager = FindObjectOfType<PhaseManager>();
