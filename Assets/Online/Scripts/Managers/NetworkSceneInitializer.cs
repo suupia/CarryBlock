@@ -23,10 +23,9 @@ public abstract class NetworkSceneInitializer : SimulationBehaviour, IPlayerJoin
     protected CancellationToken token;
 
 
-    protected async UniTask Init()
+    protected void Init()
     {
         Debug.Log($"Start {SceneManager.GetActiveScene().name} Init");
-        await runnerManager.StartScene();
 
         Debug.Log($"Runner:{Runner}\nrunnerManager.Runner:{runnerManager.Runner}");
         runnerManager.Runner.AddSimulationBehaviour(this); // Runnerに登録

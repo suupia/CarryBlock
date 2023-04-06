@@ -7,7 +7,8 @@ public class GameInitializer : NetworkSceneInitializer
 {
     async void Start()
     {
-        await base.Init();
+        await runnerManager.StartScene();
+        base.Init();
 
     }
     public void SetActiveLobbyScene()

@@ -10,11 +10,13 @@ public class TitleInitializer : NetworkSceneInitializer
     
     //Get roomName from UI component.
     public string RoomName { get; set; }
+
     
     //Called by UI component
     public async void StartGameWithRoomName()
     {
-        await base.Init();
+        await runnerManager.StartScene(RoomName);
+        base.Init();
         Runner.SetActiveScene(SceneName.LobbyScene);
 
     }
