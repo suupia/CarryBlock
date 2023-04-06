@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,102 +7,51 @@ using Fusion;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Cysharp.Threading.Tasks;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 // 全てのシーンにこれを配置しておけば、NetworkRunnerを使える
-// TitleシーンならSessionNameを受け取ってからRunnerをインスタンス
-// その他のシーンならStart()でRunnerをインスタンス
+// シーン上にNetworkRunnerがないならインスタンス化し、runner.StartGame()を実行
 public class NetworkRunnerManager : MonoBehaviour
 {
-    [SerializeField] NetworkRunner runnerPrefab;
+    [SerializeField] GameObject fusionContainer;
     public NetworkRunner Runner => runner;
 
     [CanBeNull] NetworkRunner runner;
 
-    //Get roomName from UI component.
-    public string RoomName { get; set; }
-
-    
-    public async UniTask StartScene()
+    public async UniTask StartScene(string sessionName = default)
     {
-        //Init NetworkRunner. Allow player's inputs.
-        
-        // シーンを識別
-        var activeScene = SceneManager.GetActiveScene();
-        var sceneName = activeScene.name;
-        if (sceneName == "TitleScene")
-        {
-            await StartTitleScene();
-        }
-        else
-        {
-            await StartOtherScene();
-        }
-
-    }
-
-    async UniTask StartTitleScene()
-    {
-        // すぐにはRunnerをインスタンス化しない
-        // セッション名が入力されてからインスタンス化
-        // ToDo: TitleSceneの時の初期化処理を書く
-        // とりあえずは他のシーンと同じ
-
-        runner = FindObjectOfType<NetworkRunner>();
-          if (runner == null)
-          {
-              runner = Instantiate(runnerPrefab);
-              DontDestroyOnLoad(runner);
-        
-              await runner.StartGame(new StartGameArgs()
-              {
-                  GameMode = GameMode.AutoHostOrClient,
-                  SessionName = "TestRoom",
-                  Scene = SceneManager.GetActiveScene().buildIndex,
-                  SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-              });
-          }
-    }
-
-    async UniTask StartOtherScene()
-    {
+        sessionName ??= RandomString(5);
         runner = FindObjectOfType<NetworkRunner>();
         if (runner == null)
         {
-            runner = Instantiate(runnerPrefab);
+            var fusionContainerObj = Instantiate(fusionContainer);
+            runner = fusionContainerObj.GetComponent<NetworkRunner>();
             DontDestroyOnLoad(runner);
         
             await runner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.AutoHostOrClient,
-                SessionName = "TestRoom",
+                SessionName = sessionName,
                 Scene = SceneManager.GetActiveScene().buildIndex,
-                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+                SceneManager = fusionContainerObj.AddComponent<NetworkSceneManagerDefault>()
             });
         }
+        
 
     }
+    
+    // Create random char
+    string RandomString(int length)
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        var random = new System.Random();
+        var result = new char[length];
+        for (var i = 0; i < length; i++)
+        {
+            result[i] = chars[random.Next(chars.Length)];
+        }
+        return new string(result);
+    }
 
-    // async void StartGame(GameMode mode, string roomName)
-    // {
-    //    // if (roomName.IsNullOrEmpty()) roomName = "TestRoom";
-    //
-    //     //SceneManager は、シーンに直接配置される NetworkObjects のインスタンス化を処理する
-    //     await runner.StartGame(new StartGameArgs()
-    //     {
-    //         GameMode = mode,
-    //         SessionName = roomName,
-    //         Scene = SceneManager.GetActiveScene().buildIndex,
-    //         SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-    //     });
-    //
-    //     // runner.Spawn(phaseManager);
-    //
-    //     runner.SetActiveScene(SceneName.LobbyScene);
-    // }
-    //
-    // //Will be called by UI component
-    // public void StartGameWithRoomName()
-    // {
-    //     StartGame(GameMode.AutoHostOrClient, RoomName);
-    // }
 }

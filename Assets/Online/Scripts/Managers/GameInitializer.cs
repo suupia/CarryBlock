@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : NetworkSceneManager
+public class GameInitializer : NetworkSceneInitializer
 {
     async void Start()
     {
-        await base.Init();
+        await runnerManager.StartScene();
+        base.Init();
 
     }
     public void SetActiveLobbyScene()
@@ -15,7 +16,7 @@ public class GameManager : NetworkSceneManager
         if (Runner.IsServer)
         {
             phaseManager.SetPhase(Phase.Ending);
-            enemySpawner.MaxEnemyCount = 128;
+            networkEnemyContainer.MaxEnemyCount = 128;
         }
     }
 }
