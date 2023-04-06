@@ -34,7 +34,7 @@ public class NetworkRunnerManager : MonoBehaviour
                 GameMode = GameMode.AutoHostOrClient,
                 SessionName = sessionName,
                 Scene = SceneManager.GetActiveScene().buildIndex,
-                SceneManager = fusionContainerObj.AddComponent<NetworkSceneManagerDefault>()
+                SceneManager = fusionContainerObj.GetComponent<NetworkSceneManagerDefault>()
             });
         }
         

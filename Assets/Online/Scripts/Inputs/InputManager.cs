@@ -8,7 +8,7 @@ using UnityEngine;
 public class InputManager : MonoBehaviour, INetworkRunnerCallbacks
 {
     NetworkInputData data = default;
-
+    
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
         data.horizontal = Input.GetAxisRaw("Horizontal");
@@ -16,11 +16,20 @@ public class InputManager : MonoBehaviour, INetworkRunnerCallbacks
         data.buttons.Set(PlayerOperation.MainAction, Input.GetKey(KeyCode.Space));
         data.buttons.Set(PlayerOperation.Ready, Input.GetKey(KeyCode.R));
         data.buttons.Set(PlayerOperation.ChangeUnit, Input.GetKey(KeyCode.C));
-
+    
         input.Set(data);
-
+    
         data = default;
     }
+
+    // public void OnInput(NetworkRunner runner, NetworkInput input)
+    // {
+    //     input.Set(
+    //         new NetworkInputData
+    //         {
+    //             Horizontal = Input
+    //         });
+    // }
 
     #region Ignore
     public void OnConnectedToServer(NetworkRunner runner)

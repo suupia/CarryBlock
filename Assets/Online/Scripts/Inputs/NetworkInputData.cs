@@ -13,4 +13,10 @@ public struct NetworkInputData : INetworkInput
     public float horizontal;
     public float vertical;
     public NetworkButtons buttons;
+
+    public float Horizontal;
+    public float Vertical;
+    public bool IsSpaceDown;
+    public bool IsShiftDown;
+    public bool IsShiftUp;
 }
