@@ -22,32 +22,13 @@ public class NetworkPlayerController : NetworkBehaviour
 
     public override void Spawned()
     {
-        NetworkObject unitObj;
-        //Spawn init player unit
-        if (Object.HasStateAuthority)
-        {
-            // Unit = SpawnPlayerUnit(0);
-            // Unit.Object.transform.SetParent(Object.transform);
-            
-
-            // とりあえずTankとしてスポーンさせる
-            // unitObj = SpawnPlayerUnit(0);
-            // unitObj.transform.SetParent(playerObjectParent.transform);
-
-
-            // Unit = playerObj.transform.gameObject.AddComponent<Tank>();
-            // Debug.Log($"Unit:{Unit}");
-            // Unit = playerObj.GetComponent<Tank>();
-
-        }
-        
         info.Init(playerObjectParent);
         Unit = new Tank(info);
-        
-        // spawn tank
+
+        // Spawn tank.
         var prefab = playerUnitPrefabs[0];
         var position = new Vector3(0, 1, 0);
-        var rotation = Quaternion.identity; 
+        var rotation = Quaternion.identity;
         Instantiate(prefab, position, rotation, playerObjectParent.transform);
 
         if (Object.HasInputAuthority)
@@ -56,8 +37,6 @@ public class NetworkPlayerController : NetworkBehaviour
             var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
             followtarget.SetTarget(playerObjectParent.transform);
             Debug.Log($"target.name = {playerObjectParent.transform.name}");
-            
-
         }
     }
 
@@ -103,28 +82,14 @@ public class NetworkPlayerController : NetworkBehaviour
     [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
     public void RPC_ChangeUnit(int index)
     {
-        if (Unit != null)
-        {
-            Runner.Despawn(playerObjectParent);
-        }
-
-        playerObjectParent = SpawnPlayerUnit(index);
-    }
-
-    // NetworkPlayerUnit SpawnPlayerUnit(int index)
-    // {
-    //     var prefab = playerUnitPrefabs[index];
-    //     var position = new Vector3(0, 1, 0);
-    //     var rotation = Quaternion.identity;
-    //
-    //     return Runner.Spawn(prefab, position, rotation, Runner.LocalPlayer);
-    // }
-    
-    NetworkObject SpawnPlayerUnit(int index)
-    {
-        var prefab = playerUnitPrefabs[0];
-        var position = new Vector3(0, 1, 0);
-        var rotation = Quaternion.identity;
-       return   Runner.Spawn(prefab, position, rotation, Runner.LocalPlayer);
+        
+        // Todo : ChangeUnitの実装
+        
+        // if (Unit != null)
+        // {
+        //     Runner.Despawn(playerObjectParent);
+        // }
+        //
+        // playerObjectParent = SpawnPlayerUnit(index);
     }
 }
