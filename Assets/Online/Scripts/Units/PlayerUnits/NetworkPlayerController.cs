@@ -15,10 +15,10 @@ public class NetworkPlayerController : NetworkBehaviour
 
     [Networked] NetworkButtons PreButtons { get; set; }
     [Networked] public NetworkBool IsReady { get; set; }
-    [Networked] public NetworkPlayerUnit Unit { get; set; }
+    public NetworkPlayerUnit Unit { get; set; }
 
 
-    NetworkObject playerObj;
+    [SerializeField] NetworkObject playerObjectParent; // このオブジェクトの子に3DモデルやCircleDetectorをつける
 
     public override void Spawned()
     {
@@ -30,9 +30,10 @@ public class NetworkPlayerController : NetworkBehaviour
             
 
             // とりあえずTankとしてスポーンさせる
-            playerObj = SpawnPlayerUnit(0);
-            
-            info.Init(playerObj);
+            var networkUnit = SpawnPlayerUnit(0);
+            networkUnit.transform.SetParent(playerObjectParent.transform);
+
+            info.Init(playerObjectParent);
             Unit = new Tank(info); // Todo : new でインスタンス化する
             // Unit = playerObj.transform.gameObject.AddComponent<Tank>();
             // Debug.Log($"Unit:{Unit}");
@@ -45,8 +46,8 @@ public class NetworkPlayerController : NetworkBehaviour
         {
             // spawn camera
             var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
-            followtarget.SetTarget(playerObj.transform);
-            Debug.Log($"target.name = {playerObj.transform.name}");
+            followtarget.SetTarget(playerObjectParent.transform);
+            Debug.Log($"target.name = {playerObjectParent.transform.name}");
         }
     }
 
@@ -54,9 +55,9 @@ public class NetworkPlayerController : NetworkBehaviour
     {
         if (Object.HasStateAuthority)
         {
-            if (Unit != null && playerObj != null)
+            if (Unit != null && playerObjectParent != null)
             {
-                Runner.Despawn(playerObj);
+                Runner.Despawn(playerObjectParent);
             }
         }
     }
@@ -94,10 +95,10 @@ public class NetworkPlayerController : NetworkBehaviour
     {
         if (Unit != null)
         {
-            Runner.Despawn(playerObj);
+            Runner.Despawn(playerObjectParent);
         }
 
-        playerObj = SpawnPlayerUnit(index);
+        playerObjectParent = SpawnPlayerUnit(index);
     }
 
     // NetworkPlayerUnit SpawnPlayerUnit(int index)
@@ -114,6 +115,6 @@ public class NetworkPlayerController : NetworkBehaviour
         var prefab = playerUnitPrefabs[0];
         var position = new Vector3(0, 1, 0);
         var rotation = Quaternion.identity;
-       return  playerObj = Runner.Spawn(prefab, position, rotation, Runner.LocalPlayer);
+       return   Runner.Spawn(prefab, position, rotation, Runner.LocalPlayer);
     }
 }
