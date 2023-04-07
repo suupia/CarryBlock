@@ -38,12 +38,7 @@ public class NetworkPlayerController : NetworkBehaviour
             Debug.Log($"target.name = {playerObjectParent.transform.name}");
         }
     }
-
-    public override void Despawned(NetworkRunner runner, bool hasState)
-    {
-
-    }
-
+    
     public override void FixedUpdateNetwork()
     {
         if (GetInput(out NetworkInputData input))
