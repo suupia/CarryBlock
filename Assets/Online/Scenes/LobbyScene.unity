@@ -916,8 +916,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runnerManager: {fileID: 180896374}
-  testPlayer:
-    RawGuidValue: a302a749f7736b148b56ee79b6af8253
 --- !u!4 &1866537228
 Transform:
   m_ObjectHideFlags: 0

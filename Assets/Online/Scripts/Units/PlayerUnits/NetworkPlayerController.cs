@@ -23,11 +23,14 @@ public class NetworkPlayerController : NetworkBehaviour
         {
             Unit = SpawnPlayerUnit(0);
             Unit.Object.transform.SetParent(Object.transform);
-            
-                    
+
+        }
+
+        if (Unit == Runner.LocalPlayer)
+        {
             // spawn camera
             var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
-           followtarget.SetTarget(Unit.Object.transform);
+            followtarget.SetTarget(Unit.Object.transform);
         }
     }
 
