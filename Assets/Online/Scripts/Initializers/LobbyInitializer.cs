@@ -11,7 +11,7 @@ public class LobbyInitializer : NetworkSceneInitializer
 {
     async void  Start()
     {
-        await runnerManager.StartScene();
+        await runnerManager.StartScene("LobbySceneTestRoom");
         base.Init();
 
         await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: token); 

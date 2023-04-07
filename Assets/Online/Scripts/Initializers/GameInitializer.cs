@@ -7,7 +7,7 @@ public class GameInitializer : NetworkSceneInitializer
 {
     async void Start()
     {
-        await runnerManager.StartScene();
+        await runnerManager.StartScene("GameSceneTestRoom");
         base.Init();
 
     }
