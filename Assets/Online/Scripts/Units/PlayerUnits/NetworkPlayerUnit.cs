@@ -29,13 +29,17 @@ public  class NetworkPlayerInfo
 {
     public readonly NetworkRunner runner;
     
-    [NonSerialized] public NetworkObject playerObjectParent;
+    [NonSerialized] public GameObject playerObjectParent;
+    [NonSerialized] public GameObject unitObject;
     [SerializeField] public NetworkPrefabRef pickerPrefab;
     [SerializeField] public NetworkPrefabRef bulletPrefab;
     [SerializeField] public NetworkCharacterControllerPrototype networkCharacterController;
+    [NonSerialized] public RangeDetector rangeDetector;
 
-    public void Init(NetworkObject playerObj)
+    public void Init(GameObject unitObj)
     {
-        this.playerObjectParent = playerObj;
+        playerObjectParent = unitObj.transform.parent.GetComponent<GameObject>();
+        unitObject = unitObj;
+        rangeDetector = unitObj.GetComponent<RangeDetector>();
     }
 }

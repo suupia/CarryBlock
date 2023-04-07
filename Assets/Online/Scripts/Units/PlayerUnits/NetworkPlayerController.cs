@@ -18,16 +18,17 @@ public class NetworkPlayerController : NetworkBehaviour
     public NetworkPlayerUnit Unit { get; set; }
 
 
-    [SerializeField] NetworkObject playerObjectParent; // このオブジェクトの子に3DモデルやCircleDetectorをつける
+    [SerializeField] GameObject playerObjectParent; // このオブジェクトの子に3DモデルやCircleDetectorをつける
 
     public override void Spawned()
     {
-        info.Init(playerObjectParent);
-        Unit = new Tank(info);
 
         // Spawn tank.
         var prefab = playerUnitPrefabs[0];
-        Instantiate(prefab, playerObjectParent.transform);
+        var unitObj = Instantiate(prefab, playerObjectParent.transform);
+        
+        info.Init(unitObj);
+        Unit = new Tank(info);
 
         if (Object.HasInputAuthority)
         {
@@ -44,7 +45,7 @@ public class NetworkPlayerController : NetworkBehaviour
         {
             if (Unit != null && playerObjectParent != null)
             {
-                Runner.Despawn(playerObjectParent);
+                Runner.Despawn(Object);
             }
         }
     }

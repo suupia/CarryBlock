@@ -21,7 +21,7 @@ public class Tank : NetworkPlayerUnit
         runner = info.runner;
 
         cc = info.networkCharacterController; 
-        rangeDetector = info.playerObjectParent.GetComponent<RangeDetector>();
+        rangeDetector = info.rangeDetector;
     }
 
     public override void Move(Vector3 direction)

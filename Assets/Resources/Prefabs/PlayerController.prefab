@@ -176,9 +176,10 @@ MonoBehaviour:
     bulletPrefab:
       RawGuidValue: 00000000000000000000000000000000
     networkCharacterController: {fileID: 8192604587321445282}
+    rangeDetector: {fileID: 0}
   _IsReady:
     _value: 0
-  playerObjectParent: {fileID: 0}
+  playerObjectParent: {fileID: 3042557124854155579}
 --- !u!114 &6353211947961749652
 MonoBehaviour:
   m_ObjectHideFlags: 0
