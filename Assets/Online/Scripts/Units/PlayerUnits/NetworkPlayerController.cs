@@ -9,7 +9,7 @@ public class NetworkPlayerController : NetworkBehaviour
 {
     [SerializeField] GameObject cameraPrefab;
 
-    [SerializeField] NetworkPrefabRef[] playerUnitPrefabs;
+    [SerializeField] GameObject[] playerUnitPrefabs;
 
     [SerializeField] NetworkPlayerInfo info;
 
@@ -31,8 +31,8 @@ public class NetworkPlayerController : NetworkBehaviour
             
 
             // とりあえずTankとしてスポーンさせる
-            unitObj = SpawnPlayerUnit(0);
-            unitObj.transform.SetParent(playerObjectParent.transform);
+            // unitObj = SpawnPlayerUnit(0);
+            // unitObj.transform.SetParent(playerObjectParent.transform);
 
 
             // Unit = playerObj.transform.gameObject.AddComponent<Tank>();
@@ -50,6 +50,12 @@ public class NetworkPlayerController : NetworkBehaviour
             var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
             followtarget.SetTarget(playerObjectParent.transform);
             Debug.Log($"target.name = {playerObjectParent.transform.name}");
+            
+            // spawn tank
+            var prefab = playerUnitPrefabs[0];
+            var position = new Vector3(0, 1, 0);
+            var rotation = Quaternion.identity; 
+            Instantiate(prefab, position, rotation, playerObjectParent.transform);
         }
     }
 
