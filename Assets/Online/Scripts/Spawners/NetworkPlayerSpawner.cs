@@ -32,9 +32,6 @@ public class NetworkPlayerSpawner
         var spawnPosition = new Vector3(0, 1, 0);
         var playerControllerPrefab = Resources.Load<NetworkPlayerController>("Prefabs/PlayerController");
         var playerController = runner.Spawn(playerControllerPrefab, spawnPosition, Quaternion.identity, player);
-        // Debug.Log($"playerControllerPrefab:{playerControllerPrefab}");
-        // Debug.Log($"runner:{runner}");
-        // Debug.Log($"playerController:{playerController}");
         runner.SetPlayerObject(player, playerController.Object);
         playerContainer.AddPlayer(playerController);
         

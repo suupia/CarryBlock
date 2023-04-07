@@ -22,6 +22,7 @@ public class NetworkPlayerController : NetworkBehaviour
 
     public override void Spawned()
     {
+        NetworkObject unitObj;
         //Spawn init player unit
         if (Object.HasStateAuthority)
         {
@@ -30,18 +31,18 @@ public class NetworkPlayerController : NetworkBehaviour
             
 
             // とりあえずTankとしてスポーンさせる
-            var networkUnit = SpawnPlayerUnit(0);
-            networkUnit.transform.SetParent(playerObjectParent.transform);
+            unitObj = SpawnPlayerUnit(0);
+            unitObj.transform.SetParent(playerObjectParent.transform);
 
 
             // Unit = playerObj.transform.gameObject.AddComponent<Tank>();
             // Debug.Log($"Unit:{Unit}");
             // Unit = playerObj.GetComponent<Tank>();
 
-
         }
+        
         info.Init(playerObjectParent);
-        Unit = new Tank(info); // Todo : new でインスタンス化する
+        Unit = new Tank(info);
 
         if (Object.HasInputAuthority)
         {
