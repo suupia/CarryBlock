@@ -31,6 +31,7 @@ public class NetworkPlayerController : NetworkBehaviour
             // spawn camera
             var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
             followtarget.SetTarget(Unit.Object.transform);
+            Debug.Log($"target.name = {Unit.Object.transform.name}");
         }
     }
 
