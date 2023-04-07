@@ -26,7 +26,7 @@ public class NetworkPlayerController : NetworkBehaviour
 
         }
 
-        if (Unit == Runner.LocalPlayer)
+        if (Object.HasInputAuthority)
         {
             // spawn camera
             var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
