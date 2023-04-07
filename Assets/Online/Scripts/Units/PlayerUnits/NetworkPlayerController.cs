@@ -33,14 +33,15 @@ public class NetworkPlayerController : NetworkBehaviour
             var networkUnit = SpawnPlayerUnit(0);
             networkUnit.transform.SetParent(playerObjectParent.transform);
 
-            info.Init(playerObjectParent);
-            Unit = new Tank(info); // Todo : new でインスタンス化する
+
             // Unit = playerObj.transform.gameObject.AddComponent<Tank>();
             // Debug.Log($"Unit:{Unit}");
             // Unit = playerObj.GetComponent<Tank>();
 
 
         }
+        info.Init(playerObjectParent);
+        Unit = new Tank(info); // Todo : new でインスタンス化する
 
         if (Object.HasInputAuthority)
         {
