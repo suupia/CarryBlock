@@ -226,7 +226,7 @@ MonoBehaviour:
   gravity: -20
   jumpImpulse: 8
   acceleration: 10
-  braking: 10
+  braking: 20
   maxSpeed: 5
   rotationSpeed: 15
   _IsGrounded: 0
