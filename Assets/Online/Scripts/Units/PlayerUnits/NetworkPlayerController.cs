@@ -15,10 +15,10 @@ public class NetworkPlayerController : NetworkBehaviour
 
     [Networked] NetworkButtons PreButtons { get; set; }
     [Networked] public NetworkBool IsReady { get; set; }
+    
+    [SerializeField] GameObject playerObjectParent; // このオブジェクトの子に3DモデルやCircleDetectorをつけるß
     public NetworkPlayerUnit Unit { get; set; }
 
-
-    [SerializeField] GameObject playerObjectParent; // このオブジェクトの子に3DモデルやCircleDetectorをつける
 
     public override void Spawned()
     {
@@ -41,13 +41,7 @@ public class NetworkPlayerController : NetworkBehaviour
 
     public override void Despawned(NetworkRunner runner, bool hasState)
     {
-        if (Object.HasStateAuthority)
-        {
-            if (Unit != null && playerObjectParent != null)
-            {
-                Runner.Despawn(Object);
-            }
-        }
+
     }
 
     public override void FixedUpdateNetwork()
