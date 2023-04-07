@@ -27,9 +27,7 @@ public class NetworkPlayerController : NetworkBehaviour
 
         // Spawn tank.
         var prefab = playerUnitPrefabs[0];
-        var position = new Vector3(0, 1, 0);
-        var rotation = Quaternion.identity;
-        Instantiate(prefab, position, rotation, playerObjectParent.transform);
+        Instantiate(prefab, playerObjectParent.transform);
 
         if (Object.HasInputAuthority)
         {
