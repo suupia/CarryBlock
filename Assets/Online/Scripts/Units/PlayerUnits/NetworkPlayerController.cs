@@ -9,20 +9,35 @@ public class NetworkPlayerController : NetworkBehaviour
 {
     [SerializeField] GameObject cameraPrefab;
 
-    [SerializeField] NetworkPlayerUnit[] playerUnitPrefabs;
+    [SerializeField] NetworkPrefabRef[] playerUnitPrefabs;
+
+    [SerializeField] NetworkPlayerInfo info;
 
     [Networked] NetworkButtons PreButtons { get; set; }
     [Networked] public NetworkBool IsReady { get; set; }
     [Networked] public NetworkPlayerUnit Unit { get; set; }
-    
+
+
+    NetworkObject playerObj;
 
     public override void Spawned()
     {
         //Spawn init player unit
         if (Object.HasStateAuthority)
         {
-            Unit = SpawnPlayerUnit(0);
-            Unit.Object.transform.SetParent(Object.transform);
+            // Unit = SpawnPlayerUnit(0);
+            // Unit.Object.transform.SetParent(Object.transform);
+            
+
+            // とりあえずTankとしてスポーンさせる
+            playerObj = SpawnPlayerUnit(0);
+            
+            info.Init(playerObj);
+            Unit = new Tank(info); // Todo : new でインスタンス化する
+            // Unit = playerObj.transform.gameObject.AddComponent<Tank>();
+            // Debug.Log($"Unit:{Unit}");
+            // Unit = playerObj.GetComponent<Tank>();
+
 
         }
 
@@ -30,8 +45,8 @@ public class NetworkPlayerController : NetworkBehaviour
         {
             // spawn camera
             var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
-            followtarget.SetTarget(Unit.Object.transform);
-            Debug.Log($"target.name = {Unit.Object.transform.name}");
+            followtarget.SetTarget(playerObj.transform);
+            Debug.Log($"target.name = {playerObj.transform.name}");
         }
     }
 
@@ -39,9 +54,9 @@ public class NetworkPlayerController : NetworkBehaviour
     {
         if (Object.HasStateAuthority)
         {
-            if (Unit != null && Unit.Object != null)
+            if (Unit != null && playerObj != null)
             {
-                Runner.Despawn(Unit.Object);
+                Runner.Despawn(playerObj);
             }
         }
     }
@@ -79,18 +94,26 @@ public class NetworkPlayerController : NetworkBehaviour
     {
         if (Unit != null)
         {
-            Runner.Despawn(Unit.Object);
+            Runner.Despawn(playerObj);
         }
 
-        Unit = SpawnPlayerUnit(index);
+        playerObj = SpawnPlayerUnit(index);
     }
 
-    NetworkPlayerUnit SpawnPlayerUnit(int index)
+    // NetworkPlayerUnit SpawnPlayerUnit(int index)
+    // {
+    //     var prefab = playerUnitPrefabs[index];
+    //     var position = new Vector3(0, 1, 0);
+    //     var rotation = Quaternion.identity;
+    //
+    //     return Runner.Spawn(prefab, position, rotation, Runner.LocalPlayer);
+    // }
+    
+    NetworkObject SpawnPlayerUnit(int index)
     {
-        var prefab = playerUnitPrefabs[index];
+        var prefab = playerUnitPrefabs[0];
         var position = new Vector3(0, 1, 0);
         var rotation = Quaternion.identity;
-
-        return Runner.Spawn(prefab, position, rotation, Runner.LocalPlayer);
+       return  playerObj = Runner.Spawn(prefab, position, rotation, Runner.LocalPlayer);
     }
 }

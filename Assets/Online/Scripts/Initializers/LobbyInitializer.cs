@@ -51,7 +51,7 @@ public class LobbyInitializer : NetworkSceneInitializer
         // Array.ForEach(networkEnemyContainer.Enemies, e => e.SetDirection(playerUnits));
         foreach (var networkEnemy in networkEnemyContainer.Enemies)
         {
-            networkEnemy.SetDirection(playerUnits);
+           // networkEnemy.SetDirection(playerUnits);
         }
     }
     
