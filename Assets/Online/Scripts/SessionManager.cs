@@ -18,7 +18,7 @@ public static class SceneName
 public class SessionManager : MonoBehaviour
 {
     [SerializeField] GameObject phaseManager;
-    NetworkRunner runner;
+    NetworkRunner _runner;
 
     //Get roomName from UI component.
     public string RoomName { get; set; }
@@ -27,8 +27,8 @@ public class SessionManager : MonoBehaviour
     private void Start()
     {
         //Init NetworkRunner. Allow player's inputs.
-        runner = gameObject.AddComponent<NetworkRunner>();
-        runner.ProvideInput = true;
+        _runner = gameObject.AddComponent<NetworkRunner>();
+        _runner.ProvideInput = true;
     }
 
     async void StartGame(GameMode mode, string roomName)
@@ -36,7 +36,7 @@ public class SessionManager : MonoBehaviour
         if (string.IsNullOrEmpty(roomName)) roomName = "TestRoom";
 
         //SceneManager は、シーンに直接配置される NetworkObjects のインスタンス化を処理する
-        await runner.StartGame(new StartGameArgs()
+        await _runner.StartGame(new StartGameArgs()
         {
             GameMode = mode,
             SessionName = roomName,
@@ -44,9 +44,9 @@ public class SessionManager : MonoBehaviour
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
 
-        runner.Spawn(phaseManager);
+        _runner.Spawn(phaseManager);
 
-        runner.SetActiveScene(SceneName.LobbyScene);
+        _runner.SetActiveScene(SceneName.LobbyScene);
     }
 
     //Will be called by UI component

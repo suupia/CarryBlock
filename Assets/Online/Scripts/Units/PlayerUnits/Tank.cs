@@ -7,26 +7,26 @@ using UnityEngine.Windows;
 
 public class Tank : NetworkPlayerUnit
 {
-    NetworkRunner runner;
+    readonly NetworkRunner　_runner;
     [Networked] TickTimer ReloadTimer { get; set; }
     [Networked] NetworkObject Target { get; set; }
 
-    NetworkCharacterControllerPrototype cc;
-    RangeDetector rangeDetector;
+    NetworkCharacterControllerPrototype _cc;
+    RangeDetector _rangeDetector;
     
     
     public Tank(NetworkPlayerInfo info) : base(info)
     {
         this.info = info;
-        runner = info.runner;
+        _runner = info.runner;
 
-        cc = info.networkCharacterController; 
-        rangeDetector = info.rangeDetector;
+        _cc = info.networkCharacterController; 
+        _rangeDetector = info.rangeDetector;
     }
 
     public override void Move(Vector3 direction)
     {
-        cc.Move(direction);
+        _cc.Move(direction);
     }
 
     public override void Action(NetworkButtons buttons, NetworkButtons preButtons)
@@ -35,13 +35,13 @@ public class Tank : NetworkPlayerUnit
         // todo : 後で下の処理を書く 一旦リターン
         return;
         
-        if (ReloadTimer.ExpiredOrNotRunning(runner))
+        if (ReloadTimer.ExpiredOrNotRunning(_runner))
         {
             //Auto Aim
             //一旦タグで識別、外部のスクリプトでトリガー管理。依存関係を減らしたいならPhysics系を使っても良さそう
             //その場合はLayer分けもしっかりしていきたい
             //いずれこの処理は書き換えるべき
-            var enemies =  rangeDetector.GameObjects.Where(o => o != null && o.CompareTag("Enemy")).ToArray();
+            var enemies =  _rangeDetector.GameObjects.Where(o => o != null && o.CompareTag("Enemy")).ToArray();
             if (enemies.Length > 0)
             {
                 Target = enemies.First().GetComponent<NetworkObject>();
@@ -49,14 +49,14 @@ public class Tank : NetworkPlayerUnit
                 //一時的に弾の発射位置のためにオフセットを適用
                 //将来的には、戦車を上部と下部で別にして、上部が発射位置を管理するようにしようかな
                 var offset = new Vector3(0, 1.2f, 0);
-                runner.Spawn(info.bulletPrefab, info.playerObjectParent.transform.position + offset, info.playerObjectParent.transform.rotation, PlayerRef.None, OnBeforeSpawnBullet);
-                ReloadTimer = TickTimer.CreateFromSeconds(runner, 2f);
+                _runner.Spawn(info.bulletPrefab, info.playerObjectParent.transform.position + offset, info.playerObjectParent.transform.rotation, PlayerRef.None, OnBeforeSpawnBullet);
+                ReloadTimer = TickTimer.CreateFromSeconds(_runner, 2f);
             }
         }
 
         if (buttons.GetPressed(preButtons).IsSet(PlayerOperation.MainAction))
         {
-            runner.Spawn(info.pickerPrefab, info.playerObjectParent.transform.position,  info.playerObjectParent.transform.rotation, PlayerRef.None);
+            _runner.Spawn(info.pickerPrefab, info.playerObjectParent.transform.position,  info.playerObjectParent.transform.rotation, PlayerRef.None);
         }
     }
     

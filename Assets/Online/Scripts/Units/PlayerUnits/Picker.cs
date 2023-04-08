@@ -7,17 +7,17 @@ public class Picker : NetworkBehaviour
 {
     [Networked] TickTimer Life { get; set; }
 
-    Rigidbody rb;
+    Rigidbody _rb;
 
     public override void Spawned()
     {
-        rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
 
         if (Object.HasStateAuthority)
         {
             //Tmp life time
             Life = TickTimer.CreateFromSeconds(Runner, 5.0f);
-            rb.AddForce(Vector3.up * 1000f);
+            _rb.AddForce(Vector3.up * 1000f);
 
         }
     }

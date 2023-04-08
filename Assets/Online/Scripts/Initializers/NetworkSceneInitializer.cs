@@ -20,7 +20,7 @@ public abstract class NetworkSceneInitializer : SimulationBehaviour, IPlayerJoin
     protected NetworkEnemySpawner enemySpawner;
     
     // UniTask
-    CancellationTokenSource cts = new();
+    CancellationTokenSource _cts = new();
     protected CancellationToken token;
 
 
@@ -41,7 +41,7 @@ public abstract class NetworkSceneInitializer : SimulationBehaviour, IPlayerJoin
         playerSpawner = new NetworkPlayerSpawner(Runner);
         enemySpawner = new NetworkEnemySpawner(Runner);
 
-        this.token = cts.Token;
+        this.token = _cts.Token;
         
         Debug.Log($"Finish {SceneManager.GetActiveScene().name} Init");
     }

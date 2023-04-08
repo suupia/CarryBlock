@@ -7,18 +7,18 @@ using UnityEngine;
 
 public class CameraFollowTarget : MonoBehaviour
 {
-    Transform target;
-    Vector3 offset;
+    Transform _target;
+    Vector3 _offset;
 
     public void SetTarget(Transform target)
     {
-        this.target = target;
-        offset = transform.position - target.position;
+        this._target = target;
+        _offset = transform.position - target.position;
     }
 
     void LateUpdate()
     {
         // Position the camera at the target location plus the offset.
-        transform.position = target.position + offset;
+        transform.position = _target.position + _offset;
     }
 }

@@ -2,8 +2,9 @@ using Fusion;
 using UnityEngine;
 
 /// <summary>
-/// Manage input, now playing unit, or something...
-/// This Controller class manages "NetworkPlayerUnit"
+/// The only NetworkBehaviour to control the character.
+/// Note: Objects to which this class is attached do not move themselves.
+/// Attachment on the inspector is done to the Info class.
 /// </summary>
 public class NetworkPlayerController : NetworkBehaviour
 {
