@@ -28,7 +28,8 @@ public class NetworkPlayerController : NetworkBehaviour
         var prefab = playerUnitPrefabs[0];
         var unitObj = Instantiate(prefab, playerObjectParent.transform);
         
-        info.Init(unitObj);
+ 
+        info.Init(Runner,unitObj);
         Unit = new Tank(info);
 
         if (Object.HasInputAuthority)
@@ -61,6 +62,8 @@ public class NetworkPlayerController : NetworkBehaviour
             // Debug.Log($"Direction:{direction}");
             //Apply input
             Unit.Move(direction);
+            Debug.Log($"input.Buttons = {input.Buttons}");
+            Debug.Log($"PreButtons = {PreButtons}");
             Unit.Action(input.Buttons, PreButtons);
 
             PreButtons = input.Buttons;

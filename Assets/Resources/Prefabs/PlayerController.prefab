@@ -172,11 +172,10 @@ MonoBehaviour:
   - {fileID: 129457298326952244, guid: a302a749f7736b148b56ee79b6af8253, type: 3}
   info:
     pickerPrefab:
-      RawGuidValue: 00000000000000000000000000000000
+      RawGuidValue: 6e8806391f8963a4daf9ddc261c5cd34
     bulletPrefab:
-      RawGuidValue: 00000000000000000000000000000000
+      RawGuidValue: 937c049da4cf2394995462738a7fcdf4
     networkCharacterController: {fileID: 8192604587321445282}
-    rangeDetector: {fileID: 0}
   _IsReady:
     _value: 0
   playerObjectParent: {fileID: 3042557124854155579}

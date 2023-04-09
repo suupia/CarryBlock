@@ -27,19 +27,21 @@ public abstract class NetworkPlayerUnit : IPlayerUnit
 [Serializable]
 public  class NetworkPlayerInfo
 {
-    public readonly NetworkRunner runner;
+    public NetworkRunner runner;
     
-    [NonSerialized] public GameObject playerObjectParent;
-    [NonSerialized] public GameObject unitObject;
+    [NonSerialized] public Transform playerObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
+    [NonSerialized] public GameObject unitObject; // This has 3D models, a RangeDetector, and more as children.
     [SerializeField] public NetworkPrefabRef pickerPrefab;
     [SerializeField] public NetworkPrefabRef bulletPrefab;
     [SerializeField] public NetworkCharacterControllerPrototype networkCharacterController;
     [NonSerialized] public RangeDetector rangeDetector;
 
-    public void Init(GameObject unitObj)
+    public void Init( NetworkRunner runner, GameObject unitObj)
     {
-        playerObjectParent = unitObj.transform.parent.GetComponent<GameObject>();
+        this.runner = runner;
+        playerObjectParent = unitObj.transform.parent;
+        Debug.Log($"playerObjectParent = {playerObjectParent}");
         unitObject = unitObj;
-        rangeDetector = unitObj.GetComponent<RangeDetector>();
+        rangeDetector = unitObj.GetComponentInChildren<RangeDetector>();
     }
 }
