@@ -208,10 +208,10 @@ MonoBehaviour:
     pickerParent: {fileID: 8009984501082791594}
     bulletParent: {fileID: 9016118332393888793}
     networkCharacterController: {fileID: 8192604587321445282}
-    pickerPrefab:
-      RawGuidValue: 6e8806391f8963a4daf9ddc261c5cd34
-    bulletPrefab:
-      RawGuidValue: 937c049da4cf2394995462738a7fcdf4
+    pickerPrefab: {fileID: 5800365988411164172, guid: 6e8806391f8963a4daf9ddc261c5cd34, type: 3}
+    pickerPoolingCount: 10
+    bulletPrefab: {fileID: 2133204241246472721, guid: 937c049da4cf2394995462738a7fcdf4, type: 3}
+    bulletPoolingCount: 10
   _IsReady:
     _value: 0
 --- !u!114 &6353211947961749652

@@ -33,8 +33,10 @@ public  class NetworkPlayerInfo
     [SerializeField] public Transform pickerParent;
     [SerializeField] public Transform bulletParent;
     [SerializeField] public NetworkCharacterControllerPrototype networkCharacterController;
-    [SerializeField] public NetworkPrefabRef pickerPrefab;
-    [SerializeField] public NetworkPrefabRef bulletPrefab;
+    [SerializeField] public GameObject pickerPrefab;
+    [SerializeField] public int pickerPoolingCount = 10;
+    [SerializeField] public GameObject bulletPrefab;
+    [SerializeField] public int bulletPoolingCount = 10;
     [NonSerialized] public GameObject unitObject; // This has 3D models, a RangeDetector, and more as children.
     [NonSerialized] public RangeDetector rangeDetector;
 

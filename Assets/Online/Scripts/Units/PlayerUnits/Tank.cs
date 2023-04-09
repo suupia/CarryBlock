@@ -32,8 +32,7 @@ public class Tank : NetworkPlayerUnit
     public override void Action(NetworkButtons buttons, NetworkButtons preButtons)
     {
         Debug.Log($"Actionを行います！");
-        // todo : 後で下の処理を書く 一旦リターン
-        
+
         if (ReloadTimer.ExpiredOrNotRunning(_runner))
         {
             //Auto Aim
@@ -58,7 +57,7 @@ public class Tank : NetworkPlayerUnit
 
         if (buttons.GetPressed(preButtons).IsSet(PlayerOperation.MainAction))
         {
-            _runner.Spawn(info.pickerPrefab, info.unitObject.transform.position,  info.unitObject.transform.rotation, PlayerRef.None);
+            var pickerObj = _runner.Spawn(info.pickerPrefab, info.unitObject.transform.position,  info.unitObject.transform.rotation, PlayerRef.None);
         }
     }
     
