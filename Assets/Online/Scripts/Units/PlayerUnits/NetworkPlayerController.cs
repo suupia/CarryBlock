@@ -17,7 +17,6 @@ public class NetworkPlayerController : NetworkBehaviour
     [Networked] NetworkButtons PreButtons { get; set; }
     [Networked] public NetworkBool IsReady { get; set; }
     
-    [SerializeField] GameObject playerObjectParent; // このオブジェクトの子に3DモデルやCircleDetectorをつけるß
     public NetworkPlayerUnit Unit { get; set; }
 
 
@@ -26,7 +25,7 @@ public class NetworkPlayerController : NetworkBehaviour
 
         // Spawn tank.
         var prefab = playerUnitPrefabs[0];
-        var unitObj = Instantiate(prefab, playerObjectParent.transform);
+        var unitObj = Instantiate(prefab, info.playerObjectParent);
         
  
         info.Init(Runner,unitObj);
@@ -36,8 +35,8 @@ public class NetworkPlayerController : NetworkBehaviour
         {
             // spawn camera
             var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
-            followtarget.SetTarget(playerObjectParent.transform);
-            Debug.Log($"target.name = {playerObjectParent.transform.name}");
+            followtarget.SetTarget(info.playerObjectParent);
+            Debug.Log($"target.name = {info.playerObjectParent}");
         }
     }
     
