@@ -30,6 +30,7 @@ public class Tank : NetworkPlayerUnit
         
         _bulletPool = new GameObjectPool(info.bulletParent,info.bulletPrefab, info.bulletPoolingCount);
         _pickerPool = new GameObjectPool(info.pickerParent,info.pickerPrefab, info.pickerPoolingCount);
+        Debug.Log($"_pickerPool = {_pickerPool}, pickerPoolingCount = {info.pickerPoolingCount}");
     }
 
     public override void Move(Vector3 direction)

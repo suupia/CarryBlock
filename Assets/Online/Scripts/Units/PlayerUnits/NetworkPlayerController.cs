@@ -26,21 +26,6 @@ public class NetworkPlayerController : NetworkBehaviour
         // Instantiate the tank.
         var prefab = playerUnitPrefabs[0];
         var unitObj = Instantiate(prefab, info.unitObjectParent);
-        
-        // Instantiate the picker as pooling objects.
-        for (int i = 0; i < info.pickerPoolingCount; i++)
-        {
-            var picker = Instantiate(info.pickerPrefab, info.pickerParent);
-            picker.SetActive(false);
-        }
-        
-        // Instantiate the bullet as pooling objects.
-        for (int i = 0; i < info.bulletPoolingCount; i++)
-        {
-            var bullet = Instantiate(info.bulletPrefab, info.bulletParent);
-            bullet.SetActive(false);
-        }
-        
  
         info.Init(Runner,unitObj);
         Unit = new Tank(info);

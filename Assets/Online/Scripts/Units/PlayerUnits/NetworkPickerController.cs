@@ -309,6 +309,7 @@ public class PickerSearchState : PickerAbstractState
         {
             // move in the direction the player is facing
             var moveVector = info.playerObj.transform.forward;
+            Debug.Log($"moveVector = {moveVector}");
             mover.MoveForwardNormal(moveVector);
 
             // try to take available resource

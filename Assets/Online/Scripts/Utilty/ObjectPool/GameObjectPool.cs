@@ -81,6 +81,8 @@ public class GameObjectPool
     void SetActiveFalseFirst(GameObject obj)
     {
         obj.SetActive(false);
+        var rd = obj.GetComponent<Rigidbody>();
+        if(rd != null) rd.velocity = Vector3.zero;
         _activeObjects.RemoveAt(0);
     }
     
