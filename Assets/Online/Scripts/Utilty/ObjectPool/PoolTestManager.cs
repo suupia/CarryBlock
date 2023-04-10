@@ -14,7 +14,7 @@ public class PoolTestManager : MonoBehaviour
 
     void Start()
     {
-        pool = new GameObjectPool(parent, 20, "Picker");
+        pool = new GameObjectPool(parent, new GameObject("TestObject"),10);
     }
 
     void Update()
@@ -27,7 +27,7 @@ public class PoolTestManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            var find = GameObject.Find("Picker");
+            var find = GameObject.Find("TestObject(Clone)");
             pool.Release(find.gameObject);
         }
         if (Input.GetKeyDown(KeyCode.B))

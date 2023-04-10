@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using Object = System.Object;
 
 # nullable enable
 public class GameObjectPool
@@ -15,7 +16,7 @@ public class GameObjectPool
 
     public int CountInactive => _pool.Count(obj => !obj.activeSelf);
 
-    public GameObjectPool(Transform parent, int poolSize = 20, string name = "Pool")
+    public GameObjectPool(Transform parent,GameObject prefab, int poolSize = 20)
     {
         if (poolSize <= 0)
         {
@@ -24,8 +25,7 @@ public class GameObjectPool
         _pool = new GameObject[poolSize];
         for (int i = 0; i< poolSize; i++)
         {
-            var obj = new GameObject(name);
-            obj.transform.SetParent(parent);
+            var obj = UnityEngine.Object.Instantiate(prefab, parent);
             obj.SetActive(false);
             _pool[i] = obj;
         }

@@ -13,7 +13,9 @@ public class Tank : NetworkPlayerUnit
 
     NetworkCharacterControllerPrototype _cc;
     RangeDetector _rangeDetector;
-    
+
+    GameObjectPool _bulletPool;
+    GameObjectPool _pickerPool;
     
     public Tank(NetworkPlayerInfo info) : base(info)
     {
@@ -22,6 +24,9 @@ public class Tank : NetworkPlayerUnit
 
         _cc = info.networkCharacterController; 
         _rangeDetector = info.rangeDetector;
+        
+        _bulletPool = new GameObjectPool(info.bulletParent,info.bulletPrefab, info.bulletPoolingCount);
+        _pickerPool = new GameObjectPool(info.pickerParent,info.pickerPrefab, info.pickerPoolingCount);
     }
 
     public override void Move(Vector3 direction)
@@ -57,7 +62,8 @@ public class Tank : NetworkPlayerUnit
 
         if (buttons.GetPressed(preButtons).IsSet(PlayerOperation.MainAction))
         {
-            var pickerObj = _runner.Spawn(info.pickerPrefab, info.unitObject.transform.position,  info.unitObject.transform.rotation, PlayerRef.None);
+            // var pickerObj = _runner.Spawn(info.pickerPrefab, info.unitObject.transform.position,  info.unitObject.transform.rotation, PlayerRef.None);
+            var pickerObj = _pickerPool.Get();
         }
     }
     
