@@ -15,8 +15,8 @@ public class Tank : NetworkPlayerUnit
     NetworkCharacterControllerPrototype _cc;
     RangeDetector _rangeDetector;
 
-    GameObjectPool _bulletPool;
-    GameObjectPool _pickerPool;
+    MyNetworkObjectPool _bulletPool;
+    MyNetworkObjectPool _pickerPool;
 
     float _pickerHeight = 5.0f;
     
@@ -28,8 +28,8 @@ public class Tank : NetworkPlayerUnit
         _cc = info.networkCharacterController; 
         _rangeDetector = info.rangeDetector;
         
-        _bulletPool = new GameObjectPool(info.bulletParent,info.bulletPrefab, info.bulletPoolingCount);
-        _pickerPool = new GameObjectPool(info.pickerParent,info.pickerPrefab, info.pickerPoolingCount);
+        _bulletPool = new MyNetworkObjectPool(info.bulletParent);
+        _pickerPool = new MyNetworkObjectPool(info.pickerParent);
     }
 
     public override void Move(Vector3 direction)

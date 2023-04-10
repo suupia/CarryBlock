@@ -21,7 +21,7 @@ namespace Network
         GameObject mainBaseObj;
 
 
-        public void Init(GameObject playerObj, PlayerInfoForPicker info, GameObjectPool pool)
+        public void Init(GameObject playerObj, PlayerInfoForPicker info, MyNetworkObjectPool pool)
         {
             this.playerInfoWrapper = info;
             Debug.Log($"infoWrapper.RangeRadius:{info.RangeRadius}");
@@ -84,7 +84,7 @@ public class PickerInfo
     public IPickerState CompleteState => new PickerCompleteState(this);
 
     // components
-    public GameObjectPool pool { get; private set; }
+    public MyNetworkObjectPool pool { get; private set; }
     public GameObject pickerObj { get; private set; }
     public Rigidbody pickerRd { get; private set; }
     public GameObject playerObj { get; private set; }
@@ -96,7 +96,7 @@ public class PickerInfo
     // injected fields
     public float detectionRange { get; private set; }
 
-    public PickerInfo(GameObject pickerObj, PlayerInfoForPicker info,GameObjectPool pool)
+    public PickerInfo(GameObject pickerObj, PlayerInfoForPicker info,MyNetworkObjectPool pool)
     {
         this.pickerObj = pickerObj;
         Debug.Log($"pickerObj = {pickerObj}");
@@ -309,7 +309,6 @@ public class PickerSearchState : PickerAbstractState
         {
             // move in the direction the player is facing
             var moveVector = info.playerObj.transform.forward;
-            Debug.Log($"moveVector = {moveVector}");
             mover.MoveForwardNormal(moveVector);
 
             // try to take available resource
