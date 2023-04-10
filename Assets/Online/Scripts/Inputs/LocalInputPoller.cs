@@ -1,26 +1,34 @@
-using Fusion;
+ using Fusion;
 using Fusion.Sockets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+ 
+ 
+ public enum PlayerOperation
+ {
+     MainAction = 0,
+     Ready,
+     ChangeUnit,
+ }
 
-public class InputManager : MonoBehaviour, INetworkRunnerCallbacks
+
+public class LocalInputPoller : INetworkRunnerCallbacks
 {
-    NetworkInputData data = default;
-
-    public void OnInput(NetworkRunner runner, NetworkInput input)
+    public void OnInput(NetworkRunner runner, Fusion.NetworkInput input)
     {
-        data.horizontal = Input.GetAxisRaw("Horizontal");
-        data.vertical = Input.GetAxisRaw("Vertical");
-        data.buttons.Set(PlayerOperation.MainAction, Input.GetKey(KeyCode.Space));
-        data.buttons.Set(PlayerOperation.Ready, Input.GetKey(KeyCode.R));
-        data.buttons.Set(PlayerOperation.ChangeUnit, Input.GetKey(KeyCode.C));
+        var localInput = new NetworkInputData();
+        localInput.Horizontal = Input.GetAxisRaw("Horizontal");
+        localInput.Vertical = Input.GetAxisRaw("Vertical");
+        localInput.Buttons.Set(PlayerOperation.MainAction, Input.GetKey(KeyCode.Space));
+        localInput.Buttons.Set(PlayerOperation.Ready, Input.GetKey(KeyCode.R));
+        localInput.Buttons.Set(PlayerOperation.ChangeUnit, Input.GetKey(KeyCode.C));
+        
+        input.Set(localInput);
 
-        input.Set(data);
-
-        data = default;
     }
+
 
     #region Ignore
     public void OnConnectedToServer(NetworkRunner runner)
@@ -47,7 +55,7 @@ public class InputManager : MonoBehaviour, INetworkRunnerCallbacks
     {
     }
 
-    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
+    public void OnInputMissing(NetworkRunner runner, PlayerRef player, Fusion.NetworkInput input)
     {
     }
 
@@ -85,3 +93,15 @@ public class InputManager : MonoBehaviour, INetworkRunnerCallbacks
     #endregion
 
 }
+ 
+
+ public struct NetworkInputData : INetworkInput
+ { 
+     [Networked] public float Horizontal { get; set; }
+     [Networked]public float Vertical { get; set; }
+     public NetworkButtons Buttons;
+
+     public NetworkBool IsSpaceDown { get; set; }
+     public NetworkBool IsShiftDown{ get; set; }
+     public NetworkBool IsShiftUp{ get; set; }
+ }

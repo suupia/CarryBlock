@@ -7,6 +7,15 @@ using Object = UnityEngine.Object;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 
+public class PlayerControllerInputs
+{
+    public float Horizontal { get; set; }
+    public float Vertical { get; set; }
+    public bool IsSpaceDown { get; set; }
+    public bool IsShiftDown { get; set; }
+    public bool IsShiftUp { get; set; }
+}
+
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] GameObject cameraPrefab;
@@ -18,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] PlayerInfo info;
 
+    PlayerControllerInputs inputs = new();
     PlayerUnit playerUnit;
     PlayerShooter shooter;
     ReturnGauge returnGauge;
@@ -26,7 +36,8 @@ public class PlayerController : MonoBehaviour
 
     public enum UnitType
     {
-        Tank, Plane,
+        Tank,
+        Plane,
     }
 
     public void Initialize(UnitType injectedType)
@@ -39,50 +50,55 @@ public class PlayerController : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
         };
 
-        var playerObj = Instantiate(unitPrefabs[(int)unitType],gameObject.transform);
-        var playerCamera  = Instantiate(cameraPrefab, playerObj.transform);
+        var playerObj = Instantiate(unitPrefabs[(int)unitType], gameObject.transform);
+        var playerCamera = Instantiate(cameraPrefab, playerObj.transform);
         var rangeCircleObj = Instantiate(rangeCirclePrefab, playerObj.transform);
 
         info.Init(playerObj);
 
         shooter = new PlayerShooter(info);
-        
-        returnGauge = new ReturnGauge(playerUnit.ReturnToMainBase,2.0f);
+
+        returnGauge = new ReturnGauge(playerUnit.ReturnToMainBase, 2.0f);
 
 
         isInitialized = true;
-
     }
 
     void Update()
     {
-        if(!isInitialized)return;
-
-        BattlingUnit();
+        if (!isInitialized) return;
         
+        inputs.Horizontal = Input.GetAxisRaw("Horizontal");
+        inputs.Vertical = Input.GetAxisRaw("Vertical");
+        inputs.IsSpaceDown = Input.GetKeyDown(KeyCode.Space);
+        inputs.IsShiftDown = Input.GetKeyDown(KeyCode.LeftShift);
+        inputs.IsShiftUp = Input.GetKeyUp(KeyCode.LeftShift);
+
+        BattlingUnit(inputs);
     }
-    
-    void BattlingUnit()
+
+    void BattlingUnit(PlayerControllerInputs inputs)
     {
-        var horizontalInput = Input.GetAxisRaw("Horizontal");
-        var verticalInput = Input.GetAxisRaw("Vertical");
+        var horizontalInput = inputs.Horizontal;
+        var verticalInput = inputs.Vertical;
         var direction = Vector3.Normalize(new Vector3(horizontalInput, 0, verticalInput));
 
         playerUnit.MoveUnit(direction);
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (inputs.IsSpaceDown)
         {
             playerUnit.UnitAction();
-        }   else if (Input.GetKey(KeyCode.LeftShift))
+        }
+        else if (inputs.IsShiftDown)
         {
             returnGauge.FillGauge();
         }
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        else if (inputs.IsShiftUp)
         {
             returnGauge.ResetGauge();
         }
+
         shooter.AttemptShootEnemy();
     }
-
 }
 
 [Serializable]
@@ -112,7 +128,9 @@ public class PlayerInfo
     //pure
     public PlayerInfoWrapper playerInfoWrapper;
 
-    public PlayerInfo(){ } // A serializable class requires a default constructor
+    public PlayerInfo()
+    {
+    } // A serializable class requires a default constructor
 
     public void Init(GameObject playerObj)
     {
@@ -120,7 +138,6 @@ public class PlayerInfo
         this.playerRd = playerObj.GetComponent<Rigidbody>();
         this.playerInfoWrapper = new PlayerInfoWrapper(this);
     }
-
 }
 
 
@@ -134,7 +151,6 @@ public class PlayerInfoWrapper
     {
         this.info = info;
     }
-
 }
 
 
@@ -151,6 +167,7 @@ public abstract class PlayerUnit
 
     public abstract void MoveUnit(Vector3 direction);
     public abstract void UnitAction();
+
     public void ReturnToMainBase()
     {
         // メインベースに戻る処理を記述する
@@ -173,12 +190,9 @@ public class PlayerShooter
     public void AttemptShootEnemy()
     {
         Collider[] colliders = Physics.OverlapSphere(info.playerObj.transform.position, info.rangeRadius);
-        var enemys = colliders.
-            Where(collider => collider.CompareTag("Enemy")).
-            Select(collider => collider.gameObject);
+        var enemys = colliders.Where(collider => collider.CompareTag("Enemy")).Select(collider => collider.gameObject);
 
         if (enemys.Any()) ShootEnemy(enemys.First());
-
     }
 
     async void ShootEnemy(GameObject targetEnemy)
@@ -187,16 +201,16 @@ public class PlayerShooter
         isShooting = true;
 
         // Debug.Log($"ShootEnemy() targetEnemy:{targetEnemy}");
-        var bulletInitPos = info.bulletOffset * (targetEnemy.gameObject.transform.position - info.playerObj.transform.position).normalized + info.playerObj.transform.position;
-        var bullet = Object.Instantiate(info.bulletPrefab, bulletInitPos, Quaternion.identity, info.bulletsParent).GetComponent<BulletController>();
+        var bulletInitPos =
+            info.bulletOffset * (targetEnemy.gameObject.transform.position - info.playerObj.transform.position)
+            .normalized + info.playerObj.transform.position;
+        var bullet = Object.Instantiate(info.bulletPrefab, bulletInitPos, Quaternion.identity, info.bulletsParent)
+            .GetComponent<BulletController>();
         bullet.Init(targetEnemy.gameObject);
 
         for (float t = 0; t < shootInterval; t += Time.deltaTime) await UniTask.Yield();
         isShooting = false;
-
     }
-
-
 }
 
 
@@ -204,22 +218,25 @@ public class PlayerTank : PlayerUnit
 {
     float pickerHeight = 5.0f;
 
-    public PlayerTank(PlayerInfo info): base(info)
+    public PlayerTank(PlayerInfo info) : base(info)
     {
-
     }
 
     public override void MoveUnit(Vector3 direction)
     {
-        info. playerRd.AddForce(info.acceleration * direction, ForceMode.Acceleration);
-        if (info.playerRd.velocity.magnitude >= info.maxVelocity) info.playerRd.velocity = info.maxVelocity * info.playerRd.velocity.normalized;
-        if (direction == Vector3.zero) info.playerRd.velocity = info.resistance * info.playerRd.velocity; //Decelerate when there is no key input
+        info.playerRd.AddForce(info.acceleration * direction, ForceMode.Acceleration);
+        if (info.playerRd.velocity.magnitude >= info.maxVelocity)
+            info.playerRd.velocity = info.maxVelocity * info.playerRd.velocity.normalized;
+        if (direction == Vector3.zero)
+            info.playerRd.velocity = info.resistance * info.playerRd.velocity; //Decelerate when there is no key input
     }
+
     public override void UnitAction()
     {
         // Launch a picker.
-        var pickerPos = info. playerObj.transform.position + new Vector3(0, pickerHeight, 0);
-        var picker = Object.Instantiate(info.pickerPrefab, pickerPos, Quaternion.identity, info.pickersParent).GetComponent<PickerController>();
+        var pickerPos = info.playerObj.transform.position + new Vector3(0, pickerHeight, 0);
+        var picker = Object.Instantiate(info.pickerPrefab, pickerPos, Quaternion.identity, info.pickersParent)
+            .GetComponent<PickerController>();
         picker.Init(info.playerObj.gameObject, info.playerInfoWrapper);
     }
 }
@@ -237,13 +254,15 @@ public class PlayerPlane : PlayerUnit
 
     public PlayerPlane(PlayerInfo info) : base(info)
     {
-
     }
+
     public override void MoveUnit(Vector3 direction)
     {
         info.playerRd.AddForce(info.acceleration * direction, ForceMode.Acceleration);
-        if (info.playerRd.velocity.magnitude >= info.maxVelocity) info.playerRd.velocity = info.maxVelocity * info.playerRd.velocity.normalized;
-        if (direction == Vector3.zero) info.playerRd.velocity = info.resistance * info.playerRd.velocity; //Decelerate when there is no key input
+        if (info.playerRd.velocity.magnitude >= info.maxVelocity)
+            info.playerRd.velocity = info.maxVelocity * info.playerRd.velocity.normalized;
+        if (direction == Vector3.zero)
+            info.playerRd.velocity = info.resistance * info.playerRd.velocity; //Decelerate when there is no key input
     }
 
     public override void UnitAction()
@@ -252,18 +271,20 @@ public class PlayerPlane : PlayerUnit
         AttemptCollectResource();
         SubmitResource();
     }
+
     public void AttemptCollectResource()
     {
-        Collider[] colliders = Physics.OverlapSphere(Utility.SetYToZero( info.playerObj.transform.position), detectionRange);
-        var resources = colliders.
-            Where(collider => collider.CompareTag("Resource")).
-            Where(collider => collider.gameObject.GetComponent<ResourceController>().isOwned == false).
-            Select(collider => collider.gameObject);
-        if(resources.Any())CollectResource(resources.First());
+        Collider[] colliders =
+            Physics.OverlapSphere(Utility.SetYToZero(info.playerObj.transform.position), detectionRange);
+        var resources = colliders.Where(collider => collider.CompareTag("Resource"))
+            .Where(collider => collider.gameObject.GetComponent<ResourceController>().isOwned == false)
+            .Select(collider => collider.gameObject);
+        if (resources.Any()) CollectResource(resources.First());
     }
+
     async void CollectResource(GameObject resource)
     {
-        if(resource == null)return;
+        if (resource == null) return;
         if (isCollecting) return;
 
         var initPos = info.playerObj.transform.position;
@@ -290,23 +311,24 @@ public class PlayerPlane : PlayerUnit
 
     void SubmitResource()
     {
-        if(!heldResources.Any())return;
-        if(!IsNearMainBase())return;
+        if (!heldResources.Any()) return;
+        if (!IsNearMainBase()) return;
 
         foreach (var resource in heldResources)
         {
             Object.Destroy(resource);
             Debug.Log($"submit resource");
         }
+
         heldResources = new List<GameObject>();
     }
 
     bool IsNearMainBase()
     {
-        Collider[] colliders = Physics.OverlapSphere(Utility.SetYToZero(info.playerObj.transform.position), submitResourceRange);
-        var mainBases = colliders.
-            Where(collider => collider.CompareTag("MainBase")).
-            Select(collider => collider.gameObject);
+        Collider[] colliders =
+            Physics.OverlapSphere(Utility.SetYToZero(info.playerObj.transform.position), submitResourceRange);
+        var mainBases = colliders.Where(collider => collider.CompareTag("MainBase"))
+            .Select(collider => collider.gameObject);
         Debug.Log($"IsNearMainBase():{mainBases.Any()}");
         return mainBases.Any();
     }
@@ -314,9 +336,9 @@ public class PlayerPlane : PlayerUnit
 
 public class ReturnGauge
 {
-    public float CurrentValue => time/ fillTime;
+    public float CurrentValue => time / fillTime;
     Action action;
-    float fillTime = 3.0f; 
+    float fillTime = 3.0f;
     float time = 0f;
 
     public ReturnGauge(Action action, float fillTime)
@@ -324,6 +346,7 @@ public class ReturnGauge
         this.action = action;
         this.fillTime = fillTime;
     }
+
     public void FillGauge()
     {
         time += Time.deltaTime;

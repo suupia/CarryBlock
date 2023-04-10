@@ -6,19 +6,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Object = UnityEngine.Object;
 
 
 public class NetworkPlayerSpawner
 {
-    readonly NetworkRunner runner;
+    readonly NetworkRunner _runner;
     public  NetworkPlayerSpawner(NetworkRunner runner)
     {
-        this.runner = runner;
+        this._runner = runner;
     }
     
     public void RespawnAllPlayer(NetworkPlayerContainer playerContainer)
     {
-        foreach (var player in runner.ActivePlayers)
+        foreach (var player in _runner.ActivePlayers)
         {
             DespawnPlayer(player,playerContainer);
             SpawnPlayer(player,playerContainer);
@@ -30,23 +31,22 @@ public class NetworkPlayerSpawner
         Debug.Log("Spawning Player");
         var spawnPosition = new Vector3(0, 1, 0);
         var playerControllerPrefab = Resources.Load<NetworkPlayerController>("Prefabs/PlayerController");
-        var playerController = runner.Spawn(playerControllerPrefab, spawnPosition, Quaternion.identity, player);
-        // Debug.Log($"playerControllerPrefab:{playerControllerPrefab}");
-        // Debug.Log($"runner:{runner}");
-        // Debug.Log($"playerController:{playerController}");
-        runner.SetPlayerObject(player, playerController.Object);
+        var playerController = _runner.Spawn(playerControllerPrefab, spawnPosition, Quaternion.identity, player);
+        _runner.SetPlayerObject(player, playerController.Object);
         playerContainer.AddPlayer(playerController);
+        
+
     }
 
     public void DespawnPlayer(PlayerRef player,NetworkPlayerContainer playerContainer)
     {
-        if (runner.TryGetPlayerObject(player, out var networkObject))
+        if (_runner.TryGetPlayerObject(player, out var networkObject))
         {
             var playerController = networkObject.GetComponent<NetworkPlayerController>();
             
             playerContainer.RemovePlayer(playerController);
-            runner.Despawn(networkObject);
-            runner.SetPlayerObject(player, null);
+            _runner.Despawn(networkObject);
+            _runner.SetPlayerObject(player, null);
         }
     }
 }

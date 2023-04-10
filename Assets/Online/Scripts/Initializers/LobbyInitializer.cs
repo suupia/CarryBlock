@@ -11,7 +11,7 @@ public class LobbyInitializer : NetworkSceneInitializer
 {
     async void  Start()
     {
-        await runnerManager.StartScene();
+        await runnerManager.StartScene("LobbySceneTestRoom");
         base.Init();
 
         await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: token); 
@@ -47,11 +47,11 @@ public class LobbyInitializer : NetworkSceneInitializer
     {
         //後でキャッシュを取るようにして動作改善か、そもそもの仕様を変える
         // var playerUnits = networkPlayerContainer.PlayerControllers.Map(pc => pc.NowUnit).Where(unit => unit != null).ToArray();
-        var playerUnits = networkPlayerContainer.PlayerControllers.Select(playerController => playerController.NowUnit).ToArray(); // TODO: ToArray()を消す　あと、e.SetDirectionの引数も変える
+        var playerUnits = networkPlayerContainer.PlayerControllers.Select(playerController => playerController.Unit).ToArray(); // TODO: ToArray()を消す　あと、e.SetDirectionの引数も変える
         // Array.ForEach(networkEnemyContainer.Enemies, e => e.SetDirection(playerUnits));
         foreach (var networkEnemy in networkEnemyContainer.Enemies)
         {
-            networkEnemy.SetDirection(playerUnits);
+           // networkEnemy.SetDirection(playerUnits);
         }
     }
     

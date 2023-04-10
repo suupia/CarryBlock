@@ -10,7 +10,7 @@ using UnityEngine;
 /// </summary>
 public class Bullet : NetworkBehaviour
 {
-    Rigidbody rb;
+    Rigidbody _rb;
 
     [Networked] TickTimer Life { get; set; }
 
@@ -18,8 +18,8 @@ public class Bullet : NetworkBehaviour
     {
         get
         {
-            if (rb == null) rb = GetComponent<Rigidbody>();
-            return rb;
+            if (_rb == null) _rb = GetComponent<Rigidbody>();
+            return _rb;
         }
     }
 

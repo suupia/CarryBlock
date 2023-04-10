@@ -15,26 +15,26 @@ using Random = UnityEngine.Random;
 public class NetworkRunnerManager : MonoBehaviour
 {
     [SerializeField] GameObject fusionContainer;
-    public NetworkRunner Runner => runner;
+    public NetworkRunner Runner => _runner;
 
-    [CanBeNull] NetworkRunner runner;
+    [CanBeNull] NetworkRunner _runner;
 
     public async UniTask StartScene(string sessionName = default)
     {
         sessionName ??= RandomString(5);
-        runner = FindObjectOfType<NetworkRunner>();
-        if (runner == null)
+        _runner = FindObjectOfType<NetworkRunner>();
+        if (_runner == null)
         {
             var fusionContainerObj = Instantiate(fusionContainer);
-            runner = fusionContainerObj.GetComponent<NetworkRunner>();
-            DontDestroyOnLoad(runner);
+            _runner = fusionContainerObj.GetComponent<NetworkRunner>();
+            DontDestroyOnLoad(_runner);
         
-            await runner.StartGame(new StartGameArgs()
+            await _runner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.AutoHostOrClient,
                 SessionName = sessionName,
                 Scene = SceneManager.GetActiveScene().buildIndex,
-                SceneManager = fusionContainerObj.AddComponent<NetworkSceneManagerDefault>()
+                SceneManager = fusionContainerObj.GetComponent<NetworkSceneManagerDefault>()
             });
         }
         

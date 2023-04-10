@@ -11,19 +11,19 @@ using UnityEngine.UIElements;
 
 public class NetworkEnemySpawner
 {
-    readonly NetworkRunner runner;
-    readonly CancellationTokenSource cts = new();
-    readonly CancellationToken token;
+    readonly NetworkRunner _runner;
+    readonly CancellationTokenSource _cts = new();
+    readonly CancellationToken _token;
 
     public NetworkEnemySpawner(NetworkRunner runner)
     {
-        this.runner = runner;
-        token = cts.Token;
+        this._runner = runner;
+        _token = _cts.Token;
     }
 
     public void CancelSpawning()
     {
-        cts.Cancel();
+        _cts.Cancel();
     }
     
     public async UniTask StartSimpleSpawner(int index, float interval, NetworkEnemyContainer enemyContainer)
@@ -31,7 +31,7 @@ public class NetworkEnemySpawner
         while (true)
         {
             SpawnEnemy(index,enemyContainer);
-            await UniTask.Delay(TimeSpan.FromSeconds(interval),cancellationToken: token);
+            await UniTask.Delay(TimeSpan.FromSeconds(interval),cancellationToken: _token);
         }
     }
     void SpawnEnemy(int index, NetworkEnemyContainer enemyContainer)
@@ -39,7 +39,7 @@ public class NetworkEnemySpawner
         if(enemyContainer.Enemies.Count() >= enemyContainer.MaxEnemyCount)return;;
         var position = new Vector3(0, 1, 0);
         var enemyPrefabs = Resources.LoadAll<NetworkEnemy>("Prefabs/Enemys");
-        var networkObject = runner.Spawn(enemyPrefabs[index], position, Quaternion.identity, PlayerRef.None);
+        var networkObject = _runner.Spawn(enemyPrefabs[index], position, Quaternion.identity, PlayerRef.None);
         var enemy = networkObject.GetComponent<NetworkEnemy>();
         enemy.OnDespawn += () => enemyContainer.RemoveEnemy(enemy);
         enemyContainer.AddEnemy(enemy);

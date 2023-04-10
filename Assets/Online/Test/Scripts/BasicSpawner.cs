@@ -49,10 +49,10 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     async void StartGame(GameMode mode)
     {
         runner = gameObject.AddComponent<NetworkRunner>();
-        //“ü—Í‚ğ’ñ‹Ÿ‚·‚é
+        //ï¿½ï¿½ï¿½Í‚ï¿½ñ‹Ÿ‚ï¿½ï¿½ï¿½
         runner.ProvideInput = true;
 
-        //SceneManager ‚ÍAƒV[ƒ“‚É’¼Ú”z’u‚³‚ê‚é NetworkObjects ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‰»‚ğˆ—‚·‚é
+        //SceneManager ï¿½ÍAï¿½Vï¿½[ï¿½ï¿½ï¿½É’ï¿½ï¿½Ú”zï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ NetworkObjects ï¿½ÌƒCï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         await runner.StartGame(new StartGameArgs()
         {
             GameMode = mode,
@@ -86,14 +86,14 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
     }
 
-    public void OnInput(NetworkRunner runner, NetworkInput input)
+    public void OnInput(NetworkRunner runner, Fusion.NetworkInput input)
     {
         input.Set(data);
 
         data = default;
     }
 
-    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
+    public void OnInputMissing(NetworkRunner runner, PlayerRef player, Fusion.NetworkInput input)
     {
     }
 
@@ -102,8 +102,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         if (runner.IsServer)
         {
             var spawnPosition = new Vector3(player.RawEncoded % runner.Config.Simulation.DefaultPlayers * 3, 1, 0);
-            //Host‚ªƒIƒuƒWƒFƒNƒg‚ğŠÇ—‚·‚éBUnity‚ÌInstantiate‚ªSpawn‚É’u‚«Š·‚í‚é
-            //‘æ‚Sˆø”‚Ìplayer‚Í‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ‘€ì‚Å‚«‚éƒvƒŒƒCƒ„[‚ğw‚·
+            //Hostï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½Ç—ï¿½ï¿½ï¿½ï¿½ï¿½BUnityï¿½ï¿½Instantiateï¿½ï¿½Spawnï¿½É’uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            //ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½playerï¿½Í‚ï¿½ï¿½ÌƒIï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ğ‘€ï¿½Å‚ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½wï¿½ï¿½
             var networkPlayerObject = runner.Spawn(playerPrefab, spawnPosition, Quaternion.identity, player);
             spawnedCharacters.Add(player, networkPlayerObject);
         }
