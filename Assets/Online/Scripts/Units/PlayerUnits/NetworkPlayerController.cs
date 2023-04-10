@@ -79,7 +79,7 @@ public class NetworkPlayerController : NetworkBehaviour
     }
 
     //Deal as RPC for changing unit
-    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
+    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.All)]
     public void RPC_ChangeUnit(int index)
     {
         // Todo : ChangeUnitの実装
