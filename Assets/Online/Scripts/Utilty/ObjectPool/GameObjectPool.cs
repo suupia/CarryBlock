@@ -37,7 +37,7 @@ public class GameObjectPool
         if (obj == null)
         {
             obj = _activeObjects.First();
-            SetActiveFalseFirst(obj);
+            OnRelease(obj,true);
             SetActiveTrue(obj);
             Debug.LogWarning($"There were not enough pooled objects, so I reactivated the oldest object that became active. poolSize = {_pool.Length}");
         }
@@ -61,14 +61,14 @@ public class GameObjectPool
         if (obj.activeSelf == false)
             throw new ArgumentException("Attempting to release an object that is already inactive", nameof(obj));
 
-        SetActiveFalseLast(obj);
+        OnRelease(obj,false);
     }
 
     public void Clear()
     {
         foreach (var obj in _pool)
         {
-            obj.SetActive(false);
+            OnRelease(obj,true);
         }
         _activeObjects.Clear();
     }
@@ -78,17 +78,27 @@ public class GameObjectPool
         obj.SetActive(true);
         _activeObjects.Add(obj);
     }
-    void SetActiveFalseFirst(GameObject obj)
+
+    void OnRelease(GameObject obj ,bool releaseFirst)
     {
         obj.SetActive(false);
-        var rd = obj.GetComponent<Rigidbody>();
-        if(rd != null) rd.velocity = Vector3.zero;
-        _activeObjects.RemoveAt(0);
-    }
-    
-    void SetActiveFalseLast(GameObject obj)
-    {
-        obj.SetActive(false);
-        _activeObjects.RemoveAt(_activeObjects.Count()-1);
+        obj.transform.localPosition = Vector3.zero;
+        var rds = obj.GetComponentsInChildren<Rigidbody>();
+        if(rds.Any())
+        {
+            foreach (var rd in rds)
+            {
+                rd.velocity = Vector3.zero;
+                rd.angularVelocity = Vector3.zero;
+            }
+        }
+        if (releaseFirst)
+        {
+            _activeObjects.RemoveAt(0);
+        }
+        else
+        {
+            _activeObjects.RemoveAt(_activeObjects.Count()-1);
+        }
     }
 }
