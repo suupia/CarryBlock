@@ -37,7 +37,7 @@ public class Tank : NetworkPlayerUnit
         _cc.Move(direction);
     }
 
-    public override void Action(NetworkButtons buttons, NetworkButtons preButtons)
+    public override void Action()
     {
         Debug.Log($"Actionを行います！");
 
@@ -63,15 +63,13 @@ public class Tank : NetworkPlayerUnit
             }
         }
 
-        if (buttons.GetPressed(preButtons).IsSet(PlayerOperation.MainAction))
-        {
-            // var pickerObj = _runner.Spawn(info.pickerPrefab, info.unitObject.transform.position,  info.unitObject.transform.rotation, PlayerRef.None);
-            
-            var picker = _pickerPool.Get().GetComponent<NetworkPickerController>();
-            var pickerPos = info.unitObject.transform.position + new Vector3(0, _pickerHeight, 0);
-            picker.transform.position = pickerPos;;
-            picker.Init(info.unitObject.gameObject, info.playerInfoForPicker, _pickerPool);
-        }
+        Debug.Log("aa");
+        // var pickerObj = _runner.Spawn(info.pickerPrefab, info.unitObject.transform.position,  info.unitObject.transform.rotation, PlayerRef.None);
+        
+        var picker = _pickerPool.Get().GetComponent<NetworkPickerController>();
+        var pickerPos = info.unitObject.transform.position + new Vector3(0, _pickerHeight, 0);
+        picker.transform.position = pickerPos;;
+        picker.Init(info.unitObject.gameObject, info.playerInfoForPicker, _pickerPool);
     }
     
 

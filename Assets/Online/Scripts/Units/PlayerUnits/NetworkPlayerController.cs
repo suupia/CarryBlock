@@ -56,23 +56,32 @@ public class NetworkPlayerController : NetworkBehaviour
                 RPC_ChangeUnit(1);
             }
 
+            if (input.Buttons.GetPressed(PreButtons).IsSet(PlayerOperation.MainAction))
+            {
+                RPC_MainAction();
+            }
             var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
             // Debug.Log($"Direction:{direction}");
             //Apply input
-            Unit.Move(direction);
-            Debug.Log($"input.Buttons = {input.Buttons}");
-            Debug.Log($"PreButtons = {PreButtons}");
-            Unit.Action(input.Buttons, PreButtons);
+            if (Runner.IsForward)
+            {
+                Unit.Move(direction);
+            }
 
             PreButtons = input.Buttons;
         }
+    }
+    
+    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.All)]
+    private void RPC_MainAction()
+    {
+        Unit.Action();
     }
 
     //Deal as RPC for changing unit
     [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
     public void RPC_ChangeUnit(int index)
     {
-        
         // Todo : ChangeUnitの実装
         
         // if (Unit != null)
@@ -82,4 +91,5 @@ public class NetworkPlayerController : NetworkBehaviour
         //
         // playerObjectParent = SpawnPlayerUnit(index);
     }
+    
 }

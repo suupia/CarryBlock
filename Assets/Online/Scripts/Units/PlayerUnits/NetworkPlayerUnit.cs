@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 public interface IPlayerUnit
 {
     void Move(Vector3 direction);
-    void Action(NetworkButtons buttons, NetworkButtons preButtons);
+    void Action();
 }
 
 public abstract class NetworkPlayerUnit : IPlayerUnit
@@ -21,7 +21,7 @@ public abstract class NetworkPlayerUnit : IPlayerUnit
     }
 
     public abstract void Move(Vector3 direction);
-    public abstract void Action(NetworkButtons buttons, NetworkButtons preButtons);
+    public abstract void Action();
 }
 
 [Serializable]
