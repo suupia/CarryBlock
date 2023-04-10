@@ -23,12 +23,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1438100786018379075}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8911953169427626567}
+  m_Father: {fileID: 3756329797796214364}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3042557124854155579
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1291537846645682617}
   m_Layer: 0
-  m_Name: PlayerObjectParent
+  m_Name: UnitObjectParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,8 +93,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1291537846645682617}
-  - {fileID: 8009984501082791594}
-  - {fileID: 9016118332393888793}
   m_Father: {fileID: 3756329797796214364}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -183,6 +181,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8911953169427626567}
+  - {fileID: 8009984501082791594}
+  - {fileID: 9016118332393888793}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -204,14 +204,12 @@ MonoBehaviour:
   - {fileID: 5382565514109228338, guid: 3e617250fe2faeb429c30e5d618aa013, type: 3}
   - {fileID: 129457298326952244, guid: a302a749f7736b148b56ee79b6af8253, type: 3}
   info:
-    playerObjectParent: {fileID: 1291537846645682617}
+    unitObjectParent: {fileID: 1291537846645682617}
     pickerParent: {fileID: 8009984501082791594}
     bulletParent: {fileID: 9016118332393888793}
     networkCharacterController: {fileID: 8192604587321445282}
-    pickerPrefab: {fileID: 5800365988411164172, guid: 6e8806391f8963a4daf9ddc261c5cd34, type: 3}
-    pickerPoolingCount: 10
+    pickerPrefab: {fileID: 5800365988411164172, guid: 115ee077661dd4786a1dd3a81452ca62, type: 3}
     bulletPrefab: {fileID: 2133204241246472721, guid: 937c049da4cf2394995462738a7fcdf4, type: 3}
-    bulletPoolingCount: 10
   _IsReady:
     _value: 0
 --- !u!114 &6353211947961749652
@@ -262,11 +260,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6538246006511950470}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8911953169427626567}
+  m_Father: {fileID: 3756329797796214364}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

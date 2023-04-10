@@ -25,7 +25,7 @@ public class NetworkPlayerController : NetworkBehaviour
 
         // Instantiate the tank.
         var prefab = playerUnitPrefabs[0];
-        var unitObj = Instantiate(prefab, info.playerObjectParent);
+        var unitObj = Instantiate(prefab, info.unitObjectParent);
         
         // Instantiate the picker as pooling objects.
         for (int i = 0; i < info.pickerPoolingCount; i++)
@@ -49,8 +49,8 @@ public class NetworkPlayerController : NetworkBehaviour
         {
             // spawn camera
             var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
-            followtarget.SetTarget(info.playerObjectParent);
-            Debug.Log($"target.name = {info.playerObjectParent}");
+            followtarget.SetTarget(info.unitObjectParent);
+            Debug.Log($"target.name = {info.unitObjectParent}");
         }
     }
     

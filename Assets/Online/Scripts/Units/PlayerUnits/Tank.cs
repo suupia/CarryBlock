@@ -2,6 +2,7 @@ using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Network;
 using UnityEngine;
 using UnityEngine.Windows;
 
@@ -16,6 +17,8 @@ public class Tank : NetworkPlayerUnit
 
     GameObjectPool _bulletPool;
     GameObjectPool _pickerPool;
+
+    float _pickerHeight = 5.0f;
     
     public Tank(NetworkPlayerInfo info) : base(info)
     {
@@ -63,7 +66,11 @@ public class Tank : NetworkPlayerUnit
         if (buttons.GetPressed(preButtons).IsSet(PlayerOperation.MainAction))
         {
             // var pickerObj = _runner.Spawn(info.pickerPrefab, info.unitObject.transform.position,  info.unitObject.transform.rotation, PlayerRef.None);
-            var pickerObj = _pickerPool.Get();
+            
+            var picker = _pickerPool.Get().GetComponent<NetworkPickerController>();
+            var pickerPos = info.unitObject.transform.position + new Vector3(0, _pickerHeight, 0);
+            picker.transform.position = pickerPos;;
+            picker.Init(info.unitObject.gameObject, info.playerInfoForPicker, _pickerPool);
         }
     }
     
