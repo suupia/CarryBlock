@@ -70,6 +70,7 @@ public class GameObjectPool
         {
             obj.SetActive(false);
         }
+        _activeObjects.Clear();
     }
 
     void SetActiveTrue(GameObject obj)
