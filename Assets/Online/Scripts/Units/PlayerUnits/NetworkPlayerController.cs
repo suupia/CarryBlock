@@ -21,7 +21,7 @@ public class NetworkPlayerController : NetworkBehaviour
     [Networked] TickTimer ShootCooldown { get; set; }
     [Networked] TickTimer ActionCooldown { get; set; }
 
-    public NetworkPlayerUnit Unit { get; set; }
+    NetworkPlayerUnit _unit;
     NetworkPlayerShooter _shooter;
 
 
@@ -32,7 +32,7 @@ public class NetworkPlayerController : NetworkBehaviour
         var unitObj = Instantiate(prefab, info.unitObjectParent);
 
         info.Init(Runner, unitObj);
-        Unit = new Tank(info);
+        _unit = new Tank(info);
         _shooter = new NetworkPlayerShooter(info);
 
         if (Object.HasInputAuthority)
@@ -73,14 +73,14 @@ public class NetworkPlayerController : NetworkBehaviour
             {
                 if (ActionCooldown.ExpiredOrNotRunning(Runner))
                 {
-                    Unit.Action();
-                    ActionCooldown = TickTimer.CreateFromSeconds(Runner, Unit.DelayBetweenActions);
+                    _unit.Action();
+                    ActionCooldown = TickTimer.CreateFromSeconds(Runner, _unit.DelayBetweenActions);
                 }
             }
 
             var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
-            Unit.Move(direction);
+            _unit.Move(direction);
 
             PreButtons = input.Buttons;
         }
