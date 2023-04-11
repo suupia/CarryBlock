@@ -63,10 +63,11 @@ public class NetworkPlayerController : NetworkBehaviour
             var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
             // Debug.Log($"Direction:{direction}");
             //Apply input
-            if (Runner.IsForward)
-            {
-                Unit.Move(direction);
-            }
+            // if (Runner.IsForward)
+            // {
+            //     Unit.Move(direction);
+            // }
+            Unit.Move(direction);
 
             PreButtons = input.Buttons;
         }
