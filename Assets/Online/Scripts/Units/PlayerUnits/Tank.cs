@@ -15,9 +15,6 @@ public class Tank : NetworkPlayerUnit
     NetworkCharacterControllerPrototype _cc;
     RangeDetector _rangeDetector;
 
-    MyNetworkObjectPool _bulletPool;
-    MyNetworkObjectPool _pickerPool;
-
     float _pickerHeight = 5.0f;
     
     public Tank(NetworkPlayerInfo info) : base(info)
@@ -28,8 +25,6 @@ public class Tank : NetworkPlayerUnit
         _cc = info.networkCharacterController; 
         _rangeDetector = info.rangeDetector;
         
-        _bulletPool = new MyNetworkObjectPool(info.bulletParent);
-        _pickerPool = new MyNetworkObjectPool(info.pickerParent);
     }
 
     public override void Move(Vector3 direction)
@@ -63,13 +58,10 @@ public class Tank : NetworkPlayerUnit
             }
         }
 
-        Debug.Log("aa");
-        // var pickerObj = _runner.Spawn(info.pickerPrefab, info.unitObject.transform.position,  info.unitObject.transform.rotation, PlayerRef.None);
-        
-        var picker = _pickerPool.Get().GetComponent<NetworkPickerController>();
         var pickerPos = info.unitObject.transform.position + new Vector3(0, _pickerHeight, 0);
-        picker.transform.position = pickerPos;;
-        picker.Init(info.unitObject.gameObject, info.playerInfoForPicker, _pickerPool);
+        var picker = _runner.Spawn(info.pickerPrefab, pickerPos,  Quaternion.identity, PlayerRef.None).GetComponent<NetworkPickerController>();
+        picker.Init(_runner,info.unitObject.gameObject, info.playerInfoForPicker);
+
     }
     
 

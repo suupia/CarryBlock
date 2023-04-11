@@ -31,13 +31,9 @@ public  class NetworkPlayerInfo
     
     // Attach
     [SerializeField] public Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
-    [SerializeField] public Transform pickerParent;
-    [SerializeField] public Transform bulletParent;
     [SerializeField] public NetworkCharacterControllerPrototype networkCharacterController;
-    [SerializeField] public GameObject pickerPrefab;
-    [NonSerialized] public int pickerPoolingCount = 10;
-    [SerializeField] public GameObject bulletPrefab;
-    [NonSerialized] public int bulletPoolingCount = 10;
+    [SerializeField] public NetworkPrefabRef pickerPrefab;
+    [SerializeField] public NetworkPrefabRef bulletPrefab;
     [NonSerialized] public GameObject unitObject; // This has 3D models, a RangeDetector, and more as children.
     [NonSerialized] public RangeDetector rangeDetector;
 

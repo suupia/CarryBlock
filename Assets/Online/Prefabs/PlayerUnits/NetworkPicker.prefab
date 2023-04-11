@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 2915190494148252779}
   - component: {fileID: 3733983308590787590}
   - component: {fileID: 343214678722504434}
+  - component: {fileID: 6802528633934607057}
   m_Layer: 0
   m_Name: NetworkPicker
   m_TagString: Untagged
@@ -146,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d288ecb72a684d4f8f12ab351d9b71d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
 --- !u!114 &343214678722504434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,3 +176,28 @@ MonoBehaviour:
     RotTeleportRadians: 1.5
   UseLegacySharedModeInterpolation: 0
   TargetInterpolationDelay: 0.03
+--- !u!114 &6802528633934607057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5800365988411164172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2305
+  NetworkGuid:
+    RawGuidValue: 115ee077661dd4786a1dd3a81452ca62
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 3733983308590787590}
+  - {fileID: 343214678722504434}
+  SimulationBehaviours: []

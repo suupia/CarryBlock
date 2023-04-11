@@ -4,10 +4,11 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Linq;
+using Fusion;
 
 namespace Network
 {
-    public class NetworkPickerController : MonoBehaviour
+    public class NetworkPickerController : NetworkBehaviour
     {
         bool isInitialized = false;
 
@@ -20,11 +21,11 @@ namespace Network
         GameObject mainBaseObj;
 
 
-        public void Init(GameObject playerObj, PlayerInfoForPicker info, MyNetworkObjectPool pool)
+        public void Init(NetworkRunner runner, GameObject playerObj, PlayerInfoForPicker info)
         {
             Debug.Log($"infoWrapper.RangeRadius:{info.RangeRadius}");
-
-            pickerInfo = new PickerInfo(this.gameObject, info, pool);
+            
+            pickerInfo = new PickerInfo(runner, Object, info);
             pickerInfo.SetPlayerObj(playerObj);
             mainBaseObj = GameObject.Find("MainBase");
             pickerInfo.SetMainBaseObj(mainBaseObj);
@@ -57,6 +58,9 @@ namespace Network
     [Serializable]
     public class PickerInfo
     {
+        // runner
+        public readonly NetworkRunner runner;
+        
         // constant fields
         public readonly float normalAcceleration = 300f;
         public readonly float carryingAcceleration = 150f;
@@ -82,8 +86,7 @@ namespace Network
         public IPickerState CompleteState => new PickerCompleteState(this);
 
         // components
-        public MyNetworkObjectPool pool { get; private set; }
-        public GameObject pickerObj { get; private set; }
+        public NetworkObject pickerObj { get; private set; }
         public Rigidbody pickerRd { get; private set; }
         public GameObject playerObj { get; private set; }
         public Rigidbody playerRd { get; private set; }
@@ -94,15 +97,15 @@ namespace Network
         // injected fields
         public float detectionRange { get; private set; }
 
-        public PickerInfo(GameObject pickerObj, PlayerInfoForPicker info, MyNetworkObjectPool pool)
+        public PickerInfo(NetworkRunner runner, NetworkObject pickerObj, PlayerInfoForPicker info)
         {
+            this.runner = runner;
             this.pickerObj = pickerObj;
             Debug.Log($"pickerObj = {pickerObj}");
             this.pickerRd = pickerObj.GetComponent<Rigidbody>();
 
             this.detectionRange = info.RangeRadius;
-
-            this.pool = pool;
+            
         }
 
         public void SetPlayerObj(GameObject playerObj)
@@ -501,7 +504,7 @@ namespace Network
         {
             //Debug.Log($"CompleteProcess()");
             Debug.Log($"Delete Picker");
-            info.pool.Release(info.pickerObj);
+            info.runner.Despawn(info.pickerObj);
         }
     }
 }
