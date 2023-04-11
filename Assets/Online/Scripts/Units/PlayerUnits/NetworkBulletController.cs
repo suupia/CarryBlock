@@ -46,6 +46,8 @@ public class NetworkBulletController : NetworkBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if(!HasStateAuthority)return;
+        
         if (other.CompareTag("Enemy"))
         {
             var enemy = other.GetComponent<NetworkEnemyController>();
