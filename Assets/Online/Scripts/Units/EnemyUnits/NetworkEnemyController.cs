@@ -5,66 +5,113 @@ using UnityEngine;
 
 public class NetworkEnemyController : NetworkBehaviour
 {
+    [SerializeField] NetworkPrefabRef resourcePrefab;
+    
+    float detectionRange = 30;
 
-    NetworkCharacterControllerPrototype cc;
+    GameObject targetPlayerObj;
 
-    [Networked] protected Vector2 Direction { get; set; }
-    [Networked] protected float Speed { get; set; } = 5f;
+    public enum EnemyState
+    {
+        idle,chasingPlayer,
+    }
 
-    [Networked] protected int Hp { get; set; } = 1;
-
-    public Action OnDespawn = () => { };
-
+    EnemyState state = EnemyState.idle;
+    
+    NetworkCharacterControllerPrototype _cc;
+    
     public override void Spawned()
     {
-        cc = GetComponent<NetworkCharacterControllerPrototype>();
+        _cc = GetComponent<NetworkCharacterControllerPrototype>();
 
     }
 
     public override void FixedUpdateNetwork()
     {
-        if (Hp <= 0)
+        if(!HasStateAuthority) return;
+        
+        switch (state)
         {
-            Runner.Despawn(Object);
-            return;
+            case EnemyState.idle:
+                Search();
+                break;
+            case EnemyState.chasingPlayer:
+                Chase();
+                break;
         }
-        cc.Move(new Vector3(Direction.x, 0, Direction.y) * Speed);
+        // if (Hp <= 0)
+        // {
+        //     Runner.Despawn(Object);
+        //     return;
+        // }
+        // _cc.Move(new Vector3(Direction.x, 0, Direction.y) * Speed);
     }
 
-    //一旦簡単なモデルで実装する
-    //これはNetworkManagerによって呼ばれ、自身の進むべき方向を決める
-    //変える可能性が高い
-    public void SetDirection(NetworkPlayerUnit[] playerUnits)
+    void Search()
     {
-        //とりあえず、一番近いプレイヤーに向かう。やや重たい処理になるか
-        int minIndex = 0;
-        float min = float.MaxValue;
-        for (int i = 0; i < playerUnits.Length; i++)
+        Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position, detectionRange);
+        var players = colliders.
+            Where(collider => collider.CompareTag("Player")).
+            Select(collider => collider.gameObject);
+        if (players.Any())
         {
-            var _min = Vector3.Distance(playerUnits[i].transform.position, transform.position);
-            if (_min < min)
-            {
-                min = _min;
-                minIndex = i;
-            }
+            targetPlayerObj = players.First();
+            state = EnemyState.chasingPlayer;
         }
-
-        var target = playerUnits[minIndex].transform.position;
-        var direction = target - transform.position;
-        Direction = new Vector2(direction.x, direction.z);
+        else
+        {
+            state = EnemyState.idle;
+        }
     }
 
-    public override void Despawned(NetworkRunner runner, bool hasState)
+    void Chase()
     {
-        OnDespawn.Invoke();
+        var directionVec = Utility.SetYToZero(targetPlayerObj.transform.position - gameObject.transform.position).normalized;
+        _cc.Move(directionVec);
+    }
+
+    public void OnDefeated()
+    {
+        // Instantiate(resourcePrefab,transform.position, Quaternion.identity,resourcesParent);
+        // Todo: ここでリソースを生成する
+        Runner.Despawn(Object);
     }
 
     
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.gameObject.CompareTag("Harmful"))
-        {
-            Hp -= 1;
-        }
-    }
+    //一旦簡単なモデルで実装する
+    //これはNetworkManagerによって呼ばれ、自身の進むべき方向を決める
+    //変える可能性が高い
+    // public void SetDirection(NetworkPlayerUnit[] playerUnits)
+    // {
+    //     //とりあえず、一番近いプレイヤーに向かう。やや重たい処理になるか
+    //     int minIndex = 0;
+    //     float min = float.MaxValue;
+    //     for (int i = 0; i < playerUnits.Length; i++)
+    //     {
+    //         var _min = Vector3.Distance(playerUnits[i].transform.position, transform.position);
+    //         if (_min < min)
+    //         {
+    //             min = _min;
+    //             minIndex = i;
+    //         }
+    //     }
+    //
+    //     var target = playerUnits[minIndex].transform.position;
+    //     var direction = target - transform.position;
+    //     Direction = new Vector2(direction.x, direction.z);
+    // }
+    //
+    // public override void Despawned(NetworkRunner runner, bool hasState)
+    // {
+    //     OnDespawn.Invoke();
+    // }
+    //
+    //
+    // private void OnControllerColliderHit(ControllerColliderHit hit)
+    // {
+    //     if (hit.gameObject.CompareTag("Harmful"))
+    //     {
+    //         Hp -= 1;
+    //     }
+    // }
 }
