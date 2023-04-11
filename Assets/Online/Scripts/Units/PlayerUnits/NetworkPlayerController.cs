@@ -43,6 +43,8 @@ public class NetworkPlayerController : NetworkBehaviour
     
     public override void FixedUpdateNetwork()
     {
+        if(!HasStateAuthority )return;
+        
         if (GetInput(out NetworkInputData input))
         {
             //TODO: Check phase
