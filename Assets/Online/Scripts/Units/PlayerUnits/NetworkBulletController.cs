@@ -12,36 +12,50 @@ using UnityEngine;
 public class NetworkBulletController : NetworkBehaviour
 {
     Rigidbody _rb;
+    
+    readonly float _speed = 30;
+    readonly float _lifeTime = 5;
 
-    [Networked] TickTimer Life { get; set; }
-
-    Rigidbody Rb
+    [Networked] TickTimer LifeTimer { get; set; }
+    
+    
+    public void Init(GameObject targetGameObj)
     {
-        get
-        {
-            if (_rb == null) _rb = GetComponent<Rigidbody>();
-            return _rb;
-        }
+        var directionVec = (targetGameObj.transform.position - transform.position).normalized;
+        _rb = GetComponent<Rigidbody>();
+        _rb.AddForce(_speed*directionVec , ForceMode.Impulse);
+        LifeTimer = TickTimer.CreateFromSeconds(Runner, _lifeTime);
+        
     }
 
-    public override void Spawned()
-    {
-        if (Object.HasStateAuthority)
-        {
-            Life = TickTimer.CreateFromSeconds(Runner, 3f);
-        }
-    }
+    // public override void Spawned()
+    // {
+    //     if (Object.HasStateAuthority)
+    //     {
+    //         Life = TickTimer.CreateFromSeconds(Runner, 3f);
+    //     }
+    // }
 
     public override void FixedUpdateNetwork()
     {
         if (Object.HasStateAuthority)
         {
-            if (Life.Expired(Runner)) Runner.Despawn(Object);
+            if (LifeTimer.Expired(Runner)) Runner.Despawn(Object);
         }
     }
 
-    public void AddForce(Vector3 direction, float power = 300f)
+    void OnTriggerEnter(Collider other)
     {
-        Rb.AddForce(direction * power);
+        if (other.CompareTag("Enemy"))
+        {
+            var enemy = other.GetComponent<NetworkEnemyController>();
+            if(enemy == null) Debug.LogError("The game object with the 'Enemy' tag does not have the 'NetworkEnemyController' component attached.");;
+            enemy.OnDefeated();
+            DestroyBullet();
+        }
+    }
+    void DestroyBullet()
+    {
+        Destroy(gameObject);
     }
 }

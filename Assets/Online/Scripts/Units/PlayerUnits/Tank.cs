@@ -55,7 +55,7 @@ public class Tank : NetworkPlayerUnit
                 Debug.Log($"info.bulletPrefab = {info.bulletPrefab}");
                 Debug.Log($"info.unitObject = {info.unitObject}");
                 Debug.Log($"_runner = {_runner}");
-                _runner.Spawn(info.bulletPrefab, info.unitObject.transform.position + offset, info.unitObject.transform.rotation, PlayerRef.None, OnBeforeSpawnBullet);
+                _runner.Spawn(info.bulletPrefab, info.unitObject.transform.position + offset, info.unitObject.transform.rotation, PlayerRef.None);
                 ReloadTimer = TickTimer.CreateFromSeconds(_runner, 2f);
             }
         }
@@ -67,12 +67,12 @@ public class Tank : NetworkPlayerUnit
     }
     
 
-    void OnBeforeSpawnBullet(NetworkRunner runner, NetworkObject obj)
-    {
-        var bullet = obj.GetComponent<NetworkBulletController>();
-        Debug.Log($"obj = {obj}");
-        Debug.Log($"bullet = {bullet}");
-        Debug.Log($"Target = {Target}");
-        bullet.AddForce(Target.transform.position - info.unitObject.transform.position);
-    }
+    // void OnBeforeSpawnBullet(NetworkRunner runner, NetworkObject obj)
+    // {
+    //     var bullet = obj.GetComponent<NetworkBulletController>();
+    //     Debug.Log($"obj = {obj}");
+    //     Debug.Log($"bullet = {bullet}");
+    //     Debug.Log($"Target = {Target}");
+    //     bullet.AddForce(Target.transform.position - info.unitObject.transform.position);
+    // }
 }

@@ -121,7 +121,7 @@ public class NetworkPlayerShooter
         if (enemys.Any()) ShootEnemy(enemys.First());
     }
 
-    async void ShootEnemy(GameObject targetEnemy)
+    void ShootEnemy(GameObject targetEnemy)
     {
         // Debug.Log($"ShootEnemy() targetEnemy:{targetEnemy}");
         var bulletInitPos =
@@ -130,5 +130,7 @@ public class NetworkPlayerShooter
         // var bullet = Object.Instantiate(_info.bulletPrefab, bulletInitPos, Quaternion.identity, _info.bulletsParent)
         //     .GetComponent<BulletController>();
         var bulletObj = _info.runner.Spawn(_info.bulletPrefab, bulletInitPos, Quaternion.identity, PlayerRef.None);
+        var bullet = bulletObj.GetComponent<NetworkBulletController>();
+        bullet.Init(targetEnemy);
     }
 }
