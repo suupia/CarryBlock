@@ -38,9 +38,9 @@ public class NetworkEnemySpawner
     {
         if(enemyContainer.Enemies.Count() >= enemyContainer.MaxEnemyCount)return;;
         var position = new Vector3(0, 1, 0);
-        var enemyPrefabs = Resources.LoadAll<NetworkEnemy>("Prefabs/Enemys");
+        var enemyPrefabs = Resources.LoadAll<NetworkEnemyController>("Prefabs/Enemys");
         var networkObject = _runner.Spawn(enemyPrefabs[index], position, Quaternion.identity, PlayerRef.None);
-        var enemy = networkObject.GetComponent<NetworkEnemy>();
+        var enemy = networkObject.GetComponent<NetworkEnemyController>();
         enemy.OnDespawn += () => enemyContainer.RemoveEnemy(enemy);
         enemyContainer.AddEnemy(enemy);
     }
@@ -50,17 +50,17 @@ public class NetworkEnemySpawner
 
 public class NetworkEnemyContainer
 {
-    List<NetworkEnemy> enemies = new();
+    List<NetworkEnemyController> enemies = new();
     public int MaxEnemyCount { get; set; } = 128;
-    public IEnumerable<NetworkEnemy> Enemies => enemies;
+    public IEnumerable<NetworkEnemyController> Enemies => enemies;
 
-    public void AddEnemy(NetworkEnemy enemy)
+    public void AddEnemy(NetworkEnemyController enemyController)
     {
-        enemies.Add(enemy);
+        enemies.Add(enemyController);
     }
 
-    public void RemoveEnemy(NetworkEnemy enemy)
+    public void RemoveEnemy(NetworkEnemyController enemyController)
     {
-        enemies.Remove(enemy);
+        enemies.Remove(enemyController);
     }
 }

@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public class NetworkEnemy : NetworkBehaviour
+public class NetworkEnemyController : NetworkBehaviour
 {
 
     NetworkCharacterControllerPrototype cc;

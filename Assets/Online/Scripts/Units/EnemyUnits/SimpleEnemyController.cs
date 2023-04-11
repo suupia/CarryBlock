@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleEnemy : NetworkEnemy
+public class SimpleEnemyController : NetworkEnemyController
 {
 
 }
