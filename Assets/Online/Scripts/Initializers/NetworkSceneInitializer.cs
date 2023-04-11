@@ -26,12 +26,8 @@ public abstract class NetworkSceneInitializer : SimulationBehaviour, IPlayerJoin
 
     protected void Init()
     {
-        Debug.Log($"Start {SceneManager.GetActiveScene().name} Init");
-
-        Debug.Log($"Runner:{Runner}\nrunnerManager.Runner:{runnerManager.Runner}");
         runnerManager.Runner.AddSimulationBehaviour(this); // Runnerに登録
         runnerManager.Runner.AddCallbacks(localInputPoller);
-        Debug.Log($"Runner:{Runner}");
 
         phaseManager = FindObjectOfType<PhaseManager>();
 
@@ -41,9 +37,7 @@ public abstract class NetworkSceneInitializer : SimulationBehaviour, IPlayerJoin
         playerSpawner = new NetworkPlayerSpawner(Runner);
         enemySpawner = new NetworkEnemySpawner(Runner);
 
-        this.token = _cts.Token;
-        
-        Debug.Log($"Finish {SceneManager.GetActiveScene().name} Init");
+        token = _cts.Token;
     }
 
     public void PlayerJoined(PlayerRef player)

@@ -3,28 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using Fusion;
 
 # nullable enable
-public class GameObjectPool
+public class MyNetworkObjectPool
 {
     readonly GameObject[] _pool;
-    readonly List<GameObject> _activeObjects = new List<GameObject>();
+    readonly List<GameObject> _activeObjects = new ();
     readonly int _poolSize;
 
     public int CountActive => _pool.Count(obj => obj.activeSelf);
 
     public int CountInactive => _pool.Count(obj => !obj.activeSelf);
 
-    public GameObjectPool(Transform parent,GameObject prefab, int poolSize = 20)
+    public MyNetworkObjectPool(Transform parent)
     {
+        var poolSize = parent.childCount;
         if (poolSize <= 0)
         {
-            throw new ArgumentException("Parent does not have any of these objects.", nameof(poolSize));
+            throw new ArgumentException("Parent does not have any of children.", nameof(poolSize));
         }
         _pool = new GameObject[poolSize];
+        
         for (int i = 0; i< poolSize; i++)
         {
-            var obj = UnityEngine.Object.Instantiate(prefab, parent);
+            var obj = parent.GetChild(i).gameObject;
             obj.SetActive(false);
             _pool[i] = obj;
         }
@@ -101,3 +104,4 @@ public class GameObjectPool
         }
     }
 }
+

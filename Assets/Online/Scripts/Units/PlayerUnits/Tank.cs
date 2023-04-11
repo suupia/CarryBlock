@@ -2,6 +2,7 @@ using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Network;
 using UnityEngine;
 using UnityEngine.Windows;
 
@@ -11,9 +12,12 @@ public class Tank : NetworkPlayerUnit
     [Networked] TickTimer ReloadTimer { get; set; }
     [Networked] NetworkObject Target { get; set; }
 
+    public override float DelayBetweenActions => 0.1f;
+
     NetworkCharacterControllerPrototype _cc;
     RangeDetector _rangeDetector;
-    
+
+    float _pickerHeight = 5.0f;
     
     public Tank(NetworkPlayerInfo info) : base(info)
     {
@@ -22,6 +26,7 @@ public class Tank : NetworkPlayerUnit
 
         _cc = info.networkCharacterController; 
         _rangeDetector = info.rangeDetector;
+        
     }
 
     public override void Move(Vector3 direction)
@@ -29,7 +34,7 @@ public class Tank : NetworkPlayerUnit
         _cc.Move(direction);
     }
 
-    public override void Action(NetworkButtons buttons, NetworkButtons preButtons)
+    public override void Action()
     {
         Debug.Log($"Actionを行います！");
 
@@ -50,24 +55,24 @@ public class Tank : NetworkPlayerUnit
                 Debug.Log($"info.bulletPrefab = {info.bulletPrefab}");
                 Debug.Log($"info.unitObject = {info.unitObject}");
                 Debug.Log($"_runner = {_runner}");
-                _runner.Spawn(info.bulletPrefab, info.unitObject.transform.position + offset, info.unitObject.transform.rotation, PlayerRef.None, OnBeforeSpawnBullet);
+                _runner.Spawn(info.bulletPrefab, info.unitObject.transform.position + offset, info.unitObject.transform.rotation, PlayerRef.None);
                 ReloadTimer = TickTimer.CreateFromSeconds(_runner, 2f);
             }
         }
 
-        if (buttons.GetPressed(preButtons).IsSet(PlayerOperation.MainAction))
-        {
-            var pickerObj = _runner.Spawn(info.pickerPrefab, info.unitObject.transform.position,  info.unitObject.transform.rotation, PlayerRef.None);
-        }
+        var pickerPos = info.unitObject.transform.position + new Vector3(0, _pickerHeight, 0);
+        var picker = _runner.Spawn(info.pickerPrefab, pickerPos,  Quaternion.identity, PlayerRef.None).GetComponent<NetworkPickerController>();
+        picker.Init(_runner,info.unitObject.gameObject, info.playerInfoForPicker);
+
     }
     
 
-    void OnBeforeSpawnBullet(NetworkRunner runner, NetworkObject obj)
-    {
-        var bullet = obj.GetComponent<Bullet>();
-        Debug.Log($"obj = {obj}");
-        Debug.Log($"bullet = {bullet}");
-        Debug.Log($"Target = {Target}");
-        bullet.AddForce(Target.transform.position - info.unitObject.transform.position);
-    }
+    // void OnBeforeSpawnBullet(NetworkRunner runner, NetworkObject obj)
+    // {
+    //     var bullet = obj.GetComponent<NetworkBulletController>();
+    //     Debug.Log($"obj = {obj}");
+    //     Debug.Log($"bullet = {bullet}");
+    //     Debug.Log($"Target = {Target}");
+    //     bullet.AddForce(Target.transform.position - info.unitObject.transform.position);
+    // }
 }

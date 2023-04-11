@@ -5,16 +5,19 @@ using UnityEngine;
 using UnityEngine.Pool;
 using System;
 using System.Data;
+using UnityEngine.Serialization;
 using Object = System.Object;
 
 public class PoolTestManager : MonoBehaviour
 {
     GameObjectPool pool;
-    [SerializeField] Transform parent;
+    [SerializeField] Transform parent1;
+    [SerializeField] Transform parent2;
 
     void Start()
     {
-        pool = new GameObjectPool(parent, 20, "Picker");
+        pool = new GameObjectPool(parent1, new GameObject("TestObject"),10);
+        pool = new GameObjectPool(parent2, new GameObject("Tank"), 3);
     }
 
     void Update()
@@ -27,7 +30,7 @@ public class PoolTestManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            var find = GameObject.Find("Picker");
+            var find = GameObject.Find("TestObject(Clone)");
             pool.Release(find.gameObject);
         }
         if (Input.GetKeyDown(KeyCode.B))
