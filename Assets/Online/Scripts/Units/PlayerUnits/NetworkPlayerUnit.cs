@@ -31,6 +31,11 @@ public  class NetworkPlayerInfo
 {
     [NonSerialized]public NetworkRunner runner;
     
+    // constant fields 
+    public readonly float bulletOffset = 1;
+    
+    public readonly float rangeRadius = 12.0f;
+    
     // Attach
     [SerializeField] public Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
     [SerializeField] public NetworkCharacterControllerPrototype networkCharacterController;

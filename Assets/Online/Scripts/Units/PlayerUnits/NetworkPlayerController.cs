@@ -1,5 +1,6 @@
 using Fusion;
 using UnityEngine;
+using System.Linq;
 
 /// <summary>
 /// The only NetworkBehaviour to control the character.
@@ -16,21 +17,23 @@ public class NetworkPlayerController : NetworkBehaviour
 
     [Networked] NetworkButtons PreButtons { get; set; }
     [Networked] public NetworkBool IsReady { get; set; }
-    
-    [Networked]  TickTimer _actionCooldown { get; set; }
-    
+
+    [Networked] TickTimer ShootCooldown { get; set; }
+    [Networked] TickTimer ActionCooldown { get; set; }
+
     public NetworkPlayerUnit Unit { get; set; }
+    NetworkPlayerShooter _shooter;
 
 
     public override void Spawned()
     {
-
         // Instantiate the tank.
         var prefab = playerUnitPrefabs[0];
         var unitObj = Instantiate(prefab, info.unitObjectParent);
- 
-        info.Init(Runner,unitObj);
+
+        info.Init(Runner, unitObj);
         Unit = new Tank(info);
+        _shooter = new NetworkPlayerShooter(info);
 
         if (Object.HasInputAuthority)
         {
@@ -40,11 +43,17 @@ public class NetworkPlayerController : NetworkBehaviour
             Debug.Log($"target.name = {info.unitObjectParent}");
         }
     }
-    
+
     public override void FixedUpdateNetwork()
     {
-        if(!HasStateAuthority )return;
-        
+        if (!HasStateAuthority) return;
+
+        if (ShootCooldown.ExpiredOrNotRunning(Runner))
+        {
+            _shooter.AttemptShootEnemy();
+            ShootCooldown = TickTimer.CreateFromSeconds(Runner, _shooter.shootInterval);
+        }
+
         if (GetInput(out NetworkInputData input))
         {
             //TODO: Check phase
@@ -62,12 +71,13 @@ public class NetworkPlayerController : NetworkBehaviour
 
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
             {
-                if (_actionCooldown.ExpiredOrNotRunning(Runner))
+                if (ActionCooldown.ExpiredOrNotRunning(Runner))
                 {
                     Unit.Action();
-                    _actionCooldown = TickTimer.CreateFromSeconds(Runner, Unit.DelayBetweenActions);
+                    ActionCooldown = TickTimer.CreateFromSeconds(Runner, Unit.DelayBetweenActions);
                 }
             }
+
             var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
             Unit.Move(direction);
@@ -75,14 +85,14 @@ public class NetworkPlayerController : NetworkBehaviour
             PreButtons = input.Buttons;
         }
     }
-    
+
 
     //Deal as RPC for changing unit
     [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.All)]
     public void RPC_ChangeUnit(int index)
     {
         // Todo : ChangeUnitの実装
-        
+
         // if (Unit != null)
         // {
         //     Runner.Despawn(playerObjectParent);
@@ -90,5 +100,35 @@ public class NetworkPlayerController : NetworkBehaviour
         //
         // playerObjectParent = SpawnPlayerUnit(index);
     }
-    
+}
+
+public class NetworkPlayerShooter
+{
+    NetworkPlayerInfo _info;
+
+    public float shootInterval = 0.5f;
+
+    public NetworkPlayerShooter(NetworkPlayerInfo info)
+    {
+        _info = info;
+    }
+
+    public void AttemptShootEnemy()
+    {
+        Collider[] colliders = Physics.OverlapSphere(_info.unitObject.transform.position, _info.rangeRadius);
+        var enemys = colliders.Where(collider => collider.CompareTag("Enemy")).Select(collider => collider.gameObject);
+
+        if (enemys.Any()) ShootEnemy(enemys.First());
+    }
+
+    async void ShootEnemy(GameObject targetEnemy)
+    {
+        // Debug.Log($"ShootEnemy() targetEnemy:{targetEnemy}");
+        var bulletInitPos =
+            _info.bulletOffset * (targetEnemy.gameObject.transform.position - _info.unitObject.transform.position)
+            .normalized + _info.unitObject.transform.position;
+        // var bullet = Object.Instantiate(_info.bulletPrefab, bulletInitPos, Quaternion.identity, _info.bulletsParent)
+        //     .GetComponent<BulletController>();
+        var bulletObj = _info.runner.Spawn(_info.bulletPrefab, bulletInitPos, Quaternion.identity, PlayerRef.None);
+    }
 }

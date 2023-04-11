@@ -169,6 +169,6 @@ MonoBehaviour:
     pickerPrefab:
       RawGuidValue: 115ee077661dd4786a1dd3a81452ca62
     bulletPrefab:
-      RawGuidValue: 937c049da4cf2394995462738a7fcdf4
+      RawGuidValue: 240b58989da6e405798d34a38c9be1df
   _IsReady:
     _value: 0
