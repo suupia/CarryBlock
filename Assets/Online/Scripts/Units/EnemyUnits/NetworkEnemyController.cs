@@ -57,6 +57,7 @@ public class NetworkEnemyController : NetworkBehaviour
         var players = colliders.
             Where(collider => collider.CompareTag("Player")).
             Select(collider => collider.gameObject);
+        Debug.Log($"players = {string.Join(",",players)}");
         if (players.Any())
         {
             targetPlayerObj = players.First();
