@@ -58,7 +58,8 @@ public class NetworkPlayerController : NetworkBehaviour
 
             if (input.Buttons.GetPressed(PreButtons).IsSet(PlayerOperation.MainAction))
             {
-                RPC_MainAction();
+                // RPC_MainAction();
+                Unit.Action();
             }
             var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
             // Debug.Log($"Direction:{direction}");
