@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof( NetworkCharacterControllerPrototype))]
 public class NetworkEnemyController : NetworkBehaviour
 {
     [SerializeField] NetworkPrefabRef resourcePrefab;
