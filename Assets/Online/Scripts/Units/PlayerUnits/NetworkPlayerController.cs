@@ -62,7 +62,6 @@ public class NetworkPlayerController : NetworkBehaviour
 
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
             {
-                // RPC_MainAction();
                 if (_actionCooldown.ExpiredOrNotRunning(Runner))
                 {
                     Unit.Action();
@@ -70,23 +69,13 @@ public class NetworkPlayerController : NetworkBehaviour
                 }
             }
             var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
-            // Debug.Log($"Direction:{direction}");
-            //Apply input
-            // if (Runner.IsForward)
-            // {
-            //     Unit.Move(direction);
-            // }
+
             Unit.Move(direction);
 
             PreButtons = input.Buttons;
         }
     }
     
-    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.All)]
-    private void RPC_MainAction()
-    {
-        Unit.Action();
-    }
 
     //Deal as RPC for changing unit
     [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.All)]
