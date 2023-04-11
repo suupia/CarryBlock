@@ -44,19 +44,19 @@ public class NetworkPlayerController : NetworkBehaviour
         if (GetInput(out NetworkInputData input))
         {
             //TODO: Check phase
-            if (input.Buttons.GetPressed(PreButtons).IsSet(PlayerOperation.Ready))
+            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Ready))
             {
                 IsReady = !IsReady;
                 Debug.Log($"Toggled Ready -> {IsReady}");
             }
 
-            if (input.Buttons.GetPressed(PreButtons).IsSet(PlayerOperation.ChangeUnit))
+            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
             {
                 //Tmp
                 RPC_ChangeUnit(1);
             }
 
-            if (input.Buttons.GetPressed(PreButtons).IsSet(PlayerOperation.MainAction))
+            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
             {
                 // RPC_MainAction();
                 Unit.Action();
