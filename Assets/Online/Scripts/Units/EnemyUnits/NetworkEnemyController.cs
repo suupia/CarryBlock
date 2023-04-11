@@ -17,9 +17,12 @@ public class NetworkEnemyController : NetworkBehaviour
     }
 
     EnemyState state = EnemyState.idle;
-    
+
     NetworkCharacterControllerPrototype _cc;
-    
+
+
+    public Action OnDespawn = () => { };
+
     public override void Spawned()
     {
         _cc = GetComponent<NetworkCharacterControllerPrototype>();
@@ -74,6 +77,7 @@ public class NetworkEnemyController : NetworkBehaviour
     {
         // Instantiate(resourcePrefab,transform.position, Quaternion.identity,resourcesParent);
         // Todo: ここでリソースを生成する
+        OnDespawn();
         Runner.Despawn(Object);
     }
 
