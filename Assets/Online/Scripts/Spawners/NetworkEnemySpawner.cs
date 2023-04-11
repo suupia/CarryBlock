@@ -41,7 +41,7 @@ public class NetworkEnemySpawner
         var enemyPrefabs = Resources.LoadAll<NetworkEnemyController>("Prefabs/Enemys");
         var networkObject = _runner.Spawn(enemyPrefabs[index], position, Quaternion.identity, PlayerRef.None);
         var enemy = networkObject.GetComponent<NetworkEnemyController>();
-        enemy.OnDespawn += () => enemyContainer.RemoveEnemy(enemy);
+        enemy.onDespawn += () => enemyContainer.RemoveEnemy(enemy);
         enemyContainer.AddEnemy(enemy);
     }
     
