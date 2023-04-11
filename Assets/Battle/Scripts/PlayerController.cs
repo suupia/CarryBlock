@@ -142,7 +142,7 @@ public class PlayerInfo
 
 
 [Serializable]
-public class PlayerInfoWrapper
+public class PlayerInfoWrapper 
 {
     public float RangeRadius => info.rangeRadius;
     PlayerInfo info;

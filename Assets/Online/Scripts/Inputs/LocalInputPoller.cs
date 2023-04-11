@@ -16,9 +16,11 @@ using UnityEngine;
 
 public class LocalInputPoller : INetworkRunnerCallbacks
 {
+    // Local variable to store the input polled.
+    NetworkInputData localInput = new ();
     public void OnInput(NetworkRunner runner, Fusion.NetworkInput input)
     {
-        var localInput = new NetworkInputData();
+        localInput = new NetworkInputData();
         localInput.Horizontal = Input.GetAxisRaw("Horizontal");
         localInput.Vertical = Input.GetAxisRaw("Vertical");
         localInput.Buttons.Set(PlayerOperation.MainAction, Input.GetKey(KeyCode.Space));
@@ -27,6 +29,9 @@ public class LocalInputPoller : INetworkRunnerCallbacks
         
         input.Set(localInput);
 
+        // Reset the input struct to start with a clean slate
+        // when polling for the next tick
+        localInput = default;
     }
 
 
