@@ -12,6 +12,8 @@ public class Tank : NetworkPlayerUnit
     [Networked] TickTimer ReloadTimer { get; set; }
     [Networked] NetworkObject Target { get; set; }
 
+    public override float DelayBetweenActions => 0.1f;
+
     NetworkCharacterControllerPrototype _cc;
     RangeDetector _rangeDetector;
 

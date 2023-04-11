@@ -17,6 +17,8 @@ public class NetworkPlayerController : NetworkBehaviour
     [Networked] NetworkButtons PreButtons { get; set; }
     [Networked] public NetworkBool IsReady { get; set; }
     
+    [Networked]  TickTimer _actionCooldown { get; set; }
+    
     public NetworkPlayerUnit Unit { get; set; }
 
 
@@ -59,7 +61,11 @@ public class NetworkPlayerController : NetworkBehaviour
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
             {
                 // RPC_MainAction();
-                Unit.Action();
+                if (_actionCooldown.ExpiredOrNotRunning(Runner))
+                {
+                    Unit.Action();
+                    _actionCooldown = TickTimer.CreateFromSeconds(Runner, Unit.DelayBetweenActions);
+                }
             }
             var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
             // Debug.Log($"Direction:{direction}");

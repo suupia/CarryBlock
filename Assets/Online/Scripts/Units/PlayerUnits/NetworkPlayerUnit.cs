@@ -21,6 +21,8 @@ public abstract class NetworkPlayerUnit : IPlayerUnit
     }
 
     public abstract void Move(Vector3 direction);
+
+    public abstract float DelayBetweenActions { get; }
     public abstract void Action();
 }
 
