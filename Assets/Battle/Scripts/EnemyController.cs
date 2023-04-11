@@ -6,25 +6,25 @@ using UnityEditor;
 
 public class EnemyController : MonoBehaviour
 {
-    private bool isInitialized = false; 
+    bool isInitialized = false; 
 
     Transform resourcesParent;
     [SerializeField] GameObject resourcePrefab;
 
-    private float detectionRange = 30;
+    float detectionRange = 30;
 
-    private GameObject targetPlayerObj;
-    private Rigidbody enemyRd;
+    GameObject targetPlayerObj;
+    Rigidbody enemyRd;
 
-    private float acceleration = 15f;
-    private float maxVelocity = 10f;
+    float acceleration = 15f;
+    float maxVelocity = 10f;
 
     public enum EnemyState
     {
         idle,chasingPlayer,
     }
 
-    private EnemyState state = EnemyState.idle;
+    EnemyState state = EnemyState.idle;
 
     public void  Init(Transform resourcesParent)
     {
@@ -33,7 +33,7 @@ public class EnemyController : MonoBehaviour
         isInitialized = true;
     }
 
-    private void Update()
+    void Update()
     {
         if(!isInitialized)return;
         
@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void Search()
+    void Search()
     {
         Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position, detectionRange);
         var players = colliders.
@@ -65,7 +65,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void Chase()
+    void Chase()
     {
         var directionVec = Utility.SetYToZero(targetPlayerObj.transform.position - gameObject.transform.position).normalized;
         enemyRd.AddForce(acceleration * directionVec, ForceMode.Acceleration);
