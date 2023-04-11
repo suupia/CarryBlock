@@ -8,7 +8,8 @@ using UnityEngine;
 /// もし重かったり、無料枠を超えるようなら、TickAlignedのRPCでトリガーだけ通信する方式にする
 /// 参考：https://docs.google.com/presentation/d/1kGN7ZEleBgpXuXnUin8y67LmXrmQuAtbgu4rz3QSY6U/edit#slide=id.g1592fa1edef_0_25
 /// </summary>
-public class Bullet : NetworkBehaviour
+[RequireComponent(typeof(NetworkObject))]
+public class NetworkBulletController : NetworkBehaviour
 {
     Rigidbody _rb;
 

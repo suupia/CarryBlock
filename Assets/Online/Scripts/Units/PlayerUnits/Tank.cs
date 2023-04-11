@@ -69,7 +69,7 @@ public class Tank : NetworkPlayerUnit
 
     void OnBeforeSpawnBullet(NetworkRunner runner, NetworkObject obj)
     {
-        var bullet = obj.GetComponent<Bullet>();
+        var bullet = obj.GetComponent<NetworkBulletController>();
         Debug.Log($"obj = {obj}");
         Debug.Log($"bullet = {bullet}");
         Debug.Log($"Target = {Target}");
