@@ -8,8 +8,8 @@ public class NetworkEnemyController : NetworkBehaviour, IPoolableObject
 {
     [SerializeField] NetworkPrefabRef resourcePrefab;
     
+    bool isInitialized = false;
     readonly float _detectionRange = 30;
-
     GameObject _targetPlayerObj;
 
     public enum EnemyState
@@ -26,7 +26,7 @@ public class NetworkEnemyController : NetworkBehaviour, IPoolableObject
     public override void Spawned()
     {
         _cc = GetComponent<NetworkCharacterControllerPrototype>();
-
+        isInitialized = true;
     }
 
     public override void FixedUpdateNetwork()
@@ -81,6 +81,7 @@ public class NetworkEnemyController : NetworkBehaviour, IPoolableObject
     }
     public void OnInactive()
     {
+        if (!isInitialized) return;
         _state = EnemyState.Idle;
     }
 }

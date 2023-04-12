@@ -47,7 +47,7 @@ using Fusion;
 
         public void OnInactive()
         {
-            
+            if(!isInitialized) return;
         }
 
         private void FixedUpdate()

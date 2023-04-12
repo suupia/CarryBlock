@@ -12,11 +12,11 @@ using UnityEngine;
 [RequireComponent(typeof(NetworkObject))]
 public class NetworkBulletController : NetworkBehaviour, IPoolableObject
 {
+    bool isInitialized = false;
     Rigidbody _rb;
     
     readonly float _speed = 30;
     readonly float _lifeTime = 5;
-
     [Networked] TickTimer LifeTimer { get; set; }
     
     
@@ -27,6 +27,7 @@ public class NetworkBulletController : NetworkBehaviour, IPoolableObject
         _rb.AddForce(_speed*directionVec , ForceMode.Impulse);
         LifeTimer = TickTimer.CreateFromSeconds(Runner, _lifeTime);
         
+        isInitialized = true;
     }
     
     // public override void Spawned()
@@ -69,6 +70,7 @@ public class NetworkBulletController : NetworkBehaviour, IPoolableObject
 
     public void OnInactive()
     {
+        if(!isInitialized)return;
         _rb.velocity = Vector3.zero;    
     }
 
