@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using System;
+using System.Linq;
 
 public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
 {
@@ -12,7 +13,7 @@ public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
     [SerializeField] List<NetworkPrefabRef> _poolableObjects;
 
     readonly Dictionary<NetworkPrefabId, Stack<NetworkObject>> _free = new();
-
+    
     public NetworkObject AcquireInstance(NetworkRunner runner, NetworkPrefabInfo info)
     {
         if (ShouldPool(runner, info))
@@ -24,7 +25,7 @@ public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
             return instance;
         }
 
-        return InstantiateObject(runner, info);
+        return InstantiateNonPoolableObject(runner, info);
     }
 
     public void ReleaseInstance(NetworkRunner runner, NetworkObject instance, bool isSceneObject)
@@ -40,6 +41,15 @@ public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
             if (_free.TryGetValue(prefabId, out var stack))
             {
                 instance.gameObject.SetActive(false);
+                var rds = instance.GetComponentsInChildren<Rigidbody>();
+                if(rds.Any())
+                {
+                    foreach (var rd in rds)
+                    {
+                        rd.velocity = Vector3.zero;
+                        rd.angularVelocity = Vector3.zero;
+                    }
+                }
                 stack.Push(instance);
             }
             else
@@ -73,7 +83,7 @@ public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
     }
     NetworkObject GetNewInstance(NetworkRunner runner, NetworkPrefabInfo info)
     {
-        NetworkObject instance = InstantiateObject(runner, info);
+        NetworkObject instance = InstantiatePoolableObject(runner, info);
 
         if (_free.TryGetValue(info.Prefab, out var stack) == false)
         {
@@ -83,11 +93,21 @@ public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
 
         return instance;
     }
-    NetworkObject InstantiateObject(NetworkRunner runner, NetworkPrefabInfo info)
+    NetworkObject InstantiatePoolableObject(NetworkRunner runner, NetworkPrefabInfo info)
     {
         if (runner.Config.PrefabTable.TryGetPrefab(info.Prefab, out var prefab))
         {
             return Instantiate(prefab, _poolParent);
+        }
+
+        Debug.LogError("No prefab for " + info.Prefab);
+        return null;
+    }
+    NetworkObject InstantiateNonPoolableObject(NetworkRunner runner, NetworkPrefabInfo info)
+    {
+        if (runner.Config.PrefabTable.TryGetPrefab(info.Prefab, out var prefab))
+        {
+            return Instantiate(prefab);
         }
 
         Debug.LogError("No prefab for " + info.Prefab);

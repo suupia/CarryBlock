@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4745853375487441022}
   - component: {fileID: 6077453475909247661}
+  - component: {fileID: 5106947862654808228}
   m_Layer: 0
   m_Name: NetworkRunnerManager
   m_TagString: Untagged
@@ -45,3 +46,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fusionContainer: {fileID: 2809280702630408735, guid: 8730053bea59f4aeba9fc763009021bb, type: 3}
+--- !u!114 &5106947862654808228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7490943133053557449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8546affd4741444ae8bc680d88205e17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _poolParent: {fileID: 0}
+  _poolableObjects:
+  - RawGuidValue: 240b58989da6e405798d34a38c9be1df
+  - RawGuidValue: 115ee077661dd4786a1dd3a81452ca62
+  - RawGuidValue: 31f19cb8b576944189a17141242207f5

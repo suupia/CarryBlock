@@ -12,6 +12,7 @@ using Random = UnityEngine.Random;
 
 // 全てのシーンにこれを配置しておけば、NetworkRunnerを使える
 // シーン上にNetworkRunnerがないならインスタンス化し、runner.StartGame()を実行
+[RequireComponent(typeof(NetworkObjectPoolDefault))]
 public class NetworkRunnerManager : MonoBehaviour
 {
     [SerializeField] GameObject fusionContainer;
@@ -26,16 +27,18 @@ public class NetworkRunnerManager : MonoBehaviour
         if (_runner == null)
         {
             var fusionContainerObj = Instantiate(fusionContainer);
+            
+            // Set up NetworkRunner
             _runner = fusionContainerObj.GetComponent<NetworkRunner>();
             DontDestroyOnLoad(_runner);
-        
+            
             await _runner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.AutoHostOrClient,
                 SessionName = sessionName,
                 Scene = SceneManager.GetActiveScene().buildIndex,
                 SceneManager = fusionContainerObj.GetComponent<NetworkSceneManagerDefault>(),
-                ObjectPool =  fusionContainerObj.GetComponent<NetworkObjectPoolDefault>(),
+                ObjectPool =  GetComponent<NetworkObjectPoolDefault>(),
             });
         }
         

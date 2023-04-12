@@ -58,6 +58,6 @@ public class NetworkBulletController : NetworkBehaviour
     }
     void DestroyBullet()
     {
-        Destroy(gameObject);
+        Runner.Despawn(Object);
     }
 }
