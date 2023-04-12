@@ -57,7 +57,7 @@ public  class PlayerInfo
     }
 }
 
-[Serializable]
+
 public class PlayerInfoForPicker
 {
     public float RangeRadius => 12.0f; //ToDo : move to NetworkPlayerInfo
