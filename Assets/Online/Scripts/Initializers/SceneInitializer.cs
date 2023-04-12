@@ -9,15 +9,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
-public abstract class NetworkSceneInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
+public abstract class SceneInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
 {
     [SerializeField] protected NetworkRunnerManager runnerManager;
     protected LocalInputPoller localInputPoller = new();
     protected NetworkPlayerContainer networkPlayerContainer = new();
     protected NetworkEnemyContainer networkEnemyContainer = new();
     protected PhaseManager phaseManager;
-    protected NetworkPlayerSpawner playerSpawner;
-    protected NetworkEnemySpawner enemySpawner;
+    protected PlayerSpawner playerSpawner;
+    protected EnemySpawner enemySpawner;
     
     // UniTask
     CancellationTokenSource _cts = new();
@@ -34,8 +34,8 @@ public abstract class NetworkSceneInitializer : SimulationBehaviour, IPlayerJoin
         Runner.AddSimulationBehaviour(phaseManager);
         
         // Domain
-        playerSpawner = new NetworkPlayerSpawner(Runner);
-        enemySpawner = new NetworkEnemySpawner(Runner);
+        playerSpawner = new PlayerSpawner(Runner);
+        enemySpawner = new EnemySpawner(Runner);
 
         token = _cts.Token;
     }

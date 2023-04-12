@@ -11,11 +11,11 @@ public interface IPlayerUnit
     void Action();
 }
 
-public abstract class NetworkPlayerUnit : IPlayerUnit
+public abstract class PlayerUnit : IPlayerUnit
 {
     public  Transform transform => info.unitObjectParent.transform; // 後で消す。　コライダーで判定するようにするため、ピュアなスクリプトから位置情報を取る必要はない
-    protected NetworkPlayerInfo info;
-    public NetworkPlayerUnit(NetworkPlayerInfo info)
+    protected PlayerInfo info;
+    public PlayerUnit(PlayerInfo info)
     {
         this.info = info;
     }
@@ -27,7 +27,7 @@ public abstract class NetworkPlayerUnit : IPlayerUnit
 }
 
 [Serializable]
-public  class NetworkPlayerInfo
+public  class PlayerInfo
 {
     [NonSerialized]public NetworkRunner runner;
     
@@ -61,9 +61,9 @@ public  class NetworkPlayerInfo
 public class PlayerInfoForPicker
 {
     public float RangeRadius => 12.0f; //ToDo : move to NetworkPlayerInfo
-    NetworkPlayerInfo _info;
+    PlayerInfo _info;
 
-    public PlayerInfoForPicker(NetworkPlayerInfo info)
+    public PlayerInfoForPicker(PlayerInfo info)
     {
         _info = info;
     }

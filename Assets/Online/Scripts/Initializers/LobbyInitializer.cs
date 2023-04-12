@@ -7,7 +7,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 
 [DisallowMultipleComponent]
-public class LobbyInitializer : NetworkSceneInitializer
+public class LobbyInitializer : SceneInitializer
 {
     async void  Start()
     {

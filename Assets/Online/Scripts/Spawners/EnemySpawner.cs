@@ -9,13 +9,13 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 
-public class NetworkEnemySpawner
+public class EnemySpawner
 {
     readonly NetworkRunner _runner;
     readonly CancellationTokenSource _cts = new();
     readonly CancellationToken _token;
 
-    public NetworkEnemySpawner(NetworkRunner runner)
+    public EnemySpawner(NetworkRunner runner)
     {
         this._runner = runner;
         _token = _cts.Token;

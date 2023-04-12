@@ -9,10 +9,10 @@ using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
 
-public class NetworkPlayerSpawner
+public class PlayerSpawner
 {
     readonly NetworkRunner _runner;
-    public  NetworkPlayerSpawner(NetworkRunner runner)
+    public  PlayerSpawner(NetworkRunner runner)
     {
         this._runner = runner;
     }
@@ -57,14 +57,14 @@ public class NetworkPlayerContainer
     public IEnumerable<NetworkPlayerController> PlayerControllers => playerControllers;
     public bool IsAllReady => playerControllers.All(pc => pc.IsReady);
 
-    public void AddPlayer(NetworkPlayerController playerController)
+    public void AddPlayer(NetworkPlayerController networkPlayerController)
     {
-        playerControllers.Add(playerController);
+        playerControllers.Add(networkPlayerController);
     }
 
-    public void RemovePlayer(NetworkPlayerController playerController)
+    public void RemovePlayer(NetworkPlayerController networkPlayerController)
     {
-        playerControllers.Remove(playerController);
+        playerControllers.Remove(networkPlayerController);
     }
     
 }
