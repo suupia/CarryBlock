@@ -5,12 +5,16 @@ using Fusion;
 using System;
 using System.Linq;
 
+public interface IPoolableObject
+{
+    void OnInactive(); // Please make it sure that it is called by Monobehaviour.OnDisable().
+}
 public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
 {
     [SerializeField] Transform _poolParent;
 
     [Tooltip("The objects to be pooled, leave it empty to pool every Network Object spawned")] 
-    [SerializeField] List<NetworkPrefabRef> _poolableObjects;
+    [SerializeField] List<NetworkPrefabRef> _poolableObjects; // Todo: Check the attached elements implements IPoolableObject.
 
     readonly Dictionary<NetworkPrefabId, Stack<NetworkObject>> _free = new();
     
@@ -41,15 +45,10 @@ public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
             if (_free.TryGetValue(prefabId, out var stack))
             {
                 instance.gameObject.SetActive(false);
-                var rds = instance.GetComponentsInChildren<Rigidbody>();
-                if(rds.Any())
-                {
-                    foreach (var rd in rds)
-                    {
-                        rd.velocity = Vector3.zero;
-                        rd.angularVelocity = Vector3.zero;
-                    }
-                }
+
+                // reset parenting
+                instance.transform.SetParent(_poolParent);
+                
                 stack.Push(instance);
             }
             else
