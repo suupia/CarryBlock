@@ -70,7 +70,7 @@ public class NetworkEnemyController : NetworkBehaviour
 
     public void OnDefeated()
     {
-        // Todo: ここでリソースを生成する
+        Runner.Spawn(resourcePrefab, transform.position, Quaternion.identity, PlayerRef.None);
         onDespawn();
         Runner.Despawn(Object);
     }

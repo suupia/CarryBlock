@@ -340,7 +340,7 @@ namespace Network
             Collider[] colliders = Physics.OverlapSphere(Utility.SetYToZero(info.pickerObj.transform.position),
                 info.detectionRange);
             var resources = colliders.Where(collider => collider.CompareTag("Resource"))
-                .Where(collider => collider.gameObject.GetComponent<ResourceController>().isOwned == false)
+                .Where(collider => collider.gameObject.GetComponent<NetworkResourceController>().isOwned == false)
                 .Select(collider => collider.gameObject);
 
             if (resources.Any()) TakeResource(context, resources.First());
@@ -349,7 +349,7 @@ namespace Network
         void TakeResource(IPickerContext context, GameObject resource)
         {
             if (resource == null) return;
-            resource.GetComponent<ResourceController>().isOwned = true;
+            resource.GetComponent<NetworkResourceController>().isOwned = true;
             info.SetTargetResourceObj(resource);
             context.ChangeState(info.ApproachState);
         }
