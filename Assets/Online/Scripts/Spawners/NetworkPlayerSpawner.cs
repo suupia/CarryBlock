@@ -30,7 +30,7 @@ public class NetworkPlayerSpawner
     {
         Debug.Log("Spawning Player");
         var spawnPosition = new Vector3(0, 1, 0);
-        var playerControllerPrefab = Resources.Load<NetworkPlayerController>("Prefabs/PlayerController");
+        var playerControllerPrefab = Resources.Load<NetworkPlayerController>("Prefabs/Players/PlayerController");
         var playerController = _runner.Spawn(playerControllerPrefab, spawnPosition, Quaternion.identity, player);
         _runner.SetPlayerObject(player, playerController.Object);
         playerContainer.AddPlayer(playerController);
