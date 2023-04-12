@@ -2,11 +2,10 @@ using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Network;
 using UnityEngine;
 using UnityEngine.Windows;
 
-public class Tank : NetworkPlayerUnit
+public class Tank : PlayerUnit
 {
     readonly NetworkRunner　_runner;
     [Networked] TickTimer ReloadTimer { get; set; }
@@ -19,7 +18,7 @@ public class Tank : NetworkPlayerUnit
 
     float _pickerHeight = 5.0f;
     
-    public Tank(NetworkPlayerInfo info) : base(info)
+    public Tank(PlayerInfo info) : base(info)
     {
         this.info = info;
         _runner = info.runner;

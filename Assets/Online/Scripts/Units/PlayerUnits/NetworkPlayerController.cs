@@ -13,7 +13,7 @@ public class NetworkPlayerController : NetworkBehaviour
 
     [SerializeField] GameObject[] playerUnitPrefabs;
 
-    [SerializeField] NetworkPlayerInfo info;
+    [SerializeField] PlayerInfo info;
 
     [Networked] NetworkButtons PreButtons { get; set; }
     [Networked] public NetworkBool IsReady { get; set; }
@@ -21,8 +21,8 @@ public class NetworkPlayerController : NetworkBehaviour
     [Networked] TickTimer ShootCooldown { get; set; }
     [Networked] TickTimer ActionCooldown { get; set; }
 
-    NetworkPlayerUnit _unit;
-    NetworkPlayerShooter _shooter;
+    PlayerUnit _unit;
+    PlayerShooter _shooter;
 
 
     public override void Spawned()
@@ -33,7 +33,7 @@ public class NetworkPlayerController : NetworkBehaviour
 
         info.Init(Runner, unitObj);
         _unit = new Tank(info);
-        _shooter = new NetworkPlayerShooter(info);
+        _shooter = new PlayerShooter(info);
 
         if (Object.HasInputAuthority)
         {
@@ -102,13 +102,13 @@ public class NetworkPlayerController : NetworkBehaviour
     }
 }
 
-public class NetworkPlayerShooter
+public class PlayerShooter
 {
-    NetworkPlayerInfo _info;
+    PlayerInfo _info;
 
     public float shootInterval = 0.5f;
 
-    public NetworkPlayerShooter(NetworkPlayerInfo info)
+    public PlayerShooter(PlayerInfo info)
     {
         _info = info;
     }
@@ -127,8 +127,6 @@ public class NetworkPlayerShooter
         var bulletInitPos =
             _info.bulletOffset * (targetEnemy.gameObject.transform.position - _info.unitObject.transform.position)
             .normalized + _info.unitObject.transform.position;
-        // var bullet = Object.Instantiate(_info.bulletPrefab, bulletInitPos, Quaternion.identity, _info.bulletsParent)
-        //     .GetComponent<BulletController>();
         var bulletObj = _info.runner.Spawn(_info.bulletPrefab, bulletInitPos, Quaternion.identity, PlayerRef.None);
         var bullet = bulletObj.GetComponent<NetworkBulletController>();
         bullet.Init(targetEnemy);

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 
-public class GameInitializer : NetworkSceneInitializer
+public class GameInitializer : SceneInitializer
 {
     async void Start()
     {
