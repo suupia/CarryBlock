@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 343214678722504434}
   - component: {fileID: 6802528633934607057}
   m_Layer: 0
-  m_Name: NetworkPicker
+  m_Name: Picker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
