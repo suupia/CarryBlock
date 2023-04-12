@@ -8,6 +8,17 @@ using Fusion;
 
 namespace Network
 {
+    public interface IPickerContext
+    {
+        public IPickerState CurrentState();
+        public void ChangeState(IPickerState state);
+    }
+
+    public interface IPickerState
+    {
+        public void Process(IPickerContext state);
+    }
+
     public class NetworkPickerController : NetworkBehaviour
     {
         bool isInitialized = false;
