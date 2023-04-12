@@ -49,6 +49,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  resourcePrefab:
+    RawGuidValue: 31f19cb8b576944189a17141242207f5
 --- !u!114 &6327064644294493231
 MonoBehaviour:
   m_ObjectHideFlags: 0
