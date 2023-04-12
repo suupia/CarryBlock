@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9209282993185821242}
   - component: {fileID: -5769145101562873616}
   - component: {fileID: 8527503472081105761}
+  - component: {fileID: 626525422616444197}
   m_Layer: 0
   m_Name: FusionContainer
   m_TagString: Untagged
@@ -72,3 +73,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowHierarchyWindowOverlay: 1
   PostLoadDelayFrames: 1
+--- !u!114 &626525422616444197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2809280702630408735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8546affd4741444ae8bc680d88205e17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _poolParent: {fileID: 0}
+  _poolableObjects: []
