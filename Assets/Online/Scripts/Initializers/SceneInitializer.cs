@@ -26,11 +26,10 @@ public abstract class SceneInitializer : SimulationBehaviour, IPlayerJoined, IPl
 
     protected void Init()
     {
-        runnerManager.Runner.AddSimulationBehaviour(this); // Runnerに登録
+        runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
         runnerManager.Runner.AddCallbacks(localInputPoller);
 
-        phaseManager = FindObjectOfType<PhaseManager>();
-
+        phaseManager = FindObjectOfType<PhaseManager>(); // Todo: PhaseManger関連の実装
         Runner.AddSimulationBehaviour(phaseManager);
         
         // Domain

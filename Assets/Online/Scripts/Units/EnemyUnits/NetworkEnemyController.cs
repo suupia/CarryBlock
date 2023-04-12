@@ -4,12 +4,12 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof( NetworkCharacterControllerPrototype))]
-public class NetworkEnemyController : NetworkBehaviour
+public class NetworkEnemyController : NetworkBehaviour, IPoolableObject
 {
     [SerializeField] NetworkPrefabRef resourcePrefab;
     
+    bool isInitialized = false;
     readonly float _detectionRange = 30;
-
     GameObject _targetPlayerObj;
 
     public enum EnemyState
@@ -26,7 +26,7 @@ public class NetworkEnemyController : NetworkBehaviour
     public override void Spawned()
     {
         _cc = GetComponent<NetworkCharacterControllerPrototype>();
-
+        isInitialized = true;
     }
 
     public override void FixedUpdateNetwork()
@@ -75,5 +75,13 @@ public class NetworkEnemyController : NetworkBehaviour
         Runner.Despawn(Object);
     }
 
-    
+    void OnDisable()
+    {
+        OnInactive();
+    }
+    public void OnInactive()
+    {
+        if (!isInitialized) return;
+        _state = EnemyState.Idle;
+    }
 }
