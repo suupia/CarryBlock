@@ -13,13 +13,13 @@ using Random = UnityEngine.Random;
 
 // 全てのシーンにこれを配置しておけば、NetworkRunnerを使える
 // シーン上にNetworkRunnerがないならインスタンス化し、runner.StartGame()を実行
-[RequireComponent(typeof(NetworkObjectPoolDefault))]
 public class NetworkRunnerManager : MonoBehaviour
 {
-    [SerializeField] GameObject fusionContainer;
+    [SerializeField] NetworkRunner networkRunner;
+    [SerializeField] NetworkSceneManagerDefault networkSceneManagerDefault;
+    [SerializeField] NetworkObjectPoolDefault networkObjectPoolDefault;
     public NetworkRunner Runner => _runner;
-
-    [CanBeNull] NetworkRunner _runner;
+    NetworkRunner _runner;
 
     public async UniTask AttemptStartScene(string sessionName = default)
     {
@@ -27,28 +27,24 @@ public class NetworkRunnerManager : MonoBehaviour
         _runner = FindObjectOfType<NetworkRunner>();
         if (_runner == null)
         {
-            var fusionContainerObj = Instantiate(fusionContainer);
-
             // Set up NetworkRunner
-            _runner = fusionContainerObj.GetComponent<NetworkRunner>();
-            if (_runner == null)
-            {
-                Debug.LogError($"NetworkRunner is not found in {fusionContainerObj.name}");
-                return;
-            }
-
+            _runner = Instantiate(networkRunner);
             DontDestroyOnLoad(_runner);
             _runner.AddCallbacks(new LocalInputPoller());
-
+            
+            // Set up NetworkSceneManager
+            var networkSceneManager = Instantiate(networkSceneManagerDefault);
+            DontDestroyOnLoad(networkSceneManager);
 
             await _runner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.AutoHostOrClient,
                 SessionName = sessionName,
                 Scene = SceneManager.GetActiveScene().buildIndex,
-                SceneManager = fusionContainerObj.GetComponent<NetworkSceneManagerDefault>(),
-                ObjectPool = GetComponent<NetworkObjectPoolDefault>(),
+                SceneManager = networkSceneManager,
+                ObjectPool = networkObjectPoolDefault,
             });
+
         }
 
     }

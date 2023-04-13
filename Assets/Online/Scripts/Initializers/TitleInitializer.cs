@@ -16,6 +16,7 @@ public class TitleInitializer : MonoBehaviour
     {
         var runnerManager = FindObjectOfType<NetworkRunnerManager>();
         await runnerManager.AttemptStartScene("RoomName");
+        Debug.Log($"Transitioning to LobbySceneTestRoom");
         SceneTransition.TransitioningScene(runnerManager.Runner,SceneName.LobbyScene);
     }
 }

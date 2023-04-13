@@ -9,9 +9,10 @@ using UnityEditor;
 public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
 {
     [SerializeField] Transform _poolParent;
-
+    
     [Tooltip("The objects to be pooled, leave it empty to pool every Network Object spawned")] 
     [SerializeField] List<NetworkPrefabRef> _poolableObjects; // Todo: Check the attached elements implements IPoolableObject.
+    
 
     readonly Dictionary<NetworkPrefabId, Stack<NetworkObject>> _free = new();
     
