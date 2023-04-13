@@ -70,6 +70,7 @@ public class NetworkEnemyController : NetworkBehaviour, IPoolableObject
 
     public void OnDefeated()
     {
+        Debug.Log($"Runner = {Runner}"); // Todo: シーン切り替え時にRunnerがnullになっている時があるかも
         Runner.Spawn(resourcePrefab, transform.position, Quaternion.identity, PlayerRef.None);
         onDespawn();
         Runner.Despawn(Object);

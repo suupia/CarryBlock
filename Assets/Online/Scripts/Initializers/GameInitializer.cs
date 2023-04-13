@@ -16,14 +16,10 @@ public class GameInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     async void Start()
     {
         var runnerManager = FindObjectOfType<NetworkRunnerManager>();
-        // Runner.StartGameが実行されてなかったら実行する
+        // Runner.StartGame() if it has not been run.
         await runnerManager.AttemptStartScene("GameSceneTestRoom");
         runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
-        // 別のシーンから来た時に待つ必要がある
-        if (Runner != null)
-        {
-            await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
-        }
+        await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
         
         // Domain
         _playerSpawner = new PlayerSpawner(Runner);
@@ -47,9 +43,7 @@ public class GameInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
         if (Runner.IsServer)
         {
-            // _phaseManager.SetPhase(Phase.Ending);
             SceneTransition.TransitioningScene(Runner,SceneName.LobbyScene);
-            //  networkEnemyContainer.MaxEnemyCount = 128;
         }
     }
     

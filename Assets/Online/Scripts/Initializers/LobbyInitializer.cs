@@ -18,14 +18,10 @@ public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     async void  Start()
     {
         var runnerManager = FindObjectOfType<NetworkRunnerManager>();
-        // Runner.StartGameが実行されてなかったら実行する
+        // Runner.StartGame() if it has not been run.
         await runnerManager.AttemptStartScene("LobbySceneTestRoom");
         runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
-        // 別のシーンから来た時に待つ必要がある
-        if (Runner != null)
-        {
-            await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
-        }
+        await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
         
         // Domain
         _playerSpawner = new PlayerSpawner(Runner);
