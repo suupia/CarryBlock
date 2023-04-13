@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Fusion;
@@ -20,31 +21,38 @@ public class NetworkRunnerManager : MonoBehaviour
 
     [CanBeNull] NetworkRunner _runner;
 
-    public async UniTask StartScene(string sessionName = default)
+    public async UniTask AttemptStartScene(string sessionName = default)
     {
         sessionName ??= RandomString(5);
         _runner = FindObjectOfType<NetworkRunner>();
         if (_runner == null)
         {
             var fusionContainerObj = Instantiate(fusionContainer);
-            
+
             // Set up NetworkRunner
             _runner = fusionContainerObj.GetComponent<NetworkRunner>();
+            if (_runner == null)
+            {
+                Debug.LogError($"NetworkRunner is not found in {fusionContainerObj.name}");
+                return;
+            }
+
             DontDestroyOnLoad(_runner);
-            
+            _runner.AddCallbacks(new LocalInputPoller());
+
+
             await _runner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.AutoHostOrClient,
                 SessionName = sessionName,
                 Scene = SceneManager.GetActiveScene().buildIndex,
                 SceneManager = fusionContainerObj.GetComponent<NetworkSceneManagerDefault>(),
-                ObjectPool =  GetComponent<NetworkObjectPoolDefault>(),
+                ObjectPool = GetComponent<NetworkObjectPoolDefault>(),
             });
         }
-        
 
     }
-    
+
     // Create random char
     string RandomString(int length)
     {
@@ -55,7 +63,7 @@ public class NetworkRunnerManager : MonoBehaviour
         {
             result[i] = chars[random.Next(chars.Length)];
         }
+
         return new string(result);
     }
-
 }

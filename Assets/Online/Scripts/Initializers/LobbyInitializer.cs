@@ -4,48 +4,76 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 
 [DisallowMultipleComponent]
-public class LobbyInitializer : SceneInitializer
+public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
 {
+    NetworkPlayerContainer _networkPlayerContainer = new();
+    NetworkEnemyContainer _networkEnemyContainer = new();
+    PlayerSpawner _playerSpawner;
+    EnemySpawner _enemySpawner;
+    
     async void  Start()
     {
-        await runnerManager.StartScene("LobbySceneTestRoom");
-        base.Init();
-
-        await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: token); 
-
-
+        var runnerManager = FindObjectOfType<NetworkRunnerManager>();
+        // Runner.StartGameが実行されてなかったら実行する
+        await runnerManager.AttemptStartScene("LobbySceneTestRoom");
+        runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
+        // 別のシーンから来た時に待つ必要がある
+        if (Runner != null)
+        {
+            await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
+        }
+        
+        // Domain
+        _playerSpawner = new PlayerSpawner(Runner);
+        _enemySpawner = new EnemySpawner(Runner);
         
         if (Runner.IsServer)
         {
-            playerSpawner.RespawnAllPlayer(networkPlayerContainer);
+            _playerSpawner.RespawnAllPlayer(_networkPlayerContainer);
         }
 
         if (Runner.IsServer)
         {
-            networkEnemyContainer.MaxEnemyCount = 5;
-            var _ = enemySpawner.StartSimpleSpawner(0, 5f,networkEnemyContainer);
+            _networkEnemyContainer.MaxEnemyCount = 5;
+            var _ = _enemySpawner.StartSimpleSpawner(0, 5f,_networkEnemyContainer);
         }
     }
 
     // ボタンから呼び出す
-    public void SetActiveGameScene()
+    public void TransitionToGameScene()
     {
         if (Runner.IsServer)
         {
-            if (networkPlayerContainer.IsAllReady)
+            if (_networkPlayerContainer.IsAllReady)
             {
-                enemySpawner.CancelSpawning();
-                phaseManager.SetPhase(Phase.Starting);
+                _enemySpawner.CancelSpawning();
+                SceneTransition.TransitioningScene(Runner,SceneName.GameScene);
+            }else{
+                Debug.Log("Not All Ready");
             }
         }
     }
-
-    public override void FixedUpdateNetwork()
+    void IPlayerJoined.PlayerJoined(PlayerRef player)
     {
-
+        if (Runner.IsServer)
+        {
+            _playerSpawner.SpawnPlayer(player,_networkPlayerContainer);
+    
+            // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
+        }
+    }
+    
+    
+    void IPlayerLeft.PlayerLeft(PlayerRef player)
+    {
+        if (Runner.IsServer)
+        {
+            _playerSpawner.DespawnPlayer(player,_networkPlayerContainer);
+        }
     }
     
 }

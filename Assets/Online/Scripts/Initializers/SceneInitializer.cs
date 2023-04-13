@@ -1,5 +1,4 @@
 using Fusion;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,65 +8,47 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
-public abstract class SceneInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
+public class SceneInitializer
 {
-    [SerializeField] protected NetworkRunnerManager runnerManager;
-    protected LocalInputPoller localInputPoller = new();
-    protected NetworkPlayerContainer networkPlayerContainer = new();
-    protected NetworkEnemyContainer networkEnemyContainer = new();
-    protected PhaseManager phaseManager;
-    protected PlayerSpawner playerSpawner;
-    protected EnemySpawner enemySpawner;
-    
-    // UniTask
-    CancellationTokenSource _cts = new();
-    protected CancellationToken token;
+    NetworkRunnerManager _runnerManager;
+     NetworkPlayerContainer networkPlayerContainer = new();
+     NetworkEnemyContainer networkEnemyContainer = new();
 
 
-    protected void Init()
+    public  SceneInitializer(SimulationBehaviour initializer)
     {
-        runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
-        runnerManager.Runner.AddCallbacks(localInputPoller);
+        _runnerManager = Object.FindObjectOfType<NetworkRunnerManager>(); 
+        _runnerManager.Runner.AddSimulationBehaviour(initializer); // Register this class with the runner
+        _runnerManager.Runner.AddCallbacks(new LocalInputPoller());
 
-        phaseManager = FindObjectOfType<PhaseManager>(); // Todo: PhaseManger関連の実装
-        Runner.AddSimulationBehaviour(phaseManager);
         
-        // Domain
-        playerSpawner = new PlayerSpawner(Runner);
-        enemySpawner = new EnemySpawner(Runner);
-
-        token = _cts.Token;
     }
 
-    public void PlayerJoined(PlayerRef player)
+    public async UniTask StartScene(string sessionName = default)
     {
-        if (Runner.IsServer)
-        {
-            // var _= AsyncSpawnPlayer(player, token);
-            playerSpawner.SpawnPlayer(player,networkPlayerContainer);
-
-            // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
-        }
+        await _runnerManager.AttemptStartScene(sessionName);
     }
     
 
-    public void PlayerLeft(PlayerRef player)
-    {
-        if (Runner.IsServer)
-        {
-            playerSpawner.DespawnPlayer(player,networkPlayerContainer);
-        }
-    }
-
-    // public void SceneLoadStart()
+    // public void PlayerJoined(PlayerRef player)
     // {
-    //     Debug.Log($"SceneLoadStart()");
+    //     if (Runner.IsServer)
+    //     {
+    //         // var _= AsyncSpawnPlayer(player, token);
+    //         playerSpawner.SpawnPlayer(player,networkPlayerContainer);
+    //
+    //         // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
+    //     }
     // }
     //
-    // public void SceneLoadDone()
+    //
+    // public void PlayerLeft(PlayerRef player)
     // {
-    //     // AddSimulationBehaviour()でRunnerにコールバックが登録されているはずだから呼ばれるはず
-    //     Debug.Log($"SceneLoadDone()");
+    //     if (Runner.IsServer)
+    //     {
+    //         playerSpawner.DespawnPlayer(player,networkPlayerContainer);
+    //     }
     // }
+    
 }
 
