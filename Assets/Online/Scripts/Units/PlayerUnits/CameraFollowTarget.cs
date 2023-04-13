@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
-using UnityEngine;
 
 public class CameraFollowTarget : MonoBehaviour
 {
