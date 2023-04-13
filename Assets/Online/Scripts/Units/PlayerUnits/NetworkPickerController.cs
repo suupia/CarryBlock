@@ -17,7 +17,7 @@ using Fusion;
         public void Process(IPickerContext state);
     }
 
-    public class NetworkPickerController : NetworkBehaviour, IPoolableObject
+    public class NetworkPickerController :  PoolableObject
     {
         bool isInitialized = false;
 
@@ -45,7 +45,7 @@ using Fusion;
             isInitialized = true;
         }
 
-        public void OnInactive()
+        protected override void OnInactive()
         {
             if(!isInitialized) return;
             pickerInfo.pickerRd.velocity = Vector3.zero;

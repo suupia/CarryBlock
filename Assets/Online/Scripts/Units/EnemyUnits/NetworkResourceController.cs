@@ -5,20 +5,16 @@ using Fusion;
 using UnityEngine;
 
 [RequireComponent(typeof(NetworkObject))]
-public class NetworkResourceController : NetworkBehaviour, IPoolableObject
+public class NetworkResourceController :  PoolableObject
 {
     public  bool isOwned = false;
     bool isInitialized = false;
     
-    public void Init()
+    public override void Spawned() // 必要であればInit()にして外部から呼び出せるようにする
     {
         isInitialized = true;
     }
-    void OnDisable()
-    {
-        OnInactive();
-    }
-    public void OnInactive()
+    protected override void OnInactive()
     {
         if(!isInitialized)return;
         isOwned = false;

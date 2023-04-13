@@ -4,11 +4,8 @@ using UnityEngine;
 using Fusion;
 using System;
 using System.Linq;
+using UnityEditor;
 
-public interface IPoolableObject
-{
-    void OnInactive(); // Please make it sure that it is called by Monobehaviour.OnDisable().
-}
 public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
 {
     [SerializeField] Transform _poolParent;
@@ -45,6 +42,7 @@ public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
             if (_free.TryGetValue(prefabId, out var stack))
             {
                 instance.gameObject.SetActive(false);
+                instance.gameObject.GetComponentsInChildren<PoolableObject>().ToList().ForEach(obj => obj.gameObject.SetActive(false));
 
                 // reset parenting
                 instance.transform.SetParent(_poolParent);

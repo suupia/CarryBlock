@@ -10,7 +10,7 @@ using UnityEngine;
 /// 参考：https://docs.google.com/presentation/d/1kGN7ZEleBgpXuXnUin8y67LmXrmQuAtbgu4rz3QSY6U/edit#slide=id.g1592fa1edef_0_25
 /// </summary>
 [RequireComponent(typeof(NetworkObject))]
-public class NetworkBulletController : NetworkBehaviour, IPoolableObject
+public class NetworkBulletController : PoolableObject
 {
     bool isInitialized = false;
     Rigidbody _rb;
@@ -29,14 +29,6 @@ public class NetworkBulletController : NetworkBehaviour, IPoolableObject
         
         isInitialized = true;
     }
-    
-    // public override void Spawned()
-    // {
-    //     if (Object.HasStateAuthority)
-    //     {
-    //         Life = TickTimer.CreateFromSeconds(Runner, 3f);
-    //     }
-    // }
 
     public override void FixedUpdateNetwork()
     {
@@ -68,7 +60,7 @@ public class NetworkBulletController : NetworkBehaviour, IPoolableObject
        OnInactive();
     }
 
-    public void OnInactive()
+    protected override void OnInactive()
     {
         if(!isInitialized)return;
         _rb.velocity = Vector3.zero;    

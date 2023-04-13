@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof( NetworkCharacterControllerPrototype))]
-public class NetworkEnemyController : NetworkBehaviour, IPoolableObject
+public class NetworkEnemyController :  PoolableObject
 {
     [SerializeField] NetworkPrefabRef resourcePrefab;
     
@@ -80,7 +80,7 @@ public class NetworkEnemyController : NetworkBehaviour, IPoolableObject
     {
         OnInactive();
     }
-    public void OnInactive()
+    protected override void OnInactive()
     {
         if (!isInitialized) return;
         _state = EnemyState.Idle;
