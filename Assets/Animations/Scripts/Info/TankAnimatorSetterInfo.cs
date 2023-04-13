@@ -8,6 +8,5 @@ namespace Network.AnimatorSetter.Info
     public struct TankAnimatorSetterInfo
     {
         public Animator Animator { get; set; }
-        public GameObject ShooterObject { get; set; }
     }
 }

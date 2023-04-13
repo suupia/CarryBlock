@@ -1,4 +1,5 @@
 using System;
+using Animations.Scripts;
 using Network.AnimatorSetter.Info;
 using UnityEngine;
 
@@ -16,19 +17,14 @@ namespace Network.AnimatorSetter
             _info = info;
         }
 
-        public void OnMove(Vector3 direction, Transform target = null)
+        public void OnMove(Vector3 direction)
         {
             if (direction == Vector3.zero) return;
             _info.Animator.SetFloat(Speed, direction.magnitude);
         }
 
-        public void OnAttack(Transform target = null)
+        public void OnAttack()
         {
-            if (target == null) return;
-            var pos = target.position;
-            var transform = _info.ShooterObject.transform;
-            //ignore y value
-            transform.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
         }
 
         public void OnMainAction()

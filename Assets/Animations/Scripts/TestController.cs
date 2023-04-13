@@ -6,38 +6,6 @@ using Fusion;
 using UnityEngine;
 using Network.AnimatorSetter;
 using Network.AnimatorSetter.Info;
-using UnityEngine.Serialization;
-using UnityEngine.UIElements;
-
-interface IAnimatorMove
-{
-    /// <summary>
-    /// Needs some param
-    /// </summary>
-    /// <param name="direction">Used for manage body animation</param>
-    /// <param name="target">Used for shooter or some animation without body. This can be null</param>
-    void OnMove(Vector3 direction, Transform target = null);
-}
-
-interface IAnimatorDead
-{
-    void OnDead();
-}
-
-interface IAnimatorSpawn
-{
-    void OnSpawn();
-}
-
-interface IAnimatorAttack
-{
-    void OnAttack(Transform target = null);
-}
-
-interface IAnimatorPlayerUnit: IAnimatorAttack, IAnimatorDead, IAnimatorMove, IAnimatorSpawn
-{
-    void OnMainAction();
-}
 
 namespace Network.Test
 {
@@ -55,6 +23,9 @@ namespace Network.Test
         [Networked] private Vector3 Direction { get; set; }
         [Networked] private int MainActionCount { get; set; }
 
+        [Networked(OnChanged = nameof(OnHpChanged))]
+        private byte Hp { get; set; } = 1;
+
         private GameObject _playerUnitObject;
         private int _preMainActionCount = 0;
 
@@ -64,12 +35,12 @@ namespace Network.Test
             _preMainActionCount = MainActionCount;
         }
 
-        void InstantiateTank()
+        private void InstantiateTank()
         {
             
         }
 
-        void InstantiatePlane()
+        private void InstantiatePlane()
         {
             DestroyPlayerUnit();
             _playerUnitObject = Instantiate(planePrefab, transform);
@@ -81,7 +52,7 @@ namespace Network.Test
             _animatorSetter.OnSpawn();
         }
 
-        void DestroyPlayerUnit()
+        private void DestroyPlayerUnit()
         {
             if (_playerUnitObject != null)
             {
@@ -112,6 +83,15 @@ namespace Network.Test
             {
                 _animatorSetter.OnMainAction();
                 _preMainActionCount = MainActionCount;
+            }
+        }
+
+        public static void OnHpChanged(Changed<TestController> changed)
+        {
+            var hp = changed.Behaviour.Hp;
+            if (hp <= 0)
+            {
+                changed.Behaviour._animatorSetter.OnDead();
             }
         }
     }

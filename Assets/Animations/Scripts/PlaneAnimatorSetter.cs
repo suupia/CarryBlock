@@ -20,7 +20,7 @@ namespace Animations.Scripts
         }
 
 
-        public void OnAttack(Transform target = null)
+        public void OnAttack()
         {
         }
 
@@ -28,7 +28,7 @@ namespace Animations.Scripts
         {
         }
 
-        public void OnMove(Vector3 direction, Transform target = null)
+        public void OnMove(Vector3 direction)
         {
             // Debug.Log(direction);
 
