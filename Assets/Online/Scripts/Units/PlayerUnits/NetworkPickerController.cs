@@ -48,6 +48,7 @@ using Fusion;
         public void OnInactive()
         {
             if(!isInitialized) return;
+            pickerInfo.pickerRd.velocity = Vector3.zero;
         }
 
         private void FixedUpdate()
