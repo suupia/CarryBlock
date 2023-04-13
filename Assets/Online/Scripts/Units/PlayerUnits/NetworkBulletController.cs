@@ -34,7 +34,7 @@ public class NetworkBulletController : PoolableObject
     {
         if (Object.HasStateAuthority)
         {
-            if (LifeTimer.Expired(Runner)) Runner.Despawn(Object);
+            if (LifeTimer.Expired(Runner)) DestroyBullet();
         }
     }
 
@@ -45,7 +45,7 @@ public class NetworkBulletController : PoolableObject
         if (other.CompareTag("Enemy"))
         {
             var enemy = other.GetComponent<NetworkEnemyController>();
-            if(enemy == null) Debug.LogError("The game object with the 'Enemy' tag does not have the 'NetworkEnemyController' component attached.");;
+            if(enemy == null) Debug.LogError("The game object with the 'Enemy' tag does not have the 'NetworkEnemyController' component attached.");
             enemy.OnDefeated();
             DestroyBullet();
         }
@@ -54,12 +54,7 @@ public class NetworkBulletController : PoolableObject
     {
         Runner.Despawn(Object);
     }
-
-    void OnDisable()
-    {
-       OnInactive();
-    }
-
+    
     protected override void OnInactive()
     {
         if(!isInitialized)return;
