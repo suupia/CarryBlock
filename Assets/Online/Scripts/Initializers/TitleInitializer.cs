@@ -14,10 +14,6 @@ public class TitleInitializer : MonoBehaviour
     //Called by UI component
     public async void StartGameWithRoomName()
     {
-        // await runnerManager.StartScene(RoomName);
-        // base.Init();
-        // Runner.SetActiveScene(SceneName.LobbyScene);
-        
         var runnerManager = FindObjectOfType<NetworkRunnerManager>();
         await runnerManager.AttemptStartScene("RoomName");
         SceneTransition.TransitioningScene(runnerManager.Runner,SceneName.LobbyScene);
