@@ -1,3 +1,4 @@
+using System;
 using Fusion;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,13 +10,13 @@ using UnityEngine;
 /// 参考：https://docs.google.com/presentation/d/1kGN7ZEleBgpXuXnUin8y67LmXrmQuAtbgu4rz3QSY6U/edit#slide=id.g1592fa1edef_0_25
 /// </summary>
 [RequireComponent(typeof(NetworkObject))]
-public class NetworkBulletController : NetworkBehaviour
+public class NetworkBulletController : NetworkBehaviour, IPoolableObject
 {
+    bool isInitialized = false;
     Rigidbody _rb;
     
     readonly float _speed = 30;
     readonly float _lifeTime = 5;
-
     [Networked] TickTimer LifeTimer { get; set; }
     
     
@@ -26,8 +27,9 @@ public class NetworkBulletController : NetworkBehaviour
         _rb.AddForce(_speed*directionVec , ForceMode.Impulse);
         LifeTimer = TickTimer.CreateFromSeconds(Runner, _lifeTime);
         
+        isInitialized = true;
     }
-
+    
     // public override void Spawned()
     // {
     //     if (Object.HasStateAuthority)
@@ -58,6 +60,18 @@ public class NetworkBulletController : NetworkBehaviour
     }
     void DestroyBullet()
     {
-        Destroy(gameObject);
+        Runner.Despawn(Object);
     }
+
+    void OnDisable()
+    {
+       OnInactive();
+    }
+
+    public void OnInactive()
+    {
+        if(!isInitialized)return;
+        _rb.velocity = Vector3.zero;    
+    }
+
 }

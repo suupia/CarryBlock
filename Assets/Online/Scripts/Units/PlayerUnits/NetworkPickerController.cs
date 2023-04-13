@@ -17,7 +17,7 @@ using Fusion;
         public void Process(IPickerContext state);
     }
 
-    public class NetworkPickerController : NetworkBehaviour
+    public class NetworkPickerController : NetworkBehaviour, IPoolableObject
     {
         bool isInitialized = false;
 
@@ -45,6 +45,10 @@ using Fusion;
             isInitialized = true;
         }
 
+        public void OnInactive()
+        {
+            if(!isInitialized) return;
+        }
 
         private void FixedUpdate()
         {
@@ -99,7 +103,7 @@ using Fusion;
         public Rigidbody pickerRd { get; private set; }
         public GameObject playerObj { get; private set; }
         public Rigidbody playerRd { get; private set; }
-        public GameObject targetResourceObj { get; private set; }
+        public NetworkObject targetResourceObj { get; private set; }
         public GameObject mainBaseObj { get; private set; }
 
 
@@ -124,7 +128,7 @@ using Fusion;
         }
 
 
-        public void SetTargetResourceObj(GameObject targetResourceObj)
+        public void SetTargetResourceObj(NetworkObject targetResourceObj)
         {
             this.targetResourceObj = targetResourceObj;
         }
@@ -350,12 +354,12 @@ using Fusion;
                 info.detectionRange);
             var resources = colliders.Where(collider => collider.CompareTag("Resource"))
                 .Where(collider => collider.gameObject.GetComponent<NetworkResourceController>().isOwned == false)
-                .Select(collider => collider.gameObject);
+                .Select(collider => collider.gameObject.GetComponent<NetworkObject>());
 
             if (resources.Any()) TakeResource(context, resources.First());
         }
 
-        void TakeResource(IPickerContext context, GameObject resource)
+        void TakeResource(IPickerContext context, NetworkObject resource)
         {
             if (resource == null) return;
             resource.GetComponent<NetworkResourceController>().isOwned = true;
@@ -513,6 +517,7 @@ using Fusion;
         {
             //Debug.Log($"CompleteProcess()");
             Debug.Log($"Delete Picker");
+            info.runner.Despawn(info.targetResourceObj);
             info.runner.Despawn(info.pickerObj);
         }
     }
