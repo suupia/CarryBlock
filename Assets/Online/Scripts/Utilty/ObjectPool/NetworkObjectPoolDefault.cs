@@ -6,17 +6,16 @@ using System;
 using System.Linq;
 using UnityEditor;
 
-public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
+public class NetworkObjectPoolDefault : SimulationBehaviour, INetworkObjectPool, ISceneLoadDone
 {
     [SerializeField] Transform _poolParent;
     
     [Tooltip("The objects to be pooled, leave it empty to pool every Network Object spawned")] 
     [SerializeField] List<NetworkPrefabRef> _poolableObjects; // Todo: Check the attached elements implements IPoolableObject.
-    
 
-    readonly Dictionary<NetworkPrefabId, Stack<NetworkObject>> _free = new();
-    
-    public NetworkObject AcquireInstance(NetworkRunner runner, NetworkPrefabInfo info)
+    Dictionary<NetworkPrefabId, Stack<NetworkObject>> _free = new();
+
+    NetworkObject INetworkObjectPool.AcquireInstance(NetworkRunner runner, NetworkPrefabInfo info)
     {
         if (ShouldPool(runner, info))
         {
@@ -30,7 +29,7 @@ public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
         return InstantiateNonPoolableObject(runner, info);
     }
 
-    public void ReleaseInstance(NetworkRunner runner, NetworkObject instance, bool isSceneObject)
+    void INetworkObjectPool.ReleaseInstance(NetworkRunner runner, NetworkObject instance, bool isSceneObject)
     {
         if (isSceneObject)
         {
@@ -141,5 +140,18 @@ public class NetworkObjectPoolDefault : MonoBehaviour, INetworkObjectPool
         }
 
         return false;
+    }
+
+    void ISceneLoadDone.SceneLoadDone()
+    {
+        Debug.Log($"Destroy all children of {_poolParent.name}");
+        
+        // delete children of pool parent
+        foreach (Transform child in _poolParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        _free = new();  
     }
 }

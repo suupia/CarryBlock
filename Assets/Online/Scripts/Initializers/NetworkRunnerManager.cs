@@ -27,24 +27,29 @@ public class NetworkRunnerManager : MonoBehaviour
         _runner = FindObjectOfType<NetworkRunner>();
         if (_runner == null)
         {
+            // Register this gameObject with DontDestroyOnLoad 
+            DontDestroyOnLoad(gameObject);
+            
             // Set up NetworkRunner
             _runner = Instantiate(networkRunner);
             DontDestroyOnLoad(_runner);
             _runner.AddCallbacks(new LocalInputPoller());
             
-            // Set up NetworkSceneManager
-            var networkSceneManager = Instantiate(networkSceneManagerDefault);
-            DontDestroyOnLoad(networkSceneManager);
-
             await _runner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.AutoHostOrClient,
                 SessionName = sessionName,
                 Scene = SceneManager.GetActiveScene().buildIndex,
-                SceneManager = networkSceneManager,
+                SceneManager = networkSceneManagerDefault,
                 ObjectPool = networkObjectPoolDefault,
             });
-
+            
+            // Register to allow SceneLoadDone() of NetworkSceneManagerDefault to be called.
+            _runner.AddSimulationBehaviour(networkObjectPoolDefault);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
 
     }
