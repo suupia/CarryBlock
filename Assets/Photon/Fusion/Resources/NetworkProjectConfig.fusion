@@ -157,7 +157,8 @@
         "Assembly-CSharp",
         "Assembly-CSharp-firstpass",
         "Fusion",
-        "OnlineScripts"
+        "Main",
+        "AnimationsTest"
     ],
     "UseSerializableDictionary": true,
     "NullChecksForNetworkedProperties": true,
