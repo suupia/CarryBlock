@@ -157,7 +157,7 @@
         "Assembly-CSharp",
         "Assembly-CSharp-firstpass",
         "Fusion",
-        "OnlineScripts"
+        "Main"
     ],
     "UseSerializableDictionary": true,
     "NullChecksForNetworkedProperties": true,
