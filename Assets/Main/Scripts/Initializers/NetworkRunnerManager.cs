@@ -35,12 +35,16 @@ public class NetworkRunnerManager : MonoBehaviour
             DontDestroyOnLoad(_runner);
             _runner.AddCallbacks(new LocalInputPoller());
             
+            // Set up SceneMangerDefault
+            var sceneMangerDefault = Instantiate(networkSceneManagerDefault);
+            DontDestroyOnLoad(sceneMangerDefault);
+            
             await _runner.StartGame(new StartGameArgs()
             {
                 GameMode = GameMode.AutoHostOrClient,
                 SessionName = sessionName,
                 Scene = SceneManager.GetActiveScene().buildIndex,
-                SceneManager = networkSceneManagerDefault,
+                SceneManager = sceneMangerDefault,
                 ObjectPool = networkObjectPoolDefault,
             });
             
