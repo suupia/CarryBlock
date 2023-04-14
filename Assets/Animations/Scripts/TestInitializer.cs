@@ -14,9 +14,14 @@ namespace Animations.Scripts
         [SerializeField] private string overrideSessionName;
         private async void Start()
         {
-            _runnerManager = FindObjectOfType<NetworkRunnerManager>();
-            await _runnerManager.StartScene(overrideSessionName);
-            _runnerManager.Runner.AddCallbacks(new LocalInputPoller());
+            // _runnerManager = FindObjectOfType<NetworkRunnerManager>();
+            // await _runnerManager.StartScene(overrideSessionName);
+            // _runnerManager.Runner.AddCallbacks(new LocalInputPoller());
+            var runnerManager = FindObjectOfType<NetworkRunnerManager>();
+            await runnerManager.AttemptStartScene(overrideSessionName);
+            runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
+            // await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
+
         }
 
         public void PlayerJoined(PlayerRef player)
