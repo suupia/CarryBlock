@@ -28,3 +28,8 @@ public interface IAnimatorPlayerUnit: IAnimatorAttack, IAnimatorDead, IAnimatorM
 {
     void OnMainAction();
 }
+
+public interface IAnimatorSimpleEnemyUnit : IAnimatorAttack, IAnimatorDead, IAnimatorMove, IAnimatorSpawn
+{
+    
+}
