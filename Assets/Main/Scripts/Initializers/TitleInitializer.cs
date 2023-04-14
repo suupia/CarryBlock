@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TitleInitializer : SimulationBehaviour
+public class TitleInitializer : MonoBehaviour
 {
     //Get roomName from UI component.
     public string RoomName { get; set; }
@@ -16,7 +16,6 @@ public class TitleInitializer : SimulationBehaviour
     {
         var runnerManager = FindObjectOfType<NetworkRunnerManager>();
         await runnerManager.AttemptStartScene("RoomName");
-        runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
         Debug.Log($"Transitioning to LobbySceneTestRoom");
         SceneTransition.TransitioningScene(runnerManager.Runner,SceneName.LobbyScene);
     }

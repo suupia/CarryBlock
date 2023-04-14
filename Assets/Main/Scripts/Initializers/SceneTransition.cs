@@ -25,6 +25,7 @@ public static class SceneTransition
     {
         if (sceneNameTable.TryGetValue(nextScene, out string sceneName))
         {
+            Debug.Log($"Transitioning to {sceneName}");
             runner.SetActiveScene(sceneName);
         }
         else
