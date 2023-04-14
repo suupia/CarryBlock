@@ -1,5 +1,5 @@
 {
-    "name": "OnlineScripts",
+    "name": "Animations",
     "rootNamespace": "",
     "references": [
         "GUID:476e5a37a6f1144719c702a3016d4704",
@@ -8,13 +8,8 @@
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": true,
-    "precompiledReferences": [
-        "Fusion.Common.dll",
-        "Fusion.Realtime.dll",
-        "Fusion.Runtime.dll",
-        "Fusion.Sockets.dll"
-    ],
+    "overrideReferences": false,
+    "precompiledReferences": [],
     "autoReferenced": false,
     "defineConstraints": [],
     "versionDefines": [],
