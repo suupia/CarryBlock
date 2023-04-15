@@ -10,6 +10,7 @@ using System.Linq;
 /// </summary>
 public class NetworkPlayerController : NetworkBehaviour
 {
+    [SerializeField] Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
     [SerializeField] GameObject cameraPrefab;
 
     [SerializeField] GameObject[] playerUnitPrefabs;
@@ -37,9 +38,9 @@ public class NetworkPlayerController : NetworkBehaviour
     {
         // Instantiate the tank.
         var prefab = playerUnitPrefabs[(int)_unitType];
-        var unitObj = Instantiate(prefab, info.unitObjectParent);
+        var unitObj = Instantiate(prefab, unitObjectParent);
 
-        info.Init(Runner, unitObj);
+        info.Init(Runner);
         _unit = _unitType switch
         {
             UnitType.Tank => new Tank(info),
@@ -52,8 +53,7 @@ public class NetworkPlayerController : NetworkBehaviour
         {
             // spawn camera
             var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
-            followtarget.SetTarget(info.unitObjectParent);
-            Debug.Log($"target.name = {info.unitObjectParent}");
+            followtarget.SetTarget(unitObjectParent);
         }
     }
 

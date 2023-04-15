@@ -363,7 +363,7 @@ using Fusion;
         void TakeResource(IPickerContext context, NetworkObject resource)
         {
             if (resource == null) return;
-            resource.GetComponent<NetworkResourceController>().isOwned = true;
+            resource.GetComponent<NetworkResourceController>().OnHeld(info.playerObj.transform);
             info.SetTargetResourceObj(resource);
             context.ChangeState(info.ApproachState);
         }

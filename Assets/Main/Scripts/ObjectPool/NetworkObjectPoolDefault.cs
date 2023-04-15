@@ -43,9 +43,6 @@ public class NetworkObjectPoolDefault : SimulationBehaviour, INetworkObjectPool,
             {
                 instance.gameObject.SetActive(false);
                 instance.gameObject.GetComponentsInChildren<PoolableObject>().ToList().ForEach(obj => obj.gameObject.SetActive(false));
-
-                // reset parenting
-                instance.transform.SetParent(_poolParent);
                 
                 stack.Push(instance);
             }

@@ -76,7 +76,7 @@ public class Plane : IPlayerUnit
 
         Debug.Log("complete collect");
         resource.transform.position = _info.playerObj.transform.position - new Vector3(0, collectOffset, 0);
-        resource.transform.parent = _info.playerObj.transform;
+        resource.GetComponent<NetworkResourceController>().OnHeld(_info.playerObj.transform);
         heldResources.Add(resource);
         isCollecting = false;
     }

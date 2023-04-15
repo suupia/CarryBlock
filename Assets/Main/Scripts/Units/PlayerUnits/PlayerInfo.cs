@@ -23,7 +23,6 @@ public  class PlayerInfo
     public readonly float rangeRadius = 12.0f;
     
     // Attach
-    [SerializeField] public Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
     [SerializeField] public NetworkCharacterControllerPrototype networkCharacterController;
     [SerializeField] public NetworkPrefabRef pickerPrefab;
     [SerializeField] public NetworkPrefabRef bulletPrefab;
@@ -32,12 +31,9 @@ public  class PlayerInfo
     public GameObject playerObj => networkCharacterController.gameObject;
 
     public PlayerInfoForPicker playerInfoForPicker;
-    public void Init( NetworkRunner runner, GameObject unitObj)
+    public void Init( NetworkRunner runner)
     {
         this.runner = runner;
-        unitObjectParent = unitObj.transform.parent;
-        Debug.Log($"playerObjectParent = {unitObjectParent}");
-
         playerInfoForPicker = new PlayerInfoForPicker(this);
     }
 }
