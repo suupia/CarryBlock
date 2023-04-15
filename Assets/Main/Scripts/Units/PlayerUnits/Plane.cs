@@ -18,16 +18,14 @@ public class Plane : IPlayerUnit
 
     float submitResourceRange = 3f;
 
-
     IList<NetworkObject> heldResources = new List<NetworkObject>();
 
-
-    
     public Plane(PlayerInfo info) 
     {
         _info = info;
         _runner = info.runner;
         _cc = info.networkCharacterController; 
+        _cc.Controller.height = 6;
     }
 
     public void Move(Vector3 direction)

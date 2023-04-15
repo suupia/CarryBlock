@@ -33,7 +33,7 @@ public class PlayerSpawner
     public void SpawnPlayer(PlayerRef player, NetworkPlayerContainer playerContainer)
     {
         Debug.Log("Spawning Player");
-        var spawnPosition = new Vector3(0, 1, 0);
+        var spawnPosition = new Vector3(0, 5, 0);
         var playerController = _playerSpawner.Spawn("PlayerController", spawnPosition, Quaternion.identity, player);
         _runner.SetPlayerObject(player, playerController.Object);
         playerContainer.AddPlayer(playerController);
