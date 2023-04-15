@@ -29,9 +29,9 @@ public class Tank : IPlayerUnit
     public void Action()
     {
         Debug.Log($"Action()");
-        var pickerPos = _info.unitObject.transform.position + new Vector3(0, _pickerHeight, 0);
+        var pickerPos = _info.playerObj.transform.position + new Vector3(0, _pickerHeight, 0);
         var picker = _runner.Spawn(_info.pickerPrefab, pickerPos,  Quaternion.identity, PlayerRef.None).GetComponent<NetworkPickerController>();
-        picker.Init(_runner,_info.unitObject.gameObject, _info.playerInfoForPicker);
+        picker.Init(_runner,_info.playerObj, _info.playerInfoForPicker);
 
     }
     

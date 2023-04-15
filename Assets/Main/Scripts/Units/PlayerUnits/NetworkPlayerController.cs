@@ -128,7 +128,7 @@ public class PlayerShooter
 
     public void AttemptShootEnemy()
     {
-        Collider[] colliders = Physics.OverlapSphere(_info.unitObject.transform.position, _info.rangeRadius);
+        Collider[] colliders = Physics.OverlapSphere(_info.playerObj.transform.position, _info.rangeRadius);
         var enemys = colliders.Where(collider => collider.CompareTag("Enemy")).Select(collider => collider.gameObject);
 
         if (enemys.Any()) ShootEnemy(enemys.First());
@@ -138,8 +138,8 @@ public class PlayerShooter
     {
         // Debug.Log($"ShootEnemy() targetEnemy:{targetEnemy}");
         var bulletInitPos =
-            _info.bulletOffset * (targetEnemy.gameObject.transform.position - _info.unitObject.transform.position)
-            .normalized + _info.unitObject.transform.position;
+            _info.bulletOffset * (targetEnemy.gameObject.transform.position - _info.playerObj.transform.position)
+            .normalized + _info.playerObj.transform.position;
         var bulletObj = _info.runner.Spawn(_info.bulletPrefab, bulletInitPos, Quaternion.identity, PlayerRef.None);
         var bullet = bulletObj.GetComponent<NetworkBulletController>();
         bullet.Init(targetEnemy);

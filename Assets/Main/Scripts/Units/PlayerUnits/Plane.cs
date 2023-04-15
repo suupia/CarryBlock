@@ -19,7 +19,7 @@ public class Plane : IPlayerUnit
     float submitResourceRange = 3f;
 
 
-    IList<GameObject> heldResources = new List<GameObject>();
+    IList<NetworkObject> heldResources = new List<NetworkObject>();
 
 
     
@@ -32,6 +32,7 @@ public class Plane : IPlayerUnit
 
     public void Move(Vector3 direction)
     {
+        if(isCollecting)return;
         _cc.Move(direction);
     }
     
@@ -47,20 +48,20 @@ public class Plane : IPlayerUnit
     public void AttemptCollectResource()
     {
         Collider[] colliders =
-            Physics.OverlapSphere(Utility.SetYToZero(_info.unitObject.transform.position), detectionRange);
+            Physics.OverlapSphere(Utility.SetYToZero(_info.playerObj.transform.position), detectionRange);
         Debug.Log($"colliders.Length = {colliders.Length}, colliders = {colliders}");
         var resources = colliders.Where(collider => collider.CompareTag("Resource"))
             .Where(collider => collider.gameObject.GetComponent<NetworkResourceController>().isOwned == false)
-            .Select(collider => collider.gameObject);
+            .Select(collider => collider.gameObject.GetComponent<NetworkObject>());
         if (resources.Any()) CollectResource(resources.First());
     }
 
-    async void CollectResource(GameObject resource)
+    async void CollectResource(NetworkObject resource)
     {
         if (resource == null) return;
         if (isCollecting) return;
 
-        var initPos = _info.unitObject.transform.position;
+        var initPos = _info.playerObj.transform.position;
         var deltaVector = resource.transform.position - initPos;
 
         isCollecting = true;
@@ -70,14 +71,14 @@ public class Plane : IPlayerUnit
             var coefficient = 2 * Mathf.PI / collectTime;
             var progress = -Mathf.Cos(coefficient * t) + 1f;
 
-            _info.unitObject.transform.position = progress * deltaVector + initPos;
+            _info.playerObj.transform.position = progress * deltaVector + initPos;
 
             await UniTask.Yield();
         }
 
         Debug.Log("complete collect");
-        resource.transform.position = _info.unitObject.transform.position - new Vector3(0, collectOffset, 0);
-        resource.transform.parent = _info.unitObject.transform;
+        resource.transform.position = _info.playerObj.transform.position - new Vector3(0, collectOffset, 0);
+        resource.transform.parent = _info.playerObj.transform;
         heldResources.Add(resource);
         isCollecting = false;
     }
@@ -89,17 +90,17 @@ public class Plane : IPlayerUnit
 
         foreach (var resource in heldResources)
         {
-            Object.Destroy(resource);
+            _runner.Despawn(resource);
             Debug.Log($"submit resource");
         }
 
-        heldResources = new List<GameObject>();
+        heldResources = new List<NetworkObject>();
     }
 
     bool IsNearMainBase()
     {
         Collider[] colliders =
-            Physics.OverlapSphere(Utility.SetYToZero(_info.unitObject.transform.position), submitResourceRange);
+            Physics.OverlapSphere(Utility.SetYToZero(_info.playerObj.transform.position), submitResourceRange);
         var mainBases = colliders.Where(collider => collider.CompareTag("MainBase"))
             .Select(collider => collider.gameObject);
         Debug.Log($"IsNearMainBase():{mainBases.Any()}");

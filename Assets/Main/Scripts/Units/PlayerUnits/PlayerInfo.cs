@@ -27,8 +27,9 @@ public  class PlayerInfo
     [SerializeField] public NetworkCharacterControllerPrototype networkCharacterController;
     [SerializeField] public NetworkPrefabRef pickerPrefab;
     [SerializeField] public NetworkPrefabRef bulletPrefab;
-    [NonSerialized] public GameObject unitObject; // This has 3D models, a RangeDetector, and more as children.
-    [NonSerialized] public RangeDetector rangeDetector;
+    
+    // Property
+    public GameObject playerObj => networkCharacterController.gameObject;
 
     public PlayerInfoForPicker playerInfoForPicker;
     public void Init( NetworkRunner runner, GameObject unitObj)
@@ -36,8 +37,6 @@ public  class PlayerInfo
         this.runner = runner;
         unitObjectParent = unitObj.transform.parent;
         Debug.Log($"playerObjectParent = {unitObjectParent}");
-        unitObject = unitObj;
-        rangeDetector = unitObj.GetComponentInChildren<RangeDetector>();
 
         playerInfoForPicker = new PlayerInfoForPicker(this);
     }
