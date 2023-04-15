@@ -7,21 +7,38 @@ using UnityEngine;
 [RequireComponent(typeof(NetworkObject))]
 public class NetworkResourceController :  PoolableObject
 {
-    public bool isOwned { get; private set; }
+    public enum State
+    {
+        Idle,Reserved,Held,
+    }
+
+    public State state { get; private set; } = State.Idle;
+    public bool canAccess => state == State.Idle;
     bool _isInitialized = false;
     Transform _holder;
     
     public override void Render()
     {
-        if (isOwned)
+        switch (state)
         {
-            transform.position = _holder.position;
+            case State.Idle:
+                break;
+            case State.Reserved:
+                break;
+            case State.Held:
+                transform.position = _holder.position;
+                break;
         }
+    }
+    
+    public void OnReserved()
+    {
+        state = State.Reserved;
     }
 
     public void OnHeld(Transform holder)
     {
-        isOwned = true;
+        state = State.Held;
         _holder = holder;
     }
 
@@ -33,7 +50,7 @@ public class NetworkResourceController :  PoolableObject
     protected override void OnInactive()
     {
         if(!_isInitialized)return;
-        isOwned = false;
+        state = State.Idle;
     }
 
 

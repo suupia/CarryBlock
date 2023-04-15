@@ -49,7 +49,7 @@ public class Plane : IPlayerUnit
             Physics.OverlapSphere(Utility.SetYToZero(_info.playerObj.transform.position), detectionRange);
         Debug.Log($"colliders.Length = {colliders.Length}, colliders = {colliders}");
         var resources = colliders.Where(collider => collider.CompareTag("Resource"))
-            .Where(collider => collider.gameObject.GetComponent<NetworkResourceController>().isOwned == false)
+            .Where(collider => collider.gameObject.GetComponent<NetworkResourceController>().canAccess)
             .Select(collider => collider.gameObject.GetComponent<NetworkObject>());
         if (resources.Any()) CollectResource(resources.First());
     }
