@@ -8,19 +8,15 @@ namespace Animations.Scripts
 {
     public class TestInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
-        private NetworkRunnerManager _runnerManager;
+         NetworkRunnerManager _runnerManager;
 
-        [SerializeField] private NetworkPrefabRef testController;
-        [SerializeField] private string overrideSessionName;
-        private async void Start()
+        [SerializeField]  NetworkPrefabRef testController;
+        [SerializeField]  string overrideSessionName;
+        async void Start()
         {
-            // _runnerManager = FindObjectOfType<NetworkRunnerManager>();
-            // await _runnerManager.StartScene(overrideSessionName);
-            // _runnerManager.Runner.AddCallbacks(new LocalInputPoller());
             var runnerManager = FindObjectOfType<NetworkRunnerManager>();
             await runnerManager.AttemptStartScene(overrideSessionName);
             runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
-            // await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
 
         }
 
