@@ -1,5 +1,6 @@
 using Fusion;
 using UnityEngine;
+using System;
 using System.Linq;
 
 /// <summary>
@@ -12,6 +13,7 @@ public class NetworkPlayerController : NetworkBehaviour
     [SerializeField] GameObject cameraPrefab;
 
     [SerializeField] GameObject[] playerUnitPrefabs;
+    [SerializeField] UnitType _unitType;
 
     [SerializeField] PlayerInfo info;
 
@@ -24,15 +26,26 @@ public class NetworkPlayerController : NetworkBehaviour
     IPlayerUnit _unit;
     PlayerShooter _shooter;
 
+    public enum UnitType
+    {
+        Tank = 0,
+        Plane = 1,
+    }
+
 
     public override void Spawned()
     {
         // Instantiate the tank.
-        var prefab = playerUnitPrefabs[0];
+        var prefab = playerUnitPrefabs[(int)_unitType];
         var unitObj = Instantiate(prefab, info.unitObjectParent);
 
         info.Init(Runner, unitObj);
-        _unit = new Tank(info);
+        _unit = _unitType switch
+        {
+            UnitType.Tank => new Tank(info),
+            UnitType.Plane => new Plane(info),
+            _ => throw new ArgumentOutOfRangeException(nameof(_unitType), "Invalid unitType")
+        };
         _shooter = new PlayerShooter(info);
 
         if (Object.HasInputAuthority)
