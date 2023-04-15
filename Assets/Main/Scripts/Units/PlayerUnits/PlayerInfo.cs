@@ -8,22 +8,8 @@ using UnityEngine.Serialization;
 public interface IPlayerUnit
 {
     void Move(Vector3 direction);
+    float ActionCooldown();
     void Action();
-}
-
-public abstract class PlayerUnit : IPlayerUnit
-{
-    public  Transform transform => info.unitObjectParent.transform; // 後で消す。　コライダーで判定するようにするため、ピュアなスクリプトから位置情報を取る必要はない
-    protected PlayerInfo info;
-    public PlayerUnit(PlayerInfo info)
-    {
-        this.info = info;
-    }
-
-    public abstract void Move(Vector3 direction);
-
-    public abstract float DelayBetweenActions { get; }
-    public abstract void Action();
 }
 
 [Serializable]

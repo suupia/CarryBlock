@@ -21,7 +21,7 @@ public class NetworkPlayerController : NetworkBehaviour
     [Networked] TickTimer ShootCooldown { get; set; }
     [Networked] TickTimer ActionCooldown { get; set; }
 
-    PlayerUnit _unit;
+    IPlayerUnit _unit;
     PlayerShooter _shooter;
 
 
@@ -74,7 +74,7 @@ public class NetworkPlayerController : NetworkBehaviour
                 if (ActionCooldown.ExpiredOrNotRunning(Runner))
                 {
                     _unit.Action();
-                    ActionCooldown = TickTimer.CreateFromSeconds(Runner, _unit.DelayBetweenActions);
+                    ActionCooldown = TickTimer.CreateFromSeconds(Runner, _unit.ActionCooldown());
                 }
             }
 
