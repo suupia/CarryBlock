@@ -1,77 +1,110 @@
-// using Fusion;
-// using System.Collections;
-// using System.Collections.Generic;
-// using System.Linq;
-// using UnityEngine;
-// using UnityEngine.Windows;
-//
-// public class Plane : PlayerUnit
-// {
-//     readonly NetworkRunner　_runner;
-//     [Networked] TickTimer ReloadTimer { get; set; }
-//     [Networked] NetworkObject Target { get; set; }
-//
-//     public override float DelayBetweenActions => 0.1f;
-//
-//     NetworkCharacterControllerPrototype _cc;
-//     RangeDetector _rangeDetector;
-//
-//     float _pickerHeight = 5.0f;
-//     
-//     public Plane(PlayerInfo info) : base(info)
-//     {
-//         this.info = info;
-//         _runner = info.runner;
-//
-//         _cc = info.networkCharacterController; 
-//         _rangeDetector = info.rangeDetector;
-//         
-//     }
-//
-//     public override void Move(Vector3 direction)
-//     {
-//         _cc.Move(direction);
-//     }
-//
-//     public override void Action()
-//     {
-//         Debug.Log($"Actionを行います！");
-//
-//         if (ReloadTimer.ExpiredOrNotRunning(_runner))
-//         {
-//             //Auto Aim
-//             //一旦タグで識別、外部のスクリプトでトリガー管理。依存関係を減らしたいならPhysics系を使っても良さそう
-//             //その場合はLayer分けもしっかりしていきたい
-//             //いずれこの処理は書き換えるべき
-//             var enemies =  _rangeDetector.GameObjects.Where(o => o != null && o.CompareTag("Enemy")).ToArray();
-//             if (enemies.Length > 0)
-//             {
-//                 Target = enemies.First().GetComponent<NetworkObject>();
-//
-//                 //一時的に弾の発射位置のためにオフセットを適用
-//                 //将来的には、戦車を上部と下部で別にして、上部が発射位置を管理するようにしようかな
-//                 var offset = new Vector3(0, 1.2f, 0);
-//                 Debug.Log($"info.bulletPrefab = {info.bulletPrefab}");
-//                 Debug.Log($"info.unitObject = {info.unitObject}");
-//                 Debug.Log($"_runner = {_runner}");
-//                 _runner.Spawn(info.bulletPrefab, info.unitObject.transform.position + offset, info.unitObject.transform.rotation, PlayerRef.None);
-//                 ReloadTimer = TickTimer.CreateFromSeconds(_runner, 2f);
-//             }
-//         }
-//
-//         var pickerPos = info.unitObject.transform.position + new Vector3(0, _pickerHeight, 0);
-//         var picker = _runner.Spawn(info.pickerPrefab, pickerPos,  Quaternion.identity, PlayerRef.None).GetComponent<NetworkPickerController>();
-//         picker.Init(_runner,info.unitObject.gameObject, info.playerInfoForPicker);
-//
-//     }
-//     
-//
-//     // void OnBeforeSpawnBullet(NetworkRunner runner, NetworkObject obj)
-//     // {
-//     //     var bullet = obj.GetComponent<NetworkBulletController>();
-//     //     Debug.Log($"obj = {obj}");
-//     //     Debug.Log($"bullet = {bullet}");
-//     //     Debug.Log($"Target = {Target}");
-//     //     bullet.AddForce(Target.transform.position - info.unitObject.transform.position);
-//     // }
-// }
+using Fusion;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using Cysharp.Threading.Tasks;
+
+public class Plane : IPlayerUnit
+{
+    readonly NetworkRunner　_runner;
+    PlayerInfo _info;
+    NetworkCharacterControllerPrototype _cc;
+    
+    bool isCollecting;
+    float collectTime = 1f;
+    float collectOffset = 0.5f; // determine how much to place the resource below.
+    float detectionRange = 3f;
+
+    float submitResourceRange = 3f;
+    PlayerInfo info;
+
+
+    IList<GameObject> heldResources = new List<GameObject>();
+
+
+    
+    public Plane(PlayerInfo info) 
+    {
+        _info = info;
+        _runner = info.runner;
+        _cc = info.networkCharacterController; 
+    }
+
+    public void Move(Vector3 direction)
+    {
+        _cc.Move(direction);
+    }
+    
+    public float ActionCooldown() => 0.1f;
+    
+    public void Action()
+    {
+        // Collect resource.
+        AttemptCollectResource();
+        SubmitResource();
+    }
+
+    public void AttemptCollectResource()
+    {
+        Collider[] colliders =
+            Physics.OverlapSphere(Utility.SetYToZero(info.unitObject.transform.position), detectionRange);
+        var resources = colliders.Where(collider => collider.CompareTag("Resource"))
+            .Where(collider => collider.gameObject.GetComponent<NetworkResourceController>().isOwned == false)
+            .Select(collider => collider.gameObject);
+        if (resources.Any()) CollectResource(resources.First());
+    }
+
+    async void CollectResource(GameObject resource)
+    {
+        if (resource == null) return;
+        if (isCollecting) return;
+
+        var initPos = info.unitObject.transform.position;
+        var deltaVector = resource.transform.position - initPos;
+
+        isCollecting = true;
+
+        for (float t = 0; t < collectTime; t += Time.deltaTime)
+        {
+            var coefficient = 2 * Mathf.PI / collectTime;
+            var progress = -Mathf.Cos(coefficient * t) + 1f;
+
+            info.unitObject.transform.position = progress * deltaVector + initPos;
+
+            await UniTask.Yield();
+        }
+
+        Debug.Log("complete collect");
+        resource.transform.position = info.unitObject.transform.position - new Vector3(0, collectOffset, 0);
+        resource.transform.parent = info.unitObject.transform;
+        heldResources.Add(resource);
+        isCollecting = false;
+    }
+
+    void SubmitResource()
+    {
+        if (!heldResources.Any()) return;
+        if (!IsNearMainBase()) return;
+
+        foreach (var resource in heldResources)
+        {
+            Object.Destroy(resource);
+            Debug.Log($"submit resource");
+        }
+
+        heldResources = new List<GameObject>();
+    }
+
+    bool IsNearMainBase()
+    {
+        Collider[] colliders =
+            Physics.OverlapSphere(Utility.SetYToZero(info.unitObject.transform.position), submitResourceRange);
+        var mainBases = colliders.Where(collider => collider.CompareTag("MainBase"))
+            .Select(collider => collider.gameObject);
+        Debug.Log($"IsNearMainBase():{mainBases.Any()}");
+        return mainBases.Any();
+    }
+    
+}
+
