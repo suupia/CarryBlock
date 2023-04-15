@@ -12,17 +12,21 @@ using Object = UnityEngine.Object;
 public class PlayerSpawner
 {
     readonly NetworkRunner _runner;
-    public  PlayerSpawner(NetworkRunner runner)
+    readonly NetworkBehaviourSpawner<NetworkPlayerController> _playerSpawner;
+
+    public PlayerSpawner(NetworkRunner runner)
     {
-        this._runner = runner;
+        _runner = runner;
+        _playerSpawner = new NetworkBehaviourSpawner<NetworkPlayerController>(runner,
+            new PrefabLoaderFromResources<NetworkPlayerController>("Prefabs/Players"));
     }
-    
+
     public void RespawnAllPlayer(NetworkPlayerContainer playerContainer)
     {
         foreach (var player in _runner.ActivePlayers)
         {
-            DespawnPlayer(player,playerContainer);
-            SpawnPlayer(player,playerContainer);
+            DespawnPlayer(player, playerContainer);
+            SpawnPlayer(player, playerContainer);
         }
     }
 
@@ -30,20 +34,17 @@ public class PlayerSpawner
     {
         Debug.Log("Spawning Player");
         var spawnPosition = new Vector3(0, 1, 0);
-        var playerControllerPrefab = Resources.Load<NetworkPlayerController>("Prefabs/Players/PlayerController");
-        var playerController = _runner.Spawn(playerControllerPrefab, spawnPosition, Quaternion.identity, player);
+        var playerController = _playerSpawner.Spawn("PlayerController", spawnPosition, Quaternion.identity, player);
         _runner.SetPlayerObject(player, playerController.Object);
         playerContainer.AddPlayer(playerController);
-        
-
     }
 
-    public void DespawnPlayer(PlayerRef player,NetworkPlayerContainer playerContainer)
+    public void DespawnPlayer(PlayerRef player, NetworkPlayerContainer playerContainer)
     {
         if (_runner.TryGetPlayerObject(player, out var networkObject))
         {
             var playerController = networkObject.GetComponent<NetworkPlayerController>();
-            
+
             playerContainer.RemovePlayer(playerController);
             _runner.Despawn(networkObject);
             _runner.SetPlayerObject(player, null);
@@ -66,5 +67,4 @@ public class NetworkPlayerContainer
     {
         playerControllers.Remove(networkPlayerController);
     }
-    
 }
