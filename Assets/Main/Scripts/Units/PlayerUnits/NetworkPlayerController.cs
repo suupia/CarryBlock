@@ -31,11 +31,12 @@ public class NetworkPlayerController : NetworkBehaviour
     [Networked] TickTimer ActionCooldown { get; set; }
     
     // Animation
-    [Networked] private Vector3 Direction { get; set; }
+
     [Networked] private int MainActionCount { get; set; }
     [Networked(OnChanged = nameof(OnHpChanged))]
     private byte Hp { get; set; } = 1;
     private int _preMainActionCount = 0;
+    Vector3 preDirection = Vector3.zero;
 
     IPlayerUnit _unit;
     GameObject _unitObj;
@@ -61,7 +62,7 @@ public class NetworkPlayerController : NetworkBehaviour
         {
             // spawn camera
             var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
-            followtarget.SetTarget(_info.networkCharacterController.transform);
+            followtarget.SetTarget(unitObjectParent.transform);
         }
     }
 
@@ -104,7 +105,7 @@ public class NetworkPlayerController : NetworkBehaviour
             var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
             _unit.Move(direction);
-            Direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
+            // Direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
             PreButtons = input.Buttons;
         }
@@ -112,8 +113,17 @@ public class NetworkPlayerController : NetworkBehaviour
     
     public override void Render()
     {
-        _animatorSetter.OnMove(Direction);
-
+        var deltaAngle = Vector3.SignedAngle(preDirection, _info.playerObj.transform.forward, Vector3.up);
+        preDirection = _info.playerObj.transform.forward;
+        var vector = deltaAngle switch
+        {
+            < 0 => new Vector3(-1,0,0),
+            > 0 => new Vector3(1,0,0),
+            _ => Vector3.zero
+        };
+        _animatorSetter.OnMove(vector);
+        Debug.Log("_info.playerObj.transform.forward = " + _info.playerObj.transform.forward);
+        
         if (MainActionCount > _preMainActionCount)
         {
             _animatorSetter.OnMainAction();
