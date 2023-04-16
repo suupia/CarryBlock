@@ -21,7 +21,7 @@ public class NetworkPlayerController : NetworkBehaviour
     [SerializeField] UnitType _unitType;
     IAnimatorPlayerUnit _animatorSetter;
 
-    [FormerlySerializedAs("info")] [SerializeField] PlayerInfo _info;
+    [SerializeField] PlayerInfo _info;
 
     [Networked] NetworkButtons PreButtons { get; set; }
     [Networked] public NetworkBool IsReady { get; set; }
@@ -51,8 +51,8 @@ public class NetworkPlayerController : NetworkBehaviour
     public override void Spawned()
     {
         // init info
-        _info.Init(Runner);
-
+        _info.Init(Runner,gameObject);
+        
         // Instantiate the unit.
         InstantiateUnit(_unitType);
         _shooter = new PlayerShooter(_info);
@@ -211,7 +211,7 @@ public class PlayerShooter
         var bulletInitPos =
             _info.bulletOffset * (targetEnemy.gameObject.transform.position - _info.playerObj.transform.position)
             .normalized + _info.playerObj.transform.position;
-        var bulletObj = _info.runner.Spawn(_info.bulletPrefab, bulletInitPos, Quaternion.identity, PlayerRef.None);
+        var bulletObj = _info._runner.Spawn(_info.bulletPrefab, bulletInitPos, Quaternion.identity, PlayerRef.None);
         var bullet = bulletObj.GetComponent<NetworkBulletController>();
         bullet.Init(targetEnemy);
     }
