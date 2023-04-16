@@ -17,6 +17,8 @@ public class Tank : IPlayerUnit
         _info = info;
         _runner = info.runner;
         _cc = info.networkCharacterController; 
+        _cc.Controller.height = 0.0f;
+        _cc.maxSpeed = 6.0f; 
     }
 
     public void Move(Vector3 direction)

@@ -2,6 +2,7 @@ using Fusion;
 using UnityEngine;
 using System;
 using System.Linq;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// The only NetworkBehaviour to control the character.
@@ -16,7 +17,7 @@ public class NetworkPlayerController : NetworkBehaviour
     [SerializeField] GameObject[] playerUnitPrefabs;
     [SerializeField] UnitType _unitType;
 
-    [SerializeField] PlayerInfo info;
+    [FormerlySerializedAs("info")] [SerializeField] PlayerInfo _info;
 
     [Networked] NetworkButtons PreButtons { get; set; }
     [Networked] public NetworkBool IsReady { get; set; }
@@ -27,7 +28,7 @@ public class NetworkPlayerController : NetworkBehaviour
     IPlayerUnit _unit;
     PlayerShooter _shooter;
 
-    public enum UnitType
+    enum UnitType
     {
         Tank = 0,
         Plane = 1,
@@ -36,24 +37,18 @@ public class NetworkPlayerController : NetworkBehaviour
 
     public override void Spawned()
     {
-        // Instantiate the tank.
-        var prefab = playerUnitPrefabs[(int)_unitType];
-        var unitObj = Instantiate(prefab, unitObjectParent);
+        // init info
+        _info.Init(Runner);
 
-        info.Init(Runner);
-        _unit = _unitType switch
-        {
-            UnitType.Tank => new Tank(info),
-            UnitType.Plane => new Plane(info),
-            _ => throw new ArgumentOutOfRangeException(nameof(_unitType), "Invalid unitType")
-        };
-        _shooter = new PlayerShooter(info);
+        // Instantiate the unit.
+        _unit = InstantiateUnit(_unitType);
+        _shooter = new PlayerShooter(_info);
 
         if (Object.HasInputAuthority)
         {
             // spawn camera
             var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
-            followtarget.SetTarget(unitObjectParent);
+            followtarget.SetTarget(_info.networkCharacterController.transform);
         }
     }
 
@@ -79,7 +74,7 @@ public class NetworkPlayerController : NetworkBehaviour
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
             {
                 //Tmp
-                RPC_ChangeUnit(1);
+                RPC_ChangeNextUnit();
             }
 
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
@@ -102,16 +97,31 @@ public class NetworkPlayerController : NetworkBehaviour
 
     //Deal as RPC for changing unit
     [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.All)]
-    public void RPC_ChangeUnit(int index)
+    public void RPC_ChangeNextUnit()
     {
-        // Todo : ChangeUnitの実装
+        _unitType = (UnitType)(((int)_unitType + 1) % Enum.GetValues(typeof(UnitType)).Length);
+        for(int i = 0; i < unitObjectParent.transform.childCount; i++)
+        {
+            Destroy(unitObjectParent.transform.GetChild(i).gameObject);
+        }
+        _unit = InstantiateUnit(_unitType);
+        
+        // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
+        _info.playerObj.transform.position = new Vector3(0, 30, 0) + _info.playerObj.transform.position;
+    }
 
-        // if (Unit != null)
-        // {
-        //     Runner.Despawn(playerObjectParent);
-        // }
-        //
-        // playerObjectParent = SpawnPlayerUnit(index);
+    IPlayerUnit InstantiateUnit(UnitType unitType)
+    {
+        // Instantiate the unit.
+        var prefab = playerUnitPrefabs[(int)unitType];
+        var unitObj = Instantiate(prefab, unitObjectParent);
+
+        return unitType switch
+        {
+            UnitType.Tank => new Tank(_info),
+            UnitType.Plane => new Plane(_info),
+            _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
+        };
     }
 }
 

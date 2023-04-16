@@ -25,8 +25,8 @@ public class Plane : IPlayerUnit
         _info = info;
         _runner = info.runner;
         _cc = info.networkCharacterController; 
-        _cc.Controller.height = 6;
-        _cc.acceleration *= 1.5f; // Plane is faster than other units.
+        _cc.Controller.height = 6.0f;
+        _cc.maxSpeed = 8.0f; // Plane is faster than other units.
     }
 
     public void Move(Vector3 direction)

@@ -11,7 +11,7 @@ public class CameraFollowTarget : MonoBehaviour
 
     public void SetTarget(Transform target)
     {
-        this._target = target;
+        _target = target;
         _offset = transform.position - target.position;
     }
 
