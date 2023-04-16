@@ -2,19 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangeDetector : MonoBehaviour
+namespace Main
 {
-    List<GameObject> gameObjects = new();
-
-    public GameObject[] GameObjects => gameObjects.ToArray();
-
-    private void OnTriggerEnter(Collider other)
+    public class RangeDetector : MonoBehaviour
     {
-        gameObjects.Add(other.gameObject);
+        List<GameObject> gameObjects = new();
+
+        public GameObject[] GameObjects => gameObjects.ToArray();
+
+        private void OnTriggerEnter(Collider other)
+        {
+            gameObjects.Add(other.gameObject);
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            gameObjects.Remove(other.gameObject);
+        }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        gameObjects.Remove(other.gameObject);
-    }
 }

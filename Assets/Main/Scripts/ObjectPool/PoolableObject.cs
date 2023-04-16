@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
-public abstract class PoolableObject : NetworkBehaviour
+namespace Main
 {
-    protected abstract void OnInactive();
-    void OnDisable()
+    public abstract class PoolableObject : NetworkBehaviour
     {
-        OnInactive();
-    }
+        protected abstract void OnInactive();
+        void OnDisable()
+        {
+            OnInactive();
+        }
     
+    }
+
 }

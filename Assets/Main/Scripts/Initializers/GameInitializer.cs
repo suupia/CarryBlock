@@ -5,65 +5,69 @@ using UnityEngine;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 
-public class GameInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
+namespace Main
 {
-    NetworkPlayerContainer _networkPlayerContainer = new();
-    NetworkEnemyContainer _networkEnemyContainer = new();
-    PlayerSpawner _playerSpawner;
-    EnemySpawner _enemySpawner;
-    
-    
-    async void Start()
+    public class GameInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
-        var runnerManager = FindObjectOfType<NetworkRunnerManager>();
-        // Runner.StartGame() if it has not been run.
-        await runnerManager.AttemptStartScene("GameSceneTestRoom");
-        runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
-        await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
+        NetworkPlayerContainer _networkPlayerContainer = new();
+        NetworkEnemyContainer _networkEnemyContainer = new();
+        PlayerSpawner _playerSpawner;
+        EnemySpawner _enemySpawner;
         
-        // Domain
-        _playerSpawner = new PlayerSpawner(Runner);
-        _enemySpawner = new EnemySpawner(Runner);
-
-
-        if (Runner.IsServer)
+        
+        async void Start()
         {
-            _playerSpawner.RespawnAllPlayer(_networkPlayerContainer);
+            var runnerManager = FindObjectOfType<NetworkRunnerManager>();
+            // Runner.StartGame() if it has not been run.
+            await runnerManager.AttemptStartScene("GameSceneTestRoom");
+            runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
+            await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
+            
+            // Domain
+            _playerSpawner = new PlayerSpawner(Runner);
+            _enemySpawner = new EnemySpawner(Runner);
+    
+    
+            if (Runner.IsServer)
+            {
+                _playerSpawner.RespawnAllPlayer(_networkPlayerContainer);
+            }
+    
+            if (Runner.IsServer)
+            {
+                _networkEnemyContainer.MaxEnemyCount = 5;
+                var _ = _enemySpawner.StartSimpleSpawner(0, 5f,_networkEnemyContainer);
+            }
         }
-
-        if (Runner.IsServer)
+        
+        // Return to LobbyScene
+        public void SetActiveLobbyScene()
         {
-            _networkEnemyContainer.MaxEnemyCount = 5;
-            var _ = _enemySpawner.StartSimpleSpawner(0, 5f,_networkEnemyContainer);
+            if (Runner.IsServer)
+            {
+                SceneTransition.TransitioningScene(Runner,SceneName.LobbyScene);
+            }
         }
+        
+        void IPlayerJoined.PlayerJoined(PlayerRef player)
+        {
+            if (Runner.IsServer)
+            {
+                _playerSpawner.SpawnPlayer(player,_networkPlayerContainer);
+        
+                // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
+            }
+        }
+        
+        
+        void IPlayerLeft.PlayerLeft(PlayerRef player)
+        {
+            if (Runner.IsServer)
+            {
+                _playerSpawner.DespawnPlayer(player,_networkPlayerContainer);
+            }
+        }
+     
     }
-    
-    // Return to LobbyScene
-    public void SetActiveLobbyScene()
-    {
-        if (Runner.IsServer)
-        {
-            SceneTransition.TransitioningScene(Runner,SceneName.LobbyScene);
-        }
-    }
-    
-    void IPlayerJoined.PlayerJoined(PlayerRef player)
-    {
-        if (Runner.IsServer)
-        {
-            _playerSpawner.SpawnPlayer(player,_networkPlayerContainer);
-    
-            // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
-        }
-    }
-    
-    
-    void IPlayerLeft.PlayerLeft(PlayerRef player)
-    {
-        if (Runner.IsServer)
-        {
-            _playerSpawner.DespawnPlayer(player,_networkPlayerContainer);
-        }
-    }
- 
 }
+

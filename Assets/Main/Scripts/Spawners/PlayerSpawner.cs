@@ -8,8 +8,9 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
-
-public class PlayerSpawner
+namespace Main
+{
+    public class PlayerSpawner
 {
     readonly NetworkRunner _runner;
     readonly NetworkBehaviourSpawner<NetworkPlayerController> _playerSpawner;
@@ -67,4 +68,5 @@ public class NetworkPlayerContainer
     {
         playerControllers.Remove(networkPlayerController);
     }
+}
 }

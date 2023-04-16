@@ -3,7 +3,9 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof( NetworkCharacterControllerPrototype))]
+namespace Main
+{
+    [RequireComponent(typeof( NetworkCharacterControllerPrototype))]
 public class NetworkEnemyController :  PoolableObject
 {
     [SerializeField] NetworkPrefabRef resourcePrefab;
@@ -86,3 +88,6 @@ public class NetworkEnemyController :  PoolableObject
         _state = EnemyState.Idle;
     }
 }
+
+}
+

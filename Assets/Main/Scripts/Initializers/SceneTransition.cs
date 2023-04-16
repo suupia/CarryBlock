@@ -5,32 +5,36 @@ using  UnityEngine.SceneManagement;
 using System;
 using Fusion;
 
-public enum SceneName 
+namespace Main
 {
-    TitleScene,
-    GameScene,
-    LobbyScene,
-}
-
-public static class SceneTransition
-{
-    static Dictionary<SceneName, string> sceneNameTable = new ()
+    public enum SceneName 
     {
-        {SceneName.TitleScene, "TitleScene"},
-        {SceneName.GameScene, "GameScene"},
-        {SceneName.LobbyScene, "LobbyScene"},
-    };
+        TitleScene,
+        GameScene,
+        LobbyScene,
+    }
 
-    public static void TransitioningScene(NetworkRunner runner,SceneName nextScene)
+    public static class SceneTransition
     {
-        if (sceneNameTable.TryGetValue(nextScene, out string sceneName))
+        static Dictionary<SceneName, string> sceneNameTable = new ()
         {
-            Debug.Log($"Transitioning to {sceneName}");
-            runner.SetActiveScene(sceneName);
-        }
-        else
+            {SceneName.TitleScene, "TitleScene"},
+            {SceneName.GameScene, "GameScene"},
+            {SceneName.LobbyScene, "LobbyScene"},
+        };
+
+        public static void TransitioningScene(NetworkRunner runner,SceneName nextScene)
         {
-            Debug.LogError($"{nextScene} is not registered in sceneNameTable.");
+            if (sceneNameTable.TryGetValue(nextScene, out string sceneName))
+            {
+                Debug.Log($"Transitioning to {sceneName}");
+                runner.SetActiveScene(sceneName);
+            }
+            else
+            {
+                Debug.LogError($"{nextScene} is not registered in sceneNameTable.");
+            }
         }
     }
+
 }

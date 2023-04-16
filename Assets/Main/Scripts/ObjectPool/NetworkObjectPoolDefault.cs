@@ -6,7 +6,9 @@ using System;
 using System.Linq;
 using UnityEditor;
 
-public class NetworkObjectPoolDefault : SimulationBehaviour, INetworkObjectPool, ISceneLoadDone
+namespace Main
+{
+    public class NetworkObjectPoolDefault : SimulationBehaviour, INetworkObjectPool, ISceneLoadDone
 {
     [SerializeField] Transform _poolParent;
     
@@ -152,3 +154,5 @@ public class NetworkObjectPoolDefault : SimulationBehaviour, INetworkObjectPool,
         _free = new();  
     }
 }
+}
+

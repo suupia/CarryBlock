@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Utility
+namespace  Main
+{
+    public class Utility
 {
     public static Vector3 SetYToZero(Vector3 vector)
     {
@@ -132,4 +134,6 @@ public class Utility
         /// </summary>
         public double Error { get; set; }
     }
+}
+
 }

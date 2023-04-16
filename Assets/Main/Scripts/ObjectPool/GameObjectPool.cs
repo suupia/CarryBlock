@@ -4,7 +4,9 @@ using UnityEngine;
 using System;
 using System.Linq;
 
-# nullable enable
+namespace Main
+{
+    # nullable enable
 public class GameObjectPool
 {
     readonly GameObject[] _pool;
@@ -100,4 +102,5 @@ public class GameObjectPool
             _activeObjects.RemoveAt(_activeObjects.Count()-1);
         }
     }
+}
 }

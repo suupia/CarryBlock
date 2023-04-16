@@ -6,12 +6,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Fusion;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-// 全てのシーンにこれを配置しておけば、NetworkRunnerを使える
+namespace Main
+{
+    // 全てのシーンにこれを配置しておけば、NetworkRunnerを使える
 // シーン上にNetworkRunnerがないならインスタンス化し、runner.StartGame()を実行
 public class NetworkRunnerManager : MonoBehaviour
 {
@@ -72,3 +73,5 @@ public class NetworkRunnerManager : MonoBehaviour
         return new string(result);
     }
 }
+}
+

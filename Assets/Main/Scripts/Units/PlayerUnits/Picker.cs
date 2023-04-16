@@ -3,28 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Picker : NetworkBehaviour
+namespace Main
 {
-    [Networked] TickTimer Life { get; set; }
-
-    Rigidbody _rb;
-
-    public override void Spawned()
+    public class Picker : NetworkBehaviour
     {
-        _rb = GetComponent<Rigidbody>();
+        [Networked] TickTimer Life { get; set; }
 
-        if (Object.HasStateAuthority)
+        Rigidbody _rb;
+
+        public override void Spawned()
         {
-            //Tmp life time
-            Life = TickTimer.CreateFromSeconds(Runner, 5.0f);
-            _rb.AddForce(Vector3.up * 1000f);
+            _rb = GetComponent<Rigidbody>();
 
+            if (Object.HasStateAuthority)
+            {
+                //Tmp life time
+                Life = TickTimer.CreateFromSeconds(Runner, 5.0f);
+                _rb.AddForce(Vector3.up * 1000f);
+
+            }
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            if (Life.Expired(Runner))
+                Runner.Despawn(Object);
         }
     }
 
-    public override void FixedUpdateNetwork()
-    {
-        if (Life.Expired(Runner))
-            Runner.Despawn(Object);
-    }
 }
+

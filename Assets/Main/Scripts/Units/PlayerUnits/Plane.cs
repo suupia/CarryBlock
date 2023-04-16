@@ -5,7 +5,9 @@ using System.Linq;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 
-public class Plane : IPlayerUnit
+namespace Main
+{
+    public class Plane : IPlayerUnit
 {
     readonly NetworkRunner　_runner;
     PlayerInfo _info;
@@ -112,5 +114,8 @@ public class Plane : IPlayerUnit
         return mainBases.Any();
     }
     
+}
+
+
 }
 

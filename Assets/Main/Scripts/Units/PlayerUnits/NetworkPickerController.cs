@@ -6,6 +6,9 @@ using System;
 using System.Linq;
 using Fusion;
 
+namespace Main
+{
+    
     public interface IPickerContext
     {
         public IPickerState CurrentState();
@@ -523,3 +526,5 @@ using Fusion;
             info.runner.Despawn(info.pickerObj);
         }
     }
+
+}

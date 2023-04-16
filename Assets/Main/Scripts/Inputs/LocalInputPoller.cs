@@ -4,9 +4,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
- 
- 
- public enum PlayerOperation
+
+ namespace Main
+ {
+      public enum PlayerOperation
  {
      MainAction = 0,
      Ready,
@@ -110,3 +111,6 @@ public class LocalInputPoller : INetworkRunnerCallbacks
      public NetworkBool IsShiftDown{ get; set; }
      public NetworkBool IsShiftUp{ get; set; }
  }
+
+ }
+ 

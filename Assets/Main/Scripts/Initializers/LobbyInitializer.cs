@@ -7,7 +7,9 @@ using UnityEngine;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 
-[DisallowMultipleComponent]
+namespace Main
+{
+    [DisallowMultipleComponent]
 public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
 {
     NetworkPlayerContainer _networkPlayerContainer = new();
@@ -70,6 +72,8 @@ public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
         {
             _playerSpawner.DespawnPlayer(player,_networkPlayerContainer);
         }
+        
     }
     
+}
 }

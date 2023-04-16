@@ -5,7 +5,9 @@ using System;
 using System.Linq;
 using Fusion;
 
-# nullable enable
+namespace Main
+{
+    # nullable enable
 public class MyNetworkObjectPool
 {
     readonly GameObject[] _pool;
@@ -105,3 +107,5 @@ public class MyNetworkObjectPool
     }
 }
 
+
+}
