@@ -54,12 +54,13 @@ public class NetworkPlayerController : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (!HasStateAuthority) return;
-
-        if (ShootCooldown.ExpiredOrNotRunning(Runner))
+        if (HasStateAuthority)
         {
-            _shooter.AttemptShootEnemy();
-            ShootCooldown = TickTimer.CreateFromSeconds(Runner, _shooter.shootInterval);
+            if (ShootCooldown.ExpiredOrNotRunning(Runner))
+            {
+                _shooter.AttemptShootEnemy();
+                ShootCooldown = TickTimer.CreateFromSeconds(Runner, _shooter.shootInterval);
+            }
         }
 
         if (GetInput(out NetworkInputData input))
