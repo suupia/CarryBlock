@@ -1,9 +1,12 @@
 using System;
-using Network.AnimatorSetter.Info;
 using UnityEngine;
 
-namespace Animations.Scripts
+namespace Animations
 {
+    public struct PlaneAnimatorSetterInfo
+    {
+        public Animator Animator { get; set; }
+    }
     public class PlaneAnimatorSetter: IAnimatorPlayerUnit
     {
         private enum BodyStates

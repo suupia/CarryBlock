@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Fusion;
 using UnityEngine;
 
-namespace Animations.Scripts
+namespace Animations.Tests
 {
     public class TestInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {

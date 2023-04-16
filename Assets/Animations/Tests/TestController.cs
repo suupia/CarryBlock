@@ -1,13 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Animations.Scripts;
 using Fusion;
 using UnityEngine;
-using Network.AnimatorSetter;
-using Network.AnimatorSetter.Info;
 
-namespace Network.Test
+namespace Animations.Tests
 {
     
     public class TestController : NetworkBehaviour

@@ -1,8 +1,11 @@
-using Network.AnimatorSetter.Info;
 using UnityEngine;
 
-namespace Animations.Scripts
+namespace Animations
 {
+    public struct SimpleEnemyAnimatorSetterInfo
+    {
+        public Animator Animator { get; set; }
+    }
     public class SimpleEnemyAnimatorSetter: IAnimatorSimpleEnemyUnit
     {
         private readonly SimpleEnemyAnimatorSetterInfo _info;

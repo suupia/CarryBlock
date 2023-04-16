@@ -1,11 +1,12 @@
 using System;
-using Animations.Scripts;
-using Network.AnimatorSetter.Info;
 using UnityEngine;
 
-namespace Network.AnimatorSetter
+namespace Animations
 {
-
+    public struct TankAnimatorSetterInfo
+    {
+        public Animator Animator { get; set; }
+    }
     
     public class TankAnimatorSetter: IAnimatorPlayerUnit
     {
