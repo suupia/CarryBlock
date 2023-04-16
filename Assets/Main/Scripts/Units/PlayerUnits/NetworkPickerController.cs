@@ -354,7 +354,7 @@ using Fusion;
             Collider[] colliders = Physics.OverlapSphere(Utility.SetYToZero(info.pickerObj.transform.position),
                 info.detectionRange);
             var resources = colliders.Where(collider => collider.CompareTag("Resource"))
-                .Where(collider => collider.gameObject.GetComponent<NetworkResourceController>().isOwned == false)
+                .Where(collider => collider.gameObject.GetComponent<NetworkResourceController>().canAccess)
                 .Select(collider => collider.gameObject.GetComponent<NetworkObject>());
 
             if (resources.Any()) TakeResource(context, resources.First());
@@ -363,7 +363,7 @@ using Fusion;
         void TakeResource(IPickerContext context, NetworkObject resource)
         {
             if (resource == null) return;
-            resource.GetComponent<NetworkResourceController>().isOwned = true;
+            resource.GetComponent<NetworkResourceController>().OnReserved();
             info.SetTargetResourceObj(resource);
             context.ChangeState(info.ApproachState);
         }
@@ -474,7 +474,8 @@ using Fusion;
 
             info.targetResourceObj.transform.position =
                 info.pickerObj.transform.position - new Vector3(0, info.collectOffset, 0);
-            info.targetResourceObj.transform.parent = info.pickerObj.transform;
+            // info.targetResourceObj.transform.parent = info.pickerObj.transform;
+            info.targetResourceObj.GetComponent<NetworkResourceController>().OnHeld(info.pickerObj.transform);
 
             isCollecting = false;
             isComplete = true;

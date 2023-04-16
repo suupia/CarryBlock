@@ -5,73 +5,37 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Windows;
 
-public class Tank : PlayerUnit
+public class Tank : IPlayerUnit
 {
     readonly NetworkRunner　_runner;
-    [Networked] TickTimer ReloadTimer { get; set; }
-    [Networked] NetworkObject Target { get; set; }
-
-    public override float DelayBetweenActions => 0.1f;
-
+    PlayerInfo _info;
     NetworkCharacterControllerPrototype _cc;
-    RangeDetector _rangeDetector;
-
-    float _pickerHeight = 5.0f;
+    readonly float _pickerHeight = 5.0f;
     
-    public Tank(PlayerInfo info) : base(info)
+    public Tank(PlayerInfo info) 
     {
-        this.info = info;
+        _info = info;
         _runner = info.runner;
-
         _cc = info.networkCharacterController; 
-        _rangeDetector = info.rangeDetector;
-        
+        _cc.Controller.height = 0.0f;
+        _cc.maxSpeed = 6.0f; 
     }
 
-    public override void Move(Vector3 direction)
+    public void Move(Vector3 direction)
     {
         _cc.Move(direction);
     }
+    
+    public float ActionCooldown() => 0.1f;
 
-    public override void Action()
+    public void Action()
     {
-        Debug.Log($"Actionを行います！");
-
-        if (ReloadTimer.ExpiredOrNotRunning(_runner))
-        {
-            //Auto Aim
-            //一旦タグで識別、外部のスクリプトでトリガー管理。依存関係を減らしたいならPhysics系を使っても良さそう
-            //その場合はLayer分けもしっかりしていきたい
-            //いずれこの処理は書き換えるべき
-            var enemies =  _rangeDetector.GameObjects.Where(o => o != null && o.CompareTag("Enemy")).ToArray();
-            if (enemies.Length > 0)
-            {
-                Target = enemies.First().GetComponent<NetworkObject>();
-
-                //一時的に弾の発射位置のためにオフセットを適用
-                //将来的には、戦車を上部と下部で別にして、上部が発射位置を管理するようにしようかな
-                var offset = new Vector3(0, 1.2f, 0);
-                Debug.Log($"info.bulletPrefab = {info.bulletPrefab}");
-                Debug.Log($"info.unitObject = {info.unitObject}");
-                Debug.Log($"_runner = {_runner}");
-                _runner.Spawn(info.bulletPrefab, info.unitObject.transform.position + offset, info.unitObject.transform.rotation, PlayerRef.None);
-                ReloadTimer = TickTimer.CreateFromSeconds(_runner, 2f);
-            }
-        }
-
-        var pickerPos = info.unitObject.transform.position + new Vector3(0, _pickerHeight, 0);
-        var picker = _runner.Spawn(info.pickerPrefab, pickerPos,  Quaternion.identity, PlayerRef.None).GetComponent<NetworkPickerController>();
-        picker.Init(_runner,info.unitObject.gameObject, info.playerInfoForPicker);
+        Debug.Log($"Action()");
+        var pickerPos = _info.playerObj.transform.position + new Vector3(0, _pickerHeight, 0);
+        var picker = _runner.Spawn(_info.pickerPrefab, pickerPos,  Quaternion.identity, PlayerRef.None).GetComponent<NetworkPickerController>();
+        picker.Init(_runner,_info.playerObj, _info.playerInfoForPicker);
 
     }
     
 
-    // void OnBeforeSpawnBullet(NetworkRunner runner, NetworkObject obj)
-    // {
-    //     var bullet = obj.GetComponent<NetworkBulletController>();
-    //     Debug.Log($"obj = {obj}");
-    //     Debug.Log($"bullet = {bullet}");
-    //     Debug.Log($"Target = {Target}");
-    //     bullet.AddForce(Target.transform.position - info.unitObject.transform.position);
-    // }
 }

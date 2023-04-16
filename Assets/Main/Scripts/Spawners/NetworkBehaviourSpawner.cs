@@ -31,9 +31,8 @@ public class NetworkBehaviourSpawner<T> where T : NetworkBehaviour
 {
      readonly NetworkRunner _runner;
      readonly IPrefabLoader<T> _prefabLoader;
-     readonly Action<T> _onSpawned = (T) => { };
 
-    public NetworkBehaviourSpawner(NetworkRunner runner, IPrefabLoader<T> prefabLoader)
+     public NetworkBehaviourSpawner(NetworkRunner runner, IPrefabLoader<T> prefabLoader)
     {
         _runner = runner;
         _prefabLoader = prefabLoader;
