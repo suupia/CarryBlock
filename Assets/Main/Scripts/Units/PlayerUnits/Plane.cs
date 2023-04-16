@@ -26,6 +26,7 @@ public class Plane : IPlayerUnit
         _runner = info.runner;
         _cc = info.networkCharacterController; 
         _cc.Controller.height = 6;
+        _cc.acceleration *= 1.5f; // Plane is faster than other units.
     }
 
     public void Move(Vector3 direction)
@@ -39,8 +40,14 @@ public class Plane : IPlayerUnit
     public void Action()
     {
         // Collect resource.
-        AttemptCollectResource();
-        SubmitResource();
+        if (heldResources.Any())
+        {
+            SubmitResource();
+        }
+        else
+        {
+            AttemptCollectResource();
+        }
     }
 
     public void AttemptCollectResource()
