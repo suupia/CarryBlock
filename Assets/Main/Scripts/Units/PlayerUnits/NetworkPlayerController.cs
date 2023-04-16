@@ -3,6 +3,10 @@ using UnityEngine;
 using System;
 using System.Linq;
 using UnityEngine.Serialization;
+using Animations.Scripts;
+using Network.AnimatorSetter;
+using Network.AnimatorSetter.Info;
+
 
 /// <summary>
 /// The only NetworkBehaviour to control the character.
@@ -16,6 +20,7 @@ public class NetworkPlayerController : NetworkBehaviour
 
     [SerializeField] GameObject[] playerUnitPrefabs;
     [SerializeField] UnitType _unitType;
+    IAnimatorPlayerUnit _animatorSetter;
 
     [FormerlySerializedAs("info")] [SerializeField] PlayerInfo _info;
 
@@ -24,8 +29,16 @@ public class NetworkPlayerController : NetworkBehaviour
 
     [Networked] TickTimer ShootCooldown { get; set; }
     [Networked] TickTimer ActionCooldown { get; set; }
+    
+    // Animation
+    [Networked] private Vector3 Direction { get; set; }
+    [Networked] private int MainActionCount { get; set; }
+    [Networked(OnChanged = nameof(OnHpChanged))]
+    private byte Hp { get; set; } = 1;
+    private int _preMainActionCount = 0;
 
     IPlayerUnit _unit;
+    GameObject _unitObj;
     PlayerShooter _shooter;
 
     enum UnitType
@@ -41,7 +54,7 @@ public class NetworkPlayerController : NetworkBehaviour
         _info.Init(Runner);
 
         // Instantiate the unit.
-        _unit = InstantiateUnit(_unitType);
+        InstantiateUnit(_unitType);
         _shooter = new PlayerShooter(_info);
 
         if (Object.HasInputAuthority)
@@ -84,14 +97,27 @@ public class NetworkPlayerController : NetworkBehaviour
                 {
                     _unit.Action();
                     ActionCooldown = TickTimer.CreateFromSeconds(Runner, _unit.ActionCooldown());
+                    MainActionCount++;
                 }
             }
 
             var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
             _unit.Move(direction);
+            Direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
             PreButtons = input.Buttons;
+        }
+    }
+    
+    public override void Render()
+    {
+        _animatorSetter.OnMove(Direction);
+
+        if (MainActionCount > _preMainActionCount)
+        {
+            _animatorSetter.OnMainAction();
+            _preMainActionCount = MainActionCount;
         }
     }
 
@@ -101,28 +127,53 @@ public class NetworkPlayerController : NetworkBehaviour
     public void RPC_ChangeNextUnit()
     {
         _unitType = (UnitType)(((int)_unitType + 1) % Enum.GetValues(typeof(UnitType)).Length);
-        for(int i = 0; i < unitObjectParent.transform.childCount; i++)
-        {
-            Destroy(unitObjectParent.transform.GetChild(i).gameObject);
-        }
-        _unit = InstantiateUnit(_unitType);
+        Destroy(_unitObj);
+        InstantiateUnit(_unitType);
         
         // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
         _info.playerObj.transform.position = new Vector3(0, 30, 0) + _info.playerObj.transform.position;
     }
 
-    IPlayerUnit InstantiateUnit(UnitType unitType)
+    void InstantiateUnit(UnitType unitType)
     {
         // Instantiate the unit.
         var prefab = playerUnitPrefabs[(int)unitType];
-        var unitObj = Instantiate(prefab, unitObjectParent);
-
-        return unitType switch
+        _unitObj = Instantiate(prefab, unitObjectParent);
+        
+        // Set the unit domain
+        _unit = unitType switch
         {
             UnitType.Tank => new Tank(_info),
             UnitType.Plane => new Plane(_info),
             _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
         };
+        
+        // Set the animator.
+        var animator = _unitObj.GetComponentInChildren<Animator>();
+        _animatorSetter = unitType switch
+        {
+            UnitType.Tank => new TankAnimatorSetter(new TankAnimatorSetterInfo()
+            {
+                Animator = animator,
+            }),
+            UnitType.Plane => new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
+            {
+                Animator = animator,
+            }),
+            _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
+        };
+        
+        // Play spawn animation
+        _animatorSetter.OnSpawn();
+    }
+    
+    public static void OnHpChanged(Changed<NetworkPlayerController> changed)
+    {
+        var hp = changed.Behaviour.Hp;
+        if (hp <= 0)
+        {
+            changed.Behaviour._animatorSetter.OnDead();
+        }
     }
 }
 
