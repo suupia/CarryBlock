@@ -19,7 +19,7 @@ public class NetworkPlayerController : NetworkBehaviour
 
     [SerializeField] GameObject[] playerUnitPrefabs;
     [SerializeField] UnitType _unitType;
-    // IAnimatorPlayerUnit _animatorSetter;
+    IAnimatorPlayerUnit _animatorSetter;
 
     [SerializeField] PlayerInfo _info;
 
@@ -33,8 +33,8 @@ public class NetworkPlayerController : NetworkBehaviour
 
     [Networked] private int MainActionCount { get; set; }
     [Networked(OnChanged = nameof(OnHpChanged))]
-    private byte Hp { get; set; } = 1;
-    private int _preMainActionCount = 0;
+    byte Hp { get; set; } = 1;
+    int _preMainActionCount = 0;
     Vector3 preDirection = Vector3.zero;
 
     IPlayerUnit _unit;
@@ -104,7 +104,6 @@ public class NetworkPlayerController : NetworkBehaviour
             var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
             _unit.Move(direction);
-            // Direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
             PreButtons = input.Buttons;
         }
@@ -120,12 +119,12 @@ public class NetworkPlayerController : NetworkBehaviour
             > 0 => new Vector3(1,0,0),
             _ => Vector3.zero
         };
-        // _animatorSetter.OnMove(vector);
+         _animatorSetter.OnMove(vector);
         Debug.Log("_info.playerObj.transform.forward = " + _info.playerObj.transform.forward);
         
         if (MainActionCount > _preMainActionCount)
         {
-           //  _animatorSetter.OnMainAction();
+             _animatorSetter.OnMainAction();
             _preMainActionCount = MainActionCount;
         }
     }
@@ -140,7 +139,7 @@ public class NetworkPlayerController : NetworkBehaviour
         InstantiateUnit(_unitType);
         
         // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
-        _info.playerObj.transform.position = new Vector3(0, 30, 0) + _info.playerObj.transform.position;
+        _info.playerObj.transform.position = new Vector3(0, 5, 0);
     }
 
     void InstantiateUnit(UnitType unitType)
@@ -159,21 +158,21 @@ public class NetworkPlayerController : NetworkBehaviour
         
         // Set the animator.
         var animator = _unitObj.GetComponentInChildren<Animator>();
-        // _animatorSetter = unitType switch
-        // {
-        //     UnitType.Tank => new TankAnimatorSetter(new TankAnimatorSetterInfo()
-        //     {
-        //         Animator = animator,
-        //     }),
-        //     UnitType.Plane => new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
-        //     {
-        //         Animator = animator,
-        //     }),
-        //     _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
-        // };
+        _animatorSetter = unitType switch
+        {
+            UnitType.Tank => new TankAnimatorSetter(new TankAnimatorSetterInfo()
+            {
+                Animator = animator,
+            }),
+            UnitType.Plane => new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
+            {
+                Animator = animator,
+            }),
+            _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
+        };
         
         // Play spawn animation
-       //  _animatorSetter.OnSpawn();
+         _animatorSetter.OnSpawn();
     }
     
     public static void OnHpChanged(Changed<NetworkPlayerController> changed)
@@ -181,7 +180,7 @@ public class NetworkPlayerController : NetworkBehaviour
         var hp = changed.Behaviour.Hp;
         if (hp <= 0)
         {
-           // changed.Behaviour._animatorSetter.OnDead();
+            changed.Behaviour._animatorSetter.OnDead();
         }
     }
 }

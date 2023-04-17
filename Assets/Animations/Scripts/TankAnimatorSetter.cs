@@ -21,7 +21,7 @@ namespace Animations
         public void OnMove(Vector3 direction)
         {
             if (direction == Vector3.zero) return;
-            _info.Animator.SetFloat(Speed, direction.magnitude);
+            // _info.Animator.SetFloat(Speed, direction.magnitude);
         }
 
         public void OnAttack()
