@@ -140,6 +140,7 @@ public class NetworkPlayerController : NetworkBehaviour
         
         // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
         _info.playerObj.transform.position = new Vector3(0, 5, 0);
+        _info.playerRd.velocity = Vector3.zero;
     }
 
     void InstantiateUnit(UnitType unitType)
