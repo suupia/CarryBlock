@@ -7,26 +7,34 @@ using UnityEngine.Windows;
 
 namespace Main
 {
-    public class Tank : IPlayerUnit
+    public class Tank : IUnit
     {
         readonly NetworkRunner　_runner;
         PlayerInfo _info;
-        NetworkCharacterControllerPrototype _cc;
         readonly float _pickerHeight = 5.0f;
+        IUnitMove _move;
     
         public Tank(PlayerInfo info) 
         {
             _info = info;
-            _runner = info.runner;
-            _cc = info.networkCharacterController; 
-            _cc.Controller.height = 0.0f;
-            _cc.maxSpeed = 6.0f; 
+            _runner = info._runner;
+            _move = new RegularMove()
+            {
+                transform = _info.playerObj.transform,
+                rd = _info.playerRd,
+                acceleration = _info.acceleration,
+                maxVelocity = _info.maxVelocity,
+                maxAngularVelocity = _info.maxAngularVelocity,
+                torque = _info.torque
+            };
+            _info.playerRd.useGravity = true;
         }
 
         public void Move(Vector3 direction)
         {
-            _cc.Move(direction);
+            _move.Move(direction);
         }
+        
     
         public float ActionCooldown() => 0.1f;
 

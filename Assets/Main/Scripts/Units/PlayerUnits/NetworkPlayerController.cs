@@ -21,7 +21,7 @@ public class NetworkPlayerController : NetworkBehaviour
     [SerializeField] UnitType _unitType;
     IAnimatorPlayerUnit _animatorSetter;
 
-    [FormerlySerializedAs("info")] [SerializeField] PlayerInfo _info;
+    [SerializeField] PlayerInfo _info;
 
     [Networked] NetworkButtons PreButtons { get; set; }
     [Networked] public NetworkBool IsReady { get; set; }
@@ -33,11 +33,11 @@ public class NetworkPlayerController : NetworkBehaviour
 
     [Networked] private int MainActionCount { get; set; }
     [Networked(OnChanged = nameof(OnHpChanged))]
-    private byte Hp { get; set; } = 1;
-    private int _preMainActionCount = 0;
+    byte Hp { get; set; } = 1;
+    int _preMainActionCount = 0;
     Vector3 preDirection = Vector3.zero;
 
-    IPlayerUnit _unit;
+    IUnit _unit;
     GameObject _unitObj;
     PlayerShooter _shooter;
 
@@ -51,8 +51,8 @@ public class NetworkPlayerController : NetworkBehaviour
     public override void Spawned()
     {
         // init info
-        _info.Init(Runner);
-
+        _info.Init(Runner,gameObject);
+        
         // Instantiate the unit.
         InstantiateUnit(_unitType);
         _shooter = new PlayerShooter(_info);
@@ -104,7 +104,6 @@ public class NetworkPlayerController : NetworkBehaviour
             var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
             _unit.Move(direction);
-            // Direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
             PreButtons = input.Buttons;
         }
@@ -120,12 +119,12 @@ public class NetworkPlayerController : NetworkBehaviour
             > 0 => new Vector3(1,0,0),
             _ => Vector3.zero
         };
-        _animatorSetter.OnMove(vector);
+         _animatorSetter.OnMove(vector);
         Debug.Log("_info.playerObj.transform.forward = " + _info.playerObj.transform.forward);
         
         if (MainActionCount > _preMainActionCount)
         {
-            _animatorSetter.OnMainAction();
+             _animatorSetter.OnMainAction();
             _preMainActionCount = MainActionCount;
         }
     }
@@ -140,7 +139,7 @@ public class NetworkPlayerController : NetworkBehaviour
         InstantiateUnit(_unitType);
         
         // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
-        _info.playerObj.transform.position = new Vector3(0, 30, 0) + _info.playerObj.transform.position;
+        _info.playerObj.transform.position = new Vector3(0, 5, 0);
     }
 
     void InstantiateUnit(UnitType unitType)
@@ -173,7 +172,7 @@ public class NetworkPlayerController : NetworkBehaviour
         };
         
         // Play spawn animation
-        _animatorSetter.OnSpawn();
+         _animatorSetter.OnSpawn();
     }
     
     public static void OnHpChanged(Changed<NetworkPlayerController> changed)
@@ -211,7 +210,7 @@ public class PlayerShooter
         var bulletInitPos =
             _info.bulletOffset * (targetEnemy.gameObject.transform.position - _info.playerObj.transform.position)
             .normalized + _info.playerObj.transform.position;
-        var bulletObj = _info.runner.Spawn(_info.bulletPrefab, bulletInitPos, Quaternion.identity, PlayerRef.None);
+        var bulletObj = _info._runner.Spawn(_info.bulletPrefab, bulletInitPos, Quaternion.identity, PlayerRef.None);
         var bullet = bulletObj.GetComponent<NetworkBulletController>();
         bullet.Init(targetEnemy);
     }

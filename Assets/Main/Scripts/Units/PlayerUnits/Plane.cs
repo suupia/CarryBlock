@@ -7,11 +7,10 @@ using Cysharp.Threading.Tasks;
 
 namespace Main
 {
-    public class Plane : IPlayerUnit
+    public class Plane : IUnit
 {
     readonly NetworkRunner　_runner;
     PlayerInfo _info;
-    NetworkCharacterControllerPrototype _cc;
     
     bool isCollecting;
     float collectTime = 1f;
@@ -21,20 +20,29 @@ namespace Main
     float submitResourceRange = 3f;
 
     IList<NetworkObject> heldResources = new List<NetworkObject>();
+    IUnitMove _move;
 
     public Plane(PlayerInfo info) 
     {
         _info = info;
-        _runner = info.runner;
-        _cc = info.networkCharacterController; 
-        _cc.Controller.height = 6.0f;
-        _cc.maxSpeed = 8.0f; // Plane is faster than other units.
+        _runner = info._runner;
+        _move = new RegularMove()
+        {
+            transform = _info.playerObj.transform,
+            rd = _info.playerRd,
+            acceleration = _info.acceleration,
+            maxVelocity = _info.maxVelocity,
+            maxAngularVelocity = _info.maxAngularVelocity,
+            torque = _info.torque
+        };
+        _info.playerRd.useGravity = false;
     }
 
     public void Move(Vector3 direction)
     {
         if(isCollecting)return;
-        _cc.Move(direction);
+        
+        _move.Move(direction);
     }
     
     public float ActionCooldown() => 0.1f;

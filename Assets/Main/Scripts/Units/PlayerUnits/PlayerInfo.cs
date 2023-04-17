@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace Main
 {
-    public interface IPlayerUnit
+    public interface IUnit : IUnitMove
     {
         void Move(Vector3 direction);
         float ActionCooldown();
@@ -17,25 +17,30 @@ namespace Main
     [Serializable]
     public  class PlayerInfo
     {
-        [NonSerialized]public NetworkRunner runner;
+        [NonSerialized]public NetworkRunner _runner;
     
         // constant fields 
+        public readonly float acceleration = 30f;
+        public readonly float maxVelocity = 15f;
+        public readonly float torque = 1000f;
+        public readonly float maxAngularVelocity = 100f;
         public readonly float bulletOffset = 1;
-    
         public readonly float rangeRadius = 12.0f;
     
         // Attach
-        [SerializeField] public NetworkCharacterControllerPrototype networkCharacterController;
         [SerializeField] public NetworkPrefabRef pickerPrefab;
         [SerializeField] public NetworkPrefabRef bulletPrefab;
     
         // Property
-        public GameObject playerObj => networkCharacterController.gameObject;
+        public GameObject playerObj;
+        public Rigidbody playerRd;
 
         public PlayerInfoForPicker playerInfoForPicker;
-        public void Init( NetworkRunner runner)
+        public void Init(NetworkRunner runner, GameObject playerObj)
         {
-            this.runner = runner;
+            _runner = runner;
+            this.playerObj = playerObj;
+            this.playerRd = playerObj.GetComponent<Rigidbody>();
             playerInfoForPicker = new PlayerInfoForPicker(this);
         }
     }
