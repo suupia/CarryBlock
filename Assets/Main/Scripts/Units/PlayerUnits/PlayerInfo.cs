@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace Main
 {
-    public interface IPlayerUnit
+    public interface IPlayerUnit : IPlayerUnitMove
     {
         void Move(Vector3 direction);
         float ActionCooldown();
@@ -20,9 +20,10 @@ namespace Main
         [NonSerialized]public NetworkRunner _runner;
     
         // constant fields 
-        public readonly float acceleration = 10f;
+        public readonly float acceleration = 30f;
         public readonly float maxVelocity = 15f;
-        public readonly float resistance = 0.9f;
+        public readonly float torque = 1000f;
+        public readonly float maxAngularVelocity = 100f;
         public readonly float bulletOffset = 1;
         public readonly float rangeRadius = 12.0f;
     

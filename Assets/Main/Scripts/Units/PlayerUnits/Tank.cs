@@ -12,21 +12,28 @@ namespace Main
         readonly NetworkRunner　_runner;
         PlayerInfo _info;
         readonly float _pickerHeight = 5.0f;
+        IPlayerUnitMove _move;
     
         public Tank(PlayerInfo info) 
         {
             _info = info;
             _runner = info._runner;
+            _move = new RegularMove()
+            {
+                transform = _info.playerObj.transform,
+                rigidbody = _info.playerRd,
+                acceleration = _info.acceleration,
+                maxVelocity = _info.maxVelocity,
+                maxAngularVelocity = _info.maxAngularVelocity,
+                torque = _info.torque
+            };
         }
 
         public void Move(Vector3 direction)
         {
-            _info.playerRd.AddForce(_info.acceleration * direction, ForceMode.Acceleration);
-            if (_info.playerRd.velocity.magnitude >= _info.maxVelocity)
-                _info.playerRd.velocity = _info.maxVelocity * _info.playerRd.velocity.normalized;
-            if (direction == Vector3.zero)
-                _info.playerRd.velocity = _info.resistance * _info.playerRd.velocity; //Decelerate when there is no key input
+            _move.Move(direction);
         }
+        
     
         public float ActionCooldown() => 0.1f;
 

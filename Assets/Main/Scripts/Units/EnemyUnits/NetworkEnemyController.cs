@@ -5,10 +5,15 @@ using UnityEngine;
 
 namespace Main
 {
-    [RequireComponent(typeof( NetworkCharacterControllerPrototype))]
+    [RequireComponent(typeof( NetworkRigidbody))]
 public class NetworkEnemyController :  PoolableObject
 {
     [SerializeField] NetworkPrefabRef resourcePrefab;
+    
+    public readonly float acceleration = 10f;
+    public readonly float maxVelocity = 8;
+    public readonly float resistance = 0.9f; // Determine the slipperiness.
+
     
     bool isInitialized = false;
     readonly float _detectionRange = 30;
@@ -21,13 +26,13 @@ public class NetworkEnemyController :  PoolableObject
 
     EnemyState _state = EnemyState.Idle;
 
-    NetworkCharacterControllerPrototype _cc;
+    Rigidbody _rb;
 
     public Action onDespawn = () => { };
 
     public override void Spawned()
     {
-        _cc = GetComponent<NetworkCharacterControllerPrototype>();
+        _rb = GetComponent<Rigidbody>();
         isInitialized = true;
     }
 
@@ -67,7 +72,11 @@ public class NetworkEnemyController :  PoolableObject
     void Chase()
     {
         var directionVec = Utility.SetYToZero(_targetPlayerObj.transform.position - gameObject.transform.position).normalized;
-        _cc.Move(directionVec);
+        _rb.AddForce(acceleration * directionVec, ForceMode.Acceleration);
+        if (_rb.velocity.magnitude >= maxVelocity)
+            _rb.velocity = maxVelocity * _rb.velocity.normalized;
+        if (directionVec == Vector3.zero)
+            _rb.velocity = resistance * _rb.velocity; //Decelerate when there is no key input
     }
 
     public void OnDefeated()

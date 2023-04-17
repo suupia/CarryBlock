@@ -19,7 +19,7 @@ public class NetworkPlayerController : NetworkBehaviour
 
     [SerializeField] GameObject[] playerUnitPrefabs;
     [SerializeField] UnitType _unitType;
-    IAnimatorPlayerUnit _animatorSetter;
+    // IAnimatorPlayerUnit _animatorSetter;
 
     [SerializeField] PlayerInfo _info;
 
@@ -120,12 +120,12 @@ public class NetworkPlayerController : NetworkBehaviour
             > 0 => new Vector3(1,0,0),
             _ => Vector3.zero
         };
-        _animatorSetter.OnMove(vector);
+        // _animatorSetter.OnMove(vector);
         Debug.Log("_info.playerObj.transform.forward = " + _info.playerObj.transform.forward);
         
         if (MainActionCount > _preMainActionCount)
         {
-            _animatorSetter.OnMainAction();
+           //  _animatorSetter.OnMainAction();
             _preMainActionCount = MainActionCount;
         }
     }
@@ -159,21 +159,21 @@ public class NetworkPlayerController : NetworkBehaviour
         
         // Set the animator.
         var animator = _unitObj.GetComponentInChildren<Animator>();
-        _animatorSetter = unitType switch
-        {
-            UnitType.Tank => new TankAnimatorSetter(new TankAnimatorSetterInfo()
-            {
-                Animator = animator,
-            }),
-            UnitType.Plane => new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
-            {
-                Animator = animator,
-            }),
-            _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
-        };
+        // _animatorSetter = unitType switch
+        // {
+        //     UnitType.Tank => new TankAnimatorSetter(new TankAnimatorSetterInfo()
+        //     {
+        //         Animator = animator,
+        //     }),
+        //     UnitType.Plane => new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
+        //     {
+        //         Animator = animator,
+        //     }),
+        //     _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
+        // };
         
         // Play spawn animation
-        _animatorSetter.OnSpawn();
+       //  _animatorSetter.OnSpawn();
     }
     
     public static void OnHpChanged(Changed<NetworkPlayerController> changed)
@@ -181,7 +181,7 @@ public class NetworkPlayerController : NetworkBehaviour
         var hp = changed.Behaviour.Hp;
         if (hp <= 0)
         {
-            changed.Behaviour._animatorSetter.OnDead();
+           // changed.Behaviour._animatorSetter.OnDead();
         }
     }
 }
