@@ -35,6 +35,7 @@ namespace Main
             maxAngularVelocity = _info.maxAngularVelocity,
             torque = _info.torque
         };
+        _info.playerRd.useGravity = false;
     }
 
     public void Move(Vector3 direction)
