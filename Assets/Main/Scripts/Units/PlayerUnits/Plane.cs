@@ -29,7 +29,7 @@ namespace Main
         _move = new RegularMove()
         {
             transform = _info.playerObj.transform,
-            rigidbody = _info.playerRd,
+            rd = _info.playerRd,
             acceleration = _info.acceleration,
             maxVelocity = _info.maxVelocity,
             maxAngularVelocity = _info.maxAngularVelocity,
