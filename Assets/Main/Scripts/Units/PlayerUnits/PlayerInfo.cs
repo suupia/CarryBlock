@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace Main
 {
-    public interface IPlayerUnit : IPlayerUnitMove
+    public interface IUnit : IUnitMove
     {
         void Move(Vector3 direction);
         float ActionCooldown();

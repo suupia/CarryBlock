@@ -29,10 +29,17 @@ public class NetworkEnemyController :  PoolableObject
     Rigidbody _rb;
 
     public Action onDespawn = () => { };
+    
+    IUnitMove _move;
 
     public override void Spawned()
     {
         _rb = GetComponent<Rigidbody>();
+        _move = new RegularMove()
+        {
+            transform = transform,
+            rd = _rb,
+        };
         isInitialized = true;
     }
 
@@ -71,12 +78,13 @@ public class NetworkEnemyController :  PoolableObject
 
     void Chase()
     {
-        var directionVec = Utility.SetYToZero(_targetPlayerObj.transform.position - gameObject.transform.position).normalized;
-        _rb.AddForce(acceleration * directionVec, ForceMode.Acceleration);
-        if (_rb.velocity.magnitude >= maxVelocity)
-            _rb.velocity = maxVelocity * _rb.velocity.normalized;
-        if (directionVec == Vector3.zero)
-            _rb.velocity = resistance * _rb.velocity; //Decelerate when there is no key input
+        var direction = Utility.SetYToZero(_targetPlayerObj.transform.position - gameObject.transform.position).normalized;
+        _move.Move(direction);
+        // _rb.AddForce(acceleration * directionVec, ForceMode.Acceleration);
+        // if (_rb.velocity.magnitude >= maxVelocity)
+        //     _rb.velocity = maxVelocity * _rb.velocity.normalized;
+        // if (directionVec == Vector3.zero)
+        //     _rb.velocity = resistance * _rb.velocity; //Decelerate when there is no key input
     }
 
     public void OnDefeated()

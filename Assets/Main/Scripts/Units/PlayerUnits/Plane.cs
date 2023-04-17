@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Main
 {
-    public class Plane : IPlayerUnit
+    public class Plane : IUnit
 {
     readonly NetworkRunner　_runner;
     PlayerInfo _info;
@@ -20,7 +20,7 @@ namespace Main
     float submitResourceRange = 3f;
 
     IList<NetworkObject> heldResources = new List<NetworkObject>();
-    IPlayerUnitMove _move;
+    IUnitMove _move;
 
     public Plane(PlayerInfo info) 
     {

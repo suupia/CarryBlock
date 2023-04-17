@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPlayerUnitMove
+public interface IUnitMove
 {
     void Move(Vector3 input);
 }
 
-public class RegularMove : IPlayerUnitMove
+public class RegularMove : IUnitMove
 {
     public Transform transform { get; set; }
     public Rigidbody rd { get; set; }

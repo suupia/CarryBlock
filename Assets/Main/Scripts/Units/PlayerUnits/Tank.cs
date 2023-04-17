@@ -7,12 +7,12 @@ using UnityEngine.Windows;
 
 namespace Main
 {
-    public class Tank : IPlayerUnit
+    public class Tank : IUnit
     {
         readonly NetworkRunner　_runner;
         PlayerInfo _info;
         readonly float _pickerHeight = 5.0f;
-        IPlayerUnitMove _move;
+        IUnitMove _move;
     
         public Tank(PlayerInfo info) 
         {

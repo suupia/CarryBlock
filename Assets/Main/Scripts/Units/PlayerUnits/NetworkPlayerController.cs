@@ -37,7 +37,7 @@ public class NetworkPlayerController : NetworkBehaviour
     int _preMainActionCount = 0;
     Vector3 preDirection = Vector3.zero;
 
-    IPlayerUnit _unit;
+    IUnit _unit;
     GameObject _unitObj;
     PlayerShooter _shooter;
 
