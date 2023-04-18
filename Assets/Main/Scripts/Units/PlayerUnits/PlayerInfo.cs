@@ -21,7 +21,7 @@ namespace Main
     
         // constant fields 
         public readonly float acceleration = 30f;
-        public readonly float maxVelocity = 15f;
+        public readonly float maxVelocity = 9f;
         public readonly float torque = 1000f;
         public readonly float maxAngularVelocity = 100f;
         public readonly float bulletOffset = 1;

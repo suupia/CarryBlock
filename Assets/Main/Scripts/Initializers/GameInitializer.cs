@@ -13,7 +13,7 @@ namespace Main
         NetworkEnemyContainer _networkEnemyContainer = new();
         PlayerSpawner _playerSpawner;
         EnemySpawner _enemySpawner;
-        
+        [SerializeField] WaveTimer _waveTimer;
         
         async void Start()
         {
@@ -26,6 +26,8 @@ namespace Main
             // Domain
             _playerSpawner = new PlayerSpawner(Runner);
             _enemySpawner = new EnemySpawner(Runner);
+            Runner.AddSimulationBehaviour(_waveTimer);
+            _waveTimer.Init();
     
     
             if (Runner.IsServer)
