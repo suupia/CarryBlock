@@ -42,7 +42,9 @@ namespace Main
         {
             Debug.Log($"Action()");
             var pickerPos = _info.playerObj.transform.position + new Vector3(0, _pickerHeight, 0);
+            Debug.Log($"_runner = {_runner}, _info.pickerPrefab = {_info.pickerPrefab}, pickerPos = {pickerPos}, PlayerRef.None = {PlayerRef.None}");
             var picker = _runner.Spawn(_info.pickerPrefab, pickerPos,  Quaternion.identity, PlayerRef.None).GetComponent<NetworkPickerController>();
+            Debug.Log($"picker = {picker}");
             picker.Init(_runner,_info.playerObj, _info.playerInfoForPicker);
 
         }
