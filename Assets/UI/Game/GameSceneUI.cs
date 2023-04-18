@@ -22,7 +22,7 @@ namespace  UI
             _resourceAggregator = FindObjectOfType<GameSceneLifetimeScope>().Container.Resolve<ResourceAggregator>();
         }
 
-        public void FixedUpdateNetwork()
+        public override void FixedUpdateNetwork()
         {
             if(!HasStateAuthority)return;
             _score = _resourceAggregator.getAmount; // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
