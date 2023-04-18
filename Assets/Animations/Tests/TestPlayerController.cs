@@ -8,7 +8,7 @@ using Main;
 namespace Animations.Tests
 {
     
-    public class TestController : NetworkBehaviour
+    public class TestPlayerController : NetworkBehaviour
     {
         private string DebugData => $"Tick.Row: {Runner.Tick.Raw}, frameCount: {Time.frameCount}";
         
@@ -84,7 +84,7 @@ namespace Animations.Tests
             }
         }
 
-        public static void OnHpChanged(Changed<TestController> changed)
+        public static void OnHpChanged(Changed<TestPlayerController> changed)
         {
             var hp = changed.Behaviour.Hp;
             if (hp <= 0)
