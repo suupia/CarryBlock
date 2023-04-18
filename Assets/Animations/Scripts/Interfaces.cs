@@ -33,6 +33,6 @@ namespace Animations
 
     public interface IAnimatorSimpleEnemyUnit : IAnimatorAttack, IAnimatorDead, IAnimatorMove, IAnimatorSpawn
     {
-    
+        
     }
 }
