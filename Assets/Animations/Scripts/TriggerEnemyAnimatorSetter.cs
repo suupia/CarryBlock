@@ -22,6 +22,7 @@ namespace Animations
 
         public void OnAttack(bool value = true)
         {
+            if (!value) return; 
             Animator.ResetTrigger(AttackTrigger);
             Animator.SetTrigger(AttackTrigger);
         }
