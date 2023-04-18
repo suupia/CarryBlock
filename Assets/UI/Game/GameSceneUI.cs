@@ -13,7 +13,7 @@ namespace  UI
         [SerializeField] TextMeshProUGUI _scoreText;
         [SerializeField] TextMeshProUGUI _waveTimerText;
 
-        [Networked] UInt16 score { get; set; }
+        [Networked] int score { get; set; }
 
         [SerializeField] WaveTimer _waveTimer;
         ResourceAggregator _resourceAggregator;
@@ -29,9 +29,9 @@ namespace  UI
 
         public override void FixedUpdateNetwork()
         {
-            if(!HasStateAuthority)return;
-            score = (UInt16)_resourceAggregator.getAmount; // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
             Debug.Log($"_score : {score}, runner : {Runner}");
+            if(!HasStateAuthority)return;
+            score = _resourceAggregator.getAmount; // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
         }
 
 
