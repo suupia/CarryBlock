@@ -16,11 +16,16 @@ namespace  UI
 
         ResourceAggregator _resourceAggregator;
 
-
-        void Awake()
+        [Inject]
+        public void Construct(ResourceAggregator resourceAggregator)
         {
-            _resourceAggregator = FindObjectOfType<GameSceneLifetimeScope>().Container.Resolve<ResourceAggregator>();
+            _resourceAggregator = resourceAggregator;
         }
+
+        // void Awake()
+        // {
+        //     _resourceAggregator = FindObjectOfType<GameSceneLifetimeScope>().Container.Resolve<ResourceAggregator>();
+        // }
 
         public override void FixedUpdateNetwork()
         {

@@ -22,11 +22,17 @@ namespace Main
         bool _isInitialized = false;
         Transform _holder;
         
+        
+        [Inject]
+        public void Construct(ResourceAggregator resourceAggregator)
+        {
+            _resourceAggregator = resourceAggregator;
+        }
             
         public override void Spawned() // 必要であればInit()にして外部から呼び出せるようにする
         {
             _isInitialized = true;
-            _resourceAggregator = FindObjectOfType<GameSceneLifetimeScope>().Container.Resolve<ResourceAggregator>();
+          //   _resourceAggregator = FindObjectOfType<GameSceneLifetimeScope>().Container.Resolve<ResourceAggregator>();
         }
         
         public override void Render()
