@@ -265,6 +265,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b9353e70523aac4c94d4df859805855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &716518660 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1689520349117947185, guid: 96c2bd997da7848a8bd1e066db516256, type: 3}
+  m_PrefabInstance: {fileID: 81104270947021988}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebfffd887702f427aa757cacbb298c82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &795847966
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,10 +687,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 81104270650433241, guid: 96c2bd997da7848a8bd1e066db516256, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 446665321}
     - target: {fileID: 81104272376753393, guid: 96c2bd997da7848a8bd1e066db516256, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -767,6 +774,26 @@ PrefabInstance:
     - target: {fileID: 81104272376753397, guid: 96c2bd997da7848a8bd1e066db516256, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5373281081187785450, guid: 96c2bd997da7848a8bd1e066db516256, type: 3}
+      propertyPath: Flags
+      value: 2561
+      objectReference: {fileID: 0}
+    - target: {fileID: 5373281081187785450, guid: 96c2bd997da7848a8bd1e066db516256, type: 3}
+      propertyPath: NetworkedBehaviours.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5373281081187785450, guid: 96c2bd997da7848a8bd1e066db516256, type: 3}
+      propertyPath: NetworkedBehaviours.Array.data[0]
+      value: 
+      objectReference: {fileID: 716518660}
+    - target: {fileID: 5373281081187785450, guid: 96c2bd997da7848a8bd1e066db516256, type: 3}
+      propertyPath: NetworkGuid.RawGuidValue.Array.data[0]
+      value: -3220364542467091625
+      objectReference: {fileID: 0}
+    - target: {fileID: 5373281081187785450, guid: 96c2bd997da7848a8bd1e066db516256, type: 3}
+      propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
+      value: 508641811502547389
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96c2bd997da7848a8bd1e066db516256, type: 3}

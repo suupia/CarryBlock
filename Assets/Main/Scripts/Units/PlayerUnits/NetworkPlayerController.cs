@@ -120,7 +120,7 @@ public class NetworkPlayerController : NetworkBehaviour
             _ => Vector3.zero
         };
          _animatorSetter.OnMove(vector);
-        Debug.Log("_info.playerObj.transform.forward = " + _info.playerObj.transform.forward);
+        // Debug.Log("_info.playerObj.transform.forward = " + _info.playerObj.transform.forward);
         
         if (MainActionCount > _preMainActionCount)
         {

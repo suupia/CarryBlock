@@ -1,27 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
+using Fusion;
 using UnityEngine;
 using TMPro;
-using VContainer;
+using Main.VContainer;
 using Main;
+using VContainer;
 
 namespace  UI
 {
-    public class GameSceneUI : MonoBehaviour
+    public class GameSceneUI : NetworkBehaviour
     {
         [SerializeField] TextMeshProUGUI _scoreText;
-        ResourceAggregator _resourcesAggregator;
-        
-        [Inject]
-        public void Construct(ResourceAggregator resourceAggregator)
+
+        [Networked] int _score { get; set; }
+
+        ResourceAggregator _resourceAggregator;
+
+
+        void Awake()
         {
-            _resourcesAggregator = resourceAggregator;
+            _resourceAggregator = FindObjectOfType<GameSceneLifetimeScope>().Container.Resolve<ResourceAggregator>();
         }
-        
-        
-        void Update()
+
+
+        public override void Render()
         {
-            _scoreText.text = $"Score : {_resourcesAggregator.getAmount}"; 
+            _score = _resourceAggregator.getAmount; // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
+            // Debug.Log($"_score : {_score}");
+            _scoreText.text = $"Score : {_score}"; 
         }
         
 
