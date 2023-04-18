@@ -75,7 +75,7 @@ namespace Main
 
             if (ShootCooldown.ExpiredOrNotRunning(Runner))
             {
-                _shooter.AttemptShootEnemy();
+                var _ = _shooter.AttemptShootEnemy();
                 ShootCooldown = TickTimer.CreateFromSeconds(Runner, _shooter.shootInterval);
             }
 
@@ -200,13 +200,21 @@ namespace Main
             _info = info;
         }
 
-        public void AttemptShootEnemy()
+        public bool AttemptShootEnemy()
         {
             Collider[] colliders = Physics.OverlapSphere(_info.playerObj.transform.position, _info.rangeRadius);
             var enemys = colliders.Where(collider => collider.CompareTag("Enemy"))
                 .Select(collider => collider.gameObject);
 
-            if (enemys.Any()) ShootEnemy(enemys.First());
+            if (enemys.Any())
+            {
+                ShootEnemy(enemys.First());
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         void ShootEnemy(GameObject targetEnemy)
