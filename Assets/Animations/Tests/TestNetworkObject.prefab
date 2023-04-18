@@ -66,8 +66,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 3160599333889847255}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90bff3ff095f64f48b64b5e195ba1017, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b8a40930119ed14abcf1a27ae9ea3cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  planePrefab: {fileID: 8440762090257334446, guid: 034c837c48b90204187200627bc5df4e, type: 3}
+  planePrefab: {fileID: 0}
