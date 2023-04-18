@@ -8,24 +8,24 @@ using VContainer;
 
 namespace  UI
 {
-    public class GameSceneUI : NetworkBehaviour
+    public class GameSceneUI : SimulationBehaviour
     {
         [SerializeField] TextMeshProUGUI _scoreText;
+        [SerializeField] TextMeshProUGUI _waveTimerText;
 
         [Networked] int _score { get; set; }
 
+        [SerializeField] WaveTimer _waveTimer;
         ResourceAggregator _resourceAggregator;
+        
+        // 登録しないとRunnerはnullであることに注意
+        
 
         [Inject]
         public void Construct(ResourceAggregator resourceAggregator)
         {
             _resourceAggregator = resourceAggregator;
         }
-
-        // void Awake()
-        // {
-        //     _resourceAggregator = FindObjectOfType<GameSceneLifetimeScope>().Container.Resolve<ResourceAggregator>();
-        // }
 
         public override void FixedUpdateNetwork()
         {
@@ -37,7 +37,8 @@ namespace  UI
         public override void Render()
         {
              Debug.Log($"_score : {_score}");
-            _scoreText.text = $"Score : {_score}"; 
+            _scoreText.text = $"Score : {_score}";
+            _waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime)}";
         }
         
 
