@@ -24,7 +24,7 @@ namespace Animations
             // _info.Animator.SetFloat(Speed, direction.magnitude);
         }
 
-        public void OnAttack()
+        public void OnAttack(bool value = true)
         {
         }
 

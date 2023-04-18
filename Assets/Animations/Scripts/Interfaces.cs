@@ -23,7 +23,7 @@ namespace Animations
 
     public interface IAnimatorAttack
     {
-        void OnAttack();
+        void OnAttack(bool value = true);
     }
 
     public interface IAnimatorPlayerUnit: IAnimatorAttack, IAnimatorDead, IAnimatorMove, IAnimatorSpawn

@@ -23,7 +23,7 @@ namespace Animations
         }
 
 
-        public void OnAttack()
+        public void OnAttack(bool value = true)
         {
         }
 
