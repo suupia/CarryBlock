@@ -2,13 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Fusion;
+using Main.VContainer;
 using UnityEngine;
+using VContainer;
 
 namespace Main
 {
     [RequireComponent(typeof(NetworkObject))]
     public class NetworkResourceController :  PoolableObject
     {
+        ResourceAggregator _resourceAggregator;
         public enum State
         {
             Idle,Reserved,Held,
@@ -18,6 +21,13 @@ namespace Main
         public bool canAccess => state == State.Idle;
         bool _isInitialized = false;
         Transform _holder;
+        
+            
+        public override void Spawned() // 必要であればInit()にして外部から呼び出せるようにする
+        {
+            _isInitialized = true;
+            _resourceAggregator = FindObjectOfType<GameSceneLifetimeScope>().Container.Resolve<ResourceAggregator>();
+        }
         
         public override void Render()
         {
@@ -44,18 +54,26 @@ namespace Main
             _holder = holder;
         }
     
-    
-        public override void Spawned() // 必要であればInit()にして外部から呼び出せるようにする
-        {
-            _isInitialized = true;
-        }
+
         protected override void OnInactive()
         {
             if(!_isInitialized)return;
+            if (state == State.Held) _resourceAggregator.AddResource(1);
             state = State.Idle;
         }
     
     
+    }
+    
+    public class ResourceAggregator 
+    {
+        int _amount;
+        public int getAmount => _amount;
+        
+        public void AddResource(int amount)
+        {
+            _amount += amount;
+        }
     }
 
 }

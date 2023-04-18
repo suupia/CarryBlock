@@ -2,32 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using VContainer;
+using Main;
 
-namespace  Main.UI
+namespace  UI
 {
     public class GameSceneUI : MonoBehaviour
     {
         [SerializeField] TextMeshProUGUI _scoreText;
+        ResourceAggregator _resourcesAggregator;
         
-
-
-    }
-
-    public interface IResourceAggregator
-    {
-        void AddResource(int amount);
-    }
-
-    public class ResourceAggregator : IResourceAggregator
-    {
-        int _amount;
-        public int getAmount => _amount;
-        
-        public void AddResource(int amount)
+        [Inject]
+        public void Construct(ResourceAggregator resourceAggregator)
         {
-            _amount += amount;
+            _resourcesAggregator = resourceAggregator;
         }
+        
+        
+        void Update()
+        {
+            _scoreText.text = $"Score : {_resourcesAggregator.getAmount}"; 
+        }
+        
+
+
     }
+    
 
 
 }
