@@ -8,12 +8,12 @@ using VContainer;
 
 namespace  UI
 {
-    public class GameSceneUI : SimulationBehaviour
+    public class GameSceneUI : NetworkBehaviour
     {
         [SerializeField] TextMeshProUGUI _scoreText;
         [SerializeField] TextMeshProUGUI _waveTimerText;
 
-        [Networked] int score { get; set; }
+        [Networked] public int score { get; set; }
 
         [SerializeField] WaveTimer _waveTimer;
         ResourceAggregator _resourceAggregator;
