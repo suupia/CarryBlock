@@ -12,7 +12,7 @@ public class RegularMove : IUnitMove
     public Transform transform { get; set; }
     public Rigidbody rd { get; set; }
     public float acceleration { get; set; } = 30f;
-    public float maxVelocity { get; set; } = 15f;
+    public float maxVelocity { get; set; } = 8f;
     public float torque { get; set; } = 1000f;
     public float maxAngularVelocity { get; set; } = 100f;
 

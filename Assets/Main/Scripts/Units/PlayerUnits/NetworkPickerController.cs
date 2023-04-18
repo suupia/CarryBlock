@@ -81,8 +81,8 @@ namespace Main
         // constant fields
         public readonly float normalAcceleration = 300f;
         public readonly float carryingAcceleration = 150f;
-        public readonly float normalMaxVelocity = 50;
-        public readonly float carryingMaxVelocity = 25;
+        public readonly float normalMaxVelocity = 25;
+        public readonly float carryingMaxVelocity = 8;
         public readonly float decelerationRange = 6;
         public readonly float estimatedStopTime = 0.3f; // Estimated time to decelerate to a stop
 
