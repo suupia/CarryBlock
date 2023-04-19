@@ -23,7 +23,7 @@ namespace Animations
 
     public interface IAnimatorAttack
     {
-        void OnAttack();
+        void OnAttack(bool value = true);
     }
 
     public interface IAnimatorPlayerUnit: IAnimatorAttack, IAnimatorDead, IAnimatorMove, IAnimatorSpawn
@@ -33,6 +33,6 @@ namespace Animations
 
     public interface IAnimatorSimpleEnemyUnit : IAnimatorAttack, IAnimatorDead, IAnimatorMove, IAnimatorSpawn
     {
-    
+        
     }
 }

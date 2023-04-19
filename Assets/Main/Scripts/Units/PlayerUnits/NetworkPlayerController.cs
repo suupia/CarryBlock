@@ -33,12 +33,14 @@ namespace Main
 
         // Animation
 
-        [Networked] private int MainActionCount { get; set; }
+        [Networked] int MainActionCount { get; set; }
+        [Networked] int AttackCount { get; set; }
 
         [Networked(OnChanged = nameof(OnHpChanged))]
         byte Hp { get; set; } = 1;
 
         int _preMainActionCount = 0;
+        int _preAttackCount = 0;
         Vector3 preDirection = Vector3.zero;
 
         IUnit _unit;
@@ -75,7 +77,8 @@ namespace Main
 
             if (ShootCooldown.ExpiredOrNotRunning(Runner))
             {
-                var _ = _shooter.AttemptShootEnemy();
+                var attacked = _shooter.AttemptShootEnemy();
+                if (attacked) AttackCount++;
                 ShootCooldown = TickTimer.CreateFromSeconds(Runner, _shooter.shootInterval);
             }
 
@@ -124,12 +127,21 @@ namespace Main
             };
             _animatorSetter.OnMove(vector);
             // Debug.Log("_info.playerObj.transform.forward = " + _info.playerObj.transform.forward);
-
+            
             if (MainActionCount > _preMainActionCount)
             {
                 _animatorSetter.OnMainAction();
                 _preMainActionCount = MainActionCount;
             }
+            
+            if (AttackCount > _preAttackCount)
+            {
+                //現状、攻撃時のアニメーションがないので何も効果はありません
+                // print("Attacked");
+                _animatorSetter.OnAttack();
+                _preAttackCount = AttackCount;
+            }
+            
         }
 
 
