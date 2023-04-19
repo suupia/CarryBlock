@@ -26,8 +26,8 @@ namespace Main
             // Domain
             _playerSpawner = new PlayerSpawner(Runner);
             _enemySpawner = new EnemySpawner(Runner);
-            _networkWaveTimer.Init();
             Runner.AddSimulationBehaviour(_networkWaveTimer);
+            _networkWaveTimer.Init();
 
 
             if (Runner.IsServer)

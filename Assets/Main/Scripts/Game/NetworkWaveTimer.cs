@@ -23,6 +23,7 @@ public class NetworkWaveTimer : NetworkBehaviour
     public void Init()
     {
         tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime);
+        Debug.Log($"Object.IsValid : {Object.IsValid}");
         _isInitialized = true;
     }
 
