@@ -21,11 +21,11 @@ public class GameContext
         Playing,Result // マップを開いている状態や、ユニット選択の状態などが増えるかも
     }
 
-    public void Update(WaveTimer timer)
-    {
-        if (timer.isExpired())
-        {
-            gameState = GameState.Result;
-        }
-    }
+    // public void Update(WaveTimer timer)
+    // {
+    //     if (timer.tickTimer.ExpiredOrNotRunning(Runner))
+    //     {
+    //         gameState = GameState.Result;
+    //     }
+    // }
 }

@@ -1643,7 +1643,7 @@ MonoBehaviour:
   autoInjectGameObjects:
   - {fileID: 7557915739197684494}
   - {fileID: 977649245126649663, guid: 31f19cb8b576944189a17141242207f5, type: 3}
-  _waveTimer: {fileID: 1957291319}
+  - {fileID: 1957291317}
 --- !u!1 &7557915739197684494
 GameObject:
   m_ObjectHideFlags: 0

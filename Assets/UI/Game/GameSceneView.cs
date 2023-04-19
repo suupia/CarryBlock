@@ -18,17 +18,16 @@ namespace  UI
         [Networked] public int score { get; set; }
 
         GameContext _gameContext;
-        WaveTimer _waveTimer;
         ResourceAggregator _resourceAggregator;
-        
+        WaveTimer _waveTimer;
         
 
         [Inject]
-        public void Construct(ResourceAggregator resourceAggregator, WaveTimer waveTimer, GameContext gameContext)
+        public void Construct(ResourceAggregator resourceAggregator, GameContext gameContext, WaveTimer waveTimer)
         {
             _resourceAggregator = resourceAggregator;
-            _waveTimer = waveTimer;
             _gameContext = gameContext;
+            _waveTimer = waveTimer;
         }
 
         public override void FixedUpdateNetwork()
@@ -50,7 +49,7 @@ namespace  UI
         {
              Debug.Log($"_score : {score}, runner : {Runner}");
             _scoreText.text = $"Score : {score}";
-            _waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime())}";
+            _waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
         }
         
         
