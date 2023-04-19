@@ -595,9 +595,9 @@ MonoBehaviour:
   NetworkGuid:
     RawGuidValue: 439b46d9fb3d49fe9a4d5e4e54a8a714
   NestedObjects: []
-  NetworkedBehaviours: []
-  SimulationBehaviours:
+  NetworkedBehaviours:
   - {fileID: 1608420764047403413}
+  SimulationBehaviours: []
 --- !u!1 &795847966
 GameObject:
   m_ObjectHideFlags: 0
@@ -1452,8 +1452,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebfffd887702f427aa757cacbb298c82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
   _scoreText: {fileID: 1937534886}
   _waveTimerText: {fileID: 1240057767}
+  _score: 0
   _waveTimer: {fileID: 1957291319}
 --- !u!1 &2591014611208062255
 GameObject:
