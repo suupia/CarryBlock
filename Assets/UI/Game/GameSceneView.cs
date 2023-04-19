@@ -50,7 +50,7 @@ namespace  UI
         {
              Debug.Log($"_score : {score}, runner : {Runner}");
             _scoreText.text = $"Score : {score}";
-            _waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime)}";
+            _waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime())}";
         }
         
         

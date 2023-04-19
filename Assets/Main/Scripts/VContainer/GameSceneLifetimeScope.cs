@@ -11,8 +11,8 @@ namespace Main.VContainer
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<ResourceAggregator>(Lifetime.Singleton);
-            builder.RegisterComponent(_waveTimer);
             builder.Register<GameContext>(Lifetime.Singleton);
+            builder.RegisterComponent(_waveTimer);
         }
     }
 }

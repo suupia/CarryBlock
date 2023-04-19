@@ -14,7 +14,6 @@ namespace Main
         PlayerSpawner _playerSpawner;
         EnemySpawner _enemySpawner;
         [SerializeField] WaveTimer _waveTimer;
-        
         async void Start()
         {
             var runnerManager = FindObjectOfType<NetworkRunnerManager>();
@@ -26,10 +25,9 @@ namespace Main
             // Domain
             _playerSpawner = new PlayerSpawner(Runner);
             _enemySpawner = new EnemySpawner(Runner);
-            Runner.AddSimulationBehaviour(_waveTimer);
             _waveTimer.Init();
-    
-    
+
+
             if (Runner.IsServer)
             {
                 _playerSpawner.RespawnAllPlayer(_networkPlayerContainer);

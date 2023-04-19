@@ -3,14 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
+using VContainer;
 
-public class WaveTimer : SimulationBehaviour
+public class WaveTimer : NetworkBehaviour 
 {
     [Networked] TickTimer waveTimer { get; set; }
+    GameContext _observer;
+
+    public float getRemainingTime() =>  waveTimer.RemainingTime(Runner).HasValue ? waveTimer.RemainingTime(Runner).Value : 0f;
     
-    public float getRemainingTime =>  waveTimer.RemainingTime(Runner).HasValue ? waveTimer.RemainingTime(Runner).Value : 0f;
+    public bool isExpired() => waveTimer.ExpiredOrNotRunning(Runner);
 
     readonly float _waveTime = 60f;
+
+    [Inject]
+    public void Construct(GameContext observer)
+    {
+        _observer = observer;
+    }
 
     public void Init()
     {
@@ -19,10 +29,8 @@ public class WaveTimer : SimulationBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (waveTimer.ExpiredOrNotRunning(Runner))
-        {
-            Debug.Log($"終了〜〜");
-        }
+        _observer.Update(this);
     }
     
 }
+ 
