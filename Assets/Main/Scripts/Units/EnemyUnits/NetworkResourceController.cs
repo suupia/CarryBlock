@@ -68,7 +68,10 @@ namespace Main
     public class ResourceAggregator 
     {
         int _amount;
+        int _quotaAmount = 15;
         public int getAmount => _amount;
+        
+        public bool IsQuotaReached => _amount >= _quotaAmount;
         
         public void AddResource(int amount)
         {
