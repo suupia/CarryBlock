@@ -28,6 +28,7 @@ public class NetworkWaveTimer : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         if(_isInitialized == false)return;
+        if(Object?.IsValid == false) return;
         if(tickTimer.ExpiredOrNotRunning(Runner)) tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime);
         _waveTimer.tickTimer = tickTimer;
     }
