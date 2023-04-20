@@ -5,6 +5,7 @@ using Fusion;
 using Main.VContainer;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 namespace Main
 {
@@ -26,7 +27,7 @@ namespace Main
         public override void Spawned() // 必要であればInit()にして外部から呼び出せるようにする
         {
             _isInitialized = true; 
-            _resourceAggregator = FindObjectOfType<GameSceneLifetimeScope>().Container.Resolve<ResourceAggregator>();
+            _resourceAggregator = FindObjectOfType<LifetimeScope>().Container.Resolve<ResourceAggregator>();
         }
         
         public override void Render()
@@ -68,7 +69,10 @@ namespace Main
     public class ResourceAggregator 
     {
         int _amount;
+        int _quotaAmount = 15;
         public int getAmount => _amount;
+        
+        public bool IsQuotaReached => _amount >= _quotaAmount;
         
         public void AddResource(int amount)
         {

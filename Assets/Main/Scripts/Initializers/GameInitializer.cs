@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using UnityEngine.Serialization;
 
 namespace Main
 {
@@ -13,8 +14,7 @@ namespace Main
         NetworkEnemyContainer _networkEnemyContainer = new();
         PlayerSpawner _playerSpawner;
         EnemySpawner _enemySpawner;
-        [SerializeField] WaveTimer _waveTimer;
-        
+        [SerializeField] NetworkWaveTimer _networkWaveTimer;
         async void Start()
         {
             var runnerManager = FindObjectOfType<NetworkRunnerManager>();
@@ -26,10 +26,10 @@ namespace Main
             // Domain
             _playerSpawner = new PlayerSpawner(Runner);
             _enemySpawner = new EnemySpawner(Runner);
-            Runner.AddSimulationBehaviour(_waveTimer);
-            _waveTimer.Init();
-    
-    
+            Runner.AddSimulationBehaviour(_networkWaveTimer);
+            _networkWaveTimer.Init();
+
+
             if (Runner.IsServer)
             {
                 _playerSpawner.RespawnAllPlayer(_networkPlayerContainer);

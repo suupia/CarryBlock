@@ -2,6 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using JetBrains.Annotations;
+
+#nullable enable
 
 namespace  Main
 {
@@ -29,6 +33,20 @@ namespace  Main
 
         return projectVector- perpendicularVector;
     }
+    
+
+    public static GameObject ChooseRandomObject(IEnumerable<GameObject> gameObjects)
+    {
+        if(gameObjects == null) throw new ArgumentNullException(nameof(gameObjects));
+        int count = gameObjects.Count();
+        if (count == 0)
+        {
+            throw new ArgumentException("No reference in gameObject argument", nameof(gameObjects));
+        }
+        int index = UnityEngine.Random.Range(0, count);
+        return gameObjects.ElementAt(index);
+    }
+
 
 
 

@@ -67,7 +67,7 @@ public class NetworkEnemyController :  PoolableObject
         Debug.Log($"players = {string.Join(",",players)}");
         if (players.Any())
         {
-            _targetPlayerObj = players.First();
+            _targetPlayerObj = Utility.ChooseRandomObject(players);
             _state = EnemyState.ChasingPlayer;
         }
         else

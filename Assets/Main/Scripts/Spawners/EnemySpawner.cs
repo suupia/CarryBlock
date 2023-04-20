@@ -16,6 +16,7 @@ namespace Main
         readonly CancellationTokenSource _cts = new();
         readonly CancellationToken _token;
         readonly NetworkBehaviourSpawner<NetworkEnemyController> _enemySpawner;
+        const float spawnRadius = 50;
     
         public EnemySpawner(NetworkRunner runner)
         {
@@ -42,7 +43,9 @@ namespace Main
         void SpawnEnemy(NetworkEnemyContainer enemyContainer)
         {
             if (enemyContainer.Enemies.Count() >= enemyContainer.MaxEnemyCount) return;
-            var position = new Vector3(0, 1, 0);
+            var x = UnityEngine.Random.Range(-spawnRadius, spawnRadius);
+            var z = UnityEngine.Random.Range(-spawnRadius, spawnRadius);
+            var position = new Vector3(x, 1, z);
             var networkObject = _enemySpawner.Spawn("Enemy", position, Quaternion.identity, PlayerRef.None);
             var enemy = networkObject.GetComponent<NetworkEnemyController>();
             enemy.onDespawn += () => enemyContainer.RemoveEnemy(enemy);
