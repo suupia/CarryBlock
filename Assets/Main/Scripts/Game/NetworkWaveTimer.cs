@@ -7,7 +7,7 @@ using VContainer;
 
 public class NetworkWaveTimer : NetworkBehaviour 
 {
-    [Networked] TickTimer tickTimer { get; set; }
+    [Networked] public TickTimer tickTimer { get; set; }
     WaveTimer _waveTimer;
 
     readonly float _waveTime = 60f;
