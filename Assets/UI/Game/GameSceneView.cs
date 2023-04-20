@@ -60,7 +60,8 @@ namespace  UI
         
         void ResultView()
         {
-            _resultText.text = $"Result : {score}";
+            var result = _resourceAggregator.IsSuccess() ? "Success" : "Failure";
+            _resultText.text = $"Result : {result}";
         }
 
 

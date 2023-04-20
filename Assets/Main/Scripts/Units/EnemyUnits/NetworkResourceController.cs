@@ -78,6 +78,11 @@ namespace Main
         {
             _amount += amount;
         }
+        
+        public bool IsSuccess()
+        {
+            return _amount >= _quotaAmount;
+        }
     }
 
 }
