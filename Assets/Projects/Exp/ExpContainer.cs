@@ -24,9 +24,8 @@ namespace Exp
     /// </summary>
     public class ExpContainer
     {
-        readonly private float _increaseRate;
-        readonly private int _initialThreshold;
-        private int _exp;
+        private readonly float _increaseRate;
+        private readonly int _initialThreshold;
         private int _preLevel;
 
         private Action<int, int> _onLevelChanged = (_, _) => { };
@@ -34,12 +33,12 @@ namespace Exp
         /// <summary>
         /// 現在の経験値
         /// </summary>
-        public int Exp => _exp;
+        public int Exp { get; private set; }
 
         /// <summary>
         /// 次のレベルまでのしきい値
         /// </summary>
-        public int ThresholdToNextLevel => ThresholdExpTo(Level);
+        private int ThresholdToNextLevel => ThresholdExpTo(Level);
         /// <summary>
         /// 現在の経験値から次のレベルまでに必要な経験値
         /// </summary>
@@ -57,7 +56,7 @@ namespace Exp
             {
                 var level = 1;
 
-                while (_exp >= ThresholdExpTo(level)) level++;
+                while (Exp >= ThresholdExpTo(level)) level++;
 
                 return level;
             }
@@ -66,7 +65,7 @@ namespace Exp
 
         public ExpContainer(int initialExp = 0, int initialThreshold = 100, float increaseRate = 1.1f)
         {
-            _exp = initialExp;
+            Exp = initialExp;
             _preLevel = 1;
             _increaseRate = increaseRate;
             _initialThreshold = initialThreshold;
@@ -99,7 +98,7 @@ namespace Exp
         /// <returns>現在のレベル</returns>
         public int Add(int exp)
         {
-            _exp += exp;
+            Exp += exp;
             
             if (_preLevel != Level)
             {
@@ -112,10 +111,11 @@ namespace Exp
 
         /// <summary>
         /// レベルが変わったときのコールバックを登録する関数
+        /// 第一引数は前のレベル、第二引数は現在のレベルの関数を登録できる
         /// 登録時は即座に現状のレベルが呼ばれる。この動作を変えたい場合は第二引数にfalseを指定する
-        /// 第一引数は前のレベル。第二引数は現在のレベルの関数を登録できる
         /// </summary>
         /// <param name="callback"></param>
+        /// <param name="callImmediately"></param>
         public void Register(Action<int, int> callback, bool callImmediately = true)
         {
             _onLevelChanged += callback;
