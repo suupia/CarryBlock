@@ -13,7 +13,7 @@ public class RegularMove : IUnitMove
     public Rigidbody rd { get; set; }
     public float acceleration { get; set; } = 30f;
     public float maxVelocity { get; set; } = 8f;
-    public float torque { get; set; } = 1000f;
+    public float targetRotationTime { get; set; } = 0.2f;
     public float maxAngularVelocity { get; set; } = 100f;
 
 
@@ -24,9 +24,12 @@ public class RegularMove : IUnitMove
 
         if (input != Vector3.zero)
         {
-            // Rotate if there is a difference of more than 3 degrees
-            if (Mathf.Abs(deltaAngle) >= 3.0f)
-                rd.AddTorque(Mathf.Sign(deltaAngle) * torque * Vector3.up, ForceMode.Acceleration);
+            // Rotate if there is a difference of more than Epsilon degrees
+            if (Mathf.Abs(deltaAngle) >= float.Epsilon)
+            {
+                var torque = (2 * deltaAngle) / Mathf.Sqrt(targetRotationTime);
+                rd.AddTorque(torque * Vector3.up, ForceMode.Acceleration);
+            }
 
             if (rd.angularVelocity.magnitude >= rd.maxAngularVelocity)
                 rd.angularVelocity = maxAngularVelocity * rd.angularVelocity.normalized;

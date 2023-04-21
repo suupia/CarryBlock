@@ -32,8 +32,8 @@ namespace Main
             rd = _info.playerRd,
             acceleration = _info.acceleration,
             maxVelocity = _info.maxVelocity,
+            targetRotationTime = _info.targetRotationTime,
             maxAngularVelocity = _info.maxAngularVelocity,
-            torque = _info.torque
         };
         _info.playerRd.useGravity = false;
     }
