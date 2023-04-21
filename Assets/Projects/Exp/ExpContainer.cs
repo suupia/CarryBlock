@@ -5,7 +5,7 @@ namespace Exp
 {
     /// <summary>
     /// 経験値を管理するクラス。使用するかどうかは検討
-    /// ヴァンパイアサバイバーズの経験値ゲージのようなものを目指した。
+    /// 経験値ゲージのようなものを目指した。
     ///
     /// 現状、必要経験値が等比数列的に上がるようにしている。
     /// 将来的には抽象化して、いろいろな関数を取り入れられるようにする。
@@ -31,14 +31,27 @@ namespace Exp
 
         private Action<int, int> _onLevelChanged = (_, _) => { };
 
+        /// <summary>
+        /// 現在の経験値
+        /// </summary>
         public int Exp => _exp;
 
-        //TODO: add unit test
-        public int ThresholdToNextLevel => ThresholdExpTo(_preLevel + 1);
-        public int RequiresExpToNextLevel => ThresholdToNextLevel - ThresholdExpTo(_preLevel);
+        /// <summary>
+        /// 次のレベルまでのしきい値
+        /// </summary>
+        public int ThresholdToNextLevel => ThresholdExpTo(Level);
+        /// <summary>
+        /// 現在の経験値から次のレベルまでに必要な経験値
+        /// </summary>
+        public int RequiresExpToNextLevel => ThresholdToNextLevel - ThresholdExpTo(Level - 1);
+        /// <summary>
+        /// 現在の経験値から次のレベルまでに必要な残り経験値
+        /// </summary>
         public int RemainingExpToNextLevel => ThresholdToNextLevel - Exp;
-        public float RateToNextLevel => 1 - (float)RemainingExpToNextLevel / RequiresExpToNextLevel;
 
+        /// <summary>
+        /// 現在のレベル
+        /// </summary>
         public int Level {
             get
             {
@@ -54,9 +67,9 @@ namespace Exp
         public ExpContainer(int initialExp = 0, int initialThreshold = 100, float increaseRate = 1.1f)
         {
             _exp = initialExp;
+            _preLevel = 1;
             _increaseRate = increaseRate;
             _initialThreshold = initialThreshold;
-            _preLevel = 1;
         }
 
         /// <summary>
@@ -66,34 +79,35 @@ namespace Exp
         /// <returns></returns>
         public int ThresholdExpTo(int level)
         {
-            var l = 1;
+            if (level <= 0) return 0;
+
+            var lv = 1;
             var threshold = _initialThreshold;
-            while (l < level)
+            while (lv < level)
             {
-                threshold += (int)(_initialThreshold * Mathf.Pow(_increaseRate, l));
-                l++;
+                threshold += (int)(_initialThreshold * Mathf.Pow(_increaseRate, lv));
+                lv++;
             }
 
             return threshold;
         }
 
         /// <summary>
-        /// 
+        /// この関数内でのみ、副作用を許容する
         /// </summary>
         /// <param name="exp"></param>
         /// <returns>現在のレベル</returns>
         public int Add(int exp)
         {
             _exp += exp;
-
-            var level = Level;
-            if (_preLevel != level)
+            
+            if (_preLevel != Level)
             {
                 Trigger();
-                _preLevel = level;
+                _preLevel = Level;
             }
 
-            return level;
+            return Level;
         }
 
         /// <summary>
