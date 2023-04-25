@@ -157,7 +157,8 @@
         "Assembly-CSharp",
         "Assembly-CSharp-firstpass",
         "Fusion",
-        "Main"
+        "Main",
+        "UI"
     ],
     "UseSerializableDictionary": true,
     "NullChecksForNetworkedProperties": true,
