@@ -10,7 +10,7 @@ public class NetworkWaveTimer : NetworkBehaviour
     [Networked] public TickTimer tickTimer { get; set; }
     WaveTimer _waveTimer;
 
-    readonly float _waveTime = 10f;
+    readonly float _waveTime = 60f;
     bool _isInitialized = false;
 
     [Inject]
