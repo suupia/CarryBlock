@@ -10,8 +10,8 @@ namespace Main
         bool AttemptAttack();
         float AttackCooldown();
     }
-    
-    
+
+
     public class UnitShooter : IUnitAttack
     {
         PlayerInfo _info;
@@ -49,6 +49,16 @@ namespace Main
             var bulletObj = _info._runner.Spawn(_info.bulletPrefab, bulletInitPos, Quaternion.identity, PlayerRef.None);
             var bullet = bulletObj.GetComponent<NetworkBulletController>();
             bullet.Init(targetEnemy);
+        }
+    }
+    
+    public class NoneAttack : IUnitAttack
+    {
+        public float AttackCooldown() => 0.5f;
+
+        public bool AttemptAttack()
+        {
+            return false;
         }
     }
 }
