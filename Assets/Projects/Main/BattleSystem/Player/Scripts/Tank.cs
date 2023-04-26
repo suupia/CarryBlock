@@ -11,7 +11,7 @@ namespace Main
     {
         readonly NetworkRunner　_runner;
         PlayerInfo _info;
-        IUnitMove _move;
+        IMove _move;
         IUnitAction _action;
     
         public Tank(PlayerInfo info) 

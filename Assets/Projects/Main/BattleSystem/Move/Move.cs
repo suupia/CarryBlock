@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Main
 {
-    public interface IUnitMove
+    public interface IMove
     {
         void Move(Vector3 input);
     }
 
-    public class RegularMove : IUnitMove
+    public class RegularMove : IMove
     {
         public Transform transform { get; set; }
         public Rigidbody rd { get; set; }

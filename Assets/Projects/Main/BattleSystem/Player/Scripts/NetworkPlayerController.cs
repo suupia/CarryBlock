@@ -43,9 +43,11 @@ namespace Main
         int _preAttackCount = 0;
         Vector3 preDirection = Vector3.zero;
 
-        IUnit _unit;
         GameObject _unitObj;
-        PlayerShooter _shooter;
+        IUnit _unit;
+        [Networked] ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
+        IUnitStats _unitStats;
+        IUnitAttack _shooter;
 
         enum UnitType
         {
@@ -62,7 +64,7 @@ namespace Main
 
             // Instantiate the unit.
             InstantiateUnit(_unitType);
-            _shooter = new PlayerShooter(_info);
+            _shooter = new UnitShooter(_info);
 
             if (Object.HasInputAuthority)
             {
@@ -78,9 +80,9 @@ namespace Main
 
             if (ShootCooldown.ExpiredOrNotRunning(Runner))
             {
-                var attacked = _shooter.AttemptShootEnemy();
+                var attacked = _shooter.AttemptAttack();
                 if (attacked) AttackCount++;
-                ShootCooldown = TickTimer.CreateFromSeconds(Runner, _shooter.shootInterval);
+                ShootCooldown = TickTimer.CreateFromSeconds(Runner, _shooter.AttackCooldown());
             }
 
             if (GetInput(out NetworkInputData input))
@@ -91,12 +93,6 @@ namespace Main
                     IsReady = !IsReady;
                     Debug.Log($"Toggled Ready -> {IsReady}");
                 }
-                
-                // if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
-                // {
-                //     //Tmp
-                //     RPC_ChangeNextUnit();
-                // }
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
@@ -122,8 +118,15 @@ namespace Main
             {
                 if (Input.GetKeyDown(KeyCode.C))
                 {
-                    //Tmp
                     RPC_ChangeNextUnit();
+                }
+            }
+
+            if (Object.HasInputAuthority)
+            {
+                if (Input.GetKeyDown(KeyCode.H))
+                {
+                    _unitStats.OnAttacked(ref PlayerStruct,1);
                 }
             }
 
@@ -186,6 +189,8 @@ namespace Main
                 UnitType.EstablishSubBasePlane => new EstablishSubBasePlane(_info),
                 _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
             };
+            // とりあえず共通のスタッツにする
+            _unitStats = new PlayerStats(ref PlayerStruct);
 
             // Set the animator.
             var animator = _unitObj.GetComponentInChildren<Animator>();
@@ -210,6 +215,11 @@ namespace Main
             _animatorSetter.OnSpawn();
         }
 
+        public void OnAttacked(int damage)
+        {
+            _unitStats.OnAttacked(ref PlayerStruct, damage);
+        }
+
         public static void OnHpChanged(Changed<NetworkPlayerController> changed)
         {
             var hp = changed.Behaviour.Hp;
@@ -220,43 +230,4 @@ namespace Main
         }
     }
 
-    public class PlayerShooter
-    {
-        PlayerInfo _info;
-
-        public float shootInterval = 0.5f;
-
-        public PlayerShooter(PlayerInfo info)
-        {
-            _info = info;
-        }
-
-        public bool AttemptShootEnemy()
-        {
-            Collider[] colliders = Physics.OverlapSphere(_info.playerObj.transform.position, _info.rangeRadius);
-            var enemys = colliders.Where(collider => collider.CompareTag("Enemy"))
-                .Select(collider => collider.gameObject);
-
-            if (enemys.Any())
-            {
-                ShootEnemy(enemys.First());
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        void ShootEnemy(GameObject targetEnemy)
-        {
-            // Debug.Log($"ShootEnemy() targetEnemy:{targetEnemy}");
-            var bulletInitPos =
-                _info.bulletOffset * (targetEnemy.gameObject.transform.position - _info.playerObj.transform.position)
-                .normalized + _info.playerObj.transform.position;
-            var bulletObj = _info._runner.Spawn(_info.bulletPrefab, bulletInitPos, Quaternion.identity, PlayerRef.None);
-            var bullet = bulletObj.GetComponent<NetworkBulletController>();
-            bullet.Init(targetEnemy);
-        }
-    }
 }
