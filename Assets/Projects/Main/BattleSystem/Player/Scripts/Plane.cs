@@ -44,6 +44,7 @@ namespace Main
         
         _move.Move(direction);
     }
+    public bool InAction() => isCollecting;
     
     public float ActionCooldown() => 0.1f;
     

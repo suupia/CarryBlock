@@ -13,6 +13,7 @@ namespace Main
         PlayerInfo _info;
         readonly float _pickerHeight = 5.0f;
         IUnitMove _move;
+        IUnitAction _action;
     
         public Tank(PlayerInfo info) 
         {
@@ -27,29 +28,17 @@ namespace Main
                 targetRotationTime = _info.targetRotationTime,
                 maxAngularVelocity = _info.maxAngularVelocity,
             };
+            _action = new EjectPicker(_runner, _info.playerObj,_info.playerInfoForPicker);
             _info.playerRd.useGravity = true;
         }
 
-        public void Move(Vector3 direction)
-        {
-            _move.Move(direction);
-        }
+        public void Move(Vector3 direction) => _move.Move(direction);
         
-    
-        public float ActionCooldown() => 0.1f;
+        public void Action() => _action.Action();
 
-        public void Action()
-        {
-            Debug.Log($"Action()");
-            var pickerPos = _info.playerObj.transform.position + new Vector3(0, _pickerHeight, 0);
-            Debug.Log($"_runner = {_runner}, _info.pickerPrefab = {_info.pickerPrefab}, pickerPos = {pickerPos}, PlayerRef.None = {PlayerRef.None}");
-            var picker = _runner.Spawn(_info.pickerPrefab, pickerPos,  Quaternion.identity, PlayerRef.None).GetComponent<NetworkPickerController>();
-            Debug.Log($"picker = {picker}");
-            picker.Init(_runner,_info.playerObj, _info.playerInfoForPicker);
+        public bool InAction() => _action.InAction();
 
-        }
-    
-
+        public float ActionCooldown() => _action.ActionCooldown();
     }
 
 }

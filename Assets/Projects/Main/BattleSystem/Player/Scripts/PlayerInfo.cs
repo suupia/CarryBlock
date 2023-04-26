@@ -7,11 +7,12 @@ using UnityEngine.Serialization;
 
 namespace Main
 {
-    public interface IUnit : IUnitMove
+    public interface IUnit : IUnitMove, IUnitAction
     {
         void Move(Vector3 direction);
-        float ActionCooldown();
         void Action();
+        bool InAction();
+        float ActionCooldown();
     }
 
     [Serializable]
