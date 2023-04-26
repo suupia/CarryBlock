@@ -48,7 +48,7 @@ namespace Main
             var position = new Vector3(x, 1, z);
             var networkObject = _enemySpawner.Spawn("Enemy", position, Quaternion.identity, PlayerRef.None);
             var enemy = networkObject.GetComponent<NetworkEnemyController>();
-            enemy.onDespawn += () => enemyContainer.RemoveEnemy(enemy);
+            enemy.OnDespawn += () => enemyContainer.RemoveEnemy(enemy);
             enemyContainer.AddEnemy(enemy);
         }
     }

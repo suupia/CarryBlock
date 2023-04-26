@@ -215,6 +215,11 @@ namespace Main
             _animatorSetter.OnSpawn();
         }
 
+        public void OnAttacked(int damage)
+        {
+            _unitStats.OnAttacked(ref PlayerStruct, damage);
+        }
+
         public static void OnHpChanged(Changed<NetworkPlayerController> changed)
         {
             var hp = changed.Behaviour.Hp;
