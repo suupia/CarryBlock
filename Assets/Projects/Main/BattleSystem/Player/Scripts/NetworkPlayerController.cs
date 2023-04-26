@@ -94,8 +94,7 @@ namespace Main
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
                 {
-                    //Tmp
-                    RPC_ChangeNextUnit();
+                    ChangeNextUnit();
                 }
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
@@ -145,10 +144,8 @@ namespace Main
             
         }
 
-
-        //Deal as RPC for changing unit
-        [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.All)]
-        public void RPC_ChangeNextUnit()
+        
+        void ChangeNextUnit()
         {
             _unitType = (UnitType)(((int)_unitType + 1) % Enum.GetValues(typeof(UnitType)).Length);
             Destroy(_unitObj);
