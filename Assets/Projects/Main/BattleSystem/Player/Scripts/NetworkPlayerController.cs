@@ -50,7 +50,8 @@ namespace Main
         enum UnitType
         {
             Tank = 0,
-            Plane = 1,
+            CollectResourcePlane = 1,
+            EstablishSubBasePlane = 2,
         }
 
 
@@ -168,7 +169,8 @@ namespace Main
             _unit = unitType switch
             {
                 UnitType.Tank => new Tank(_info),
-                UnitType.Plane => new Plane(_info),
+                UnitType.CollectResourcePlane => new CollectResourcePlane(_info),
+                UnitType.EstablishSubBasePlane => new EstablishSubBasePlane(_info),
                 _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
             };
 
@@ -180,7 +182,11 @@ namespace Main
                 {
                     Animator = animator,
                 }),
-                UnitType.Plane => new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
+                UnitType.CollectResourcePlane => new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
+                {
+                    Animator = animator,
+                }),
+                UnitType.EstablishSubBasePlane => new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
                 {
                     Animator = animator,
                 }),

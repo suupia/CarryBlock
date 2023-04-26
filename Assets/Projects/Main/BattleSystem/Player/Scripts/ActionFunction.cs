@@ -154,4 +154,31 @@ namespace Main
             return mainBases.Any();
         }
     }
+
+    public class EstablishSubBase : IUnitAction
+    {
+        readonly NetworkRunner _runner;
+        readonly GameObject _playerObj;
+        readonly PrefabLoaderFromResources<NetworkObject> _prefabLoaderFromResources;
+
+        readonly float _subBaseHeight = 5.0f;
+
+        public EstablishSubBase(NetworkRunner runner, GameObject playerObj)
+        {
+            _runner = runner;
+            _playerObj = playerObj;
+            _prefabLoaderFromResources = new PrefabLoaderFromResources<NetworkObject>("Prefabs/Players");
+        }
+
+        public float ActionCooldown() => 0.1f;
+
+        public bool InAction() => false;
+
+        public void Action()
+        {
+            Debug.Log($"Action()");
+            var subBasePos = _playerObj.transform.position + new Vector3(0, _subBaseHeight, 0);
+            var _ = _runner.Spawn(_prefabLoaderFromResources.Load("SubBase"), subBasePos, Quaternion.identity, PlayerRef.None);
+        }
+    }
 }
