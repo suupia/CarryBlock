@@ -15,6 +15,11 @@ namespace Main
         float ActionCooldown();
     }
 
+    public interface IUnitStats
+    {
+        void OnAttacked(ref NetworkPlayerStruct networkPlayerStruct,int damage);
+    }
+
     [Serializable]
     public  class PlayerInfo
     {

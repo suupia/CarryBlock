@@ -43,8 +43,10 @@ namespace Main
         int _preAttackCount = 0;
         Vector3 preDirection = Vector3.zero;
 
-        IUnit _unit;
         GameObject _unitObj;
+        IUnit _unit;
+        [Networked] ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
+        IUnitStats _unitStats;
         PlayerShooter _shooter;
 
         enum UnitType
@@ -91,12 +93,6 @@ namespace Main
                     IsReady = !IsReady;
                     Debug.Log($"Toggled Ready -> {IsReady}");
                 }
-                
-                // if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
-                // {
-                //     //Tmp
-                //     RPC_ChangeNextUnit();
-                // }
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
@@ -122,8 +118,15 @@ namespace Main
             {
                 if (Input.GetKeyDown(KeyCode.C))
                 {
-                    //Tmp
                     RPC_ChangeNextUnit();
+                }
+            }
+
+            if (Object.HasInputAuthority)
+            {
+                if (Input.GetKeyDown(KeyCode.H))
+                {
+                    _unitStats.OnAttacked(ref PlayerStruct,1);
                 }
             }
 
@@ -186,6 +189,8 @@ namespace Main
                 UnitType.EstablishSubBasePlane => new EstablishSubBasePlane(_info),
                 _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
             };
+            // とりあえず共通のスタッツにする
+            _unitStats = new PlayerStats(ref PlayerStruct);
 
             // Set the animator.
             var animator = _unitObj.GetComponentInChildren<Animator>();
