@@ -47,7 +47,7 @@ namespace Main
         IUnit _unit;
         [Networked] ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
         IUnitStats _unitStats;
-        UnitShooter _shooter;
+        IUnitAttack _shooter;
 
         enum UnitType
         {
@@ -80,9 +80,9 @@ namespace Main
 
             if (ShootCooldown.ExpiredOrNotRunning(Runner))
             {
-                var attacked = _shooter.AttemptShootEnemy();
+                var attacked = _shooter.AttemptAttack();
                 if (attacked) AttackCount++;
-                ShootCooldown = TickTimer.CreateFromSeconds(Runner, _shooter.shootInterval);
+                ShootCooldown = TickTimer.CreateFromSeconds(Runner, _shooter.AttackCooldown());
             }
 
             if (GetInput(out NetworkInputData input))
@@ -230,43 +230,4 @@ namespace Main
         }
     }
 
-    public class UnitShooter
-    {
-        PlayerInfo _info;
-
-        public float shootInterval = 0.5f;
-
-        public UnitShooter(PlayerInfo info)
-        {
-            _info = info;
-        }
-
-        public bool AttemptShootEnemy()
-        {
-            Collider[] colliders = Physics.OverlapSphere(_info.playerObj.transform.position, _info.rangeRadius);
-            var enemys = colliders.Where(collider => collider.CompareTag("Enemy"))
-                .Select(collider => collider.gameObject);
-
-            if (enemys.Any())
-            {
-                ShootEnemy(enemys.First());
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        void ShootEnemy(GameObject targetEnemy)
-        {
-            // Debug.Log($"ShootEnemy() targetEnemy:{targetEnemy}");
-            var bulletInitPos =
-                _info.bulletOffset * (targetEnemy.gameObject.transform.position - _info.playerObj.transform.position)
-                .normalized + _info.playerObj.transform.position;
-            var bulletObj = _info._runner.Spawn(_info.bulletPrefab, bulletInitPos, Quaternion.identity, PlayerRef.None);
-            var bullet = bulletObj.GetComponent<NetworkBulletController>();
-            bullet.Init(targetEnemy);
-        }
-    }
 }
