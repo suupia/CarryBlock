@@ -30,7 +30,7 @@ namespace Main
 
 
         // Components
-        GameObject mainBaseObj;
+        List<GameObject> baseObjs = new List<GameObject>();
 
 
         public void Init(NetworkRunner runner, GameObject playerObj, PlayerInfoForPicker info)
@@ -39,8 +39,9 @@ namespace Main
             
             pickerInfo = new PickerInfo(runner, Object, info);
             pickerInfo.SetPlayerObj(playerObj);
-            mainBaseObj = GameObject.Find("MainBase");
-            pickerInfo.SetMainBaseObj(mainBaseObj);
+            baseObjs.Add( GameObject.FindWithTag("MainBase"));
+            baseObjs = baseObjs.Concat(GameObject.FindGameObjectsWithTag("SubBase")).ToList();
+            pickerInfo.SetMainBaseObj(baseObjs);
 
             pickerContext = new PickerContext(pickerInfo.SearchState);
 
@@ -98,7 +99,7 @@ namespace Main
         public IPickerState SearchState => new PickerSearchState(this);
         public IPickerState ApproachState => new PickerApproachState(this);
         public IPickerState CollectState => new PickerCollectState(this);
-        public IPickerState ReturnToMainBaseState => new PickerReturnToMainBaseState(this);
+        public IPickerState ReturnToMainBaseState => new PickerReturnToBaseState(this);
         public IPickerState ReturnToPlayerState => new PickerReturnToPlayerState(this);
         public IPickerState CompleteState => new PickerCompleteState(this);
 
@@ -108,7 +109,7 @@ namespace Main
         public GameObject playerObj { get; private set; }
         public Rigidbody playerRd { get; private set; }
         public NetworkObject targetResourceObj { get; private set; }
-        public GameObject mainBaseObj { get; private set; }
+        public IEnumerable<GameObject> baseObjs { get; private set; }
 
 
         // injected fields
@@ -137,9 +138,9 @@ namespace Main
             this.targetResourceObj = targetResourceObj;
         }
 
-        public void SetMainBaseObj(GameObject mainBaseObj)
+        public void SetMainBaseObj(IEnumerable<GameObject> mainBaseObj)
         {
-            this.mainBaseObj = mainBaseObj;
+            this.baseObjs = mainBaseObj;
         }
     }
 
@@ -485,9 +486,9 @@ namespace Main
         }
     }
 
-    public class PickerReturnToMainBaseState : PickerAbstractState
+    public class PickerReturnToBaseState : PickerAbstractState
     {
-        public PickerReturnToMainBaseState(PickerInfo info) : base(info)
+        public PickerReturnToBaseState(PickerInfo info) : base(info)
         {
         }
 
@@ -501,13 +502,31 @@ namespace Main
             }
             else
             {
-                mover.MoveToFixedPosCarrying(info.mainBaseObj.transform.position);
+                mover.MoveToFixedPosCarrying(GetNearestBasePos());
             }
+        }
+
+        Vector3 GetNearestBasePos()
+        {
+            var resultPos = Vector3.zero;
+            var minDistance = float.MaxValue;
+            var pos = info.pickerObj.transform.position;
+            foreach (var baseObj in info.baseObjs)
+            {
+                var distance = Vector3.Distance(pos, baseObj.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    resultPos = baseObj.transform.position;
+                }
+            }
+            if (resultPos == Vector3.zero) Debug.LogError($"GetNearestBasePos() was failed");
+            return resultPos;
         }
 
         bool CanSwitchState()
         {
-            var vector = Utility.SetYToZero(info.mainBaseObj.transform.position - info.pickerObj.transform.position);
+            var vector = Utility.SetYToZero(GetNearestBasePos()- info.pickerObj.transform.position);
             return vector.magnitude <= info.returnToMainBaseRange;
         }
     }

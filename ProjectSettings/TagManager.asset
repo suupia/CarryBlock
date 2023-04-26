@@ -11,6 +11,7 @@ TagManager:
   - Picker
   - MainBase
   - Harmful
+  - SubBase
   layers:
   - Default
   - TransparentFX
