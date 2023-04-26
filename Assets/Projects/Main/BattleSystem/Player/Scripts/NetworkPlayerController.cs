@@ -91,11 +91,12 @@ namespace Main
                     IsReady = !IsReady;
                     Debug.Log($"Toggled Ready -> {IsReady}");
                 }
-
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
-                {
-                    ChangeNextUnit();
-                }
+                
+                // if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
+                // {
+                //     //Tmp
+                //     RPC_ChangeNextUnit();
+                // }
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
@@ -113,6 +114,19 @@ namespace Main
 
                 PreButtons = input.Buttons;
             }
+        }
+
+        void Update()
+        {
+            if (Object. HasInputAuthority)
+            {
+                if (Input.GetKeyDown(KeyCode.C))
+                {
+                    //Tmp
+                    RPC_ChangeNextUnit();
+                }
+            }
+
         }
 
         public override void Render()
@@ -144,8 +158,10 @@ namespace Main
             
         }
 
-        
-        void ChangeNextUnit()
+
+        //Deal as RPC for changing unit
+        [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.All)]
+        public void RPC_ChangeNextUnit()
         {
             _unitType = (UnitType)(((int)_unitType + 1) % Enum.GetValues(typeof(UnitType)).Length);
             Destroy(_unitObj);
