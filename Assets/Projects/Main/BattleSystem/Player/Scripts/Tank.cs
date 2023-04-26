@@ -11,7 +11,6 @@ namespace Main
     {
         readonly NetworkRunner　_runner;
         PlayerInfo _info;
-        readonly float _pickerHeight = 5.0f;
         IUnitMove _move;
         IUnitAction _action;
     
