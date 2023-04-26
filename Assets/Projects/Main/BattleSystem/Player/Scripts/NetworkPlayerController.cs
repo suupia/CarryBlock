@@ -180,37 +180,37 @@ namespace Main
             var prefab = playerUnitPrefabs[(int)unitType];
             _unitObj = Instantiate(prefab, unitObjectParent);
 
-            // Set the unit domain
-            _unit = unitType switch
+            switch (_unitType)
             {
-                UnitType.Tank => new Tank(_info),
-                UnitType.CollectResourcePlane => new CollectResourcePlane(_info),
-                UnitType.EstablishSubBasePlane => new EstablishSubBasePlane(_info),
-                _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
-            };
-            // とりあえず共通のスタッツにする
-            _unitStats = new PlayerStats(ref PlayerStruct);
-            _shooter = new UnitShooter(_info);
-
-            // Set the animator.
-            var animator = _unitObj.GetComponentInChildren<Animator>();
-            _animatorSetter = unitType switch
-            {
-                UnitType.Tank => new TankAnimatorSetter(new TankAnimatorSetterInfo()
-                {
-                    Animator = animator,
-                }),
-                UnitType.CollectResourcePlane => new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
-                {
-                    Animator = animator,
-                }),
-                UnitType.EstablishSubBasePlane => new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
-                {
-                    Animator = animator,
-                }),
-                _ => throw new ArgumentOutOfRangeException(nameof(unitType), "Invalid unitType")
-            };
-
+                case UnitType.Tank:
+                    _unit = new Tank(_info);
+                    _unitStats = new PlayerStats(ref PlayerStruct);
+                    _shooter = new UnitShooter(_info);
+                    _animatorSetter = new TankAnimatorSetter(new TankAnimatorSetterInfo()
+                    {
+                        Animator = _unitObj.GetComponentInChildren<Animator>(),
+                    });
+                    break;
+                case UnitType.CollectResourcePlane:
+                    _unit = new CollectResourcePlane(_info);
+                    _unitStats = new PlayerStats(ref PlayerStruct);
+                    _shooter = new UnitShooter(_info);
+                    _animatorSetter = new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
+                    {
+                        Animator = _unitObj.GetComponentInChildren<Animator>(),
+                    });
+                    break;
+                case UnitType.EstablishSubBasePlane:
+                    _unit = new EstablishSubBasePlane(_info);
+                    _unitStats = new PlayerStats(ref PlayerStruct);
+                    _shooter = new UnitShooter(_info);
+                    _animatorSetter = new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
+                    {
+                        Animator = _unitObj.GetComponentInChildren<Animator>(),
+                    });
+                    break;
+            }
+            
             // Play spawn animation
             _animatorSetter.OnSpawn();
         }
