@@ -47,7 +47,7 @@ namespace Main
         IUnit _unit;
         [Networked] ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
         IUnitStats _unitStats;
-        PlayerShooter _shooter;
+        UnitShooter _shooter;
 
         enum UnitType
         {
@@ -64,7 +64,7 @@ namespace Main
 
             // Instantiate the unit.
             InstantiateUnit(_unitType);
-            _shooter = new PlayerShooter(_info);
+            _shooter = new UnitShooter(_info);
 
             if (Object.HasInputAuthority)
             {
@@ -230,13 +230,13 @@ namespace Main
         }
     }
 
-    public class PlayerShooter
+    public class UnitShooter
     {
         PlayerInfo _info;
 
         public float shootInterval = 0.5f;
 
-        public PlayerShooter(PlayerInfo info)
+        public UnitShooter(PlayerInfo info)
         {
             _info = info;
         }
