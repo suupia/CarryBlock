@@ -112,6 +112,7 @@ MonoBehaviour:
   - {fileID: 5382565514109228338, guid: 3e617250fe2faeb429c30e5d618aa013, type: 3}
   - {fileID: 129457298326952244, guid: a302a749f7736b148b56ee79b6af8253, type: 3}
   - {fileID: 129457298326952244, guid: a302a749f7736b148b56ee79b6af8253, type: 3}
+  - {fileID: 5382565514109228338, guid: 3e617250fe2faeb429c30e5d618aa013, type: 3}
   _unitType: 0
   _info:
     pickerPrefab:

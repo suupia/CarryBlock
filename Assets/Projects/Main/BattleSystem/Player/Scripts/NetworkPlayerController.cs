@@ -54,6 +54,7 @@ namespace Main
             Tank = 0,
             CollectResourcePlane = 1,
             EstablishSubBasePlane = 2,
+            NoneAttackTank = 3,
         }
 
 
@@ -123,9 +124,10 @@ namespace Main
 
             if (Object.HasInputAuthority)
             {
+                // ToDo : デバッグ用なので後で消す
                 if (Input.GetKeyDown(KeyCode.H))
                 {
-                    _unitStats.OnAttacked(ref PlayerStruct,1);
+                    Debug.Log($"hp = {PlayerStruct.Hp}");
                 }
             }
 
@@ -205,6 +207,15 @@ namespace Main
                     _unitStats = new PlayerStats(ref PlayerStruct);
                     _shooter = new UnitShooter(_info);
                     _animatorSetter = new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
+                    {
+                        Animator = _unitObj.GetComponentInChildren<Animator>(),
+                    });
+                    break;
+                case UnitType.NoneAttackTank:
+                    _unit = new Tank(_info);
+                    _unitStats = new PlayerStats(ref PlayerStruct);
+                    _shooter = new NoneAttack();
+                    _animatorSetter = new TankAnimatorSetter(new TankAnimatorSetterInfo()
                     {
                         Animator = _unitObj.GetComponentInChildren<Animator>(),
                     });
