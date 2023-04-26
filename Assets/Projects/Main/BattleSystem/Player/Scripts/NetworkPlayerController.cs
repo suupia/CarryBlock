@@ -64,7 +64,6 @@ namespace Main
 
             // Instantiate the unit.
             InstantiateUnit(_unitType);
-            _shooter = new UnitShooter(_info);
 
             if (Object.HasInputAuthority)
             {
@@ -191,6 +190,7 @@ namespace Main
             };
             // とりあえず共通のスタッツにする
             _unitStats = new PlayerStats(ref PlayerStruct);
+            _shooter = new UnitShooter(_info);
 
             // Set the animator.
             var animator = _unitObj.GetComponentInChildren<Animator>();
