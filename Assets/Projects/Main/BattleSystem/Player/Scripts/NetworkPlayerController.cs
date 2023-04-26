@@ -80,9 +80,12 @@ namespace Main
 
             if (ShootCooldown.ExpiredOrNotRunning(Runner))
             {
-                var attacked = _shooter.AttemptAttack();
-                if (attacked) AttackCount++;
-                ShootCooldown = TickTimer.CreateFromSeconds(Runner, _shooter.AttackCooldown());
+                if (PlayerStruct.IsAlive)
+                {
+                    var attacked = _shooter.AttemptAttack();
+                    if (attacked) AttackCount++;
+                    ShootCooldown = TickTimer.CreateFromSeconds(Runner, _shooter.AttackCooldown());
+                }
             }
 
             if (GetInput(out NetworkInputData input))
@@ -98,9 +101,12 @@ namespace Main
                 {
                     if (ActionCooldown.ExpiredOrNotRunning(Runner))
                     {
-                        _unit.Action();
-                        ActionCooldown = TickTimer.CreateFromSeconds(Runner, _unit.ActionCooldown());
-                        MainActionCount++;
+                        if (PlayerStruct.IsAlive)
+                        {
+                            _unit.Action();
+                            ActionCooldown = TickTimer.CreateFromSeconds(Runner, _unit.ActionCooldown());
+                            MainActionCount++;   
+                        }
                     }
                 }
 

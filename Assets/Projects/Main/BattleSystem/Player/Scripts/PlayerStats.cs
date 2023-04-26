@@ -5,6 +5,7 @@ namespace Main
 {
     public struct NetworkPlayerStruct : INetworkStruct
     {
+        public NetworkBool IsAlive;
         public int Hp { get; set; }
     }
 
@@ -18,6 +19,7 @@ namespace Main
         
         public PlayerStats(ref NetworkPlayerStruct stats)
         {
+            stats.IsAlive = true;
             stats.Hp = MaxHp;
         }
         
@@ -28,6 +30,7 @@ namespace Main
             if (stats.Hp <= 0)
             {
                 //ToDo : dead
+                stats.IsAlive = false;
                 return;
             }
         }
