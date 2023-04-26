@@ -16,12 +16,12 @@ namespace Main
 
     public class EjectPicker : IUnitAction
     {
-        NetworkRunner _runner;
-        GameObject _playerObj;
-        PlayerInfoForPicker _info;
-        PrefabLoaderFromResources<NetworkPickerController> _prefabLoaderFromResources;
+        readonly NetworkRunner _runner;
+        readonly GameObject _playerObj;
+        readonly PlayerInfoForPicker _info;
+        readonly PrefabLoaderFromResources<NetworkPickerController> _prefabLoaderFromResources;
 
-        float _pickerHeight = 5.0f;
+        readonly float _pickerHeight = 5.0f;
 
         public EjectPicker(NetworkRunner runner, GameObject playerObj, PlayerInfoForPicker playerInfoForPicker)
         {
@@ -50,15 +50,16 @@ namespace Main
 
     public class CollectResource : IUnitAction
     {
-        NetworkRunner _runner;
-        GameObject _playerObj;
+        readonly NetworkRunner _runner;
+        readonly GameObject _playerObj;
 
-        bool isCollecting;
-        float collectTime = 1f;
-        float collectOffset = 0.5f; // determine how much to place the resource below.
-        float detectionRange = 3f;
-        float submitResourceRange = 3f;
-        IList<NetworkObject> heldResources = new List<NetworkObject>();
+        readonly float _collectTime = 1f;
+        readonly float _collectOffset = 0.5f; // determine how much to place the resource below.
+        readonly float _detectionRange = 3f;
+        readonly float _submitResourceRange = 3f;
+
+        bool _isCollecting;
+        IList<NetworkObject> _heldResources = new List<NetworkObject>();
 
         public CollectResource(NetworkRunner runner, GameObject playerObj)
         {
@@ -68,25 +69,25 @@ namespace Main
 
         public float ActionCooldown() => 0.1f;
 
-        public bool InAction() => isCollecting;
+        public bool InAction() => _isCollecting;
 
         public void Action()
         {
             // Collect resource.
-            if (heldResources.Any())
+            if (_heldResources.Any())
             {
                 SubmitResource();
             }
             else
             {
-               var _ = AttemptCollectResource();
+                var _ = AttemptCollectResource();
             }
         }
 
-        public bool AttemptCollectResource()
+        bool AttemptCollectResource()
         {
             Collider[] colliders =
-                Physics.OverlapSphere(Utility.SetYToZero(_playerObj.transform.position), detectionRange);
+                Physics.OverlapSphere(Utility.SetYToZero(_playerObj.transform.position), _detectionRange);
             Debug.Log($"colliders.Length = {colliders.Length}, colliders = {colliders}");
             var resources = colliders.Where(collider => collider.CompareTag("Resource"))
                 .Where(collider => collider.gameObject.GetComponent<NetworkResourceController>().canAccess)
@@ -95,7 +96,9 @@ namespace Main
             {
                 CollectResourceAction(resources.First());
                 return true;
-            }else{
+            }
+            else
+            {
                 return false;
             }
         }
@@ -103,16 +106,16 @@ namespace Main
         async void CollectResourceAction(NetworkObject resource)
         {
             if (resource == null) return;
-            if (isCollecting) return;
+            if (_isCollecting) return;
 
             var initPos = _playerObj.transform.position;
             var deltaVector = resource.transform.position - initPos;
 
-            isCollecting = true;
+            _isCollecting = true;
 
-            for (float t = 0; t < collectTime; t += Time.deltaTime)
+            for (float t = 0; t < _collectTime; t += Time.deltaTime)
             {
-                var coefficient = 2 * Mathf.PI / collectTime;
+                var coefficient = 2 * Mathf.PI / _collectTime;
                 var progress = -Mathf.Cos(coefficient * t) + 1f;
 
                 _playerObj.transform.position = progress * deltaVector + initPos;
@@ -121,30 +124,30 @@ namespace Main
             }
 
             Debug.Log("complete collect");
-            resource.transform.position = _playerObj.transform.position - new Vector3(0, collectOffset, 0);
+            resource.transform.position = _playerObj.transform.position - new Vector3(0, _collectOffset, 0);
             resource.GetComponent<NetworkResourceController>().OnHeld(_playerObj.transform);
-            heldResources.Add(resource);
-            isCollecting = false;
+            _heldResources.Add(resource);
+            _isCollecting = false;
         }
 
         void SubmitResource()
         {
-            if (!heldResources.Any()) return;
+            if (!_heldResources.Any()) return;
             if (!IsNearMainBase()) return;
 
-            foreach (var resource in heldResources)
+            foreach (var resource in _heldResources)
             {
                 _runner.Despawn(resource);
                 Debug.Log($"submit resource");
             }
 
-            heldResources = new List<NetworkObject>();
+            _heldResources = new List<NetworkObject>();
         }
 
         bool IsNearMainBase()
         {
             Collider[] colliders =
-                Physics.OverlapSphere(Utility.SetYToZero(_playerObj.transform.position), submitResourceRange);
+                Physics.OverlapSphere(Utility.SetYToZero(_playerObj.transform.position), _submitResourceRange);
             var mainBases = colliders.Where(collider => collider.CompareTag("MainBase"))
                 .Select(collider => collider.gameObject);
             Debug.Log($"IsNearMainBase():{mainBases.Any()}");
