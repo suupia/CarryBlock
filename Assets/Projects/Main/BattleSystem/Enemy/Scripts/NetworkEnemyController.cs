@@ -30,7 +30,7 @@ public class NetworkEnemyController :  PoolableObject
 
     public Action onDespawn = () => { };
     
-    IUnitMove _move;
+    IMove _move;
 
     public override void Spawned()
     {

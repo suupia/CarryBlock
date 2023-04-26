@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 namespace Main
 {
-    public interface IUnit : IUnitMove, IUnitAction
+    public interface IUnit : IMove, IUnitAction
     {
         void Move(Vector3 direction);
         void Action();

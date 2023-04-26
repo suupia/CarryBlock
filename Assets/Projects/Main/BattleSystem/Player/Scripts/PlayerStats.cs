@@ -10,7 +10,7 @@ namespace Main
 
     public class PlayerStats : IUnitStats
     {
-        public readonly int MaxHp = 10;
+        public readonly int MaxHp = 3;
         
         public PlayerStats(ref NetworkPlayerStruct stats)
         {
