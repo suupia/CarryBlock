@@ -35,10 +35,7 @@ namespace Main
 
         [Networked] int MainActionCount { get; set; }
         [Networked] int AttackCount { get; set; }
-
-        [Networked(OnChanged = nameof(OnHpChanged))]
-        byte Hp { get; set; } = 1;
-
+        
         int _preMainActionCount = 0;
         int _preAttackCount = 0;
         Vector3 preDirection = Vector3.zero;
@@ -192,39 +189,39 @@ namespace Main
             {
                 case UnitType.Tank:
                     _unit = new Tank(_info);
-                    _unitStats = new PlayerStats(ref PlayerStruct);
                     _shooter = new UnitShooter(_info);
                     _animatorSetter = new TankAnimatorSetter(new TankAnimatorSetterInfo()
                     {
                         Animator = _unitObj.GetComponentInChildren<Animator>(),
                     });
+                    _unitStats = new PlayerStats(ref PlayerStruct, _animatorSetter);
                     break;
                 case UnitType.CollectResourcePlane:
                     _unit = new CollectResourcePlane(_info);
-                    _unitStats = new PlayerStats(ref PlayerStruct);
                     _shooter = new UnitShooter(_info);
                     _animatorSetter = new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
                     {
                         Animator = _unitObj.GetComponentInChildren<Animator>(),
                     });
+                    _unitStats = new PlayerStats(ref PlayerStruct,_animatorSetter);
                     break;
                 case UnitType.EstablishSubBasePlane:
                     _unit = new EstablishSubBasePlane(_info);
-                    _unitStats = new PlayerStats(ref PlayerStruct);
                     _shooter = new UnitShooter(_info);
                     _animatorSetter = new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
                     {
                         Animator = _unitObj.GetComponentInChildren<Animator>(),
                     });
+                    _unitStats = new PlayerStats(ref PlayerStruct,_animatorSetter);
                     break;
                 case UnitType.NoneAttackTank:
                     _unit = new Tank(_info);
-                    _unitStats = new PlayerStats(ref PlayerStruct);
                     _shooter = new NoneAttack();
                     _animatorSetter = new TankAnimatorSetter(new TankAnimatorSetterInfo()
                     {
                         Animator = _unitObj.GetComponentInChildren<Animator>(),
                     });
+                    _unitStats = new PlayerStats(ref PlayerStruct,_animatorSetter);
                     break;
             }
             
@@ -234,17 +231,18 @@ namespace Main
 
         public void OnAttacked(int damage)
         {
+            if (!HasStateAuthority) return;
             _unitStats.OnAttacked(ref PlayerStruct, damage);
         }
 
-        public static void OnHpChanged(Changed<NetworkPlayerController> changed)
-        {
-            var hp = changed.Behaviour.Hp;
-            if (hp <= 0)
-            {
-                changed.Behaviour._animatorSetter.OnDead();
-            }
-        }
+        // public static void OnHpChanged(Changed<NetworkPlayerController> changed)
+        // {
+        //     var hp = changed.Behaviour.Hp;
+        //     if (hp <= 0)
+        //     {
+        //         changed.Behaviour._animatorSetter.OnDead();
+        //     }
+        // }
     }
 
 }
