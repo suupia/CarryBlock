@@ -52,6 +52,7 @@ namespace UI
             Debug.Log($"_score : {Score}, runner : {Runner}");
             scoreText.text = $"Score : {Score}";
             waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
+            resultText.text = $"Result : {Result}";
         }
 
 
@@ -63,7 +64,6 @@ namespace UI
         void ResultView()
         {
             Result = _resourceAggregator.IsSuccess() ? "Success" : "Failure";
-            resultText.text = $"Result : {Result}";
         }
     }
 }

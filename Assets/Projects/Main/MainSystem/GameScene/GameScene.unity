@@ -1613,10 +1613,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  _scoreText: {fileID: 1937534886}
-  _waveTimerText: {fileID: 1240057767}
-  _resultText: {fileID: 1110138518}
-  _score: 0
+  scoreText: {fileID: 1937534886}
+  waveTimerText: {fileID: 1240057767}
+  resultText: {fileID: 1110138518}
 --- !u!1 &2591014611208062255
 GameObject:
   m_ObjectHideFlags: 0
