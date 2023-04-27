@@ -4,23 +4,25 @@ using UnityEngine;
 using TMPro;
 using Main.VContainer;
 using Main;
+using UnityEngine.Serialization;
 using VContainer;
 
-namespace  UI
+namespace UI
 {
     public class GameSceneView : NetworkBehaviour
     {
         // NetworkObject must be attached to the parent of this script.
-        [SerializeField] TextMeshProUGUI _scoreText;
-        [SerializeField] TextMeshProUGUI _waveTimerText;
-        [SerializeField] TextMeshProUGUI _resultText;
+        [SerializeField] TextMeshProUGUI scoreText;
+        [SerializeField] TextMeshProUGUI waveTimerText;
+        [SerializeField] TextMeshProUGUI resultText;
 
-        [Networked] public int score { get; set; }
+        [Networked] int Score { get; set; }
+        [Networked] NetworkString<_16> Result { get; set; }
 
         GameContext _gameContext;
         ResourceAggregator _resourceAggregator;
         WaveTimer _waveTimer;
-        
+
 
         [Inject]
         public void Construct(ResourceAggregator resourceAggregator, GameContext gameContext, WaveTimer waveTimer)
@@ -32,14 +34,14 @@ namespace  UI
 
         public override void FixedUpdateNetwork()
         {
-            if(!HasStateAuthority)return;
+            if (!HasStateAuthority) return;
             switch (_gameContext.gameState)
             {
                 case GameContext.GameState.Playing:
-                    PlayingView();
+                    PlayingNetworkView();
                     break;
                 case GameContext.GameState.Result:
-                    ResultView();
+                    ResultNetworkView();
                     break;
             }
         }
@@ -47,26 +49,39 @@ namespace  UI
 
         public override void Render()
         {
-             Debug.Log($"_score : {score}, runner : {Runner}");
-            _scoreText.text = $"Score : {score}";
-            _waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
-        }
-        
-        
-        void PlayingView()
-        {
-            score = _resourceAggregator.getAmount; // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
-        }
-        
-        void ResultView()
-        {
-            var result = _resourceAggregator.IsSuccess() ? "Success" : "Failure";
-            _resultText.text = $"Result : {result}";
+            switch (_gameContext.gameState)
+            {
+                case GameContext.GameState.Playing:
+                    PlayingLocalView();
+                    break;
+                case GameContext.GameState.Result:
+                    ResultLocalView();
+                    break;
+            }
+            
         }
 
 
+        void PlayingNetworkView()
+        {
+            Score = _resourceAggregator.getAmount; // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
+        }
+
+        void ResultNetworkView()
+        {
+            Result = _resourceAggregator.IsSuccess() ? "Success" : "Failure";
+        }
+        
+        void PlayingLocalView()
+        {
+            Debug.Log($"_score : {Score}, runner : {Runner}");
+            scoreText.text = $"Score : {Score}";
+            waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
+        }
+        
+        void ResultLocalView()
+        {
+            resultText.text = $"Result : {Result}";
+        }
     }
-    
-
-
 }

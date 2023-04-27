@@ -1,5 +1,6 @@
 using Fusion;
 using UnityEngine;
+using Animations;
 
 namespace Main
 {
@@ -16,13 +17,15 @@ namespace Main
     public class PlayerStats : IUnitStats
     {
         public readonly int MaxHp = 3;
+        IAnimatorPlayerUnit _animatorSetter;
         
-        public PlayerStats(ref NetworkPlayerStruct stats)
+        public PlayerStats(ref NetworkPlayerStruct stats,  IAnimatorPlayerUnit animatorSetter)
         {
             stats.IsAlive = true;
             stats.Hp = MaxHp;
+            _animatorSetter = animatorSetter;
         }
-        
+
         public void OnAttacked(ref NetworkPlayerStruct stats,int damage)
         {
             stats.Hp -= damage;
@@ -30,6 +33,7 @@ namespace Main
             if (stats.Hp <= 0)
             {
                 //ToDo : dead
+                _animatorSetter.OnDead();
                 stats.IsAlive = false;
                 return;
             }
