@@ -12,7 +12,6 @@ using UnityEngine;
      MainAction = 0,
      Ready,
      ChangeUnit,
-     ReturnToMainBase,
  }
 
 
@@ -28,8 +27,7 @@ public class LocalInputPoller : INetworkRunnerCallbacks
         localInput.Buttons.Set(PlayerOperation.MainAction, Input.GetKey(KeyCode.Space));
         localInput.Buttons.Set(PlayerOperation.Ready, Input.GetKey(KeyCode.R));
         localInput.Buttons.Set(PlayerOperation.ChangeUnit, Input.GetKey(KeyCode.C));
-        localInput.Buttons.Set(PlayerOperation.ReturnToMainBase, Input.GetKey(KeyCode.LeftShift));
-        
+
         input.Set(localInput);
 
         // Reset the input struct to start with a clean slate

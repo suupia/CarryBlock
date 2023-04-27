@@ -11,6 +11,7 @@ namespace Main.VContainer
             builder.Register<ResourceAggregator>(Lifetime.Singleton);
             builder.Register<GameContext>(Lifetime.Singleton);
             builder.Register<WaveTimer>(Lifetime.Singleton);
+            builder.Register<ReturnToMainBaseGauge>(Lifetime.Singleton);
         }
     }
 }

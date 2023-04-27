@@ -2,25 +2,19 @@ using System;
 using Fusion;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using VContainer;
 
 namespace Main
 {
     public class ReturnToMainBaseGauge
     {
         public float CurrentValue => _time / _fillTime;
-        readonly NetworkRunner _runner;
-        readonly float _fillTime;
+        readonly float _fillTime = 3.0f;
         float _time = 0f;
-
-        public ReturnToMainBaseGauge(NetworkRunner runner, float fillTime = 3.0f)
-        {
-            _runner = runner;
-            _fillTime = fillTime;
-        }
-
+        
          public  void FillGauge()
         {
-            _time += _runner.DeltaTime;
+            _time += Time.deltaTime;
             Debug.Log($"_timer = {_time}");
             if (_time >= _fillTime)
             {
@@ -36,7 +30,7 @@ namespace Main
 
         void ReturnToMainBase()
         {
-            Debug.Log($"LocalPlayer:{_runner.LocalPlayer} MainBaseに帰還します");
+            Debug.Log($"MainBaseに帰還します");
         }
     }
 }

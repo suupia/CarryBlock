@@ -1,9 +1,9 @@
 using Fusion;
 using UnityEngine;
 using System;
-using System.Linq;
-using UnityEngine.Serialization;
 using Animations;
+using VContainer;
+using VContainer.Unity;
 
 namespace Main
 {
@@ -69,6 +69,9 @@ namespace Main
                 // spawn camera
                 var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
                 followtarget.SetTarget(unitObjectParent.transform);
+                
+                // setup ReturnToMainBase
+                _returnToMainBaseGauge = FindObjectOfType<LifetimeScope>().Container.Resolve<ReturnToMainBaseGauge>();
             }
         }
 
@@ -107,16 +110,6 @@ namespace Main
                         }
                     }
                 }
-                
-                if(input.Buttons.IsSet( PlayerOperation.ReturnToMainBase))
-                {
-                    _returnToMainBaseGauge.FillGauge();
-                }
-                
-                if(input.Buttons.WasReleased(PreButtons, PlayerOperation.ReturnToMainBase))
-                {
-                    _returnToMainBaseGauge.ResetGauge();
-                }
 
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
@@ -133,6 +126,16 @@ namespace Main
                 if (Input.GetKeyDown(KeyCode.C))
                 {
                     RPC_ChangeNextUnit();
+                }
+
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    _returnToMainBaseGauge.FillGauge();
+                }
+
+                if (Input.GetKeyUp(KeyCode.LeftShift))
+                {
+                    _returnToMainBaseGauge.ResetGauge();
                 }
             }
 
@@ -236,8 +239,6 @@ namespace Main
                     break;
             }
 
-            _returnToMainBaseGauge = new ReturnToMainBaseGauge(Runner);
-            
             // Play spawn animation
             _animatorSetter.OnSpawn();
         }
