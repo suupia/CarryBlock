@@ -45,6 +45,7 @@ namespace Main
         [Networked] ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
         IUnitStats _unitStats;
         IUnitAttack _shooter;
+        ReturnToMainBaseGauge _returnToMainBaseGauge;
 
         enum UnitType
         {
@@ -105,6 +106,16 @@ namespace Main
                             MainActionCount++;   
                         }
                     }
+                }
+                
+                if(input.Buttons.IsSet( PlayerOperation.ReturnToMainBase))
+                {
+                    _returnToMainBaseGauge.FillGauge();
+                }
+                
+                if(input.Buttons.WasReleased(PreButtons, PlayerOperation.ReturnToMainBase))
+                {
+                    _returnToMainBaseGauge.ResetGauge();
                 }
 
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
@@ -224,6 +235,8 @@ namespace Main
                     _unitStats = new PlayerStats(ref PlayerStruct,_animatorSetter);
                     break;
             }
+
+            _returnToMainBaseGauge = new ReturnToMainBaseGauge(Runner);
             
             // Play spawn animation
             _animatorSetter.OnSpawn();

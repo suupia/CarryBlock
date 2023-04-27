@@ -28,7 +28,7 @@ namespace Main
             AttackCount++;
         }
 
-        public void Update(in NetworkPlayerStruct player) // NetworkPlayerController.Render()ではこれだけを呼ぶようにする
+        public void Detect(in NetworkPlayerStruct player) // NetworkPlayerController.Render()ではこれだけを呼ぶようにする
         {
             if (player.IsAlive)
             {
