@@ -6,22 +6,33 @@ using Animations;
 
 namespace Main
 {
-    public class NetworkPlayerStructDetector
+    public class NetworkPlayerStructDetector : NetworkBehaviour
     {
-        IAnimatorPlayerUnit _animatorSetter;
-         int _preHp;
+       　readonly IAnimatorPlayerUnit _animatorSetter;
+        [Networked] int MainActionCount { get; set; }
+        [Networked] int AttackCount { get; set; }
+        [Networked] int PreHp { get; set; }
 
-        public NetworkPlayerStructDetector(IAnimatorPlayerUnit animatorSetter , NetworkPlayerStruct player)
+        public NetworkPlayerStructDetector(IAnimatorPlayerUnit animatorSetter)
         {
             _animatorSetter = animatorSetter;
-            _preHp = player.Hp;
+        }
+        
+        public void IncrementMainActionCount()
+        {
+            MainActionCount++; // 今NetworkPlayerControllerで直に＋しているところを代わりにこれを呼ぶようにする
+        }
+        
+        public void IncrementAttackCount()
+        {
+            AttackCount++;
         }
 
-        public void Update(in NetworkPlayerStruct player)
+        public void Update(in NetworkPlayerStruct player) // NetworkPlayerController.Render()ではこれだけを呼ぶようにする
         {
             if (player.IsAlive)
             {
-                if (player.Hp < _preHp)
+                if (player.Hp < PreHp)
                 {
                     Debug.Log("OnDamaged!");
                     // _animatorSetter.OnDamaged();
@@ -31,7 +42,7 @@ namespace Main
                     Debug.Log("OnDead!");
                     _animatorSetter.OnDead();
                 }
-                _preHp = player.Hp;
+                PreHp = player.Hp;
             }
         }
     }
