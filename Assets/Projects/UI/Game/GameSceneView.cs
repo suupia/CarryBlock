@@ -38,10 +38,10 @@ namespace UI
             switch (_gameContext.gameState)
             {
                 case GameContext.GameState.Playing:
-                    PlayingView();
+                    PlayingNetworkView();
                     break;
                 case GameContext.GameState.Result:
-                    ResultView();
+                    ResultNetworkView();
                     break;
             }
         }
@@ -49,21 +49,39 @@ namespace UI
 
         public override void Render()
         {
-            Debug.Log($"_score : {Score}, runner : {Runner}");
-            scoreText.text = $"Score : {Score}";
-            waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
-            resultText.text = $"Result : {Result}";
+            switch (_gameContext.gameState)
+            {
+                case GameContext.GameState.Playing:
+                    PlayingLocalView();
+                    break;
+                case GameContext.GameState.Result:
+                    ResultLocalView();
+                    break;
+            }
+            
         }
 
 
-        void PlayingView()
+        void PlayingNetworkView()
         {
             Score = _resourceAggregator.getAmount; // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
         }
 
-        void ResultView()
+        void ResultNetworkView()
         {
             Result = _resourceAggregator.IsSuccess() ? "Success" : "Failure";
+        }
+        
+        void PlayingLocalView()
+        {
+            Debug.Log($"_score : {Score}, runner : {Runner}");
+            scoreText.text = $"Score : {Score}";
+            waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
+        }
+        
+        void ResultLocalView()
+        {
+            resultText.text = $"Result : {Result}";
         }
     }
 }
