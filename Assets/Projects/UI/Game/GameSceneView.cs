@@ -15,6 +15,7 @@ namespace UI
         [SerializeField] TextMeshProUGUI scoreText;
         [SerializeField] TextMeshProUGUI waveTimerText;
         [SerializeField] TextMeshProUGUI resultText;
+        [SerializeField] TextMeshProUGUI remainingTimeToReturnText;
 
         [Networked] int Score { get; set; }
         [Networked] NetworkString<_16> Result { get; set; }
@@ -22,6 +23,8 @@ namespace UI
         GameContext _gameContext;
         ResourceAggregator _resourceAggregator;
         WaveTimer _waveTimer;
+
+        NetworkPlayerController _networkPlayerController;
 
 
         [Inject]
@@ -77,6 +80,14 @@ namespace UI
             Debug.Log($"_score : {Score}, runner : {Runner}");
             scoreText.text = $"Score : {Score}";
             waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
+            // if ()
+            // {
+            //     remainingTimeToReturnText = $"";
+            // }
+            // else
+            // {
+            //     
+            // }
         }
         
         void ResultLocalView()
