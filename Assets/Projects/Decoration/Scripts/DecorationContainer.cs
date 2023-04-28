@@ -11,25 +11,27 @@ namespace Decoration
         public int AttackCount;
         public int PreHp;
     }
+
     public struct NetworkDecorationPlayer : INetworkStruct
     {
         public int MainActionCount;
         public int AttackCount;
     }
-    
+
 
     public class DecorationEnemyContainer
     {
-        private List<IDecorationEnemy> _decorations;
+        private List<IEnemyDecoration> _decorations;
         private int _preAttackCount = 0;
 
-        public DecorationEnemyContainer(params IDecorationEnemy[] decorations)
+        public DecorationEnemyContainer(params IEnemyDecoration[] decorations)
         {
             _decorations = decorations.ToList();
         }
 
-        public void OnSpawn(NetworkDecorationEnemy networkStruct) { }
-        
+        public void OnSpawn(NetworkDecorationEnemy networkStruct)
+        {
+        }
     }
 
     /// <summary>
@@ -46,25 +48,31 @@ namespace Decoration
     /// </summary>
     public class DecorationPlayerContainer
     {
-        private readonly List<IDecorationPlayer> _decorations;
-        
+        private readonly List<IPlayerDecoration> _decorations;
+
         private int _preAttackCount = 0;
         private int _preMainActionCount = 0;
         private int _preHp = 0;
 
-        public DecorationPlayerContainer(params IDecorationPlayer[] decorations)
+        public DecorationPlayerContainer(params IPlayerDecoration[] decorations)
         {
             _decorations = decorations.ToList();
         }
 
-        public void OnSpawn()
+        public void OnSpawned()
         {
-            _decorations.ForEach(d => d.OnSpawn());
+            _decorations.ForEach(d => d.OnSpawned());
         }
 
         public void OnMainAction(ref NetworkDecorationPlayer networkDecoration)
         {
             networkDecoration.MainActionCount++;
+        }
+
+
+        public void OnAttacked(ref NetworkDecorationPlayer networkDecoration)
+        {
+            networkDecoration.AttackCount++;
         }
 
         /// <summary>
@@ -74,34 +82,38 @@ namespace Decoration
         /// <param name="hp"></param>
         public void OnRender(ref NetworkDecorationPlayer networkDecoration, int hp)
         {
-            _decorations.ForEach(d => d.OnMove());
-            
-            if (hp < _preHp)
-            {
-                _decorations.ForEach(d => d.OnDamage());
-            }
-            if (hp == 0)
-            {
-                _decorations.ForEach(d => d.OnDead());
-            }
-            _preHp = hp;
+            _decorations.ForEach(d => d.OnMoved());
+
+            if (hp != _preHp) OnHpChanged(hp);
 
             if (networkDecoration.MainActionCount > _preMainActionCount)
             {
                 _decorations.ForEach(d => d.OnMainAction());
                 _preMainActionCount = networkDecoration.MainActionCount;
             }
-            
+
             if (networkDecoration.AttackCount > _preAttackCount)
             {
-                _decorations.ForEach(d => d.OnAttack());
+                _decorations.ForEach(d => d.OnAttacked());
                 _preAttackCount = networkDecoration.AttackCount;
             }
         }
 
-        public void OnAttack(ref NetworkDecorationPlayer networkDecoration)
+        private void OnHpChanged(int hp)
         {
-            networkDecoration.AttackCount++;
+            if (hp <= 0)
+            {
+                Debug.Log("OnDead!");
+                _decorations.ForEach(d => d.OnDead());
+            }
+            else if (hp < _preHp)
+            {
+                Debug.Log("OnDamaged!");
+
+                _decorations.ForEach(d => d.OnDamaged());
+            }
+
+            _preHp = hp;
         }
     }
 }

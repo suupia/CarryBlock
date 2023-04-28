@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Animations
 {
-    public class LoopEnemyAnimatorSetter: IDecorationEnemy
+    public class LoopEnemyAnimatorSetter: IEnemyDecoration
     {
         private readonly GameObject _gameObject;
         private readonly Animator _animator;
@@ -16,12 +16,12 @@ namespace Animations
             _gameObject = gameObject;
             _animator = gameObject.GetComponentInChildren<Animator>();
         }
-        public void OnAttack(bool value = true)
+        public void OnAttacked(bool onStart = true)
         {
-            _animator.SetBool(AttackLoop, value);
+            _animator.SetBool(AttackLoop, onStart);
         }
 
-        public void OnDamage()
+        public void OnDamaged()
         {
             
         }
@@ -31,12 +31,12 @@ namespace Animations
             _animator.SetTrigger(Dead);
         }
 
-        public void OnMove()
+        public void OnMoved()
         {
             // _animator.SetFloat(Speed, direction.magnitude);
         }
 
-        public void OnSpawn()
+        public void OnSpawned()
         {
         }
     }

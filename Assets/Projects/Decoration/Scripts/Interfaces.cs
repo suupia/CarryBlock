@@ -2,19 +2,41 @@ using UnityEngine;
 
 namespace Decoration
 {
-    public interface IDecoration
+    public interface IMoverDecoration
     {
-        void OnMove();
-        void OnDamage();
+        void OnMoved();
+    }
+
+    public interface IHurtDecoration
+    {
+        void OnDamaged();
         void OnDead();
-        void OnSpawn();
-        void OnAttack(bool value = true);
+    }
+
+    public interface IHealDecoration
+    {
+        void OnHealed();
+    }
+
+    public interface ISpawnedDecoration
+    {
+        void OnSpawned();
+    }
+
+    public interface IAttackerDecoration
+    {
+        void OnAttacked(bool onStart = true);
 
     }
-    
-    public interface IDecorationEnemy: IDecoration {}
+    public interface IEntityDecoration : IMoverDecoration, IAttackerDecoration, IHurtDecoration, ISpawnedDecoration
+    {
 
-    public interface IDecorationPlayer: IDecoration
+        // void OnInput(); //入力に呼応するデコレーションもあると思う
+    }
+    
+    public interface IEnemyDecoration: IEntityDecoration {}
+
+    public interface IPlayerDecoration: IEntityDecoration
     {
         void OnMainAction();
     }

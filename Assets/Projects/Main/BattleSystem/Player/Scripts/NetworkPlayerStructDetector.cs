@@ -9,12 +9,12 @@ namespace Main
 {
     public class NetworkPlayerStructDetector : NetworkBehaviour
     {
-       　readonly IDecorationPlayer _animatorSetter;
+       　readonly IPlayerDecoration _animatorSetter;
         [Networked] int MainActionCount { get; set; }
         [Networked] int AttackCount { get; set; }
         [Networked] int PreHp { get; set; }
 
-        public NetworkPlayerStructDetector(IDecorationPlayer animatorSetter)
+        public NetworkPlayerStructDetector(IPlayerDecoration animatorSetter)
         {
             _animatorSetter = animatorSetter;
         }

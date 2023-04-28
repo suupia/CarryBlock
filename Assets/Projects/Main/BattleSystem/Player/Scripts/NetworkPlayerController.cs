@@ -20,7 +20,7 @@ namespace Main
 
         [SerializeField] GameObject[] playerUnitPrefabs;
         [SerializeField] UnitType _unitType;
-        IDecorationPlayer _animatorSetter;
+        IPlayerDecoration _animatorSetter;
 
         [SerializeField] PlayerInfo _info;
 
@@ -137,7 +137,7 @@ namespace Main
 
         public override void Render()
         {
-            _animatorSetter.OnMove();
+            _animatorSetter.OnMoved();
             // Debug.Log("_info.playerObj.transform.forward = " + _info.playerObj.transform.forward);
             
             if (MainActionCount > _preMainActionCount)
@@ -150,7 +150,7 @@ namespace Main
             {
                 //現状、攻撃時のアニメーションがないので何も効果はありません
                 // print("Attacked");
-                _animatorSetter.OnAttack();
+                _animatorSetter.OnAttacked();
                 _preAttackCount = AttackCount;
             }
             
@@ -205,7 +205,7 @@ namespace Main
             }
             
             // Play spawn animation
-            _animatorSetter.OnSpawn();
+            _animatorSetter.OnSpawned();
         }
 
         public void OnAttacked(int damage)

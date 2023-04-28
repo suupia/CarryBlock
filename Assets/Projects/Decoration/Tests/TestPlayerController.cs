@@ -1,4 +1,5 @@
 
+using System;
 using Decoration;
 using Fusion;
 using UnityEngine;
@@ -8,26 +9,25 @@ namespace Animations.Tests
 {
     public class TestPlayerController : NetworkBehaviour
     {
-        [SerializeField] GameObject planePrefab;
-        [Networked] NetworkButtons PreButtons { get; set; }
+        [SerializeField] private GameObject planePrefab;
+        [Networked] private NetworkButtons PreButtons { get; set; }
 
-        [Networked] 
-        ref NetworkDecorationPlayer DecorationPlayerRef => ref MakeRef<NetworkDecorationPlayer>();
+        [Networked] private ref NetworkDecorationPlayer DecorationPlayerRef => ref MakeRef<NetworkDecorationPlayer>();
 
         //以下はテスト用のプロパティ
-        [Networked] byte Hp { get; set; }
-        [Networked] float Horizontal { get; set; }
+        [Networked] private byte Hp { get; set; } = 2;
+        [Networked] private float Horizontal { get; set; }
 
-        GameObject _playerUnitObject;
-        DecorationPlayerContainer _decorationContainer;
+        private GameObject _playerUnitObject;
+        private DecorationPlayerContainer _decorationContainer;
 
         public override void Spawned()
         {
             Setup();
-            _decorationContainer.OnSpawn();
+            _decorationContainer.OnSpawned();
         }
 
-        void Setup()
+        private void Setup()
         {
             _playerUnitObject = Instantiate(planePrefab, transform);
             _decorationContainer = new DecorationPlayerContainer(
@@ -48,26 +48,29 @@ namespace Animations.Tests
                 //Assuming Attacked
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Debug1))
                 {
-                    _decorationContainer.OnAttack(ref DecorationPlayerRef);
+                    _decorationContainer.OnAttacked(ref DecorationPlayerRef);
                 }
                 
                 //Assuming Dead
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Debug2))
                 {
-                    Hp = 0;
+                    Hp--;
                 }
 
                 PreButtons = input.Buttons;
             }
         }
 
-        public override void Render()
+        private void Update()
         {
             //Assuming changed transform.forward
             var preRotation = _playerUnitObject.transform.rotation.eulerAngles;
             var rotation = Quaternion.Euler(0, preRotation.y + Horizontal, 0);
             _playerUnitObject.transform.rotation = rotation;
+        }
 
+        public override void Render()
+        {
             _decorationContainer.OnRender(ref DecorationPlayerRef, Hp);
         }
     }

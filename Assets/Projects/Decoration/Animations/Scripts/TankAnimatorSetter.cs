@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Animations
 {
-    public class TankAnimatorSetter: IDecorationPlayer
+    public class TankAnimatorSetter: IPlayerDecoration
     {
         private readonly GameObject _gameObject;
         private readonly Animator _animator;
@@ -16,17 +16,17 @@ namespace Animations
             _animator = gameObject.GetComponentInChildren<Animator>();
         }
 
-        public void OnMove()
+        public void OnMoved()
         {
             // _animator.SetFloat(Speed, direction.magnitude);
         }
 
-        public void OnDamage()
+        public void OnDamaged()
         {
             
         }
 
-        public void OnAttack(bool value = true)
+        public void OnAttacked(bool onStart = true)
         {
         }
 
@@ -40,7 +40,7 @@ namespace Animations
             
         }
 
-        public void OnSpawn()
+        public void OnSpawned()
         {
             
         }

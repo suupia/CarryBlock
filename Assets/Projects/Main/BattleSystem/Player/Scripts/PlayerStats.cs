@@ -18,9 +18,9 @@ namespace Main
     public class PlayerStats : IUnitStats
     {
         public readonly int MaxHp = 3;
-        IDecorationPlayer _animatorSetter;
+        IPlayerDecoration _animatorSetter;
         
-        public PlayerStats(ref NetworkPlayerStruct stats,  IDecorationPlayer animatorSetter)
+        public PlayerStats(ref NetworkPlayerStruct stats,  IPlayerDecoration animatorSetter)
         {
             stats.IsAlive = true;
             stats.Hp = MaxHp;

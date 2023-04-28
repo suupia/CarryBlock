@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Animations
 {
-    public class PlaneAnimatorSetter: IDecorationPlayer
+    public class PlaneAnimatorSetter: IPlayerDecoration
     {
         private enum BodyStates
         {
@@ -23,11 +23,11 @@ namespace Animations
         }
 
 
-        public void OnAttack(bool value = true)
+        public void OnAttacked(bool onStart = true)
         {
         }
 
-        public void OnDamage()
+        public void OnDamaged()
         {
         }
 
@@ -35,7 +35,7 @@ namespace Animations
         {
         }
 
-        public void OnMove()
+        public void OnMoved()
         {
             // Debug.Log(direction);
 
@@ -56,7 +56,7 @@ namespace Animations
 
         }
 
-        public void OnSpawn()
+        public void OnSpawned()
         {
         }
 
