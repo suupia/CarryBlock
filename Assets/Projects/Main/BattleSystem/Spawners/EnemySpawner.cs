@@ -15,13 +15,13 @@ namespace Main
         readonly NetworkRunner _runner;
         readonly CancellationTokenSource _cts = new();
         readonly CancellationToken _token;
-        readonly NetworkBehaviourSpawner<NetworkEnemyController> _enemySpawner;
+        readonly NetworkBehaviourPrefabSpawner<NetworkEnemyController> _enemyPrefabSpawner;
         const float spawnRadius = 50;
     
         public EnemySpawner(NetworkRunner runner)
         {
             _runner = runner;
-            _enemySpawner = new NetworkBehaviourSpawner<NetworkEnemyController>(runner,
+            _enemyPrefabSpawner = new NetworkBehaviourPrefabSpawner<NetworkEnemyController>(runner,
                 new PrefabLoaderFromResources<NetworkEnemyController>("Prefabs/Enemys"),"Enemy");
             _token = _cts.Token;
         }
@@ -46,7 +46,7 @@ namespace Main
             var x = UnityEngine.Random.Range(-spawnRadius, spawnRadius);
             var z = UnityEngine.Random.Range(-spawnRadius, spawnRadius);
             var position = new Vector3(x, 1, z);
-            var networkObject = _enemySpawner.SpawnPrefab(position, Quaternion.identity, PlayerRef.None);
+            var networkObject = _enemyPrefabSpawner.SpawnPrefab(position, Quaternion.identity, PlayerRef.None);
             var enemy = networkObject.GetComponent<NetworkEnemyController>();
             enemy.OnDespawn += () => enemyContainer.RemoveEnemy(enemy);
             enemyContainer.AddEnemy(enemy);

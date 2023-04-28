@@ -14,13 +14,13 @@ namespace Main
     public class NetworkPlayerSpawner
     {
         readonly NetworkRunner _runner;
-        readonly NetworkBehaviourSpawner<NetworkPlayerController> _playerSpawner;
+        readonly NetworkBehaviourPrefabSpawner<NetworkPlayerController> _playerPrefabSpawner;
         readonly string _prefabName;
 
-        public NetworkPlayerSpawner(NetworkRunner runner,  NetworkBehaviourSpawner<NetworkPlayerController> playerSpawner, string prefabName ="PlayerController")
+        public NetworkPlayerSpawner(NetworkRunner runner,  NetworkBehaviourPrefabSpawner<NetworkPlayerController> playerPrefabSpawner, string prefabName ="PlayerController")
         {
             _runner = runner;
-            _playerSpawner = playerSpawner;
+            _playerPrefabSpawner = playerPrefabSpawner;
             _prefabName = prefabName;
         }
 
@@ -37,7 +37,7 @@ namespace Main
         {
             Debug.Log("Spawning Player");
             var spawnPosition = new Vector3(0, 5, 0);
-            var playerController = _playerSpawner.SpawnPrefab(spawnPosition, Quaternion.identity, player);
+            var playerController = _playerPrefabSpawner.SpawnPrefab(spawnPosition, Quaternion.identity, player);
             _runner.SetPlayerObject(player, playerController.Object);
             playerContainer.AddPlayer(playerController);
         }

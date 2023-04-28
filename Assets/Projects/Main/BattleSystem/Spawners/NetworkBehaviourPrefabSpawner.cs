@@ -29,13 +29,13 @@ namespace Main
         }
     }
     
-    public class NetworkBehaviourSpawner<T> where T : NetworkBehaviour
+    public class NetworkBehaviourPrefabSpawner<T> where T : NetworkBehaviour
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<T> _prefabLoader;
         readonly string _prefabName;
 
-        public NetworkBehaviourSpawner(NetworkRunner runner, IPrefabLoader<T> prefabLoader, string prefabName)
+        public NetworkBehaviourPrefabSpawner(NetworkRunner runner, IPrefabLoader<T> prefabLoader, string prefabName)
         {
             _runner = runner;
             _prefabLoader = prefabLoader;
@@ -63,16 +63,16 @@ namespace Main
     }
     public class NetworkPlayerPrefabSpawner : IPrefabSpawner<NetworkPlayerController>
     {
-        NetworkBehaviourSpawner<NetworkPlayerController> _playerPrefabSpawner;
+        NetworkBehaviourPrefabSpawner<NetworkPlayerController> _playerPrefabPrefabSpawner;
         public NetworkPlayerPrefabSpawner(NetworkRunner runner)
         {
-            _playerPrefabSpawner =  new NetworkBehaviourSpawner<NetworkPlayerController>(runner,
+            _playerPrefabPrefabSpawner =  new NetworkBehaviourPrefabSpawner<NetworkPlayerController>(runner,
                 new PrefabLoaderFromResources<NetworkPlayerController>("Prefabs/Players"), "PlayerController");
         }  
         
         public NetworkPlayerController SpawnPrefab(Vector3 position, Quaternion rotation , PlayerRef playerRef)
         {
-            return _playerPrefabSpawner.SpawnPrefab(position, rotation, playerRef);
+            return _playerPrefabPrefabSpawner.SpawnPrefab(position, rotation, playerRef);
         }
     }
 

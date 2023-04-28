@@ -26,7 +26,7 @@ namespace Main
                 cancellationToken: new CancellationToken());
 
             // Domain
-            var playerSpawner = new NetworkBehaviourSpawner<NetworkPlayerController>(Runner,
+            var playerSpawner = new NetworkBehaviourPrefabSpawner<NetworkPlayerController>(Runner,
                 new PrefabLoaderFromResources<NetworkPlayerController>("Prefabs/Players"),"PlayerController");
             _networkPlayerSpawner = new NetworkPlayerSpawner(Runner,playerSpawner);
             _enemySpawner = new EnemySpawner(Runner);
