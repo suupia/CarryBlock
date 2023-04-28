@@ -15,14 +15,13 @@ namespace Main
         readonly NetworkRunner _runner;
         readonly CancellationTokenSource _cts = new();
         readonly CancellationToken _token;
-        readonly NetworkBehaviourPrefabSpawner<NetworkEnemyController> _enemyPrefabSpawner;
+        readonly IPrefabSpawner<NetworkEnemyController> _enemyPrefabSpawner;
         const float spawnRadius = 50;
     
         public EnemySpawner(NetworkRunner runner)
         {
             _runner = runner;
-            _enemyPrefabSpawner = new NetworkBehaviourPrefabSpawner<NetworkEnemyController>(runner,
-                new PrefabLoaderFromResources<NetworkEnemyController>("Prefabs/Enemys"),"Enemy");
+            _enemyPrefabSpawner = new NetworkEnemyPrefabSpawner(runner);
             _token = _cts.Token;
         }
     

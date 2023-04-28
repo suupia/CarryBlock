@@ -61,6 +61,8 @@ namespace Main
         // Client does not need to know prefab name
         T SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef);
     }
+    
+    // The following classes specifically determine which prefab to spawn
     public class NetworkPlayerPrefabSpawner : IPrefabSpawner<NetworkPlayerController>
     {
         NetworkBehaviourPrefabSpawner<NetworkPlayerController> _playerPrefabPrefabSpawner;
@@ -75,7 +77,21 @@ namespace Main
             return _playerPrefabPrefabSpawner.SpawnPrefab(position, rotation, playerRef);
         }
     }
-
+    
+    public class NetworkEnemyPrefabSpawner : IPrefabSpawner<NetworkEnemyController>
+    {
+        NetworkBehaviourPrefabSpawner<NetworkEnemyController> _playerPrefabPrefabSpawner;
+        public NetworkEnemyPrefabSpawner(NetworkRunner runner)
+        {
+            _playerPrefabPrefabSpawner =  new NetworkBehaviourPrefabSpawner<NetworkEnemyController>(runner,
+                new PrefabLoaderFromResources<NetworkEnemyController>("Prefabs/Enemys"), "Enemy");
+        }  
+        
+        public NetworkEnemyController SpawnPrefab(Vector3 position, Quaternion rotation , PlayerRef playerRef)
+        {
+            return _playerPrefabPrefabSpawner.SpawnPrefab(position, rotation, playerRef);
+        }
+    }
 
 }
 
