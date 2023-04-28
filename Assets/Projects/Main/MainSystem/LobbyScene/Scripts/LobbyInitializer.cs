@@ -26,7 +26,9 @@ public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
         await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
         
         // Domain
-        _playerSpawner = new PlayerSpawner(Runner);
+        var playerSpawner = new NetworkBehaviourSpawner<NetworkPlayerController>(Runner,
+            new PrefabLoaderFromResources<NetworkPlayerController>("Prefabs/Players"));
+        _playerSpawner = new PlayerSpawner(Runner, playerSpawner);
         _enemySpawner = new EnemySpawner(Runner);
         
         if (Runner.IsServer)

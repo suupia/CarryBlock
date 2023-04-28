@@ -15,16 +15,20 @@ namespace Main
         PlayerSpawner _playerSpawner;
         EnemySpawner _enemySpawner;
         [SerializeField] NetworkWaveTimer _networkWaveTimer;
+
         async void Start()
         {
             var runnerManager = FindObjectOfType<NetworkRunnerManager>();
             // Runner.StartGame() if it has not been run.
             await runnerManager.AttemptStartScene("GameSceneTestRoom");
             runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
-            await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
-            
+            await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner),
+                cancellationToken: new CancellationToken());
+
             // Domain
-            _playerSpawner = new PlayerSpawner(Runner);
+            var playerSpawner = new NetworkBehaviourSpawner<NetworkPlayerController>(Runner,
+                new PrefabLoaderFromResources<NetworkPlayerController>("Prefabs/Players"));
+            _playerSpawner = new PlayerSpawner(Runner,playerSpawner);
             _enemySpawner = new EnemySpawner(Runner);
             Runner.AddSimulationBehaviour(_networkWaveTimer);
             _networkWaveTimer.Init();
@@ -34,42 +38,40 @@ namespace Main
             {
                 _playerSpawner.RespawnAllPlayer(_networkPlayerContainer);
             }
-    
+
             if (Runner.IsServer)
             {
                 _networkEnemyContainer.MaxEnemyCount = 5;
-                var _ = _enemySpawner.StartSimpleSpawner(0, 5f,_networkEnemyContainer);
+                var _ = _enemySpawner.StartSimpleSpawner(0, 5f, _networkEnemyContainer);
             }
         }
-        
+
         // Return to LobbyScene
         public void SetActiveLobbyScene()
         {
             if (Runner.IsServer)
             {
-                SceneTransition.TransitioningScene(Runner,SceneName.LobbyScene);
+                SceneTransition.TransitioningScene(Runner, SceneName.LobbyScene);
             }
         }
-        
+
         void IPlayerJoined.PlayerJoined(PlayerRef player)
         {
             if (Runner.IsServer)
             {
-                _playerSpawner.SpawnPlayer(player,_networkPlayerContainer);
-        
+                _playerSpawner.SpawnPlayer(player, _networkPlayerContainer);
+
                 // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
             }
         }
-        
-        
+
+
         void IPlayerLeft.PlayerLeft(PlayerRef player)
         {
             if (Runner.IsServer)
             {
-                _playerSpawner.DespawnPlayer(player,_networkPlayerContainer);
+                _playerSpawner.DespawnPlayer(player, _networkPlayerContainer);
             }
         }
-     
     }
 }
-
