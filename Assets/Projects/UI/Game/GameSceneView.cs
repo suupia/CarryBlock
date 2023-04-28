@@ -92,7 +92,7 @@ namespace UI
             scoreText.text = $"Score : {Score}";
             waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
 
-            if (Runner.IsPlayer)
+            if (Runner.LocalPlayer)
             {
                 remainingTimeToReturnText.text = IsReturnToMainBase ? $"{RemainingTimeToReturn}s" : "";
             }
