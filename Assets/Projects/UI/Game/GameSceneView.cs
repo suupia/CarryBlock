@@ -19,6 +19,8 @@ namespace UI
 
         [Networked] int Score { get; set; }
         [Networked] NetworkString<_16> Result { get; set; }
+        
+        [Networked] float RemainingTimeToReturn { get; set; }
 
         GameContext _gameContext;
         ResourceAggregator _resourceAggregator;
@@ -74,6 +76,7 @@ namespace UI
         void FixedUpdateNetwork_Playing()
         {
             Score = _resourceAggregator.getAmount; // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
+            RemainingTimeToReturn = _returnToMainBaseGauge.RemainingTime;
         }
 
         void FixedUpdateNetwork_Result()
@@ -86,9 +89,14 @@ namespace UI
             Debug.Log($"_score : {Score}, runner : {Runner}");
             scoreText.text = $"Score : {Score}";
             waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
-            remainingTimeToReturnText.text = _returnToMainBaseGauge.IsReturnToMainBase
-                ? $"{_returnToMainBaseGauge.RemainingTime}s"
-                : "";
+
+            if (Object.HasInputAuthority)
+            {
+                remainingTimeToReturnText.text = _returnToMainBaseGauge.IsReturnToMainBase
+                    ? $"{RemainingTimeToReturn}s"
+                    : "";
+            }
+
         }
         
         void Render_Result()
