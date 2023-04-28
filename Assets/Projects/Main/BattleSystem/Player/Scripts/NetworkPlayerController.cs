@@ -71,13 +71,10 @@ namespace Main
                 followtarget.SetTarget(unitObjectParent.transform);
 
             }
+            // setup ReturnToMainBase
+            _returnToMainBaseGauge = FindObjectOfType<LifetimeScope>().Container.Resolve<ReturnToMainBaseGauge>();
+            Debug.Log($"LocalPlayer = {Runner.LocalPlayer}, _returnToMainBaseGauge = {_returnToMainBaseGauge}");
 
-            if (Object.HasStateAuthority)
-            {
-                // setup ReturnToMainBase
-                _returnToMainBaseGauge = FindObjectOfType<LifetimeScope>().Container.Resolve<ReturnToMainBaseGauge>();
-                Debug.Log($"LocalPlayer = {Runner.LocalPlayer}, _returnToMainBaseGauge = {_returnToMainBaseGauge}");
-            }
         }
 
         public override void FixedUpdateNetwork()

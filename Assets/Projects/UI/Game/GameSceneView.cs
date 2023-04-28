@@ -20,8 +20,6 @@ namespace UI
         [Networked] int Score { get; set; }
         [Networked] NetworkString<_16> Result { get; set; }
 
-        [Networked] NetworkBool IsReturnToMainBase { get; set; }
-        [Networked] float RemainingTimeToReturn { get; set; }
 
         GameContext _gameContext;
         ResourceAggregator _resourceAggregator;
@@ -77,8 +75,6 @@ namespace UI
         {
             // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
             Score = _resourceAggregator.getAmount;
-            IsReturnToMainBase = _returnToMainBaseGauge.IsReturnToMainBase;
-            RemainingTimeToReturn = _returnToMainBaseGauge.RemainingTime;
         }
 
         void FixedUpdateNetwork_Result()
@@ -88,14 +84,14 @@ namespace UI
 
         void Render_Playing()
         {
-            // Debug.Log($"_score : {Score}, runner : {Runner}");
+            // サーバー用のドメインの反映
             scoreText.text = $"Score : {Score}";
             waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
-
-            if (Runner.LocalPlayer)
-            {
-                remainingTimeToReturnText.text = IsReturnToMainBase ? $"{RemainingTimeToReturn}s" : "";
-            }
+            
+            // ローカル用のドメインの反映
+            remainingTimeToReturnText.text = _returnToMainBaseGauge.IsReturnToMainBase
+                ? $"{_returnToMainBaseGauge.RemainingTime}s"
+                : "";
         }
 
         void Render_Result()
