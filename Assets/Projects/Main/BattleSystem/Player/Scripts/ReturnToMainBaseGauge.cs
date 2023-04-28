@@ -14,8 +14,15 @@ namespace Main
         readonly int _fillTime = 3;
         float _startTime;
         bool _isReturnToMainBase;
+        Action _onReturnToMainBase = () => { };
+        
         CancellationTokenSource _cts;
         CancellationToken _token;
+        
+        public void SetOnReturnToMainBase(Action onReturnToMainBase)
+        {
+            _onReturnToMainBase = onReturnToMainBase;
+        }
 
         public async void FillGauge()
         {
@@ -43,6 +50,7 @@ namespace Main
         void ReturnToMainBase()
         {
             Debug.Log($"MainBaseに帰還します");
+            _onReturnToMainBase();
         }
     }
 }

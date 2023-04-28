@@ -73,7 +73,7 @@ namespace Main
             }
             // setup ReturnToMainBase
             _returnToMainBaseGauge = FindObjectOfType<LifetimeScope>().Container.Resolve<ReturnToMainBaseGauge>();
-            Debug.Log($"LocalPlayer = {Runner.LocalPlayer}, _returnToMainBaseGauge = {_returnToMainBaseGauge}");
+            _returnToMainBaseGauge.SetOnReturnToMainBase(SetToOrigin);
 
         }
 
@@ -194,10 +194,8 @@ namespace Main
             _unitType = (UnitType)(((int)_unitType + 1) % Enum.GetValues(typeof(UnitType)).Length);
             Destroy(_unitObj);
             InstantiateUnit(_unitType);
-
-            // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
-            _info.playerObj.transform.position = new Vector3(0, 5, 0);
-            _info.playerRd.velocity = Vector3.zero;
+            
+            SetToOrigin();
         }
 
         void InstantiateUnit(UnitType unitType)
@@ -255,15 +253,13 @@ namespace Main
             if (!HasStateAuthority) return;
             _unitStats.OnAttacked(ref PlayerStruct, damage);
         }
-
-        // public static void OnHpChanged(Changed<NetworkPlayerController> changed)
-        // {
-        //     var hp = changed.Behaviour.Hp;
-        //     if (hp <= 0)
-        //     {
-        //         changed.Behaviour._animatorSetter.OnDead();
-        //     }
-        // }
+        
+        void SetToOrigin()
+        {
+            // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
+            _info.playerObj.transform.position = new Vector3(0, 5, 0);
+            _info.playerRd.velocity = Vector3.zero;
+        }
     }
 
 }
