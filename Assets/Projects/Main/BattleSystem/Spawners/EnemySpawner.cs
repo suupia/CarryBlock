@@ -22,7 +22,7 @@ namespace Main
         {
             _runner = runner;
             _enemySpawner = new NetworkBehaviourSpawner<NetworkEnemyController>(runner,
-                new PrefabLoaderFromResources<NetworkEnemyController>("Prefabs/Enemys"));
+                new PrefabLoaderFromResources<NetworkEnemyController>("Prefabs/Enemys"),"Enemy");
             _token = _cts.Token;
         }
     
@@ -46,7 +46,7 @@ namespace Main
             var x = UnityEngine.Random.Range(-spawnRadius, spawnRadius);
             var z = UnityEngine.Random.Range(-spawnRadius, spawnRadius);
             var position = new Vector3(x, 1, z);
-            var networkObject = _enemySpawner.Spawn("Enemy", position, Quaternion.identity, PlayerRef.None);
+            var networkObject = _enemySpawner.SpawnPrefab(position, Quaternion.identity, PlayerRef.None);
             var enemy = networkObject.GetComponent<NetworkEnemyController>();
             enemy.OnDespawn += () => enemyContainer.RemoveEnemy(enemy);
             enemyContainer.AddEnemy(enemy);

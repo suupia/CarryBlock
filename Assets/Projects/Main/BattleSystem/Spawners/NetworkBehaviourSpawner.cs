@@ -28,21 +28,23 @@ namespace Main
             return Resources.Load<T>(_folderPath + "/" + prefabName);
         }
     }
-
+    
     public class NetworkBehaviourSpawner<T> where T : NetworkBehaviour
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<T> _prefabLoader;
+        readonly string _prefabName;
 
-        public NetworkBehaviourSpawner(NetworkRunner runner, IPrefabLoader<T> prefabLoader)
+        public NetworkBehaviourSpawner(NetworkRunner runner, IPrefabLoader<T> prefabLoader, string prefabName)
         {
             _runner = runner;
             _prefabLoader = prefabLoader;
+            _prefabName = prefabName;
         }
 
-        public T Spawn(string prefabName, Vector3 position, Quaternion rotation, PlayerRef playerRef)
+        public T SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef)
         {
-            var prefab = _prefabLoader.Load(prefabName);
+            var prefab = _prefabLoader.Load(_prefabName);
             var networkObject = _runner.Spawn(prefab, position, rotation, playerRef);
             var networkBehaviour = networkObject.GetComponent<T>();
             if (networkBehaviour == null)
@@ -51,6 +53,26 @@ namespace Main
             }
 
             return networkBehaviour;
+        }
+    }
+
+    public interface IPrefabSpawner<out T> where T : NetworkBehaviour
+    {
+        // Client does not need to know prefab name
+        T SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef);
+    }
+    public class NetworkPlayerPrefabSpawner : IPrefabSpawner<NetworkPlayerController>
+    {
+        NetworkBehaviourSpawner<NetworkPlayerController> _playerPrefabSpawner;
+        public NetworkPlayerPrefabSpawner(NetworkRunner runner)
+        {
+            _playerPrefabSpawner =  new NetworkBehaviourSpawner<NetworkPlayerController>(runner,
+                new PrefabLoaderFromResources<NetworkPlayerController>("Prefabs/Players"), "PlayerController");
+        }  
+        
+        public NetworkPlayerController SpawnPrefab(Vector3 position, Quaternion rotation , PlayerRef playerRef)
+        {
+            return _playerPrefabSpawner.SpawnPrefab(position, rotation, playerRef);
         }
     }
 

@@ -27,7 +27,7 @@ public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
         
         // Domain
         var playerSpawner = new NetworkBehaviourSpawner<NetworkPlayerController>(Runner,
-            new PrefabLoaderFromResources<NetworkPlayerController>("Prefabs/Players"));
+            new PrefabLoaderFromResources<NetworkPlayerController>("Prefabs/Players"),"PlayerController");
         _networkPlayerSpawner = new NetworkPlayerSpawner(Runner, playerSpawner);
         _enemySpawner = new EnemySpawner(Runner);
         
