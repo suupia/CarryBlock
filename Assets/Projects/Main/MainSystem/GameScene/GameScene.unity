@@ -1401,7 +1401,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 12.34s
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2055,6 +2055,7 @@ MonoBehaviour:
   scoreText: {fileID: 1937534886}
   waveTimerText: {fileID: 1240057767}
   resultText: {fileID: 1110138518}
+  remainingTimeToReturnText: {fileID: 1610550305}
 --- !u!1 &2591014611208062255
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,25 +9,35 @@ namespace Main
 {
     public class ReturnToMainBaseGauge
     {
-        public float RemainingTime => _fillTime - (Time.time - _startTime);
+        public bool IsReturnToMainBase => _isReturnToMainBase;
+        public float RemainingTime => Mathf.Max( 0,_fillTime - (Time.time - _startTime));
         readonly int _fillTime = 3;
         float _startTime;
-         CancellationTokenSource _cts;
-         CancellationToken _token;
+        bool _isReturnToMainBase;
+        CancellationTokenSource _cts;
+        CancellationToken _token;
 
-         public async void FillGauge()
-         {
-             _cts = new ();
-             _token = _cts.Token;
-             
-             _startTime = Time.time;
-             await UniTask.Delay(TimeSpan.FromSeconds(_fillTime),  cancellationToken:_token);
-             ReturnToMainBase();
-         }
+        public async void FillGauge()
+        {
+            _cts = new();
+            _token = _cts.Token;
+
+            _startTime = Time.time;
+            try {  
+                _isReturnToMainBase = true;
+                await UniTask.Delay(TimeSpan.FromSeconds(_fillTime), cancellationToken: _token);
+                ReturnToMainBase(); 
+            }
+            catch (OperationCanceledException e){  
+                Debug.Log("Canceled ReturnToMainBase");
+                _isReturnToMainBase = false;
+            }
+        }
 
         public void ResetGauge()
         {
             _cts.Cancel();
+            _isReturnToMainBase = false;
         }
 
         void ReturnToMainBase()

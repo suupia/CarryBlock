@@ -23,16 +23,22 @@ namespace UI
         GameContext _gameContext;
         ResourceAggregator _resourceAggregator;
         WaveTimer _waveTimer;
+        ReturnToMainBaseGauge _returnToMainBaseGauge;
 
         NetworkPlayerController _networkPlayerController;
 
 
         [Inject]
-        public void Construct(ResourceAggregator resourceAggregator, GameContext gameContext, WaveTimer waveTimer)
+        public void Construct(
+            ResourceAggregator resourceAggregator,
+            GameContext gameContext,
+            WaveTimer waveTimer,
+            ReturnToMainBaseGauge returnToMainBaseGauge)
         {
             _resourceAggregator = resourceAggregator;
             _gameContext = gameContext;
             _waveTimer = waveTimer;
+            _returnToMainBaseGauge = returnToMainBaseGauge;
         }
 
         public override void FixedUpdateNetwork()
@@ -80,14 +86,9 @@ namespace UI
             Debug.Log($"_score : {Score}, runner : {Runner}");
             scoreText.text = $"Score : {Score}";
             waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
-            // if ()
-            // {
-            //     remainingTimeToReturnText = $"";
-            // }
-            // else
-            // {
-            //     
-            // }
+            remainingTimeToReturnText.text = _returnToMainBaseGauge.IsReturnToMainBase
+                ? $"{_returnToMainBaseGauge.RemainingTime}s"
+                : "";
         }
         
         void ResultLocalView()
