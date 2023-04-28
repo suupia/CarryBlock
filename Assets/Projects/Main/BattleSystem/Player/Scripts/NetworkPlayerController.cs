@@ -111,6 +111,16 @@ namespace Main
                     }
                 }
 
+                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ReturnToMainBase))
+                {
+                    _returnToMainBaseGauge.FillGauge();
+                }
+
+                if (input.Buttons.WasReleased(PreButtons, PlayerOperation.ReturnToMainBase))
+                {
+                    _returnToMainBaseGauge.ResetGauge();
+                }
+
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
                 _unit.Move(direction);
@@ -126,16 +136,6 @@ namespace Main
                 if (Input.GetKeyDown(KeyCode.C))
                 {
                     RPC_ChangeNextUnit();
-                }
-
-                if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    _returnToMainBaseGauge.FillGauge();
-                }
-
-                if (Input.GetKeyUp(KeyCode.LeftShift))
-                {
-                    _returnToMainBaseGauge.ResetGauge();
                 }
             }
 

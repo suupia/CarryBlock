@@ -3,29 +3,31 @@ using Fusion;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using VContainer;
+using System.Threading;
 
 namespace Main
 {
     public class ReturnToMainBaseGauge
     {
-        public float CurrentValue => _time / _fillTime;
-        readonly float _fillTime = 3.0f;
-        float _time = 0f;
-        
-         public  void FillGauge()
-        {
-            _time += Time.deltaTime;
-            Debug.Log($"_timer = {_time}");
-            if (_time >= _fillTime)
-            {
-                ReturnToMainBase();
-                ResetGauge();
-            }
-        }
+        public float RemainingTime => _fillTime - (Time.time - _startTime);
+        readonly int _fillTime = 3;
+        float _startTime;
+         CancellationTokenSource _cts;
+         CancellationToken _token;
+
+         public async void FillGauge()
+         {
+             _cts = new ();
+             _token = _cts.Token;
+             
+             _startTime = Time.time;
+             await UniTask.Delay(TimeSpan.FromSeconds(_fillTime),  cancellationToken:_token);
+             ReturnToMainBase();
+         }
 
         public void ResetGauge()
         {
-            _time = 0f;
+            _cts.Cancel();
         }
 
         void ReturnToMainBase()
