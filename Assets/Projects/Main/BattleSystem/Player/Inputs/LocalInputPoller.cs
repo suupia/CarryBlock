@@ -12,6 +12,9 @@ using UnityEngine;
      MainAction = 0,
      Ready,
      ChangeUnit,
+     Debug1,
+     Debug2,
+     Debug3,
  }
 
 
@@ -27,7 +30,9 @@ public class LocalInputPoller : INetworkRunnerCallbacks
         localInput.Buttons.Set(PlayerOperation.MainAction, Input.GetKey(KeyCode.Space));
         localInput.Buttons.Set(PlayerOperation.Ready, Input.GetKey(KeyCode.R));
         localInput.Buttons.Set(PlayerOperation.ChangeUnit, Input.GetKey(KeyCode.C));
-        
+        localInput.Buttons.Set(PlayerOperation.Debug1, Input.GetKey(KeyCode.F1));
+        localInput.Buttons.Set(PlayerOperation.Debug2, Input.GetKey(KeyCode.F2));
+        localInput.Buttons.Set(PlayerOperation.Debug3, Input.GetKey(KeyCode.F3));
         input.Set(localInput);
 
         // Reset the input struct to start with a clean slate

@@ -3,17 +3,18 @@ using System;
 using System.Linq;
 using UnityEngine;
 using Animations;
+using Decoration;
 
 namespace Main
 {
     public class NetworkPlayerStructDetector : NetworkBehaviour
     {
-       　readonly IAnimatorPlayerUnit _animatorSetter;
+       　readonly IDecorationPlayer _animatorSetter;
         [Networked] int MainActionCount { get; set; }
         [Networked] int AttackCount { get; set; }
         [Networked] int PreHp { get; set; }
 
-        public NetworkPlayerStructDetector(IAnimatorPlayerUnit animatorSetter)
+        public NetworkPlayerStructDetector(IDecorationPlayer animatorSetter)
         {
             _animatorSetter = animatorSetter;
         }

@@ -1,9 +1,8 @@
 using Fusion;
 using UnityEngine;
 using System;
-using System.Linq;
-using UnityEngine.Serialization;
 using Animations;
+using Decoration;
 
 namespace Main
 {
@@ -21,7 +20,7 @@ namespace Main
 
         [SerializeField] GameObject[] playerUnitPrefabs;
         [SerializeField] UnitType _unitType;
-        IAnimatorPlayerUnit _animatorSetter;
+        IDecorationPlayer _animatorSetter;
 
         [SerializeField] PlayerInfo _info;
 
@@ -138,15 +137,7 @@ namespace Main
 
         public override void Render()
         {
-            var deltaAngle = Vector3.SignedAngle(preDirection, _info.playerObj.transform.forward, Vector3.up);
-            preDirection = _info.playerObj.transform.forward;
-            var vector = deltaAngle switch
-            {
-                < 0 => new Vector3(-1, 0, 0),
-                > 0 => new Vector3(1, 0, 0),
-                _ => Vector3.zero
-            };
-            _animatorSetter.OnMove(vector);
+            _animatorSetter.OnMove();
             // Debug.Log("_info.playerObj.transform.forward = " + _info.playerObj.transform.forward);
             
             if (MainActionCount > _preMainActionCount)
@@ -190,37 +181,25 @@ namespace Main
                 case UnitType.Tank:
                     _unit = new Tank(_info);
                     _shooter = new UnitShooter(_info);
-                    _animatorSetter = new TankAnimatorSetter(new TankAnimatorSetterInfo()
-                    {
-                        Animator = _unitObj.GetComponentInChildren<Animator>(),
-                    });
+                    _animatorSetter = new TankAnimatorSetter(_unitObj);
                     _unitStats = new PlayerStats(ref PlayerStruct, _animatorSetter);
                     break;
                 case UnitType.CollectResourcePlane:
                     _unit = new CollectResourcePlane(_info);
                     _shooter = new UnitShooter(_info);
-                    _animatorSetter = new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
-                    {
-                        Animator = _unitObj.GetComponentInChildren<Animator>(),
-                    });
+                    _animatorSetter = new PlaneAnimatorSetter(_unitObj);
                     _unitStats = new PlayerStats(ref PlayerStruct,_animatorSetter);
                     break;
                 case UnitType.EstablishSubBasePlane:
                     _unit = new EstablishSubBasePlane(_info);
                     _shooter = new UnitShooter(_info);
-                    _animatorSetter = new PlaneAnimatorSetter(new PlaneAnimatorSetterInfo()
-                    {
-                        Animator = _unitObj.GetComponentInChildren<Animator>(),
-                    });
+                    _animatorSetter = new PlaneAnimatorSetter(_unitObj);
                     _unitStats = new PlayerStats(ref PlayerStruct,_animatorSetter);
                     break;
                 case UnitType.NoneAttackTank:
                     _unit = new Tank(_info);
                     _shooter = new NoneAttack();
-                    _animatorSetter = new TankAnimatorSetter(new TankAnimatorSetterInfo()
-                    {
-                        Animator = _unitObj.GetComponentInChildren<Animator>(),
-                    });
+                    _animatorSetter = new TankAnimatorSetter(_unitObj);
                     _unitStats = new PlayerStats(ref PlayerStruct,_animatorSetter);
                     break;
             }

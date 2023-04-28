@@ -1,16 +1,15 @@
 {
-    "name": "Animations",
+    "name": "Effect",
     "rootNamespace": "",
     "references": [
-        "GUID:476e5a37a6f1144719c702a3016d4704",
-        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+        "GUID:476e5a37a6f1144719c702a3016d4704"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
+    "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false

@@ -1,6 +1,7 @@
 using Fusion;
 using UnityEngine;
 using Animations;
+using Decoration;
 
 namespace Main
 {
@@ -17,9 +18,9 @@ namespace Main
     public class PlayerStats : IUnitStats
     {
         public readonly int MaxHp = 3;
-        IAnimatorPlayerUnit _animatorSetter;
+        IDecorationPlayer _animatorSetter;
         
-        public PlayerStats(ref NetworkPlayerStruct stats,  IAnimatorPlayerUnit animatorSetter)
+        public PlayerStats(ref NetworkPlayerStruct stats,  IDecorationPlayer animatorSetter)
         {
             stats.IsAlive = true;
             stats.Hp = MaxHp;
