@@ -72,7 +72,7 @@ namespace Main
 
                 // setup ReturnToMainBase
                 _returnToMainBaseGauge = FindObjectOfType<LifetimeScope>().Container.Resolve<ReturnToMainBaseGauge>();
-                _returnToMainBaseGauge.SetOnReturnToMainBase(SetToOrigin);
+                _returnToMainBaseGauge.SetOnReturnToMainBase(RPC_SetToOrigin);
             }
 
 
@@ -196,6 +196,12 @@ namespace Main
             Destroy(_unitObj);
             InstantiateUnit(_unitType);
             
+            SetToOrigin();
+        }
+        
+        [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
+        public void RPC_SetToOrigin()
+        {
             SetToOrigin();
         }
 
