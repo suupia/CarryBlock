@@ -12,7 +12,7 @@ namespace Main
     {
         NetworkPlayerContainer _networkPlayerContainer = new();
         NetworkEnemyContainer _networkEnemyContainer = new();
-        PlayerSpawner _playerSpawner;
+        NetworkPlayerSpawner _networkPlayerSpawner;
         EnemySpawner _enemySpawner;
         [SerializeField] NetworkWaveTimer _networkWaveTimer;
 
@@ -28,7 +28,7 @@ namespace Main
             // Domain
             var playerSpawner = new NetworkBehaviourSpawner<NetworkPlayerController>(Runner,
                 new PrefabLoaderFromResources<NetworkPlayerController>("Prefabs/Players"));
-            _playerSpawner = new PlayerSpawner(Runner,playerSpawner);
+            _networkPlayerSpawner = new NetworkPlayerSpawner(Runner,playerSpawner);
             _enemySpawner = new EnemySpawner(Runner);
             Runner.AddSimulationBehaviour(_networkWaveTimer);
             _networkWaveTimer.Init();
@@ -36,7 +36,7 @@ namespace Main
 
             if (Runner.IsServer)
             {
-                _playerSpawner.RespawnAllPlayer(_networkPlayerContainer);
+                _networkPlayerSpawner.RespawnAllPlayer(_networkPlayerContainer);
             }
 
             if (Runner.IsServer)
@@ -59,7 +59,7 @@ namespace Main
         {
             if (Runner.IsServer)
             {
-                _playerSpawner.SpawnPlayer(player, _networkPlayerContainer);
+                _networkPlayerSpawner.SpawnPlayer(player, _networkPlayerContainer);
 
                 // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
             }
@@ -70,7 +70,7 @@ namespace Main
         {
             if (Runner.IsServer)
             {
-                _playerSpawner.DespawnPlayer(player, _networkPlayerContainer);
+                _networkPlayerSpawner.DespawnPlayer(player, _networkPlayerContainer);
             }
         }
     }

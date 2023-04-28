@@ -10,13 +10,13 @@ using Object = UnityEngine.Object;
 
 namespace Main
 {
-    public class PlayerSpawner
+    public class NetworkPlayerSpawner
     {
         readonly NetworkRunner _runner;
         readonly NetworkBehaviourSpawner<NetworkPlayerController> _playerSpawner;
         readonly string _prefabName;
 
-        public PlayerSpawner(NetworkRunner runner,  NetworkBehaviourSpawner<NetworkPlayerController> playerSpawner, string prefabName ="PlayerController")
+        public NetworkPlayerSpawner(NetworkRunner runner,  NetworkBehaviourSpawner<NetworkPlayerController> playerSpawner, string prefabName ="PlayerController")
         {
             _runner = runner;
             _playerSpawner = playerSpawner;
