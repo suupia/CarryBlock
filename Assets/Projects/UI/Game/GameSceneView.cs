@@ -47,10 +47,10 @@ namespace UI
             switch (_gameContext.gameState)
             {
                 case GameContext.GameState.Playing:
-                    PlayingNetworkView();
+                    FixedUpdateNetwork_Playing();
                     break;
                 case GameContext.GameState.Result:
-                    ResultNetworkView();
+                    FixedUpdateNetwork_Result();
                     break;
             }
         }
@@ -61,27 +61,27 @@ namespace UI
             switch (_gameContext.gameState)
             {
                 case GameContext.GameState.Playing:
-                    PlayingLocalView();
+                    Render_Playing();
                     break;
                 case GameContext.GameState.Result:
-                    ResultLocalView();
+                    Render_Result();
                     break;
             }
             
         }
 
 
-        void PlayingNetworkView()
+        void FixedUpdateNetwork_Playing()
         {
             Score = _resourceAggregator.getAmount; // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
         }
 
-        void ResultNetworkView()
+        void FixedUpdateNetwork_Result()
         {
             Result = _resourceAggregator.IsSuccess() ? "Success" : "Failure";
         }
         
-        void PlayingLocalView()
+        void Render_Playing()
         {
             Debug.Log($"_score : {Score}, runner : {Runner}");
             scoreText.text = $"Score : {Score}";
@@ -91,7 +91,7 @@ namespace UI
                 : "";
         }
         
-        void ResultLocalView()
+        void Render_Result()
         {
             resultText.text = $"Result : {Result}";
         }
