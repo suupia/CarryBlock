@@ -14,14 +14,12 @@ namespace Main
     public class NetworkPlayerSpawner
     {
         readonly NetworkRunner _runner;
-        readonly NetworkBehaviourPrefabSpawner<NetworkPlayerController> _playerPrefabSpawner;
-        readonly string _prefabName;
+        readonly NetworkPlayerPrefabSpawner _playerPrefabSpawner;
 
-        public NetworkPlayerSpawner(NetworkRunner runner,  NetworkBehaviourPrefabSpawner<NetworkPlayerController> playerPrefabSpawner, string prefabName ="PlayerController")
+        public NetworkPlayerSpawner(NetworkRunner runner, NetworkPlayerPrefabSpawner playerPrefabSpawner)
         {
             _runner = runner;
             _playerPrefabSpawner = playerPrefabSpawner;
-            _prefabName = prefabName;
         }
 
         public void RespawnAllPlayer(NetworkPlayerContainer playerContainer)
