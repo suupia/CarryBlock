@@ -69,9 +69,14 @@ namespace Main
                 // spawn camera
                 var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
                 followtarget.SetTarget(unitObjectParent.transform);
-                
+
+            }
+
+            if (Object.HasStateAuthority)
+            {
                 // setup ReturnToMainBase
                 _returnToMainBaseGauge = FindObjectOfType<LifetimeScope>().Container.Resolve<ReturnToMainBaseGauge>();
+                Debug.Log($"LocalPlayer = {Runner.LocalPlayer}, _returnToMainBaseGauge = {_returnToMainBaseGauge}");
             }
         }
 
