@@ -19,18 +19,18 @@ namespace Animations.Tests
         [Networked] private float Horizontal { get; set; }
 
         private GameObject _playerUnitObject;
-        private DecorationPlayerContainer _decorationContainer;
+        private PlayerDecorationContainer _playerDecorationContainer;
 
         public override void Spawned()
         {
             Setup();
-            _decorationContainer.OnSpawned();
+            _playerDecorationContainer.OnSpawned();
         }
 
         private void Setup()
         {
             _playerUnitObject = Instantiate(planePrefab, transform);
-            _decorationContainer = new DecorationPlayerContainer(
+            _playerDecorationContainer = new PlayerDecorationContainer(
                 new PlaneAnimatorSetter(_playerUnitObject));
         }
         
@@ -40,7 +40,7 @@ namespace Animations.Tests
             {
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
-                    _decorationContainer.OnMainAction(ref DecorationPlayerRef);
+                    _playerDecorationContainer.OnMainAction(ref DecorationPlayerRef);
                 }
 
                 Horizontal = input.Horizontal;
@@ -48,7 +48,7 @@ namespace Animations.Tests
                 //Assuming Attacked
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Debug1))
                 {
-                    _decorationContainer.OnAttacked(ref DecorationPlayerRef);
+                    _playerDecorationContainer.OnAttacked(ref DecorationPlayerRef);
                 }
                 
                 //Assuming Dead
@@ -76,7 +76,7 @@ namespace Animations.Tests
             //Decoration側の理想としては、OnRenderedの中でOnMovedが呼ばれる
             //そのため、動き系の処理と同じループ頻度でOnRenderedは呼んでほしい
             //ただ、トルク系は動きが残るので大丈夫かも。要検討
-            _decorationContainer.OnRendered(ref DecorationPlayerRef, Hp);
+            _playerDecorationContainer.OnRendered(ref DecorationPlayerRef, Hp);
         }
     }
 }

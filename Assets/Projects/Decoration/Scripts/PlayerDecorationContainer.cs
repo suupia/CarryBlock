@@ -6,11 +6,6 @@ using UnityEngine;
 
 namespace Decoration
 {
-    public struct NetworkDecorationEnemy : INetworkStruct
-    {
-        public int AttackCount;
-        public int PreHp;
-    }
 
     public struct NetworkDecorationPlayer : INetworkStruct
     {
@@ -18,21 +13,6 @@ namespace Decoration
         public int AttackCount;
     }
 
-
-    public class DecorationEnemyContainer
-    {
-        private List<IEnemyDecoration> _decorations;
-        private int _preAttackCount = 0;
-
-        public DecorationEnemyContainer(params IEnemyDecoration[] decorations)
-        {
-            _decorations = decorations.ToList();
-        }
-
-        public void OnSpawn(NetworkDecorationEnemy networkStruct)
-        {
-        }
-    }
 
     /// <summary>
     /// デコレーション系のすべてを管理する
@@ -43,18 +23,18 @@ namespace Decoration
     /// これらはIDecoration系のインタフェースを継承していないといけない
     /// 
     /// 呼び出し側の制限は
-    ///     正しくインタフェースの関数を呼ぶ
-    ///     NetworkedプロパティとしてNetworkDecoration系の変数を持つ
+    ///     正しく関数を呼ぶ（TestPlayerControllerを参考にしてください）
+    ///     Networkedプロパティとして対応したNetworkDecoration系の変数を持つ
     /// </summary>
-    public class DecorationPlayerContainer
+    public class PlayerDecorationContainer
     {
         private readonly List<IPlayerDecoration> _decorations;
 
-        private int _preAttackCount = 0;
-        private int _preMainActionCount = 0;
-        private int _preHp = 0;
+        private int _preAttackCount;
+        private int _preMainActionCount;
+        private int _preHp;
 
-        public DecorationPlayerContainer(params IPlayerDecoration[] decorations)
+        public PlayerDecorationContainer(params IPlayerDecoration[] decorations)
         {
             _decorations = decorations.ToList();
         }
