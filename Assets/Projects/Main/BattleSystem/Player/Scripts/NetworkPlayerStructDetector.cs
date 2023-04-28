@@ -2,7 +2,6 @@ using Fusion;
 using System;
 using System.Linq;
 using UnityEngine;
-using Animations;
 using Decoration;
 
 namespace Main
@@ -29,23 +28,24 @@ namespace Main
             AttackCount++;
         }
 
-        public void Update(in NetworkPlayerStruct player) // NetworkPlayerController.Render()ではこれだけを呼ぶようにする
-        {
-            if (player.IsAlive)
-            {
-                if (player.Hp < PreHp)
-                {
-                    Debug.Log("OnDamaged!");
-                    // _animatorSetter.OnDamaged();
-                }
-                if (player.Hp == 0)
-                {
-                    Debug.Log("OnDead!");
-                    _animatorSetter.OnDead();
-                }
-                PreHp = player.Hp;
-            }
-        }
+        //警告が出るのでコメントアウトさせていただきます。
+        // public void Update(in NetworkPlayerStruct player) // NetworkPlayerController.Render()ではこれだけを呼ぶようにする
+        // {
+        //     if (player.IsAlive)
+        //     {
+        //         if (player.Hp < PreHp)
+        //         {
+        //             Debug.Log("OnDamaged!");
+        //             // _animatorSetter.OnDamaged();
+        //         }
+        //         if (player.Hp == 0)
+        //         {
+        //             Debug.Log("OnDead!");
+        //             _animatorSetter.OnDead();
+        //         }
+        //         PreHp = player.Hp;
+        //     }
+        // }
     }
 
 }

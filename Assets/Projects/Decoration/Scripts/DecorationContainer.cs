@@ -80,7 +80,7 @@ namespace Decoration
         /// </summary>
         /// <param name="networkDecoration"></param>
         /// <param name="hp"></param>
-        public void OnRender(ref NetworkDecorationPlayer networkDecoration, int hp)
+        public void OnRendered(ref NetworkDecorationPlayer networkDecoration, int hp)
         {
             _decorations.ForEach(d => d.OnMoved());
 

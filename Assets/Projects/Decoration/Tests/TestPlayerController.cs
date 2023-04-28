@@ -64,14 +64,19 @@ namespace Animations.Tests
         private void Update()
         {
             //Assuming changed transform.forward
+            //現状のテストだとNetworkTransform系がついていないので完全に同期はしない可能性がある。あくまでテスト用のコード
             var preRotation = _playerUnitObject.transform.rotation.eulerAngles;
-            var rotation = Quaternion.Euler(0, preRotation.y + Horizontal, 0);
+            var deltaY = Horizontal * Time.deltaTime * 100;
+            var rotation = Quaternion.Euler(0, preRotation.y + deltaY, 0);
             _playerUnitObject.transform.rotation = rotation;
         }
 
         public override void Render()
         {
-            _decorationContainer.OnRender(ref DecorationPlayerRef, Hp);
+            //Decoration側の理想としては、OnRenderedの中でOnMovedが呼ばれる
+            //そのため、動き系の処理と同じループ頻度でOnRenderedは呼んでほしい
+            //ただ、トルク系は動きが残るので大丈夫かも。要検討
+            _decorationContainer.OnRendered(ref DecorationPlayerRef, Hp);
         }
     }
 }
