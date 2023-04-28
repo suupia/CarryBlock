@@ -112,16 +112,7 @@ namespace Main
                         }
                     }
                 }
-
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ReturnToMainBase))
-                {
-                    _returnToMainBaseGauge.FillGauge();
-                }
-
-                if (input.Buttons.WasReleased(PreButtons, PlayerOperation.ReturnToMainBase))
-                {
-                    _returnToMainBaseGauge.ResetGauge();
-                }
+                
 
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
@@ -129,10 +120,13 @@ namespace Main
 
                 PreButtons = input.Buttons;
             }
+            
+            
         }
 
         void Update()
         {
+        
             if (Object. HasInputAuthority)
             {
                 if (Input.GetKeyDown(KeyCode.C))
@@ -143,11 +137,22 @@ namespace Main
 
             if (Object.HasInputAuthority)
             {
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    _returnToMainBaseGauge.FillGauge();
+                }
+
+                if (Input.GetKeyUp(KeyCode.LeftShift))
+                {
+                    _returnToMainBaseGauge.ResetGauge();
+                }
+                
                 // ToDo : デバッグ用なので後で消す
                 if (Input.GetKeyDown(KeyCode.H))
                 {
                     Debug.Log($"hp = {PlayerStruct.Hp}");
                 }
+
             }
 
         }
