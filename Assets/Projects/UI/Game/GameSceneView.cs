@@ -19,7 +19,8 @@ namespace UI
 
         [Networked] int Score { get; set; }
         [Networked] NetworkString<_16> Result { get; set; }
-        
+
+        [Networked] NetworkBool IsReturnToMainBase { get; set; }
         [Networked] float RemainingTimeToReturn { get; set; }
 
         GameContext _gameContext;
@@ -69,13 +70,14 @@ namespace UI
                     Render_Result();
                     break;
             }
-            
         }
 
 
         void FixedUpdateNetwork_Playing()
         {
-            Score = _resourceAggregator.getAmount; // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
+            // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
+            Score = _resourceAggregator.getAmount;
+            IsReturnToMainBase = _returnToMainBaseGauge.IsReturnToMainBase;
             RemainingTimeToReturn = _returnToMainBaseGauge.RemainingTime;
         }
 
@@ -83,22 +85,19 @@ namespace UI
         {
             Result = _resourceAggregator.IsSuccess() ? "Success" : "Failure";
         }
-        
+
         void Render_Playing()
         {
-            Debug.Log($"_score : {Score}, runner : {Runner}");
+            // Debug.Log($"_score : {Score}, runner : {Runner}");
             scoreText.text = $"Score : {Score}";
             waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
 
-            if (Object.HasInputAuthority)
+            if (Runner.IsPlayer)
             {
-                remainingTimeToReturnText.text = _returnToMainBaseGauge.IsReturnToMainBase
-                    ? $"{RemainingTimeToReturn}s"
-                    : "";
+                remainingTimeToReturnText.text = IsReturnToMainBase ? $"{RemainingTimeToReturn}s" : "";
             }
-
         }
-        
+
         void Render_Result()
         {
             resultText.text = $"Result : {Result}";
