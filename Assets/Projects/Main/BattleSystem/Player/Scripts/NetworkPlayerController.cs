@@ -70,10 +70,11 @@ namespace Main
                 var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
                 followtarget.SetTarget(unitObjectParent.transform);
 
+                // setup ReturnToMainBase
+                _returnToMainBaseGauge = FindObjectOfType<LifetimeScope>().Container.Resolve<ReturnToMainBaseGauge>();
+                _returnToMainBaseGauge.SetOnReturnToMainBase(SetToOrigin);
             }
-            // setup ReturnToMainBase
-            _returnToMainBaseGauge = FindObjectOfType<LifetimeScope>().Container.Resolve<ReturnToMainBaseGauge>();
-            _returnToMainBaseGauge.SetOnReturnToMainBase(SetToOrigin);
+
 
         }
 
