@@ -6,14 +6,6 @@ using UnityEngine;
 
 namespace Decoration
 {
-
-    public struct NetworkDecorationPlayer : INetworkStruct
-    {
-        public int MainActionCount;
-        public int AttackCount;
-    }
-
-
     /// <summary>
     /// デコレーション系のすべてを管理する
     /// ローカル変数の管理をすべてこっちに持ってこれる
@@ -28,6 +20,12 @@ namespace Decoration
     /// </summary>
     public class PlayerDecorationContainer
     {
+        public struct Data : INetworkStruct
+        {
+            public int MainActionCount;
+            public int AttackCount;
+        }
+
         private readonly List<IPlayerDecoration> _decorations;
 
         private int _preAttackCount;
@@ -44,38 +42,38 @@ namespace Decoration
             _decorations.ForEach(d => d.OnSpawned());
         }
 
-        public void OnMainAction(ref NetworkDecorationPlayer networkDecoration)
+        public void OnMainAction(ref Data data)
         {
-            networkDecoration.MainActionCount++;
+            data.MainActionCount++;
         }
 
 
-        public void OnAttacked(ref NetworkDecorationPlayer networkDecoration)
+        public void OnAttacked(ref Data data)
         {
-            networkDecoration.AttackCount++;
+            data.AttackCount++;
         }
 
         /// <summary>
         /// AttackとMainAttackとMoveとDamageとDeadの管理
         /// </summary>
-        /// <param name="networkDecoration"></param>
+        /// <param name="data"></param>
         /// <param name="hp"></param>
-        public void OnRendered(ref NetworkDecorationPlayer networkDecoration, int hp)
+        public void OnRendered(ref Data data, int hp)
         {
             _decorations.ForEach(d => d.OnMoved());
 
             if (hp != _preHp) OnHpChanged(hp);
 
-            if (networkDecoration.MainActionCount > _preMainActionCount)
+            if (data.MainActionCount > _preMainActionCount)
             {
                 _decorations.ForEach(d => d.OnMainAction());
-                _preMainActionCount = networkDecoration.MainActionCount;
+                _preMainActionCount = data.MainActionCount;
             }
 
-            if (networkDecoration.AttackCount > _preAttackCount)
+            if (data.AttackCount > _preAttackCount)
             {
                 _decorations.ForEach(d => d.OnAttacked());
-                _preAttackCount = networkDecoration.AttackCount;
+                _preAttackCount = data.AttackCount;
             }
         }
 
