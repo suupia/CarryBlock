@@ -10,7 +10,7 @@ namespace Main
 {
     public class GameInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
-        NetworkPlayerContainer _networkPlayerContainer = new();
+        NetworkPlayerContainer _abstractNetworkPlayerContainer = new();
         NetworkEnemyContainer _networkEnemyContainer = new();
         NetworkPlayerSpawner _networkPlayerSpawner;
         EnemySpawner _enemySpawner;
@@ -35,7 +35,7 @@ namespace Main
 
             if (Runner.IsServer)
             {
-                _networkPlayerSpawner.RespawnAllPlayer(_networkPlayerContainer);
+                _networkPlayerSpawner.RespawnAllPlayer(_abstractNetworkPlayerContainer);
             }
 
             if (Runner.IsServer)
@@ -58,7 +58,7 @@ namespace Main
         {
             if (Runner.IsServer)
             {
-                _networkPlayerSpawner.SpawnPlayer(player, _networkPlayerContainer);
+                _networkPlayerSpawner.SpawnPlayer(player, _abstractNetworkPlayerContainer);
 
                 // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
             }
@@ -69,7 +69,7 @@ namespace Main
         {
             if (Runner.IsServer)
             {
-                _networkPlayerSpawner.DespawnPlayer(player, _networkPlayerContainer);
+                _networkPlayerSpawner.DespawnPlayer(player, _abstractNetworkPlayerContainer);
             }
         }
     }

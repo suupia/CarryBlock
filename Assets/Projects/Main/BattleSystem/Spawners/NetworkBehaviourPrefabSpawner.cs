@@ -78,6 +78,21 @@ namespace Main
         }
     }
     
+    public class LobbyNetworkPlayerPrefabSpawner : IPrefabSpawner<LobbyNetworkPlayerController>
+    {
+        NetworkBehaviourPrefabSpawner<LobbyNetworkPlayerController> _playerPrefabPrefabSpawner;
+        public LobbyNetworkPlayerPrefabSpawner(NetworkRunner runner)
+        {
+            _playerPrefabPrefabSpawner =  new NetworkBehaviourPrefabSpawner<LobbyNetworkPlayerController>(runner,
+                new PrefabLoaderFromResources<LobbyNetworkPlayerController>("Prefabs/Players"), "LobbyPlayerController");
+        }  
+        
+        public LobbyNetworkPlayerController SpawnPrefab(Vector3 position, Quaternion rotation , PlayerRef playerRef)
+        {
+            return _playerPrefabPrefabSpawner.SpawnPrefab(position, rotation, playerRef);
+        }
+    }
+    
     public class NetworkEnemyPrefabSpawner : IPrefabSpawner<NetworkEnemyController>
     {
         NetworkBehaviourPrefabSpawner<NetworkEnemyController> _playerPrefabPrefabSpawner;

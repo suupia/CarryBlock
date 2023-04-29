@@ -12,9 +12,9 @@ namespace Main
     [DisallowMultipleComponent]
 public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
 {
-    NetworkPlayerContainer _networkPlayerContainer = new();
+    LobbyNetworkPlayerContainer _lobbyNetworkPlayerContainer = new();
     NetworkEnemyContainer _networkEnemyContainer = new();
-    NetworkPlayerSpawner _networkPlayerSpawner;
+    LobbyNetworkPlayerSpawner _lobbyNetworkPlayerSpawner;
     EnemySpawner _enemySpawner;
     
     async void  Start()
@@ -26,13 +26,13 @@ public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
         await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
         
         // Domain
-        var playerPrefabSpawner = new NetworkPlayerPrefabSpawner(Runner);
-        _networkPlayerSpawner = new NetworkPlayerSpawner(Runner, playerPrefabSpawner);
+        var playerPrefabSpawner = new LobbyNetworkPlayerPrefabSpawner(Runner);
+        _lobbyNetworkPlayerSpawner = new LobbyNetworkPlayerSpawner(Runner, playerPrefabSpawner);
         _enemySpawner = new EnemySpawner(Runner);
         
         if (Runner.IsServer)
         {
-            _networkPlayerSpawner.RespawnAllPlayer(_networkPlayerContainer);
+            _lobbyNetworkPlayerSpawner.RespawnAllPlayer(_lobbyNetworkPlayerContainer);
         }
 
         if (Runner.IsServer)
@@ -47,7 +47,7 @@ public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
         if (Runner.IsServer)
         {
-            if (_networkPlayerContainer.IsAllReady)
+            if (_lobbyNetworkPlayerContainer.IsAllReady)
             {
                 _enemySpawner.CancelSpawning();
                 SceneTransition.TransitioningScene(Runner,SceneName.GameScene);
@@ -60,7 +60,7 @@ public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
         if (Runner.IsServer)
         {
-            _networkPlayerSpawner.SpawnPlayer(player,_networkPlayerContainer);
+            _lobbyNetworkPlayerSpawner.SpawnPlayer(player,_lobbyNetworkPlayerContainer);
     
             // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
         }
@@ -71,7 +71,7 @@ public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
         if (Runner.IsServer)
         {
-            _networkPlayerSpawner.DespawnPlayer(player,_networkPlayerContainer);
+            _lobbyNetworkPlayerSpawner.DespawnPlayer(player,_lobbyNetworkPlayerContainer);
         }
         
     }

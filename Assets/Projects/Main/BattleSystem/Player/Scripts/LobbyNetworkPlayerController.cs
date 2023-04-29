@@ -71,8 +71,8 @@ namespace Main
                 followtarget.SetTarget(unitObjectParent.transform);
 
                 // setup ReturnToMainBase
-                _returnToMainBaseGauge = FindObjectOfType<LifetimeScope>().Container.Resolve<ReturnToMainBaseGauge>();
-                _returnToMainBaseGauge.SetOnReturnToMainBase(RPC_SetToOrigin);
+                // _returnToMainBaseGauge = FindObjectOfType<LifetimeScope>().Container.Resolve<ReturnToMainBaseGauge>();
+                // _returnToMainBaseGauge.SetOnReturnToMainBase(RPC_SetToOrigin);
             }
 
 
@@ -136,25 +136,25 @@ namespace Main
                 }
             }
 
-            if (Object.HasInputAuthority)
-            {
-                if (Input.GetKeyDown(KeyCode.LeftShift))
-                {
-                    _returnToMainBaseGauge.FillGauge();
-                }
-
-                if (Input.GetKeyUp(KeyCode.LeftShift))
-                {
-                    _returnToMainBaseGauge.ResetGauge();
-                }
-                
-                // ToDo : デバッグ用なので後で消す
-                if (Input.GetKeyDown(KeyCode.H))
-                {
-                    Debug.Log($"hp = {PlayerStruct.Hp}");
-                }
-
-            }
+            // if (Object.HasInputAuthority)
+            // {
+            //     if (Input.GetKeyDown(KeyCode.LeftShift))
+            //     {
+            //         _returnToMainBaseGauge.FillGauge();
+            //     }
+            //
+            //     if (Input.GetKeyUp(KeyCode.LeftShift))
+            //     {
+            //         _returnToMainBaseGauge.ResetGauge();
+            //     }
+            //     
+            //     // ToDo : デバッグ用なので後で消す
+            //     if (Input.GetKeyDown(KeyCode.H))
+            //     {
+            //         Debug.Log($"hp = {PlayerStruct.Hp}");
+            //     }
+            //
+            // }
 
         }
 
