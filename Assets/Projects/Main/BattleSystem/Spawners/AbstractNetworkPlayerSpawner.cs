@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 
 namespace Main
 {
-    public abstract class AbstractNetworkPlayerSpawner<T> where T : NetworkBehaviour
+    public abstract class AbstractNetworkPlayerSpawner<T> where T : AbstractNetworkPlayerController
     {
         readonly NetworkRunner _runner;
         readonly IPrefabSpawner<T> _playerPrefabSpawner;
@@ -67,7 +67,7 @@ namespace Main
         }
     }
 
-    public abstract class AbstractNetworkPlayerContainer<T> where T : NetworkBehaviour
+    public abstract class AbstractNetworkPlayerContainer<T> where T : AbstractNetworkPlayerController
     {
         protected readonly List<T> playerControllers = new();
         public IEnumerable<T> PlayerControllers => playerControllers;
