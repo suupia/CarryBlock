@@ -109,6 +109,7 @@ namespace Main
 
                 Direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
+                _unit.Move(Direction);
 
                 PreButtons = input.Buttons;
             }
@@ -137,7 +138,6 @@ namespace Main
 
         public override void Render()
         {
-            _unit.Move(Direction);
             _animatorSetter.OnMoved();
             // Debug.Log("_info.playerObj.transform.forward = " + _info.playerObj.transform.forward);
             

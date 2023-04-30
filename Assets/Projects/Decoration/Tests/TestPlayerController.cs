@@ -16,7 +16,6 @@ namespace Animations.Tests
 
         //以下はテスト用のプロパティ
         [Networked] private byte Hp { get; set; } = 2;
-        [Networked] private float Horizontal { get; set; }
 
         private GameObject _playerUnitObject;
         private PlayerDecorationContainer _playerDecorationContainer;
@@ -43,8 +42,14 @@ namespace Animations.Tests
                     _playerDecorationContainer.OnMainAction(ref DecorationDataRef);
                 }
 
-                Horizontal = input.Horizontal;
-                
+                //Assuming changed transform.forward
+                //現状のテストだとNetworkTransform系がついていないので完全に同期はしない可能性がある。あくまでテスト用のコード
+                var preRotation = _playerUnitObject.transform.rotation.eulerAngles;
+                var deltaY = input.Horizontal * Time.deltaTime * 100;
+                var rotation = Quaternion.Euler(0, preRotation.y + deltaY, 0);
+                _playerUnitObject.transform.rotation = rotation;
+                _playerDecorationContainer.OnChangeDirection(ref DecorationDataRef, _playerUnitObject.transform.forward);
+
                 //Assuming Attacked
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Debug1))
                 {
@@ -68,12 +73,7 @@ namespace Animations.Tests
 
         public override void Render()
         {
-            //Assuming changed transform.forward
-            //現状のテストだとNetworkTransform系がついていないので完全に同期はしない可能性がある。あくまでテスト用のコード
-            var preRotation = _playerUnitObject.transform.rotation.eulerAngles;
-            var deltaY = Horizontal * Time.deltaTime * 100;
-            var rotation = Quaternion.Euler(0, preRotation.y + deltaY, 0);
-            _playerUnitObject.transform.rotation = rotation;
+
             
             //Decoration側の理想としては、OnRenderedの中でOnMovedが呼ばれる
             //そのため、動き系の処理と同じループ頻度でOnRenderedは呼んでほしい

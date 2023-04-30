@@ -32,7 +32,6 @@ namespace Decoration
         private int _preAttackCount;
         private int _preMainActionCount;
         private int _preHp;
-        private Vector3 _preForward;
 
         public PlayerDecorationContainer(params IPlayerDecoration[] decorations)
         {
@@ -67,12 +66,8 @@ namespace Decoration
         /// <param name="hp"></param>
         public void OnRendered(ref Data data, int hp)
         {
-            if (data.Forward != _preForward)
-            {
-                var forward = data.Forward;
-                _decorations.ForEach(d => d.OnChangeForward(forward));
-                _preForward = forward;
-            }
+            var forward = data.Forward;
+            _decorations.ForEach(d => d.OnChangeForward(forward));
             _decorations.ForEach(d => d.OnMoved());
 
             if (hp != _preHp) OnHpChanged(hp);
