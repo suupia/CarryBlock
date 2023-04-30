@@ -45,9 +45,8 @@ namespace Animations
             
         }
 
-        public void OnChangeForward(Vector3 forward)
+        public void OnChangeDirection(Vector3 direction)
         {
-            
         }
     }
 

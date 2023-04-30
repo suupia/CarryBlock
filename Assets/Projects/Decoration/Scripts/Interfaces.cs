@@ -4,7 +4,7 @@ namespace Decoration
 {
     public interface IForwardDecoration
     {
-        void OnChangeForward(Vector3 forward);
+        void OnChangeDirection(Vector3 direction);
 
     }
     public interface IMoverDecoration

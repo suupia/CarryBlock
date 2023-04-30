@@ -44,11 +44,9 @@ namespace Animations.Tests
 
                 //Assuming changed transform.forward
                 //現状のテストだとNetworkTransform系がついていないので完全に同期はしない可能性がある。あくまでテスト用のコード
-                var preRotation = _playerUnitObject.transform.rotation.eulerAngles;
-                var deltaY = input.Horizontal * Time.deltaTime * 100;
-                var rotation = Quaternion.Euler(0, preRotation.y + deltaY, 0);
-                _playerUnitObject.transform.rotation = rotation;
-                _playerDecorationContainer.OnChangeDirection(ref DecorationDataRef, _playerUnitObject.transform.forward);
+                var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
+
+                _playerDecorationContainer.OnChangeDirection(ref DecorationDataRef, direction);
 
                 //Assuming Attacked
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Debug1))

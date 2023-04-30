@@ -49,11 +49,10 @@ namespace Animations
         {
         }
 
-        public void OnChangeForward(Vector3 forward)
+        public void OnChangeDirection(Vector3 direction)
         {
             // Debug.Log(direction);
-            var deltaAngle = Vector3.SignedAngle(_preForward, forward, Vector3.up);
-
+            var deltaAngle = direction.x;
             var bodyState = deltaAngle switch
             {
                 < 0 => BodyStates.Left,
@@ -61,8 +60,9 @@ namespace Animations
                 _ => BodyStates.Normal
             };
             
+            Debug.Log(deltaAngle);
+            
             _animator.SetInteger(BodyState, (int)bodyState);
-            _preForward = forward;
         }
     }
 }

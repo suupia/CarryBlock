@@ -24,7 +24,7 @@ namespace Decoration
         {
             public int MainActionCount;
             public int AttackCount;
-            [Networked] public Vector3 Forward { get; set; }
+            [Networked] public Vector3 Direction { get; set; }
         }
 
         private readonly List<IPlayerDecoration> _decorations;
@@ -48,9 +48,9 @@ namespace Decoration
             data.MainActionCount++;
         }
 
-        public void OnChangeDirection(ref Data data, Vector3 forward)
+        public void OnChangeDirection(ref Data data, Vector3 direction)
         {
-            data.Forward = forward;
+            data.Direction = direction;
         }
 
 
@@ -66,8 +66,8 @@ namespace Decoration
         /// <param name="hp"></param>
         public void OnRendered(ref Data data, int hp)
         {
-            var forward = data.Forward;
-            _decorations.ForEach(d => d.OnChangeForward(forward));
+            var direction = data.Direction;
+            _decorations.ForEach(d => d.OnChangeDirection(direction));
             _decorations.ForEach(d => d.OnMoved());
 
             if (hp != _preHp) OnHpChanged(hp);
