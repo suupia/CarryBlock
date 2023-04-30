@@ -15,21 +15,31 @@ namespace UI
         [SerializeField] TextMeshProUGUI scoreText;
         [SerializeField] TextMeshProUGUI waveTimerText;
         [SerializeField] TextMeshProUGUI resultText;
+        [SerializeField] TextMeshProUGUI remainingTimeToReturnText;
 
         [Networked] int Score { get; set; }
         [Networked] NetworkString<_16> Result { get; set; }
 
+
         GameContext _gameContext;
         ResourceAggregator _resourceAggregator;
         WaveTimer _waveTimer;
+        ReturnToMainBaseGauge _returnToMainBaseGauge;
+
+        NetworkPlayerController _networkPlayerController;
 
 
         [Inject]
-        public void Construct(ResourceAggregator resourceAggregator, GameContext gameContext, WaveTimer waveTimer)
+        public void Construct(
+            ResourceAggregator resourceAggregator,
+            GameContext gameContext,
+            WaveTimer waveTimer,
+            ReturnToMainBaseGauge returnToMainBaseGauge)
         {
             _resourceAggregator = resourceAggregator;
             _gameContext = gameContext;
             _waveTimer = waveTimer;
+            _returnToMainBaseGauge = returnToMainBaseGauge;
         }
 
         public override void FixedUpdateNetwork()
@@ -38,10 +48,10 @@ namespace UI
             switch (_gameContext.gameState)
             {
                 case GameContext.GameState.Playing:
-                    PlayingNetworkView();
+                    FixedUpdateNetwork_Playing();
                     break;
                 case GameContext.GameState.Result:
-                    ResultNetworkView();
+                    FixedUpdateNetwork_Result();
                     break;
             }
         }
@@ -52,34 +62,39 @@ namespace UI
             switch (_gameContext.gameState)
             {
                 case GameContext.GameState.Playing:
-                    PlayingLocalView();
+                    Render_Playing();
                     break;
                 case GameContext.GameState.Result:
-                    ResultLocalView();
+                    Render_Result();
                     break;
             }
-            
         }
 
 
-        void PlayingNetworkView()
+        void FixedUpdateNetwork_Playing()
         {
-            Score = _resourceAggregator.getAmount; // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
+            // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
+            Score = _resourceAggregator.getAmount;
         }
 
-        void ResultNetworkView()
+        void FixedUpdateNetwork_Result()
         {
             Result = _resourceAggregator.IsSuccess() ? "Success" : "Failure";
         }
-        
-        void PlayingLocalView()
+
+        void Render_Playing()
         {
-            Debug.Log($"_score : {Score}, runner : {Runner}");
+            // サーバー用のドメインの反映
             scoreText.text = $"Score : {Score}";
             waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
+            
+            // ローカル用のドメインの反映
+            remainingTimeToReturnText.text = _returnToMainBaseGauge.IsReturnToMainBase
+                ? $"{_returnToMainBaseGauge.RemainingTime}s"
+                : "";
         }
-        
-        void ResultLocalView()
+
+        void Render_Result()
         {
             resultText.text = $"Result : {Result}";
         }

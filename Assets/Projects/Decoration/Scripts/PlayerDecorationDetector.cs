@@ -18,7 +18,7 @@ namespace Decoration
     ///     正しく関数を呼ぶ（TestPlayerControllerを参考にしてください）
     ///     Networkedプロパティとして対応したNetworkDecoration系の変数を持つ
     /// </summary>
-    public class PlayerDecorationContainer
+    public class PlayerDecorationDetector
     {
         public struct Data : INetworkStruct
         {
@@ -33,7 +33,7 @@ namespace Decoration
         private int _preMainActionCount;
         private int _preHp;
 
-        public PlayerDecorationContainer(params IPlayerDecoration[] decorations)
+        public PlayerDecorationDetector(params IPlayerDecoration[] decorations)
         {
             _decorations = decorations.ToList();
         }

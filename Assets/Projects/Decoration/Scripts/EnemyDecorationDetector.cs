@@ -4,7 +4,7 @@ using Fusion;
 
 namespace Decoration
 {
-    public class EnemyDecorationContainer
+    public class EnemyDecorationDetector
     {
         public struct Data : INetworkStruct
         {
@@ -14,7 +14,7 @@ namespace Decoration
         private List<IEnemyDecoration> _decorations;
         // private int _preAttackCount = 0;
 
-        public EnemyDecorationContainer(params IEnemyDecoration[] decorations)
+        public EnemyDecorationDetector(params IEnemyDecoration[] decorations)
         {
             _decorations = decorations.ToList();
         }

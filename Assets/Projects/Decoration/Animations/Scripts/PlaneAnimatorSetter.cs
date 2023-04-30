@@ -60,8 +60,6 @@ namespace Animations
                 _ => BodyStates.Normal
             };
             
-            Debug.Log(deltaAngle);
-            
             _animator.SetInteger(BodyState, (int)bodyState);
         }
     }
