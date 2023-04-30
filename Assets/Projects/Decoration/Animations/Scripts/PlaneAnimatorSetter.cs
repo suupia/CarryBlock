@@ -37,10 +37,21 @@ namespace Animations
 
         public void OnMoved()
         {
-            // Debug.Log(direction);
 
-            var forward = _gameObject.transform.forward;
-            
+
+        }
+
+        public void OnSpawned()
+        {
+        }
+
+        public void OnMainAction()
+        {
+        }
+
+        public void OnChangeForward(Vector3 forward)
+        {
+            // Debug.Log(direction);
             var deltaAngle = Vector3.SignedAngle(_preForward, forward, Vector3.up);
 
             var bodyState = deltaAngle switch
@@ -51,17 +62,7 @@ namespace Animations
             };
             
             _animator.SetInteger(BodyState, (int)bodyState);
-            
             _preForward = forward;
-
-        }
-
-        public void OnSpawned()
-        {
-        }
-
-        public void OnMainAction()
-        {
         }
     }
 }

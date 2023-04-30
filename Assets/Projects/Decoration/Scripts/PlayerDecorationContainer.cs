@@ -24,6 +24,7 @@ namespace Decoration
         {
             public int MainActionCount;
             public int AttackCount;
+            [Networked] public Vector3 Forward { get; set; }
         }
 
         private readonly List<IPlayerDecoration> _decorations;
@@ -31,6 +32,7 @@ namespace Decoration
         private int _preAttackCount;
         private int _preMainActionCount;
         private int _preHp;
+        private Vector3 _preForward;
 
         public PlayerDecorationContainer(params IPlayerDecoration[] decorations)
         {
@@ -47,6 +49,11 @@ namespace Decoration
             data.MainActionCount++;
         }
 
+        public void OnChangeDirection(ref Data data, Vector3 forward)
+        {
+            data.Forward = forward;
+        }
+
 
         public void OnAttacked(ref Data data)
         {
@@ -60,6 +67,12 @@ namespace Decoration
         /// <param name="hp"></param>
         public void OnRendered(ref Data data, int hp)
         {
+            if (data.Forward != _preForward)
+            {
+                var forward = data.Forward;
+                _decorations.ForEach(d => d.OnChangeForward(forward));
+                _preForward = forward;
+            }
             _decorations.ForEach(d => d.OnMoved());
 
             if (hp != _preHp) OnHpChanged(hp);

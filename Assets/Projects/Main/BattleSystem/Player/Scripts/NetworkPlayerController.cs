@@ -42,6 +42,7 @@ namespace Main
         GameObject _unitObj;
         IUnit _unit;
         [Networked] ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
+        [Networked] private Vector3 Direction { get; set; }
         IUnitStats _unitStats;
         IUnitAttack _shooter;
 
@@ -106,9 +107,8 @@ namespace Main
                     }
                 }
 
-                var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
+                Direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
-                _unit.Move(direction);
 
                 PreButtons = input.Buttons;
             }
@@ -137,6 +137,7 @@ namespace Main
 
         public override void Render()
         {
+            _unit.Move(Direction);
             _animatorSetter.OnMoved();
             // Debug.Log("_info.playerObj.transform.forward = " + _info.playerObj.transform.forward);
             

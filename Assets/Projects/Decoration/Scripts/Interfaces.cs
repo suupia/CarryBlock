@@ -2,6 +2,11 @@ using UnityEngine;
 
 namespace Decoration
 {
+    public interface IForwardDecoration
+    {
+        void OnChangeForward(Vector3 forward);
+
+    }
     public interface IMoverDecoration
     {
         void OnMoved();
@@ -36,7 +41,7 @@ namespace Decoration
     
     public interface IEnemyDecoration: IEntityDecoration {}
 
-    public interface IPlayerDecoration: IEntityDecoration
+    public interface IPlayerDecoration: IEntityDecoration, IForwardDecoration
     {
         void OnMainAction();
     }

@@ -44,6 +44,11 @@ namespace Animations
         {
             
         }
+
+        public void OnChangeForward(Vector3 forward)
+        {
+            
+        }
     }
 
 }
