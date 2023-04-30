@@ -22,7 +22,6 @@ namespace Main
 
         [SerializeField] GameObject[] playerUnitPrefabs;
         [SerializeField] UnitType _unitType;
-        IPlayerDecoration _animatorSetter;
 
         [SerializeField] PlayerInfo _info;
 
@@ -32,20 +31,18 @@ namespace Main
         [Networked] TickTimer ShootCooldown { get; set; }
         [Networked] TickTimer ActionCooldown { get; set; }
 
-        // Animation
+        // Detector
+        [Networked]
+        protected ref PlayerDecorationDetector.Data DecorationDataRef => ref MakeRef<PlayerDecorationDetector.Data>();
 
-        [Networked] int MainActionCount { get; set; }
-        [Networked] int AttackCount { get; set; }
-        
-        int _preMainActionCount = 0;
-        int _preAttackCount = 0;
-        Vector3 preDirection = Vector3.zero;
+        [Networked] protected ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
+
 
         GameObject _unitObj;
         IUnit _unit;
-        [Networked] protected ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
         IUnitStats _unitStats;
         IUnitAttack _shooter;
+        PlayerDecorationDetector _decorationDetector;
 
 
         enum UnitType
@@ -70,10 +67,7 @@ namespace Main
                 // spawn camera
                 var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
                 followtarget.SetTarget(unitObjectParent.transform);
-                
             }
-
-
         }
 
         public override void FixedUpdateNetwork()
@@ -85,7 +79,7 @@ namespace Main
                 if (PlayerStruct.IsAlive)
                 {
                     var attacked = _shooter.AttemptAttack();
-                    if (attacked) AttackCount++;
+                    if (attacked) _decorationDetector.OnAttacked(ref DecorationDataRef);
                     ShootCooldown = TickTimer.CreateFromSeconds(Runner, _shooter.AttackCooldown());
                 }
             }
@@ -107,11 +101,11 @@ namespace Main
                         {
                             _unit.Action();
                             ActionCooldown = TickTimer.CreateFromSeconds(Runner, _unit.ActionCooldown());
-                            MainActionCount++;   
+                            _decorationDetector.OnMainAction(ref DecorationDataRef);
                         }
                     }
                 }
-                
+
 
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
@@ -119,52 +113,22 @@ namespace Main
 
                 PreButtons = input.Buttons;
             }
-            
-            
         }
 
         protected void Update()
         {
-        
-            if (Object. HasInputAuthority)
+            if (Object.HasInputAuthority)
             {
                 if (Input.GetKeyDown(KeyCode.C))
                 {
                     RPC_ChangeNextUnit();
                 }
             }
-
-
-
         }
 
         public override void Render()
         {
-            var deltaAngle = Vector3.SignedAngle(preDirection, _info.playerObj.transform.forward, Vector3.up);
-            preDirection = _info.playerObj.transform.forward;
-            var vector = deltaAngle switch
-            {
-                < 0 => new Vector3(-1, 0, 0),
-                > 0 => new Vector3(1, 0, 0),
-                _ => Vector3.zero
-            };
-            _animatorSetter.OnChangeDirection(vector);
-            // Debug.Log("_info.playerObj.transform.forward = " + _info.playerObj.transform.forward);
-            
-            if (MainActionCount > _preMainActionCount)
-            {
-                _animatorSetter.OnMainAction();
-                _preMainActionCount = MainActionCount;
-            }
-            
-            if (AttackCount > _preAttackCount)
-            {
-                //現状、攻撃時のアニメーションがないので何も効果はありません
-                // print("Attacked");
-                _animatorSetter.OnAttacked();
-                _preAttackCount = AttackCount;
-            }
-            
+            _decorationDetector.OnRendered(ref DecorationDataRef, PlayerStruct.Hp);
         }
 
 
@@ -175,10 +139,10 @@ namespace Main
             _unitType = (UnitType)(((int)_unitType + 1) % Enum.GetValues(typeof(UnitType)).Length);
             Destroy(_unitObj);
             InstantiateUnit(_unitType);
-            
+
             SetToOrigin();
         }
-        
+
         [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
         public void RPC_SetToOrigin()
         {
@@ -196,31 +160,39 @@ namespace Main
                 case UnitType.Tank:
                     _unit = new Tank(_info);
                     _shooter = new UnitShooter(_info);
-                    _animatorSetter = new TankAnimatorSetter(_unitObj);
-                    _unitStats = new PlayerStats(ref PlayerStruct, _animatorSetter);
+                    _decorationDetector = new PlayerDecorationDetector(
+                        new TankAnimatorSetter(_unitObj)
+                    );
+                    _unitStats = new PlayerStats(ref PlayerStruct);
                     break;
                 case UnitType.CollectResourcePlane:
                     _unit = new CollectResourcePlane(_info);
                     _shooter = new UnitShooter(_info);
-                    _animatorSetter = new PlaneAnimatorSetter(_unitObj);
-                    _unitStats = new PlayerStats(ref PlayerStruct,_animatorSetter);
+                    _decorationDetector = new PlayerDecorationDetector(
+                        new PlaneAnimatorSetter(_unitObj)
+                    );
+                    _unitStats = new PlayerStats(ref PlayerStruct);
                     break;
                 case UnitType.EstablishSubBasePlane:
                     _unit = new EstablishSubBasePlane(_info);
                     _shooter = new UnitShooter(_info);
-                    _animatorSetter = new PlaneAnimatorSetter(_unitObj);
-                    _unitStats = new PlayerStats(ref PlayerStruct,_animatorSetter);
+                    _decorationDetector = new PlayerDecorationDetector(
+                        new PlaneAnimatorSetter(_unitObj)
+                    );
+                    _unitStats = new PlayerStats(ref PlayerStruct);
                     break;
                 case UnitType.NoneAttackTank:
                     _unit = new Tank(_info);
                     _shooter = new NoneAttack();
-                    _animatorSetter = new TankAnimatorSetter(_unitObj);
-                    _unitStats = new PlayerStats(ref PlayerStruct,_animatorSetter);
+                    _decorationDetector = new PlayerDecorationDetector(
+                        new TankAnimatorSetter(_unitObj)
+                    );
+                    _unitStats = new PlayerStats(ref PlayerStruct);
                     break;
             }
 
             // Play spawn animation
-            _animatorSetter.OnSpawned();
+            _decorationDetector.OnSpawned();
         }
 
         public void OnAttacked(int damage)
@@ -228,7 +200,7 @@ namespace Main
             if (!HasStateAuthority) return;
             _unitStats.OnAttacked(ref PlayerStruct, damage);
         }
-        
+
         void SetToOrigin()
         {
             // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
@@ -236,5 +208,4 @@ namespace Main
             _info.playerRd.velocity = Vector3.zero;
         }
     }
-
 }
