@@ -22,6 +22,13 @@ public class NetworkRunnerManager : MonoBehaviour
     public NetworkRunner Runner => _runner;
     NetworkRunner _runner;
 
+    [SerializeField] private bool autoStart;
+    [SerializeField] private string overrideRoomName;
+    private async void Start()
+    {
+        if (autoStart) await AttemptStartScene(overrideRoomName);
+    }
+
     public async UniTask AttemptStartScene(string sessionName = default)
     {
         sessionName ??= RandomString(5);
