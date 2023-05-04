@@ -30,12 +30,11 @@ namespace Main
     /// </summary>
     public class WanderingMove : IMove, IDisposable
     {
-            
         public struct Context
         {
             public float InputSimulationFrequency;
         }
-        
+
         private IMove _move;
         private Context _context;
         private Vector3 _simulatedInput;
@@ -47,7 +46,6 @@ namespace Main
                 InputSimulationFrequency = 2f
             })
         {
-            
         }
 
         public WanderingMove(IMove move, Context context)
@@ -63,12 +61,13 @@ namespace Main
         {
             _move.Move(input == default ? _simulatedInput : input);
         }
-        
+
         private async UniTaskVoid StartSimulation(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(_context.InputSimulationFrequency), cancellationToken: cancellationToken);
+                await UniTask.Delay(TimeSpan.FromSeconds(_context.InputSimulationFrequency),
+                    cancellationToken: cancellationToken);
                 _simulatedInput = SimulateRandomInput();
                 Debug.Log(_simulatedInput);
             }
@@ -105,6 +104,48 @@ namespace Main
         {
             var direction = Utility.SetYToZero(target - _from.position).normalized;
             _move.Move(direction);
+        }
+    }
+
+    //rigidBodyで動き、transformで回転
+    public class SimpleMove : IMove
+    {
+        public struct Context
+        {
+            public float Acceleration;
+            public float MaxVelocity;
+        }
+
+        private Transform _transform;
+        private Rigidbody _rd;
+        private Context _context;
+
+        public SimpleMove(GameObject gameObject) : this(gameObject, new Context()
+        {
+            Acceleration = 30f, MaxVelocity = 1f
+        })
+        {
+        }
+
+        public SimpleMove(GameObject gameObject, Context context)
+        {
+            _transform = gameObject.transform;
+            _rd = gameObject.GetComponent<Rigidbody>();
+            _context = context;
+        }
+
+        public void Move(Vector3 input = default)
+        {
+            if (input == Vector3.zero) return;
+
+            var dirToGo = input + _transform.position;
+            _transform.LookAt(dirToGo);
+            _rd.AddForce(_transform.forward * _context.Acceleration, ForceMode.Acceleration);
+            if (_rd.velocity.magnitude >= _context.MaxVelocity)
+            {
+                _rd.velocity = _context.MaxVelocity * _rd.velocity.normalized;
+                
+            }
         }
     }
 
