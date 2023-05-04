@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
 
 namespace Main
@@ -25,10 +26,7 @@ namespace Main
 
         public ChooseRandomAttack(params IAttack[] attacks)
         {
-            if (attacks.Length == 0)
-            {
-                throw new ArgumentException("attacks need at least one attack");
-            }
+            Assert.AreNotEqual(attacks.Length, 0);
 
             _attacks = attacks.ToList();
         }

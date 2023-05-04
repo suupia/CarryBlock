@@ -70,7 +70,7 @@ namespace Decoration
             _decorations.ForEach(d => d.OnChangeDirection(direction));
             _decorations.ForEach(d => d.OnMoved());
 
-            if (hp != _preHp) OnHpChanged(hp);
+            if (hp != _preHp) OnChangedHp(hp);
 
             if (data.MainActionCount > _preMainActionCount)
             {
@@ -85,7 +85,7 @@ namespace Decoration
             }
         }
 
-        private void OnHpChanged(int hp)
+        private void OnChangedHp(int hp)
         {
             if (hp <= 0)
             {

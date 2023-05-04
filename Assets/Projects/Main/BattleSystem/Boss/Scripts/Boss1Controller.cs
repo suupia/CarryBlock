@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Animations;
 using Decoration;
 using Fusion;
 using Main;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 namespace Boss
 {
-    public class BossController : NetworkBehaviour
+    public class Boss1Controller : NetworkBehaviour
     {
         enum State
         {
@@ -18,22 +19,26 @@ namespace Boss
 
         [SerializeField] private GameObject modelObject;
 
-        [Networked] ref BossDecorationDetector.Data DecorationDataRef => ref MakeRef<BossDecorationDetector.Data>();
-        private BossDecorationDetector _decorationDetector;
+        [Networked] ref Boss1DecorationDetector.Data DecorationDataRef => ref MakeRef<Boss1DecorationDetector.Data>();
 
         [Networked] private TickTimer AttackTimer { get; set; }
+
+        [Networked] private int Hp { get; set; } = 1;
 
         private IMove DefaultMove => new SimpleMove(gameObject);
         private string DebugText => $"State: {_state}";
 
         private bool IsLostPlayers => _colliders.Length == 0;
 
+        //ステートパターンに従う
+        //インスタンスを使用する方法でも良いが、一旦列挙体で管理する。
         private State _state = State.None;
 
         private IMove _move;
         private ISearch _search;
-        private IAttack _attack;
-
+        private IAttack _attack; 
+        
+        private Boss1DecorationDetector _decorationDetector;
         private readonly HashSet<Transform> _targetBuffer = new();
         private Collider[] _colliders;
 
@@ -44,7 +49,9 @@ namespace Boss
 
         void SetUp()
         {
-            OnLostPlayers();
+            _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
+            
+            SetMove(new WanderingMove(DefaultMove));
             _search = new RangeSearch(transform, 6, LayerMask.GetMask("Player"));
         }
 
@@ -88,6 +95,8 @@ namespace Boss
             }
         }
         
+        //Do not call in Render loop
+        //HostのFixedUpdateNetworkでのみ呼び出す想定
         void SetState(State state)
         {
             if (_state == state) return;
@@ -99,28 +108,19 @@ namespace Boss
                 case State.None:
                     break;
                 case State.Lost:
-                    OnLostPlayers();
+                    _attack = null;
+                    _decorationDetector.OnEndTackle(ref DecorationDataRef);
+                    SetMove(new WanderingMove(DefaultMove));
                     break;
                 case State.Detected:
-                    OnDetectedPlayers();
+                    _attack = new ToNearestAttack(transform, _targetBuffer, new ToTargetAttack(gameObject));
+                    _decorationDetector.OnStartTackle(ref DecorationDataRef);
+                    SetMove(new ToTargetMove(transform, DefaultMove));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
 
-        }
-        
-        
-        void OnDetectedPlayers()
-        {
-            _attack = new ToNearestAttack(transform, _targetBuffer, new ToTargetAttack(gameObject));
-            SetMove(new ToTargetMove(transform, DefaultMove));
-        }
-
-        void OnLostPlayers()
-        {
-            _attack = null;
-            SetMove(new WanderingMove(DefaultMove));
         }
 
         void SetMove(IMove move)
@@ -131,6 +131,11 @@ namespace Boss
             }
 
             _move = move;
+        }
+
+        public override void Render()
+        {
+            _decorationDetector.OnRendered(ref DecorationDataRef, Hp);
         }
     }
 }
