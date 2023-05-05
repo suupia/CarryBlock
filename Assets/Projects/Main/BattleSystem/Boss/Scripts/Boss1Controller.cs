@@ -50,7 +50,7 @@ namespace Boss
         private Boss1DecorationDetector _decorationDetector;
 
         private readonly HashSet<Transform> _targetBuffer = new();
-        private Collider[] _colliders = {};
+        private Collider[] _colliders = { };
         private Rigidbody _rd;
         private State _willState;
 
@@ -62,6 +62,7 @@ namespace Boss
             Acceleration = 20f,
             MaxVelocity = 1f
         });
+
         private IMove SpeedyMove => new SimpleMove(new SimpleMove.Context()
         {
             GameObject = gameObject,
@@ -77,7 +78,12 @@ namespace Boss
             move: DefaultMove
         );
 
-        private IMove ToTargetMove => new ToTargetMove(transform, SpeedyMove);
+        private IMove ToTargetMove =>
+            new ToTargetMove(
+                new ToTargetMove.Context()
+                {
+                    Transform = transform
+                }, SpeedyMove);
 
 
         private string DebugText => $"State: {_state}, Move: {_move}, Attack: {_attack}";
@@ -104,29 +110,23 @@ namespace Boss
         {
             if (!HasStateAuthority) return;
 
-            //Move
-            if (_attack is ITargetAttack attack && attack.Target != null)
-            {
-                _move?.Move(attack.Target.position);
-            }
-            else
-            {
-                _move?.Move();
-            }
+            Move();
 
+            CheckWillStateTimer();
 
-            if (SetAsWillStateTimer.Expired(Runner))
-            {
-                SetAsWillStateTimer = TickTimer.None;
-                SetState(_willState);
-            }
+            CheckAttackTimer();
+        }
 
+        private void CheckAttackTimer()
+        {
             if (AttackTimer.ExpiredOrNotRunning(Runner))
             {
                 //Search
+                //現状は攻撃時にサーチする
                 _colliders = _search.Search();
 
                 //Set Detected Targets
+                //このバッファを更新することで、ToNearestAttackが機能する
                 _targetBuffer.Clear();
                 _targetBuffer.UnionWith(_colliders.Map(c => c.transform));
 
@@ -140,10 +140,11 @@ namespace Boss
                     if (_state == State.Lost)
                     {
                         // SetState(State.Detected);
+                        //攻撃手法の抽出方法はまだ未検討
                         var detectedStates = new[] { State.ChargingJump, State.Detected };
                         SetState(detectedStates[Random.Range(0, detectedStates.Length)]);
                     }
-                    
+
                     //Attack
                     _attack?.Attack();
 
@@ -152,6 +153,30 @@ namespace Boss
                     AttackTimer = TickTimer.CreateFromSeconds(Runner, 4f);
                 }
             }
+        }
+
+        private void CheckWillStateTimer()
+        {
+            if (SetAsWillStateTimer.Expired(Runner))
+            {
+                SetAsWillStateTimer = TickTimer.None;
+                SetState(_willState);
+            }
+        }
+
+        private void Move()
+        {
+            //Set Target if ITargetMove
+            if (_move is ITargetMove move)
+            {
+                if (_attack is ITargetAttack attack)
+                {
+                    move.Target = attack.Target;
+                }
+            }
+
+            //Move
+            _move?.Move();
         }
 
         //Do not call in Client loop
@@ -196,6 +221,7 @@ namespace Boss
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
+
                     _move = WanderingMove; //ふらつく動き
                     break;
                 case State.Detected:

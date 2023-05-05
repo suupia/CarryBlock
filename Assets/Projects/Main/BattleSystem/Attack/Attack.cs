@@ -66,7 +66,7 @@ namespace Main
 
         private GameObject _attackSphere;
 
-        public RangeAttack([NotNull] GameObject gameObject, float radius)
+        public RangeAttack([NotNull] GameObject gameObject, float radius = 0)
         {
             //プレハブの存在確認
             Assert.IsNotNull(_attackSpherePrefab);
@@ -78,7 +78,10 @@ namespace Main
                 : transform.gameObject;
 
             _attackSphere.name = _attackSphereIdentifier;
-            _attackSphere.GetComponent<SphereCollider>().radius = radius;
+            if (radius != 0)
+            {
+                _attackSphere.GetComponent<SphereCollider>().radius = radius;
+            }
             _attackSphere.SetActive(false);
         }
 
