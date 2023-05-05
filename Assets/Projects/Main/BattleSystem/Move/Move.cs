@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -19,31 +20,49 @@ namespace Main
         Transform Target { get; set; }
     }
 
-
-    public class StableMove : IMove
+    /// <summary>
+    /// いくつかのIMove実装クラスの基底クラス
+    /// _moveプロパティを持ち、
+    /// ToStringをオーバーライドしていて、ネスト関係が見やすいようになっている
+    /// </summary>
+    public class MoveWrapper
     {
-        public void Move(Vector3 input = default)
+        // ReSharper disable once InconsistentNaming
+        protected IMove _move;
+        public override string ToString()
         {
-            //Ignore
+            return $"{base.ToString()}+{_move}";
         }
     }
 
+    /// <summary>
+    /// いくつかのIMove実装クラスの基底クラス
+    /// _movesプロパティを持ち、複数のIMoveをラップできる想定
+    /// ToStringをオーバーライドしていて、ネスト関係が見やすいようになっている
+    /// </summary>
+    public class MovesWrapper
+    {
+        // ReSharper disable once InconsistentNaming
+        protected IMove[] _moves;
+        public override string ToString()
+        {
+            return $"{base.ToString()}+[{string.Join(", ", _moves.Select(m => m.ToString()))}]";
+        }
+    }
 
     /// <summary>
     /// ふらふら歩く動き
     /// 引数を指定しない想定
-    /// 引数を指定すると、moveの動きになるが、あまり使用する意味はない
+    /// 引数を指定すると、_moveの動きになるが、あまり使用する意味はない
     /// ただし、実装の関係上、Vector.zeroに対応できない
-    /// 動きたくない場合は、StableMoveを使用する
     /// </summary>
-    public class WanderingMove : IMove, IDisposable
+    public class WanderingMove : MoveWrapper, IMove, IDisposable
     {
         public struct Context
         {
             public float InputSimulationFrequency;
         }
 
-        private readonly IMove _move;
         private readonly Context _context;
         private Vector3 _simulatedInput;
         private readonly CancellationTokenSource _cancellationTokenSource;
@@ -68,16 +87,10 @@ namespace Main
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(_context.InputSimulationFrequency),
                     cancellationToken: cancellationToken);
-                _simulatedInput = SimulateRandomInput();
-                Debug.Log(_simulatedInput);
+                _simulatedInput = MoveUtility.SimulateRandomInput();
+                // Debug.Log(_simulatedInput);
             }
         }
-
-        private Vector3 SimulateRandomInput() => new Vector3(
-            Random.Range(-1, 2),
-            0,
-            Random.Range(-1, 2)
-        ).normalized;
 
         public void Dispose()
         {
@@ -89,7 +102,7 @@ namespace Main
     /// Targetに対象のTransformをセットすることでそちらに向かう動き
     /// 動き方はmoveで指定可
     /// </summary>
-    public class ToTargetMove : ITargetMove
+    public class ToTargetMove : MoveWrapper, ITargetMove
     {
         public struct Context
         {
@@ -99,7 +112,6 @@ namespace Main
         }
 
         private readonly Context _context;
-        private readonly IMove _move;
 
         public Transform Target { get; set; }
 
@@ -129,10 +141,8 @@ namespace Main
     /// 実装としては、ToTargetMoveを使用している
     /// 自身とターゲットを同じTransformにして、GetOffsetにtransform.forwardを指定している
     /// </summary>
-    public class ToAheadMove : IMove
+    public class ToAheadMove : MoveWrapper, IMove
     {
-        private readonly ITargetMove _move;
-
         public ToAheadMove(Transform transform, IMove move)
         {
             _move = new ToTargetMove(new ToTargetMove.Context()
@@ -153,7 +163,7 @@ namespace Main
     /// rigidBodyで動き、transformで回転
     ///
     /// </summary>
-    public class SimpleMove : IMove
+    public class SimpleMove : MoveWrapper, IMove
     {
         public struct Context
         {
@@ -161,8 +171,6 @@ namespace Main
             public float Acceleration;
             public float MaxVelocity;
         }
-
-        private readonly IMove _move;
 
         public SimpleMove(Context context)
         {
@@ -248,10 +256,8 @@ namespace Main
     /// 複数のMoveを一括管理する。
     /// 処理される順番はコンストラクタで追加した順
     /// </summary>
-    public class CombinationMove : IMove
+    public class CombinationMove : MovesWrapper, IMove
     {
-        private readonly IMove[] _moves;
-
         public CombinationMove(params IMove[] moves)
         {
             _moves = moves;

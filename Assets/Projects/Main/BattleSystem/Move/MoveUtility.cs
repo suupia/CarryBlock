@@ -18,5 +18,15 @@ namespace Main
             
             rd.velocity += Vector3.up * v0;
         }
+        
+        /// <summary>
+        /// プレイヤーの入力をシミュレーションする関数。正規化して返す
+        /// </summary>
+        /// <returns></returns>
+        public static Vector3 SimulateRandomInput() => new Vector3(
+            Random.Range(-1, 2),
+            0,
+            Random.Range(-1, 2)
+        ).normalized;
     }
 }

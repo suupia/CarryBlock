@@ -22,8 +22,9 @@ namespace Main
         // private Collider[] _colliders = new Collider[16];
         public Collider[] Search()
         {
+            var center = _transform.position;
             // Physics.OverlapSphereNonAlloc(_transform.position, _radius, _colliders, _layerMask);
-            return Physics.OverlapSphere(_transform.position, _radius, _layerMask);
+            return Physics.OverlapSphere(center, _radius, _layerMask);
         }
     }
 }

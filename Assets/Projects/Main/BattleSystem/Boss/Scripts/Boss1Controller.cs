@@ -27,6 +27,7 @@ namespace Boss
 
         private const float JumpTime = 2f;
         private const float ChargeJumpTime = 0.5f;
+        private const float SearchRadius = 6f;
 
         [Networked]
         private ref Boss1DecorationDetector.Data DecorationDataRef => ref MakeRef<Boss1DecorationDetector.Data>();
@@ -67,7 +68,7 @@ namespace Boss
         {
             GameObject = gameObject,
             Acceleration = 30f,
-            MaxVelocity = 2f
+            MaxVelocity = 2.5f
         });
 
         private IMove WanderingMove => new WanderingMove(
@@ -103,7 +104,7 @@ namespace Boss
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
             _attack = null;
             _move = WanderingMove;
-            _search = new RangeSearch(transform, 6, LayerMask.GetMask("Player"));
+            _search = new RangeSearch(transform: transform, radius: SearchRadius, layerMask: LayerMask.GetMask("Player"));
         }
 
         public override void FixedUpdateNetwork()
@@ -141,8 +142,8 @@ namespace Boss
                     {
                         // SetState(State.Detected);
                         //攻撃手法の抽出方法はまだ未検討
-                        var detectedStates = new[] { State.ChargingJump, State.Detected };
-                        SetState(detectedStates[Random.Range(0, detectedStates.Length)]);
+                        var state = ChooseState();
+                        SetState(state);
                     }
 
                     //Attack
@@ -153,6 +154,13 @@ namespace Boss
                     AttackTimer = TickTimer.CreateFromSeconds(Runner, 4f);
                 }
             }
+        }
+
+        private static State ChooseState()
+        {
+            var detectedStates = new[] { State.ChargingJump, State.Detected };
+            var state = detectedStates[Random.Range(0, detectedStates.Length)];
+            return state;
         }
 
         private void CheckWillStateTimer()
@@ -288,6 +296,12 @@ namespace Boss
             // {
             //     _message = "Button clicked!";
             // }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, SearchRadius);
         }
     }
 }
