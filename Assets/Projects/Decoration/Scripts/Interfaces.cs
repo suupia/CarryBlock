@@ -51,5 +51,6 @@ namespace Decoration
     {
         void OnTackle(bool onStart);
         void OnJump(bool onStart);
+        void OnSpitOut();
     }
 }

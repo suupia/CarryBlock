@@ -20,13 +20,16 @@ namespace Boss
             Detected,
             Jumping,
             ChargingJump,
+            SpitOut,
         }
 
         [SerializeField] private GameObject modelObject;
-
+        [SerializeField] private State overrideState;
+        [SerializeField] private Transform finSpawnerTransform;
 
         private const float JumpTime = 2f;
         private const float ChargeJumpTime = 0.5f;
+        private const float ChargeSpitOutTime = 1.5f;
         private const float SearchRadius = 6f;
 
         [Networked]
@@ -55,6 +58,10 @@ namespace Boss
         private Rigidbody _rd;
         private State _willState;
 
+
+        //TODO: より良い管理方法を考える
+        //Trigger的なDecorationはAttackが呼ばれるたびに呼んでほしい
+        Action _onAttack = () => { };
 
         //Define Template Moves 
         private IMove DefaultMove => new SimpleMove(new SimpleMove.Context()
@@ -86,6 +93,7 @@ namespace Boss
                     Transform = transform
                 }, SpeedyMove);
 
+        private IMove LookAtTargetMove => new LookAtTargetMove(transform);
 
         private string DebugText => $"State: {_state}\nMove: {_move}\nAttack: {_attack}";
 
@@ -104,7 +112,8 @@ namespace Boss
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
             _attack = null;
             _move = WanderingMove;
-            _search = new RangeSearch(transform: transform, radius: SearchRadius, layerMask: LayerMask.GetMask("Player"));
+            _search = new RangeSearch(transform: transform, radius: SearchRadius,
+                layerMask: LayerMask.GetMask("Player"));
         }
 
         public override void FixedUpdateNetwork()
@@ -140,7 +149,6 @@ namespace Boss
                     //前の状態がLostなら、新しい攻撃状態に入る
                     if (_state == State.Lost)
                     {
-                        // SetState(State.Detected);
                         //攻撃手法の抽出方法はまだ未検討
                         var state = ChooseState();
                         SetState(state);
@@ -148,6 +156,7 @@ namespace Boss
 
                     //Attack
                     _attack?.Attack();
+                    _onAttack(); //Assume calling Decoration callback
 
                     //SetTimer
                     //攻撃時のクールタイムを設定する
@@ -156,9 +165,14 @@ namespace Boss
             }
         }
 
-        private static State ChooseState()
+        private State ChooseState()
         {
-            var detectedStates = new[] { State.ChargingJump, State.Detected };
+            if (overrideState != State.None)
+            {
+                return overrideState;
+            }
+
+            var detectedStates = new[] { State.ChargingJump, State.Detected, State.SpitOut };
             var state = detectedStates[Random.Range(0, detectedStates.Length)];
             return state;
         }
@@ -214,28 +228,24 @@ namespace Boss
                     _attack = null;
                     switch (preState)
                     {
-                        case State.None:
-                            break;
-                        case State.Lost:
-                            break;
                         case State.Detected:
                             _decorationDetector.OnEndTackle(ref DecorationDataRef);
                             break;
                         case State.Jumping:
                             _decorationDetector.OnEndJump(ref DecorationDataRef);
                             break;
-                        case State.ChargingJump:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
                     }
 
+                    _onAttack = () => { };
                     _move = WanderingMove; //ふらつく動き
                     break;
                 case State.Detected:
                     _attack = new ToNearestAttack(
-                        transform,
-                        _targetBuffer,
+                        new TargetBufferAttack.Context()
+                        {
+                            Transform = transform,
+                            TargetBuffer = _targetBuffer
+                        },
                         new ToTargetAttack(
                             gameObject,
                             new MockAttack()
@@ -251,15 +261,18 @@ namespace Boss
                     DelaySetState(State.Lost, JumpTime);
                     break;
                 case State.ChargingJump:
-                    //Jumpのためのセットアップ
+                    GameObject o;
                     _attack = new ToNearestAttack(
-                        transform,
-                        _targetBuffer,
+                        new TargetBufferAttack.Context()
+                        {
+                            Transform = transform,
+                            TargetBuffer = _targetBuffer
+                        },
                         new ToTargetAttack(
-                            gameObject,
+                            (o = gameObject),
                             new DelayAttack(
                                 JumpTime + ChargeJumpTime,
-                                new RangeAttack(gameObject, 3)
+                                new RangeAttack(o, 3)
                             )
                         )
                     );
@@ -268,12 +281,39 @@ namespace Boss
 
                     DelaySetState(State.Jumping, ChargeJumpTime);
                     break;
+                case State.SpitOut:
+
+                    _attack = new ToFurthestAttack(
+                        new TargetBufferAttack.Context()
+                        {
+                            Transform = transform,
+                            TargetBuffer = _targetBuffer
+                        },
+                        new ToTargetAttack(
+                            gameObject,
+                            new DelayAttack(
+                                ChargeSpitOutTime,
+                                new LaunchNetworkObjectAttack(
+                                    new LaunchNetworkObjectAttack.Context()
+                                    {
+                                        Runner = Runner,
+                                        From = finSpawnerTransform,
+                                        Prefab = Resources.Load<GameObject>("Prefabs/Attacks/Fin"),
+                                    }
+                                )
+                            )
+                        )
+                    );
+                    _onAttack = () => { _decorationDetector.OnSpitOut(ref DecorationDataRef); };
+                    _move = LookAtTargetMove;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
         }
 
 
+        //TickTimerを用いて、状態を遅延セット
         private void DelaySetState(State state, float delay)
         {
             // Debug.Log($"Delay set called to {state}");
@@ -286,10 +326,11 @@ namespace Boss
             _decorationDetector.OnRendered(DecorationDataRef, Hp);
         }
 
+
         private void OnGUI()
         {
             // ラベルを表示
-            GUI.Label(new Rect(10, 10, 600, 100), DebugText);
+            GUI.Label(new Rect(10, 10, 600, 150), DebugText);
 
             // // ボタンを表示
             // if (GUI.Button(new Rect(10, 40, 100, 20), "Click me"))

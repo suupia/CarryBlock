@@ -199,6 +199,7 @@ namespace Main
 
     /// <summary>
     /// Transform.LookAtのラッパー
+    /// Moveの引数の方向を向く
     /// </summary>
     public class LookAtMove : IMove
     {
@@ -214,6 +215,26 @@ namespace Main
             var dirToGo = input + _transform.position;
             _transform.LookAt(dirToGo);
         }
+    }
+    
+    /// <summary>
+    /// Transform.LookAtのラッパー
+    /// </summary>
+    public class LookAtTargetMove : ITargetMove
+    {
+        private readonly Transform _transform;
+        public Transform Target { get; set; }
+
+        public LookAtTargetMove(Transform transform)
+        {
+            _transform = transform;
+        }
+
+        public void Move(Vector3 input = default)
+        {
+            _transform.LookAt(Target);
+        }
+
     }
 
     /// <summary>

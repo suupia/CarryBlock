@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -7,16 +8,20 @@ namespace Main
     {
         /// <summary>
         /// timeの間ジャンプするために、yの速度を変更する
+        /// 
+        /// y = v0 * t - 1/2 * g * t^2
+        ///
+        /// をv0について解いただけ
         /// </summary>
-        /// <param name="rd"></param>
+        /// <param name="rb"></param>
         /// <param name="time"></param>
-        public static void Jump(Rigidbody rd, float time)
+        public static void Jump([NotNull] Rigidbody rb, float time)
         {
             Assert.IsTrue(time > 0);
             var g = Physics.gravity.magnitude;
             var v0 = 0.5f * g * time;
             
-            rd.velocity += Vector3.up * v0;
+            rb.velocity += Vector3.up * v0;
         }
         
         /// <summary>

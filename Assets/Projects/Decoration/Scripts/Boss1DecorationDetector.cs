@@ -10,11 +10,13 @@ namespace Decoration
         private readonly List<IBoss1Decoration> _decorations;
         private int _preHp;
         private int _preJumpCount;
+        private int _preSpitOutCount;
 
         public struct Data : INetworkStruct
         {
             public int TackleCount;
             public int JumpCount;
+            public int SpitOutCount;
         }
 
         public Boss1DecorationDetector(params IBoss1Decoration[] decorations)
@@ -43,6 +45,11 @@ namespace Decoration
             data.JumpCount--;
         }
 
+        public void OnSpitOut(ref Data data)
+        {
+            data.SpitOutCount++;
+        }
+
         public void OnRendered(Data data, int hp)
         {
             _decorations.ForEach(d => d.OnMoved());
@@ -50,7 +57,11 @@ namespace Decoration
             CheckTackle(data);
 
             CheckJump(data);
-
+            if (data.SpitOutCount > _preSpitOutCount)
+            {
+                _decorations.ForEach(d => d.OnSpitOut());
+                _preSpitOutCount = data.SpitOutCount;
+            }
 
             if (hp != _preHp) OnChangedHp(hp);
         }

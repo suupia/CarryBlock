@@ -24,21 +24,39 @@ namespace Main
     {
         void Attack();
     }
-
+    
     public interface ITargetAttack : IAttack
     {
         Transform Target { get; set; }
     }
 
     /// <summary>
+    /// いくつかのIAttack実装クラスの基底クラス
+    /// _attackプロパティを持ち、
+    /// ToStringをオーバーライドしていて、ネスト関係が見やすいようになっている
+    /// </summary>
+    public class AttackWrapper
+    {
+        // ReSharper disable once InconsistentNaming
+        protected IAttack _attack;
+
+        // ReSharper disable once InconsistentNaming
+        public IAttack attack => _attack;
+        public override string ToString()
+        {
+            return $"{base.ToString()}+{_attack}";
+        }
+    }
+
+
+    /// <summary>
     /// Attackが呼ばれてから遅延してattackの攻撃を呼び出す
     /// 使用しなくても良いが、クライアントコードが複雑にならないことが期待できる。
     /// ここでのAttackはasyncになっている。キャストすればawait句が使用できる
     /// </summary>
-    public class DelayAttack : IAttack
+    public class DelayAttack : AttackWrapper, IAttack
     {
         private float _delay;
-        private IAttack _attack;
 
         public DelayAttack(float delay, [NotNull] IAttack attack)
         {
@@ -58,6 +76,10 @@ namespace Main
     /// 
     /// 実装は、攻撃用のプレハブをロードしてきて、インスタンス化
     /// このプレハブにはSphereColliderがついていて、あたったかどうかの判定を他に任せる
+    ///
+    /// 内部でInstantiateを使用しているが、コライダーのみのPrefabのため、見た目に影響がないかつ、
+    /// Hostでのみ当たり判定を管理する予定なので問題ないはず
+    /// 問題があれば、Runnerを受け取るようにする
     /// </summary>
     public class RangeAttack : IAttack
     {
@@ -66,11 +88,18 @@ namespace Main
 
         private GameObject _attackSphere;
 
+        /// <summary>
+        /// radiusが0（指定しない）なら、プレハブの値が採用される
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <param name="radius"></param>
         public RangeAttack([NotNull] GameObject gameObject, float radius = 0)
         {
             //プレハブの存在確認
             Assert.IsNotNull(_attackSpherePrefab);
-
+            //radiusは正
+            Assert.IsTrue(radius >= 0);
+            
             //攻撃用オブジェクトの初期化
             var transform = gameObject.transform.Find(_attackSphereIdentifier);
             _attackSphere = transform == null
@@ -96,72 +125,8 @@ namespace Main
         }
     }
 
-    /// <summary>
-    /// targetBufferを共有して、一番transformに近いものをtargetとする
-    /// 使用される攻撃はtargetAttackで指定する
-    /// </summary>
-    public class ToNearestAttack : ITargetAttack
-    {
-        private ITargetAttack _targetAttack;
-        private ISet<Transform> _targetBuffer;
-        private readonly Transform _transform;
 
 
-        public Transform Target
-        {
-            get => _targetAttack.Target;
-            set => _targetAttack.Target = value;
-        }
-
-        public ToNearestAttack(Transform transform, ISet<Transform> targetBuffer, ITargetAttack targetAttack)
-        {
-            _transform = transform;
-            _targetAttack = targetAttack;
-            _targetBuffer = targetBuffer;
-        }
-
-        public void Attack()
-        {
-            if (_targetBuffer.Count == 0) return;
-
-            Transform minTransform = null;
-            float minDistance = float.PositiveInfinity;
-            foreach (var transform in _targetBuffer)
-            {
-                var distance = Vector3.Distance(transform.position, _transform.position);
-                if (distance < minDistance)
-                {
-                    minTransform = transform;
-                    minDistance = distance;
-                }
-            }
-
-            _targetAttack.Target = minTransform;
-            _targetAttack.Attack();
-        }
-    }
-
-    public class ToTargetAttack : ITargetAttack
-    {
-        private GameObject _gameObject;
-        private IAttack _attack;
-
-        public Transform Target { get; set; }
-
-        public ToTargetAttack(GameObject gameObject, IAttack attack, Transform target = null)
-        {
-            Target = target;
-            _attack = attack;
-            _gameObject = gameObject;
-        }
-
-        public void Attack()
-        {
-            if (Target == null) return;
-            _gameObject.transform.LookAt(Target);
-            _attack.Attack();
-        }
-    }
 
 
     public class MockAttack : IAttack
