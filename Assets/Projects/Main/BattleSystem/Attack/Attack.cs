@@ -1,15 +1,16 @@
 using UnityEngine;
 
-//全体的な方針は以下の通り。これはIMoveも共通
+// 全体的な方針は以下の通り。これはIMoveも共通
 //
-//- ネストを用いて擬似的に継承を実現し、細かい機能に分け、機能の拡張を容易にする
-//- シグネチャが複雑にならないように、必要な情報が２つ以上ある場合は、各クラスのContextでラップする
-//- FlutterやSwiftUI、Reactあたりの構文を参考にした。つまりUIの構築と同じような感覚で攻撃を構築できる
+//     - ネストを用いて擬似的に継承のような機能を実現する
+//     - 細かい機能に分け、それらを組み合わせることで、攻撃を構築する
+//     - シグネチャが複雑にならないように、必要な情報が２つ以上ある場合は、各クラスの内部構造体のContextでラップする
+//     - FlutterやSwiftUI、Reactあたりの構文を参考にした。つまりUIの構築と同じような感覚で攻撃を構築できる
 //
-//使用例)
-//new ToNearestAttack(
-//    new TargetBufferAttack.Context()
-//    {
+//     使用例)
+// _attack = new ToNearestAttack(
+//     new TargetBufferAttack.Context()
+//     {
 //         Transform = transform,
 //         TargetBuffer = _targetBuffer
 //     },
@@ -20,17 +21,17 @@ using UnityEngine;
 //             new RangeAttack(gameObject, radius: 5)
 //         )
 //     )
-//);
-
-//ネストが多くなってしまうが、全体をネストの上位層から見ていくと、どのような攻撃かがわかるようになっている
-//まず、ToNearestAttackがあるので、TargetBufferにいる奴らから一番近い奴に攻撃が行われる
-//行われる攻撃は、第二引数のToTargetAttack
-//行われる攻撃は、第二引数のDelayAttack
-//行われる攻撃は、第二引数のRangeAttack
-
-//よって、この部分だけを見れば、「一番近い奴に対して、３秒後に範囲５の攻撃が行われる」ことがわかるという設計
-//かつ、一番のメリットはIAttackを継承なし、かつクライアントコードの負担を最小に組み合わせることができるため、
-//様々な攻撃の構築が簡単にできる点である
+// );
+//
+// ネストが多くなってしまうが、全体をネストの上位層から見ていくと、どのような攻撃かがわかるようになっている
+//     まず、ToNearestAttackがあるので、TargetBufferにいる奴らから一番近い奴に攻撃が行われる
+//     行われる攻撃は、第二引数のToTargetAttack
+//     行われる攻撃は、第二引数のDelayAttack
+//     行われる攻撃は、第二引数のRangeAttack
+//
+//     よって、この部分だけを見れば、「Attackを呼んだとき、一番近い奴に対して、３秒後に範囲５の攻撃が行われる」ことがわかるという設計
+//     かつ、一番のメリットはIAttackを継承なし、かつクライアントコードの負担を最小に組み合わせることができるため、
+// 様々な攻撃の構築が簡単にできる点である
 namespace Main
 {
     /// <summary>
