@@ -1,17 +1,41 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Assertions;
-using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
+//全体的な方針は以下の通り。これはIMoveも共通
+//
+//- ネストを用いて擬似的に継承を実現し、細かい機能に分け、機能の拡張を容易にする
+//- シグネチャが複雑にならないように、必要な情報が２つ以上ある場合は、各クラスのContextでラップする
+//- FlutterやSwiftUI、Reactあたりの構文を参考にした。つまりUIの構築と同じような感覚で攻撃を構築できる
+//
+//使用例)
+//new ToNearestAttack(
+//    new TargetBufferAttack.Context()
+//    {
+//         Transform = transform,
+//         TargetBuffer = _targetBuffer
+//     },
+//     new ToTargetAttack(
+//         gameObject,
+//         new DelayAttack(
+//             3,
+//             new RangeAttack(gameObject, radius: 5)
+//         )
+//     )
+//);
+
+//ネストが多くなってしまうが、全体をネストの上位層から見ていくと、どのような攻撃かがわかるようになっている
+//まず、ToNearestAttackがあるので、TargetBufferにいる奴らから一番近い奴に攻撃が行われる
+//行われる攻撃は、第二引数のToTargetAttack
+//行われる攻撃は、第二引数のDelayAttack
+//行われる攻撃は、第二引数のRangeAttack
+
+//よって、この部分だけを見れば、「一番近い奴に対して、３秒後に範囲５の攻撃が行われる」ことがわかるという設計
+//かつ、一番のメリットはIAttackを継承なし、かつクライアントコードの負担を最小に組み合わせることができるため、
+//様々な攻撃の構築が簡単にできる点である
 namespace Main
 {
     /// <summary>
     /// 攻撃を抽象化し、クライアントコードを簡潔に、再利用性を上げたい。
+    /// void Attack()を実装するとする。
     /// 方針は実装者に委ねるが、主に３つあると考える
     ///
     /// 1. 攻撃用のColliderがついたGameObjectを動かすもの
@@ -47,95 +71,19 @@ namespace Main
             return $"{base.ToString()}+{_attack}";
         }
     }
-
-
+    
     /// <summary>
-    /// Attackが呼ばれてから遅延してattackの攻撃を呼び出す
-    /// 使用しなくても良いが、クライアントコードが複雑にならないことが期待できる。
-    /// ここでのAttackはasyncになっている。キャストすればawait句が使用できる
+    /// これから実装するAttackの仮置きとして使用する
+    /// Wrapper系のAttackが機能しているかテストするときなど
     /// </summary>
-    public class DelayAttack : AttackWrapper, IAttack
-    {
-        private float _delay;
-
-        public DelayAttack(float delay, [NotNull] IAttack attack)
-        {
-            _delay = delay;
-            _attack = attack;
-        }
-
-        public async void Attack()
-        {
-            await UniTask.Delay(TimeSpan.FromSeconds(_delay));
-            _attack.Attack();
-        }
-    }
-
-    /// <summary>
-    /// 範囲攻撃をする。Radiusだけ渡せば、Attackを呼び出したタイミングで機能する
-    /// 
-    /// 実装は、攻撃用のプレハブをロードしてきて、インスタンス化
-    /// このプレハブにはSphereColliderがついていて、あたったかどうかの判定を他に任せる
-    ///
-    /// 内部でInstantiateを使用しているが、コライダーのみのPrefabのため、見た目に影響がないかつ、
-    /// Hostでのみ当たり判定を管理する予定なので問題ないはず
-    /// 問題があれば、Runnerを受け取るようにする
-    /// </summary>
-    public class RangeAttack : IAttack
-    {
-        private static GameObject _attackSpherePrefab = Resources.Load<GameObject>("Prefabs/Attacks/AttackSphere");
-        private static string _attackSphereIdentifier = "AttackSphere";
-
-        private GameObject _attackSphere;
-
-        /// <summary>
-        /// radiusが0（指定しない）なら、プレハブの値が採用される
-        /// </summary>
-        /// <param name="gameObject"></param>
-        /// <param name="radius"></param>
-        public RangeAttack([NotNull] GameObject gameObject, float radius = 0)
-        {
-            //プレハブの存在確認
-            Assert.IsNotNull(_attackSpherePrefab);
-            //radiusは正
-            Assert.IsTrue(radius >= 0);
-            
-            //攻撃用オブジェクトの初期化
-            var transform = gameObject.transform.Find(_attackSphereIdentifier);
-            _attackSphere = transform == null
-                ? Object.Instantiate(_attackSpherePrefab, gameObject.transform)
-                : transform.gameObject;
-
-            _attackSphere.name = _attackSphereIdentifier;
-            if (radius != 0)
-            {
-                _attackSphere.GetComponent<SphereCollider>().radius = radius;
-            }
-            _attackSphere.SetActive(false);
-        }
-
-        public async void Attack()
-        {
-            _attackSphere.SetActive(true);
-            await UniTask.Delay(TimeSpan.FromSeconds(1f));
-            if (_attackSphere != null)
-            {
-                _attackSphere.SetActive(false);
-            }
-        }
-    }
-
-
-
-
-
     public class MockAttack : IAttack
     {
         public void Attack()
         {
-            //Impl Later...
+            //Stub
         }
     }
+    
     // public class ChooseRandomAttack : IAttack
     // {
     //     private List<IAttack> _attacks;
