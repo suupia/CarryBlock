@@ -240,8 +240,7 @@ namespace Main
         {
             _context.Rb.AddForce(input * _context.Acceleration, ForceMode.Acceleration);
 
-            var velocity = _context.Rb.velocity;
-            velocity.y = 0;
+            var velocity = Utility.SetYToZero(_context.Rb.velocity);
             if (velocity.magnitude >= _context.MaxVelocity)
             {
                 velocity = _context.MaxVelocity * velocity.normalized;

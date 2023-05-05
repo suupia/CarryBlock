@@ -64,7 +64,7 @@ namespace Decoration
         /// </summary>
         /// <param name="data"></param>
         /// <param name="hp"></param>
-        public void OnRendered(ref Data data, int hp)
+        public void OnRendered(Data data, int hp)
         {
             var direction = data.Direction;
             _decorations.ForEach(d => d.OnChangeDirection(direction));

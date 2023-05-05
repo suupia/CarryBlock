@@ -76,7 +76,7 @@ namespace Animations.Tests
             //Decoration側の理想としては、OnRenderedの中でOnMovedが呼ばれる
             //そのため、動き系の処理と同じループ頻度でOnRenderedは呼んでほしい
             //ただ、トルク系は動きが残るので大丈夫かも。要検討
-            _playerDecorationDetector.OnRendered(ref DecorationDataRef, Hp);
+            _playerDecorationDetector.OnRendered(DecorationDataRef, Hp);
         }
     }
 }

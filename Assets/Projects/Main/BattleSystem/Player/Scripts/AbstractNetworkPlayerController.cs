@@ -128,7 +128,7 @@ namespace Main
 
         public override void Render()
         {
-            _decorationDetector.OnRendered(ref DecorationDataRef, PlayerStruct.Hp);
+            _decorationDetector.OnRendered(DecorationDataRef, PlayerStruct.Hp);
         }
 
 

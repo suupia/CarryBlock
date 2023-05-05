@@ -11,7 +11,7 @@ namespace Decoration
         private int _preHp;
         private int _preJumpCount;
 
-        public struct Data: INetworkStruct
+        public struct Data : INetworkStruct
         {
             public int TackleCount;
             public int JumpCount;
@@ -21,6 +21,7 @@ namespace Decoration
         {
             _decorations = decorations.ToList();
         }
+
         public void OnStartTackle(ref Data data)
         {
             data.TackleCount++;
@@ -30,47 +31,56 @@ namespace Decoration
         {
             data.TackleCount--;
         }
-        
-        
+
+
         public void OnStartJump(ref Data data)
         {
             data.JumpCount++;
         }
-        
+
         public void OnEndJump(ref Data data)
         {
             data.JumpCount--;
         }
 
-        public void OnRendered(ref Data data, int hp)
+        public void OnRendered(Data data, int hp)
         {
             _decorations.ForEach(d => d.OnMoved());
-            
+
+            CheckTackle(data);
+
+            CheckJump(data);
+
+
+            if (hp != _preHp) OnChangedHp(hp);
+        }
+
+        private void CheckTackle(Data data)
+        {
             if (data.TackleCount > _preTackleCount)
             {
                 _decorations.ForEach(d => d.OnTackle(true));
                 _preTackleCount = data.TackleCount;
             }
-            if (data.TackleCount < _preTackleCount)
+            else if (data.TackleCount < _preTackleCount)
             {
                 _decorations.ForEach(d => d.OnTackle(false));
                 _preTackleCount = data.TackleCount;
             }
-            
+        }
+
+        private void CheckJump(Data data)
+        {
             if (data.JumpCount > _preJumpCount)
             {
                 _decorations.ForEach(d => d.OnJump(true));
                 _preJumpCount = data.JumpCount;
             }
-            if (data.JumpCount < _preJumpCount)
+            else if (data.JumpCount < _preJumpCount)
             {
                 _decorations.ForEach(d => d.OnJump(false));
                 _preJumpCount = data.JumpCount;
             }
-
-            
-            if (hp != _preHp) OnChangedHp(hp);
-
         }
 
         private void OnChangedHp(int hp)
@@ -86,6 +96,5 @@ namespace Decoration
 
             _preHp = hp;
         }
-
     }
 }

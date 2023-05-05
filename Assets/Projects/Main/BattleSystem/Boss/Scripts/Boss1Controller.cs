@@ -87,7 +87,7 @@ namespace Boss
                 }, SpeedyMove);
 
 
-        private string DebugText => $"State: {_state}, Move: {_move}, Attack: {_attack}";
+        private string DebugText => $"State: {_state}\nMove: {_move}\nAttack: {_attack}";
 
         private void Start()
         {
@@ -283,13 +283,13 @@ namespace Boss
 
         public override void Render()
         {
-            _decorationDetector.OnRendered(ref DecorationDataRef, Hp);
+            _decorationDetector.OnRendered(DecorationDataRef, Hp);
         }
 
         private void OnGUI()
         {
             // ラベルを表示
-            GUI.Label(new Rect(10, 10, 600, 20), DebugText);
+            GUI.Label(new Rect(10, 10, 600, 100), DebugText);
 
             // // ボタンを表示
             // if (GUI.Button(new Rect(10, 40, 100, 20), "Click me"))
