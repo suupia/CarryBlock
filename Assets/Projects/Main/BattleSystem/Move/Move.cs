@@ -22,6 +22,26 @@ namespace Main
     }
 
     /// <summary>
+    /// 複数のMoveを一括管理する
+    /// </summary>
+    public class CombinationMove : IMove
+    {
+        private IMove[] _moves;
+        public CombinationMove(params IMove[] moves)
+        {
+            _moves = moves;
+        }
+        public void Move(Vector3 input = default)
+        {
+            foreach (var move in _moves)
+            {
+                move.Move(input);
+            }
+        }
+    }
+    
+
+    /// <summary>
     /// ふらふら歩く動き
     /// 引数を指定しない想定
     /// 引数を指定すると、moveの動きになるが、あまり使用する意味はない
@@ -40,15 +60,7 @@ namespace Main
         private Vector3 _simulatedInput;
         private readonly CancellationTokenSource _cancellationTokenSource;
 
-        public WanderingMove(IMove move) :
-            this(move, new Context()
-            {
-                InputSimulationFrequency = 2f
-            })
-        {
-        }
-
-        public WanderingMove(IMove move, Context context)
+        public WanderingMove(Context context, IMove move)
         {
             _cancellationTokenSource = new CancellationTokenSource();
             _move = move;
@@ -107,11 +119,15 @@ namespace Main
         }
     }
 
-    //rigidBodyで動き、transformで回転
+    /// <summary>
+    /// rigidBodyで動き、transformで回転
+    /// Jumpと組み合わさることを考えて、スピード制限はyを除いて行う
+    /// </summary>
     public class SimpleMove : IMove
     {
         public struct Context
         {
+            public GameObject GameObject;
             public float Acceleration;
             public float MaxVelocity;
         }
@@ -120,17 +136,10 @@ namespace Main
         private Rigidbody _rd;
         private Context _context;
 
-        public SimpleMove(GameObject gameObject) : this(gameObject, new Context()
+        public SimpleMove(Context context)
         {
-            Acceleration = 30f, MaxVelocity = 1f
-        })
-        {
-        }
-
-        public SimpleMove(GameObject gameObject, Context context)
-        {
-            _transform = gameObject.transform;
-            _rd = gameObject.GetComponent<Rigidbody>();
+            _transform = context.GameObject.transform;
+            _rd = context.GameObject.GetComponent<Rigidbody>();
             _context = context;
         }
 
@@ -141,10 +150,14 @@ namespace Main
             var dirToGo = input + _transform.position;
             _transform.LookAt(dirToGo);
             _rd.AddForce(_transform.forward * _context.Acceleration, ForceMode.Acceleration);
-            if (_rd.velocity.magnitude >= _context.MaxVelocity)
+
+            var velocity = _rd.velocity;
+            velocity.y = 0;
+            if (velocity.magnitude >= _context.MaxVelocity)
             {
-                _rd.velocity = _context.MaxVelocity * _rd.velocity.normalized;
-                
+                velocity = _context.MaxVelocity * velocity.normalized;
+                velocity.y = _rd.velocity.y;
+                _rd.velocity = velocity;
             }
         }
     }

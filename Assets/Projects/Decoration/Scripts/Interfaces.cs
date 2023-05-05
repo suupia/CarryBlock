@@ -50,5 +50,6 @@ namespace Decoration
     public interface IBoss1Decoration : IEntityDecoration
     {
         void OnTackle(bool onStart);
+        void OnJump(bool onStart);
     }
 }

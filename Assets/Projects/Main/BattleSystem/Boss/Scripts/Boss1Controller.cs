@@ -1,32 +1,41 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Animations;
 using Decoration;
 using Fusion;
 using Main;
 using UnityEngine;
+using Assert = UnityEngine.Assertions.Assert;
+using Random = UnityEngine.Random;
 
 namespace Boss
 {
     public class Boss1Controller : NetworkBehaviour
     {
-        enum State
+        private enum State
         {
             None,
             Lost,
-            Detected
+            Detected,
+            Jumping,
+            ChargingJump,
         }
 
         [SerializeField] private GameObject modelObject;
 
-        [Networked] ref Boss1DecorationDetector.Data DecorationDataRef => ref MakeRef<Boss1DecorationDetector.Data>();
 
+        private const float JumpTime = 2f;
+        private const float ChargeJumpTime = 0.5f;
+
+        [Networked]
+        private ref Boss1DecorationDetector.Data DecorationDataRef => ref MakeRef<Boss1DecorationDetector.Data>();
+
+        //Timer
         [Networked] private TickTimer AttackTimer { get; set; }
+        [Networked] private TickTimer SetAsWillStateTimer { get; set; }
 
         [Networked] private int Hp { get; set; } = 1;
-
-        private IMove DefaultMove => new SimpleMove(gameObject);
-        private string DebugText => $"State: {_state}";
 
         private bool IsLostPlayers => _colliders.Length == 0;
 
@@ -36,22 +45,58 @@ namespace Boss
 
         private IMove _move;
         private ISearch _search;
-        private IAttack _attack; 
-        
+        private IAttack _attack;
+
         private Boss1DecorationDetector _decorationDetector;
+
         private readonly HashSet<Transform> _targetBuffer = new();
-        private Collider[] _colliders;
+        private Collider[] _colliders = {};
+        private Rigidbody _rd;
+        private State _willState;
+
+
+        //Define Template Moves 
+        private IMove DefaultMove => new SimpleMove(new SimpleMove.Context()
+        {
+            GameObject = gameObject,
+            Acceleration = 20f,
+            MaxVelocity = 1f
+        });
+        private IMove SpeedyMove => new SimpleMove(new SimpleMove.Context()
+        {
+            GameObject = gameObject,
+            Acceleration = 30f,
+            MaxVelocity = 2f
+        });
+
+        private IMove WanderingMove => new WanderingMove(
+            context: new WanderingMove.Context()
+            {
+                InputSimulationFrequency = 2f
+            },
+            move: DefaultMove
+        );
+
+        private IMove ToTargetMove => new ToTargetMove(transform, SpeedyMove);
+
+
+        private string DebugText => $"State: {_state}, Move: {_move}, Attack: {_attack}";
+
+        private void Start()
+        {
+            _rd = GetComponent<Rigidbody>();
+        }
 
         public override void Spawned()
         {
             SetUp();
         }
 
-        void SetUp()
+        private void SetUp()
         {
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
-            
-            SetMove(new WanderingMove(DefaultMove));
+            _attack = null;
+            _move = WanderingMove;
             _search = new RangeSearch(transform, 6, LayerMask.GetMask("Player"));
         }
 
@@ -62,11 +107,18 @@ namespace Boss
             //Move
             if (_attack is ITargetAttack attack && attack.Target != null)
             {
-                _move.Move(attack.Target.position);
+                _move?.Move(attack.Target.position);
             }
             else
             {
-                _move.Move();
+                _move?.Move();
+            }
+
+
+            if (SetAsWillStateTimer.Expired(Runner))
+            {
+                SetAsWillStateTimer = TickTimer.None;
+                SetState(_willState);
             }
 
             if (AttackTimer.ExpiredOrNotRunning(Runner))
@@ -74,68 +126,142 @@ namespace Boss
                 //Search
                 _colliders = _search.Search();
 
+                //Set Detected Targets
+                _targetBuffer.Clear();
+                _targetBuffer.UnionWith(_colliders.Map(c => c.transform));
+
                 if (IsLostPlayers)
                 {
                     SetState(State.Lost);
                 }
                 else
                 {
-                    SetState(State.Detected);
+                    //前の状態がLostなら、新しい攻撃状態に入る
+                    if (_state == State.Lost)
+                    {
+                        // SetState(State.Detected);
+                        var detectedStates = new[] { State.ChargingJump, State.Detected };
+                        SetState(detectedStates[Random.Range(0, detectedStates.Length)]);
+                    }
                     
-                    _targetBuffer.Clear();
-                    _targetBuffer.UnionWith(_colliders.Map(c => c.transform));
-
                     //Attack
-                    _attack.Attack();
+                    _attack?.Attack();
 
                     //SetTimer
                     //攻撃時のクールタイムを設定する
-                    AttackTimer = TickTimer.CreateFromSeconds(Runner, 3f);
+                    AttackTimer = TickTimer.CreateFromSeconds(Runner, 4f);
                 }
             }
         }
-        
-        //Do not call in Render loop
+
+        //Do not call in Client loop
         //HostのFixedUpdateNetworkでのみ呼び出す想定
-        void SetState(State state)
+        private void SetState(State state)
         {
             if (_state == state) return;
+
+            var preState = _state;
             _state = state;
 
-            
+            //新しい状態がJumpingのとき、前の状態はChargingJumpである
+            Assert.IsTrue(state != State.Jumping || preState == State.ChargingJump);
+
+            // Debug.Log($"State was changed to {state}");
+
+            if (_move is IDisposable move)
+            {
+                move.Dispose();
+            }
+
             switch (state)
             {
                 case State.None:
                     break;
                 case State.Lost:
                     _attack = null;
-                    _decorationDetector.OnEndTackle(ref DecorationDataRef);
-                    SetMove(new WanderingMove(DefaultMove));
+                    switch (preState)
+                    {
+                        case State.None:
+                            break;
+                        case State.Lost:
+                            break;
+                        case State.Detected:
+                            _decorationDetector.OnEndTackle(ref DecorationDataRef);
+                            break;
+                        case State.Jumping:
+                            _decorationDetector.OnEndJump(ref DecorationDataRef);
+                            break;
+                        case State.ChargingJump:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                    _move = WanderingMove; //ふらつく動き
                     break;
                 case State.Detected:
-                    _attack = new ToNearestAttack(transform, _targetBuffer, new ToTargetAttack(gameObject));
+                    _attack = new ToNearestAttack(
+                        transform,
+                        _targetBuffer,
+                        new ToTargetAttack(
+                            gameObject,
+                            new MockAttack()
+                        )
+                    );
                     _decorationDetector.OnStartTackle(ref DecorationDataRef);
-                    SetMove(new ToTargetMove(transform, DefaultMove));
+                    _move = ToTargetMove; //ターゲットに向かう動き
+                    break;
+                case State.Jumping:
+                    _move = ToTargetMove;
+                    MoveUtility.Jump(_rd, JumpTime); //ジャンプのインパルスを与える
+
+                    DelaySetState(State.Lost, JumpTime);
+                    break;
+                case State.ChargingJump:
+                    //Jumpのためのセットアップ
+                    _attack = new ToNearestAttack(
+                        transform,
+                        _targetBuffer,
+                        new ToTargetAttack(
+                            gameObject,
+                            new DelayAttack(
+                                JumpTime + ChargeJumpTime,
+                                new RangeAttack(gameObject, 3)
+                            )
+                        )
+                    );
+                    _decorationDetector.OnStartJump(ref DecorationDataRef);
+                    _move = null;
+
+                    DelaySetState(State.Jumping, ChargeJumpTime);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
-
         }
 
-        void SetMove(IMove move)
-        {
-            if (_move is IDisposable preMove)
-            {
-                preMove.Dispose();
-            }
 
-            _move = move;
+        private void DelaySetState(State state, float delay)
+        {
+            // Debug.Log($"Delay set called to {state}");
+            SetAsWillStateTimer = TickTimer.CreateFromSeconds(Runner, delay);
+            _willState = state;
         }
 
         public override void Render()
         {
             _decorationDetector.OnRendered(ref DecorationDataRef, Hp);
+        }
+
+        private void OnGUI()
+        {
+            // ラベルを表示
+            GUI.Label(new Rect(10, 10, 600, 20), DebugText);
+
+            // // ボタンを表示
+            // if (GUI.Button(new Rect(10, 40, 100, 20), "Click me"))
+            // {
+            //     _message = "Button clicked!";
+            // }
         }
     }
 }
