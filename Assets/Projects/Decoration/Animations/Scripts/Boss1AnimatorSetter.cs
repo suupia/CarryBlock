@@ -14,6 +14,7 @@ namespace Animations
         private static readonly int Tackling = Animator.StringToHash("Tackling");
         private static readonly int Jumping = Animator.StringToHash("Jumping");
         private static readonly int SpitOut = Animator.StringToHash("SpitOut");
+        private static readonly int Vacuuming = Animator.StringToHash("Vacuuming");
 
         public Boss1AnimatorSetter(GameObject gameObject)
         {
@@ -41,6 +42,11 @@ namespace Animations
         public void OnSpitOut()
         {
             _animator.SetTrigger(SpitOut);
+        }
+
+        public void OnVacuum(bool onStart)
+        {
+            _animator.SetBool(Vacuuming, onStart);
         }
 
         public void OnDamaged()

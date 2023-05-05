@@ -6,6 +6,7 @@ using Decoration;
 using Fusion;
 using Main;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Assert = UnityEngine.Assertions.Assert;
 using Random = UnityEngine.Random;
 
@@ -17,15 +18,18 @@ namespace Boss
         {
             None,
             Lost,
-            Detected,
+            Tackling,
             Jumping,
             ChargingJump,
             SpitOut,
+            Vacuuming,
         }
 
         [SerializeField] private GameObject modelObject;
-        [SerializeField] private State overrideState;
         [SerializeField] private Transform finSpawnerTransform;
+        [SerializeField] private State overrideOnDetectedState;
+        [SerializeField] private bool showGizmos;
+        [SerializeField] private bool showGUI;
 
         private const float JumpTime = 2f;
         private const float ChargeJumpTime = 0.5f;
@@ -61,7 +65,7 @@ namespace Boss
 
         //TODO: より良い管理方法を考える
         //Trigger的なDecorationはAttackが呼ばれるたびに呼んでほしい
-        Action _onAttack = () => { };
+        private Action _onAttack = () => { };
 
         //Define Template Moves 
         private IMove DefaultMove => new SimpleMove(new SimpleMove.Context()
@@ -167,12 +171,12 @@ namespace Boss
 
         private State ChooseState()
         {
-            if (overrideState != State.None)
+            if (overrideOnDetectedState != State.None)
             {
-                return overrideState;
+                return overrideOnDetectedState;
             }
 
-            var detectedStates = new[] { State.ChargingJump, State.Detected, State.SpitOut };
+            var detectedStates = new[] { State.ChargingJump, State.Tackling, State.SpitOut, State.Vacuuming };
             var state = detectedStates[Random.Range(0, detectedStates.Length)];
             return state;
         }
@@ -228,18 +232,21 @@ namespace Boss
                     _attack = null;
                     switch (preState)
                     {
-                        case State.Detected:
+                        case State.Tackling:
                             _decorationDetector.OnEndTackle(ref DecorationDataRef);
                             break;
                         case State.Jumping:
                             _decorationDetector.OnEndJump(ref DecorationDataRef);
+                            break;
+                        case State.Vacuuming:
+                            _decorationDetector.OnEndVacuum(ref DecorationDataRef);
                             break;
                     }
 
                     _onAttack = () => { };
                     _move = WanderingMove; //ふらつく動き
                     break;
-                case State.Detected:
+                case State.Tackling:
                     _attack = new ToNearestAttack(
                         new TargetBufferAttack.Context()
                         {
@@ -307,6 +314,18 @@ namespace Boss
                     _onAttack = () => { _decorationDetector.OnSpitOut(ref DecorationDataRef); };
                     _move = LookAtTargetMove;
                     break;
+                case State.Vacuuming:
+                    _attack = new ToNearestAttack(
+                        new TargetBufferAttack.Context()
+                        {
+                            Transform = transform,
+                            TargetBuffer = _targetBuffer
+                        },
+                        new ToTargetAttack(gameObject, new MockAttack())
+                    );
+                    _decorationDetector.OnStartVacuum(ref DecorationDataRef);
+                    _move = LookAtTargetMove;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
@@ -314,6 +333,7 @@ namespace Boss
 
 
         //TickTimerを用いて、状態を遅延セット
+        //このクラスのメンバ変数を使うので完璧に動くわけではない
         private void DelaySetState(State state, float delay)
         {
             // Debug.Log($"Delay set called to {state}");
@@ -329,6 +349,7 @@ namespace Boss
 
         private void OnGUI()
         {
+            if (!showGUI) return;
             // ラベルを表示
             GUI.Label(new Rect(10, 10, 600, 150), DebugText);
 
@@ -341,6 +362,8 @@ namespace Boss
 
         private void OnDrawGizmos()
         {
+            if (!showGizmos) return;
+            //サーチ範囲を表示
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, SearchRadius);
         }

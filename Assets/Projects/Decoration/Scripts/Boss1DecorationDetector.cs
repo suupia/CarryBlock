@@ -11,12 +11,14 @@ namespace Decoration
         private int _preHp;
         private int _preJumpCount;
         private int _preSpitOutCount;
+        private int _preVacuumCount;
 
         public struct Data : INetworkStruct
         {
             public int TackleCount;
             public int JumpCount;
             public int SpitOutCount;
+            public int VacuumCount;
         }
 
         public Boss1DecorationDetector(params IBoss1Decoration[] decorations)
@@ -49,6 +51,17 @@ namespace Decoration
         {
             data.SpitOutCount++;
         }
+        
+        
+        public void OnStartVacuum(ref Data data)
+        {
+            data.VacuumCount++;
+        }
+
+        public void OnEndVacuum(ref Data data)
+        {
+            data.VacuumCount--;
+        }
 
         public void OnRendered(Data data, int hp)
         {
@@ -57,13 +70,21 @@ namespace Decoration
             CheckTackle(data);
 
             CheckJump(data);
+            
+            CheckVacuum(data);
+            
+            CheckSpitOut(data);
+
+            if (hp != _preHp) OnChangedHp(hp);
+        }
+
+        private void CheckSpitOut(Data data)
+        {
             if (data.SpitOutCount > _preSpitOutCount)
             {
                 _decorations.ForEach(d => d.OnSpitOut());
                 _preSpitOutCount = data.SpitOutCount;
             }
-
-            if (hp != _preHp) OnChangedHp(hp);
         }
 
         private void CheckTackle(Data data)
@@ -93,6 +114,21 @@ namespace Decoration
                 _preJumpCount = data.JumpCount;
             }
         }
+        
+        
+        private void CheckVacuum(Data data)
+        {
+            if (data.VacuumCount > _preVacuumCount)
+            {
+                _decorations.ForEach(d => d.OnVacuum(true));
+                _preVacuumCount = data.VacuumCount;
+            }
+            else if (data.VacuumCount < _preVacuumCount)
+            {
+                _decorations.ForEach(d => d.OnVacuum(false));
+                _preVacuumCount = data.VacuumCount;
+            }
+        }
 
         private void OnChangedHp(int hp)
         {
@@ -107,5 +143,6 @@ namespace Decoration
 
             _preHp = hp;
         }
+
     }
 }
