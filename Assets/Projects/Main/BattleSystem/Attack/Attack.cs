@@ -69,7 +69,7 @@ namespace Main
         public IAttack attack => _attack;
         public override string ToString()
         {
-            return $"{base.ToString()}+{_attack}";
+            return $"({base.ToString()}+{_attack})";
         }
     }
     

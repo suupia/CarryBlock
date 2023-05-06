@@ -31,7 +31,7 @@ namespace Main
         protected IMove _move;
         public override string ToString()
         {
-            return $"{base.ToString()}+{_move}";
+            return $"({base.ToString()}+{_move})";
         }
     }
 

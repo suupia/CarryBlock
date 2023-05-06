@@ -24,7 +24,7 @@ namespace Boss
             Vacuuming,
         }
 
-        struct StateContext
+        private struct StateContext
         {
             public IMove Move;
             public ISearch Search;
@@ -236,7 +236,7 @@ namespace Boss
 
 
         //TickTimerを用いて、状態を遅延セット
-        //このクラスのメンバ変数を使うので完璧に動くわけではない
+        //外部スコープの変数を使うので完璧に動くわけではない
         private void DelaySetState(State state, float delay)
         {
             // Debug.Log($"Delay set called to {state}");
@@ -256,7 +256,7 @@ namespace Boss
             GUI.Label(new Rect(10, 10, 600, 150), DebugText);
 
             // ボタンを表示
-            if (GUI.Button(new Rect(600, 10, 100, 20), "Show in console"))
+            if (GUI.Button(new Rect(600, 10, 120, 20), "Show in console"))
             {
                 Debug.Log(DebugText);
             }
