@@ -65,7 +65,10 @@ namespace Boss
         //Trigger的なDecorationはAttackが呼ばれるたびに呼んでほしい
         private Action _onAttack = () => { };
 
-        private string DebugText => $"State: {_state}\nMove: {_context.Move}\nAttack: {_context.Attack}";
+        private string DebugText =>
+            $"State: {_state}\nMove: {_context.Move}\nAttack: {_context.Attack}" +
+            $"\nMove Target: {(_context.Move as ITargetMove)?.Target}" +
+            $"\nAttack Target: {(_context.Attack as ITargetAttack)?.Target}";
 
         public override void Spawned()
         {
@@ -97,12 +100,9 @@ namespace Boss
         private void Move()
         {
             //Set Target if ITargetMove
-            if (_context.Move is ITargetMove move)
+            if (_context is { Move: ITargetMove move, Attack: ITargetAttack attack })
             {
-                if (_context.Attack is ITargetAttack attack)
-                {
-                    move.Target = attack.Target;
-                }
+                move.Target = attack.Target;
             }
 
             //Move
@@ -138,6 +138,7 @@ namespace Boss
                     }
 
                     //Attack
+                    // Debug.Log($"Now attack is {_context.Attack}");
                     _context.Attack?.Attack();
                     _onAttack(); //Assume calling Decoration callback
 
@@ -165,10 +166,11 @@ namespace Boss
             if (SetAsWillStateTimer.Expired(Runner))
             {
                 SetAsWillStateTimer = TickTimer.None;
+                AttackTimer = TickTimer.None;
                 SetState(_willState);
             }
         }
-        
+
         //Do not call in Client loop
         //HostのFixedUpdateNetworkでのみ呼び出す想定
         private void SetState(State state)
@@ -180,7 +182,7 @@ namespace Boss
             Assert.IsTrue(state != State.Jumping || preState == State.ChargingJump);
             //Noneには遷移しない。Noneはクライアント用の状態
             Assert.IsFalse(state == State.None);
-            
+
             if (_context.Move is IDisposable move)
             {
                 move.Dispose();
@@ -245,18 +247,17 @@ namespace Boss
             _decorationDetector.OnRendered(DecorationDataRef, Hp);
         }
 
-
         private void OnGUI()
         {
             if (!showGUI) return;
             // ラベルを表示
             GUI.Label(new Rect(10, 10, 600, 150), DebugText);
 
-            // // ボタンを表示
-            // if (GUI.Button(new Rect(10, 40, 100, 20), "Click me"))
-            // {
-            //     _message = "Button clicked!";
-            // }
+            // ボタンを表示
+            if (GUI.Button(new Rect(600, 10, 100, 20), "Show in console"))
+            {
+                Debug.Log(DebugText);
+            }
         }
 
         private void OnDrawGizmos()
