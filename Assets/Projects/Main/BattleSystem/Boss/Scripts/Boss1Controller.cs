@@ -29,6 +29,7 @@ namespace Boss
             public IMove Move;
             public ISearch Search;
             public IAttack Attack;
+            public float AttackCoolTime;
         }
 
         [SerializeField] private GameObject modelObject;
@@ -146,7 +147,7 @@ namespace Boss
 
                     //SetTimer
                     //攻撃時のクールタイムを設定する
-                    AttackTimer = TickTimer.CreateFromSeconds(Runner, 4f);
+                    AttackTimer = TickTimer.CreateFromSeconds(Runner, _context.AttackCoolTime);
                 }
             }
         }
@@ -192,7 +193,9 @@ namespace Boss
 
             _state = state;
             _context = _get[_state]();
-
+            
+            //Attackがnullでないとき、AttackCoolTimeは必須
+            Assert.IsTrue(_context.Attack == null || _context.AttackCoolTime > 0);
 
             switch (state)
             {

@@ -13,18 +13,20 @@ namespace Boss
         private const float JumpAttackRadius = 3f;
         private const float ChargeSpitOutTime = 1.5f;
         private const float SearchRadius = 6f;
+        private const float DefaultAttackCoolTime = 4f;
 
-        private readonly State[] _detectedStates =  { State.ChargingJump, State.Tackling, State.SpitOut, State.Vacuuming };
+        private readonly State[] _detectedStates =
+            { State.ChargingJump, State.Tackling, State.SpitOut, State.Vacuuming };
 
         //Define Template Moves 
-        private IMove DefaultMove => new SimpleMove(new SimpleMove.Context()
+        private IMove DefaultMove => new SimpleMove(new SimpleMove.Context
         {
             GameObject = gameObject,
             Acceleration = 20f,
             MaxVelocity = 1f
         });
 
-        private IMove SpeedyMove => new SimpleMove(new SimpleMove.Context()
+        private IMove SpeedyMove => new SimpleMove(new SimpleMove.Context
         {
             GameObject = gameObject,
             Acceleration = 30f,
@@ -32,7 +34,7 @@ namespace Boss
         });
 
         private IMove WanderingMove => new WanderingMove(
-            context: new WanderingMove.Context()
+            context: new WanderingMove.Context
             {
                 InputSimulationFrequency = 2f
             },
@@ -41,7 +43,7 @@ namespace Boss
 
         private IMove ToTargetMove =>
             new ToTargetMove(
-                new ToTargetMove.Context()
+                new ToTargetMove.Context
                 {
                     Transform = transform
                 }, SpeedyMove);
@@ -73,44 +75,49 @@ namespace Boss
                 {
                     State.Tackling, () => new StateContext
                     {
-                        Attack = new ToNearestAttack(
-                            new TargetBufferAttack.Context()
+                        Attack = new ToNearestAttack(new TargetBufferAttack.Context
                             {
                                 Transform = transform,
                                 TargetBuffer = _targetBuffer
                             },
                             new ToTargetAttack(
                                 gameObject,
-                                new MockAttack()
+                                new RangeAttack(new RangeAttack.Context
+                                {
+                                    Transform = transform,
+                                    Radius = 2f,
+                                    AttackSphereLifeTime = 0.5f
+                                })
                             )
                         ),
+                        AttackCoolTime = 1,
                         Move = ToTargetMove,
                         Search = DefaultSearch
                     }
                 },
                 {
-                    State.Jumping, () =>
+                    State.Jumping, () => new StateContext
                     {
-                        GameObject o;
-                        return new StateContext
-                        {
-                            Attack = new ToNearestAttack(
-                                new TargetBufferAttack.Context()
-                                {
-                                    Transform = transform,
-                                    TargetBuffer = _targetBuffer
-                                },
-                                new ToTargetAttack(
-                                    (o = gameObject),
-                                    new DelayAttack(
-                                        JumpTime,
-                                        new RangeAttack(o, JumpAttackRadius)
-                                    )
+                        Attack = new ToNearestAttack(new TargetBufferAttack.Context
+                            {
+                                Transform = transform,
+                                TargetBuffer = _targetBuffer
+                            },
+                            new ToTargetAttack(
+                                gameObject,
+                                new DelayAttack(
+                                    JumpTime,
+                                    new RangeAttack(new RangeAttack.Context
+                                    {
+                                        Transform = transform,
+                                        Radius = JumpAttackRadius
+                                    })
                                 )
-                            ),
-                            Move = ToTargetMove,
-                            Search = DefaultSearch
-                        };
+                            )
+                        ),
+                        AttackCoolTime = DefaultAttackCoolTime,
+                        Move = ToTargetMove,
+                        Search = DefaultSearch
                     }
                 },
                 {
@@ -121,10 +128,9 @@ namespace Boss
                     }
                 },
                 {
-                    State.SpitOut, () => new StateContext()
+                    State.SpitOut, () => new StateContext
                     {
-                        Attack = new ToFurthestAttack(
-                            new TargetBufferAttack.Context()
+                        Attack = new ToFurthestAttack(new TargetBufferAttack.Context
                             {
                                 Transform = transform,
                                 TargetBuffer = _targetBuffer
@@ -133,8 +139,7 @@ namespace Boss
                                 gameObject,
                                 new DelayAttack(
                                     ChargeSpitOutTime,
-                                    new LaunchNetworkObjectAttack(
-                                        new LaunchNetworkObjectAttack.Context()
+                                    new LaunchNetworkObjectAttack(new LaunchNetworkObjectAttack.Context
                                         {
                                             Runner = Runner,
                                             From = finSpawnerTransform,
@@ -144,21 +149,22 @@ namespace Boss
                                 )
                             )
                         ),
+                        AttackCoolTime = DefaultAttackCoolTime,
                         Move = LookAtTargetMove,
                         Search = DefaultSearch,
                     }
                 },
                 {
-                    State.Vacuuming, () => new StateContext()
+                    State.Vacuuming, () => new StateContext
                     {
-                        Attack = new ToNearestAttack(
-                            new TargetBufferAttack.Context()
+                        Attack = new ToNearestAttack(new TargetBufferAttack.Context
                             {
                                 Transform = transform,
                                 TargetBuffer = _targetBuffer
                             },
                             new ToTargetAttack(gameObject, new MockAttack())
                         ),
+                        AttackCoolTime = DefaultAttackCoolTime,
                         Move = LookAtTargetMove,
                         Search = DefaultSearch
                     }

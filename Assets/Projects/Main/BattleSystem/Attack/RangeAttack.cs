@@ -22,39 +22,58 @@ namespace Main
         private static readonly GameObject AttackSpherePrefab = Resources.Load<GameObject>("Prefabs/Attacks/AttackSphere");
 
         private const string AttackSphereIdentifier = "AttackSphere";
+        
+        public struct Context
+        {
+            public Transform Transform;
+            public float Radius;
+            public float AttackSphereLifeTime;
+        }
 
+        private Context _context;
         private readonly GameObject _attackSphere;
 
         /// <summary>
         /// radiusが0（指定しない）なら、プレハブの値が採用される
         /// </summary>
-        /// <param name="gameObject"></param>
-        /// <param name="radius"></param>
-        public RangeAttack([NotNull] GameObject gameObject, float radius = 0)
+        /// <param name="context"></param>
+        public RangeAttack(Context context)
         {
             //プレハブの存在確認
             Assert.IsNotNull(AttackSpherePrefab);
             //radiusは正
-            Assert.IsTrue(radius >= 0);
+            Assert.IsTrue(context.Radius >= 0);
+            Assert.IsTrue(context.AttackSphereLifeTime >= 0);
+
+            var name = $"{AttackSphereIdentifier}:radius{context.Radius}";
             
             //攻撃用オブジェクトの初期化
-            var transform = gameObject.transform.Find(AttackSphereIdentifier);
+            var transform = context.Transform.Find(name);
             _attackSphere = transform == null
-                ? Object.Instantiate(AttackSpherePrefab, gameObject.transform)
+                ? Object.Instantiate(AttackSpherePrefab, context.Transform)
                 : transform.gameObject;
 
-            _attackSphere.name = AttackSphereIdentifier;
-            if (radius != 0)
+            _attackSphere.name = name;
+            if (context.Radius != 0)
             {
-                _attackSphere.GetComponent<SphereCollider>().radius = radius;
+                _attackSphere.GetComponent<SphereCollider>().radius = context.Radius;
             }
+            
+            if (context.AttackSphereLifeTime == 0)
+            {
+                context.AttackSphereLifeTime = 1f;
+            }
+            
             _attackSphere.SetActive(false);
+            
+            _context = context;
+
         }
 
         public async void Attack()
         {
             _attackSphere.SetActive(true);
-            await UniTask.Delay(TimeSpan.FromSeconds(1f));
+            await UniTask.Delay(TimeSpan.FromSeconds(_context.AttackSphereLifeTime));
             if (_attackSphere != null)
             {
                 _attackSphere.SetActive(false);
