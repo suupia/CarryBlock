@@ -88,7 +88,7 @@ namespace Exp.Tests
         [Test]
         public void TestAbnormalState()
         {
-            _ec = new ExpContainer(100, 100);
+            _ec = new ExpContainer(100);
             Assert.That(_ec.Level, Is.EqualTo(2));
         }
 

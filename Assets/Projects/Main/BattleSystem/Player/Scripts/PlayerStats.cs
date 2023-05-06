@@ -29,10 +29,8 @@ namespace Main
             stats.Hp -= damage;
             Debug.Log($"Player HP = {stats.Hp}");
             if (stats.Hp <= 0)
-            {
                 //ToDo : dead
                 stats.IsAlive = false;
-            }
         }
     }
 }

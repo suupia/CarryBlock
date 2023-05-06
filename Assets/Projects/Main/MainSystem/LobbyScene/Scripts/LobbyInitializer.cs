@@ -8,10 +8,10 @@ namespace Main
     [DisallowMultipleComponent]
     public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
-        EnemySpawner _enemySpawner;
         readonly LobbyNetworkPlayerContainer _lobbyNetworkPlayerContainer = new();
-        LobbyNetworkPlayerSpawner _lobbyNetworkPlayerSpawner;
         readonly NetworkEnemyContainer _networkEnemyContainer = new();
+        EnemySpawner _enemySpawner;
+        LobbyNetworkPlayerSpawner _lobbyNetworkPlayerSpawner;
 
         async void Start()
         {

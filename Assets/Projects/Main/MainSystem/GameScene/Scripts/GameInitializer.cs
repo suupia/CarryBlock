@@ -9,8 +9,8 @@ namespace Main
     {
         [SerializeField] NetworkWaveTimer _networkWaveTimer;
         readonly NetworkPlayerContainer _abstractNetworkPlayerContainer = new();
-        EnemySpawner _enemySpawner;
         readonly NetworkEnemyContainer _networkEnemyContainer = new();
+        EnemySpawner _enemySpawner;
         NetworkPlayerSpawner _networkPlayerSpawner;
 
         async void Start()

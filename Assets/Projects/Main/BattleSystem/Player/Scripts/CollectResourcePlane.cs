@@ -5,10 +5,10 @@ namespace Main
 {
     public class CollectResourcePlane : IUnit
     {
-        readonly NetworkRunner _runner;
         readonly IUnitAction _action;
         readonly PlayerInfo _info;
         readonly IMove _move;
+        readonly NetworkRunner _runner;
 
         public CollectResourcePlane(PlayerInfo info)
         {
@@ -52,10 +52,10 @@ namespace Main
 
     public class EstablishSubBasePlane : IUnit
     {
-        readonly NetworkRunner _runner;
         readonly IUnitAction _action;
         readonly PlayerInfo _info;
         readonly IMove _move;
+        readonly NetworkRunner _runner;
 
         public EstablishSubBasePlane(PlayerInfo info)
         {

@@ -250,10 +250,8 @@ namespace Main
                 directionVec; // Calculate the acceleration so that the velocity in the next frame aligns with the direction of deltaVector
             var accelerationVector = (nextVelocity - pickerVelocity) / Time.fixedDeltaTime;
             if (accelerationVector.magnitude > acceleration)
-            {
                 //Debug.Log($"accelerationVector.magnitude is large");
                 accelerationVector = acceleration * deltaVector.normalized;
-            }
 
             //Debug.Log($"accelerationVector.magnitude is calculated correctly");
             //Debug.Log($"accelerationVector:{accelerationVector}, accelerationVector.magnitude:{accelerationVector.magnitude}");
