@@ -1,6 +1,3 @@
-using Fusion;
-using System;
-using System.Linq;
 using UnityEngine;
 
 namespace Main
@@ -15,10 +12,10 @@ namespace Main
 
     public interface IEnemyStats
     {
-        void OnAttacked(ref NetworkPlayerStruct networkPlayerStruct,int damage);
+        void OnAttacked(ref NetworkPlayerStruct networkPlayerStruct, int damage);
     }
+
     public class EnemyInfo
     {
-        
     }
 }

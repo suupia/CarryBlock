@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Cysharp.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using Fusion;
+using UnityEngine;
 
 namespace Main
 {
-    
     public interface IPickerContext
     {
         public IPickerState CurrentState();
@@ -20,26 +18,32 @@ namespace Main
         public void Process(IPickerContext state);
     }
 
-    public class NetworkPickerController :  PoolableObject
+    public class NetworkPickerController : PoolableObject
     {
-        bool isInitialized = false;
-
         // Pure
         [SerializeField] PickerInfo pickerInfo;
-        IPickerContext pickerContext;
 
 
         // Components
-        List<GameObject> baseObjs = new List<GameObject>();
+        List<GameObject> baseObjs = new();
+        bool isInitialized;
+        IPickerContext pickerContext;
+
+        private void FixedUpdate()
+        {
+            if (!isInitialized) return;
+
+            pickerContext.CurrentState().Process(pickerContext);
+        }
 
 
         public void Init(NetworkRunner runner, GameObject playerObj, PlayerInfoForPicker info)
         {
             Debug.Log($"infoWrapper.RangeRadius:{info.RangeRadius}");
-            
+
             pickerInfo = new PickerInfo(runner, Object, info);
             pickerInfo.SetPlayerObj(playerObj);
-            baseObjs.Add( GameObject.FindWithTag("MainBase"));
+            baseObjs.Add(GameObject.FindWithTag("MainBase"));
             baseObjs = baseObjs.Concat(GameObject.FindGameObjectsWithTag("SubBase")).ToList();
             pickerInfo.SetMainBaseObj(baseObjs);
 
@@ -51,15 +55,8 @@ namespace Main
 
         protected override void OnInactive()
         {
-            if(!isInitialized) return;
-            pickerInfo.pickerRd.velocity = Vector3.zero;
-        }
-
-        private void FixedUpdate()
-        {
             if (!isInitialized) return;
-
-            pickerContext.CurrentState().Process(pickerContext);
+            pickerInfo.pickerRd.velocity = Vector3.zero;
         }
 
         // Debug
@@ -76,24 +73,36 @@ namespace Main
     [Serializable]
     public class PickerInfo
     {
-        // runner
-        public readonly NetworkRunner runner;
-        
-        // constant fields
-        public readonly float normalAcceleration = 300f;
         public readonly float carryingAcceleration = 150f;
-        public readonly float normalMaxVelocity = 25;
         public readonly float carryingMaxVelocity = 8;
-        public readonly float decelerationRange = 6;
-        public readonly float estimatedStopTime = 0.3f; // Estimated time to decelerate to a stop
+        public readonly float collectOffset = 1;
 
 
         public readonly float collectRange = 2.0f;
         public readonly float collectTime = 1.2f;
-        public readonly float collectOffset = 1;
+        public readonly float decelerationRange = 6;
+        public readonly float estimatedStopTime = 0.3f; // Estimated time to decelerate to a stop
+
+        // constant fields
+        public readonly float normalAcceleration = 300f;
+        public readonly float normalMaxVelocity = 25;
 
         public readonly float returnToMainBaseRange = 1;
+
         public readonly float returnToPlayerRange = 2.5f;
+
+        // runner
+        public readonly NetworkRunner runner;
+
+        public PickerInfo(NetworkRunner runner, NetworkObject pickerObj, PlayerInfoForPicker info)
+        {
+            this.runner = runner;
+            this.pickerObj = pickerObj;
+            Debug.Log($"pickerObj = {pickerObj}");
+            pickerRd = pickerObj.GetComponent<Rigidbody>();
+
+            detectionRange = info.RangeRadius;
+        }
 
         // singletons
         public IPickerState SearchState => new PickerSearchState(this);
@@ -115,21 +124,10 @@ namespace Main
         // injected fields
         public float detectionRange { get; private set; }
 
-        public PickerInfo(NetworkRunner runner, NetworkObject pickerObj, PlayerInfoForPicker info)
-        {
-            this.runner = runner;
-            this.pickerObj = pickerObj;
-            Debug.Log($"pickerObj = {pickerObj}");
-            this.pickerRd = pickerObj.GetComponent<Rigidbody>();
-
-            this.detectionRange = info.RangeRadius;
-            
-        }
-
         public void SetPlayerObj(GameObject playerObj)
         {
             this.playerObj = playerObj;
-            this.playerRd = playerObj.gameObject.GetComponent<Rigidbody>();
+            playerRd = playerObj.gameObject.GetComponent<Rigidbody>();
         }
 
 
@@ -140,19 +138,19 @@ namespace Main
 
         public void SetMainBaseObj(IEnumerable<GameObject> mainBaseObj)
         {
-            this.baseObjs = mainBaseObj;
+            baseObjs = mainBaseObj;
         }
     }
 
 #nullable enable
     public class PickerContext : IPickerContext
     {
-        public IPickerState currentState { get; private set; }
-
         public PickerContext(IPickerState initState)
         {
-            this.currentState = initState;
+            currentState = initState;
         }
+
+        public IPickerState currentState { get; private set; }
 
         public IPickerState CurrentState()
         {
@@ -161,7 +159,7 @@ namespace Main
 
         public void ChangeState(IPickerState state)
         {
-            this.currentState = state;
+            currentState = state;
         }
     }
 
@@ -173,7 +171,7 @@ namespace Main
         protected PickerAbstractState(PickerInfo info)
         {
             this.info = info;
-            this.mover = new PickerMover(info);
+            mover = new PickerMover(info);
         }
 
         public abstract void Process(IPickerContext context);
@@ -181,28 +179,20 @@ namespace Main
 
     public class PickerMover
     {
-        PickerInfo info;
-        MoveState state;
+        readonly PickerInfo info;
 
         // These fields are used in MoveToFixedPos()
         Vector3 initDeltaVector;
-        bool isPast = false;
-        bool isReach = false;
         bool isFirstReach = true;
+        bool isPast;
+        bool isReach;
         Vector3 prevVelocity;
+        MoveState state;
         Vector3 toEndVector;
 
         public PickerMover(PickerInfo info)
         {
             this.info = info;
-        }
-
-        enum MoveState
-        {
-            ForwardNormal,
-            ToFixedPosNormal,
-            ToMovingPosNormal,
-            ToFixedPosCarrying
         }
 
         public void MoveForwardNormal(Vector3 moveVector)
@@ -264,11 +254,8 @@ namespace Main
                 //Debug.Log($"accelerationVector.magnitude is large");
                 accelerationVector = acceleration * deltaVector.normalized;
             }
-            else
-            {
-                //Debug.Log($"accelerationVector.magnitude is calculated correctly");
-            }
 
+            //Debug.Log($"accelerationVector.magnitude is calculated correctly");
             //Debug.Log($"accelerationVector:{accelerationVector}, accelerationVector.magnitude:{accelerationVector.magnitude}");
             AddForceByLimitVelocity(accelerationVector, maxVelocity);
         }
@@ -297,7 +284,7 @@ namespace Main
                     toEndVector = endPos - pickerPos;
                 }
 
-                var preAccelerationVector = (2 / Mathf.Pow(info.estimatedStopTime, 2)) *
+                var preAccelerationVector = 2 / Mathf.Pow(info.estimatedStopTime, 2) *
                                             (toEndVector -
                                              prevVelocity * info.estimatedStopTime); // Note that it is a constant.
                 var accelerationVector = Utility.SetYToZero(preAccelerationVector);
@@ -317,12 +304,20 @@ namespace Main
             if (info.pickerRd.velocity.magnitude >= maxVelocity)
                 info.pickerRd.velocity = maxVelocity * info.pickerRd.velocity.normalized;
         }
+
+        enum MoveState
+        {
+            ForwardNormal,
+            ToFixedPosNormal,
+            ToMovingPosNormal,
+            ToFixedPosCarrying
+        }
     }
 
     public class PickerSearchState : PickerAbstractState
     {
-        float timer = 0;
         readonly float minSpawnTime = 0.3f;
+        float timer;
 
         public PickerSearchState(PickerInfo info) : base(info)
         {
@@ -384,13 +379,9 @@ namespace Main
             if (info.targetResourceObj == null) context.ChangeState(info.ReturnToPlayerState);
 
             if (CanSwitchState())
-            {
                 context.ChangeState(info.CompleteState);
-            }
             else
-            {
                 mover.MoveToMovingPosNormal(info.playerObj.transform.position);
-            }
         }
 
         bool CanSwitchState()
@@ -409,14 +400,10 @@ namespace Main
         public override void Process(IPickerContext context)
         {
             if (CanSwitchState())
-            {
                 context.ChangeState(info.CollectState);
-            }
             else
-            {
                 //if (info.targetResourceObj == null) context.ChangeState(info.returnToPlayerState); // A flag has been added, so there is no longer a possibility of null during execution
                 mover.MoveToFixedPosNormal(info.targetResourceObj.transform.position);
-            }
         }
 
         bool CanSwitchState()
@@ -429,8 +416,8 @@ namespace Main
 
     public class PickerCollectState : PickerAbstractState
     {
-        Vector3 initPos;
-        Vector3 deltaVector;
+        readonly Vector3 deltaVector;
+        readonly Vector3 initPos;
 
         bool isCollecting;
         bool isComplete;
@@ -446,13 +433,9 @@ namespace Main
         {
             // Debug.Log($"CollectProcess()");
             if (CanSwitchState())
-            {
                 context.ChangeState(info.ReturnToMainBaseState);
-            }
             else
-            {
                 CollectResource(context);
-            }
         }
 
         bool CanSwitchState()
@@ -497,13 +480,9 @@ namespace Main
             //Debug.Log($"ReturnProcess()");
 
             if (CanSwitchState())
-            {
                 context.ChangeState(info.CompleteState);
-            }
             else
-            {
                 mover.MoveToFixedPosCarrying(GetNearestBasePos());
-            }
         }
 
         Vector3 GetNearestBasePos()
@@ -520,13 +499,14 @@ namespace Main
                     resultPos = baseObj.transform.position;
                 }
             }
-            if (resultPos == Vector3.zero) Debug.LogError($"GetNearestBasePos() was failed");
+
+            if (resultPos == Vector3.zero) Debug.LogError("GetNearestBasePos() was failed");
             return resultPos;
         }
 
         bool CanSwitchState()
         {
-            var vector = Utility.SetYToZero(GetNearestBasePos()- info.pickerObj.transform.position);
+            var vector = Utility.SetYToZero(GetNearestBasePos() - info.pickerObj.transform.position);
             return vector.magnitude <= info.returnToMainBaseRange;
         }
     }
@@ -540,10 +520,9 @@ namespace Main
         public override void Process(IPickerContext context)
         {
             //Debug.Log($"CompleteProcess()");
-            Debug.Log($"Delete Picker");
+            Debug.Log("Delete Picker");
             info.runner.Despawn(info.targetResourceObj);
             info.runner.Despawn(info.pickerObj);
         }
     }
-
 }

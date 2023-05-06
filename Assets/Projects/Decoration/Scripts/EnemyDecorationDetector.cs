@@ -6,11 +6,6 @@ namespace Decoration
 {
     public class EnemyDecorationDetector
     {
-        public struct Data : INetworkStruct
-        {
-            public int AttackCount;
-        }
-
         private List<IEnemyDecoration> _decorations;
         // private int _preAttackCount = 0;
 
@@ -21,6 +16,11 @@ namespace Decoration
 
         public void OnSpawn(ref Data data)
         {
+        }
+
+        public struct Data : INetworkStruct
+        {
+            public int AttackCount;
         }
     }
 }

@@ -1,14 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEngine;
 
 namespace Exp.Tests
 {
     public class ExpTests
     {
-        private ExpContainer _ec;
         private int _counter;
+        private ExpContainer _ec;
 
         [SetUp]
         public void SetUp()
@@ -91,7 +88,7 @@ namespace Exp.Tests
         [Test]
         public void TestAbnormalState()
         {
-            _ec = new ExpContainer(initialExp: 100, initialThreshold: 100);
+            _ec = new ExpContainer(100, 100);
             Assert.That(_ec.Level, Is.EqualTo(2));
         }
 
@@ -114,7 +111,7 @@ namespace Exp.Tests
         [Test]
         public void TestRegisterWithoutCallImmediately()
         {
-            _ec.Register(IncrementCallback, callImmediately: false);
+            _ec.Register(IncrementCallback, false);
             Assert.That(_counter, Is.EqualTo(0));
 
 
@@ -125,7 +122,7 @@ namespace Exp.Tests
         [Test]
         public void TestRegisterMultiple()
         {
-            _ec.Register(IncrementCallback, callImmediately: false);
+            _ec.Register(IncrementCallback, false);
             _ec.Register(IncrementCallback);
             Assert.That(_counter, Is.EqualTo(2));
         }
@@ -175,6 +172,4 @@ namespace Exp.Tests
             _counter++;
         }
     }
-
 }
-

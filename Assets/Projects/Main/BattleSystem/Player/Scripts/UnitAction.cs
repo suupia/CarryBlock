@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using Fusion;
-using UnityEngine;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Fusion;
+using UnityEngine;
 
 namespace Main
 {
@@ -16,12 +15,12 @@ namespace Main
 
     public class EjectPicker : IUnitAction
     {
-        readonly NetworkRunner _runner;
-        readonly GameObject _playerObj;
         readonly PlayerInfoForPicker _info;
-        readonly PrefabLoaderFromResources<NetworkPickerController> _prefabLoaderFromResources;
 
         readonly float _pickerHeight = 5.0f;
+        readonly GameObject _playerObj;
+        readonly PrefabLoaderFromResources<NetworkPickerController> _prefabLoaderFromResources;
+        readonly NetworkRunner _runner;
 
         public EjectPicker(NetworkRunner runner, GameObject playerObj, PlayerInfoForPicker playerInfoForPicker)
         {
@@ -31,13 +30,19 @@ namespace Main
             _prefabLoaderFromResources = new PrefabLoaderFromResources<NetworkPickerController>("Prefabs/Players");
         }
 
-        public float ActionCooldown() => 0.1f;
+        public float ActionCooldown()
+        {
+            return 0.1f;
+        }
 
-        public bool InAction() => false;
+        public bool InAction()
+        {
+            return false;
+        }
 
         public void Action()
         {
-            Debug.Log($"Action()");
+            Debug.Log("Action()");
             var pickerPos = _playerObj.transform.position + new Vector3(0, _pickerHeight, 0);
             Debug.Log(
                 $"_runner = {_runner}, _info.pickerPrefab = {_prefabLoaderFromResources.Load("Picker")}, pickerPos = {pickerPos}, PlayerRef.None = {PlayerRef.None}");
@@ -50,16 +55,16 @@ namespace Main
 
     public class CollectResource : IUnitAction
     {
-        readonly NetworkRunner _runner;
-        readonly GameObject _playerObj;
+        readonly float _collectOffset = 0.5f; // determine how much to place the resource below.
 
         readonly float _collectTime = 1f;
-        readonly float _collectOffset = 0.5f; // determine how much to place the resource below.
         readonly float _detectionRange = 3f;
+        readonly GameObject _playerObj;
+        readonly NetworkRunner _runner;
         readonly float _submitResourceRange = 3f;
+        IList<NetworkObject> _heldResources = new List<NetworkObject>();
 
         bool _isCollecting;
-        IList<NetworkObject> _heldResources = new List<NetworkObject>();
 
         public CollectResource(NetworkRunner runner, GameObject playerObj)
         {
@@ -67,9 +72,15 @@ namespace Main
             _playerObj = playerObj;
         }
 
-        public float ActionCooldown() => 0.1f;
+        public float ActionCooldown()
+        {
+            return 0.1f;
+        }
 
-        public bool InAction() => _isCollecting;
+        public bool InAction()
+        {
+            return _isCollecting;
+        }
 
         public void Action()
         {
@@ -86,7 +97,7 @@ namespace Main
 
         bool AttemptCollectResource()
         {
-            Collider[] colliders =
+            var colliders =
                 Physics.OverlapSphere(Utility.SetYToZero(_playerObj.transform.position), _detectionRange);
             Debug.Log($"colliders.Length = {colliders.Length}, colliders = {colliders}");
             var resources = colliders.Where(collider => collider.CompareTag("Resource"))
@@ -97,10 +108,8 @@ namespace Main
                 CollectResourceAction(resources.First());
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         async void CollectResourceAction(NetworkObject resource)
@@ -138,7 +147,7 @@ namespace Main
             foreach (var resource in _heldResources)
             {
                 _runner.Despawn(resource);
-                Debug.Log($"submit resource");
+                Debug.Log("submit resource");
             }
 
             _heldResources = new List<NetworkObject>();
@@ -146,7 +155,7 @@ namespace Main
 
         bool IsNearMainBase()
         {
-            Collider[] colliders =
+            var colliders =
                 Physics.OverlapSphere(Utility.SetYToZero(_playerObj.transform.position), _submitResourceRange);
             var mainBases = colliders.Where(collider => collider.CompareTag("MainBase"))
                 .Select(collider => collider.gameObject);
@@ -157,9 +166,9 @@ namespace Main
 
     public class EstablishSubBase : IUnitAction
     {
-        readonly NetworkRunner _runner;
         readonly GameObject _playerObj;
         readonly PrefabLoaderFromResources<NetworkObject> _prefabLoaderFromResources;
+        readonly NetworkRunner _runner;
 
         readonly float _subBaseHeight = 5.0f;
 
@@ -170,15 +179,22 @@ namespace Main
             _prefabLoaderFromResources = new PrefabLoaderFromResources<NetworkObject>("Prefabs/Players");
         }
 
-        public float ActionCooldown() => 0.1f;
+        public float ActionCooldown()
+        {
+            return 0.1f;
+        }
 
-        public bool InAction() => false;
+        public bool InAction()
+        {
+            return false;
+        }
 
         public void Action()
         {
-            Debug.Log($"Action()");
+            Debug.Log("Action()");
             var subBasePos = _playerObj.transform.position + new Vector3(0, _subBaseHeight, 0);
-            var _ = _runner.Spawn(_prefabLoaderFromResources.Load("SubBase"), subBasePos, Quaternion.identity, PlayerRef.None);
+            var _ = _runner.Spawn(_prefabLoaderFromResources.Load("SubBase"), subBasePos, Quaternion.identity,
+                PlayerRef.None);
         }
     }
 }

@@ -1,6 +1,5 @@
-using Fusion;
-using System;
 using System.Linq;
+using Fusion;
 using UnityEngine;
 
 namespace Main
@@ -14,18 +13,21 @@ namespace Main
 
     public class UnitShooter : IUnitAttack
     {
-        PlayerInfo _info;
-
-        public float AttackCooldown() => 0.5f;
+        readonly PlayerInfo _info;
 
         public UnitShooter(PlayerInfo info)
         {
             _info = info;
         }
 
+        public float AttackCooldown()
+        {
+            return 0.5f;
+        }
+
         public bool AttemptAttack()
         {
-            Collider[] colliders = Physics.OverlapSphere(_info.playerObj.transform.position, _info.rangeRadius);
+            var colliders = Physics.OverlapSphere(_info.playerObj.transform.position, _info.rangeRadius);
             var enemys = colliders.Where(collider => collider.CompareTag("Enemy"))
                 .Select(collider => collider.gameObject);
 
@@ -34,10 +36,8 @@ namespace Main
                 ShootEnemy(enemys.First());
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         void ShootEnemy(GameObject targetEnemy)
@@ -51,10 +51,13 @@ namespace Main
             bullet.Init(targetEnemy);
         }
     }
-    
+
     public class NoneAttack : IUnitAttack
     {
-        public float AttackCooldown() => 0.5f;
+        public float AttackCooldown()
+        {
+            return 0.5f;
+        }
 
         public bool AttemptAttack()
         {

@@ -1,8 +1,7 @@
+using System;
+using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Main
@@ -15,16 +14,16 @@ namespace Main
         ReturnToMainBase,
         Debug1,
         Debug2,
-        Debug3,
+        Debug3
     }
 
 
     public class LocalInputPoller : INetworkRunnerCallbacks
     {
         // Local variable to store the input polled.
-        NetworkInputData localInput = new();
+        NetworkInputData localInput;
 
-        public void OnInput(NetworkRunner runner, Fusion.NetworkInput input)
+        public void OnInput(NetworkRunner runner, NetworkInput input)
         {
             localInput = new NetworkInputData();
             localInput.Horizontal = Input.GetAxisRaw("Horizontal");
@@ -71,7 +70,7 @@ namespace Main
         {
         }
 
-        public void OnInputMissing(NetworkRunner runner, PlayerRef player, Fusion.NetworkInput input)
+        public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
         {
         }
 

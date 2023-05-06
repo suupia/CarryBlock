@@ -1,17 +1,15 @@
-using Fusion;
-using UnityEngine;
 using System;
 using Animations;
 using Decoration;
-using VContainer;
-using VContainer.Unity;
+using Fusion;
+using UnityEngine;
 
 namespace Main
 {
     /// <summary>
-    /// The only NetworkBehaviour to control the character.
-    /// Note: Objects to which this class is attached do not move themselves.
-    /// Attachment on the inspector is done to the Info class.
+    ///     The only NetworkBehaviour to control the character.
+    ///     Note: Objects to which this class is attached do not move themselves.
+    ///     Attachment on the inspector is done to the Info class.
     /// </summary>
     public abstract class AbstractNetworkPlayerController : NetworkBehaviour
     {
@@ -24,6 +22,13 @@ namespace Main
         [SerializeField] UnitType _unitType;
 
         [SerializeField] PlayerInfo _info;
+        PlayerDecorationDetector _decorationDetector;
+        IUnitAttack _shooter;
+        IUnit _unit;
+
+
+        GameObject _unitObj;
+        IUnitStats _unitStats;
 
         [Networked] NetworkButtons PreButtons { get; set; }
         [Networked] public NetworkBool IsReady { get; set; }
@@ -37,20 +42,11 @@ namespace Main
 
         [Networked] protected ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
 
-
-        GameObject _unitObj;
-        IUnit _unit;
-        IUnitStats _unitStats;
-        IUnitAttack _shooter;
-        PlayerDecorationDetector _decorationDetector;
-
-
-        enum UnitType
+        protected void Update()
         {
-            Tank = 0,
-            CollectResourcePlane = 1,
-            EstablishSubBasePlane = 2,
-            NoneAttackTank = 3,
+            if (Object.HasInputAuthority)
+                if (Input.GetKeyDown(KeyCode.C))
+                    RPC_ChangeNextUnit();
         }
 
 
@@ -75,14 +71,12 @@ namespace Main
             if (!HasStateAuthority) return;
 
             if (ShootCooldown.ExpiredOrNotRunning(Runner))
-            {
                 if (PlayerStruct.IsAlive)
                 {
                     var attacked = _shooter.AttemptAttack();
                     if (attacked) _decorationDetector.OnAttacked(ref DecorationDataRef);
                     ShootCooldown = TickTimer.CreateFromSeconds(Runner, _shooter.AttackCooldown());
                 }
-            }
 
             if (GetInput(out NetworkInputData input))
             {
@@ -94,17 +88,13 @@ namespace Main
                 }
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
-                {
                     if (ActionCooldown.ExpiredOrNotRunning(Runner))
-                    {
                         if (PlayerStruct.IsAlive)
                         {
                             _unit.Action();
                             ActionCooldown = TickTimer.CreateFromSeconds(Runner, _unit.ActionCooldown());
                             _decorationDetector.OnMainAction(ref DecorationDataRef);
                         }
-                    }
-                }
 
 
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
@@ -115,17 +105,6 @@ namespace Main
             }
         }
 
-        protected void Update()
-        {
-            if (Object.HasInputAuthority)
-            {
-                if (Input.GetKeyDown(KeyCode.C))
-                {
-                    RPC_ChangeNextUnit();
-                }
-            }
-        }
-
         public override void Render()
         {
             _decorationDetector.OnRendered(ref DecorationDataRef, PlayerStruct.Hp);
@@ -133,7 +112,7 @@ namespace Main
 
 
         //Deal as RPC for changing unit
-        [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.All)]
+        [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
         public void RPC_ChangeNextUnit()
         {
             _unitType = (UnitType)(((int)_unitType + 1) % Enum.GetValues(typeof(UnitType)).Length);
@@ -143,7 +122,7 @@ namespace Main
             SetToOrigin();
         }
 
-        [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_SetToOrigin()
         {
             SetToOrigin();
@@ -206,6 +185,15 @@ namespace Main
             // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
             _info.playerObj.transform.position = new Vector3(0, 5, 0);
             _info.playerRd.velocity = Vector3.zero;
+        }
+
+
+        enum UnitType
+        {
+            Tank = 0,
+            CollectResourcePlane = 1,
+            EstablishSubBasePlane = 2,
+            NoneAttackTank = 3
         }
     }
 }

@@ -1,6 +1,6 @@
-using Fusion;
 using System;
 using System.Linq;
+using Fusion;
 using UnityEngine;
 
 namespace Main
@@ -8,33 +8,45 @@ namespace Main
     [RequireComponent(typeof(NetworkRigidbody))]
     public class NetworkEnemyController : PoolableObject
     {
-        [SerializeField] NetworkPrefabRef resourcePrefab;
-
-        bool _isInitialized = false;
-        readonly float _detectionRange = 30;
-        GameObject _targetPlayerObj;
-
         public enum EnemyState
         {
             Idle,
-            ChasingPlayer,
+            ChasingPlayer
         }
 
-        EnemyState _state = EnemyState.Idle;
+        [SerializeField] NetworkPrefabRef resourcePrefab;
+        readonly float _detectionRange = 30;
+
+        bool _isInitialized;
+
+        IMove _move;
 
         Rigidbody _rb;
 
+        EnemyState _state = EnemyState.Idle;
+        GameObject _targetPlayerObj;
+
         public Action OnDespawn = () => { };
 
-        IMove _move;
+        void OnDisable()
+        {
+            OnInactive();
+        }
+
+        void OnCollisionEnter(Collision other)
+        {
+            var player = other.gameObject.GetComponent<NetworkPlayerController>();
+            if (player == null) return;
+            player.OnAttacked(1);
+        }
 
         public override void Spawned()
         {
             _rb = GetComponent<Rigidbody>();
-            _move = new RegularMove()
+            _move = new RegularMove
             {
                 transform = transform,
-                rd = _rb,
+                rd = _rb
             };
             _isInitialized = true;
         }
@@ -56,7 +68,7 @@ namespace Main
 
         void Search()
         {
-            Collider[] colliders = Physics.OverlapSphere(gameObject.transform.position, _detectionRange);
+            var colliders = Physics.OverlapSphere(gameObject.transform.position, _detectionRange);
             var players = colliders.Where(collider => collider.CompareTag("Player"))
                 .Select(collider => collider.gameObject);
             Debug.Log($"players = {string.Join(",", players)}");
@@ -86,23 +98,10 @@ namespace Main
             Runner.Despawn(Object);
         }
 
-        void OnDisable()
-        {
-            OnInactive();
-        }
-
         protected override void OnInactive()
         {
             if (!_isInitialized) return;
             _state = EnemyState.Idle;
-        }
-
-        void OnCollisionEnter(Collision other)
-        {
-            var player = other.gameObject.GetComponent<NetworkPlayerController>();
-            if(player == null) return;
-            player.OnAttacked(1);
-            
         }
     }
 }

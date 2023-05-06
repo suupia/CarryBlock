@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +5,7 @@ namespace Main
 {
     public class RangeDetector : MonoBehaviour
     {
-        List<GameObject> gameObjects = new();
+        readonly List<GameObject> gameObjects = new();
 
         public GameObject[] GameObjects => gameObjects.ToArray();
 
@@ -20,5 +19,4 @@ namespace Main
             gameObjects.Remove(other.gameObject);
         }
     }
-
 }

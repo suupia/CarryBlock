@@ -1,18 +1,17 @@
+using System;
+using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
     [SerializeField] NetworkPrefabRef playerPrefab;
-
-    TestNetworkInputData data = default;
-    NetworkRunner runner;
     readonly Dictionary<PlayerRef, NetworkObject> spawnedCharacters = new();
+
+    TestNetworkInputData data;
+    NetworkRunner runner;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +21,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) 
+        if (Input.GetMouseButtonDown(0))
             data.buttons.Set(TestPlayerOperations.Attack, true);
 
         data.buttons.Set(TestPlayerOperations.Forward, Input.GetKey(KeyCode.W));
@@ -35,31 +34,9 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (runner == null)
         {
-            if (GUI.Button(new Rect(0, 0, 200, 40), "Host"))
-            {
-                StartGame(GameMode.Host);
-            }
-            if (GUI.Button(new Rect(0, 40, 200, 40), "Join"))
-            {
-                StartGame(GameMode.Client);
-            }
+            if (GUI.Button(new Rect(0, 0, 200, 40), "Host")) StartGame(GameMode.Host);
+            if (GUI.Button(new Rect(0, 40, 200, 40), "Join")) StartGame(GameMode.Client);
         }
-    }
-
-    async void StartGame(GameMode mode)
-    {
-        runner = gameObject.AddComponent<NetworkRunner>();
-        //���͂�񋟂���
-        runner.ProvideInput = true;
-
-        //SceneManager �́A�V�[���ɒ��ڔz�u����� NetworkObjects �̃C���X�^���X������������
-        await runner.StartGame(new StartGameArgs()
-        {
-            GameMode = mode,
-            SessionName = "TestRoom",
-            Scene = SceneManager.GetActiveScene().buildIndex,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
-        });
     }
 
     public void OnConnectedToServer(NetworkRunner runner)
@@ -86,14 +63,14 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
     }
 
-    public void OnInput(NetworkRunner runner, Fusion.NetworkInput input)
+    public void OnInput(NetworkRunner runner, NetworkInput input)
     {
         input.Set(data);
 
         data = default;
     }
 
-    public void OnInputMissing(NetworkRunner runner, PlayerRef player, Fusion.NetworkInput input)
+    public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
     {
     }
 
@@ -142,4 +119,19 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
     }
 
+    async void StartGame(GameMode mode)
+    {
+        runner = gameObject.AddComponent<NetworkRunner>();
+        //���͂�񋟂���
+        runner.ProvideInput = true;
+
+        //SceneManager �́A�V�[���ɒ��ڔz�u����� NetworkObjects �̃C���X�^���X������������
+        await runner.StartGame(new StartGameArgs
+        {
+            GameMode = mode,
+            SessionName = "TestRoom",
+            Scene = SceneManager.GetActiveScene().buildIndex,
+            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+        });
+    }
 }

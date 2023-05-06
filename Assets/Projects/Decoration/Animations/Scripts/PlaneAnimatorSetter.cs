@@ -1,20 +1,15 @@
-using System;
 using Decoration;
 using UnityEngine;
 
 namespace Animations
 {
-    public class PlaneAnimatorSetter: IPlayerDecoration
+    public class PlaneAnimatorSetter : IPlayerDecoration
     {
-        private enum BodyStates
-        {
-            Normal = 0, Left, Right
-        }
-        
-        private readonly GameObject _gameObject;
-        private readonly Animator _animator;
-        private Vector3 _preForward = Vector3.zero;
         private static readonly int BodyState = Animator.StringToHash("BodyState");
+        private readonly Animator _animator;
+
+        private readonly GameObject _gameObject;
+        private Vector3 _preForward = Vector3.zero;
 
         public PlaneAnimatorSetter(GameObject gameObject)
         {
@@ -37,8 +32,6 @@ namespace Animations
 
         public void OnMoved()
         {
-
-
         }
 
         public void OnSpawned()
@@ -59,8 +52,15 @@ namespace Animations
                 > 0 => BodyStates.Right,
                 _ => BodyStates.Normal
             };
-            
+
             _animator.SetInteger(BodyState, (int)bodyState);
+        }
+
+        private enum BodyStates
+        {
+            Normal = 0,
+            Left,
+            Right
         }
     }
 }

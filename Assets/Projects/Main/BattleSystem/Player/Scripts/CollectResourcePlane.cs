@@ -1,31 +1,27 @@
 using Fusion;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using Cysharp.Threading.Tasks;
 
 namespace Main
 {
     public class CollectResourcePlane : IUnit
     {
         readonly NetworkRunner _runner;
-        PlayerInfo _info;
-        IMove _move;
-        IUnitAction _action;
+        readonly IUnitAction _action;
+        readonly PlayerInfo _info;
+        readonly IMove _move;
 
         public CollectResourcePlane(PlayerInfo info)
         {
             _info = info;
             _runner = info._runner;
-            _move = new RegularMove()
+            _move = new RegularMove
             {
                 transform = _info.playerObj.transform,
                 rd = _info.playerRd,
                 acceleration = _info.acceleration,
                 maxVelocity = _info.maxVelocity,
                 targetRotationTime = _info.targetRotationTime,
-                maxAngularVelocity = _info.maxAngularVelocity,
+                maxAngularVelocity = _info.maxAngularVelocity
             };
             _action = new CollectResource(_runner, _info.playerObj);
             _info.playerRd.useGravity = false;
@@ -38,32 +34,41 @@ namespace Main
             _move.Move(direction);
         }
 
-        public bool InAction() => _action.InAction();
+        public bool InAction()
+        {
+            return _action.InAction();
+        }
 
-        public float ActionCooldown() => _action.ActionCooldown();
+        public float ActionCooldown()
+        {
+            return _action.ActionCooldown();
+        }
 
-        public void Action() => _action.Action();
+        public void Action()
+        {
+            _action.Action();
+        }
     }
-    
+
     public class EstablishSubBasePlane : IUnit
     {
         readonly NetworkRunner _runner;
-        PlayerInfo _info;
-        IMove _move;
-        IUnitAction _action;
+        readonly IUnitAction _action;
+        readonly PlayerInfo _info;
+        readonly IMove _move;
 
         public EstablishSubBasePlane(PlayerInfo info)
         {
             _info = info;
             _runner = info._runner;
-            _move = new RegularMove()
+            _move = new RegularMove
             {
                 transform = _info.playerObj.transform,
                 rd = _info.playerRd,
                 acceleration = _info.acceleration,
                 maxVelocity = _info.maxVelocity,
                 targetRotationTime = _info.targetRotationTime,
-                maxAngularVelocity = _info.maxAngularVelocity,
+                maxAngularVelocity = _info.maxAngularVelocity
             };
             _action = new EstablishSubBase(_runner, _info.playerObj);
             _info.playerRd.useGravity = false;
@@ -76,10 +81,19 @@ namespace Main
             _move.Move(direction);
         }
 
-        public bool InAction() => _action.InAction();
+        public bool InAction()
+        {
+            return _action.InAction();
+        }
 
-        public float ActionCooldown() => _action.ActionCooldown();
+        public float ActionCooldown()
+        {
+            return _action.ActionCooldown();
+        }
 
-        public void Action() => _action.Action();
+        public void Action()
+        {
+            _action.Action();
+        }
     }
 }

@@ -3,35 +3,26 @@ using System.Linq;
 using Fusion;
 using UnityEngine;
 
-
 namespace Decoration
 {
     /// <summary>
-    /// デコレーション系のすべてを管理する
-    /// ローカル変数の管理をすべてこっちに持ってこれる
-    /// 範囲が広い？個々で見れば小さいと思う
-    /// アニメーション、サウンド、エフェクトなどのデコレーションを
-    /// 任意に選択でき、かつ責任をすべてこのクラスにまとめる。
-    /// これらはIDecoration系のインタフェースを継承していないといけない
-    /// 
-    /// 呼び出し側の制限は
+    ///     デコレーション系のすべてを管理する
+    ///     ローカル変数の管理をすべてこっちに持ってこれる
+    ///     範囲が広い？個々で見れば小さいと思う
+    ///     アニメーション、サウンド、エフェクトなどのデコレーションを
+    ///     任意に選択でき、かつ責任をすべてこのクラスにまとめる。
+    ///     これらはIDecoration系のインタフェースを継承していないといけない
+    ///     呼び出し側の制限は
     ///     正しく関数を呼ぶ（TestPlayerControllerを参考にしてください）
     ///     Networkedプロパティとして対応したNetworkDecoration系の変数を持つ
     /// </summary>
     public class PlayerDecorationDetector
     {
-        public struct Data : INetworkStruct
-        {
-            public int MainActionCount;
-            public int AttackCount;
-            [Networked] public Vector3 Direction { get; set; }
-        }
-
         private readonly List<IPlayerDecoration> _decorations;
 
         private int _preAttackCount;
-        private int _preMainActionCount;
         private int _preHp;
+        private int _preMainActionCount;
 
         public PlayerDecorationDetector(params IPlayerDecoration[] decorations)
         {
@@ -60,7 +51,7 @@ namespace Decoration
         }
 
         /// <summary>
-        /// AttackとMainAttackとMoveとDamageとDeadの管理
+        ///     AttackとMainAttackとMoveとDamageとDeadの管理
         /// </summary>
         /// <param name="data"></param>
         /// <param name="hp"></param>
@@ -100,6 +91,13 @@ namespace Decoration
             }
 
             _preHp = hp;
+        }
+
+        public struct Data : INetworkStruct
+        {
+            public int MainActionCount;
+            public int AttackCount;
+            [Networked] public Vector3 Direction { get; set; }
         }
     }
 }

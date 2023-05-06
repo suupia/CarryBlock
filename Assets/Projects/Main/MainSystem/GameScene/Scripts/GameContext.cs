@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
-using UnityEngine;
-using VContainer;
 
 public interface ITimerObserver
 {
@@ -15,21 +11,19 @@ public interface ITimer
     float getRemainingTime(NetworkRunner runner);
     bool isExpired(NetworkRunner runner);
 }
-public class GameContext: ITimerObserver
+
+public class GameContext : ITimerObserver
 {
-    public GameState gameState { get; private set; } = GameState.Playing;
-    
     public enum GameState
     {
-        Playing,Result // マップを開いている状態や、ユニット選択の状態などが増えるかも
+        Playing,
+        Result // マップを開いている状態や、ユニット選択の状態などが増えるかも
     }
+
+    public GameState gameState { get; private set; } = GameState.Playing;
 
     public void Update(NetworkRunner runner, ITimer timer)
     {
-        if (timer.isExpired(runner))
-        {
-            gameState = GameState.Result;
-        }
+        if (timer.isExpired(runner)) gameState = GameState.Result;
     }
-    
 }

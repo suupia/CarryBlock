@@ -1,31 +1,28 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using  UnityEngine.SceneManagement;
-using System;
 using Fusion;
+using UnityEngine;
 
 namespace Main
 {
-    public enum SceneName 
+    public enum SceneName
     {
         TitleScene,
         GameScene,
-        LobbyScene,
+        LobbyScene
     }
 
     public static class SceneTransition
     {
-        static Dictionary<SceneName, string> sceneNameTable = new ()
+        static readonly Dictionary<SceneName, string> sceneNameTable = new()
         {
-            {SceneName.TitleScene, "TitleScene"},
-            {SceneName.GameScene, "GameScene"},
-            {SceneName.LobbyScene, "LobbyScene"},
+            { SceneName.TitleScene, "TitleScene" },
+            { SceneName.GameScene, "GameScene" },
+            { SceneName.LobbyScene, "LobbyScene" }
         };
 
-        public static void TransitioningScene(NetworkRunner runner,SceneName nextScene)
+        public static void TransitioningScene(NetworkRunner runner, SceneName nextScene)
         {
-            if (sceneNameTable.TryGetValue(nextScene, out string sceneName))
+            if (sceneNameTable.TryGetValue(nextScene, out var sceneName))
             {
                 Debug.Log($"Transitioning to {sceneName}");
                 runner.SetActiveScene(sceneName);
@@ -36,5 +33,4 @@ namespace Main
             }
         }
     }
-
 }
