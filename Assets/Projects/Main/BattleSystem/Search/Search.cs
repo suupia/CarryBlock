@@ -4,6 +4,7 @@ namespace Main
 {
     public interface ISearch
     {
+        
         Collider[] Search();
     }
     
