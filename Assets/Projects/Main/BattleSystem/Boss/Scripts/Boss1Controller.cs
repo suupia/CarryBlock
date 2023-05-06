@@ -43,7 +43,8 @@ namespace Boss
         //Timer
         [Networked] private TickTimer AttackTimer { get; set; }
         [Networked] private TickTimer SetAsWillStateTimer { get; set; }
-
+        
+        //Status
         [Networked] private int Hp { get; set; } = 1;
 
         private bool IsLostPlayers => _colliders.Length == 0;
@@ -99,7 +100,8 @@ namespace Boss
 
         private void Move()
         {
-            //Set Target if ITargetMove
+            //Set Target if ITargetMove and ITargetAttack
+            //以下はパターン構文。MoveとAttackプロパティのタイプチェックをしている
             if (_context is { Move: ITargetMove move, Attack: ITargetAttack attack })
             {
                 move.Target = attack.Target;
