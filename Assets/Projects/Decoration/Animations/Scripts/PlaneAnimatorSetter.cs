@@ -5,11 +5,11 @@ namespace Animations
 {
     public class PlaneAnimatorSetter : IPlayerDecoration
     {
-        private static readonly int BodyState = Animator.StringToHash("BodyState");
-        private readonly Animator _animator;
+        static readonly int BodyState = Animator.StringToHash("BodyState");
+        readonly Animator _animator;
 
-        private readonly GameObject _gameObject;
-        private Vector3 _preForward = Vector3.zero;
+        readonly GameObject _gameObject;
+        Vector3 _preForward = Vector3.zero;
 
         public PlaneAnimatorSetter(GameObject gameObject)
         {
@@ -56,7 +56,7 @@ namespace Animations
             _animator.SetInteger(BodyState, (int)bodyState);
         }
 
-        private enum BodyStates
+        enum BodyStates
         {
             Normal = 0,
             Left,

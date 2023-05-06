@@ -29,7 +29,7 @@ namespace Main
         bool isInitialized;
         IPickerContext pickerContext;
 
-        private void FixedUpdate()
+        void FixedUpdate()
         {
             if (!isInitialized) return;
 
