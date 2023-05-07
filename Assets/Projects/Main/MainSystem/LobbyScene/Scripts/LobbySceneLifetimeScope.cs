@@ -1,6 +1,5 @@
 using VContainer;
 using VContainer.Unity;
-using UnityEngine;
 
 namespace Main.VContainer
 {

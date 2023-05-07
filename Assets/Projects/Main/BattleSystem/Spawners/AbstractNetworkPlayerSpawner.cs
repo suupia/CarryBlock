@@ -1,19 +1,14 @@
-using Fusion;
-using Fusion.Sockets;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Fusion;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Object = UnityEngine.Object;
 
 namespace Main
 {
     public abstract class AbstractNetworkPlayerSpawner<T> where T : AbstractNetworkPlayerController
     {
-        readonly NetworkRunner _runner;
         readonly IPrefabSpawner<T> _playerPrefabSpawner;
+        readonly NetworkRunner _runner;
 
         public AbstractNetworkPlayerSpawner(NetworkRunner runner, IPrefabSpawner<T> playerPrefabSpawner)
         {
@@ -51,18 +46,20 @@ namespace Main
             }
         }
     }
-    
+
     // A class implementing AbstractNetworkPlayerSpawner can be created as follows.
-    public class NetworkPlayerSpawner : AbstractNetworkPlayerSpawner<NetworkPlayerController> 
+    public class NetworkPlayerSpawner : AbstractNetworkPlayerSpawner<NetworkPlayerController>
     {
-        public NetworkPlayerSpawner(NetworkRunner runner, IPrefabSpawner<NetworkPlayerController> playerPrefabSpawner) : base(runner, playerPrefabSpawner)
+        public NetworkPlayerSpawner(NetworkRunner runner, IPrefabSpawner<NetworkPlayerController> playerPrefabSpawner) :
+            base(runner, playerPrefabSpawner)
         {
         }
     }
 
     public class LobbyNetworkPlayerSpawner : AbstractNetworkPlayerSpawner<LobbyNetworkPlayerController>
     {
-        public LobbyNetworkPlayerSpawner(NetworkRunner runner, IPrefabSpawner<LobbyNetworkPlayerController> playerPrefabSpawner) : base(runner, playerPrefabSpawner)
+        public LobbyNetworkPlayerSpawner(NetworkRunner runner,
+            IPrefabSpawner<LobbyNetworkPlayerController> playerPrefabSpawner) : base(runner, playerPrefabSpawner)
         {
         }
     }
@@ -82,14 +79,13 @@ namespace Main
             playerControllers.Remove(networkPlayerController);
         }
     }
-    
+
     // A class implementing AbstractNetworkPlayerSpawner can be created as follows.
-    public class NetworkPlayerContainer : AbstractNetworkPlayerContainer< NetworkPlayerController> 
+    public class NetworkPlayerContainer : AbstractNetworkPlayerContainer<NetworkPlayerController>
     {
-        
     }
 
-    public class LobbyNetworkPlayerContainer : AbstractNetworkPlayerContainer< LobbyNetworkPlayerController> 
+    public class LobbyNetworkPlayerContainer : AbstractNetworkPlayerContainer<LobbyNetworkPlayerController>
     {
         public bool IsAllReady => playerControllers.All(pc => pc.IsReady);
     }

@@ -1,17 +1,16 @@
 using Fusion;
 
-
 public enum TestPlayerOperations
 {
     Attack = 0,
     Forward,
     Backward,
     Left,
-    Right,
+    Right
 }
 
 public struct TestNetworkInputData : INetworkInput
 {
-    //Fusion ‚Í“ü—Í‚ğˆ³k‚µAÀÛ‚É•Ï‰»‚·‚éƒf[ƒ^‚Ì‚İ‚ğ‘—M‚·‚éd‘g‚İ‚É‚È‚Á‚Ä‚¢‚é
+    //Fusion ï¿½Í“ï¿½ï¿½Í‚ï¿½ï¿½ï¿½ï¿½kï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Û‚É•Ï‰ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½[ï¿½^ï¿½Ì‚İ‚ğ‘—Mï¿½ï¿½ï¿½ï¿½dï¿½gï¿½İ‚É‚È‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
     public NetworkButtons buttons;
 }

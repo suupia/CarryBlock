@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using UnityEngine.TestTools;
-using Main;
 
 namespace Main.Tests
 {
@@ -14,16 +9,16 @@ namespace Main.Tests
         [Test]
         public void TestReflectVectorYZero()
         {
-            Vector3 vector1 = new Vector3(1, 0, 2);
-            Vector3 axis1 = new Vector3(0,0 , 1);
-            Assert.That(Utility.ReflectVectorYZero(vector1,axis1),Is.EqualTo(new Vector3(-1,0,2)));
+            var vector1 = new Vector3(1, 0, 2);
+            var axis1 = new Vector3(0, 0, 1);
+            Assert.That(Utility.ReflectVectorYZero(vector1, axis1), Is.EqualTo(new Vector3(-1, 0, 2)));
 
-            Vector3 vector2 = new Vector3(-1, 0, 2);
-            Vector3 axis2 = new Vector3(0, 0, 1);
+            var vector2 = new Vector3(-1, 0, 2);
+            var axis2 = new Vector3(0, 0, 1);
             Assert.That(Utility.ReflectVectorYZero(vector2, axis2), Is.EqualTo(new Vector3(1, 0, 2)));
 
-            Vector3 vector3 = new Vector3(1, 2, 2);
-            Vector3 axis3 = new Vector3(0, -4, 1);
+            var vector3 = new Vector3(1, 2, 2);
+            var axis3 = new Vector3(0, -4, 1);
             Assert.That(Utility.ReflectVectorYZero(vector1, axis1), Is.EqualTo(new Vector3(-1, 0, 2)));
         }
 
@@ -38,7 +33,8 @@ namespace Main.Tests
             // 解 
             // (x, y, z) = (1, 2, 3)
 
-            var matrix = new double[,] {
+            var matrix = new double[,]
+            {
                 { 3, 2, 1 },
                 { 1, 4, 1 },
                 { 2, 2, 5 }
@@ -56,6 +52,4 @@ namespace Main.Tests
             Assert.That(result.Solution[2], Is.EqualTo(3).Within(0.001f));
         }
     }
-
 }
-

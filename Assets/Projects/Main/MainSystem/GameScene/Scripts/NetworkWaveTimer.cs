@@ -1,17 +1,13 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 using VContainer;
 
-public class NetworkWaveTimer : NetworkBehaviour 
+public class NetworkWaveTimer : NetworkBehaviour
 {
-    [Networked] public TickTimer tickTimer { get; set; }
-    WaveTimer _waveTimer;
-
     readonly float _waveTime = 60f;
-    bool _isInitialized = false;
+    bool _isInitialized;
+    WaveTimer _waveTimer;
+    [Networked] public TickTimer tickTimer { get; set; }
 
     [Inject]
     public void Construct(WaveTimer waveTimer)
@@ -28,33 +24,38 @@ public class NetworkWaveTimer : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if(_isInitialized == false)return;
+        if (_isInitialized == false) return;
         // if(Object?.IsValid == false) return;
         // if(tickTimer.ExpiredOrNotRunning(Runner)) tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime);
         _waveTimer.tickTimer = tickTimer;
         _waveTimer.NotifyObservers(Runner);
     }
-    
 }
 
 public class WaveTimer : ITimer
 {
-    GameContext _gameContext;
-    public TickTimer tickTimer { get; set; }
+    readonly GameContext _gameContext;
 
     [Inject]
     public WaveTimer(GameContext gameContext)
     {
         _gameContext = gameContext;
-    }  
-    
+    }
+
+    public TickTimer tickTimer { get; set; }
+
     public void NotifyObservers(NetworkRunner runner)
     {
         _gameContext.Update(runner, this);
     }
 
-    public float getRemainingTime(NetworkRunner Runner) =>  tickTimer.RemainingTime(Runner).HasValue ? tickTimer.RemainingTime(Runner).Value : 0f;
-    
-    public bool isExpired(NetworkRunner Runner) => tickTimer.ExpiredOrNotRunning(Runner);
+    public float getRemainingTime(NetworkRunner Runner)
+    {
+        return tickTimer.RemainingTime(Runner).HasValue ? tickTimer.RemainingTime(Runner).Value : 0f;
+    }
+
+    public bool isExpired(NetworkRunner Runner)
+    {
+        return tickTimer.ExpiredOrNotRunning(Runner);
+    }
 }
- 

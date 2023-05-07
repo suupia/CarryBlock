@@ -1,15 +1,12 @@
 using Fusion;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Main
 {
     public class Picker : NetworkBehaviour
     {
-        [Networked] TickTimer Life { get; set; }
-
         Rigidbody _rb;
+        [Networked] TickTimer Life { get; set; }
 
         public override void Spawned()
         {
@@ -20,7 +17,6 @@ namespace Main
                 //Tmp life time
                 Life = TickTimer.CreateFromSeconds(Runner, 5.0f);
                 _rb.AddForce(Vector3.up * 1000f);
-
             }
         }
 
@@ -30,6 +26,4 @@ namespace Main
                 Runner.Despawn(Object);
         }
     }
-
 }
-

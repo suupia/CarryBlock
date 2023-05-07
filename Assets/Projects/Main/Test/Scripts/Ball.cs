@@ -1,7 +1,4 @@
 using Fusion;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Ball : NetworkBehaviour
 {
@@ -9,7 +6,7 @@ public class Ball : NetworkBehaviour
 
     public void Init()
     {
-        //‚T•bŒã‚ÌTickTimer‚ğæ“¾‚Å‚«‚é
+        //ï¿½Tï¿½bï¿½ï¿½ï¿½TickTimerï¿½ï¿½ï¿½æ“¾ï¿½Å‚ï¿½ï¿½ï¿½
         life = TickTimer.CreateFromSeconds(Runner, 5.0f);
     }
 
@@ -18,9 +15,9 @@ public class Ball : NetworkBehaviour
         if (life.Expired(Runner))
             Runner.Despawn(Object);
         else
-            //Interpolation Data Source‚ğPredicted‚É‚·‚é‚ÆAƒ[ƒJƒ‹‚Å—\‘ª‚µ‚Ä‚­‚ê‚é
-            //—\‘ª‚ÍƒT[ƒo[‚ÌƒXƒiƒbƒvƒVƒ‡ƒbƒg‚©‚ç”‰ñ•ª’ö“x‚ÅAƒvƒŒƒCƒ„[‚Ì“ü—Í‚ª‚È‚¢ê‡‚Í‚ ‚é’ö“x³Šm
-            //‚±‚ê‚É‚æ‚Á‚ÄA’á’x‰„‚ğ‘•‚Á‚Ä‚¢‚é
+            //Interpolation Data Sourceï¿½ï¿½Predictedï¿½É‚ï¿½ï¿½ï¿½ÆAï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½Å—\ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½
+            //ï¿½\ï¿½ï¿½ï¿½ÍƒTï¿½[ï¿½oï¿½[ï¿½ÌƒXï¿½iï¿½bï¿½vï¿½Vï¿½ï¿½ï¿½bï¿½gï¿½ï¿½ï¿½ç”ï¿½ñ•ª’ï¿½ï¿½xï¿½ÅAï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ì“ï¿½ï¿½Í‚ï¿½ï¿½È‚ï¿½ï¿½ê‡ï¿½Í‚ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½m
+            //ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½ÄAï¿½ï¿½xï¿½ï¿½ï¿½ğ‘•‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
             transform.position += 5 * Runner.DeltaTime * transform.forward;
     }
 }

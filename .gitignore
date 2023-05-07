@@ -49,6 +49,3 @@ crashlytics-build.properties
 
 # UserSettings
 UserSettings/
-
-# JetBrains Rider
-.idea/

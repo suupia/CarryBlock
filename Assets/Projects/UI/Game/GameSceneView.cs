@@ -1,10 +1,7 @@
-using System;
 using Fusion;
-using UnityEngine;
-using TMPro;
-using Main.VContainer;
 using Main;
-using UnityEngine.Serialization;
+using TMPro;
+using UnityEngine;
 using VContainer;
 
 namespace UI
@@ -17,16 +14,16 @@ namespace UI
         [SerializeField] TextMeshProUGUI resultText;
         [SerializeField] TextMeshProUGUI remainingTimeToReturnText;
 
-        [Networked] int Score { get; set; }
-        [Networked] NetworkString<_16> Result { get; set; }
-
 
         GameContext _gameContext;
-        ResourceAggregator _resourceAggregator;
-        WaveTimer _waveTimer;
-        ReturnToMainBaseGauge _returnToMainBaseGauge;
 
         NetworkPlayerController _networkPlayerController;
+        ResourceAggregator _resourceAggregator;
+        ReturnToMainBaseGauge _returnToMainBaseGauge;
+        WaveTimer _waveTimer;
+
+        [Networked] int Score { get; set; }
+        [Networked] NetworkString<_16> Result { get; set; }
 
 
         [Inject]
@@ -87,7 +84,7 @@ namespace UI
             // サーバー用のドメインの反映
             scoreText.text = $"Score : {Score}";
             waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
-            
+
             // ローカル用のドメインの反映
             remainingTimeToReturnText.text = _returnToMainBaseGauge.IsReturnToMainBase
                 ? $"{_returnToMainBaseGauge.RemainingTime}s"

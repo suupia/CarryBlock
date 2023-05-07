@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-
 // public class SelectUnitUI : MonoBehaviour
 // {
 //     [SerializeField] GameObject selectUnitUIObj;
@@ -37,3 +32,4 @@ using UnityEngine.UI;
 //         selectUnitUIObj.gameObject.SetActive(false);
 //     }
 // }
+

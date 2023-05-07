@@ -1,14 +1,13 @@
-using System;
 using Decoration;
 using UnityEngine;
 
 namespace Animations
 {
-    public class TankAnimatorSetter: IPlayerDecoration
+    public class TankAnimatorSetter : IPlayerDecoration
     {
-        private readonly GameObject _gameObject;
-        private readonly Animator _animator;
-        private static readonly int Speed = Animator.StringToHash("Speed");
+        static readonly int Speed = Animator.StringToHash("Speed");
+        readonly Animator _animator;
+        readonly GameObject _gameObject;
 
         public TankAnimatorSetter(GameObject gameObject)
         {
@@ -23,7 +22,6 @@ namespace Animations
 
         public void OnDamaged()
         {
-            
         }
 
         public void OnAttacked(bool onStart = true)
@@ -32,22 +30,18 @@ namespace Animations
 
         public void OnMainAction()
         {
-            
         }
 
         public void OnDead()
         {
-            
         }
 
         public void OnSpawned()
         {
-            
         }
 
         public void OnChangeDirection(Vector3 direction)
         {
         }
     }
-
 }
