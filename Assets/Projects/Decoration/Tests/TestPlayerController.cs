@@ -7,19 +7,18 @@ namespace Animations.Tests
 {
     public class TestPlayerController : NetworkBehaviour
     {
-        [SerializeField] private GameObject planePrefab;
-        private PlayerDecorationDetector _playerDecorationDetector;
+        [SerializeField] GameObject planePrefab;
+        PlayerDecorationDetector _playerDecorationDetector;
 
-        private GameObject _playerUnitObject;
-        [Networked] private NetworkButtons PreButtons { get; set; }
+        GameObject _playerUnitObject;
+        [Networked] NetworkButtons PreButtons { get; set; }
 
-        [Networked]
-        private ref PlayerDecorationDetector.Data DecorationDataRef => ref MakeRef<PlayerDecorationDetector.Data>();
+        [Networked] ref PlayerDecorationDetector.Data DecorationDataRef => ref MakeRef<PlayerDecorationDetector.Data>();
 
         //以下はテスト用のプロパティ
-        [Networked] private byte Hp { get; set; } = 2;
+        [Networked] byte Hp { get; set; } = 2;
 
-        private void Update()
+        void Update()
         {
         }
 
@@ -29,7 +28,7 @@ namespace Animations.Tests
             _playerDecorationDetector.OnSpawned();
         }
 
-        private void Setup()
+        void Setup()
         {
             _playerUnitObject = Instantiate(planePrefab, transform);
             _playerDecorationDetector = new PlayerDecorationDetector(

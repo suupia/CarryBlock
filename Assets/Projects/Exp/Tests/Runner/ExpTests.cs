@@ -4,8 +4,8 @@ namespace Exp.Tests
 {
     public class ExpTests
     {
-        private int _counter;
-        private ExpContainer _ec;
+        int _counter;
+        ExpContainer _ec;
 
         [SetUp]
         public void SetUp()

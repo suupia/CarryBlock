@@ -5,11 +5,11 @@ namespace Animations
 {
     public class TriggerEnemyAnimatorSetter : IEnemyDecoration
     {
-        private static readonly int AttackTrigger = Animator.StringToHash("AttackTrigger");
-        private static readonly int Dead = Animator.StringToHash("Dead");
-        private static readonly int Speed = Animator.StringToHash("Speed");
-        private readonly Animator _animator;
-        private readonly GameObject _gameObject;
+        static readonly int AttackTrigger = Animator.StringToHash("AttackTrigger");
+        static readonly int Dead = Animator.StringToHash("Dead");
+        static readonly int Speed = Animator.StringToHash("Speed");
+        readonly Animator _animator;
+        readonly GameObject _gameObject;
 
 
         public TriggerEnemyAnimatorSetter(GameObject gameObject)

@@ -5,9 +5,9 @@ namespace Animations
 {
     public class TankAnimatorSetter : IPlayerDecoration
     {
-        private static readonly int Speed = Animator.StringToHash("Speed");
-        private readonly Animator _animator;
-        private readonly GameObject _gameObject;
+        static readonly int Speed = Animator.StringToHash("Speed");
+        readonly Animator _animator;
+        readonly GameObject _gameObject;
 
         public TankAnimatorSetter(GameObject gameObject)
         {

@@ -18,11 +18,11 @@ namespace Decoration
     /// </summary>
     public class PlayerDecorationDetector
     {
-        private readonly List<IPlayerDecoration> _decorations;
+        readonly List<IPlayerDecoration> _decorations;
 
-        private int _preAttackCount;
-        private int _preHp;
-        private int _preMainActionCount;
+        int _preAttackCount;
+        int _preHp;
+        int _preMainActionCount;
 
         public PlayerDecorationDetector(params IPlayerDecoration[] decorations)
         {
@@ -76,7 +76,7 @@ namespace Decoration
             }
         }
 
-        private void OnHpChanged(int hp)
+        void OnHpChanged(int hp)
         {
             if (hp <= 0)
             {

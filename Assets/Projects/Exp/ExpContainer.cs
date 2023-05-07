@@ -21,11 +21,11 @@ namespace Exp
     /// </summary>
     public class ExpContainer
     {
-        private readonly float _increaseRate;
-        private readonly int _initialThreshold;
+        readonly float _increaseRate;
+        readonly int _initialThreshold;
 
-        private Action<int, int> _onLevelChanged = (_, _) => { };
-        private int _preLevel;
+        Action<int, int> _onLevelChanged = (_, _) => { };
+        int _preLevel;
 
 
         public ExpContainer(int initialExp = 0, int initialThreshold = 100, float increaseRate = 1.1f)
@@ -44,7 +44,7 @@ namespace Exp
         /// <summary>
         ///     次のレベルまでのしきい値
         /// </summary>
-        private int ThresholdToNextLevel => ThresholdExpTo(Level);
+        int ThresholdToNextLevel => ThresholdExpTo(Level);
 
         /// <summary>
         ///     現在の経験値から次のレベルまでに必要な経験値

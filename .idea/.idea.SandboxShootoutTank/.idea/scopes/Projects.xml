@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Projects" pattern="file:Assets/Projects/*.cs" />
+</component>

@@ -6,7 +6,7 @@ namespace Decoration
 {
     public class EnemyDecorationDetector
     {
-        private List<IEnemyDecoration> _decorations;
+        List<IEnemyDecoration> _decorations;
         // private int _preAttackCount = 0;
 
         public EnemyDecorationDetector(params IEnemyDecoration[] decorations)
