@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Fusion;
 using Main;
 using UnityEngine;
 
@@ -14,6 +16,7 @@ public interface IBoss1State
     public void Process(IBoss1Context state);
 }
 
+[Serializable]
 public record Boss1Record
 {
     // constant fields
@@ -24,6 +27,15 @@ public record Boss1Record
     public readonly float SearchRadius = 6f;
     public readonly float DefaultAttackCoolTime = 4f;
 
+    // SerializeField
+    [SerializeField] public GameObject modelObject;
+
+    [SerializeField] public Transform finSpawnerTransform;
+
+    // [SerializeField] public State overrideOnDetectedState;
+    [SerializeField] public bool showGizmos;
+    [SerializeField] public bool showGUI;
+
     // target buffer
     public HashSet<Transform> TargetBuffer { get; } = new();
     
@@ -32,8 +44,13 @@ public record Boss1Record
     public Transform Transform => GameObject.transform;
     public Rigidbody Rd { get; }
 
-    public Boss1Record(GameObject gameObject)
+    public IBoss1State SpitOutState => new SpitOutState(_runner, this);
+
+    readonly NetworkRunner _runner;
+
+    public Boss1Record(NetworkRunner runner, GameObject gameObject)
     {
+        _runner = runner;
         GameObject = gameObject;
         Rd = gameObject.GetComponent<Rigidbody>();
     }
@@ -159,7 +176,7 @@ public class TacklingState : Boss1AbstractState
             }));
         _search = new RangeSearch(Record.Transform, Record.SearchRadius,
             LayerMask.GetMask("Player"));
-        ;
+        
     }
 
     public override void Process(IBoss1Context state)
@@ -168,90 +185,140 @@ public class TacklingState : Boss1AbstractState
     }
 }
 
-public class JumpingState
+public class JumpingState : Boss1AbstractState
 {
-    Boss1Record _record;
     IAttack _attack;
     float _attackCoolTime;
     IMove _move;
     ISearch _search;
 
-    public JumpingState(Boss1Record record, IAttack attack, IMove move, ISearch search)
+    public JumpingState(Boss1Record record) : base(record)
     {
-        _record = record;
-        _attack = attack;
-        _move = move;
-        _search = search;
+        _attack = new ToNearestAttack(new TargetBufferAttack.Context
+            {
+                Transform = Record.Transform,
+                TargetBuffer = Record.TargetBuffer
+            },
+            new ToTargetAttack(
+                Record.GameObject,
+                new DelayAttack(
+                    Record.JumpTime,
+                    new RangeAttack(new RangeAttack.Context
+                    {
+                        Transform = Record.Transform,
+                        Radius = Record.JumpAttackRadius
+                    })
+                )
+            )
+        );
+        _attackCoolTime = Record.DefaultAttackCoolTime;
+        _move = new ToTargetMove(
+            new ToTargetMove.Record
+            {
+                Transform = Record.Transform
+            }, new SimpleMove(new SimpleMove.Record
+            {
+                GameObject = Record.GameObject,
+                Acceleration = 30f,
+                MaxVelocity = 2.5f
+            })
+        );
+        _search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            LayerMask.GetMask("Player"));
     }
 
-    public void Process(IBoss1Context state)
+    public override void Process(IBoss1Context state)
     {
-        Debug.Log("NoneState.Process()");
+        Debug.Log("JumpingState.Process()");
     }
 }
 
-public class ChargeJumpingState
+public class ChargeJumpingState : Boss1AbstractState
 {
-    Boss1Record _record;
     IAttack _attack;
     float _attackCoolTime;
     IMove _move;
     ISearch _search;
 
-    public ChargeJumpingState(Boss1Record record, IAttack attack, IMove move, ISearch search)
+    public ChargeJumpingState(Boss1Record record) : base(record)
     {
-        _record = record;
-        _attack = attack;
-        _move = move;
-        _search = search;
+        _attack = null;
+        _attackCoolTime = 0;
+        _move = new LookAtTargetMove(Record.Transform);
+        _search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            LayerMask.GetMask("Player"));
     }
 
-    public void Process(IBoss1Context state)
+    public override void Process(IBoss1Context state)
     {
-        Debug.Log("NoneState.Process()");
+        Debug.Log("ChargeJumpingState.Process()");
     }
 }
 
-public class SpitOutState
+public class SpitOutState : Boss1AbstractState
 {
-    Boss1Record _record;
     IAttack _attack;
     float _attackCoolTime;
     IMove _move;
     ISearch _search;
 
-    public SpitOutState(Boss1Record record, IAttack attack, IMove move, ISearch search)
+    public SpitOutState(NetworkRunner runner, Boss1Record record) : base(record)
     {
-        _record = record;
-        _attack = attack;
-        _move = move;
-        _search = search;
+        _attack = new ToFurthestAttack(new TargetBufferAttack.Context
+            {
+                Transform = Record.Transform,
+                TargetBuffer = Record.TargetBuffer
+            },
+            new ToTargetAttack(
+                Record.GameObject,
+                new DelayAttack(
+                    Record.ChargeSpitOutTime,
+                    new LaunchNetworkObjectAttack(new LaunchNetworkObjectAttack.Context
+                        {
+                            Runner = runner,
+                            From = Record.finSpawnerTransform,
+                            Prefab = Resources.Load<GameObject>("Prefabs/Attacks/Fin")
+                        }
+                    )
+                )
+            )
+        );
+        _attackCoolTime = Record.DefaultAttackCoolTime;
+        _move = new LookAtTargetMove(Record.Transform);
+        _search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            LayerMask.GetMask("Player"));
     }
 
-    public void Process(IBoss1Context state)
+    public override void Process(IBoss1Context state)
     {
-        Debug.Log("NoneState.Process()");
+        Debug.Log("SpitOutState.Process()");
     }
 }
 
-public class VacuumingState
+public class VacuumingState : Boss1AbstractState
 {
-    Boss1Record _record;
     IAttack _attack;
     float _attackCoolTime;
     IMove _move;
     ISearch _search;
 
-    public VacuumingState(Boss1Record record, IAttack attack, IMove move, ISearch search)
+    public VacuumingState(Boss1Record record) : base(record)
     {
-        _record = record;
-        _attack = attack;
-        _move = move;
-        _search = search;
+        _attack = new ToNearestAttack(new TargetBufferAttack.Context
+            {
+                Transform = Record.Transform,
+                TargetBuffer = Record.TargetBuffer
+            },
+            new ToTargetAttack(Record.GameObject, new MockAttack())
+        );
+        _attackCoolTime = Record.DefaultAttackCoolTime;
+        _move = new LookAtTargetMove(Record.Transform);
+        _search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            LayerMask.GetMask("Player"));
     }
 
-    public void Process(IBoss1Context state)
+    public override void Process(IBoss1Context state)
     {
-        Debug.Log("NoneState.Process()");
+        Debug.Log("VacuumingState.Process()");
     }
 }
