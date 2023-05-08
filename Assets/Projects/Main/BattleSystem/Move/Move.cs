@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Main
 {
@@ -58,20 +55,20 @@ namespace Main
     /// </summary>
     public class WanderingMove : MoveWrapper, IMove, IDisposable
     {
-        public struct Context
+        public record Record
         {
             public float InputSimulationFrequency;
         }
 
-        private readonly Context _context;
+        readonly Record _record;
         private Vector3 _simulatedInput;
         private readonly CancellationTokenSource _cancellationTokenSource;
 
-        public WanderingMove(Context context, IMove move)
+        public WanderingMove(Record record, IMove move)
         {
             _cancellationTokenSource = new CancellationTokenSource();
             _move = move;
-            _context = context;
+            _record = record;
 
             StartSimulation(_cancellationTokenSource.Token).Forget();
         }
@@ -85,7 +82,7 @@ namespace Main
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(_context.InputSimulationFrequency),
+                await UniTask.Delay(TimeSpan.FromSeconds(_record.InputSimulationFrequency),
                     cancellationToken: cancellationToken);
                 _simulatedInput = MoveUtility.SimulateRandomInput();
                 // Debug.Log(_simulatedInput);
@@ -104,22 +101,22 @@ namespace Main
     /// </summary>
     public class ToTargetMove : MoveWrapper, ITargetMove
     {
-        public struct Context
+        public record Record
         {
             [NotNull] public Transform Transform;
             public Transform Target;
             public Func<Vector3> GetOffset;
         }
 
-        private readonly Context _context;
+        readonly Record _record;
 
         public Transform Target { get; set; }
 
-        public ToTargetMove(Context context, IMove move)
+        public ToTargetMove(Record record, IMove move)
         {
-            _context = context;
-            _context.GetOffset ??= () => Vector3.zero;
-            Target = _context.Target;
+            _record = record;
+            _record.GetOffset ??= () => Vector3.zero;
+            Target = _record.Target;
             _move = move;
         }
 
@@ -127,7 +124,7 @@ namespace Main
         {
             if (Target != null)
             {
-                input = Utility.SetYToZero(Target.position - _context.Transform.position + _context.GetOffset())
+                input = Utility.SetYToZero(Target.position - _record.Transform.position + _record.GetOffset())
                     .normalized;
             }
 
@@ -145,7 +142,7 @@ namespace Main
     {
         public ToAheadMove(Transform transform, IMove move)
         {
-            _move = new ToTargetMove(new ToTargetMove.Context()
+            _move = new ToTargetMove(new ToTargetMove.Record
             {
                 Transform = transform,
                 Target = transform,
@@ -165,25 +162,25 @@ namespace Main
     /// </summary>
     public class SimpleMove : MoveWrapper, IMove
     {
-        public struct Context
+        public record Record
         {
             public GameObject GameObject;
             public float Acceleration;
             public float MaxVelocity;
         }
 
-        public SimpleMove(Context context)
+        public SimpleMove(Record record)
         {
-            var transform = context.GameObject.transform;
+            var transform = record.GameObject.transform;
             _move = new CombinationMove(
                 new LookAtMove(transform),
                 new ToAheadMove(
                     transform,
-                    new AddForceMove(new AddForceMove.Context()
+                    new AddForceMove(new AddForceMove.Record
                     {
-                        Rb = context.GameObject.GetComponent<Rigidbody>(),
-                        Acceleration = context.Acceleration,
-                        MaxVelocity = context.MaxVelocity
+                        Rb = record.GameObject.GetComponent<Rigidbody>(),
+                        Acceleration = record.Acceleration,
+                        MaxVelocity = record.MaxVelocity
                     })
                 )
             );
@@ -243,30 +240,30 @@ namespace Main
     /// </summary>
     public class AddForceMove : IMove
     {
-        public struct Context
+        public record Record
         {
             public Rigidbody Rb;
             public float Acceleration;
             public float MaxVelocity;
         }
 
-        private readonly Context _context;
+        readonly Record _record;
 
-        public AddForceMove(Context context)
+        public AddForceMove(Record record)
         {
-            _context = context;
+            _record = record;
         }
 
         public void Move(Vector3 input = default)
         {
-            _context.Rb.AddForce(input * _context.Acceleration, ForceMode.Acceleration);
+            _record.Rb.AddForce(input * _record.Acceleration, ForceMode.Acceleration);
 
-            var velocity = Utility.SetYToZero(_context.Rb.velocity);
-            if (velocity.magnitude >= _context.MaxVelocity)
+            var velocity = Utility.SetYToZero(_record.Rb.velocity);
+            if (velocity.magnitude >= _record.MaxVelocity)
             {
-                velocity = _context.MaxVelocity * velocity.normalized;
-                velocity.y = _context.Rb.velocity.y;
-                _context.Rb.velocity = velocity;
+                velocity = _record.MaxVelocity * velocity.normalized;
+                velocity.y = _record.Rb.velocity.y;
+                _record.Rb.velocity = velocity;
             }
         }
     }

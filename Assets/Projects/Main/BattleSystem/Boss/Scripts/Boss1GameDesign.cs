@@ -19,14 +19,14 @@ namespace Boss
             { State.ChargingJump, State.Tackling, State.SpitOut, State.Vacuuming };
 
         //Define Template Moves 
-        private IMove DefaultMove => new SimpleMove(new SimpleMove.Context
+        IMove DefaultMove => new SimpleMove(new SimpleMove.Record
         {
             GameObject = gameObject,
             Acceleration = 20f,
             MaxVelocity = 1f
         });
 
-        private IMove SpeedyMove => new SimpleMove(new SimpleMove.Context
+        IMove SpeedyMove => new SimpleMove(new SimpleMove.Record
         {
             GameObject = gameObject,
             Acceleration = 30f,
@@ -34,7 +34,7 @@ namespace Boss
         });
 
         private IMove WanderingMove => new WanderingMove(
-            context: new WanderingMove.Context
+            new WanderingMove.Record
             {
                 InputSimulationFrequency = 2f
             },
@@ -43,7 +43,7 @@ namespace Boss
 
         private IMove ToTargetMove =>
             new ToTargetMove(
-                new ToTargetMove.Context
+                new ToTargetMove.Record
                 {
                     Transform = transform
                 }, SpeedyMove);
