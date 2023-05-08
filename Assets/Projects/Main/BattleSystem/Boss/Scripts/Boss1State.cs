@@ -27,9 +27,6 @@ public record Boss1Record
     public readonly float SearchRadius = 6f;
     public readonly float DefaultAttackCoolTime = 4f;
 
-    // SerializeField
-    [SerializeField] public GameObject modelObject;
-
     [SerializeField] public Transform finSpawnerTransform;
 
     // [SerializeField] public State overrideOnDetectedState;
