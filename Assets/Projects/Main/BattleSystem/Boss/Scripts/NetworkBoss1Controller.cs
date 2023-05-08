@@ -24,6 +24,7 @@ namespace Boss
         [Networked] int Hp { get; set; } = 1;
 
         // Domain
+        Boss1StateGenerator _stateGenerator;
         IBoss1Context _context;
         
         // Decoration
@@ -61,7 +62,8 @@ namespace Boss
             var prefab = _modelPrefab;
             var modelObject = Instantiate(prefab, gameObject.transform);
 
-            _context = new Boss1Context(new LostState(_record));
+            _stateGenerator = new Boss1StateGenerator(Runner, _record);
+            _context = new Boss1Context(_stateGenerator.LostState);
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
         }
     }
