@@ -190,9 +190,9 @@ namespace Boss
             //Noneには遷移しない。Noneはクライアント用の状態
             Assert.IsFalse(state == State.None);
 
-            if (_context?.Move is IDisposable move)
+            if (_context?.Move is ICancelMove move)
             {
-                move.Dispose();
+                move.CancelMove();
             }
 
             _state = state;

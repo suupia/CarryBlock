@@ -17,6 +17,11 @@ namespace Main
         Transform Target { get; set; }
     }
 
+    public interface ICancelMove
+    {
+        void CancelMove();
+    }
+
     /// <summary>
     /// いくつかのIMove実装クラスの基底クラス
     /// _moveプロパティを持ち、
@@ -53,7 +58,7 @@ namespace Main
     /// 引数を指定すると、_moveの動きになるが、あまり使用する意味はない
     /// ただし、実装の関係上、Vector.zeroに対応できない
     /// </summary>
-    public class WanderingMove : MoveWrapper, IMove, IDisposable
+    public class WanderingMove : MoveWrapper, IMove, ICancelMove
     {
         public record Record
         {
@@ -89,7 +94,7 @@ namespace Main
             }
         }
 
-        public void Dispose()
+        public void CancelMove()
         {
             _cancellationTokenSource?.Cancel();
         }
