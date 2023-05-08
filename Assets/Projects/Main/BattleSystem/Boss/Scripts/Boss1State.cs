@@ -41,8 +41,6 @@ public record Boss1Record
     public Transform Transform => GameObject.transform;
     public Rigidbody Rd { get; }
 
-    public IBoss1State SpitOutState => new SpitOutState(_runner, this);
-
     readonly NetworkRunner _runner;
 
     public Boss1Record(NetworkRunner runner, GameObject gameObject)
@@ -74,10 +72,12 @@ public class Boss1Context : IBoss1Context
 public abstract class Boss1AbstractState : IBoss1State
 {
     protected Boss1Record Record { get; }
+    protected Boss1StateGenerator _stateGenerator { get; }
 
-    public Boss1AbstractState(Boss1Record record)
+    public Boss1AbstractState(Boss1Record record, Boss1StateGenerator stateGenerator)
     {
         Record = record;
+        _stateGenerator = stateGenerator;
     }
 
     public abstract void Process(IBoss1Context state);
@@ -110,7 +110,7 @@ public class LostState : Boss1AbstractState
     IMove _move;
     ISearch _search;
 
-    public LostState(Boss1Record record) : base(record)
+    public LostState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
         _attack = null;
         _move = new WanderingMove(
@@ -143,7 +143,7 @@ public class TacklingState : Boss1AbstractState
     IMove _move;
     ISearch _search;
 
-    public TacklingState(Boss1Record record) : base(record)
+    public TacklingState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
         _attack = new ToNearestAttack(new TargetBufferAttack.Context
             {
@@ -189,7 +189,7 @@ public class JumpingState : Boss1AbstractState
     IMove _move;
     ISearch _search;
 
-    public JumpingState(Boss1Record record) : base(record)
+    public JumpingState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
         _attack = new ToNearestAttack(new TargetBufferAttack.Context
             {
@@ -237,7 +237,7 @@ public class ChargeJumpingState : Boss1AbstractState
     IMove _move;
     ISearch _search;
 
-    public ChargeJumpingState(Boss1Record record) : base(record)
+    public ChargeJumpingState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
         _attack = null;
         _attackCoolTime = 0;
@@ -259,7 +259,8 @@ public class SpitOutState : Boss1AbstractState
     IMove _move;
     ISearch _search;
 
-    public SpitOutState(NetworkRunner runner, Boss1Record record) : base(record)
+    public SpitOutState(NetworkRunner runner, Boss1Record record, Boss1StateGenerator stateGenerator) : base(record,
+        stateGenerator)
     {
         _attack = new ToFurthestAttack(new TargetBufferAttack.Context
             {
@@ -299,7 +300,7 @@ public class VacuumingState : Boss1AbstractState
     IMove _move;
     ISearch _search;
 
-    public VacuumingState(Boss1Record record) : base(record)
+    public VacuumingState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
         _attack = new ToNearestAttack(new TargetBufferAttack.Context
             {
@@ -338,12 +339,12 @@ public class Boss1StateGenerator
 
     public Boss1StateGenerator(NetworkRunner runner, Boss1Record record)
     {
-        LostState = new LostState(record);
-        TacklingState = new TacklingState(record);
-        JumpingState = new JumpingState(record);
-        ChargeJumpingState = new ChargeJumpingState(record);
-        SpitOutState = new SpitOutState(runner, record);
-        VacuumingState = new VacuumingState(record);
+        LostState = new LostState(record, this);
+        TacklingState = new TacklingState(record, this);
+        JumpingState = new JumpingState(record, this);
+        ChargeJumpingState = new ChargeJumpingState(record, this);
+        SpitOutState = new SpitOutState(runner, record, this);
+        VacuumingState = new VacuumingState(record, this);
     }
 }
 
