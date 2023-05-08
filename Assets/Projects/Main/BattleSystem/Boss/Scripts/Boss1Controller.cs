@@ -46,8 +46,7 @@ namespace Boss
         
         //Status
         [Networked] private int Hp { get; set; } = 1;
-
-        private bool IsLostPlayers => _colliders.Length == 0;
+        
 
         //ステートパターンに従う
         //インスタンスを使用する方法でも良いが、一旦列挙体で管理する。
@@ -57,7 +56,6 @@ namespace Boss
         private Boss1DecorationDetector _decorationDetector;
 
         private readonly HashSet<Transform> _targetBuffer = new();
-        private Collider[] _colliders = { };
         private Rigidbody _rd;
         private State _willState;
 
@@ -123,9 +121,9 @@ namespace Boss
         {
             if (AttackTimer.ExpiredOrNotRunning(Runner))
             {
-                Search();
+                var colliders = Search();
 
-                if (IsLostPlayers)
+                if (IsLostPlayers(colliders))
                 {
                     SetState(State.Lost);
                 }
@@ -151,16 +149,23 @@ namespace Boss
             }
         }
 
-        private void Search()
+        Collider[] Search()
         {
             //Search
             //現状は攻撃時にサーチする
-            _colliders = _context.Search.Search();
+            var colliders = _context.Search.Search();
 
             //Set Detected Targets
             //このバッファを更新することで、ToNearestAttackが機能する
             _targetBuffer.Clear();
-            _targetBuffer.UnionWith(_colliders.Map(c => c.transform));
+            _targetBuffer.UnionWith(colliders.Map(c => c.transform));
+
+            return colliders;
+        }
+
+        bool IsLostPlayers(Collider[] colliders)
+        {
+            return colliders.Length == 0;
         }
 
         private void CheckWillStateTimer()
