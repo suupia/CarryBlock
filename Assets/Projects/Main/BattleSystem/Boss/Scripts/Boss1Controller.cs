@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Animations;
 using Decoration;
 using Fusion;
@@ -24,7 +23,7 @@ namespace Boss
             Vacuuming,
         }
 
-        private struct StateContext
+        class StateContext
         {
             public IMove Move;
             public ISearch Search;
@@ -68,9 +67,9 @@ namespace Boss
         private Action _onAttack = () => { };
 
         private string DebugText =>
-            $"State: {_state}\nMove: {_context.Move}\nAttack: {_context.Attack}" +
-            $"\nMove Target: {(_context.Move as ITargetMove)?.Target}" +
-            $"\nAttack Target: {(_context.Attack as ITargetAttack)?.Target}";
+            $"State: {_state}\nMove: {_context?.Move}\nAttack: {_context?.Attack}" +
+            $"\nMove Target: {(_context?.Move as ITargetMove)?.Target}" +
+            $"\nAttack Target: {(_context?.Attack as ITargetAttack)?.Target}";
 
         public override void Spawned()
         {
@@ -186,7 +185,7 @@ namespace Boss
             //Noneには遷移しない。Noneはクライアント用の状態
             Assert.IsFalse(state == State.None);
 
-            if (_context.Move is IDisposable move)
+            if (_context?.Move is IDisposable move)
             {
                 move.Dispose();
             }

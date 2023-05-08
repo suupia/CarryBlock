@@ -69,7 +69,9 @@ namespace Boss
                     State.Lost, () => new StateContext
                     {
                         Move = WanderingMove,
-                        Search = DefaultSearch
+                        Search = DefaultSearch,
+                        Attack = null,
+                        AttackCoolTime = 0
                     }
                 },
                 {
@@ -124,7 +126,9 @@ namespace Boss
                     State.ChargingJump, () => new StateContext
                     {
                         Move = LookAtTargetMove,
-                        Search = DefaultSearch
+                        Search = DefaultSearch,
+                        Attack = null,
+                        AttackCoolTime = 0
                     }
                 },
                 {
