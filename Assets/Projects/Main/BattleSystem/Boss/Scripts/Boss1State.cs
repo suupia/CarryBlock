@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Main;
 using UnityEngine;
 
@@ -23,6 +24,9 @@ public record Boss1Record
     public readonly float SearchRadius = 6f;
     public readonly float DefaultAttackCoolTime = 4f;
 
+    // target buffer
+    public HashSet<Transform> TargetBuffer { get; } = new();
+    
     // componets
     public GameObject GameObject { get; }
     public Transform Transform => GameObject.transform;
@@ -94,7 +98,7 @@ public class LostState : Boss1AbstractState
 
     public LostState(Boss1Record record) : base(record)
     {
-        _attack = default;
+        _attack = null;
         _move = new WanderingMove(
             new WanderingMove.Record
             {
@@ -109,34 +113,58 @@ public class LostState : Boss1AbstractState
         );
         _search = new RangeSearch(Record.Transform, Record.SearchRadius,
             LayerMask.GetMask("Player"));
-        ;
+        
     }
 
     public override void Process(IBoss1Context state)
     {
-        Debug.Log("NoneState.Process()");
+        Debug.Log("LostState.Process()");
     }
 }
 
-public class TacklingState
+public class TacklingState : Boss1AbstractState
 {
-    Boss1Record _record;
     IAttack _attack;
     float _attackCoolTime;
     IMove _move;
     ISearch _search;
 
-    public TacklingState(Boss1Record record, IAttack attack, IMove move, ISearch search)
+    public TacklingState(Boss1Record record) : base(record)
     {
-        _record = record;
-        _attack = attack;
-        _move = move;
-        _search = search;
+        _attack = new ToNearestAttack(new TargetBufferAttack.Context
+            {
+                Transform = Record.Transform,
+                TargetBuffer = Record.TargetBuffer
+            },
+            new ToTargetAttack(
+                Record.GameObject,
+                new RangeAttack(new RangeAttack.Context
+                {
+                    Transform = Record.Transform,
+                    Radius = 2f,
+                    AttackSphereLifeTime = 0.5f
+                })
+            )
+        );
+        _attackCoolTime = 1;
+        _move = new ToTargetMove(
+            new ToTargetMove.Record
+            {
+                Transform = Record.Transform
+            }, new SimpleMove(new SimpleMove.Record
+            {
+                GameObject = Record.GameObject,
+                Acceleration = 30f,
+                MaxVelocity = 2.5f
+            }));
+        _search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            LayerMask.GetMask("Player"));
+        ;
     }
 
-    public void Process(IBoss1Context state)
+    public override void Process(IBoss1Context state)
     {
-        Debug.Log("NoneState.Process()");
+        Debug.Log("TacklingState.Process()");
     }
 }
 
