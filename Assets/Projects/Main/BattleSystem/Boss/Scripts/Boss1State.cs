@@ -319,3 +319,31 @@ public class VacuumingState : Boss1AbstractState
         Debug.Log("VacuumingState.Process()");
     }
 }
+
+/// <summary>
+///     A class to treat each state as a singleton.
+/// </summary>
+public class Boss1StateGenerator
+{
+    // ToDo: FactoryMethodかAbstractFactoryパターンっぽいが厳密には多分違う
+    // インターフェイスを切っていないため、クライアントコードが具象のFactoryに依存してしまうが
+    // 戻り値がインターフェイスであるため、クライアントコードは抽象のIBoss1Stateに依存することになる
+    // もっと厳密にやるにはクライアントコードでDIする必要があるが、Runnerを使っているのでできない。
+    public IBoss1State LostState { get; }
+    public IBoss1State TacklingState { get; }
+    public IBoss1State JumpingState { get; }
+    public IBoss1State ChargeJumpingState { get; }
+    public IBoss1State SpitOutState { get; }
+    public IBoss1State VacuumingState { get; }
+
+    public Boss1StateGenerator(NetworkRunner runner, Boss1Record record)
+    {
+        LostState = new LostState(record);
+        TacklingState = new TacklingState(record);
+        JumpingState = new JumpingState(record);
+        ChargeJumpingState = new ChargeJumpingState(record);
+        SpitOutState = new SpitOutState(runner, record);
+        VacuumingState = new VacuumingState(record);
+    }
+}
+

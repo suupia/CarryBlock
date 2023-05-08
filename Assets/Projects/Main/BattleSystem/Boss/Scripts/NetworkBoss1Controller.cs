@@ -1,3 +1,4 @@
+using Animations;
 using Decoration;
 using Fusion;
 using Main;
@@ -24,8 +25,7 @@ namespace Boss
 
         // Domain
         IBoss1Context _context;
-
-
+        
         // Decoration
         Boss1DecorationDetector _decorationDetector;
 
@@ -46,12 +46,24 @@ namespace Boss
         protected override void OnInactive()
         {
             //　ファイナライザ的な処理を書く
+            _record.Rd.velocity = Vector3.zero;
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            if (!HasStateAuthority) return;
+
+            _context.CurrentState.Process(_context);
         }
 
         void InstantiateBoss()
         {
             var prefab = _modelPrefab;
             var modelObject = Instantiate(prefab, gameObject.transform);
+
+            _context = new Boss1Context(new LostState(_record));
+            _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
         }
     }
+
 }
