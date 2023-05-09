@@ -85,10 +85,10 @@ public abstract class Boss1AbstractState : IBoss1State
 
 public class NoneState : IBoss1State
 {
-    IAttack _attack;
+    IEnemyAttack _attack;
     float _attackCoolTime;
     IMove _move;
-    ISearch _search;
+    IEnemySearch _search;
 
     public NoneState(Boss1Record record)
     {
@@ -105,10 +105,10 @@ public class NoneState : IBoss1State
 
 public class LostState : Boss1AbstractState
 {
-    IAttack _attack;
+    IEnemyAttack _attack;
     float _attackCoolTime;
     IMove _move;
-    ISearch _search;
+    IEnemySearch _search;
 
     public LostState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
@@ -138,10 +138,10 @@ public class LostState : Boss1AbstractState
 
 public class TacklingState : Boss1AbstractState
 {
-    IAttack _attack;
+    IEnemyAttack _attack;
     float _attackCoolTime;
     IMove _move;
-    ISearch _search;
+    IEnemySearch _search;
 
     public TacklingState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
@@ -184,10 +184,10 @@ public class TacklingState : Boss1AbstractState
 
 public class JumpingState : Boss1AbstractState
 {
-    IAttack _attack;
+    IEnemyAttack _attack;
     float _attackCoolTime;
     IMove _move;
-    ISearch _search;
+    IEnemySearch _search;
 
     public JumpingState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
@@ -232,10 +232,10 @@ public class JumpingState : Boss1AbstractState
 
 public class ChargeJumpingState : Boss1AbstractState
 {
-    IAttack _attack;
+    IEnemyAttack _attack;
     float _attackCoolTime;
     IMove _move;
-    ISearch _search;
+    IEnemySearch _search;
 
     public ChargeJumpingState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
@@ -254,10 +254,10 @@ public class ChargeJumpingState : Boss1AbstractState
 
 public class SpitOutState : Boss1AbstractState
 {
-    IAttack _attack;
+    IEnemyAttack _attack;
     float _attackCoolTime;
     IMove _move;
-    ISearch _search;
+    IEnemySearch _search;
 
     public SpitOutState(NetworkRunner runner, Boss1Record record, Boss1StateGenerator stateGenerator) : base(record,
         stateGenerator)
@@ -295,10 +295,10 @@ public class SpitOutState : Boss1AbstractState
 
 public class VacuumingState : Boss1AbstractState
 {
-    IAttack _attack;
+    IEnemyAttack _attack;
     float _attackCoolTime;
     IMove _move;
-    ISearch _search;
+    IEnemySearch _search;
 
     public VacuumingState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {

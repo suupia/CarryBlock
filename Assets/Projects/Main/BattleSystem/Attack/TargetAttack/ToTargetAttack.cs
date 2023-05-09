@@ -23,7 +23,7 @@ namespace Main
             }
         }
 
-        public ToTargetAttack(GameObject gameObject, IAttack attack, Transform target = null)
+        public ToTargetAttack(GameObject gameObject, IEnemyAttack attack, Transform target = null)
         {
             _target = target;
             _attack = attack;

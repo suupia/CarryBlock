@@ -1,6 +1,5 @@
 using System;
 using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Object = UnityEngine.Object;
@@ -17,7 +16,7 @@ namespace Main
     /// Hostでのみ当たり判定を管理する予定なので問題ないはず
     /// 問題があれば、Runnerを受け取るようにする
     /// </summary>
-    public class RangeAttack : IAttack
+    public class RangeAttack : IEnemyAttack
     {
         private static readonly GameObject AttackSpherePrefab = Resources.Load<GameObject>("Prefabs/Attacks/AttackSphere");
 

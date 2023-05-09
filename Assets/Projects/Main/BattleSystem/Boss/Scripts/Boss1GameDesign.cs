@@ -51,7 +51,7 @@ namespace Boss
         private IMove LookAtTargetMove => new LookAtTargetMove(transform);
 
         //Define Search
-        private ISearch DefaultSearch => new RangeSearch(transform: transform, radius: SearchRadius,
+        IEnemySearch DefaultSearch => new RangeSearch(transform, SearchRadius,
             layerMask: LayerMask.GetMask("Player"));
 
         //Define State

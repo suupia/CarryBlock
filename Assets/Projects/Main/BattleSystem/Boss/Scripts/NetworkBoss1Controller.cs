@@ -54,8 +54,19 @@ namespace Boss
         {
             if (!HasStateAuthority) return;
 
-            _context.CurrentState.Process(_context);
+            var currentState = _context.CurrentState;
+
+            // currentState.Move();
+            //
+            // if (AttackTimer.ExpiredOrNotRunning(Runner))
+            // {
+            //     currentState.Attack();
+            // }
+            
+            
+
         }
+        
 
         void InstantiateBoss()
         {
