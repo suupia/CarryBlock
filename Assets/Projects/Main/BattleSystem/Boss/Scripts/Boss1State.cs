@@ -110,14 +110,14 @@ public class NoneState : Boss1AbstractState
     }
 }
 
-public class LostState : Boss1AbstractState
+public class SearchPlayerState : Boss1AbstractState
 {
     IEnemyAttack _attack;
     float _attackCoolTime;
     IMove _move;
     IEnemySearch _search;
 
-    public LostState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
+    public SearchPlayerState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
         _attack = null;
         _move = new WanderingMove(
@@ -376,7 +376,7 @@ public class Boss1StateGenerator
 
     public Boss1StateGenerator(NetworkRunner runner, Boss1Record record)
     {
-        LostState = new LostState(record, this);
+        LostState = new SearchPlayerState(record, this);
         TacklingState = new TacklingState(record, this);
         JumpingState = new JumpingState(record, this);
         ChargeJumpingState = new ChargeJumpingState(record, this);
