@@ -123,14 +123,14 @@ public class SearchPlayerState : Boss1AbstractState
     }
 }
 
-public class TacklingState : Boss1AbstractState
+public class TackleState : Boss1AbstractState
 {
     IEnemyAttack _attack;
     float _attackCoolTime;
     IMove _move;
     IEnemySearch _search;
 
-    public TacklingState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
+    public TackleState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
         _attack = new ToNearestAttack(new TargetBufferAttack.Context
             {
@@ -174,14 +174,14 @@ public class TacklingState : Boss1AbstractState
     }
 }
 
-public class JumpingState : Boss1AbstractState
+public class JumpState : Boss1AbstractState
 {
     IEnemyAttack _attack;
     float _attackCoolTime;
     IMove _move;
     IEnemySearch _search;
 
-    public JumpingState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
+    public JumpState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
         _attack = new ToNearestAttack(new TargetBufferAttack.Context
             {
@@ -227,14 +227,14 @@ public class JumpingState : Boss1AbstractState
     }
 }
 
-public class ChargeJumpingState : Boss1AbstractState
+public class ChargeJumpState : Boss1AbstractState
 {
     IEnemyAttack _attack;
     float _attackCoolTime;
     IMove _move;
     IEnemySearch _search;
 
-    public ChargeJumpingState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
+    public ChargeJumpState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
         _attack = null;
         _attackCoolTime = 0;
@@ -300,14 +300,14 @@ public class SpitOutState : Boss1AbstractState
     }
 }
 
-public class VacuumingState : Boss1AbstractState
+public class VacuumState : Boss1AbstractState
 {
     IEnemyAttack _attack;
     float _attackCoolTime;
     IMove _move;
     IEnemySearch _search;
 
-    public VacuumingState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
+    public VacuumState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
         _attack = new ToNearestAttack(new TargetBufferAttack.Context
             {
@@ -352,11 +352,11 @@ public class Boss1StateGenerator
     public Boss1StateGenerator(NetworkRunner runner, Boss1Record record)
     {
         LostState = new SearchPlayerState(record, this);
-        TacklingState = new TacklingState(record, this);
-        JumpingState = new JumpingState(record, this);
-        ChargeJumpingState = new ChargeJumpingState(record, this);
+        TacklingState = new TackleState(record, this);
+        JumpingState = new JumpState(record, this);
+        ChargeJumpingState = new ChargeJumpState(record, this);
         SpitOutState = new SpitOutState(runner, record, this);
-        VacuumingState = new VacuumingState(record, this);
+        VacuumingState = new VacuumState(record, this);
     }
 }
 
