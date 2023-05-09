@@ -4,6 +4,7 @@ using Fusion;
 using Main;
 using UnityEngine;
 
+// 中央集権的なStateパターン
 public interface IBoss1Context
 {
     public IBoss1State CurrentState { get; }
@@ -292,6 +293,7 @@ public class VacuumState : Boss1AbstractState
     
 }
 
+
 /// <summary>
 ///     A class to treat each state as a singleton.
 /// </summary>
@@ -302,20 +304,20 @@ public class Boss1StateGenerator
     // 戻り値がインターフェイスであるため、クライアントコードは抽象のIBoss1Stateに依存することになる
     // もっと厳密にやるにはクライアントコードでDIする必要があるが、Runnerを使っているのでできない。
     public IBoss1State LostState { get; }
-    public IBoss1State TacklingState { get; }
-    public IBoss1State JumpingState { get; }
-    public IBoss1State ChargeJumpingState { get; }
+    public IBoss1State TackleState { get; }
+    public IBoss1State JumpState { get; }
+    public IBoss1State ChargeJumpState { get; }
     public IBoss1State SpitOutState { get; }
-    public IBoss1State VacuumingState { get; }
+    public IBoss1State VacuumState { get; }
 
     public Boss1StateGenerator(NetworkRunner runner, Boss1Record record)
     {
         LostState = new SearchPlayerState(record, this);
-        TacklingState = new TackleState(record, this);
-        JumpingState = new JumpState(record, this);
-        ChargeJumpingState = new ChargeJumpState(record, this);
+        TackleState = new TackleState(record, this);
+        JumpState = new JumpState(record, this);
+        ChargeJumpState = new ChargeJumpState(record, this);
         SpitOutState = new SpitOutState(runner, record, this);
-        VacuumingState = new VacuumState(record, this);
+        VacuumState = new VacuumState(record, this);
     }
 }
 

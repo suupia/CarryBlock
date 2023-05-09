@@ -60,12 +60,12 @@ namespace Boss
 
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
             {
-                // var searchResult = _boss1.Search();
-                // if (searchResult.Count > 0)
-                // {
-                //     _boss1.Attack(searchResult);
-                //     AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
-                // }
+                var searchResult = _boss1.Search();
+                if (searchResult.Length > 0)
+                {
+                    _boss1.Attack();
+                    AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
+                }
             }
 
         }
@@ -77,22 +77,32 @@ namespace Boss
 
             var stateGenerator = new Boss1StateGenerator(Runner, _record);
             var context = new Boss1Context(stateGenerator.LostState);
-            _boss1 = new Boss1IncludeDecorationDetector(modelObject, context);
+            _boss1 = new Boss1IncludeDecorationDetector(modelObject, stateGenerator, context);
         }
     }
 
     public class Boss1IncludeDecorationDetector : IBoss1
     {
         // Domain
+        readonly Boss1StateGenerator _stateGenerator;
         readonly IBoss1Context _context;
 
         // Decoration
         Boss1DecorationDetector _decorationDetector;
 
-        public Boss1IncludeDecorationDetector(GameObject modelObject, IBoss1Context context)
+        public Boss1IncludeDecorationDetector(GameObject modelObject, Boss1StateGenerator stateGenerator,
+            IBoss1Context context)
         {
             _context = context;
+            _stateGenerator = stateGenerator;
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
+        }
+
+        public void ChooseAttackState()
+        {
+            // ToDo: ここで攻撃ステートを決める
+            // とりあえずTackleにする
+            //_context.ChangeState(_context.);
         }
 
         public void Move(Vector3 input)
