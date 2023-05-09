@@ -85,31 +85,6 @@ public abstract class Boss1AbstractState : IBoss1State
     public abstract void Move(Vector3 input);
 }
 
-public class NoneState : Boss1AbstractState
-{
-    IEnemyAttack _attack;
-    float _attackCoolTime;
-    IMove _move;
-    IEnemySearch _search;
-
-    public NoneState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
-    {
-        _attack = default; // ToDO: Nullオブジェクトを代入する
-        _move = default;
-        _search = default;
-    }
-
-    public override void Process(IBoss1Context state)
-    {
-        Debug.Log("NoneState.Process()");
-    }
-
-    public override void Move(Vector3 input)
-    {
-        _move.Move(input);
-    }
-}
-
 public class SearchPlayerState : Boss1AbstractState
 {
     IEnemyAttack _attack;
