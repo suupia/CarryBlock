@@ -11,7 +11,7 @@ public interface IBoss1Context
     public void ChangeState(IBoss1State state);
 }
 
-public interface IBoss1State : IMove, IEnemyAttack, IEnemySearch
+public interface IBoss1State : IEnemyMove, IEnemyAttack, IEnemySearch
 {
     public void Process(IBoss1Context state);
 }
@@ -71,7 +71,7 @@ public abstract class Boss1AbstractState : IBoss1State
 
     protected IEnemyAttack attack;
     protected float attackCoolTime;
-    protected IMove move;
+    protected IEnemyMove move;
     protected IEnemySearch search;
 
     protected Boss1AbstractState(Boss1Record record)

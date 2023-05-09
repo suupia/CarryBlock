@@ -25,7 +25,7 @@ namespace Boss
 
         class StateContext
         {
-            public IMove Move;
+            public IEnemyMove Move;
             public IEnemySearch Search;
             public IEnemyAttack Attack;
             public float AttackCoolTime;

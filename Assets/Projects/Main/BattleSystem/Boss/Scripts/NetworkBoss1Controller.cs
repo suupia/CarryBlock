@@ -56,7 +56,7 @@ namespace Boss
             if (!HasStateAuthority) return;
 
 
-            // _boss1.Move();
+            _boss1.Move();
 
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
             {
@@ -106,9 +106,9 @@ namespace Boss
             _context.ChangeState(_stateGenerator.TackleState);
         }
 
-        public void Move(Vector3 input)
+        public void Move()
         {
-            _context.CurrentState.Move(input);
+            _context.CurrentState.Move();
         }
 
         public Collider[] Search()

@@ -9,10 +9,15 @@ namespace Main
 {
     public interface IMove
     {
+        void Move(Vector3 input);
+    }
+
+    public interface IEnemyMove
+    {
         void Move(Vector3 input = default);
     }
 
-    public interface ITargetMove : IMove
+    public interface ITargetMove : IEnemyMove
     {
         Transform Target { get; set; }
     }
@@ -30,7 +35,7 @@ namespace Main
     public class MoveWrapper
     {
         // ReSharper disable once InconsistentNaming
-        protected IMove _move;
+        protected IEnemyMove _move;
         public override string ToString()
         {
             return $"({base.ToString()}+{_move})";
@@ -45,7 +50,7 @@ namespace Main
     public class MovesWrapper
     {
         // ReSharper disable once InconsistentNaming
-        protected IMove[] _moves;
+        protected IEnemyMove[] _moves;
         public override string ToString()
         {
             return $"{base.ToString()}+[{string.Join(", ", _moves.Select(m => m.ToString()))}]";
@@ -58,7 +63,7 @@ namespace Main
     /// 引数を指定すると、_moveの動きになるが、あまり使用する意味はない
     /// ただし、実装の関係上、Vector.zeroに対応できない
     /// </summary>
-    public class WanderingMove : MoveWrapper, IMove, ICancelMove
+    public class WanderingMove : MoveWrapper, IEnemyMove, ICancelMove
     {
         public record Record
         {
@@ -69,7 +74,7 @@ namespace Main
         private Vector3 _simulatedInput;
         private readonly CancellationTokenSource _cancellationTokenSource;
 
-        public WanderingMove(Record record, IMove move)
+        public WanderingMove(Record record, IEnemyMove move)
         {
             _cancellationTokenSource = new CancellationTokenSource();
             _move = move;
@@ -117,7 +122,7 @@ namespace Main
 
         public Transform Target { get; set; }
 
-        public ToTargetMove(Record record, IMove move)
+        public ToTargetMove(Record record, IEnemyMove move)
         {
             _record = record;
             _record.GetOffset ??= () => Vector3.zero;
@@ -143,9 +148,9 @@ namespace Main
     /// 実装としては、ToTargetMoveを使用している
     /// 自身とターゲットを同じTransformにして、GetOffsetにtransform.forwardを指定している
     /// </summary>
-    public class ToAheadMove : MoveWrapper, IMove
+    public class ToAheadMove : MoveWrapper, IEnemyMove
     {
-        public ToAheadMove(Transform transform, IMove move)
+        public ToAheadMove(Transform transform, IEnemyMove move)
         {
             _move = new ToTargetMove(new ToTargetMove.Record
             {
@@ -165,7 +170,7 @@ namespace Main
     /// rigidBodyで動き、transformで回転
     ///
     /// </summary>
-    public class SimpleMove : MoveWrapper, IMove
+    public class SimpleMove : MoveWrapper, IEnemyMove
     {
         public record Record
         {
@@ -203,7 +208,7 @@ namespace Main
     /// Transform.LookAtのラッパー
     /// Moveの引数の方向を向く
     /// </summary>
-    public class LookAtMove : IMove
+    public class LookAtMove : IEnemyMove
     {
         private readonly Transform _transform;
 
@@ -243,7 +248,7 @@ namespace Main
     /// RigidBodyで動く
     /// Jumpと組み合わさることを考えて、スピード制限はyを除いて行う
     /// </summary>
-    public class AddForceMove : IMove
+    public class AddForceMove : IEnemyMove
     {
         public record Record
         {
@@ -278,9 +283,9 @@ namespace Main
     /// 複数のMoveを一括管理する。
     /// 処理される順番はコンストラクタで追加した順
     /// </summary>
-    public class CombinationMove : MovesWrapper, IMove
+    public class CombinationMove : MovesWrapper, IEnemyMove
     {
-        public CombinationMove(params IMove[] moves)
+        public CombinationMove(params IEnemyMove[] moves)
         {
             _moves = moves;
         }
