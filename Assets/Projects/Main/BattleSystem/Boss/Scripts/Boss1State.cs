@@ -71,33 +71,43 @@ public class Boss1Context : IBoss1Context
 public abstract class Boss1AbstractState : IBoss1State
 {
     protected Boss1Record Record { get; }
-    protected Boss1StateGenerator _stateGenerator { get; }
+    protected Boss1StateGenerator stateGenerator { get; }
 
-    public Boss1AbstractState(Boss1Record record, Boss1StateGenerator stateGenerator)
+    protected IEnemyAttack attack;
+    protected float attackCoolTime;
+    protected IMove move;
+    protected IEnemySearch search;
+
+    protected Boss1AbstractState(Boss1Record record, Boss1StateGenerator stateGenerator)
     {
         Record = record;
-        _stateGenerator = stateGenerator;
+        this.stateGenerator = stateGenerator;
     }
 
     public abstract void Process(IBoss1Context state);
 
-    public abstract void Move(Vector3 input);
-    public abstract Collider[] Search();
+    public void Move(Vector3 input)
+    {
+        move.Move(input);
+    }
 
-    public abstract void Attack();
+    public Collider[] Search()
+    {
+        return search.Search();
+    }
+
+
+    public void Attack()
+    {
+        attack.Attack();
+    }
 }
 
 public class SearchPlayerState : Boss1AbstractState
 {
-    IEnemyAttack _attack;
-    float _attackCoolTime;
-    IMove _move;
-    IEnemySearch _search;
-
     public SearchPlayerState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
-        _attack = new DoNothingAttack();
-        _move = new WanderingMove(
+        move = new WanderingMove(
             new WanderingMove.Record
             {
                 InputSimulationFrequency = 2f
@@ -109,9 +119,11 @@ public class SearchPlayerState : Boss1AbstractState
                 MaxVelocity = 1f
             })
         );
-        _search = new RangeSearch(Record.Transform, Record.SearchRadius,
+        search = new RangeSearch(Record.Transform, Record.SearchRadius,
             LayerMask.GetMask("Player"));
-        
+        attack = new DoNothingAttack();
+        attackCoolTime = 0;
+
     }
 
     public override void Process(IBoss1Context state)
@@ -119,34 +131,25 @@ public class SearchPlayerState : Boss1AbstractState
         Debug.Log("LostState.Process()");
     }
 
-    public override void Move(Vector3 input)
-    {
-        _move.Move(input);
-    }
-
-    public override Collider[] Search()
-    {
-        return _search.Search();
-    }
-
-
-    public override void Attack()
-    {
-        _attack.Attack();
-    }
-    
 }
 
 public class TackleState : Boss1AbstractState
 {
-    IEnemyAttack _attack;
-    float _attackCoolTime;
-    IMove _move;
-    IEnemySearch _search;
-
     public TackleState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
-        _attack = new ToNearestAttack(new TargetBufferAttack.Context
+        move = new ToTargetMove(
+            new ToTargetMove.Record
+            {
+                Transform = Record.Transform
+            }, new SimpleMove(new SimpleMove.Record
+            {
+                GameObject = Record.GameObject,
+                Acceleration = 30f,
+                MaxVelocity = 2.5f
+            }));
+        search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            LayerMask.GetMask("Player"));
+        attack = new ToNearestAttack(new TargetBufferAttack.Context
             {
                 Transform = Record.Transform,
                 TargetBuffer = Record.TargetBuffer
@@ -161,8 +164,20 @@ public class TackleState : Boss1AbstractState
                 })
             )
         );
-        _attackCoolTime = 1;
-        _move = new ToTargetMove(
+        attackCoolTime = 1;
+    }
+
+    public override void Process(IBoss1Context state)
+    {
+        Debug.Log("TacklingState.Process()");
+    }
+}
+
+public class JumpState : Boss1AbstractState
+{
+    public JumpState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
+    {
+        move = new ToTargetMove(
             new ToTargetMove.Record
             {
                 Transform = Record.Transform
@@ -171,43 +186,11 @@ public class TackleState : Boss1AbstractState
                 GameObject = Record.GameObject,
                 Acceleration = 30f,
                 MaxVelocity = 2.5f
-            }));
-        _search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            })
+        );
+        search = new RangeSearch(Record.Transform, Record.SearchRadius,
             LayerMask.GetMask("Player"));
-        
-    }
-
-    public override void Process(IBoss1Context state)
-    {
-        Debug.Log("TacklingState.Process()");
-    }
-
-    public override void Move(Vector3 input)
-    {
-        _move.Move(input);
-    }
-
-    public override Collider[] Search()
-    {
-        return _search.Search();
-    }
-
-    public override void Attack()
-    {
-        _attack.Attack();
-    }
-}
-
-public class JumpState : Boss1AbstractState
-{
-    IEnemyAttack _attack;
-    float _attackCoolTime;
-    IMove _move;
-    IEnemySearch _search;
-
-    public JumpState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
-    {
-        _attack = new ToNearestAttack(new TargetBufferAttack.Context
+        attack = new ToNearestAttack(new TargetBufferAttack.Context
             {
                 Transform = Record.Transform,
                 TargetBuffer = Record.TargetBuffer
@@ -224,91 +207,43 @@ public class JumpState : Boss1AbstractState
                 )
             )
         );
-        _attackCoolTime = Record.DefaultAttackCoolTime;
-        _move = new ToTargetMove(
-            new ToTargetMove.Record
-            {
-                Transform = Record.Transform
-            }, new SimpleMove(new SimpleMove.Record
-            {
-                GameObject = Record.GameObject,
-                Acceleration = 30f,
-                MaxVelocity = 2.5f
-            })
-        );
-        _search = new RangeSearch(Record.Transform, Record.SearchRadius,
-            LayerMask.GetMask("Player"));
+        attackCoolTime = Record.DefaultAttackCoolTime;
     }
 
     public override void Process(IBoss1Context state)
     {
         Debug.Log("JumpingState.Process()");
     }
-
-    public override void Move(Vector3 input)
-    {
-        _move.Move(input);
-    }
-
-    public override Collider[] Search()
-    {
-        return _search.Search();
-    }
-
-    public override void Attack()
-    {
-        _attack.Attack();
-    }
+    
 }
 
 public class ChargeJumpState : Boss1AbstractState
 {
-    IEnemyAttack _attack;
-    float _attackCoolTime;
-    IMove _move;
-    IEnemySearch _search;
-
     public ChargeJumpState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
-        _attack = new DoNothingAttack();
-        _attackCoolTime = 0;
-        _move = new LookAtTargetMove(Record.Transform);
-        _search = new RangeSearch(Record.Transform, Record.SearchRadius,
+        move = new LookAtTargetMove(Record.Transform);
+        search = new RangeSearch(Record.Transform, Record.SearchRadius,
             LayerMask.GetMask("Player"));
+        attack = new DoNothingAttack();
+        attackCoolTime = 0;
     }
 
     public override void Process(IBoss1Context state)
     {
         Debug.Log("ChargeJumpingState.Process()");
     }
-
-    public override void Move(Vector3 input)
-    {
-        _move.Move(input);
-    }
-
-    public override Collider[] Search()
-    {
-        return _search.Search();
-    }
-
-    public override void Attack()
-    {
-        _attack.Attack();
-    }
+    
 }
 
 public class SpitOutState : Boss1AbstractState
 {
-    IEnemyAttack _attack;
-    float _attackCoolTime;
-    IMove _move;
-    IEnemySearch _search;
-
     public SpitOutState(NetworkRunner runner, Boss1Record record, Boss1StateGenerator stateGenerator) : base(record,
         stateGenerator)
     {
-        _attack = new ToFurthestAttack(new TargetBufferAttack.Context
+        move = new LookAtTargetMove(Record.Transform);
+        search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            LayerMask.GetMask("Player"));
+        attack = new ToFurthestAttack(new TargetBufferAttack.Context
             {
                 Transform = Record.Transform,
                 TargetBuffer = Record.TargetBuffer
@@ -327,74 +262,38 @@ public class SpitOutState : Boss1AbstractState
                 )
             )
         );
-        _attackCoolTime = Record.DefaultAttackCoolTime;
-        _move = new LookAtTargetMove(Record.Transform);
-        _search = new RangeSearch(Record.Transform, Record.SearchRadius,
-            LayerMask.GetMask("Player"));
+        attackCoolTime = Record.DefaultAttackCoolTime;
     }
 
     public override void Process(IBoss1Context state)
     {
         Debug.Log("SpitOutState.Process()");
     }
-
-    public override void Move(Vector3 input)
-    {
-        _move.Move(input);
-    }
-
-    public override Collider[] Search()
-    {
-        return _search.Search();
-    }
-
-    public override void Attack()
-    {
-        _attack.Attack();
-    }
+    
 }
 
 public class VacuumState : Boss1AbstractState
 {
-    IEnemyAttack _attack;
-    float _attackCoolTime;
-    IMove _move;
-    IEnemySearch _search;
-
     public VacuumState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
-        _attack = new ToNearestAttack(new TargetBufferAttack.Context
+        move = new LookAtTargetMove(Record.Transform);
+        search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            LayerMask.GetMask("Player"));
+        attack = new ToNearestAttack(new TargetBufferAttack.Context
             {
                 Transform = Record.Transform,
                 TargetBuffer = Record.TargetBuffer
             },
             new ToTargetAttack(Record.GameObject, new MockAttack())
         );
-        _attackCoolTime = Record.DefaultAttackCoolTime;
-        _move = new LookAtTargetMove(Record.Transform);
-        _search = new RangeSearch(Record.Transform, Record.SearchRadius,
-            LayerMask.GetMask("Player"));
+        attackCoolTime = Record.DefaultAttackCoolTime;
     }
 
     public override void Process(IBoss1Context state)
     {
         Debug.Log("VacuumingState.Process()");
     }
-
-    public override void Move(Vector3 input)
-    {
-        _move.Move(input);
-    }
-
-    public override Collider[] Search()
-    {
-        return _search.Search();
-    }
-
-    public override void Attack()
-    {
-        _attack.Attack();
-    }
+    
 }
 
 /// <summary>
