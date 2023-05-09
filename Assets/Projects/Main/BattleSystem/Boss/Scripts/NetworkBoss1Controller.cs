@@ -16,9 +16,8 @@ namespace Boss
         ref Boss1DecorationDetector.Data DecorationDataRef => ref MakeRef<Boss1DecorationDetector.Data>();
 
         // Networked TickerTimer
-        //Timer
-        [Networked] TickTimer AttackTimer { get; set; }
-        [Networked] TickTimer SetAsWillStateTimer { get; set; }
+        // Cooldown Timer
+        [Networked] TickTimer AttackCooldown { get; set; }
 
         // Stats
         [Networked] int Hp { get; set; } = 1;
@@ -56,12 +55,12 @@ namespace Boss
 
             var currentState = _context.CurrentState;
 
-            // currentState.Move();
-            //
-            // if (AttackTimer.ExpiredOrNotRunning(Runner))
-            // {
-            //     currentState.Attack();
-            // }
+            currentState.Move();
+
+            if (AttackCooldown.ExpiredOrNotRunning(Runner))
+            {
+                // currentState.Attack();
+            }
             
             
 
