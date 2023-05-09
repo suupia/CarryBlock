@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Boss
 {
+    public interface IBoss1 : IMove
+    {
+    }
     public class NetworkBoss1Controller : PoolableObject
     {
         // Serialize Record
@@ -23,8 +26,7 @@ namespace Boss
         [Networked] int Hp { get; set; } = 1;
 
         // Domain
-        Boss1StateGenerator _stateGenerator;
-        IBoss1Context _context;
+        IBoss1 _boss1;
         
         // Decoration
         Boss1DecorationDetector _decorationDetector;
@@ -53,9 +55,8 @@ namespace Boss
         {
             if (!HasStateAuthority) return;
 
-            var currentState = _context.CurrentState;
 
-            currentState.Move();
+            _boss1.Move();
 
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
             {
@@ -63,19 +64,37 @@ namespace Boss
             }
             
             
-
         }
-        
 
         void InstantiateBoss()
         {
             var prefab = _modelPrefab;
             var modelObject = Instantiate(prefab, gameObject.transform);
 
-            _stateGenerator = new Boss1StateGenerator(Runner, _record);
-            _context = new Boss1Context(_stateGenerator.LostState);
+            var stateGenerator = new Boss1StateGenerator(Runner, _record);
+            var context = new Boss1Context(stateGenerator.LostState);
+            _boss1 = new Boss1IncludeDecorationDetector(stateGenerator, context);
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
         }
+    }
+
+    public class Boss1IncludeDecorationDetector : IBoss1
+    {
+        Boss1StateGenerator _stateGenerator;
+        readonly IBoss1Context _context;
+
+        public Boss1IncludeDecorationDetector(Boss1StateGenerator stateGenerator, IBoss1Context context)
+        {
+            _stateGenerator = stateGenerator;
+            _context = context;
+        }
+
+        public void Move(Vector3 input)
+        {
+            _context.CurrentState.Move(input);
+        }
+        // public void Search() => _context.CurrentState.Search();
+        // public void Attack() => _context.CurrentState.Attack();
     }
 
 }
