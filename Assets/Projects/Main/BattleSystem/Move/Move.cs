@@ -132,6 +132,7 @@ namespace Main
 
         public void Move(Vector3 input = default)
         {
+            Debug.Log($"ToTargetMove Transform.name{_record.Transform.name} -> {Target?.name}");
             if (Target != null)
             {
                 input = Utility.SetYToZero(Target.position - _record.Transform.position + _record.GetOffset())
@@ -266,7 +267,10 @@ namespace Main
 
         public void Move(Vector3 input = default)
         {
+            Debug.Log($"AddForceMoveを実行します！ input = {input}");
             _record.Rb.AddForce(input * _record.Acceleration, ForceMode.Acceleration);
+
+            Debug.Log($"_record.Rd = {_record.Rb}, velocity = {_record.Rb.velocity}");
 
             var velocity = Utility.SetYToZero(_record.Rb.velocity);
             if (velocity.magnitude >= _record.MaxVelocity)

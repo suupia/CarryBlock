@@ -30,10 +30,10 @@ public record Boss1Record
     [SerializeField] public Transform finSpawnerTransform;
 
     // target buffer
-    public HashSet<Transform> TargetBuffer { get; } = new();
+    public HashSet<Transform> TargetBuffer { get; set; } = new();
     
     // componets
-    public GameObject GameObject { get; }
+    public GameObject GameObject { get; } // NetworkControllerのGameObject
     public Transform Transform => GameObject.transform;
     public Rigidbody Rd { get; }
 
@@ -81,7 +81,7 @@ public abstract class Boss1AbstractState : IBoss1State
 
     public abstract void Process(IBoss1Context state);
 
-    public void Move(Vector3 input)
+    public void Move(Vector3 input = default)
     {
         move.Move(input);
     }
@@ -132,10 +132,13 @@ public class TackleState : Boss1AbstractState
 {
     public TackleState(Boss1Record record) : base(record)
     {
+        Debug.Log($"Record.GameObject = {Record.GameObject}");
+        Debug.Log($"Record.GameObject.transform = {Record.GameObject.transform}");
         move = new ToTargetMove(
             new ToTargetMove.Record
             {
                 Transform = Record.Transform
+                // Target = Record.TargetBuffer.First() // ToDo: 適当にこれでいいんじゃない？と代入した　→　エラーになった
             }, new SimpleMove(new SimpleMove.Record
             {
                 GameObject = Record.GameObject,

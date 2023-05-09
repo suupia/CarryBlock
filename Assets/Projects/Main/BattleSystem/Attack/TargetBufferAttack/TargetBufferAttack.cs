@@ -32,6 +32,9 @@ namespace Main
         
         public void Attack()
         {
+            Debug.Log($"TargetBufferAttack() TargetBuffer.Count={_context.TargetBuffer.Count}");
+            Debug.Log($"{ToString()}");
+            Debug.Log($"Transform ={_context.Transform}");
             if (_context.TargetBuffer.Count == 0) return;
 
             TargetAttack.Target = GetTargetTransform(_context);

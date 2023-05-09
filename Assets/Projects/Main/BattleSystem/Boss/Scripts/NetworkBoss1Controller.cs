@@ -81,22 +81,25 @@ namespace Boss
 
             var stateGenerator = new Boss1StateGenerator(Runner, _record);
             var context = new Boss1Context(stateGenerator.SearchPlayerState);
-            _boss1 = new Boss1IncludeDecorationDetector(modelObject, stateGenerator, context);
+            _boss1 = new Boss1IncludeDecorationDetector(_record, modelObject, stateGenerator, context);
         }
     }
 
     public class Boss1IncludeDecorationDetector
     {
         // Domain
+        readonly Boss1Record _record; //ToDo: targetbufferを取得するためだけにあるので、いずれ消す
         readonly Boss1StateGenerator _stateGenerator;
         readonly IBoss1Context _context;
 
         // Decoration
         Boss1DecorationDetector _decorationDetector;
 
-        public Boss1IncludeDecorationDetector(GameObject modelObject, Boss1StateGenerator stateGenerator,
+        public Boss1IncludeDecorationDetector(Boss1Record record, GameObject modelObject,
+            Boss1StateGenerator stateGenerator,
             IBoss1Context context)
         {
+            _record = record;
             _context = context;
             _stateGenerator = stateGenerator;
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
@@ -114,14 +117,17 @@ namespace Boss
             _context.ChangeState(_stateGenerator.SearchPlayerState);
         }
 
-        public void Move()
+        public void Move(Vector3 input = default)
         {
-            _context.CurrentState.Move();
+            _context.CurrentState.Move(input);
         }
 
         public Collider[] Search()
         {
-            return _context.CurrentState.Search();
+            var searchResult = _context.CurrentState.Search();
+            _record.TargetBuffer.Clear();
+            _record.TargetBuffer.UnionWith(searchResult.Map(c => c.transform));
+            return searchResult;
         }
 
         public void Attack()
