@@ -29,7 +29,7 @@ namespace Boss
         IBoss1 _boss1;
         
         // Decoration
-        Boss1DecorationDetector _decorationDetector;
+       
 
         public override void Spawned()
         {
@@ -73,20 +73,22 @@ namespace Boss
 
             var stateGenerator = new Boss1StateGenerator(Runner, _record);
             var context = new Boss1Context(stateGenerator.LostState);
-            _boss1 = new Boss1IncludeDecorationDetector(stateGenerator, context);
-            _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
+            _boss1 = new Boss1IncludeDecorationDetector(modelObject, context);
         }
     }
 
     public class Boss1IncludeDecorationDetector : IBoss1
     {
-        Boss1StateGenerator _stateGenerator;
+        // Domain
         readonly IBoss1Context _context;
 
-        public Boss1IncludeDecorationDetector(Boss1StateGenerator stateGenerator, IBoss1Context context)
+        // Decoration
+        Boss1DecorationDetector _decorationDetector;
+
+        public Boss1IncludeDecorationDetector(GameObject modelObject, IBoss1Context context)
         {
-            _stateGenerator = stateGenerator;
             _context = context;
+            _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
         }
 
         public void Move(Vector3 input)
