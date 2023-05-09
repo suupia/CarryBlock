@@ -10,7 +10,7 @@ public interface IBoss1Context
     public void ChangeState(IBoss1State state);
 }
 
-public interface IBoss1State
+public interface IBoss1State : IMove
 {
     // ToDo: IAttackやIMoveなどのインターフェースを透過的にしたい
     public void Process(IBoss1Context state);
@@ -81,25 +81,32 @@ public abstract class Boss1AbstractState : IBoss1State
     }
 
     public abstract void Process(IBoss1Context state);
+
+    public abstract void Move(Vector3 input);
 }
 
-public class NoneState : IBoss1State
+public class NoneState : Boss1AbstractState
 {
     IEnemyAttack _attack;
     float _attackCoolTime;
     IMove _move;
     IEnemySearch _search;
 
-    public NoneState(Boss1Record record)
+    public NoneState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
         _attack = default; // ToDO: Nullオブジェクトを代入する
         _move = default;
         _search = default;
     }
 
-    public void Process(IBoss1Context state)
+    public override void Process(IBoss1Context state)
     {
         Debug.Log("NoneState.Process()");
+    }
+
+    public override void Move(Vector3 input)
+    {
+        _move.Move(input);
     }
 }
 
@@ -133,6 +140,11 @@ public class LostState : Boss1AbstractState
     public override void Process(IBoss1Context state)
     {
         Debug.Log("LostState.Process()");
+    }
+
+    public override void Move(Vector3 input)
+    {
+        _move.Move(input);
     }
 }
 
@@ -179,6 +191,11 @@ public class TacklingState : Boss1AbstractState
     public override void Process(IBoss1Context state)
     {
         Debug.Log("TacklingState.Process()");
+    }
+
+    public override void Move(Vector3 input)
+    {
+        _move.Move(input);
     }
 }
 
@@ -228,6 +245,11 @@ public class JumpingState : Boss1AbstractState
     {
         Debug.Log("JumpingState.Process()");
     }
+
+    public override void Move(Vector3 input)
+    {
+        _move.Move(input);
+    }
 }
 
 public class ChargeJumpingState : Boss1AbstractState
@@ -249,6 +271,11 @@ public class ChargeJumpingState : Boss1AbstractState
     public override void Process(IBoss1Context state)
     {
         Debug.Log("ChargeJumpingState.Process()");
+    }
+
+    public override void Move(Vector3 input)
+    {
+        _move.Move(input);
     }
 }
 
@@ -291,6 +318,11 @@ public class SpitOutState : Boss1AbstractState
     {
         Debug.Log("SpitOutState.Process()");
     }
+
+    public override void Move(Vector3 input)
+    {
+        _move.Move(input);
+    }
 }
 
 public class VacuumingState : Boss1AbstractState
@@ -318,6 +350,11 @@ public class VacuumingState : Boss1AbstractState
     public override void Process(IBoss1Context state)
     {
         Debug.Log("VacuumingState.Process()");
+    }
+
+    public override void Move(Vector3 input)
+    {
+        _move.Move(input);
     }
 }
 
