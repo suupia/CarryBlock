@@ -66,6 +66,10 @@ namespace Boss
                     _boss1.Attack();
                     AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
                 }
+                else
+                {
+                    _boss1.SetSearchState();
+                }
             }
 
         }
@@ -76,7 +80,7 @@ namespace Boss
             var modelObject = Instantiate(prefab, gameObject.transform);
 
             var stateGenerator = new Boss1StateGenerator(Runner, _record);
-            var context = new Boss1Context(stateGenerator.LostState);
+            var context = new Boss1Context(stateGenerator.SearchPlayerState);
             _boss1 = new Boss1IncludeDecorationDetector(modelObject, stateGenerator, context);
         }
     }
@@ -103,6 +107,11 @@ namespace Boss
             // ToDo: ここで攻撃ステートを決める
             // とりあえずTackleにする
             _context.ChangeState(_stateGenerator.TackleState);
+        }
+
+        public void SetSearchState()
+        {
+            _context.ChangeState(_stateGenerator.SearchPlayerState);
         }
 
         public void Move()

@@ -300,7 +300,7 @@ public class Boss1StateGenerator
     // インターフェイスを切っていないため、クライアントコードが具象のFactoryに依存してしまうが
     // 戻り値がインターフェイスであるため、クライアントコードは抽象のIBoss1Stateに依存することになる
     // もっと厳密にやるにはクライアントコードでDIする必要があるが、Runnerを使っているのでできない。
-    public IBoss1State LostState { get; }
+    public IBoss1State SearchPlayerState { get; }
     public IBoss1State TackleState { get; }
     public IBoss1State JumpState { get; }
     public IBoss1State ChargeJumpState { get; }
@@ -309,7 +309,7 @@ public class Boss1StateGenerator
 
     public Boss1StateGenerator(NetworkRunner runner, Boss1Record record)
     {
-        LostState = new SearchPlayerState(record);
+        SearchPlayerState = new SearchPlayerState(record);
         TackleState = new TackleState(record);
         JumpState = new JumpState(record);
         ChargeJumpState = new ChargeJumpState(record);
