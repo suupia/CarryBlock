@@ -28,10 +28,6 @@ public record Boss1Record
 
     [SerializeField] public Transform finSpawnerTransform;
 
-    // [SerializeField] public State overrideOnDetectedState;
-    [SerializeField] public bool showGizmos;
-    [SerializeField] public bool showGUI;
-
     // target buffer
     public HashSet<Transform> TargetBuffer { get; } = new();
     
