@@ -60,10 +60,14 @@ namespace Boss
 
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
             {
-                // currentState.Attack();
+                // var searchResult = _boss1.Search();
+                // if (searchResult.Count > 0)
+                // {
+                //     _boss1.Attack(searchResult);
+                //     AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
+                // }
             }
-            
-            
+
         }
 
         void InstantiateBoss()

@@ -55,6 +55,13 @@ namespace Main
         Transform Target { get; set; }
     }
 
+    public class DoNothingAttack : IEnemyAttack
+    {
+        public void Attack()
+        {
+        }
+    }
+
     /// <summary>
     /// いくつかのIAttack実装クラスの基底クラス
     /// _attackプロパティを持ち、
