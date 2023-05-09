@@ -25,9 +25,12 @@ namespace Boss
         // Domain
         Boss1IncludeDecorationDetector _boss1;
 
+        // Flag for PoolableObject
+        bool _isInitialized;
 
         public override void Spawned()
         {
+            Debug.Log("Spawned");
             Init();
         }
 
@@ -38,10 +41,12 @@ namespace Boss
 
             // Instantiate the boss.
             InstantiateBoss();
+            _isInitialized = true;
         }
         
         protected override void OnInactive()
         {
+            if (!_isInitialized) return;
             //　ファイナライザ的な処理を書く
             _record.Rd.velocity = Vector3.zero;
         }
@@ -51,7 +56,7 @@ namespace Boss
             if (!HasStateAuthority) return;
 
 
-            //_boss1.Move();
+            // _boss1.Move();
 
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
             {
