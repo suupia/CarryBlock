@@ -6,9 +6,6 @@ using UnityEngine;
 
 namespace Boss
 {
-    public interface IBoss1 : IMove, IEnemyAttack, IEnemySearch
-    {
-    }
     public class NetworkBoss1Controller : PoolableObject
     {
         // Serialize Record
@@ -26,10 +23,8 @@ namespace Boss
         [Networked] int Hp { get; set; } = 1;
 
         // Domain
-        IBoss1 _boss1;
-        
-        // Decoration
-       
+        Boss1IncludeDecorationDetector _boss1;
+
 
         public override void Spawned()
         {
@@ -56,13 +51,14 @@ namespace Boss
             if (!HasStateAuthority) return;
 
 
-            _boss1.Move();
+            //_boss1.Move();
 
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
             {
                 var searchResult = _boss1.Search();
                 if (searchResult.Length > 0)
                 {
+                    _boss1.ChooseAttackState();
                     _boss1.Attack();
                     AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
                 }
@@ -81,7 +77,7 @@ namespace Boss
         }
     }
 
-    public class Boss1IncludeDecorationDetector : IBoss1
+    public class Boss1IncludeDecorationDetector
     {
         // Domain
         readonly Boss1StateGenerator _stateGenerator;
@@ -102,7 +98,7 @@ namespace Boss
         {
             // ToDo: ここで攻撃ステートを決める
             // とりあえずTackleにする
-            //_context.ChangeState(_context.);
+            _context.ChangeState(_stateGenerator.TackleState);
         }
 
         public void Move(Vector3 input)
