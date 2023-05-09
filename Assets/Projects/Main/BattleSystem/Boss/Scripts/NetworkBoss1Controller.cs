@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Boss
 {
-    public interface IBoss1 : IMove, IEnemyAttack
+    public interface IBoss1 : IMove, IEnemyAttack, IEnemySearch
     {
     }
     public class NetworkBoss1Controller : PoolableObject
@@ -99,7 +99,12 @@ namespace Boss
         {
             _context.CurrentState.Move(input);
         }
-        // public void Search() => _context.CurrentState.Search();
+
+        public Collider[] Search()
+        {
+            return _context.CurrentState.Search();
+        }
+
         public void Attack()
         {
             _context.CurrentState.Attack();
