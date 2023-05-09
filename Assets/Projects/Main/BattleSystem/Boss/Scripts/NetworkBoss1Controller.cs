@@ -30,7 +30,6 @@ namespace Boss
 
         public override void Spawned()
         {
-            Debug.Log("Spawned");
             Init();
         }
 
