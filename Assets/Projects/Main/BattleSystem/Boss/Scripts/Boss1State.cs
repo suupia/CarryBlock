@@ -68,17 +68,15 @@ public class Boss1Context : IBoss1Context
 public abstract class Boss1AbstractState : IBoss1State
 {
     protected Boss1Record Record { get; }
-    protected Boss1StateGenerator stateGenerator { get; }
 
     protected IEnemyAttack attack;
     protected float attackCoolTime;
     protected IMove move;
     protected IEnemySearch search;
 
-    protected Boss1AbstractState(Boss1Record record, Boss1StateGenerator stateGenerator)
+    protected Boss1AbstractState(Boss1Record record)
     {
         Record = record;
-        this.stateGenerator = stateGenerator;
     }
 
     public abstract void Process(IBoss1Context state);
@@ -102,7 +100,7 @@ public abstract class Boss1AbstractState : IBoss1State
 
 public class SearchPlayerState : Boss1AbstractState
 {
-    public SearchPlayerState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
+    public SearchPlayerState(Boss1Record record) : base(record)
     {
         move = new WanderingMove(
             new WanderingMove.Record
@@ -132,7 +130,7 @@ public class SearchPlayerState : Boss1AbstractState
 
 public class TackleState : Boss1AbstractState
 {
-    public TackleState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
+    public TackleState(Boss1Record record) : base(record)
     {
         move = new ToTargetMove(
             new ToTargetMove.Record
@@ -172,7 +170,7 @@ public class TackleState : Boss1AbstractState
 
 public class JumpState : Boss1AbstractState
 {
-    public JumpState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
+    public JumpState(Boss1Record record) : base(record)
     {
         move = new ToTargetMove(
             new ToTargetMove.Record
@@ -216,7 +214,7 @@ public class JumpState : Boss1AbstractState
 
 public class ChargeJumpState : Boss1AbstractState
 {
-    public ChargeJumpState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
+    public ChargeJumpState(Boss1Record record) : base(record)
     {
         move = new LookAtTargetMove(Record.Transform);
         search = new RangeSearch(Record.Transform, Record.SearchRadius,
@@ -234,8 +232,7 @@ public class ChargeJumpState : Boss1AbstractState
 
 public class SpitOutState : Boss1AbstractState
 {
-    public SpitOutState(NetworkRunner runner, Boss1Record record, Boss1StateGenerator stateGenerator) : base(record,
-        stateGenerator)
+    public SpitOutState(NetworkRunner runner, Boss1Record record) : base(record)
     {
         move = new LookAtTargetMove(Record.Transform);
         search = new RangeSearch(Record.Transform, Record.SearchRadius,
@@ -271,7 +268,7 @@ public class SpitOutState : Boss1AbstractState
 
 public class VacuumState : Boss1AbstractState
 {
-    public VacuumState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
+    public VacuumState(Boss1Record record) : base(record)
     {
         move = new LookAtTargetMove(Record.Transform);
         search = new RangeSearch(Record.Transform, Record.SearchRadius,
@@ -312,12 +309,12 @@ public class Boss1StateGenerator
 
     public Boss1StateGenerator(NetworkRunner runner, Boss1Record record)
     {
-        LostState = new SearchPlayerState(record, this);
-        TackleState = new TackleState(record, this);
-        JumpState = new JumpState(record, this);
-        ChargeJumpState = new ChargeJumpState(record, this);
-        SpitOutState = new SpitOutState(runner, record, this);
-        VacuumState = new VacuumState(record, this);
+        LostState = new SearchPlayerState(record);
+        TackleState = new TackleState(record);
+        JumpState = new JumpState(record);
+        ChargeJumpState = new ChargeJumpState(record);
+        SpitOutState = new SpitOutState(runner, record);
+        VacuumState = new VacuumState(record);
     }
 }
 
