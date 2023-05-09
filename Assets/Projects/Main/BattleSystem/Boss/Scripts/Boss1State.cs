@@ -94,7 +94,7 @@ public class SearchPlayerState : Boss1AbstractState
 
     public SearchPlayerState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
-        _attack = null;
+        _attack = new DoNothingAttack();
         _move = new WanderingMove(
             new WanderingMove.Record
             {
@@ -236,7 +236,7 @@ public class ChargeJumpState : Boss1AbstractState
 
     public ChargeJumpState(Boss1Record record, Boss1StateGenerator stateGenerator) : base(record, stateGenerator)
     {
-        _attack = null;
+        _attack = new DoNothingAttack();
         _attackCoolTime = 0;
         _move = new LookAtTargetMove(Record.Transform);
         _search = new RangeSearch(Record.Transform, Record.SearchRadius,
