@@ -10,7 +10,7 @@ public interface IBoss1Context
     public void ChangeState(IBoss1State state);
 }
 
-public interface IBoss1State : IMove
+public interface IBoss1State : IMove, IEnemyAttack
 {
     // ToDo: IAttackやIMoveなどのインターフェースを透過的にしたい
     public void Process(IBoss1Context state);
@@ -83,6 +83,8 @@ public abstract class Boss1AbstractState : IBoss1State
     public abstract void Process(IBoss1Context state);
 
     public abstract void Move(Vector3 input);
+
+    public abstract void Attack();
 }
 
 public class SearchPlayerState : Boss1AbstractState
@@ -121,6 +123,12 @@ public class SearchPlayerState : Boss1AbstractState
     {
         _move.Move(input);
     }
+
+    public override void Attack()
+    {
+        _attack.Attack();
+    }
+    
 }
 
 public class TackleState : Boss1AbstractState
@@ -171,6 +179,11 @@ public class TackleState : Boss1AbstractState
     public override void Move(Vector3 input)
     {
         _move.Move(input);
+    }
+
+    public override void Attack()
+    {
+        _attack.Attack();
     }
 }
 
@@ -225,6 +238,11 @@ public class JumpState : Boss1AbstractState
     {
         _move.Move(input);
     }
+
+    public override void Attack()
+    {
+        _attack.Attack();
+    }
 }
 
 public class ChargeJumpState : Boss1AbstractState
@@ -251,6 +269,11 @@ public class ChargeJumpState : Boss1AbstractState
     public override void Move(Vector3 input)
     {
         _move.Move(input);
+    }
+
+    public override void Attack()
+    {
+        _attack.Attack();
     }
 }
 
@@ -298,6 +321,11 @@ public class SpitOutState : Boss1AbstractState
     {
         _move.Move(input);
     }
+
+    public override void Attack()
+    {
+        _attack.Attack();
+    }
 }
 
 public class VacuumState : Boss1AbstractState
@@ -330,6 +358,11 @@ public class VacuumState : Boss1AbstractState
     public override void Move(Vector3 input)
     {
         _move.Move(input);
+    }
+
+    public override void Attack()
+    {
+        _attack.Attack();
     }
 }
 

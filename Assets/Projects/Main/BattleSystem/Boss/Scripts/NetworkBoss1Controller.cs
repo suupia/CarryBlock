@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Boss
 {
-    public interface IBoss1 : IMove
+    public interface IBoss1 : IMove, IEnemyAttack
     {
     }
     public class NetworkBoss1Controller : PoolableObject
@@ -100,7 +100,10 @@ namespace Boss
             _context.CurrentState.Move(input);
         }
         // public void Search() => _context.CurrentState.Search();
-        // public void Attack() => _context.CurrentState.Attack();
+        public void Attack()
+        {
+            _context.CurrentState.Attack();
+        }
     }
 
 }
