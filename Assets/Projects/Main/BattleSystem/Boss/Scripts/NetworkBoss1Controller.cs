@@ -122,7 +122,13 @@ namespace Boss
 
         public void ChooseAttackState(IBoss1AttackSelector attackSelector)
         {
-            var attack = attackSelector.SelectAttack(_stateGenerator.TackleState, _stateGenerator.SpitOutState);
+            var attacks = new[]
+            {
+                _stateGenerator.TackleState,
+                _stateGenerator.SpitOutState,
+                _stateGenerator.VacuumState
+            };
+            var attack = attackSelector.SelectAttack(attacks);
             _context.ChangeState(attack);
         }
 
