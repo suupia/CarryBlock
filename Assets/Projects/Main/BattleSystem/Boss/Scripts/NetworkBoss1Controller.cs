@@ -62,7 +62,7 @@ namespace Boss
                 var searchResult = _boss1.Search();
                 if (searchResult.Length > 0)
                 {
-                    _boss1.ChooseAttackState();
+                    _boss1.ChooseAttackState(new RandomAttackSelector());
                     _boss1.Attack();
                     AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
                 }
@@ -82,6 +82,21 @@ namespace Boss
             var stateGenerator = new Boss1StateGenerator(Runner, _record);
             var context = new Boss1Context(stateGenerator.SearchPlayerState);
             _boss1 = new Boss1IncludeDecorationDetector(_record, modelObject, stateGenerator, context);
+        }
+    }
+
+    public interface IBoss1AttackSelector
+    {
+        IBoss1State SelectAttack(params IBoss1State[] attacks);
+    }
+
+    public class RandomAttackSelector : IBoss1AttackSelector
+    {
+        public IBoss1State SelectAttack(params IBoss1State[] attacks)
+        {
+            // 0からattacks.Length-1までのランダムな整数を取得
+            var randomIndex = Random.Range(0, attacks.Length);
+            return attacks[randomIndex];
         }
     }
 
@@ -105,13 +120,10 @@ namespace Boss
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
         }
 
-        public void ChooseAttackState()
+        public void ChooseAttackState(IBoss1AttackSelector attackSelector)
         {
-            // ToDo: ここで攻撃ステートを決める
-            // とりあえずTackleにする
-            //_context.ChangeState(_stateGenerator.TackleState);
-            _context.ChangeState(_stateGenerator.SpitOutState);
-
+            var attack = attackSelector.SelectAttack(_stateGenerator.TackleState, _stateGenerator.SpitOutState);
+            _context.ChangeState(attack);
         }
 
         public void SetSearchState()
