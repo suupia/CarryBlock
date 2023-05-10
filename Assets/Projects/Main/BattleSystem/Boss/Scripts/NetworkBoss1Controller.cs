@@ -35,9 +35,9 @@ namespace Boss
 
         void Init()
         {
-            // Init record.
-            _record = new Boss1Record(Runner, gameObject);
-
+            // Init Record
+            _record.Init(Runner, gameObject);
+            
             // Instantiate the boss.
             InstantiateBoss();
             _isInitialized = true;
@@ -109,7 +109,9 @@ namespace Boss
         {
             // ToDo: ここで攻撃ステートを決める
             // とりあえずTackleにする
-            _context.ChangeState(_stateGenerator.TackleState);
+            //_context.ChangeState(_stateGenerator.TackleState);
+            _context.ChangeState(_stateGenerator.SpitOutState);
+
         }
 
         public void SetSearchState()

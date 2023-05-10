@@ -36,13 +36,18 @@ public record Boss1Record
     public HashSet<Transform> TargetBuffer { get; set; } = new();
     
     // componets
-    public GameObject GameObject { get; } // NetworkControllerのGameObject
+    public GameObject GameObject { get; private set; } // NetworkControllerのGameObject
     public Transform Transform => GameObject.transform;
-    public Rigidbody Rd { get; }
+    public Rigidbody Rd { get; private set; }
 
-    readonly NetworkRunner _runner;
+    NetworkRunner _runner;
 
-    public Boss1Record(NetworkRunner runner, GameObject gameObject)
+    // This record will initialize by SerializeField
+    Boss1Record()
+    {
+    }
+
+    public void Init(NetworkRunner runner, GameObject gameObject)
     {
         _runner = runner;
         GameObject = gameObject;
@@ -267,6 +272,7 @@ public class SpitOutState : Boss1AbstractState
             )
         );
         attackCoolTime = Record.DefaultAttackCoolTime;
+        Debug.Log($"Record.finSpawnerTransform = {Record.finSpawnerTransform}");
     }
 
     public override void Process(IBoss1Context state)

@@ -73,6 +73,9 @@ namespace Main
         public async void Attack()
         {
             if (Target == null) return;
+            Debug.Log($"_context.Prefab={_context.Prefab}");
+            Debug.Log($"_context.From={_context.From}");
+            Debug.Log($"_context.GetOffset={_context.GetOffset}");
             var no = _context.Runner.Spawn(
                 _context.Prefab,
                 _context.From.position + _context.GetOffset(),
