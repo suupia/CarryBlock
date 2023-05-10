@@ -9,11 +9,14 @@ public interface IBoss1Context
 {
     public IBoss1State CurrentState { get; }
     public void ChangeState(IBoss1State state);
+    
 }
 
 public interface IBoss1State : IEnemyMove, IEnemyAttack, IEnemySearch
 {
     public void Process(IBoss1Context state);
+    public IEnemyMove EnemyMove { get; }
+    public IEnemyAttack EnemyAttack { get; }
 }
 
 [Serializable]
@@ -60,6 +63,7 @@ public class Boss1Context : IBoss1Context
     {
         CurrentState = state;
     }
+    
 }
 
 /// <summary>
@@ -68,6 +72,9 @@ public class Boss1Context : IBoss1Context
 public abstract class Boss1AbstractState : IBoss1State
 {
     protected Boss1Record Record { get; }
+
+    public IEnemyMove EnemyMove => move;
+    public IEnemyAttack EnemyAttack => attack;
 
     protected IEnemyAttack attack;
     protected float attackCoolTime;

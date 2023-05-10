@@ -119,7 +119,12 @@ namespace Boss
 
         public void Move(Vector3 input = default)
         {
-            _context.CurrentState.Move(input);
+            var state = _context.CurrentState;
+            if (state is { EnemyMove : ITargetMove move, EnemyAttack: ITargetAttack attack })
+                move.Target = attack.Target;
+
+            state.Move(input);
+
         }
 
         public Collider[] Search()
