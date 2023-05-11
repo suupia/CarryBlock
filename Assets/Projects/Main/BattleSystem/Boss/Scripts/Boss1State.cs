@@ -184,8 +184,45 @@ public class TackleState : Boss1AbstractState
     }
 }
 
+public class ChargeJumpState : Boss1AbstractState
+{
+    bool _isCharging;
+    bool _isCompleted;
+
+    public ChargeJumpState(Boss1Record record) : base(record)
+    {
+        move = new LookAtTargetMove(Record.Transform);
+        search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            LayerMask.GetMask("Player"));
+        attack = new DoNothingAttack();
+        attackCoolTime = 0;
+    }
+
+    public override void Process(IBoss1Context context)
+    {
+        Debug.Log("ChargeJumpingState.Process()");
+        if (_isCompleted)
+            context.ChangeState(new JumpState(Record));
+        else
+            ChargeJump();
+    }
+
+    async void ChargeJump()
+    {
+        if (_isCharging) return;
+        _isCharging = true;
+
+        for (float t = 0; t < Record.ChargeJumpTime; t += Time.deltaTime) await UniTask.Yield();
+
+        _isCharging = false;
+        _isCompleted = true;
+    }
+}
+
 public class JumpState : Boss1AbstractState
 {
+    bool _isJumping;
+    bool _isCompleted;
     public JumpState(Boss1Record record) : base(record)
     {
         move = new ToTargetMove(
@@ -224,42 +261,24 @@ public class JumpState : Boss1AbstractState
     public override void Process(IBoss1Context context)
     {
         Debug.Log("JumpingState.Process()");
-    }
-    
-}
-
-public class ChargeJumpState : Boss1AbstractState
-{
-    bool _isCharging;
-    bool _isCompleted;
-    public ChargeJumpState(Boss1Record record) : base(record)
-    {
-        move = new LookAtTargetMove(Record.Transform);
-        search = new RangeSearch(Record.Transform, Record.SearchRadius,
-            LayerMask.GetMask("Player"));
-        attack = new DoNothingAttack();
-        attackCoolTime = 0;
-    }
-
-    public override void Process(IBoss1Context context)
-    {
-        Debug.Log("ChargeJumpingState.Process()");
         if (_isCompleted)
-            context.ChangeState(new JumpState(Record));
+            context.ChangeState(new SearchPlayerState(Record));
         else
-            ChargeJump();
+            Jump();
     }
 
-    async void ChargeJump()
+    async void Jump()
     {
-        if (_isCharging) return;
-        _isCharging = true;
+        if (_isJumping) return;
+        _isJumping = true;
 
-        for (float t = 0; t < Record.ChargeJumpTime; t += Time.deltaTime) await UniTask.Yield();
+        for (float t = 0; t < Record.JumpTime; t += Time.deltaTime) await UniTask.Yield();
 
-        _isCharging = false;
+        _isJumping = false;
         _isCompleted = true;
     }
+    
+    
     
 }
 
