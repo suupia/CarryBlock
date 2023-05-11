@@ -79,9 +79,8 @@ namespace Boss
             var prefab = _modelPrefab;
             var modelObject = Instantiate(prefab, gameObject.transform);
 
-            var stateGenerator = new Boss1StateGenerator(Runner, _record);
-            var context = new Boss1Context(stateGenerator.SearchPlayerState);
-            _boss1 = new Boss1IncludeDecorationDetector(_record, modelObject, stateGenerator, context);
+            var context = new Boss1Context(new SearchPlayerState(_record));
+            _boss1 = new Boss1IncludeDecorationDetector(_record, modelObject, context, Runner);
         }
     }
 
@@ -102,32 +101,33 @@ namespace Boss
 
     public class Boss1IncludeDecorationDetector
     {
+        // NetworkRunner
+        readonly NetworkRunner _runner;
+
         // Domain
         readonly Boss1Record _record; //ToDo: targetbufferを取得するためだけにあるので、いずれ消す
-        readonly Boss1StateGenerator _stateGenerator;
         readonly IBoss1Context _context;
 
         // Decoration
         Boss1DecorationDetector _decorationDetector;
 
-        public Boss1IncludeDecorationDetector(Boss1Record record, GameObject modelObject,
-            Boss1StateGenerator stateGenerator,
-            IBoss1Context context)
+        public Boss1IncludeDecorationDetector(Boss1Record record, GameObject modelObject, IBoss1Context context,
+            NetworkRunner runner)
         {
             _record = record;
             _context = context;
-            _stateGenerator = stateGenerator;
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
+            _runner = runner;
         }
 
         public void SelectAttackState(IBoss1AttackSelector attackSelector)
         {
-            var attacks = new[]
+            var attacks = new IBoss1State[]
             {
-                _stateGenerator.TackleState,
-                _stateGenerator.SpitOutState,
-                _stateGenerator.VacuumState,
-                _stateGenerator.ChargeJumpState
+                new TackleState(_record),
+                new SpitOutState(_record, _runner),
+                new VacuumState(_record),
+                new ChargeJumpState(_record)
             };
             var attack = attackSelector.SelectAttack(attacks);
             _context.ChangeState(attack);
@@ -135,7 +135,7 @@ namespace Boss
 
         public void SetSearchState()
         {
-            _context.ChangeState(_stateGenerator.SearchPlayerState);
+            _context.ChangeState(new SearchPlayerState(_record));
         }
 
         public void Move(Vector3 input = default)

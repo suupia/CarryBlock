@@ -89,9 +89,8 @@ namespace Boss.Tests
             var prefab = _modelPrefab;
             var modelObject = Instantiate(prefab, gameObject.transform);
 
-            var stateGenerator = new Boss1StateGenerator(Runner, _record);
-            var context = new Boss1Context(stateGenerator.SearchPlayerState);
-            _boss1 = new Boss1IncludeDecorationDetector(_record, modelObject, stateGenerator, context);
+            var context = new Boss1Context(new SearchPlayerState(_record));
+            _boss1 = new Boss1IncludeDecorationDetector(_record, modelObject, context, Runner);
         }
     }
 

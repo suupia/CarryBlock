@@ -136,7 +136,7 @@ public class SearchPlayerState : Boss1AbstractState
 
     public override void Process(IBoss1Context context)
     {
-        Debug.Log("LostState.Process()");
+        Debug.Log("SearchPlayerState.Process()");
     }
 
 }
@@ -284,7 +284,7 @@ public class JumpState : Boss1AbstractState
 
 public class SpitOutState : Boss1AbstractState
 {
-    public SpitOutState(NetworkRunner runner, Boss1Record record) : base(record)
+    public SpitOutState(Boss1Record record, NetworkRunner runner) : base(record)
     {
         move = new LookAtTargetMove(Record.Transform);
         search = new RangeSearch(Record.Transform, Record.SearchRadius,
@@ -343,31 +343,4 @@ public class VacuumState : Boss1AbstractState
     
 }
 
-
-/// <summary>
-///     A class to treat each state as a singleton.
-/// </summary>
-public class Boss1StateGenerator
-{
-    // ToDo: FactoryMethodかAbstractFactoryパターンっぽいが厳密には多分違う
-    // インターフェイスを切っていないため、クライアントコードが具象のFactoryに依存してしまうが
-    // 戻り値がインターフェイスであるため、クライアントコードは抽象のIBoss1Stateに依存することになる
-    // もっと厳密にやるにはクライアントコードでDIする必要があるが、Runnerを使っているのでできない。
-    public IBoss1State SearchPlayerState { get; }
-    public IBoss1State TackleState { get; }
-    public IBoss1State JumpState { get; }
-    public IBoss1State ChargeJumpState { get; }
-    public IBoss1State SpitOutState { get; }
-    public IBoss1State VacuumState { get; }
-
-    public Boss1StateGenerator(NetworkRunner runner, Boss1Record record)
-    {
-        SearchPlayerState = new SearchPlayerState(record);
-        TackleState = new TackleState(record);
-        JumpState = new JumpState(record);
-        ChargeJumpState = new ChargeJumpState(record);
-        SpitOutState = new SpitOutState(runner, record);
-        VacuumState = new VacuumState(record);
-    }
-}
 
