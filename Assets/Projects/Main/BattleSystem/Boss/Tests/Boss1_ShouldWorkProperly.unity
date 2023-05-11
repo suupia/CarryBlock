@@ -771,4 +771,4 @@ MonoBehaviour:
   _record:
     finSpawnerTransform: {fileID: 2627756533950696082}
   _modelPrefab: {fileID: 4388754072195441984}
-  stateUnderTest: 0
+  stateUnderTest: 3

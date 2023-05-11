@@ -32,7 +32,8 @@ namespace Boss.Tests
         {
             Tackle = 0,
             SpitOut = 1,
-            Vacuum = 2
+            Vacuum = 2,
+            ChargeJump = 3
         }
 
         [SerializeField] StateUnderTest stateUnderTest;
@@ -54,15 +55,14 @@ namespace Boss.Tests
 
         protected override void OnInactive()
         {
-            if (!_isInitialized) return;
             //　ファイナライザ的な処理を書く
+            if (!_isInitialized) return;
             _record.Rd.velocity = Vector3.zero;
         }
 
         public override void FixedUpdateNetwork()
         {
             if (!HasStateAuthority) return;
-
 
             _boss1.Move();
 
@@ -71,7 +71,7 @@ namespace Boss.Tests
                 var searchResult = _boss1.Search();
                 if (searchResult.Length > 0)
                 {
-                    _boss1.ChooseAttackState(new FixedAttackSelector((int)stateUnderTest));
+                    _boss1.SelectAttackState(new FixedAttackSelector((int)stateUnderTest));
                     _boss1.Attack();
                     AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
                 }

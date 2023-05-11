@@ -62,7 +62,7 @@ namespace Boss
                 var searchResult = _boss1.Search();
                 if (searchResult.Length > 0)
                 {
-                    _boss1.ChooseAttackState(new RandomAttackSelector());
+                    _boss1.SelectAttackState(new RandomAttackSelector());
                     _boss1.Attack();
                     AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
                 }
@@ -120,13 +120,14 @@ namespace Boss
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
         }
 
-        public void ChooseAttackState(IBoss1AttackSelector attackSelector)
+        public void SelectAttackState(IBoss1AttackSelector attackSelector)
         {
             var attacks = new[]
             {
                 _stateGenerator.TackleState,
                 _stateGenerator.SpitOutState,
-                _stateGenerator.VacuumState
+                _stateGenerator.VacuumState,
+                _stateGenerator.ChargeJumpState
             };
             var attack = attackSelector.SelectAttack(attacks);
             _context.ChangeState(attack);
