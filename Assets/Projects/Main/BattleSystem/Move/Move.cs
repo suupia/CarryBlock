@@ -81,7 +81,6 @@ namespace Main
             _record = record;
 
             StartSimulation(_cancellationTokenSource.Token).Forget();
-            Debug.Log("");
         }
 
         public void Move(Vector3 input = default)

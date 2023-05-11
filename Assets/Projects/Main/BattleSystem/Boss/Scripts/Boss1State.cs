@@ -204,10 +204,10 @@ public class ChargeJumpState : Boss1AbstractState
         if (_isCompleted)
             context.ChangeState(new JumpState(Record));
         else
-            ChargeJump();
+            ChargeJump().Forget();
     }
 
-    async void ChargeJump()
+    async UniTaskVoid ChargeJump()
     {
         if (_isCharging) return;
         _isCharging = true;
@@ -264,13 +264,15 @@ public class JumpState : Boss1AbstractState
         if (_isCompleted)
             context.ChangeState(new SearchPlayerState(Record));
         else
-            Jump();
+            Jump().Forget();
     }
 
-    async void Jump()
+    async UniTaskVoid Jump()
     {
         if (_isJumping) return;
         _isJumping = true;
+
+        MoveUtility.Jump(Record.Rd, Record.JumpTime);
 
         for (float t = 0; t < Record.JumpTime; t += Time.deltaTime) await UniTask.Yield();
 

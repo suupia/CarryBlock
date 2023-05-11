@@ -118,6 +118,7 @@ namespace Boss
         // Domain
         readonly Boss1Record _record; //ToDo: targetbufferを取得するためだけにあるので、いずれ消す
         readonly IBoss1Context _context;
+        readonly IBoss1State[] _attacks;
 
         // Decoration
         readonly Boss1DecorationDetector _decorationDetector;
@@ -130,18 +131,19 @@ namespace Boss
             _context = context;
             _decorationDetector = decorationDetector;
             _runner = runner;
-        }
 
-        public void SelectAttackState(IBoss1AttackSelector attackSelector, ref Boss1DecorationDetector.Data data)
-        {
-            var attacks = new IBoss1State[]
+            _attacks = new IBoss1State[]
             {
                 new TackleState(_record),
                 new SpitOutState(_record, _runner),
                 new VacuumState(_record),
                 new ChargeJumpState(_record)
             };
-            var attack = attackSelector.SelectAttack(attacks);
+        }
+
+        public void SelectAttackState(IBoss1AttackSelector attackSelector, ref Boss1DecorationDetector.Data data)
+        {
+            var attack = attackSelector.SelectAttack(_attacks);
 
             // Decoration
             StartDecoration(attack, ref data);
@@ -163,8 +165,14 @@ namespace Boss
         public void Move(Vector3 input = default)
         {
             var state = _context.CurrentState;
-            if (state is { EnemyMove : ITargetMove move, EnemyAttack: ITargetAttack attack })
+            if (state is
+                {
+                    EnemyMove : ITargetMove move, EnemyAttack: ITargetAttack attack
+                }) // ToDo: ここにあるのは変なのでうまく切り出す
+            {
                 move.Target = attack.Target;
+                Debug.Log("Targetをセット！ move.Target = " + move.Target);
+            }
 
             state.Move(input);
 
