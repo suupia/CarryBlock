@@ -71,7 +71,7 @@ namespace Boss.Tests
                 var searchResult = _boss1.Search();
                 if (searchResult.Length > 0)
                 {
-                    _boss1.SelectAttackState(new FixedAttackSelector((int)stateUnderTest));
+                    _boss1.SelectAttackState(new FixedAttackSelector((int)stateUnderTest)); // テストのためにここで設定？もっといい方法ある？
                     _boss1.Attack();
                     AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
                 }
@@ -80,6 +80,8 @@ namespace Boss.Tests
                     _boss1.SetSearchState();
                 }
             }
+
+            _boss1.Process();
         }
 
         void InstantiateBoss()

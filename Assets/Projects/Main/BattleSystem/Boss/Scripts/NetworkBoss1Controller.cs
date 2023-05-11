@@ -160,6 +160,11 @@ namespace Boss
         {
             _context.CurrentState.Attack();
         }
+
+        public void Process()
+        {
+            _context.CurrentState.Process(_context);
+        }
     }
 
 }

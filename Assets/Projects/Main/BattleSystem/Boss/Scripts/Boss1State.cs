@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
 using UnityEngine;
@@ -14,7 +15,7 @@ public interface IBoss1Context
 
 public interface IBoss1State : IEnemyMove, IEnemyAttack, IEnemySearch
 {
-    public void Process(IBoss1Context state);
+    public void Process(IBoss1Context context);
     public IEnemyMove EnemyMove { get; }
     public IEnemyAttack EnemyAttack { get; }
 }
@@ -91,7 +92,7 @@ public abstract class Boss1AbstractState : IBoss1State
         Record = record;
     }
 
-    public abstract void Process(IBoss1Context state);
+    public abstract void Process(IBoss1Context context);
 
     public void Move(Vector3 input = default)
     {
@@ -133,7 +134,7 @@ public class SearchPlayerState : Boss1AbstractState
 
     }
 
-    public override void Process(IBoss1Context state)
+    public override void Process(IBoss1Context context)
     {
         Debug.Log("LostState.Process()");
     }
@@ -177,7 +178,7 @@ public class TackleState : Boss1AbstractState
         attackCoolTime = 1;
     }
 
-    public override void Process(IBoss1Context state)
+    public override void Process(IBoss1Context context)
     {
         Debug.Log("TacklingState.Process()");
     }
@@ -220,7 +221,7 @@ public class JumpState : Boss1AbstractState
         attackCoolTime = Record.DefaultAttackCoolTime;
     }
 
-    public override void Process(IBoss1Context state)
+    public override void Process(IBoss1Context context)
     {
         Debug.Log("JumpingState.Process()");
     }
@@ -229,6 +230,8 @@ public class JumpState : Boss1AbstractState
 
 public class ChargeJumpState : Boss1AbstractState
 {
+    bool _isCharging;
+    bool _isCompleted;
     public ChargeJumpState(Boss1Record record) : base(record)
     {
         move = new LookAtTargetMove(Record.Transform);
@@ -238,9 +241,24 @@ public class ChargeJumpState : Boss1AbstractState
         attackCoolTime = 0;
     }
 
-    public override void Process(IBoss1Context state)
+    public override void Process(IBoss1Context context)
     {
         Debug.Log("ChargeJumpingState.Process()");
+        if (_isCompleted)
+            context.ChangeState(new JumpState(Record));
+        else
+            ChargeJump();
+    }
+
+    async void ChargeJump()
+    {
+        if (_isCharging) return;
+        _isCharging = true;
+
+        for (float t = 0; t < Record.ChargeJumpTime; t += Time.deltaTime) await UniTask.Yield();
+
+        _isCharging = false;
+        _isCompleted = true;
     }
     
 }
@@ -275,7 +293,7 @@ public class SpitOutState : Boss1AbstractState
         Debug.Log($"Record.finSpawnerTransform = {Record.finSpawnerTransform}");
     }
 
-    public override void Process(IBoss1Context state)
+    public override void Process(IBoss1Context context)
     {
         Debug.Log("SpitOutState.Process()");
     }
@@ -299,7 +317,7 @@ public class VacuumState : Boss1AbstractState
         attackCoolTime = Record.DefaultAttackCoolTime;
     }
 
-    public override void Process(IBoss1Context state)
+    public override void Process(IBoss1Context context)
     {
         Debug.Log("VacuumingState.Process()");
     }
