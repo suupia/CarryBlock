@@ -12,15 +12,12 @@ namespace Boss
         [SerializeField] Boss1Record _record;
         [SerializeField] GameObject _modelPrefab; // ToDo: インスペクタで設定する作りはよくない ロードする作りに変える
 
-        // INetworkStruct
-        ref Boss1DecorationDetector.Data DecorationDataRef => ref MakeRef<Boss1DecorationDetector.Data>();
-
-        // Networked TickerTimer
-        // Cooldown Timer
+        // Networked Properties
+        [Networked] ref Boss1DecorationDetector.Data DecorationDataRef => ref MakeRef<Boss1DecorationDetector.Data>();
         [Networked] TickTimer AttackCooldown { get; set; }
 
-        // Stats
-        [Networked] int Hp { get; set; } = 1;
+        // Decoration Detector
+        Boss1DecorationDetector _decorationDetector;
 
         // Domain
         Boss1IncludeDecorationDetector _boss1;
@@ -62,13 +59,13 @@ namespace Boss
                 var searchResult = _boss1.Search();
                 if (searchResult.Length > 0)
                 {
-                    _boss1.SelectAttackState(new RandomAttackSelector());
+                    _boss1.SelectAttackState(new RandomAttackSelector(), ref DecorationDataRef);
                     _boss1.Attack();
                     AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
                 }
                 else
                 {
-                    _boss1.SetSearchState();
+                    _boss1.SetSearchState(ref DecorationDataRef);
                 }
             }
 
@@ -76,11 +73,15 @@ namespace Boss
 
         void InstantiateBoss()
         {
+            // Instantiate
             var prefab = _modelPrefab;
             var modelObject = Instantiate(prefab, gameObject.transform);
 
+            // Init Decoration
+            _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
+
             var context = new Boss1Context(new SearchPlayerState(_record));
-            _boss1 = new Boss1IncludeDecorationDetector(_record, modelObject, context, Runner);
+            _boss1 = new Boss1IncludeDecorationDetector(_record, modelObject, context, _decorationDetector, Runner);
         }
     }
 
@@ -102,25 +103,26 @@ namespace Boss
     public class Boss1IncludeDecorationDetector
     {
         // NetworkRunner
-        readonly NetworkRunner _runner;
+        readonly NetworkRunner _runner; // SpitOutStateのためだけにある
 
         // Domain
         readonly Boss1Record _record; //ToDo: targetbufferを取得するためだけにあるので、いずれ消す
         readonly IBoss1Context _context;
 
         // Decoration
-        Boss1DecorationDetector _decorationDetector;
+        readonly Boss1DecorationDetector _decorationDetector;
 
         public Boss1IncludeDecorationDetector(Boss1Record record, GameObject modelObject, IBoss1Context context,
+            Boss1DecorationDetector decorationDetector,
             NetworkRunner runner)
         {
             _record = record;
             _context = context;
-            _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
+            _decorationDetector = decorationDetector;
             _runner = runner;
         }
 
-        public void SelectAttackState(IBoss1AttackSelector attackSelector)
+        public void SelectAttackState(IBoss1AttackSelector attackSelector, ref Boss1DecorationDetector.Data data)
         {
             var attacks = new IBoss1State[]
             {
@@ -130,11 +132,20 @@ namespace Boss
                 new ChargeJumpState(_record)
             };
             var attack = attackSelector.SelectAttack(attacks);
+
+            // Decoration
+            StartDecoration(attack, ref data);
+
+            // ChangeState
             _context.ChangeState(attack);
         }
 
-        public void SetSearchState()
+        public void SetSearchState(ref Boss1DecorationDetector.Data data)
         {
+            // Decoration
+            EndDecoration(ref data);
+
+            // ChangeState
             _context.ChangeState(new SearchPlayerState(_record));
         }
 
@@ -161,9 +172,49 @@ namespace Boss
             _context.CurrentState.Attack();
         }
 
-        public void Process()
+        void StartDecoration(IBoss1State attack, ref Boss1DecorationDetector.Data data)
         {
-            _context.CurrentState.Process(_context);
+            // For Decoration
+            if (attack is TackleState)
+            {
+                _decorationDetector.OnStartTackle(ref data);
+            }
+            else if (attack is SpitOutState)
+            {
+                // これは用意されていない
+                // decorationDetector.OnStartSpitOut(ref data);
+            }
+            else if (attack is VacuumState)
+            {
+                _decorationDetector.OnStartVacuum(ref data);
+            }
+            else if (attack is ChargeJumpState)
+            {
+                _decorationDetector.OnStartJump(ref data);
+            }
+        }
+
+        void EndDecoration(ref Boss1DecorationDetector.Data data)
+        {
+            // For Decoration
+            var attack = _context.CurrentState;
+            if (attack is TackleState)
+            {
+                _decorationDetector.OnEndTackle(ref data);
+            }
+            else if (attack is SpitOutState)
+            {
+                // これは用意されていない
+                // decorationDetector.OnEndSpitOut(ref data);
+            }
+            else if (attack is VacuumState)
+            {
+                _decorationDetector.OnEndVacuum(ref data);
+            }
+            else if (attack is ChargeJumpState)
+            {
+                _decorationDetector.OnEndJump(ref data);
+            }
         }
     }
 
