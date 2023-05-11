@@ -81,10 +81,14 @@ namespace Main
             _record = record;
 
             StartSimulation(_cancellationTokenSource.Token).Forget();
+            Debug.Log("");
         }
 
         public void Move(Vector3 input = default)
         {
+            Debug.Log($"WanderingMove -> {input}");
+            Debug.Log($"_simulatedInput = {_simulatedInput}");
+            Debug.Log($"input == default = {input == default}");
             _move.Move(input == default ? _simulatedInput : input);
         }
 

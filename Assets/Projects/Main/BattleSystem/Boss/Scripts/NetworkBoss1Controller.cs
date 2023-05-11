@@ -11,30 +11,33 @@ namespace Boss
         // Serialize Record
         [SerializeField] Boss1Record _record;
         [SerializeField] GameObject _modelPrefab; // ToDo: インスペクタで設定する作りはよくない ロードする作りに変える
+        [SerializeField] Transform modelParent;
 
         // Networked Properties
         [Networked] ref Boss1DecorationDetector.Data DecorationDataRef => ref MakeRef<Boss1DecorationDetector.Data>();
         [Networked] TickTimer AttackCooldown { get; set; }
+
+        // Tmp
+        [Networked] int Hp { get; set; } = 1;
 
         // Decoration Detector
         Boss1DecorationDetector _decorationDetector;
 
         // Domain
         Boss1IncludeDecorationDetector _boss1;
+        IBoss1AttackSelector _attackSelector;
 
         // Flag for PoolableObject
         bool _isInitialized;
 
-        public override void Spawned()
-        {
-            Init();
-        }
-
-        void Init()
+        public void Init(IBoss1AttackSelector attackSelector)
         {
             // Init Record
             _record.Init(Runner, gameObject);
-            
+
+            // Init Domain
+            _attackSelector = attackSelector;
+
             // Instantiate the boss.
             InstantiateBoss();
             _isInitialized = true;
@@ -49,9 +52,9 @@ namespace Boss
 
         public override void FixedUpdateNetwork()
         {
+            if (!_isInitialized) return;
             if (!HasStateAuthority) return;
-
-
+            
             _boss1.Move();
 
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
@@ -59,7 +62,7 @@ namespace Boss
                 var searchResult = _boss1.Search();
                 if (searchResult.Length > 0)
                 {
-                    _boss1.SelectAttackState(new RandomAttackSelector(), ref DecorationDataRef);
+                    _boss1.SelectAttackState(_attackSelector, ref DecorationDataRef);
                     _boss1.Attack();
                     AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
                 }
@@ -69,19 +72,26 @@ namespace Boss
                 }
             }
 
+            _boss1.Process();
+
         }
 
         void InstantiateBoss()
         {
             // Instantiate
             var prefab = _modelPrefab;
-            var modelObject = Instantiate(prefab, gameObject.transform);
+            var modelObject = Instantiate(prefab, gameObject.transform, modelParent);
 
             // Init Decoration
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
 
             var context = new Boss1Context(new SearchPlayerState(_record));
-            _boss1 = new Boss1IncludeDecorationDetector(_record, modelObject, context, _decorationDetector, Runner);
+            _boss1 = new Boss1IncludeDecorationDetector(_record, context, _decorationDetector, Runner);
+        }
+
+        public override void Render()
+        {
+            _decorationDetector.OnRendered(DecorationDataRef, Hp);
         }
     }
 
@@ -112,7 +122,7 @@ namespace Boss
         // Decoration
         readonly Boss1DecorationDetector _decorationDetector;
 
-        public Boss1IncludeDecorationDetector(Boss1Record record, GameObject modelObject, IBoss1Context context,
+        public Boss1IncludeDecorationDetector(Boss1Record record, IBoss1Context context,
             Boss1DecorationDetector decorationDetector,
             NetworkRunner runner)
         {
@@ -143,9 +153,10 @@ namespace Boss
         public void SetSearchState(ref Boss1DecorationDetector.Data data)
         {
             // Decoration
-            EndDecoration(ref data);
+            EndDecoration(ref data); // ここにあるのはちょっと変かも
 
             // ChangeState
+            if (_context.CurrentState is SearchPlayerState) return;
             _context.ChangeState(new SearchPlayerState(_record));
         }
 
@@ -170,6 +181,11 @@ namespace Boss
         public void Attack()
         {
             _context.CurrentState.Attack();
+        }
+
+        public void Process()
+        {
+            _context.CurrentState.Process(_context);
         }
 
         void StartDecoration(IBoss1State attack, ref Boss1DecorationDetector.Data data)
