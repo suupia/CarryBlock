@@ -16,9 +16,9 @@ namespace Boss.Tests
         enum StateUnderTest
         {
             Tackle,
-            Jump,
             SpitOut,
             Vacuum,
+            Jump,
             Random
         }
 
