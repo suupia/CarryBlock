@@ -472,7 +472,7 @@ GameObject:
   - component: {fileID: 1417945714}
   - component: {fileID: 1417945713}
   m_Layer: 0
-  m_Name: Boss1SpawnerForTest
+  m_Name: Boss1TestInitializer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
