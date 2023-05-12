@@ -28,7 +28,10 @@ namespace Boss
         IBoss1State[] _attackStates;
         IBoss1AttackSelector _attackSelector;
 
-        // Flag for PoolableObject
+        // For Debug
+        [SerializeField] bool showGizmos;
+
+        // Flag for DI and PoolableObject
         bool _isInitialized;
 
         public void Init(IBoss1AttackSelector attackSelector)
@@ -190,6 +193,14 @@ namespace Boss
             {
                 _decorationDetector.OnEndJump(ref data);
             }
+        }
+
+        void OnDrawGizmos()
+        {
+            if (!showGizmos) return;
+            //サーチ範囲を表示
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, _record.SearchRadius);
         }
 
     }
