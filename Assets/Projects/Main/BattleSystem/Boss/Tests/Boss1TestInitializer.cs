@@ -30,6 +30,7 @@ namespace Boss.Tests
                 cancellationToken: new CancellationToken());
 
             _isSetupComplete = true;
+            Debug.Log("Boss1TestInitializer is ready.");
         }
 
         void Update()
