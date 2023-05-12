@@ -15,11 +15,11 @@ namespace Boss.Tests
 
         enum StateUnderTest
         {
-            Random,
             Tackle,
             Jump,
             SpitOut,
-            Vacuum
+            Vacuum,
+            Random
         }
 
         async void Start()
@@ -48,7 +48,7 @@ namespace Boss.Tests
                     }
 
                     var boss1 = SpawnBoss1();
-                    if (i == 0)
+                    if (i == stateEnums.Length - 1)
                         // Random
                         boss1.Init(new RandomAttackSelector());
                     else
