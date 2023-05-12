@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
@@ -14,10 +15,11 @@ namespace Boss.Tests
 
         enum StateUnderTest
         {
-            Tackle = 0,
-            Jump = 1,
-            SpitOut = 2,
-            Vacuum = 3
+            Random,
+            Tackle,
+            Jump,
+            SpitOut,
+            Vacuum
         }
 
         async void Start()
@@ -32,37 +34,29 @@ namespace Boss.Tests
             _isSetupComplete = true;
             Debug.Log("Boss1TestInitializer is ready.");
         }
-
-        void Update()
+        
+        void OnGUI()
         {
-            if (!_isSetupComplete) return;
+            var stateEnums = Enum.GetNames(typeof(StateUnderTest));
+            for (var i = 0; i < stateEnums.Length; i++)
+                if (GUI.Button(new Rect(10, 10 + i * 30, 120, 20), stateEnums[i]))
+                {
+                    if (!_isSetupComplete)
+                    {
+                        Debug.Log("NetworkRunnerManager is not ready yet.");
+                        return;
+                    }
 
-            if (Input.GetKeyDown(KeyCode.Alpha0))
-            {
-                var boss1 = SpawnBoss1();
-                boss1.Init(new RandomAttackSelector());
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                var boss1 = SpawnBoss1();
-                boss1.Init(CreateTestAttackSelector(1));
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                var boss1 = SpawnBoss1();
-                boss1.Init(CreateTestAttackSelector(2));
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                var boss1 = SpawnBoss1();
-                boss1.Init(CreateTestAttackSelector(3));
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                var boss1 = SpawnBoss1();
-                boss1.Init(CreateTestAttackSelector(4));
-            }
+                    var boss1 = SpawnBoss1();
+                    if (i == 0)
+                        // Random
+                        boss1.Init(new RandomAttackSelector());
+                    else
+                        // Fixed
+                        boss1.Init(CreateTestAttackSelector(i));
+                }
         }
+        
 
         NetworkBoss1Controller SpawnBoss1()
         {
@@ -76,6 +70,8 @@ namespace Boss.Tests
         {
             return new FixedAttackSelector(index);
         }
+
+
     }
 
     public class FixedAttackSelector : IBoss1AttackSelector
@@ -95,4 +91,6 @@ namespace Boss.Tests
             return attacks[0];
         }
     }
+    
+
 }
