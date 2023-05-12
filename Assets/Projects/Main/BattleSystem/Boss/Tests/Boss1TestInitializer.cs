@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Boss.Tests
 {
-    public class Boss1SpawnerForTest : NetworkBehaviour
+    public class Boss1TestInitializer : NetworkBehaviour
     {
         [SerializeField] NetworkPrefabRef boss1Prefab; // 本来はResourceフォルダかAddressable(?)から取得する
 
