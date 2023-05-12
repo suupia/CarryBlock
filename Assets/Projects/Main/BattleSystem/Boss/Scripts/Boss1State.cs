@@ -145,8 +145,6 @@ public class TackleState : Boss1AbstractState
 {
     public TackleState(Boss1Record record) : base(record)
     {
-        Debug.Log($"Record.GameObject = {Record.GameObject}");
-        Debug.Log($"Record.GameObject.transform = {Record.GameObject.transform}");
         move = new ToTargetMove(
             new ToTargetMove.Record
             {
