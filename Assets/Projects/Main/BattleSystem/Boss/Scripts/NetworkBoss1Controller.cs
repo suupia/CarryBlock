@@ -24,7 +24,8 @@ namespace Boss
         Boss1DecorationDetector _decorationDetector;
 
         // Domain
-        Boss1IncludeDecorationDetector _boss1;
+        IBoss1Context _context;
+        IBoss1State[] _attackStates;
         IBoss1AttackSelector _attackSelector;
 
         // Flag for PoolableObject
@@ -32,17 +33,36 @@ namespace Boss
 
         public void Init(IBoss1AttackSelector attackSelector)
         {
-            // Init Record
-            _record.Init(Runner, gameObject);
-
             // Init Domain
             _attackSelector = attackSelector;
 
-            // Instantiate the boss.
-            InstantiateBoss();
+            RPC_LocalInit();
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void RPC_LocalInit()
+        {
+            // Init Record
+            _record.Init(Runner, gameObject);
+            
+            // Instantiate
+            var prefab = _modelPrefab;
+            var modelObject = Instantiate(prefab, gameObject.transform, modelParent);
+
+            _context = new Boss1Context(new SearchPlayerState(_record));
+            _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
+
+            _attackStates = new IBoss1State[]
+            {
+                new TackleState(_record),
+                new SpitOutState(_record, Runner),
+                new VacuumState(_record),
+                new ChargeJumpState(_record)
+            };
             _isInitialized = true;
         }
         
+
         protected override void OnInactive()
         {
             if (!_isInitialized) return;
@@ -54,96 +74,38 @@ namespace Boss
         {
             if (!_isInitialized) return;
             if (!HasStateAuthority) return;
-            
-            _boss1.Move();
+
+            Move();
 
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
             {
-                var searchResult = _boss1.Search();
+                var searchResult = Search();
                 if (searchResult.Length > 0)
                 {
-                    _boss1.SelectAttackState(_attackSelector, ref DecorationDataRef);
-                    _boss1.Attack();
+                    SelectAttackState(_attackSelector, ref DecorationDataRef);
+                    _context.CurrentState.Attack();
                     AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
                 }
                 else
                 {
-                    _boss1.SetSearchState(ref DecorationDataRef);
+                    SetSearchState(ref DecorationDataRef);
                 }
             }
 
-            _boss1.Process();
+            _context.CurrentState.Process(_context);
 
-        }
-
-        void InstantiateBoss()
-        {
-            // Instantiate
-            var prefab = _modelPrefab;
-            var modelObject = Instantiate(prefab, gameObject.transform, modelParent);
-
-            // Init Decoration
-            _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
-
-            var context = new Boss1Context(new SearchPlayerState(_record));
-            _boss1 = new Boss1IncludeDecorationDetector(_record, context, _decorationDetector, Runner);
         }
 
         public override void Render()
         {
             _decorationDetector.OnRendered(DecorationDataRef, Hp);
         }
-    }
+        
+        // 以下privateメソッド
 
-    public interface IBoss1AttackSelector
-    {
-        IBoss1State SelectAttack(params IBoss1State[] attacks);
-    }
-
-    public class RandomAttackSelector : IBoss1AttackSelector
-    {
-        public IBoss1State SelectAttack(params IBoss1State[] attacks)
+        void SelectAttackState(IBoss1AttackSelector attackSelector, ref Boss1DecorationDetector.Data data)
         {
-            // 0からattacks.Length-1までのランダムな整数を取得
-            var randomIndex = Random.Range(0, attacks.Length);
-            return attacks[randomIndex];
-        }
-    }
-
-    public class Boss1IncludeDecorationDetector
-    {
-        // NetworkRunner
-        readonly NetworkRunner _runner; // SpitOutStateのためだけにある
-
-        // Domain
-        readonly Boss1Record _record; //ToDo: targetbufferを取得するためだけにあるので、いずれ消す
-        readonly IBoss1Context _context;
-        readonly IBoss1State[] _attacks;
-
-        // Decoration
-        readonly Boss1DecorationDetector _decorationDetector;
-
-        public Boss1IncludeDecorationDetector(Boss1Record record, IBoss1Context context,
-            Boss1DecorationDetector decorationDetector,
-            NetworkRunner runner)
-        {
-            _record = record;
-            _context = context;
-            _decorationDetector = decorationDetector;
-            _runner = runner;
-
-            _attacks = new IBoss1State[]
-            {
-                new TackleState(_record),
-                new SpitOutState(_record, _runner),
-                new VacuumState(_record),
-                new ChargeJumpState(_record)
-            };
-        }
-
-        public void SelectAttackState(IBoss1AttackSelector attackSelector, ref Boss1DecorationDetector.Data data)
-        {
-            var attack = attackSelector.SelectAttack(_attacks);
+            var attack = attackSelector.SelectAttack(_attackStates);
 
             // Decoration
             StartDecoration(attack, ref data);
@@ -162,7 +124,7 @@ namespace Boss
             _context.ChangeState(new SearchPlayerState(_record));
         }
 
-        public void Move(Vector3 input = default)
+        void Move(Vector3 input = default)
         {
             var state = _context.CurrentState;
             if (state is
@@ -175,25 +137,14 @@ namespace Boss
             }
 
             state.Move(input);
-
         }
-
-        public Collider[] Search()
+        
+        Collider[] Search()
         {
             var searchResult = _context.CurrentState.Search();
             _record.TargetBuffer.Clear();
             _record.TargetBuffer.UnionWith(searchResult.Map(c => c.transform));
             return searchResult;
-        }
-
-        public void Attack()
-        {
-            _context.CurrentState.Attack();
-        }
-
-        public void Process()
-        {
-            _context.CurrentState.Process(_context);
         }
 
         void StartDecoration(IBoss1State attack, ref Boss1DecorationDetector.Data data)
@@ -240,6 +191,23 @@ namespace Boss
                 _decorationDetector.OnEndJump(ref data);
             }
         }
+
     }
+
+    public interface IBoss1AttackSelector
+    {
+        IBoss1State SelectAttack(params IBoss1State[] attacks);
+    }
+
+    public class RandomAttackSelector : IBoss1AttackSelector
+    {
+        public IBoss1State SelectAttack(params IBoss1State[] attacks)
+        {
+            // 0からattacks.Length-1までのランダムな整数を取得
+            var randomIndex = Random.Range(0, attacks.Length);
+            return attacks[randomIndex];
+        }
+    }
+
 
 }
