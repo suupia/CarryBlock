@@ -26,7 +26,7 @@ namespace Boss.Tests
         {
             var runnerManager = FindObjectOfType<NetworkRunnerManager>();
             // Runner.StartGame() if it has not been run.
-            await runnerManager.AttemptStartScene("GameSceneTestRoom");
+            await runnerManager.AttemptStartScene("Boss1TestInitializer");
             runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner),
                 cancellationToken: new CancellationToken());
