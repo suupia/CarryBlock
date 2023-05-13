@@ -69,7 +69,7 @@ namespace Boss
         protected override void OnInactive()
         {
             if (!_isInitialized) return;
-            //　ファイナライザ的な処理を書く
+            //　SetActive(false)された時の処理を書く
             _record.Rd.velocity = Vector3.zero;
         }
 
