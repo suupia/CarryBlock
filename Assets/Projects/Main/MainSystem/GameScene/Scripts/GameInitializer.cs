@@ -25,7 +25,7 @@ namespace Main
             // Domain
             var playerPrefabSpawner = new NetworkPlayerPrefabSpawner(Runner);
             _networkPlayerSpawner = new NetworkPlayerSpawner(Runner, playerPrefabSpawner);
-            _enemySpawner = new EnemySpawner(Runner);
+            _enemySpawner = new EnemySpawner(new EnemySpawner.EnemySpawnerRecord(){ Runner = Runner});
             Runner.AddSimulationBehaviour(_networkWaveTimer);
             _networkWaveTimer.Init();
 

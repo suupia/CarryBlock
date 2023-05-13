@@ -12,6 +12,7 @@ TagManager:
   - MainBase
   - Harmful
   - SubBase
+  - EnemySpawnerTransform
   layers:
   - Default
   - TransparentFX
