@@ -9,11 +9,11 @@ namespace Main
     /// 使用しなくても良いが、クライアントコードが複雑にならないことが期待できる。
     /// ここでのAttackはasyncになっている。キャストすればawait句が使用できる
     /// </summary>
-    public class DelayAttack : AttackWrapper, IEnemyAttack
+    public class DelayAttack : AttackWrapper, IBoss1Attack
     {
         private float _delay;
 
-        public DelayAttack(float delay, [NotNull] IEnemyAttack attack)
+        public DelayAttack(float delay, [NotNull] IBoss1Attack attack)
         {
             _delay = delay;
             _attack = attack;

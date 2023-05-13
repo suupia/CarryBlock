@@ -13,11 +13,11 @@ namespace Boss
         public void ChangeState(IBoss1State state);
     }
 
-    public interface IBoss1State : IEnemyMove, IEnemyAttack, IEnemySearch
+    public interface IBoss1State : IBoss1Move, IBoss1Attack, IBoss1Search
     {
         public void Process(IBoss1Context context);
-        public IEnemyMove EnemyMove { get; }
-        public IEnemyAttack EnemyAttack { get; }
+        public IBoss1Move EnemyMove { get; }
+        public IBoss1Attack EnemyAttack { get; }
     }
 
 
@@ -43,13 +43,13 @@ namespace Boss
     {
         protected Boss1Record Record { get; }
 
-        public IEnemyMove EnemyMove => move;
-        public IEnemyAttack EnemyAttack => attack;
+        public IBoss1Move EnemyMove => move;
+        public IBoss1Attack EnemyAttack => attack;
 
-        protected IEnemyAttack attack;
+        protected IBoss1Attack attack;
         protected float attackCoolTime;
-        protected IEnemyMove move;
-        protected IEnemySearch search;
+        protected IBoss1Move move;
+        protected IBoss1Search search;
 
         protected Boss1AbstractState(Boss1Record record)
         {

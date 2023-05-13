@@ -2,13 +2,13 @@ using UnityEngine;
 
 namespace Main
 {
-    public interface IEnemySearch
+    public interface IBoss1Search
     {
         
         Collider[] Search();
     }
 
-    public class RangeSearch : IEnemySearch
+    public class RangeSearch : IBoss1Search
     {
         private readonly Transform _transform;
         private readonly float _radius;
