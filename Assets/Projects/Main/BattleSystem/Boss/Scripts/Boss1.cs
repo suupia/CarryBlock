@@ -56,7 +56,7 @@ namespace Boss
         Vector3 Position { get; }
     }
 
-    public class SimpleBoss1 : IEnemy
+    public class ExampleEnemy : IEnemy
     {
         public float AttackCoolTime => _attack.AttackCoolTime;
         readonly IEnemyMoveExecutor _move;
@@ -65,7 +65,7 @@ namespace Boss
 
         IUnitOnTargeted? _targetUnit;
 
-        public SimpleBoss1()
+        public ExampleEnemy()
         {
             // いろいろ受け取って初期化
         }
