@@ -150,6 +150,7 @@ namespace Boss
             return searchResult;
         }
 
+        // 以下はデコレーション用
         void StartDecoration(IBoss1State attack, ref Boss1DecorationDetector.Data data)
         {
             // For Decoration
@@ -195,6 +196,7 @@ namespace Boss
             }
         }
 
+        // 以下はデバッグ用
         void OnDrawGizmos()
         {
             if (!showGizmos) return;
