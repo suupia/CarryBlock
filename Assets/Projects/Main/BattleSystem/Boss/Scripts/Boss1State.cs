@@ -135,6 +135,7 @@ namespace Boss
     {
         bool _isCharging;
         bool _isCompleted;
+        JumpState _jumpState;
 
         public ChargeJumpState(Boss1Record record) : base(record)
         {
@@ -143,6 +144,8 @@ namespace Boss
                 LayerMask.GetMask("Player"));
             attack = new DoNothingAttack();
             attackCoolTime = 0;
+
+            _jumpState = new JumpState(record);
         }
 
         public override void Process(IBoss1Context context)
@@ -150,8 +153,8 @@ namespace Boss
             Debug.Log("ChargeJumpingState.Process()");
             if (_isCompleted)
             {
-                Reset(); // 状態を持つため、リセットが必須１
-                context.ChangeState(new JumpState(Record));
+                Reset(); // 状態を持つため、リセットが必須
+                context.ChangeState(_jumpState);
             }
             else
             {
