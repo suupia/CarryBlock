@@ -163,7 +163,7 @@ namespace Boss
         public ChargeJumpState(Boss1Record record) : base(record)
         {
             // move = new LookAtTargetMove(Record.Transform);
-            move = new TargetMove(record.Transform, new DoNothingInputMove());
+            move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
             attack = new DoNothingAttack();
@@ -174,9 +174,14 @@ namespace Boss
         {
             Debug.Log("ChargeJumpingState.Process()");
             if (_isCompleted)
+            {
+                Reset(); // 状態を持つため、リセットが必須１
                 context.ChangeState(new JumpState(Record));
+            }
             else
+            {
                 ChargeJump().Forget();
+            }
         }
 
         async UniTaskVoid ChargeJump()
@@ -188,6 +193,12 @@ namespace Boss
 
             _isCharging = false;
             _isCompleted = true;
+        }
+
+        void Reset()
+        {
+            _isCharging = false;
+            _isCompleted = false;
         }
     }
 
@@ -238,9 +249,14 @@ namespace Boss
         {
             Debug.Log("JumpingState.Process()");
             if (_isCompleted)
+            {
+                Reset(); // 状態を持つので、リセットが必須　ただし、このクラスは毎回newされているので厳密には不要
                 context.ChangeState(new SearchPlayerState(Record));
+            }
             else
+            {
                 Jump().Forget();
+            }
         }
 
         async UniTaskVoid Jump()
@@ -254,6 +270,12 @@ namespace Boss
 
             _isJumping = false;
             _isCompleted = true;
+        }
+
+        void Reset()
+        {
+             _isJumping = false;
+             _isCompleted = false;
         }
     }
 

@@ -167,7 +167,7 @@ namespace Boss
         public void Move(Vector3 input)
         {
             var unitInput = input.normalized;
-            _rb.AddForce(input * acceleration, ForceMode.Acceleration);
+            _rb.AddForce(unitInput * acceleration, ForceMode.Acceleration);
 
             var velocity = Utility.SetYToZero(_rb.velocity);
             if (velocity.magnitude >= maxVelocity)
@@ -181,8 +181,7 @@ namespace Boss
 
     public class NonTorqueRegularMove: IInputMoveExecutor
     {
-        readonly Rigidbody _rd;
-        IInputMoveExecutor _move;
+        readonly IInputMoveExecutor _move;
 
         public NonTorqueRegularMove(Transform transform, Rigidbody rb, float acceleration = 30f, float maxVelocity = 2.5f)
         {
