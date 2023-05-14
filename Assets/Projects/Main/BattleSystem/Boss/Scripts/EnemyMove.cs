@@ -29,12 +29,13 @@ namespace Boss
             _cancellationTokenSource = new CancellationTokenSource();
         }
         
-        public  void Move(Vector3 input = default)
+        public void Move(Vector3 input = default)
         {
+            InputSimulation();
             _move.Move(_simulatedInput);
         }
         
-        async UniTaskVoid StartSimulation()
+        async UniTaskVoid InputSimulation()
         {
             if(_isSimulating)return;
             _isSimulating = true;
