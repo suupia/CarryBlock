@@ -31,44 +31,48 @@ namespace Boss
     {
         void Move();
     }
-
     public interface IEnemyTargetMoveExecutor : IEnemyMoveExecutor
     {
         Transform Target { get; set; }
     }
     public interface IEnemySearchExecutor
     {
-        IUnitOnTargeted[]  Search();
+        Transform[]  Search();
+        Transform DetermineTarget(IEnumerable<Transform> targetUnits); // Moveのターゲットなどに使われる
+
     }
 
-    public interface IEnemyAttackExecutor
+    public interface IEnemyActionExecutor
     {
-        float AttackCoolTime { get; }　//ToDo: 関数でもいいかも
-        IUnitOnTargeted DetermineTarget(IEnumerable<IUnitOnTargeted> targetUnits); // Moveのターゲットなどに使われる
-        void Attack(IEnumerable<IUnitOnAttacked> targetUnits);
+        float ActionCoolTime { get; }　//ToDo: 関数でもいいかも
+        void Action();
+    }
+    public interface IEnemyTargetActionExecutor : IEnemyActionExecutor
+    {
+        Transform Target { get; set; }
     }
 
     // 以下はUnit側のインターフェース
     // ToDo:後で移動
 
-    public interface IUnitOnAttacked
-    {
-        NetworkPlayerStruct OnAttacked(ref NetworkPlayerStruct networkPlayerStruct, int damage);
-    }
-
-    public interface IUnitOnTargeted : IUnitOnAttacked
-    {
-        Transform targetTransform { get; }
-    }
+    // public interface IUnitOnAttacked
+    // {
+    //     NetworkPlayerStruct OnAttacked(ref NetworkPlayerStruct networkPlayerStruct, int damage);
+    // }
+    //
+    // public interface IUnitOnTargeted : IUnitOnAttacked
+    // {
+    //     Transform targetTransform { get; }
+    // }
 
     public class ExampleEnemy : IEnemy
     {
-        public float ActionCoolTime => _attack.AttackCoolTime;
+        public float ActionCoolTime => _action.ActionCoolTime;
         readonly IEnemyMoveExecutor _move;
         readonly IEnemySearchExecutor _search;
-        readonly IEnemyAttackExecutor _attack;
+        readonly IEnemyActionExecutor _action;
 
-        IUnitOnTargeted? _targetUnit;
+        Transform? _targetUnit;
 
         public ExampleEnemy()
         {
@@ -88,10 +92,12 @@ namespace Boss
             var units = _search.Search();
             if (units.Any())
             {
-                _targetUnit = _attack.DetermineTarget(units);
+                _targetUnit = _search.DetermineTarget(units);
                 if(_move is IEnemyTargetMoveExecutor targetMoveExecutor)
-                    targetMoveExecutor.Target = _targetUnit.targetTransform;
-                _attack.Attack(units);
+                    targetMoveExecutor.Target = _targetUnit;
+                if(_action is IEnemyTargetActionExecutor targetActionExecutor)
+                    targetActionExecutor.Target = _targetUnit;
+                _action.Action();
             }
         }
         

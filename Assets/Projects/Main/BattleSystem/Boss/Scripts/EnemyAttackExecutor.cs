@@ -13,24 +13,33 @@ namespace Boss
     /// <summary>
     /// 何もしないIEnemyAttackExecutorの実装クラス
     /// </summary>
-    public class DoNothingAttack : IEnemyAttackExecutor
+    public class DoNothingAction : IEnemyActionExecutor
     {
-        public float AttackCoolTime => 0;
+        public float ActionCoolTime => 0;
 
-        public DoNothingAttack()
+        public DoNothingAction()
         {
         }
 
-        public IUnitOnTargeted DetermineTarget(IEnumerable<IUnitOnTargeted> targetUnits)
-        {
-            return targetUnits.First();
-        }
-
-        public void Attack(IEnumerable<IUnitOnAttacked> targetUnits)
+        public void Action()
         {
             
         }
     }
     
+    // ToDo: TackleStateで使用されるAttackを作成する
+    public class TackleAction : IEnemyActionExecutor
+    {
+        public float ActionCoolTime => 0;
+
+        public TackleAction()
+        {
+        }
+        
+        public void Action()
+        {
+            
+        }
+    }
     
 }
