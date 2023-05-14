@@ -84,8 +84,10 @@ namespace Boss
             move = new RandomMove(simulationInterval: 2f, 
                 new NonTorqueRegularMove(
                     record.Transform, record.Rb, acceleration: 20f, maxVelocity: 1.0f));
+            
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
+            
             attack = new DoNothingAttackOld();
             attackCoolTime = 0;
         }
@@ -103,8 +105,10 @@ namespace Boss
             move = new TargetMove(record.Transform,
                 new NonTorqueRegularMove(
                 record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
-                search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            
+            search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
+                
             attack = new ToNearestAttack(new TargetBufferAttack.Context
                 {
                     Transform = Record.Transform,
@@ -120,6 +124,7 @@ namespace Boss
                     })
                 )
             );
+            
             attackCoolTime = 1;
         }
 
@@ -140,9 +145,12 @@ namespace Boss
         public ChargeJumpState(Boss1Record record) : base(record)
         {
             move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
+            
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
+            
             attack = new DoNothingAttackOld();
+            
             attackCoolTime = 0;
 
             _jumpState = new JumpState(record);
@@ -190,8 +198,10 @@ namespace Boss
             move = new TargetMove(record.Transform,
                 new NonTorqueRegularMove(
                     record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
+            
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
+            
             attack = new ToNearestAttack(new TargetBufferAttack.Context
                 {
                     Transform = Record.Transform,
@@ -251,8 +261,10 @@ namespace Boss
         public SpitOutState(Boss1Record record, NetworkRunner runner) : base(record)
         {
             move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
+            
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
+            
             attack = new ToFurthestAttack(new TargetBufferAttack.Context
                 {
                     Transform = Record.Transform,
@@ -287,8 +299,10 @@ namespace Boss
         public VacuumState(Boss1Record record) : base(record)
         {
             move = new TargetMove(record.Transform, new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
+            
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
+            
             attack = new ToNearestAttack(new TargetBufferAttack.Context
                 {
                     Transform = Record.Transform,
@@ -296,6 +310,7 @@ namespace Boss
                 },
                 new ToTargetAttack(Record.GameObject, new MockAttack())
             );
+            
             attackCoolTime = Record.DefaultAttackCoolTime;
         }
 

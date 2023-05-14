@@ -30,7 +30,7 @@ namespace Boss
         
         public void Move()
         {
-            InputSimulation();
+            InputSimulation().Forget();
             _move.Move(_simulatedInput);
         }
         
