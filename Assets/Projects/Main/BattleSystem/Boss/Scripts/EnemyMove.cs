@@ -6,7 +6,9 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
+using JetBrains.Annotations;
 
+# nullable enable
 namespace Boss
 {
     /// <summary>
@@ -65,22 +67,23 @@ namespace Boss
 
     /// <summary>
     /// IInputMoveExecutorにtargetの方向をinputとして与える
+    /// Targetがnullのときは、_transform.forwardをinputとして与える
     /// </summary>
-    public class TargetMove : IEnemyMoveExecutor
+    public class TargetMove : IEnemyTargetMoveExecutor
     {
         readonly Transform _transform;
-        readonly Transform _target;
         readonly IInputMoveExecutor _move;
-        public TargetMove(Transform transform, Transform target, IInputMoveExecutor move)
+        public Transform? Target { get; set; }
+
+        public TargetMove(Transform transform, IInputMoveExecutor move)
         {
             _transform = transform;
-            _target = target;
             _move = move;
         }
         
         public void Move()
         {
-            var input = (_target.position - _transform.position).normalized;
+            var input = Target != null ? (Target.position - _transform.position).normalized : _transform.forward;
             _move.Move(input);
         }
     }
@@ -93,9 +96,9 @@ namespace Boss
     /// <summary>
     /// 何もしないIInputMoveExecutorの実装クラス
     /// </summary>
-    public class DoNothingMove : IInputMoveExecutor
+    public class DoNothingInputMove : IInputMoveExecutor
     {
-        public DoNothingMove()
+        public DoNothingInputMove()
         {
         }
         public void Move(Vector3 input)
@@ -104,17 +107,35 @@ namespace Boss
     }
 
     /// <summary>
-    /// inputの方を向く
+    /// IInputMoveExecutorに_transform.forwardをinputとして与える
+    /// 引数のinputは無視されることに注意
+    /// </summary>
+    public class ForwardInputDecorator : IInputMoveExecutor
+    {
+        readonly Transform _transform;
+        readonly IInputMoveExecutor _move;
+        public ForwardInputDecorator(Transform transform, IInputMoveExecutor move)
+        {
+            _transform = transform;
+            _move = move;
+        }
+        public void Move(Vector3 input)
+        {
+            var overrideInput = _transform.forward;
+            _move.Move(overrideInput);
+        }
+    }
+
+    /// <summary>
+    /// inputの方をすぐに向く
     /// </summary>
     public class LookAtInputMoveDecorator : IInputMoveExecutor
     {
         readonly Transform _transform;
-        readonly Transform _target;
         readonly IInputMoveExecutor _move;
-        public LookAtInputMoveDecorator(Transform transform, Transform target, IInputMoveExecutor move)
+        public LookAtInputMoveDecorator(Transform transform ,IInputMoveExecutor move)
         {
             _transform = transform;
-            _target = target;
             _move = move;
         }
         public void Move(Vector3 input)
@@ -125,26 +146,8 @@ namespace Boss
         }
     }
     
-    /// <summary>
-    /// targetの方を向く
-    /// </summary>
-    public class LookAtTargetMoveDecorator : IInputMoveExecutor
-    {
-        readonly Transform _transform;
-        readonly Transform _target;
-        readonly IInputMoveExecutor _move;
-        public LookAtTargetMoveDecorator(Transform transform, Transform target, IInputMoveExecutor move)
-        {
-            _transform = transform;
-            _target = target;
-            _move = move;
-        }
-        public void Move(Vector3 input)
-        {
-            _transform.LookAt(_target);
-            _move.Move(input);
-        }
-    }
+    
+    // ToDo: TorqueLookAtInputMoveDecoratorのようなクラスを追加するかもしれない
     
     /// <summary>
     /// RigidBodyで動く
@@ -175,4 +178,28 @@ namespace Boss
             }
         }
     }
+
+    public class NonTorqueRegularMove: IInputMoveExecutor
+    {
+        readonly Rigidbody _rd;
+        IInputMoveExecutor _move;
+
+        public NonTorqueRegularMove(Transform transform, Rigidbody rb, float acceleration = 30f, float maxVelocity = 2.5f)
+        {
+            _move = new LookAtInputMoveDecorator(transform,
+                new ForwardInputDecorator(transform,
+                    new AddForceMove(rb)
+                    {
+                        acceleration = acceleration, 
+                        maxVelocity = maxVelocity
+                    }));
+        }
+        
+        public void Move(Vector3 input)
+        {
+            _move.Move(input);
+        }
+    }
+    
+
 }

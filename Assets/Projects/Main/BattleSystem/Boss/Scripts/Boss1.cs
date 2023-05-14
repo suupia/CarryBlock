@@ -34,7 +34,7 @@ namespace Boss
 
     public interface IEnemyTargetMoveExecutor : IEnemyMoveExecutor
     {
-        IUnitOnTargeted Target { get; set; }
+        Transform Target { get; set; }
     }
     public interface IEnemySearchExecutor
     {
@@ -58,7 +58,7 @@ namespace Boss
 
     public interface IUnitOnTargeted : IUnitOnAttacked
     {
-        Vector3 Position { get; }
+        Transform targetTransform { get; }
     }
 
     public class ExampleEnemy : IEnemy
@@ -90,7 +90,7 @@ namespace Boss
             {
                 _targetUnit = _attack.DetermineTarget(units);
                 if(_move is IEnemyTargetMoveExecutor targetMoveExecutor)
-                    targetMoveExecutor.Target = _targetUnit;
+                    targetMoveExecutor.Target = _targetUnit.targetTransform;
                 _attack.Attack(units);
             }
         }
