@@ -16,8 +16,8 @@ namespace Boss
     
     public interface IEnemyAttack
     {
-        float AttackCoolTime { get; }
-        void Attack();
+        float ActionCoolTime { get; }
+        void Action();
     }
 
     public interface  IEnemy : IEnemyMove, IEnemyAttack
@@ -27,9 +27,14 @@ namespace Boss
 
     // 以下はドメインのEnemyクラスのためのインターフェース
 
-    public interface IEnemyMoveExecutor : IEnemyMove
+    public interface IEnemyMoveExecutor
     {
-        void Move(IUnitOnTargeted? target = default);
+        void Move(Vector3 input = default);
+    }
+
+    public interface IEnemyTargetMoveExecutor : IEnemyMoveExecutor
+    {
+        IUnitOnTargeted Target { get; set; }
     }
     public interface IEnemySearchExecutor
     {
@@ -58,7 +63,7 @@ namespace Boss
 
     public class ExampleEnemy : IEnemy
     {
-        public float AttackCoolTime => _attack.AttackCoolTime;
+        public float ActionCoolTime => _attack.AttackCoolTime;
         readonly IEnemyMoveExecutor _move;
         readonly IEnemySearchExecutor _search;
         readonly IEnemyAttackExecutor _attack;
@@ -73,17 +78,19 @@ namespace Boss
         // NetworkFixedUpdateで呼ばれるためパフォーマンスに注意
         public void Move()
         {
-            _move.Move(_targetUnit);
+            _move.Move();
         }
 
         // このメソッドを呼んだ後にAttackCoolTimeを回す
-        public void Attack()
+        public void Action()
         {
             // ここで絶対にSearchを使う
             var units = _search.Search();
             if (units.Any())
             {
                 _targetUnit = _attack.DetermineTarget(units);
+                if(_move is IEnemyTargetMoveExecutor targetMoveExecutor)
+                    targetMoveExecutor.Target = _targetUnit;
                 _attack.Attack(units);
             }
         }
