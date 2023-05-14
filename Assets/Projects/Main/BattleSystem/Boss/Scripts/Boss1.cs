@@ -14,13 +14,13 @@ namespace Boss
         void Move(); 
     }
     
-    public interface IEnemyAttack
+    public interface IEnemyAction
     {
         float ActionCoolTime { get; }
         void Action();
     }
 
-    public interface  IEnemy : IEnemyMove, IEnemyAttack
+    public interface  IEnemy : IEnemyMove, IEnemyAction
     {
 
     }
