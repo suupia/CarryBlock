@@ -39,6 +39,7 @@ namespace Boss
     {
         Transform[]  Search();
         Transform DetermineTarget(IEnumerable<Transform> targetUnits); // Moveのターゲットなどに使われる
+        // もし、Action側で複数のTransformを受け取る必要がある場合は、IEnemyTargetsActionExecutorとDetermineTargetsを作成する
 
     }
 
@@ -85,10 +86,10 @@ namespace Boss
             _move.Move();
         }
 
-        // このメソッドを呼んだ後にAttackCoolTimeを回す
+        // このメソッドを呼んだ後にActionCoolTimeを回す
         public void Action()
         {
-            // ここで絶対にSearchを使う
+            // ここでSearchを使う
             var units = _search.Search();
             if (units.Any())
             {
