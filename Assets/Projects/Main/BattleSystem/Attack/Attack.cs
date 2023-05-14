@@ -55,7 +55,7 @@ namespace Main
         Transform Target { get; set; }
     }
 
-    public class DoNothingAttack : IBoss1Attack
+    public class DoNothingAttackOld : IBoss1Attack
     {
         public void Attack()
         {

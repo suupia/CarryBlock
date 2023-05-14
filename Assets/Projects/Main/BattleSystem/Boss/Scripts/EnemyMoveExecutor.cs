@@ -6,7 +6,6 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
-using JetBrains.Annotations;
 
 # nullable enable
 namespace Boss

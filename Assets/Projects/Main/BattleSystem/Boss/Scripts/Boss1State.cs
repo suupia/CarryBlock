@@ -86,7 +86,7 @@ namespace Boss
                     record.Transform, record.Rb, acceleration: 20f, maxVelocity: 1.0f));
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
-            attack = new DoNothingAttack();
+            attack = new DoNothingAttackOld();
             attackCoolTime = 0;
         }
 
@@ -142,7 +142,7 @@ namespace Boss
             move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
-            attack = new DoNothingAttack();
+            attack = new DoNothingAttackOld();
             attackCoolTime = 0;
 
             _jumpState = new JumpState(record);
