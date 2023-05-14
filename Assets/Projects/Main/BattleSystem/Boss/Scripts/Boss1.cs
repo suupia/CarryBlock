@@ -29,7 +29,7 @@ namespace Boss
 
     public interface IEnemyMoveExecutor
     {
-        void Move(Vector3 input = default);
+        void Move();
     }
 
     public interface IEnemyTargetMoveExecutor : IEnemyMoveExecutor
