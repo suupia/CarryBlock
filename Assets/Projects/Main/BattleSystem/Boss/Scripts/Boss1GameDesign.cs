@@ -19,21 +19,21 @@ namespace Boss
             { State.ChargingJump, State.Tackling, State.SpitOut, State.Vacuuming };
 
         //Define Template Moves 
-        IEnemyMove DefaultMove => new SimpleMove(new SimpleMove.Record
+        IBoss1Move DefaultMove => new SimpleMove(new SimpleMove.Record
         {
             GameObject = gameObject,
             Acceleration = 20f,
             MaxVelocity = 1f
         });
 
-        IEnemyMove SpeedyMove => new SimpleMove(new SimpleMove.Record
+        IBoss1Move SpeedyMove => new SimpleMove(new SimpleMove.Record
         {
             GameObject = gameObject,
             Acceleration = 30f,
             MaxVelocity = 2.5f
         });
 
-        IEnemyMove WanderingMove => new WanderingMove(
+        IBoss1Move WanderingMove => new WanderingMove(
             new WanderingMove.Record
             {
                 InputSimulationFrequency = 2f
@@ -41,17 +41,17 @@ namespace Boss
             move: DefaultMove
         );
 
-        IEnemyMove ToTargetMove =>
+        IBoss1Move ToTargetMove =>
             new ToTargetMove(
                 new ToTargetMove.Record
                 {
                     Transform = transform
                 }, SpeedyMove);
 
-        IEnemyMove LookAtTargetMove => new LookAtTargetMove(transform);
+        IBoss1Move LookAtTargetMove => new LookAtTargetMove(transform);
 
         //Define Search
-        IEnemySearch DefaultSearch => new RangeSearch(transform, SearchRadius,
+        IBoss1Search DefaultSearch => new RangeSearch(transform, SearchRadius,
             layerMask: LayerMask.GetMask("Player"));
 
         //Define State

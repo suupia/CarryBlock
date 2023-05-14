@@ -74,6 +74,9 @@ namespace Boss.Tests
 
     }
 
+    /// <summary>
+    /// 特定の攻撃状態だけを返す
+    /// </summary>
     public class FixedAttackSelector : IBoss1AttackSelector
     {
         readonly int _attackIndex;

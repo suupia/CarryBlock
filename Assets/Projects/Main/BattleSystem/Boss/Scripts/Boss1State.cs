@@ -1,7 +1,9 @@
+using System.Diagnostics;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Boss
 {
@@ -13,11 +15,11 @@ namespace Boss
         public void ChangeState(IBoss1State state);
     }
 
-    public interface IBoss1State : IEnemyMove, IEnemyAttack, IEnemySearch
+    public interface IBoss1State : IEnemyMoveExecutor, IBoss1Attack, IBoss1Search
     {
         public void Process(IBoss1Context context);
-        public IEnemyMove EnemyMove { get; }
-        public IEnemyAttack EnemyAttack { get; }
+        public IEnemyMoveExecutor EnemyMove { get; }
+        public IBoss1Attack EnemyAttack { get; }
     }
 
 
@@ -43,13 +45,13 @@ namespace Boss
     {
         protected Boss1Record Record { get; }
 
-        public IEnemyMove EnemyMove => move;
-        public IEnemyAttack EnemyAttack => attack;
+        public IEnemyMoveExecutor EnemyMove => move;
+        public IBoss1Attack EnemyAttack => attack;
 
-        protected IEnemyAttack attack;
+        protected IBoss1Attack attack;
         protected float attackCoolTime;
-        protected IEnemyMove move;
-        protected IEnemySearch search;
+        protected IEnemyMoveExecutor move;
+        protected IBoss1Search search;
 
         protected Boss1AbstractState(Boss1Record record)
         {
@@ -58,9 +60,9 @@ namespace Boss
 
         public abstract void Process(IBoss1Context context);
 
-        public void Move(Vector3 input = default)
+        public void Move()
         {
-            move.Move(input);
+            move.Move();
         }
 
         public Collider[] Search()
@@ -79,18 +81,22 @@ namespace Boss
     {
         public SearchPlayerState(Boss1Record record) : base(record)
         {
-            move = new WanderingMove(
-                new WanderingMove.Record
-                {
-                    InputSimulationFrequency = 2f
-                },
-                new SimpleMove(new SimpleMove.Record
-                {
-                    GameObject = Record.GameObject,
-                    Acceleration = 20f,
-                    MaxVelocity = 1f
-                })
-            );
+
+            // move = new WanderingMove(
+            //     new WanderingMove.Record
+            //     {
+            //         InputSimulationFrequency = 2f
+            //     },
+            //     new SimpleMove(new SimpleMove.Record
+            //     {
+            //         GameObject = Record.GameObject,
+            //         Acceleration = 20f,
+            //         MaxVelocity = 1f
+            //     })
+            // );
+            move = new RandomMove(simulationInterval: 2f, 
+                new NonTorqueRegularMove(
+                    record.Transform, record.Rb, acceleration: 20f, maxVelocity: 1.0f));
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
             attack = new DoNothingAttack();
@@ -107,18 +113,21 @@ namespace Boss
     {
         public TackleState(Boss1Record record) : base(record)
         {
-            move = new ToTargetMove(
-                new ToTargetMove.Record
-                {
-                    Transform = Record.Transform
-                    // Target = Record.TargetBuffer.First() // ToDo: 適当にこれでいいんじゃない？と代入した　→　エラーになった
-                }, new SimpleMove(new SimpleMove.Record
-                {
-                    GameObject = Record.GameObject,
-                    Acceleration = 30f,
-                    MaxVelocity = 2.5f
-                }));
-            search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            // move = new ToTargetMove(
+            //     new ToTargetMove.Record
+            //     {
+            //         Transform = Record.Transform
+            //         // Target = Record.TargetBuffer.First() // ToDo: 適当にこれでいいんじゃない？と代入した　→　エラーになった
+            //     }, new SimpleMove(new SimpleMove.Record
+            //     {
+            //         GameObject = Record.GameObject,
+            //         Acceleration = 30f,
+            //         MaxVelocity = 2.5f
+            //     }));
+            move = new TargetMove(record.Transform,
+                new NonTorqueRegularMove(
+                record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
+                search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
             attack = new ToNearestAttack(new TargetBufferAttack.Context
                 {
@@ -141,6 +150,8 @@ namespace Boss
         public override void Process(IBoss1Context context)
         {
             Debug.Log("TacklingState.Process()");
+            var targetMove = move as TargetMove;
+            Debug.Log($"targetMove.Target: {targetMove.Target}");
         }
     }
 
@@ -151,7 +162,8 @@ namespace Boss
 
         public ChargeJumpState(Boss1Record record) : base(record)
         {
-            move = new LookAtTargetMove(Record.Transform);
+            // move = new LookAtTargetMove(Record.Transform);
+            move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
             attack = new DoNothingAttack();
@@ -162,9 +174,14 @@ namespace Boss
         {
             Debug.Log("ChargeJumpingState.Process()");
             if (_isCompleted)
+            {
+                Reset(); // 状態を持つため、リセットが必須１
                 context.ChangeState(new JumpState(Record));
+            }
             else
+            {
                 ChargeJump().Forget();
+            }
         }
 
         async UniTaskVoid ChargeJump()
@@ -177,6 +194,12 @@ namespace Boss
             _isCharging = false;
             _isCompleted = true;
         }
+
+        void Reset()
+        {
+            _isCharging = false;
+            _isCompleted = false;
+        }
     }
 
     public class JumpState : Boss1AbstractState
@@ -186,17 +209,20 @@ namespace Boss
 
         public JumpState(Boss1Record record) : base(record)
         {
-            move = new ToTargetMove(
-                new ToTargetMove.Record
-                {
-                    Transform = Record.Transform
-                }, new SimpleMove(new SimpleMove.Record
-                {
-                    GameObject = Record.GameObject,
-                    Acceleration = 30f,
-                    MaxVelocity = 2.5f
-                })
-            );
+            // move = new ToTargetMove(
+            //     new ToTargetMove.Record
+            //     {
+            //         Transform = Record.Transform
+            //     }, new SimpleMove(new SimpleMove.Record
+            //     {
+            //         GameObject = Record.GameObject,
+            //         Acceleration = 30f,
+            //         MaxVelocity = 2.5f
+            //     })
+            // );
+            move = new TargetMove(record.Transform,
+                new NonTorqueRegularMove(
+                    record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
             attack = new ToNearestAttack(new TargetBufferAttack.Context
@@ -223,9 +249,14 @@ namespace Boss
         {
             Debug.Log("JumpingState.Process()");
             if (_isCompleted)
+            {
+                Reset(); // 状態を持つので、リセットが必須　ただし、このクラスは毎回newされているので厳密には不要
                 context.ChangeState(new SearchPlayerState(Record));
+            }
             else
+            {
                 Jump().Forget();
+            }
         }
 
         async UniTaskVoid Jump()
@@ -233,12 +264,18 @@ namespace Boss
             if (_isJumping) return;
             _isJumping = true;
 
-            MoveUtility.Jump(Record.Rd, Record.JumpTime);
+            MoveUtility.Jump(Record.Rb, Record.JumpTime);
 
             for (float t = 0; t < Record.JumpTime; t += Time.deltaTime) await UniTask.Yield();
 
             _isJumping = false;
             _isCompleted = true;
+        }
+
+        void Reset()
+        {
+             _isJumping = false;
+             _isCompleted = false;
         }
     }
 
@@ -246,7 +283,8 @@ namespace Boss
     {
         public SpitOutState(Boss1Record record, NetworkRunner runner) : base(record)
         {
-            move = new LookAtTargetMove(Record.Transform);
+            // move = new LookAtTargetMove(Record.Transform);
+            move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
             attack = new ToFurthestAttack(new TargetBufferAttack.Context
@@ -282,7 +320,8 @@ namespace Boss
     {
         public VacuumState(Boss1Record record) : base(record)
         {
-            move = new LookAtTargetMove(Record.Transform);
+            // move = new LookAtTargetMove(Record.Transform);
+            move = new TargetMove(record.Transform, new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
             attack = new ToNearestAttack(new TargetBufferAttack.Context

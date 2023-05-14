@@ -45,17 +45,17 @@ namespace Main
     ///
     /// 内部でどちらを採用するかは自由だが、必要なものがなにかをコメントで残すと理想的
     /// </summary>
-    public interface IEnemyAttack
+    public interface IBoss1Attack
     {
         void Attack();
     }
 
-    public interface ITargetAttack : IEnemyAttack
+    public interface ITargetAttack : IBoss1Attack
     {
         Transform Target { get; set; }
     }
 
-    public class DoNothingAttack : IEnemyAttack
+    public class DoNothingAttack : IBoss1Attack
     {
         public void Attack()
         {
@@ -70,10 +70,10 @@ namespace Main
     public class AttackWrapper
     {
         // ReSharper disable once InconsistentNaming
-        protected IEnemyAttack _attack;
+        protected IBoss1Attack _attack;
 
         // ReSharper disable once InconsistentNaming
-        public IEnemyAttack attack => _attack;
+        public IBoss1Attack attack => _attack;
         public override string ToString()
         {
             return $"({base.ToString()}+{_attack})";
@@ -84,7 +84,7 @@ namespace Main
     /// これから実装するAttackの仮置きとして使用する
     /// Wrapper系のAttackが機能しているかテストするときなど
     /// </summary>
-    public class MockAttack : IEnemyAttack
+    public class MockAttack : IBoss1Attack
     {
         public void Attack()
         {

@@ -1,3 +1,4 @@
+using System.Linq;
 using Animations;
 using Decoration;
 using Fusion;
@@ -69,8 +70,8 @@ namespace Boss
         protected override void OnInactive()
         {
             if (!_isInitialized) return;
-            //　ファイナライザ的な処理を書く
-            _record.Rd.velocity = Vector3.zero;
+            //　SetActive(false)された時の処理を書く
+            _record.Rb.velocity = Vector3.zero;
         }
 
         public override void FixedUpdateNetwork()
@@ -86,6 +87,10 @@ namespace Boss
                 if (searchResult.Length > 0)
                 {
                     SelectAttackState(_attackSelector, ref DecorationDataRef);
+                    if (_context.CurrentState is{EnemyMove :  IEnemyTargetMoveExecutor targetMoveExecutor} )
+                    {
+                        targetMoveExecutor.Target = searchResult.First().transform;
+                    }
                     _context.CurrentState.Attack();
                     AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
                 }
@@ -127,7 +132,7 @@ namespace Boss
             _context.ChangeState(new SearchPlayerState(_record));
         }
 
-        void Move(Vector3 input = default)
+        void Move()
         {
             var state = _context.CurrentState;
             if (state is
@@ -139,7 +144,7 @@ namespace Boss
                 Debug.Log("Targetをセット！ move.Target = " + move.Target);
             }
 
-            state.Move(input);
+            state.Move();
         }
         
         Collider[] Search()
@@ -150,6 +155,7 @@ namespace Boss
             return searchResult;
         }
 
+        // 以下はデコレーション用
         void StartDecoration(IBoss1State attack, ref Boss1DecorationDetector.Data data)
         {
             // For Decoration
@@ -195,6 +201,7 @@ namespace Boss
             }
         }
 
+        // 以下はデバッグ用
         void OnDrawGizmos()
         {
             if (!showGizmos) return;
