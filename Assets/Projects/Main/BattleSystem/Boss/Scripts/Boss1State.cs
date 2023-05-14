@@ -81,19 +81,6 @@ namespace Boss
     {
         public SearchPlayerState(Boss1Record record) : base(record)
         {
-
-            // move = new WanderingMove(
-            //     new WanderingMove.Record
-            //     {
-            //         InputSimulationFrequency = 2f
-            //     },
-            //     new SimpleMove(new SimpleMove.Record
-            //     {
-            //         GameObject = Record.GameObject,
-            //         Acceleration = 20f,
-            //         MaxVelocity = 1f
-            //     })
-            // );
             move = new RandomMove(simulationInterval: 2f, 
                 new NonTorqueRegularMove(
                     record.Transform, record.Rb, acceleration: 20f, maxVelocity: 1.0f));
@@ -113,17 +100,6 @@ namespace Boss
     {
         public TackleState(Boss1Record record) : base(record)
         {
-            // move = new ToTargetMove(
-            //     new ToTargetMove.Record
-            //     {
-            //         Transform = Record.Transform
-            //         // Target = Record.TargetBuffer.First() // ToDo: 適当にこれでいいんじゃない？と代入した　→　エラーになった
-            //     }, new SimpleMove(new SimpleMove.Record
-            //     {
-            //         GameObject = Record.GameObject,
-            //         Acceleration = 30f,
-            //         MaxVelocity = 2.5f
-            //     }));
             move = new TargetMove(record.Transform,
                 new NonTorqueRegularMove(
                 record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
@@ -162,7 +138,6 @@ namespace Boss
 
         public ChargeJumpState(Boss1Record record) : base(record)
         {
-            // move = new LookAtTargetMove(Record.Transform);
             move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
@@ -209,17 +184,6 @@ namespace Boss
 
         public JumpState(Boss1Record record) : base(record)
         {
-            // move = new ToTargetMove(
-            //     new ToTargetMove.Record
-            //     {
-            //         Transform = Record.Transform
-            //     }, new SimpleMove(new SimpleMove.Record
-            //     {
-            //         GameObject = Record.GameObject,
-            //         Acceleration = 30f,
-            //         MaxVelocity = 2.5f
-            //     })
-            // );
             move = new TargetMove(record.Transform,
                 new NonTorqueRegularMove(
                     record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
@@ -283,7 +247,6 @@ namespace Boss
     {
         public SpitOutState(Boss1Record record, NetworkRunner runner) : base(record)
         {
-            // move = new LookAtTargetMove(Record.Transform);
             move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
@@ -320,7 +283,6 @@ namespace Boss
     {
         public VacuumState(Boss1Record record) : base(record)
         {
-            // move = new LookAtTargetMove(Record.Transform);
             move = new TargetMove(record.Transform, new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             search = new RangeSearch(Record.Transform, Record.SearchRadius,
                 LayerMask.GetMask("Player"));
