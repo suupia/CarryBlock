@@ -38,13 +38,13 @@ namespace Boss
     }
 
     /// <summary>
-    ///     Boss1Recordを保持するための抽象クラス
+    ///     各IBoss1Stateの抽象クラス
     /// </summary>
     public abstract class Boss1AbstractState : IBoss1State
     {
         public IEnemyMoveExecutor EnemyMove => move;
         public IEnemyActionExecutor EnemyAction => action;
-        protected Boss1Record Record { get; }
+        Boss1Record Record { get; }
         protected IEnemyActionExecutor action;
         protected IEnemyMoveExecutor move;
         protected IEnemySearchExecutor search;
@@ -126,23 +126,7 @@ namespace Boss
             
             search = new  NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }
-
-        async UniTaskVoid ChargeJump()
-        {
-            if (_isCharging) return;
-            _isCharging = true;
-
-            for (float t = 0; t < Record.ChargeJumpTime; t += Time.deltaTime) await UniTask.Yield();
-
-            _isCharging = false;
-            _isCompleted = true;
-        }
-
-        void Reset()
-        {
-            _isCharging = false;
-            _isCompleted = false;
-        }
+        
     }
 
     public class JumpState : Boss1AbstractState
