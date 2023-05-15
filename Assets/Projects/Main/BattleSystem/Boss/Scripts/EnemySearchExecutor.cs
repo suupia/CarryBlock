@@ -6,6 +6,22 @@ using UnityEngine;
 
 namespace Boss
 {
+    public class DoNothingSearch : IEnemySearchExecutor
+    {
+        public DoNothingSearch()
+        {
+        }
+
+        public Transform[]? Search()
+        {
+            return null;
+        }
+
+        public Transform? DetermineTarget(IEnumerable<Transform> targetUnits)
+        {
+            return null;
+        }
+    }
     public class NearestSearch : IEnemySearchExecutor
     {
         readonly int _layerMask;

@@ -29,10 +29,10 @@ namespace Boss
 
         // Domain
         IBoss1AttackSelector _actionSelector;
-         IBoss1Context _context;
-         IBoss1State[] _actionStates;
-         IBoss1State _idleState;
-         
+        IBoss1State _idleState;
+        IBoss1State[] _actionStates;
+        IBoss1Context _context;
+
          Transform? _targetUnit;
 
         // For Debug
@@ -58,14 +58,17 @@ namespace Boss
             _record.Init(Runner, gameObject);
             
             // Init Host Domain
-            _idleState = new WanderState(_record);
-            _context = new Boss1Context(_idleState);
+            // newの順番に注意！
+            var wanderState = new WanderState(_record);
+            _context = new Boss1Context(wanderState);
+            _idleState = new IdleState(_record, wanderState, _context);
+            var jumpState = new JumpState(_record,_idleState, _context);
             _actionStates = new IBoss1State[]
             {
                 new TackleState(_record),
                 new SpitOutState(_record, Runner),
                 new VacuumState(_record),
-                new ChargeJumpState(_record, _context)
+                new ChargeJumpState(_record,jumpState, _context)
             };
 
             
@@ -91,13 +94,20 @@ namespace Boss
             if (!_isInitialized) return;
             if (!HasStateAuthority) return;
 
+            Debug.Log($"_context.CurrentState:{_context.CurrentState}");
+
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
             {
-                // Search()を実行する
+                // Actionを実行する
+                _context.CurrentState.StartAction();
+                AttackCooldown = TickTimer.CreateFromSeconds(Runner, _context.CurrentState.ActionCoolTime);
+                
+                // Searchを実行する
                 var units = _context.CurrentState.Search();
                 if (units != null && units.Any())
                 {
-                    // Actionを決定する
+
+                    // 次のActionを決定する
                     var actionState = _actionSelector.SelectAction(_actionStates);
                     _context.ChangeState(actionState);
                 
@@ -107,25 +117,27 @@ namespace Boss
                         targetMoveExecutor.Target = _targetUnit;
                     if(_context.CurrentState.EnemyAction is IEnemyTargetActionExecutor targetActionExecutor)
                         targetActionExecutor.Target = _targetUnit;
-                
-                    // Actionを実行する
-                    _context.CurrentState.StartAction();
-                    AttackCooldown = TickTimer.CreateFromSeconds(Runner, _context.CurrentState.ActionCoolTime);
-                    
+
                     // Decoration
                     StartDecoration( ref DecorationDataRef);
                 }
                 else
                 {
-                    // Actionの終了処理を行う
-                    _context.CurrentState.EndAction();
+                    if (_context.CurrentState is IdleState || _context.CurrentState is WanderState)
+                    {
+                        // IdleSateやWanderStateの場合は何もしない
+                    }
+                    else
+                    {
+                        // Actionの終了処理を行う
+                        _context.CurrentState.EndAction();
                     
-                    // Decoration
-                    EndDecoration(ref DecorationDataRef);
-                
-                    // Searchステートに切り替え
-                    if (!(_context.CurrentState is WanderState))
+                        // Decoration
+                        EndDecoration(ref DecorationDataRef);
+                        
+                        // IdleStateに戻る
                         _context.ChangeState(_idleState);
+                    }
                 }
             }
             

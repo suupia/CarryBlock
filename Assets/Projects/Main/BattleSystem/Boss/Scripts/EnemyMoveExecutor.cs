@@ -11,6 +11,18 @@ using System;
 namespace Boss
 {
     /// <summary>
+    /// 何もしないIEnemyMoveExecutorの実装クラス
+    /// </summary>
+    public class DoNothingMove : IEnemyMoveExecutor
+    {
+        public DoNothingMove()
+        {
+        }
+        public void Move( )
+        {
+        }
+    }
+    /// <summary>
     /// IInputMoveExecutorにランダムな入力をinputとして与える
     /// </summary>
     public class RandomMove : IEnemyMoveExecutor

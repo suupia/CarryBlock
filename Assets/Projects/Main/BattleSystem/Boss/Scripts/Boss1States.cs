@@ -81,6 +81,19 @@ namespace Boss
             return search.DetermineTarget(targetUnits);
         }
     }
+    
+    public class IdleState : Boss1AbstractState
+    {
+        readonly WanderState _wanderState;
+        public IdleState(Boss1Record record, IBoss1State wanderState, IBoss1Context context) : base(record)
+        {
+            move = new DoNothingMove();
+
+            action = new IdleAction(wanderState, context);
+
+            search = new DoNothingSearch();
+        }
+    }
 
     public class WanderState : Boss1AbstractState
     {
@@ -116,14 +129,12 @@ namespace Boss
     {
         bool _isCharging;
         bool _isCompleted;
-        readonly JumpState _jumpState;
 
-        public ChargeJumpState(Boss1Record record, IBoss1Context context) : base(record)
+        public ChargeJumpState(Boss1Record record, IBoss1State jumpState, IBoss1Context context) : base(record)
         {
-            _jumpState = new JumpState(record, context);
             move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             
-            action = new ChargeJumpAction(_jumpState, context);
+            action = new ChargeJumpAction(jumpState, context);
             
             search = new  NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }
@@ -134,16 +145,14 @@ namespace Boss
     {
         bool _isJumping;
         bool _isCompleted;
-        WanderState _wanderState;
 
-        public JumpState(Boss1Record record, IBoss1Context context) : base(record)
+        public JumpState(Boss1Record record,IBoss1State idleState, IBoss1Context context) : base(record)
         {
-            _wanderState = new WanderState(record);
             move = new TargetMove(record.Transform,
                 new NonTorqueRegularMove(
                     record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
 
-            action = new JumpAction(_wanderState, context,record.Transform,record.Rb);
+            action = new JumpAction(idleState, context,record.Transform,record.Rb);
             
             search = new  NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }

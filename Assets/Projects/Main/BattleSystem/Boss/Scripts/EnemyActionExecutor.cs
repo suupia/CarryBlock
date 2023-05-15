@@ -32,7 +32,66 @@ namespace Boss
         {
         }
     }
-    
+    public class IdleAction : IEnemyActionExecutor
+    {
+        public float ActionCoolTime => 1;
+        bool _isDelaying;
+        bool _isCompleted;
+        CancellationTokenSource _cts;
+        public float delayTime { get; init; } = 0.8f;
+        readonly IBoss1State _nextState;
+        readonly IBoss1Context _context;
+
+        public IdleAction(IBoss1State nextState, IBoss1Context context)
+        {
+            _nextState = nextState;
+            _context = context;
+            _cts = new CancellationTokenSource();
+        }
+        
+        
+        public void StartAction()
+        {
+            Debug.Log($"IdleAction StartAction _isCompleted:{_isCompleted}");
+            if (_isCompleted)
+            {
+                Reset();
+                _context.ChangeState(_nextState);
+            }
+            else
+            {
+                Delay().Forget();
+            }
+        }
+
+        public void EndAction()
+        {
+            Reset();
+        }
+
+        async UniTaskVoid Delay()
+        {
+            if (_isDelaying) return;
+            _isDelaying = true;
+            try
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(delayTime), cancellationToken: _cts.Token);
+            }catch(OperationCanceledException)
+            {
+                Reset();
+                return;
+            }
+            _isDelaying = false;
+            _isCompleted = true;
+        }
+
+        void Reset()
+        {
+            _isDelaying = false;
+            _isCompleted = false;
+            _cts = new CancellationTokenSource();
+        }
+    }
 
     public class TackleAction : IEnemyActionExecutor
     {
@@ -67,13 +126,13 @@ namespace Boss
         bool _isCharging;
         bool _isCompleted;
         public float chargeTime { get; init; } = 0.5f;
-        readonly JumpState _jumpState;
+        readonly IBoss1State _nextState;
         readonly IBoss1Context _context;
         readonly CancellationTokenSource _cts;
 
-        public ChargeJumpAction(JumpState jumpState, IBoss1Context context)
+        public ChargeJumpAction(IBoss1State nextState, IBoss1Context context)
         {
-            _jumpState = jumpState;
+            _nextState = nextState;
             _context = context;
             _cts = new CancellationTokenSource();
         }
@@ -84,7 +143,7 @@ namespace Boss
             if (_isCompleted)
             {
                 Reset();
-                _context.ChangeState(_jumpState);
+                _context.ChangeState(_nextState);
             }
             else
             {
@@ -130,18 +189,18 @@ namespace Boss
         public float jumpTime { get; init; } = 2f;
         readonly AttackCollider _attackCollider;
         readonly string _prefabName = "JumpAttackCollider";
-        readonly WanderState _wanderState;
+        readonly IBoss1State _nextState;
         readonly IBoss1Context _context;
         readonly Rigidbody _rb;
         readonly CancellationTokenSource _cts;
 
-        public JumpAction(WanderState wanderState,IBoss1Context context, Transform parent, Rigidbody rb)
+        public JumpAction(IBoss1State nextState,IBoss1Context context, Transform parent, Rigidbody rb)
         {
             _attackColliderInstantiate = new(
                 new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks"), 
                 "JumpCollider"); // ToDo: _prefabNameを代入する
             _attackCollider = _attackColliderInstantiate.InstantiatePrefab(parent);
-            _wanderState = wanderState;
+            _nextState = nextState;
             _context = context;
             _rb = rb;
 
@@ -153,7 +212,7 @@ namespace Boss
             if (_isCompleted)
             {
                 Reset();
-                _context.ChangeState(_wanderState);
+                _context.ChangeState(_nextState);
             }
             else
             {
