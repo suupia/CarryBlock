@@ -91,9 +91,6 @@ namespace Boss
             if (!_isInitialized) return;
             if (!HasStateAuthority) return;
 
-            Debug.Log($"_context.CurrentState: {_context.CurrentState}");
-            _context.CurrentState.Move();
-
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
             {
                 // Search()を実行する
@@ -131,6 +128,8 @@ namespace Boss
                     _context.ChangeState(_idleState);
                 }
             }
+            
+            _context.CurrentState.Move();
 
         }
 
