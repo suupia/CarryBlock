@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Boss
 {
-    public class Boos1Controller_Net : PoolableObject
+    public class Boss1Controller_Net : PoolableObject
     {
         // Serialize Record
         [SerializeField] Boss1Record _record;
