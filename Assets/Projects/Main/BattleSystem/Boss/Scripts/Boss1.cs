@@ -35,13 +35,6 @@ namespace Boss
     {
         Transform Target { get; set; }
     }
-    public interface IEnemySearchExecutor
-    {
-        Transform[]?  Search();
-        Transform? DetermineTarget(IEnumerable<Transform> targetUnits); // Moveのターゲットなどに使われる
-        // もし、Action側で複数のTransformを受け取る必要がある場合は、IEnemyTargetsActionExecutorとDetermineTargetsを作成する
-
-    }
 
     public interface IEnemyActionExecutor
     {
@@ -49,9 +42,18 @@ namespace Boss
         void StartAction();
         void EndAction();
     }
+
     public interface IEnemyTargetActionExecutor : IEnemyActionExecutor
     {
         Transform? Target { get; set; }
+    }
+
+    public interface IEnemySearchExecutor
+    {
+        Transform[]?  Search();
+        Transform? DetermineTarget(IEnumerable<Transform> targetUnits); // Moveのターゲットなどに使われる
+        // もし、Action側で複数のTransformを受け取る必要がある場合は、IEnemyTargetsActionExecutorとDetermineTargetsを作成する
+
     }
 
     // 以下はUnit側のインターフェース
@@ -71,8 +73,8 @@ namespace Boss
     {
         public float ActionCoolTime => _action.ActionCoolTime;
         readonly IEnemyMoveExecutor _move;
-        readonly IEnemySearchExecutor _search;
         readonly IEnemyActionExecutor _action;
+        readonly IEnemySearchExecutor _search;
 
         Transform? _targetUnit;
 
@@ -112,8 +114,8 @@ namespace Boss
         public float ActionCoolTime => _record.DefaultAttackCoolTime; // Attackごとに変えるかも → StateでIEnemyAttackを実装するようにする
         readonly Boss1Record _record;
         readonly IBoss1AttackSelector _actionSelector;
-        readonly IBoss1State _searchState;
         readonly IBoss1State[] _actionStates;
+        readonly IBoss1State _searchState;
         readonly IBoss1Context _context;
         
         Transform? _targetUnit;
