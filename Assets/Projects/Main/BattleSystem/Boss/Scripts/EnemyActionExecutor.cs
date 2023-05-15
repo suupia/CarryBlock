@@ -8,6 +8,8 @@ using System.Threading;
 using System;
 using System.Linq;
 
+# nullable enable
+
 namespace Boss
 {
     /// <summary>
@@ -30,24 +32,31 @@ namespace Boss
         }
     }
     
-    // ToDo: TackleStateで使用されるAttackを作成する
+
     public class TackleAction : IEnemyActionExecutor
     {
         public float ActionCoolTime => 0;
-        
+        ComponentPrefabInstantiate<SphereCollider> _sphereColliderInstantiate;
+        readonly SphereCollider _collider;
 
-        public TackleAction()
+        public TackleAction(Transform parent,  float sphereRadius = 0)
         {
+            _sphereColliderInstantiate = new(
+                new PrefabLoaderFromResources<SphereCollider>("Prefabs/Attacks"), 
+                "AttackSphere");
+            _collider = _sphereColliderInstantiate.InstantiatePrefab(parent);
+            if(sphereRadius != 0 )_collider.radius = sphereRadius; // 引数が0の場合はプレハブの値を使用する
         }
+        
         
         public void StartAction()
         {
-            
+            _collider.enabled = true;
         }
 
         public void EndAction()
         {
-            
+            _collider.enabled = false;
         }
     }
 

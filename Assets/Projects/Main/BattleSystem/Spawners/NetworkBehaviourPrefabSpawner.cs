@@ -21,16 +21,25 @@ namespace Main
 
         public T Load(string prefabName)
         {
-            return Resources.Load<T>(_folderPath + "/" + prefabName);
+            var result = Resources.Load<T>(_folderPath + "/" + prefabName);
+            if (result == null)
+            {
+                Debug.LogError($"Failed to load prefab. folderPath ={_folderPath+"/"+prefabName} prefabName = {prefabName}");
+                return null;
+            }
+            else
+            {
+                return result;
+            }
         }
     }
     
-    public class GameObjectPrefabInstantiate<T> where T : MonoBehaviour
+    public class ComponentPrefabInstantiate<T> where  T : Component
     {
         readonly IPrefabLoader<T> _prefabLoader;
         readonly string _prefabName;
 
-        public GameObjectPrefabInstantiate(IPrefabLoader<T> prefabLoader, string prefabName)
+        public ComponentPrefabInstantiate(IPrefabLoader<T> prefabLoader, string prefabName)
         {
             _prefabLoader = prefabLoader;
             _prefabName = prefabName;
@@ -40,10 +49,17 @@ namespace Main
         {
             var prefab = _prefabLoader.Load(_prefabName);
             var gameObj = Object.Instantiate(prefab, position, rotation, parent);
-            var monoBehaviour = gameObj.GetComponent<T>();
-            if (monoBehaviour == null) Debug.LogError($"Instantiated object does not have MonoBehaviour. T = {typeof(T)}");
-
-            return monoBehaviour;
+            var component = gameObj.GetComponent<T>();
+            if(component == null) Debug.LogError($"Instantiated object does not have component. T = {typeof(T)}");
+            return component;
+        }
+        public T InstantiatePrefab(Transform parent)
+        {
+            var prefab = _prefabLoader.Load(_prefabName);
+            var gameObj = Object.Instantiate(prefab, parent);
+            var component = gameObj.GetComponent<T>();
+            if(component == null) Debug.LogError($"Instantiated object does not have component. T = {typeof(T)}");
+            return component;
         }
     }
 
