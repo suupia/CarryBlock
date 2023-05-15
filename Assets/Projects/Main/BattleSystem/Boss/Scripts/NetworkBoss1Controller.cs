@@ -113,7 +113,7 @@ namespace Boss
 
         void SelectAttackState(IBoss1AttackSelector attackSelector, ref Boss1DecorationDetector.Data data)
         {
-            var attack = attackSelector.SelectAttack(_attackStates);
+            var attack = attackSelector.SelectAction(_attackStates);
 
             // Decoration
             StartDecoration(attack, ref data);

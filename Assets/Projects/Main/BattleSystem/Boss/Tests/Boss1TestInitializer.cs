@@ -86,7 +86,7 @@ namespace Boss.Tests
             _attackIndex = attackIndex;
         }
 
-        public IBoss1State SelectAttack(params IBoss1State[] attacks)
+        public IBoss1State SelectAction(params IBoss1State[] attacks)
         {
             if (0 <= _attackIndex && _attackIndex < attacks.Length) return attacks[_attackIndex];
 
