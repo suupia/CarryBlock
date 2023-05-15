@@ -130,18 +130,18 @@ namespace Boss
         public float jumpTime { get; init; } = 2f;
         readonly AttackCollider _attackCollider;
         readonly string _prefabName = "JumpAttackCollider";
-        readonly IdleState _idleState;
+        readonly WanderState _wanderState;
         readonly IBoss1Context _context;
         readonly Rigidbody _rb;
         readonly CancellationTokenSource _cts;
 
-        public JumpAction(IdleState idleState,IBoss1Context context, Transform parent, Rigidbody rb)
+        public JumpAction(WanderState wanderState,IBoss1Context context, Transform parent, Rigidbody rb)
         {
             _attackColliderInstantiate = new(
                 new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks"), 
                 "JumpCollider"); // ToDo: _prefabNameを代入する
             _attackCollider = _attackColliderInstantiate.InstantiatePrefab(parent);
-            _idleState = idleState;
+            _wanderState = wanderState;
             _context = context;
             _rb = rb;
 
@@ -153,7 +153,7 @@ namespace Boss
             if (_isCompleted)
             {
                 Reset();
-                _context.ChangeState(_idleState);
+                _context.ChangeState(_wanderState);
             }
             else
             {

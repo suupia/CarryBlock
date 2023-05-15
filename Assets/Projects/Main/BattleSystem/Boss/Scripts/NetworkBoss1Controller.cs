@@ -54,7 +54,7 @@ namespace Boss
             var prefab = _modelPrefab;
             var modelObject = Instantiate(prefab, gameObject.transform, modelParent);
 
-            _context = new Boss1Context(new IdleState(_record));
+            _context = new Boss1Context(new WanderState(_record));
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
 
             _attackStates = new IBoss1State[]
@@ -129,8 +129,8 @@ namespace Boss
             EndDecoration(ref data); // ここにあるのはちょっと変かも
 
             // ChangeState
-            if (_context.CurrentState is IdleState) return;
-            _context.ChangeState(new IdleState(_record));
+            if (_context.CurrentState is WanderState) return;
+            _context.ChangeState(new WanderState(_record));
         }
 
         void Move()

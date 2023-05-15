@@ -82,13 +82,13 @@ namespace Boss
         }
     }
 
-    public class IdleState : Boss1AbstractState
+    public class WanderState : Boss1AbstractState
     {
-        public IdleState(Boss1Record record) : base(record)
+        public WanderState(Boss1Record record) : base(record)
         {
             move =
                 new RandomMove(simulationInterval: 2f,
-                     new NonTorqueRegularMove(
+                    new NonTorqueRegularMove(
                         record.Transform, record.Rb, acceleration: 20f, maxVelocity: 1.0f));
 
             action = new DoNothingAction();
@@ -134,16 +134,16 @@ namespace Boss
     {
         bool _isJumping;
         bool _isCompleted;
-        IdleState _idleState;
+        WanderState _wanderState;
 
         public JumpState(Boss1Record record, IBoss1Context context) : base(record)
         {
-            _idleState = new IdleState(record);
+            _wanderState = new WanderState(record);
             move = new TargetMove(record.Transform,
                 new NonTorqueRegularMove(
                     record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
 
-            action = new JumpAction(_idleState, context,record.Transform,record.Rb);
+            action = new JumpAction(_wanderState, context,record.Transform,record.Rb);
             
             search = new  NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }

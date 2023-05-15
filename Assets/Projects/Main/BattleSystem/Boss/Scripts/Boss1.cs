@@ -128,7 +128,7 @@ namespace Boss
             _actionSelector = actionSelector;
 
             _context = new Boss1Context(_idleState);
-            _idleState = new IdleState(record);
+            _idleState = new WanderState(record);
             _actionStates = new IBoss1State[]
             {
                 new TackleState(_record),
@@ -170,7 +170,7 @@ namespace Boss
                 _context.CurrentState.EndAction();
                 
                 // Searchステートに切り替え
-                if (_context.CurrentState is IdleState) return;
+                if (_context.CurrentState is WanderState) return;
                 _context.ChangeState(_idleState);
             }
         }

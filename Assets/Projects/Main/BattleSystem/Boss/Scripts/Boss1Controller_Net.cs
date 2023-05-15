@@ -58,7 +58,7 @@ namespace Boss
             _record.Init(Runner, gameObject);
             
             // Init Host Domain
-            _idleState = new IdleState(_record);
+            _idleState = new WanderState(_record);
             _context = new Boss1Context(_idleState);
             _actionStates = new IBoss1State[]
             {
@@ -124,7 +124,7 @@ namespace Boss
                     EndDecoration(ref DecorationDataRef);
                 
                     // Searchステートに切り替え
-                    if (!(_context.CurrentState is IdleState))
+                    if (!(_context.CurrentState is WanderState))
                         _context.ChangeState(_idleState);
                 }
             }
