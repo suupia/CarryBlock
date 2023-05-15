@@ -268,6 +268,8 @@ namespace Boss
 
         public void StartAction()
         {
+            Debug.Log($"SpitOut StartAction");
+            Debug.Log($"_transform.position: {_transform.position}");
            var targetAttack =   _attackColliderSpawner.SpawnPrefab(_transform.position, Quaternion.identity, PlayerRef.None);
            targetAttack.Init(Target);
         }

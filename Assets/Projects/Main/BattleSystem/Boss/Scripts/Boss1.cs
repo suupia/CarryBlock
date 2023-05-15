@@ -56,20 +56,7 @@ namespace Boss
         // もし、Action側で複数のTransformを受け取る必要がある場合は、IEnemyTargetsActionExecutorとDetermineTargetsを作成する
 
     }
-
-    // 以下はUnit側のインターフェース
-    // ToDo:後で移動
-
-    // public interface IUnitOnAttacked
-    // {
-    //     NetworkPlayerStruct OnAttacked(ref NetworkPlayerStruct networkPlayerStruct, int damage);
-    // }
-    //
-    // public interface IUnitOnTargeted : IUnitOnAttacked
-    // {
-    //     Transform targetTransform { get; }
-    // }
-
+    
     public class ExampleEnemy : IEnemy
     {
         public float ActionCoolTime => _action.ActionCoolTime;

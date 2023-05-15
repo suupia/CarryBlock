@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Fusion;
+using Main;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -21,13 +22,27 @@ public abstract class AttackCollider : MonoBehaviour
 }
 
 [RequireComponent(typeof(Collider))]
-public abstract class NetworkAttackCollider : NetworkBehaviour
+public abstract class NetworkAttackCollider : PoolableObject
 {
     // 発射物,粉塵攻撃など、NetworkBehaviourをSpawnするような見た目も伴う攻撃はこちらを使用する
 }
 
-public abstract class NetworkTargetAttackCollider : NetworkBehaviour
+[RequireComponent(typeof(Collider))]
+public abstract class NetworkTargetAttackCollider : PoolableObject
 {
     // targetが必要な攻撃はこちらを使用する
     public abstract void Init(Transform target);
 }
+
+// 以下はUnit側のインターフェース
+public interface IPlayerOnAttacked
+{
+    NetworkPlayerStruct NetworkPlayerStruct { get; }
+    
+    /// <summary>
+    /// 外部からNetworkPlayerStructを受け取り被ダメージの処理をする
+    /// </summary>
+    /// <param name="networkPlayerStruct"></param>
+    void OnAttacked(NetworkPlayerStruct networkPlayerStruct);
+}
+
