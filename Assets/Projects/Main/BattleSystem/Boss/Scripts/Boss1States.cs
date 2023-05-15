@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
 using UnityEngine;
+using System.Collections.Generic;
 
 
 namespace Boss
@@ -14,11 +15,10 @@ namespace Boss
         public void ChangeState(IBoss1State state);
     }
 
-    public interface IBoss1State : IEnemyMoveExecutor, IBoss1Attack, IBoss1Search
+    public interface IBoss1State : IEnemyMoveExecutor, IEnemyActionExecutor, IEnemySearchExecutor
     {
-        public void Process(IBoss1Context context);
-        public IEnemyMoveExecutor EnemyMove { get; }
-        public IBoss1Attack EnemyAttack { get; }
+        IEnemyMoveExecutor EnemyMove { get; } 
+        IEnemyActionExecutor EnemyAction { get; }
     }
 
 
@@ -42,58 +42,61 @@ namespace Boss
     /// </summary>
     public abstract class Boss1AbstractState : IBoss1State
     {
-        protected Boss1Record Record { get; }
-
         public IEnemyMoveExecutor EnemyMove => move;
-        public IBoss1Attack EnemyAttack => attack;
-
-        protected IBoss1Attack attack;
-        protected float attackCoolTime;
+        public IEnemyActionExecutor EnemyAction => action;
+        protected Boss1Record Record { get; }
+        protected IEnemyActionExecutor action;
         protected IEnemyMoveExecutor move;
-        protected IBoss1Search search;
+        protected IEnemySearchExecutor search;
+        
+        public float ActionCoolTime => action.ActionCoolTime;
 
         protected Boss1AbstractState(Boss1Record record)
         {
             Record = record;
         }
 
-        public abstract void Process(IBoss1Context context);
-
         public void Move()
         {
             move.Move();
         }
+        
+        public void StartAction()
+        {
+            action.StartAction();
+        }
 
-        public Collider[] Search()
+        public void EndAction()
+        {
+            action.EndAction();
+        }
+        
+        public Transform[]? Search()
         {
             return search.Search();
         }
-
-
-        public void Attack()
+        
+        public Transform? DetermineTarget(IEnumerable<Transform> targetUnits)
         {
-            attack.Attack();
+            return search.DetermineTarget(targetUnits);
         }
     }
 
-    public class SearchPlayerState : Boss1AbstractState
+    public class IdleState : Boss1AbstractState
     {
-        public SearchPlayerState(Boss1Record record) : base(record)
+        public IdleState(Boss1Record record) : base(record)
         {
             move = new RandomMove(simulationInterval: 2f, 
                 new NonTorqueRegularMove(
                     record.Transform, record.Rb, acceleration: 20f, maxVelocity: 1.0f));
             
-            search = new RangeSearch(Record.Transform, Record.SearchRadius,
-                LayerMask.GetMask("Player"));
-            
-            attack = new DoNothingAttackOld();
-            attackCoolTime = 0;
-        }
-
-        public override void Process(IBoss1Context context)
-        {
-            Debug.Log("SearchPlayerState.Process()");
+            // search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            //     LayerMask.GetMask("Player"));
+            //
+            // action = new DoNothingAttackOld();
+            // attackCoolTime = 0;
+            action = new DoNothingAction();
+            search = new NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }
     }
 
@@ -105,68 +108,52 @@ namespace Boss
                 new NonTorqueRegularMove(
                 record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
             
-            search = new RangeSearch(Record.Transform, Record.SearchRadius,
-                LayerMask.GetMask("Player"));
-                
-            attack = new ToNearestAttack(new TargetBufferAttack.Context
-                {
-                    Transform = Record.Transform,
-                    TargetBuffer = Record.TargetBuffer
-                },
-                new ToTargetAttack(
-                    Record.GameObject,
-                    new RangeAttack(new RangeAttack.Context
-                    {
-                        Transform = Record.Transform,
-                        Radius = 2f,
-                        AttackSphereLifeTime = 0.5f
-                    })
-                )
-            );
-            
-            attackCoolTime = 1;
-        }
+            // search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            //     LayerMask.GetMask("Player"));
+            //     
+            // action = new ToNearestAttack(new TargetBufferAttack.Context
+            //     {
+            //         Transform = Record.Transform,
+            //         TargetBuffer = Record.TargetBuffer
+            //     },
+            //     new ToTargetAttack(
+            //         Record.GameObject,
+            //         new RangeAttack(new RangeAttack.Context
+            //         {
+            //             Transform = Record.Transform,
+            //             Radius = 2f,
+            //             AttackSphereLifeTime = 0.5f
+            //         })
+            //     )
+            // );
+            // attackCoolTime = 1;
 
-        public override void Process(IBoss1Context context)
-        {
-            Debug.Log("TacklingState.Process()");
-            var targetMove = move as TargetMove;
-            Debug.Log($"targetMove.Target: {targetMove.Target}");
+            action = new TackleAction(record.Transform);
+            search = new NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }
+        
     }
 
     public class ChargeJumpState : Boss1AbstractState
     {
         bool _isCharging;
         bool _isCompleted;
-        JumpState _jumpState;
+        readonly JumpState _jumpState;
 
-        public ChargeJumpState(Boss1Record record) : base(record)
+        public ChargeJumpState(Boss1Record record, IBoss1Context context) : base(record)
         {
+            _jumpState = new JumpState(record, context);
             move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
-            
-            search = new RangeSearch(Record.Transform, Record.SearchRadius,
-                LayerMask.GetMask("Player"));
-            
-            attack = new DoNothingAttackOld();
-            
-            attackCoolTime = 0;
 
-            _jumpState = new JumpState(record);
-        }
+            // search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            //     LayerMask.GetMask("Player"));
+            //
+            // action = new DoNothingAttackOld();
+            //
+            // attackCoolTime = 0;
 
-        public override void Process(IBoss1Context context)
-        {
-            Debug.Log("ChargeJumpingState.Process()");
-            if (_isCompleted)
-            {
-                Reset(); // 状態を持つため、リセットが必須
-                context.ChangeState(_jumpState);
-            }
-            else
-            {
-                ChargeJump().Forget();
-            }
+            action = new ChargeJumpAction(_jumpState, context);
+            search = new  NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }
 
         async UniTaskVoid ChargeJump()
@@ -191,68 +178,42 @@ namespace Boss
     {
         bool _isJumping;
         bool _isCompleted;
+        IdleState _idleState;
 
-        public JumpState(Boss1Record record) : base(record)
+        public JumpState(Boss1Record record, IBoss1Context context) : base(record)
         {
+            _idleState = new IdleState(record);
             move = new TargetMove(record.Transform,
                 new NonTorqueRegularMove(
                     record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
             
-            search = new RangeSearch(Record.Transform, Record.SearchRadius,
-                LayerMask.GetMask("Player"));
+            // search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            //     LayerMask.GetMask("Player"));
+            //
+            // action = new ToNearestAttack(new TargetBufferAttack.Context
+            //     {
+            //         Transform = Record.Transform,
+            //         TargetBuffer = Record.TargetBuffer
+            //     },
+            //     new ToTargetAttack(
+            //         Record.GameObject,
+            //         new DelayAttack(
+            //             Record.JumpTime,
+            //             new RangeAttack(new RangeAttack.Context
+            //             {
+            //                 Transform = Record.Transform,
+            //                 Radius = Record.JumpAttackRadius
+            //             })
+            //         )
+            //     )
+            // );
+            // attackCoolTime = Record.DefaultAttackCoolTime;
             
-            attack = new ToNearestAttack(new TargetBufferAttack.Context
-                {
-                    Transform = Record.Transform,
-                    TargetBuffer = Record.TargetBuffer
-                },
-                new ToTargetAttack(
-                    Record.GameObject,
-                    new DelayAttack(
-                        Record.JumpTime,
-                        new RangeAttack(new RangeAttack.Context
-                        {
-                            Transform = Record.Transform,
-                            Radius = Record.JumpAttackRadius
-                        })
-                    )
-                )
-            );
-            attackCoolTime = Record.DefaultAttackCoolTime;
+            action = new JumpAction(_idleState, context,record.Transform,record.Rb);
+            
+            search = new  NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }
-
-        public override void Process(IBoss1Context context)
-        {
-            Debug.Log("JumpingState.Process()");
-            if (_isCompleted)
-            {
-                Reset(); // 状態を持つので、リセットが必須　ただし、このクラスは毎回newされているので厳密には不要
-                context.ChangeState(new SearchPlayerState(Record));
-            }
-            else
-            {
-                Jump().Forget();
-            }
-        }
-
-        async UniTaskVoid Jump()
-        {
-            if (_isJumping) return;
-            _isJumping = true;
-
-            MoveUtility.Jump(Record.Rb, Record.JumpTime);
-
-            for (float t = 0; t < Record.JumpTime; t += Time.deltaTime) await UniTask.Yield();
-
-            _isJumping = false;
-            _isCompleted = true;
-        }
-
-        void Reset()
-        {
-             _isJumping = false;
-             _isCompleted = false;
-        }
+        
     }
 
     public class SpitOutState : Boss1AbstractState
@@ -261,36 +222,34 @@ namespace Boss
         {
             move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             
-            search = new RangeSearch(Record.Transform, Record.SearchRadius,
-                LayerMask.GetMask("Player"));
+            // search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            //     LayerMask.GetMask("Player"));
+            //
+            // action = new ToFurthestAttack(new TargetBufferAttack.Context
+            //     {
+            //         Transform = Record.Transform,
+            //         TargetBuffer = Record.TargetBuffer
+            //     },
+            //     new ToTargetAttack(
+            //         Record.GameObject,
+            //         new DelayAttack(
+            //             Record.ChargeSpitOutTime,
+            //             new LaunchNetworkObjectAttack(new LaunchNetworkObjectAttack.Context
+            //                 {
+            //                     Runner = runner,
+            //                     From = Record.finSpawnerTransform,
+            //                     Prefab = Resources.Load<GameObject>("Prefabs/Attacks/Fin")
+            //                 }
+            //             )
+            //         )
+            //     )
+            // );
+            // attackCoolTime = Record.DefaultAttackCoolTime;
             
-            attack = new ToFurthestAttack(new TargetBufferAttack.Context
-                {
-                    Transform = Record.Transform,
-                    TargetBuffer = Record.TargetBuffer
-                },
-                new ToTargetAttack(
-                    Record.GameObject,
-                    new DelayAttack(
-                        Record.ChargeSpitOutTime,
-                        new LaunchNetworkObjectAttack(new LaunchNetworkObjectAttack.Context
-                            {
-                                Runner = runner,
-                                From = Record.finSpawnerTransform,
-                                Prefab = Resources.Load<GameObject>("Prefabs/Attacks/Fin")
-                            }
-                        )
-                    )
-                )
-            );
-            attackCoolTime = Record.DefaultAttackCoolTime;
-            Debug.Log($"Record.finSpawnerTransform = {Record.finSpawnerTransform}");
+            action = new SpitOutAction(runner,record.Transform);
+            search = new FarthestSearch(record.Transform, record.SearchRadius, LayerMask.GetMask("Player"));
         }
-
-        public override void Process(IBoss1Context context)
-        {
-            Debug.Log("SpitOutState.Process()");
-        }
+        
     }
 
     public class VacuumState : Boss1AbstractState
@@ -299,23 +258,22 @@ namespace Boss
         {
             move = new TargetMove(record.Transform, new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             
-            search = new RangeSearch(Record.Transform, Record.SearchRadius,
-                LayerMask.GetMask("Player"));
-            
-            attack = new ToNearestAttack(new TargetBufferAttack.Context
-                {
-                    Transform = Record.Transform,
-                    TargetBuffer = Record.TargetBuffer
-                },
-                new ToTargetAttack(Record.GameObject, new MockAttack())
-            );
-            
-            attackCoolTime = Record.DefaultAttackCoolTime;
-        }
+            // search = new RangeSearch(Record.Transform, Record.SearchRadius,
+            //     LayerMask.GetMask("Player"));
+            //
+            // action = new ToNearestAttack(new TargetBufferAttack.Context
+            //     {
+            //         Transform = Record.Transform,
+            //         TargetBuffer = Record.TargetBuffer
+            //     },
+            //     new ToTargetAttack(Record.GameObject, new MockAttack())
+            // );
+            //
+            // attackCoolTime = Record.DefaultAttackCoolTime;
 
-        public override void Process(IBoss1Context context)
-        {
-            Debug.Log("VacuumingState.Process()");
+            action = new VacuumAction();
+            search = new NearestSearch(record.Transform, record.SearchRadius, LayerMask.GetMask("Player"));
         }
+        
     }
 }

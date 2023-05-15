@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
@@ -111,30 +112,30 @@ namespace Boss
     // これをNetworkBehaviourのフィールドとし、Initで受け取るようにしたい
     public class ExampleStateEnemy : IEnemy
     {
-        public float ActionCoolTime => _record.DefaultAttackCoolTime; // Attackごとに変えるかも → StateでIEnemyAttackを実装するようにする
+        public float ActionCoolTime => _context.CurrentState.ActionCoolTime;
         readonly Boss1Record _record;
         readonly IBoss1AttackSelector _actionSelector;
         readonly IBoss1State[] _actionStates;
-        readonly IBoss1State _searchState;
+        readonly IBoss1State _idleState;
         readonly IBoss1Context _context;
         
+
         Transform? _targetUnit;
 
         public ExampleStateEnemy(NetworkRunner runner, Boss1Record record, IBoss1AttackSelector actionSelector)
         {
             _record = record;
             _actionSelector = actionSelector;
-            
-            _searchState = new SearchPlayerState(record);
+
+            _context = new Boss1Context(_idleState);
+            _idleState = new IdleState(record);
             _actionStates = new IBoss1State[]
             {
                 new TackleState(_record),
                 new SpitOutState(_record, runner),
                 new VacuumState(_record),
-                new ChargeJumpState(_record)
+                new ChargeJumpState(_record, _context) // 内部でJumpStateに遷移するため、contextに依存している
             };
-
-            _context = new Boss1Context(_searchState);
         }
     
         public void Move()
@@ -145,31 +146,32 @@ namespace Boss
         // このメソッドを呼んだ後にAttackCoolTimeを回す
         public void Action()
         {
-            // ここで絶対にSearchを使う
+            // Search()を実行する
             var units = _context.CurrentState.Search();
             if (units.Any())
             {
                 // Actionを決定する
-                //var actionState = _actionSelector.SelectAction(_actionStates);
+                var actionState = _actionSelector.SelectAction(_actionStates);
+                _context.ChangeState(actionState);
                 
                 // targetを決定し、必要があればtargetをセットする
-                //_targetUnit = _context.CurrentState.DetermineTarget(units);
-                // if(_context.CurrentState is IEnemyTargetMoveExecutor targetMoveExecutor)
-                //     targetMoveExecutor.Target = _targetUnit;
-                // if(_context.CurrentState is IEnemyTargetActionExecutor targetActionExecutor)
-                //     targetActionExecutor.Target = _targetUnit;
+                _targetUnit = _context.CurrentState.DetermineTarget(units);
+                 if(_context.CurrentState is IEnemyTargetMoveExecutor targetMoveExecutor)
+                     targetMoveExecutor.Target = _targetUnit;
+                 if(_context.CurrentState is IEnemyTargetActionExecutor targetActionExecutor)
+                     targetActionExecutor.Target = _targetUnit;
                 
                 // Actionを実行する
-                //_context.CurrentState.StartAction();
+                _context.CurrentState.StartAction();
             }
             else
             {
                 // Actionの終了処理を行う
-                //_context.CurrentState.EndAction();
+                _context.CurrentState.EndAction();
                 
                 // Searchステートに切り替え
-                if (_context.CurrentState is SearchPlayerState) return;
-                _context.ChangeState(_searchState);
+                if (_context.CurrentState is IdleState) return;
+                _context.ChangeState(_idleState);
             }
         }
     }

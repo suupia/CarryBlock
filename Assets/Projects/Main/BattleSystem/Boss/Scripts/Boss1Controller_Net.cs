@@ -1,14 +1,16 @@
 using System.Linq;
 using Animations;
-using Cysharp.Threading.Tasks.Triggers;
 using Decoration;
 using Fusion;
+using JetBrains.Annotations;
 using Main;
 using UnityEngine;
 
+#nullable  enable
+
 namespace Boss
 {
-    public class NetworkBoss1Controller : PoolableObject
+    public class Boos1Controller_Net : PoolableObject
     {
         // Serialize Record
         [SerializeField] Boss1Record _record;
@@ -26,9 +28,13 @@ namespace Boss
         Boss1DecorationDetector _decorationDetector;
 
         // Domain
-        IBoss1Context _context;
-        IBoss1State[] _attackStates;
-        IBoss1AttackSelector _attackSelector;
+        public float ActionCoolTime => _context.CurrentState.ActionCoolTime;
+         IBoss1AttackSelector _actionSelector;
+         IBoss1Context _context;
+         IBoss1State[] _actionStates;
+         IBoss1State _idleState;
+         
+         Transform? _targetUnit;
 
         // For Debug
         [SerializeField] bool showGizmos;
@@ -39,7 +45,7 @@ namespace Boss
         public void Init(IBoss1AttackSelector attackSelector)
         {
             // Init Domain
-            _attackSelector = attackSelector;
+            _actionSelector = attackSelector;
 
             RPC_LocalInit();
         }
@@ -57,7 +63,7 @@ namespace Boss
             _context = new Boss1Context(new IdleState(_record));
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
 
-            _attackStates = new IBoss1State[]
+            _actionStates = new IBoss1State[]
             {
                 new TackleState(_record),
                 new SpitOutState(_record, Runner),
@@ -80,28 +86,44 @@ namespace Boss
             if (!_isInitialized) return;
             if (!HasStateAuthority) return;
 
-            Move();
+            _context.CurrentState.Move();
 
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
             {
-                var searchResult = Search();
-                if (searchResult.Length > 0)
+                // Search()を実行する
+                var units = _context.CurrentState.Search();
+                if (units != null && units.Any())
                 {
-                    SelectAttackState(_attackSelector, ref DecorationDataRef);
-                    if (_context.CurrentState is{EnemyMove :  IEnemyTargetMoveExecutor targetMoveExecutor} )
-                    {
-                        targetMoveExecutor.Target = searchResult.First().transform;
-                    }
+                    // Actionを決定する
+                    var actionState = _actionSelector.SelectAction(_actionStates);
+                    _context.ChangeState(actionState);
+                
+                    // targetを決定し、必要があればtargetをセットする
+                    _targetUnit = _context.CurrentState.DetermineTarget(units);
+                    if(_context.CurrentState.EnemyMove is IEnemyTargetMoveExecutor targetMoveExecutor)
+                        targetMoveExecutor.Target = _targetUnit;
+                    if(_context.CurrentState.EnemyAction is IEnemyTargetActionExecutor targetActionExecutor)
+                        targetActionExecutor.Target = _targetUnit;
+                
+                    // Actionを実行する
                     _context.CurrentState.StartAction();
-                    AttackCooldown = TickTimer.CreateFromSeconds(Runner, _record.DefaultAttackCoolTime);
+                    
+                    // Decoration
+                    StartDecoration( ref DecorationDataRef);
                 }
                 else
                 {
-                    SetSearchState(ref DecorationDataRef);
+                    // Actionの終了処理を行う
+                    _context.CurrentState.EndAction();
+                    
+                    // Decoration
+                    EndDecoration(ref DecorationDataRef);
+                
+                    // Searchステートに切り替え
+                    if (_context.CurrentState is IdleState) return;
+                    _context.ChangeState(_idleState);
                 }
             }
-
-            // _context.CurrentState.Process(_context);
 
         }
 
@@ -110,57 +132,13 @@ namespace Boss
             _decorationDetector.OnRendered(DecorationDataRef, Hp);
         }
         
-        // 以下privateメソッド
-
-        void SelectAttackState(IBoss1AttackSelector attackSelector, ref Boss1DecorationDetector.Data data)
-        {
-            var attack = attackSelector.SelectAction(_attackStates);
-
-            // Decoration
-            StartDecoration(attack, ref data);
-
-            // ChangeState
-            _context.ChangeState(attack);
-        }
-
-        void SetSearchState(ref Boss1DecorationDetector.Data data)
-        {
-            // Decoration
-            EndDecoration(ref data); // ここにあるのはちょっと変かも
-
-            // ChangeState
-            if (_context.CurrentState is IdleState) return;
-            _context.ChangeState(new IdleState(_record));
-        }
-
-        void Move()
-        {
-            var state = _context.CurrentState;
-            if (state is
-                {
-                    EnemyMove : ITargetMove move, EnemyAction: ITargetAttack attack
-                }) // ToDo: ここにあるのは変なのでうまく切り出す
-            {
-                move.Target = attack.Target;
-                Debug.Log("Targetをセット！ move.Target = " + move.Target);
-            }
-
-            state.Move();
-        }
         
-        Collider[] Search()
-        {
-            var searchResult = _context.CurrentState.Search();
-            _record.TargetBuffer.Clear();
-            _record.TargetBuffer.UnionWith(searchResult.Map(c => c.transform));
-            // return searchResult;
-            return searchResult.Map(c => c.GetComponent<Collider>());
-        }
 
         // 以下はデコレーション用
-        void StartDecoration(IBoss1State attack, ref Boss1DecorationDetector.Data data)
+        void StartDecoration(ref Boss1DecorationDetector.Data data)
         {
             // For Decoration
+            var attack = _context.CurrentState;
             if (attack is TackleState)
             {
                 _decorationDetector.OnStartTackle(ref data);
