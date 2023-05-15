@@ -36,27 +36,27 @@ namespace Boss
     public class TackleAction : IEnemyActionExecutor
     {
         public float ActionCoolTime => 0;
-        ComponentPrefabInstantiate<SphereCollider> _sphereColliderInstantiate;
-        readonly SphereCollider _collider;
+        ComponentPrefabInstantiate<AttackCollider> _attackColliderInstantiate;
+        readonly AttackCollider _attackCollider;
 
         public TackleAction(Transform parent,  float sphereRadius = 0)
         {
-            _sphereColliderInstantiate = new(
-                new PrefabLoaderFromResources<SphereCollider>("Prefabs/Attacks"), 
+            _attackColliderInstantiate = new(
+                new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks"), 
                 "AttackSphere");
-            _collider = _sphereColliderInstantiate.InstantiatePrefab(parent);
-            if(sphereRadius != 0 )_collider.radius = sphereRadius; // 引数が0の場合はプレハブの値を使用する
+            _attackCollider = _attackColliderInstantiate.InstantiatePrefab(parent);
+            if(sphereRadius != 0 )_attackCollider.Radius = sphereRadius; // 引数が0の場合はプレハブの値を使用する
         }
         
         
         public void StartAction()
         {
-            _collider.enabled = true;
+            _attackCollider.gameObject.SetActive(true);
         }
 
         public void EndAction()
         {
-            _collider.enabled = false;
+            _attackCollider.gameObject.SetActive(false);
         }
     }
 
