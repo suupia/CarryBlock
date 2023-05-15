@@ -15,7 +15,7 @@ public class SpitOutAttackCollider : NetworkTargetAttackCollider
     readonly float _force = 10;
     Rigidbody? _rb;
     bool _isInitialized;
-    int _damage = 1;
+    readonly int _damage = 1;
 
     [Networked] TickTimer LifeTimer { get; set; }
 
