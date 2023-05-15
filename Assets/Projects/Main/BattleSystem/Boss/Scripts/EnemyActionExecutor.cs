@@ -36,7 +36,7 @@ namespace Boss
 
     public class TackleAction : IEnemyActionExecutor
     {
-        public float ActionCoolTime => 0;
+        public float ActionCoolTime { get; init; } = 1.0f;
         ComponentPrefabInstantiate<AttackCollider> _attackColliderInstantiate;
         readonly AttackCollider _attackCollider;
         readonly string _prefabName = "TackleAttackCollider";
@@ -66,14 +66,13 @@ namespace Boss
         public float ActionCoolTime => 0;
         bool _isCharging;
         bool _isCompleted;
-        readonly float _chargeTime;
+        public float chargeTime { get; init; } = 0.5f;
         readonly JumpState _jumpState;
         readonly IBoss1Context _context;
         readonly CancellationTokenSource _cts;
 
-        public ChargeJumpAction(float chargeTime, JumpState jumpState, IBoss1Context context)
+        public ChargeJumpAction(JumpState jumpState, IBoss1Context context)
         {
-            _chargeTime = chargeTime;
             _jumpState = jumpState;
             _context = context;
             _cts = new CancellationTokenSource();
@@ -104,7 +103,7 @@ namespace Boss
             _isCharging = true;
             try
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(_chargeTime), cancellationToken: _cts.Token);
+                await UniTask.Delay(TimeSpan.FromSeconds(chargeTime), cancellationToken: _cts.Token);
             }catch(OperationCanceledException)
             {
                 Reset();
@@ -124,11 +123,11 @@ namespace Boss
 
     public class JumpAction : IEnemyActionExecutor
     {
-        public float ActionCoolTime { get; }
+        public float ActionCoolTime { get; init; } = 4.0f;
         ComponentPrefabInstantiate<AttackCollider> _attackColliderInstantiate;
         bool _isJumping;
         bool _isCompleted;
-        public float jumpTime { get; init; }
+        public float jumpTime { get; init; } = 2f;
         readonly AttackCollider _attackCollider;
         readonly string _prefabName = "JumpAttackCollider";
         readonly SearchPlayerState _searchPlayerState;
@@ -136,9 +135,8 @@ namespace Boss
         readonly Rigidbody _rb;
         readonly CancellationTokenSource _cts;
 
-        public JumpAction(float actionCoolTime,SearchPlayerState searchPlayerState,IBoss1Context context, Transform parent, Rigidbody rb)
+        public JumpAction(SearchPlayerState searchPlayerState,IBoss1Context context, Transform parent, Rigidbody rb)
         {
-            ActionCoolTime = actionCoolTime;
             _attackColliderInstantiate = new(
                 new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks"), 
                 "AttackSphere"); // ToDo: _prefabNameを代入する
@@ -197,20 +195,18 @@ namespace Boss
     {
         public Transform Target { get; set; }
         NetworkBehaviourPrefabSpawner<NetworkTargetAttackCollider> _attackColliderSpawner;
-        public float ActionCoolTime { get; }
+        public float ActionCoolTime { get; init; } = 4.0f;
         readonly Transform _transform;
         readonly string _prefabName = "SpitOutAttackCollider";
 
-        public SpitOutAction(NetworkRunner runner, Transform transform,float actionCoolTime)
+        public SpitOutAction(NetworkRunner runner, Transform transform)
         {
             _transform = transform;
-            ActionCoolTime = actionCoolTime;
             _attackColliderSpawner = new(runner,
                 new PrefabLoaderFromResources<NetworkTargetAttackCollider>("Prefabs/Attacks"), 
                 "AttackSphere"); // ToDo: _prefabNameを代入する
         }
-        
-        
+
         public void StartAction()
         {
            var targetAttack =   _attackColliderSpawner.SpawnPrefab(_transform.position, Quaternion.identity, PlayerRef.None);
@@ -220,6 +216,26 @@ namespace Boss
         public void EndAction()
         {
             // 特になし
+        }
+    }
+
+    public class VacuumAction : IEnemyTargetActionExecutor
+    {
+        public Transform? Target { get; set; }
+        public float ActionCoolTime { get; init; } = 4.0f;
+        public VacuumAction()
+        {
+            
+        }
+        
+        public void StartAction()
+        {
+            // ToDo: バキュームの実装をする
+        }
+
+        public void EndAction()
+        {
+            // ToDo: バキュームの終了の実装をする
         }
     }
 
