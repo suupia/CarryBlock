@@ -28,8 +28,7 @@ namespace Boss
         Boss1DecorationDetector _decorationDetector;
 
         // Domain
-        public float ActionCoolTime => _context.CurrentState.ActionCoolTime;
-         IBoss1AttackSelector _actionSelector;
+        IBoss1AttackSelector _actionSelector;
          IBoss1Context _context;
          IBoss1State[] _actionStates;
          IBoss1State _idleState;
@@ -114,6 +113,7 @@ namespace Boss
                 
                     // Actionを実行する
                     _context.CurrentState.StartAction();
+                    AttackCooldown = TickTimer.CreateFromSeconds(Runner, _context.CurrentState.ActionCoolTime);
                     
                     // Decoration
                     StartDecoration( ref DecorationDataRef);
