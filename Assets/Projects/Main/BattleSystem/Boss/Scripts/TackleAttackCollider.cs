@@ -14,6 +14,8 @@ public class TackleAttackCollider : AttackCollider
 
     void OnTriggerEnter(Collider other)
     {
+        if(!other.gameObject.CompareTag("Player"))return;
+        
         Debug.Log("OnTriggerEnter TackleCollider");
     }
 }
