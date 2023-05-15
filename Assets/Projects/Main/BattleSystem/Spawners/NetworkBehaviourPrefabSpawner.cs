@@ -21,7 +21,45 @@ namespace Main
 
         public T Load(string prefabName)
         {
-            return Resources.Load<T>(_folderPath + "/" + prefabName);
+            var result = Resources.Load<T>(_folderPath + "/" + prefabName);
+            if (result == null)
+            {
+                Debug.LogError($"Failed to load prefab. folderPath ={_folderPath+"/"+prefabName} prefabName = {prefabName}");
+                return null;
+            }
+            else
+            {
+                return result;
+            }
+        }
+    }
+    
+    public class ComponentPrefabInstantiate<T> where  T : Component
+    {
+        readonly IPrefabLoader<T> _prefabLoader;
+        readonly string _prefabName;
+
+        public ComponentPrefabInstantiate(IPrefabLoader<T> prefabLoader, string prefabName)
+        {
+            _prefabLoader = prefabLoader;
+            _prefabName = prefabName;
+        }
+
+        public T InstantiatePrefab(Vector3 position, Quaternion rotation, Transform parent = null)
+        {
+            var prefab = _prefabLoader.Load(_prefabName);
+            var gameObj = Object.Instantiate(prefab, position, rotation, parent);
+            var component = gameObj.GetComponent<T>();
+            if(component == null) Debug.LogError($"Instantiated object does not have component. T = {typeof(T)}");
+            return component;
+        }
+        public T InstantiatePrefab(Transform parent)
+        {
+            var prefab = _prefabLoader.Load(_prefabName);
+            var gameObj = Object.Instantiate(prefab, parent);
+            var component = gameObj.GetComponent<T>();
+            if(component == null) Debug.LogError($"Instantiated object does not have component. T = {typeof(T)}");
+            return component;
         }
     }
 
@@ -43,7 +81,7 @@ namespace Main
             var prefab = _prefabLoader.Load(_prefabName);
             var networkObject = _runner.Spawn(prefab, position, rotation, playerRef);
             var networkBehaviour = networkObject.GetComponent<T>();
-            if (networkBehaviour == null) Debug.LogError("Spawned object does not have NetworkBehaviour");
+            if (networkBehaviour == null) Debug.LogError($"Spawned object does not have NetworkBehaviour. T = {typeof(T)}");
 
             return networkBehaviour;
         }

@@ -16,7 +16,7 @@ namespace Main
     /// Hostでのみ当たり判定を管理する予定なので問題ないはず
     /// 問題があれば、Runnerを受け取るようにする
     /// </summary>
-    public class RangeAttack : IEnemyAttack
+    public class RangeAttack : IBoss1Attack
     {
         private static readonly GameObject AttackSpherePrefab = Resources.Load<GameObject>("Prefabs/Attacks/AttackSphere");
 

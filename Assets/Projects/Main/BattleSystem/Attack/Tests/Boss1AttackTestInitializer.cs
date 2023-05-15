@@ -7,8 +7,12 @@ using UnityEngine;
 
 namespace Boss.Tests
 {
-    public class Boss1TestInitializer : NetworkBehaviour
+    public class Boss1AttackTestInitializer : NetworkBehaviour
     {
+        readonly NetworkPlayerContainer _abstractNetworkPlayerContainer = new();
+        readonly NetworkEnemyContainer _networkEnemyContainer = new();
+        EnemySpawner _enemySpawner;
+        NetworkPlayerSpawner _networkPlayerSpawner;
         [SerializeField] NetworkPrefabRef boss1Prefab; // 本来はResourceフォルダかAddressable(?)から取得する
 
         bool _isSetupComplete;
@@ -26,20 +30,37 @@ namespace Boss.Tests
         {
             var runnerManager = FindObjectOfType<NetworkRunnerManager>();
             // Runner.StartGame() if it has not been run.
-            await runnerManager.AttemptStartScene("Boss1TestInitializer");
+            await runnerManager.AttemptStartScene("Boss1AttackTestInitializer");
             runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner),
                 cancellationToken: new CancellationToken());
+            
+            
+            // Domain
+            var playerPrefabSpawner = new NetworkPlayerPrefabSpawner(Runner);
+            _networkPlayerSpawner = new NetworkPlayerSpawner(Runner, playerPrefabSpawner);
+            _enemySpawner = new EnemySpawner(Runner);
+
+
+            if (Runner.IsServer) _networkPlayerSpawner.RespawnAllPlayer(_abstractNetworkPlayerContainer);
+
+            if (Runner.IsServer)
+            {
+                _networkEnemyContainer.MaxEnemyCount = 5;
+                var _ = _enemySpawner.StartSimpleSpawner(0, 5f, _networkEnemyContainer);
+            }
 
             _isSetupComplete = true;
-            Debug.Log("Boss1TestInitializer is ready.");
+            Debug.Log("Boss1AttackTestInitializer is ready.");
         }
         
         void OnGUI()
         {
             var stateEnums = Enum.GetNames(typeof(StateUnderTest));
+            var buttonWidth = 120;
+            var buttonHeight = 20;
             for (var i = 0; i < stateEnums.Length; i++)
-                if (GUI.Button(new Rect(10, 10 + i * 30, 120, 20), stateEnums[i]))
+                if (GUI.Button(new Rect(Screen.width - 10 -buttonWidth , 10 + i * 30, buttonWidth, buttonHeight), stateEnums[i]))
                 {
                     if (!_isSetupComplete)
                     {
@@ -53,7 +74,7 @@ namespace Boss.Tests
                         boss1.Init(new RandomAttackSelector());
                     else
                         // Fixed
-                        boss1.Init(CreateTestAttackSelector(i));
+                        boss1.Init(new FixedAttackSelector(i));
                 }
         }
         
@@ -66,34 +87,9 @@ namespace Boss.Tests
             return boss1;
         }
 
-        IBoss1AttackSelector CreateTestAttackSelector(int index)
-        {
-            return new FixedAttackSelector(index);
-        }
-
+        
 
     }
 
-    /// <summary>
-    /// 特定の攻撃状態だけを返す
-    /// </summary>
-    public class FixedAttackSelector : IBoss1AttackSelector
-    {
-        readonly int _attackIndex;
-
-        public FixedAttackSelector(int attackIndex)
-        {
-            _attackIndex = attackIndex;
-        }
-
-        public IBoss1State SelectAction(params IBoss1State[] attacks)
-        {
-            if (0 <= _attackIndex && _attackIndex < attacks.Length) return attacks[_attackIndex];
-
-            Debug.LogError($"_attackIndex({_attackIndex}) is out of range.");
-            return attacks[0];
-        }
-    }
-    
 
 }
