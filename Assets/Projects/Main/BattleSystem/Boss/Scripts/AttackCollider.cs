@@ -10,6 +10,7 @@ public abstract class AttackCollider : MonoBehaviour
     // 今のところは、gameobjectのactiveを切り替えて制御する予定
     // このコンポーネントのみをenable = falseにしたり
     // 内部のロジックでon/offを切り替えることは想定していない
-
-    public abstract float Radius { get; set; }
+    
+    // インターフェースの役割を担う
+    // すなわち、クライアントコードでは具体的なクラス名が出てこないようにし、AttackColliderに依存するようにする
 }

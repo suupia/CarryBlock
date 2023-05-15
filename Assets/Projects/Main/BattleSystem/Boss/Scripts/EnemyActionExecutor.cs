@@ -38,14 +38,14 @@ namespace Boss
         public float ActionCoolTime => 0;
         ComponentPrefabInstantiate<AttackCollider> _attackColliderInstantiate;
         readonly AttackCollider _attackCollider;
+        readonly string _prefabName = "TackleAttackCollider";
 
-        public TackleAction(Transform parent,  float sphereRadius = 0)
+        public TackleAction(Transform parent)
         {
             _attackColliderInstantiate = new(
                 new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks"), 
-                "AttackSphere");
+                "AttackSphere"); // ToDo: _prefabNameを代入する
             _attackCollider = _attackColliderInstantiate.InstantiatePrefab(parent);
-            if(sphereRadius != 0 )_attackCollider.Radius = sphereRadius; // 引数が0の場合はプレハブの値を使用する
         }
         
         
