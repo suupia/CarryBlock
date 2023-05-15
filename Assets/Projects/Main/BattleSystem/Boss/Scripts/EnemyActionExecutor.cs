@@ -21,9 +21,12 @@ namespace Boss
         {
         }
 
-        public void Action()
+        public void StartAction() 
         {
-            
+        }
+        
+        public void EndAction()
+        {
         }
     }
     
@@ -36,7 +39,12 @@ namespace Boss
         {
         }
         
-        public void Action()
+        public void StartAction()
+        {
+            
+        }
+
+        public void EndAction()
         {
             
         }

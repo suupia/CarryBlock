@@ -46,7 +46,8 @@ namespace Boss
     public interface IEnemyActionExecutor
     {
         float ActionCoolTime { get; }　//ToDo: 関数でもいいかも
-        void Action();
+        void StartAction();
+        void EndAction();
     }
     public interface IEnemyTargetActionExecutor : IEnemyActionExecutor
     {
@@ -98,7 +99,7 @@ namespace Boss
                     targetMoveExecutor.Target = _targetUnit;
                 if(_action is IEnemyTargetActionExecutor targetActionExecutor)
                     targetActionExecutor.Target = _targetUnit;
-                _action.Action();
+                _action.StartAction();
             }
         }
         
@@ -157,10 +158,13 @@ namespace Boss
                 //     targetActionExecutor.Target = _targetUnit;
                 
                 // Actionを実行する
-                //_context.CurrentState.Action();
+                //_context.CurrentState.StartAction();
             }
             else
             {
+                // Actionの終了処理を行う
+                //_context.CurrentState.EndAction();
+                
                 // Searchステートに切り替え
                 if (_context.CurrentState is SearchPlayerState) return;
                 _context.ChangeState(_searchState);
