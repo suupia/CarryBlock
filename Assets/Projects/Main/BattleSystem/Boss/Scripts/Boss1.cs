@@ -106,7 +106,7 @@ namespace Boss
     
     // 具体的なクラスの例
     // これをNetworkBehaviourのフィールドとし、Initで受け取るようにしたい
-    public class Boss1 : IEnemy
+    public class ExampleStateEnemy : IEnemy
     {
         public float ActionCoolTime => _record.DefaultAttackCoolTime; // Attackごとに変えるかも → StateでIEnemyAttackを実装するようにする
         readonly Boss1Record _record;
@@ -117,8 +117,7 @@ namespace Boss
         
         Transform? _targetUnit;
 
-
-        public Boss1(NetworkRunner runner, Boss1Record record, IBoss1AttackSelector actionSelector)
+        public ExampleStateEnemy(NetworkRunner runner, Boss1Record record, IBoss1AttackSelector actionSelector)
         {
             _record = record;
             _actionSelector = actionSelector;
@@ -162,12 +161,11 @@ namespace Boss
             }
             else
             {
-                // 継続してSearchステート
+                // Searchステートに切り替え
+                if (_context.CurrentState is SearchPlayerState) return;
+                _context.ChangeState(_searchState);
             }
         }
-        
-        
     }
-    
 }
 
