@@ -24,6 +24,28 @@ namespace Main
             return Resources.Load<T>(_folderPath + "/" + prefabName);
         }
     }
+    
+    public class GameObjectPrefabInstantiate<T> where T : MonoBehaviour
+    {
+        readonly IPrefabLoader<T> _prefabLoader;
+        readonly string _prefabName;
+
+        public GameObjectPrefabInstantiate(IPrefabLoader<T> prefabLoader, string prefabName)
+        {
+            _prefabLoader = prefabLoader;
+            _prefabName = prefabName;
+        }
+
+        public T InstantiatePrefab(Vector3 position, Quaternion rotation, Transform parent = null)
+        {
+            var prefab = _prefabLoader.Load(_prefabName);
+            var gameObj = Object.Instantiate(prefab, position, rotation, parent);
+            var monoBehaviour = gameObj.GetComponent<T>();
+            if (monoBehaviour == null) Debug.LogError($"Instantiated object does not have MonoBehaviour. T = {typeof(T)}");
+
+            return monoBehaviour;
+        }
+    }
 
     public class NetworkBehaviourPrefabSpawner<T> where T : NetworkBehaviour
     {
@@ -43,7 +65,7 @@ namespace Main
             var prefab = _prefabLoader.Load(_prefabName);
             var networkObject = _runner.Spawn(prefab, position, rotation, playerRef);
             var networkBehaviour = networkObject.GetComponent<T>();
-            if (networkBehaviour == null) Debug.LogError("Spawned object does not have NetworkBehaviour");
+            if (networkBehaviour == null) Debug.LogError($"Spawned object does not have NetworkBehaviour. T = {typeof(T)}");
 
             return networkBehaviour;
         }

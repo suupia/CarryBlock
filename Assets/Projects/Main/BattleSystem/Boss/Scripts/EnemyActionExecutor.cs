@@ -34,6 +34,7 @@ namespace Boss
     public class TackleAction : IEnemyActionExecutor
     {
         public float ActionCoolTime => 0;
+        
 
         public TackleAction()
         {
@@ -49,5 +50,5 @@ namespace Boss
             
         }
     }
-    
+
 }
