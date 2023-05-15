@@ -90,12 +90,8 @@ namespace Boss
                 new NonTorqueRegularMove(
                     record.Transform, record.Rb, acceleration: 20f, maxVelocity: 1.0f));
             
-            // search = new RangeSearch(Record.Transform, Record.SearchRadius,
-            //     LayerMask.GetMask("Player"));
-            //
-            // action = new DoNothingAttackOld();
-            // attackCoolTime = 0;
             action = new DoNothingAction();
+            
             search = new NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }
     }
@@ -108,27 +104,8 @@ namespace Boss
                 new NonTorqueRegularMove(
                 record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
             
-            // search = new RangeSearch(Record.Transform, Record.SearchRadius,
-            //     LayerMask.GetMask("Player"));
-            //     
-            // action = new ToNearestAttack(new TargetBufferAttack.Context
-            //     {
-            //         Transform = Record.Transform,
-            //         TargetBuffer = Record.TargetBuffer
-            //     },
-            //     new ToTargetAttack(
-            //         Record.GameObject,
-            //         new RangeAttack(new RangeAttack.Context
-            //         {
-            //             Transform = Record.Transform,
-            //             Radius = 2f,
-            //             AttackSphereLifeTime = 0.5f
-            //         })
-            //     )
-            // );
-            // attackCoolTime = 1;
-
             action = new TackleAction(record.Transform);
+            
             search = new NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }
         
@@ -144,15 +121,9 @@ namespace Boss
         {
             _jumpState = new JumpState(record, context);
             move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
-
-            // search = new RangeSearch(Record.Transform, Record.SearchRadius,
-            //     LayerMask.GetMask("Player"));
-            //
-            // action = new DoNothingAttackOld();
-            //
-            // attackCoolTime = 0;
-
+            
             action = new ChargeJumpAction(_jumpState, context);
+            
             search = new  NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }
 
@@ -186,29 +157,7 @@ namespace Boss
             move = new TargetMove(record.Transform,
                 new NonTorqueRegularMove(
                     record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
-            
-            // search = new RangeSearch(Record.Transform, Record.SearchRadius,
-            //     LayerMask.GetMask("Player"));
-            //
-            // action = new ToNearestAttack(new TargetBufferAttack.Context
-            //     {
-            //         Transform = Record.Transform,
-            //         TargetBuffer = Record.TargetBuffer
-            //     },
-            //     new ToTargetAttack(
-            //         Record.GameObject,
-            //         new DelayAttack(
-            //             Record.JumpTime,
-            //             new RangeAttack(new RangeAttack.Context
-            //             {
-            //                 Transform = Record.Transform,
-            //                 Radius = Record.JumpAttackRadius
-            //             })
-            //         )
-            //     )
-            // );
-            // attackCoolTime = Record.DefaultAttackCoolTime;
-            
+
             action = new JumpAction(_idleState, context,record.Transform,record.Rb);
             
             search = new  NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
@@ -222,31 +171,8 @@ namespace Boss
         {
             move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             
-            // search = new RangeSearch(Record.Transform, Record.SearchRadius,
-            //     LayerMask.GetMask("Player"));
-            //
-            // action = new ToFurthestAttack(new TargetBufferAttack.Context
-            //     {
-            //         Transform = Record.Transform,
-            //         TargetBuffer = Record.TargetBuffer
-            //     },
-            //     new ToTargetAttack(
-            //         Record.GameObject,
-            //         new DelayAttack(
-            //             Record.ChargeSpitOutTime,
-            //             new LaunchNetworkObjectAttack(new LaunchNetworkObjectAttack.Context
-            //                 {
-            //                     Runner = runner,
-            //                     From = Record.finSpawnerTransform,
-            //                     Prefab = Resources.Load<GameObject>("Prefabs/Attacks/Fin")
-            //                 }
-            //             )
-            //         )
-            //     )
-            // );
-            // attackCoolTime = Record.DefaultAttackCoolTime;
-            
             action = new SpitOutAction(runner,record.Transform);
+            
             search = new FarthestSearch(record.Transform, record.SearchRadius, LayerMask.GetMask("Player"));
         }
         
@@ -257,21 +183,9 @@ namespace Boss
         public VacuumState(Boss1Record record) : base(record)
         {
             move = new TargetMove(record.Transform, new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
-            
-            // search = new RangeSearch(Record.Transform, Record.SearchRadius,
-            //     LayerMask.GetMask("Player"));
-            //
-            // action = new ToNearestAttack(new TargetBufferAttack.Context
-            //     {
-            //         Transform = Record.Transform,
-            //         TargetBuffer = Record.TargetBuffer
-            //     },
-            //     new ToTargetAttack(Record.GameObject, new MockAttack())
-            // );
-            //
-            // attackCoolTime = Record.DefaultAttackCoolTime;
 
             action = new VacuumAction();
+            
             search = new NearestSearch(record.Transform, record.SearchRadius, LayerMask.GetMask("Player"));
         }
         
