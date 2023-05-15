@@ -124,8 +124,8 @@ namespace Boss
                     EndDecoration(ref DecorationDataRef);
                 
                     // Searchステートに切り替え
-                    if (_context.CurrentState is IdleState) return;
-                    _context.ChangeState(_idleState);
+                    if (!(_context.CurrentState is IdleState))
+                        _context.ChangeState(_idleState);
                 }
             }
             

@@ -86,13 +86,14 @@ namespace Boss
     {
         public IdleState(Boss1Record record) : base(record)
         {
-            move = new RandomMove(simulationInterval: 2f, 
-                new NonTorqueRegularMove(
-                    record.Transform, record.Rb, acceleration: 20f, maxVelocity: 1.0f));
-            
+            move =
+                new RandomMove(simulationInterval: 2f,
+                     new NonTorqueRegularMove(
+                        record.Transform, record.Rb, acceleration: 20f, maxVelocity: 1.0f));
+
             action = new DoNothingAction();
-            
-            search = new NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
+
+            search = new NearestSearch(record.Transform, record.SearchRadius, LayerMask.GetMask("Player"));
         }
     }
 

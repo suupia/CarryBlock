@@ -178,6 +178,9 @@ namespace Boss
         }
     }
 
+    /// <summary>
+    /// LookAtInputMoveDecorator -> ForwardInputDecorator -> AddForceMoveの順に実行する
+    /// </summary>
     public class NonTorqueRegularMove: IInputMoveExecutor
     {
         readonly IInputMoveExecutor _move;
