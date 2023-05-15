@@ -15,7 +15,7 @@ namespace Boss
     /// </summary>
     public class RandomMove : IEnemyMoveExecutor
     {
-        readonly float _simulationInterval = 2f;
+        readonly float _simulationInterval;
         readonly IInputMoveExecutor _move;
         Vector3 _simulatedInput;
         bool _isSimulating;
@@ -154,7 +154,7 @@ namespace Boss
     /// </summary>
     public class AddForceMove : IInputMoveExecutor  // ToDo: AddTorqueMoveのようなクラスの必要性について考える
     {
-        Rigidbody _rb;
+        readonly Rigidbody _rb;
         public float acceleration { get; set; } = 30f;
         public float maxVelocity { get; set; } = 8f;
 
