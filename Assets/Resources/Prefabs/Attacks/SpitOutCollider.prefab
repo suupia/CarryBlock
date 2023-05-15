@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 9131824767769667609}
   - component: {fileID: 2334683622222549442}
   - component: {fileID: 6196046406996929383}
-  - component: {fileID: -5438450235214586302}
-  m_Layer: 0
+  - component: {fileID: 5795246473700926787}
+  - component: {fileID: 4240494270054352065}
+  m_Layer: 7
   m_Name: SpitOutCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,9 +104,22 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 2334683622222549442}
-  - {fileID: -5438450235214586302}
+  - {fileID: 4240494270054352065}
   SimulationBehaviours: []
---- !u!114 &-5438450235214586302
+--- !u!65 &5795246473700926787
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8291268587889763370}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.26, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4240494270054352065
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,9 +139,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4489019586887572563}
     m_Modifications:
+    - target: {fileID: 222857754630055621, guid: 6fb1be42afbb1204d9dc02bf54a33937, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1750602085336353304, guid: 6fb1be42afbb1204d9dc02bf54a33937, type: 3}
       propertyPath: m_Name
       value: Boss1Fin
+      objectReference: {fileID: 0}
+    - target: {fileID: 1750602085336353304, guid: 6fb1be42afbb1204d9dc02bf54a33937, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8527189880173212833, guid: 6fb1be42afbb1204d9dc02bf54a33937, type: 3}
       propertyPath: m_RootOrder

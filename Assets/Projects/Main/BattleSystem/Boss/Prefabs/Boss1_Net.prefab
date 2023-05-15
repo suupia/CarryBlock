@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2627756533478098386}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FinSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 502306180718360525}
   - component: {fileID: 1476089964}
   - component: {fileID: 3106542789823019383}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Boss1_Net
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 106986818877319159}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ModelParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}

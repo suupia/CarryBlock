@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7150443199748470329}
   - component: {fileID: 6072534277696549594}
   - component: {fileID: -7560750548576778063}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: JumpCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

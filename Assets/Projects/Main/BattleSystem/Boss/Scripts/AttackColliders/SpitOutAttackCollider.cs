@@ -7,6 +7,7 @@ using Main;
 
 # nullable enable
 
+[RequireComponent(typeof(Collider))]
 public class SpitOutAttackCollider : NetworkTargetAttackCollider
 {
 
@@ -14,6 +15,7 @@ public class SpitOutAttackCollider : NetworkTargetAttackCollider
     readonly float _force = 10;
     Rigidbody? _rb;
     bool _isInitialized;
+    int _damage = 1;
 
     [Networked] TickTimer LifeTimer { get; set; }
 
@@ -29,6 +31,7 @@ public class SpitOutAttackCollider : NetworkTargetAttackCollider
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"other.tag: {other.tag}, other.name: {other.name}");
         if (!other.CompareTag("Player")) return;
         var player = other.GetComponent<IPlayerOnAttacked>();
         if (player == null)
@@ -62,7 +65,8 @@ public class SpitOutAttackCollider : NetworkTargetAttackCollider
     
     NetworkPlayerStruct CalculateDamage(NetworkPlayerStruct playerStruct)
     {
-        playerStruct.Hp -= 10;
+        playerStruct.Hp -= _damage;
+            Debug.Log($"playerStruct.Hp: {playerStruct.Hp}");
         return playerStruct;
     }
 }
