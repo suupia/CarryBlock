@@ -110,6 +110,7 @@ namespace Boss
                     // 次のActionを決定する
                     var actionState = _actionSelector.SelectAction(_actionStates);
                     _context.ChangeState(actionState);
+                    AttackCooldown = TickTimer.CreateFromSeconds(Runner, _context.CurrentState.ActionCoolTime);
                 
                     // targetを決定し、必要があればtargetをセットする
                     _targetUnit = _context.CurrentState.DetermineTarget(units);
@@ -137,6 +138,7 @@ namespace Boss
                         
                         // IdleStateに戻る
                         _context.ChangeState(_idleState);
+                        AttackCooldown = TickTimer.CreateFromSeconds(Runner, _context.CurrentState.ActionCoolTime);
                     }
                 }
             }

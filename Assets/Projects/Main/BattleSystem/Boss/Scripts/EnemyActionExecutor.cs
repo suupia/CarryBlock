@@ -34,11 +34,11 @@ namespace Boss
     }
     public class IdleAction : IEnemyActionExecutor
     {
-        public float ActionCoolTime => 1;
+        public float ActionCoolTime => 0.6f;
         bool _isDelaying;
         bool _isCompleted;
         CancellationTokenSource _cts;
-        public float delayTime { get; init; } = 0.8f;
+        public float delayTime { get; init; } = 0.3f;
         readonly IBoss1State _nextState;
         readonly IBoss1Context _context;
 
