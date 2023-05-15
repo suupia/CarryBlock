@@ -39,7 +39,6 @@ namespace Boss.Tests
             // Domain
             var playerPrefabSpawner = new NetworkPlayerPrefabSpawner(Runner);
             _networkPlayerSpawner = new NetworkPlayerSpawner(Runner, playerPrefabSpawner);
-            Debug.Log($"_networkPlayerSpawner = {_networkPlayerSpawner} 、Start直後");
             _enemySpawner = new EnemySpawner(Runner);
 
 
@@ -58,8 +57,10 @@ namespace Boss.Tests
         void OnGUI()
         {
             var stateEnums = Enum.GetNames(typeof(StateUnderTest));
+            var buttonWidth = 120;
+            var buttonHeight = 20;
             for (var i = 0; i < stateEnums.Length; i++)
-                if (GUI.Button(new Rect(10, 10 + i * 30, 120, 20), stateEnums[i]))
+                if (GUI.Button(new Rect(Screen.width - 10 -buttonWidth , 10 + i * 30, buttonWidth, buttonHeight), stateEnums[i]))
                 {
                     if (!_isSetupComplete)
                     {
