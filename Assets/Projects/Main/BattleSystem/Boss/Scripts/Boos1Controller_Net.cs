@@ -42,9 +42,11 @@ namespace Boss
         // Flag for DI and PoolableObject
         bool _isInitialized;
 
+        // Initializerから注入したいオブジェクトを受け取る
+        // よっぽどのことがない限り、初期化の処理はRPCの方に書いた方が安全
         public void Init(IBoss1AttackSelector attackSelector)
         {
-            // Init Domain
+            // Init Host Domain
             _actionSelector = attackSelector;
 
             RPC_LocalInit();
@@ -56,13 +58,9 @@ namespace Boss
             // Init Record
             _record.Init(Runner, gameObject);
             
-            // Instantiate
-            var prefab = _modelPrefab;
-            var modelObject = Instantiate(prefab, gameObject.transform, modelParent);
-
-            _context = new Boss1Context(new IdleState(_record));
-            _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
-
+            // Init Host Domain
+            _idleState = new IdleState(_record);
+            _context = new Boss1Context(_idleState);
             _actionStates = new IBoss1State[]
             {
                 new TackleState(_record),
@@ -70,6 +68,14 @@ namespace Boss
                 new VacuumState(_record),
                 new ChargeJumpState(_record, _context)
             };
+
+            
+            // Instantiate
+            var prefab = _modelPrefab;
+            var modelObject = Instantiate(prefab, gameObject.transform, modelParent);
+            
+            _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
+
             _isInitialized = true;
         }
         
@@ -86,6 +92,7 @@ namespace Boss
             if (!_isInitialized) return;
             if (!HasStateAuthority) return;
 
+            Debug.Log($"_context.CurrentState: {_context.CurrentState}");
             _context.CurrentState.Move();
 
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
