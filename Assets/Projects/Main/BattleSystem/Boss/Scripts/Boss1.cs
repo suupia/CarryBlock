@@ -92,7 +92,7 @@ namespace Boss
         {
             // ここでSearchを使う
             var units = _search.Search();
-            if (units.Any())
+            if (units != null && units.Any())
             {
                 _targetUnit = _search.DetermineTarget(units);
                 if(_move is IEnemyTargetMoveExecutor targetMoveExecutor)
