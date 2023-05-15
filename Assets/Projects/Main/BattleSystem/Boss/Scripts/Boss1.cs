@@ -37,8 +37,8 @@ namespace Boss
     }
     public interface IEnemySearchExecutor
     {
-        Transform[]  Search();
-        Transform DetermineTarget(IEnumerable<Transform> targetUnits); // Moveのターゲットなどに使われる
+        Transform[]?  Search();
+        Transform? DetermineTarget(IEnumerable<Transform> targetUnits); // Moveのターゲットなどに使われる
         // もし、Action側で複数のTransformを受け取る必要がある場合は、IEnemyTargetsActionExecutorとDetermineTargetsを作成する
 
     }
