@@ -51,7 +51,7 @@ namespace Boss
     }
     public interface IEnemyTargetActionExecutor : IEnemyActionExecutor
     {
-        Transform Target { get; set; }
+        Transform? Target { get; set; }
     }
 
     // 以下はUnit側のインターフェース
