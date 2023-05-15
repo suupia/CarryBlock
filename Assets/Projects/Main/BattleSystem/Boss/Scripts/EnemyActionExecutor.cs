@@ -93,6 +93,11 @@ namespace Boss
             }
         }
 
+        public void EndAction()
+        {
+            Reset();
+        }
+
         async UniTaskVoid ChargeJump()
         {
             if (_isCharging) return;
@@ -107,11 +112,6 @@ namespace Boss
             }
             _isCharging = false;
             _isCompleted = true;
-        }
-
-        public void EndAction()
-        {
-            Reset();
         }
 
         void Reset()
@@ -132,10 +132,11 @@ namespace Boss
         readonly AttackCollider _attackCollider;
         readonly string _prefabName = "JumpAttackCollider";
         readonly SearchPlayerState _searchPlayerState;
+        readonly IBoss1Context _context;
         readonly Rigidbody _rb;
         readonly CancellationTokenSource _cts;
 
-        public JumpAction(float actionCoolTime,SearchPlayerState searchPlayerState, Transform parent, Rigidbody rb)
+        public JumpAction(float actionCoolTime,SearchPlayerState searchPlayerState,IBoss1Context context, Transform parent, Rigidbody rb)
         {
             ActionCoolTime = actionCoolTime;
             _attackColliderInstantiate = new(
@@ -143,6 +144,7 @@ namespace Boss
                 "AttackSphere"); // ToDo: _prefabNameを代入する
             _attackCollider = _attackColliderInstantiate.InstantiatePrefab(parent);
             _searchPlayerState = searchPlayerState;
+            _context = context;
             _rb = rb;
 
             _cts = new CancellationTokenSource();
@@ -150,14 +152,22 @@ namespace Boss
         
         public void StartAction()
         {
-            _attackCollider.gameObject.SetActive(true);
+            if (_isCompleted)
+            {
+                Reset();
+                _context.ChangeState(_searchPlayerState);
+            }
+            else
+            {
+                Jump().Forget();
+            }
         }
 
         public void EndAction()
         {
-            _attackCollider.gameObject.SetActive(false);
+            Reset();
         }
-        
+
         async UniTaskVoid Jump()
         {
             if (_isJumping) return;
