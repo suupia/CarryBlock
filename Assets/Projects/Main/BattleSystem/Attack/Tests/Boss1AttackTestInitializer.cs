@@ -9,6 +9,10 @@ namespace Boss.Tests
 {
     public class Boss1AttackTestInitializer : NetworkBehaviour
     {
+        readonly NetworkPlayerContainer _abstractNetworkPlayerContainer = new();
+        readonly NetworkEnemyContainer _networkEnemyContainer = new();
+        EnemySpawner _enemySpawner;
+        NetworkPlayerSpawner _networkPlayerSpawner;
         [SerializeField] NetworkPrefabRef boss1Prefab; // 本来はResourceフォルダかAddressable(?)から取得する
 
         bool _isSetupComplete;
@@ -26,13 +30,29 @@ namespace Boss.Tests
         {
             var runnerManager = FindObjectOfType<NetworkRunnerManager>();
             // Runner.StartGame() if it has not been run.
-            await runnerManager.AttemptStartScene("Boss1TestInitializer");
+            await runnerManager.AttemptStartScene("Boss1AttackTestInitializer");
             runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner),
                 cancellationToken: new CancellationToken());
+            
+            
+            // Domain
+            var playerPrefabSpawner = new NetworkPlayerPrefabSpawner(Runner);
+            _networkPlayerSpawner = new NetworkPlayerSpawner(Runner, playerPrefabSpawner);
+            Debug.Log($"_networkPlayerSpawner = {_networkPlayerSpawner} 、Start直後");
+            _enemySpawner = new EnemySpawner(Runner);
+
+
+            if (Runner.IsServer) _networkPlayerSpawner.RespawnAllPlayer(_abstractNetworkPlayerContainer);
+
+            if (Runner.IsServer)
+            {
+                _networkEnemyContainer.MaxEnemyCount = 5;
+                var _ = _enemySpawner.StartSimpleSpawner(0, 5f, _networkEnemyContainer);
+            }
 
             _isSetupComplete = true;
-            Debug.Log("Boss1TestInitializer is ready.");
+            Debug.Log("Boss1AttackTestInitializer is ready.");
         }
         
         void OnGUI()
@@ -53,7 +73,7 @@ namespace Boss.Tests
                         boss1.Init(new RandomAttackSelector());
                     else
                         // Fixed
-                        boss1.Init(CreateTestAttackSelector(i));
+                        boss1.Init(new FixedAttackSelector(i));
                 }
         }
         
@@ -66,11 +86,7 @@ namespace Boss.Tests
             return boss1;
         }
 
-        IBoss1AttackSelector CreateTestAttackSelector(int index)
-        {
-            return new FixedAttackSelector(index);
-        }
-
+        
 
     }
 
