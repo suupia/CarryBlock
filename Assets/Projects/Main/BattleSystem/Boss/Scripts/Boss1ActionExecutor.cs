@@ -255,6 +255,7 @@ namespace Boss
         public Transform Target { get; set; }
         NetworkBehaviourPrefabSpawner<NetworkTargetAttackCollider> _attackColliderSpawner;
         public float ActionCoolTime { get; init; } = 4.0f;
+        readonly float _yOffset = 1.0f;
         readonly Transform _transform;
         readonly string _prefabName = "SpitOutAttackCollider";
 
@@ -268,10 +269,9 @@ namespace Boss
 
         public void StartAction()
         {
-            Debug.Log($"SpitOut StartAction");
-            Debug.Log($"_transform.position: {_transform.position}");
-           var targetAttack =   _attackColliderSpawner.SpawnPrefab(_transform.position, Quaternion.identity, PlayerRef.None);
-           targetAttack.Init(Target);
+            var pos = _transform.position + new Vector3(0, _yOffset, 0);
+            var targetAttack = _attackColliderSpawner.SpawnPrefab(pos, Quaternion.identity, PlayerRef.None);
+            targetAttack.Init(Target);
         }
 
         public void EndAction()

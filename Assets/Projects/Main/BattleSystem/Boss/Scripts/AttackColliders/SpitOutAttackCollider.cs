@@ -11,7 +11,7 @@ public class SpitOutAttackCollider : NetworkTargetAttackCollider
 {
 
     readonly float _lifeTime = 5;
-    readonly float _speed = 30;
+    readonly float _force = 10;
     Rigidbody? _rb;
     bool _isInitialized;
 
@@ -19,11 +19,9 @@ public class SpitOutAttackCollider : NetworkTargetAttackCollider
 
     public override void Init(Transform targetTransform)
     {
-        Debug.Log($"SpitOut AttackCollider Init");
-        Debug.Log($"transform.position:{transform.position} targetTransform.position:{targetTransform.position}");
         var directionVec = (targetTransform.position - transform.position).normalized;
         _rb = GetComponent<Rigidbody>();
-        _rb.AddForce(_speed * directionVec, ForceMode.Impulse);
+        _rb.AddForce(_force * directionVec, ForceMode.Impulse);
         LifeTimer = TickTimer.CreateFromSeconds(Runner, _lifeTime);
 
         _isInitialized = true;

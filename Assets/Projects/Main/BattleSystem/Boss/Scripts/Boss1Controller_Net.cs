@@ -94,13 +94,16 @@ namespace Boss
             if (!_isInitialized) return;
             if (!HasStateAuthority) return;
 
-            Debug.Log($"_context.CurrentState:{_context.CurrentState}");
+            Debug.Log($"_context.CurrentState:{_context.CurrentState} , _context.CurrentState.ActionCoolTime:{_context.CurrentState.ActionCoolTime}");
 
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
             {
                 // Actionを実行する
                 _context.CurrentState.StartAction();
                 AttackCooldown = TickTimer.CreateFromSeconds(Runner, _context.CurrentState.ActionCoolTime);
+                
+                // Decoration
+                StartDecoration( ref DecorationDataRef);
                 
                 // Searchを実行する
                 var units = _context.CurrentState.Search();
@@ -110,17 +113,18 @@ namespace Boss
                     // 次のActionを決定する
                     var actionState = _actionSelector.SelectAction(_actionStates);
                     _context.ChangeState(actionState);
-                    AttackCooldown = TickTimer.CreateFromSeconds(Runner, _context.CurrentState.ActionCoolTime);
-                
+
                     // targetを決定し、必要があればtargetをセットする
                     _targetUnit = _context.CurrentState.DetermineTarget(units);
                     if(_context.CurrentState.EnemyMove is IEnemyTargetMoveExecutor targetMoveExecutor)
                         targetMoveExecutor.Target = _targetUnit;
                     if(_context.CurrentState.EnemyAction is IEnemyTargetActionExecutor targetActionExecutor)
                         targetActionExecutor.Target = _targetUnit;
-
-                    // Decoration
-                    StartDecoration( ref DecorationDataRef);
+                    
+                    // Actionを実行する
+                    _context.CurrentState.StartAction();
+                    AttackCooldown = TickTimer.CreateFromSeconds(Runner, _context.CurrentState.ActionCoolTime);
+                    
                 }
                 else
                 {
