@@ -15,6 +15,9 @@ public abstract class AttackCollider : MonoBehaviour
     
     // インターフェースの役割を担う
     // すなわち、クライアントコードでは具体的なクラス名が出てこないようにし、AttackColliderに依存するようにする
+    
+    // Init()を追加して引数を渡して初期化できるようにするかも
+    // ただしその時は、サブクラス全てに共通する引数にしたい。
 }
 
 [RequireComponent(typeof(Collider))]
