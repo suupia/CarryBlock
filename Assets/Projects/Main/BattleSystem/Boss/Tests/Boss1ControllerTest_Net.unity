@@ -516,7 +516,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   boss1Prefab:
-    RawGuidValue: 76e0e45fea36d4ccbb64d6dd03fd5e3b
+    RawGuidValue: ae7b7beeebf62465cacd5e446e588e85
 --- !u!4 &1417945715
 Transform:
   m_ObjectHideFlags: 0

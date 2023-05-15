@@ -45,7 +45,7 @@ namespace Boss
         {
             _attackColliderInstantiate = new(
                 new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks"), 
-                "AttackSphere"); // ToDo: _prefabNameを代入する
+                "TackleCollider"); // ToDo: _prefabNameを代入する
             _attackCollider = _attackColliderInstantiate.InstantiatePrefab(parent);
         }
         
@@ -139,7 +139,7 @@ namespace Boss
         {
             _attackColliderInstantiate = new(
                 new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks"), 
-                "AttackSphere"); // ToDo: _prefabNameを代入する
+                "JumpCollider"); // ToDo: _prefabNameを代入する
             _attackCollider = _attackColliderInstantiate.InstantiatePrefab(parent);
             _idleState = idleState;
             _context = context;
@@ -204,7 +204,7 @@ namespace Boss
             _transform = transform;
             _attackColliderSpawner = new(runner,
                 new PrefabLoaderFromResources<NetworkTargetAttackCollider>("Prefabs/Attacks"), 
-                "AttackSphere"); // ToDo: _prefabNameを代入する
+                "SpitOutCollider"); // ToDo: _prefabNameを代入する
         }
 
         public void StartAction()
