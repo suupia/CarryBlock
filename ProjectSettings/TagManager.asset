@@ -12,6 +12,7 @@ TagManager:
   - MainBase
   - Harmful
   - SubBase
+  - SpawnerTransform
   - EnemySpawnerTransform
   layers:
   - Default

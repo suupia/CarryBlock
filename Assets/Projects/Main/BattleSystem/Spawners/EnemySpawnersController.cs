@@ -22,10 +22,10 @@ namespace Main
         readonly List<EnemySpawner> _enemySpawners;
         readonly StartSimpleSpawnerRecord _defaultRecord = new();
 
-        public EnemySpawnersController(NetworkRunner runner, SpawnerTransformContainer spawnerTransforms)
+        public EnemySpawnersController(NetworkRunner runner, SpawnerTransformContainer container)
         {
-            _enemySpawners = spawnerTransforms
-                .Map(st => new EnemySpawner(
+            _enemySpawners = container.Transforms
+                .Select(st => new EnemySpawner(
                     new EnemySpawner.EnemySpawnerRecord
                     {
                         GetCenter = () => st.position,
@@ -44,11 +44,11 @@ namespace Main
         /// 
         /// </summary>
         /// <param name="networkEnemyContainer"></param>
-        /// <param name="stopBeforeSpawner"></param>
+        /// <param name="stopBeforeSpawn"></param>
         /// <param name="startSimpleSpawnerDelegate">第一引数にindex, 第二引数にEnemySpawner, 戻り値にStartSimpleSpawnerRecordを返す関数</param>
         public void StartSimpleSpawner(
             NetworkEnemyContainer networkEnemyContainer,
-            bool stopBeforeSpawner = true,
+            bool stopBeforeSpawn = true,
             Func<int, EnemySpawner, StartSimpleSpawnerRecord> startSimpleSpawnerDelegate = null)
         {
             if (_enemySpawners.Count == 0)
@@ -56,7 +56,7 @@ namespace Main
                 Debug.LogWarning("EnemySpawners is empty. No enemies will be spawned");
             }
 
-            if (stopBeforeSpawner)
+            if (stopBeforeSpawn)
             {
                 CancelSpawning();
             }
