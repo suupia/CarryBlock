@@ -4,6 +4,7 @@ using Boss;
 using UnityEngine;
 using Fusion;
 using Main;
+using Enemy;
 
 # nullable enable
 

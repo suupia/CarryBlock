@@ -2,8 +2,9 @@ using Fusion;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using Main;
 
-namespace Main
+namespace Enemy
 {
     [RequireComponent(typeof(NetworkObject))]
     public class NetworkResourceController : PoolableObject

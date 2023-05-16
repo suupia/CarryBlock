@@ -1,5 +1,6 @@
 using VContainer;
 using VContainer.Unity;
+using Enemy;
 
 namespace Main.VContainer
 {

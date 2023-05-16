@@ -6,6 +6,8 @@ using Cysharp.Threading.Tasks;
 using Fusion;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Enemy;
+
 
 namespace Main
 {

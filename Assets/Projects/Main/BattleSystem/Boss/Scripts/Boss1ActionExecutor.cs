@@ -8,6 +8,7 @@ using System.Threading;
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Enemy;
 
 # nullable enable
 

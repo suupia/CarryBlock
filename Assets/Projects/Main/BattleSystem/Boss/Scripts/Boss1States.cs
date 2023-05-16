@@ -3,6 +3,7 @@ using Fusion;
 using Main;
 using UnityEngine;
 using System.Collections.Generic;
+using Enemy;
 
 
 namespace Boss

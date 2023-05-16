@@ -1,5 +1,7 @@
 using Fusion;
 using UnityEngine;
+using Enemy;
+
 
 namespace Main
 {

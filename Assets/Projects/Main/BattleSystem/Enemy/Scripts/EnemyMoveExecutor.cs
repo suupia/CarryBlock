@@ -6,9 +6,10 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
+using Boss;
 
 # nullable enable
-namespace Boss
+namespace Enemy
 {
     /// <summary>
     /// 何もしないIEnemyMoveExecutorの実装クラス

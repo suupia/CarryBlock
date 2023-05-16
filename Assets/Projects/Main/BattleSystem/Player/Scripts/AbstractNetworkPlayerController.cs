@@ -3,6 +3,7 @@ using Animations;
 using Decoration;
 using Fusion;
 using UnityEngine;
+using Enemy;
 
 namespace Main
 {

@@ -2,8 +2,9 @@ using System;
 using System.Linq;
 using Fusion;
 using UnityEngine;
+using Main;
 
-namespace Main
+namespace Enemy
 {
     [RequireComponent(typeof(NetworkRigidbody))]
     public class NetworkEnemyController : PoolableObject
