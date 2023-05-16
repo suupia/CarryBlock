@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using Enemy;
 
-public class JumpAttackCollider : AttackCollider
+namespace Boss
 {
-    Collider _collider;
-
-    void Start()
+    public class JumpAttackCollider : AttackCollider
     {
-        _collider = GetComponent<Collider>();
+        Collider _collider;
+
+        void Start()
+        {
+            _collider = GetComponent<Collider>();
         
+        }
+
+        void OnTriggerEnter(Collider other)
+        {
+            Debug.Log("OnTriggerEnter JumpAttackCollider");
+        }
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("OnTriggerEnter JumpAttackCollider");
-    }
 }
