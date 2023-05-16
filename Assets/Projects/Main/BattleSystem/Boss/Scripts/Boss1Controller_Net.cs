@@ -34,6 +34,8 @@ namespace Boss
         IBoss1State _jumpState;
         IBoss1State[] _actionStates;
         IBoss1Context _context;
+        
+        IBoss1State _beforeState;
 
          Transform? _targetUnit;
 
@@ -98,25 +100,28 @@ namespace Boss
             
             if (AttackCooldown.ExpiredOrNotRunning(Runner))
             {
+                // デコレーションの終了処理
+                EndDecoration(ref DecorationDataRef);
 
-                // 次のStateを決定する (Actionを終了する前に行うことに注意)
+                // 次のDomainのStateを決定する (Actionを終了する前に行うことに注意)
                 Debug.Log($"before state = {_context.CurrentState}");
                 DecideNextState();
                 Debug.Log($"after state = {_context.CurrentState}");
 
                 
-                // Actionの終了処理を行う
+                // DomainのActionの終了処理を行う
                 Debug.Log($"is action completed = {_context.CurrentState.IsActionCompleted}");
-                if (_context.CurrentState.IsActionCompleted)
+                if (_context.CurrentState.IsActionCompleted || _beforeState != _context.CurrentState)
                 {
                     _context.CurrentState.EndAction();
-                    EndDecoration(ref DecorationDataRef);
                 }
                 
                 
-                // Actionの開始処理
+                // DomainのActionの開始処理
                 _context.CurrentState.StartAction();
                 AttackCooldown = TickTimer.CreateFromSeconds(Runner, _context.CurrentState.ActionCoolTime);
+                
+                // デコレーションの開始処理
                 StartDecoration( ref DecorationDataRef);
                 
             }
@@ -132,20 +137,21 @@ namespace Boss
 
         void DecideNextState()
         {
-            if (_context.CurrentState is IdleState)
+            _beforeState = _context.CurrentState;
+            if (_beforeState is IdleState)
             {
-                if (_context.CurrentState.IsActionCompleted)
+                if (_beforeState.IsActionCompleted)
                     _context.ChangeState(_wanderState);
             }
-            else if (_context.CurrentState is ChargeJumpState)
+            else if (_beforeState is ChargeJumpState)
             {
-                if (_context.CurrentState.IsActionCompleted)
+                if (_beforeState.IsActionCompleted)
                     _context.ChangeState(_jumpState);
             }
             else
             {
                 // Searchを実行する
-                var units = _context.CurrentState.Search();
+                var units = _beforeState.Search();
                 if (units != null && units.Any())
                 {
                     // 次のActionを決定する
