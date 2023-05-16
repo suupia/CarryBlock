@@ -33,6 +33,7 @@ namespace Boss
     
         void OnTriggerEnter(Collider other)
         {
+            if (!Object.HasInputAuthority) return;
             Debug.Log($"other.tag: {other.tag}, other.name: {other.name}");
             if (!other.CompareTag("Player")) return;
             var player = other.GetComponent<IPlayerOnAttacked>();
