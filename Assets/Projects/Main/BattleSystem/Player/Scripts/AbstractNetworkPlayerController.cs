@@ -111,7 +111,12 @@ namespace Main
             _decorationDetector.OnRendered(DecorationDataRef, PlayerStruct.Hp);
         }
 
-
+        public void OnAttacked(int damage)
+        {
+            if (!HasStateAuthority) return;
+            _unitStats.OnAttacked(ref PlayerStruct, damage);
+        }
+        
         //Deal as RPC for changing unit
         [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
         public void RPC_ChangeNextUnit()
@@ -175,11 +180,7 @@ namespace Main
             _decorationDetector.OnSpawned();
         }
 
-        public void OnAttacked(int damage)
-        {
-            if (!HasStateAuthority) return;
-            _unitStats.OnAttacked(ref PlayerStruct, damage);
-        }
+
 
         void SetToOrigin()
         {
