@@ -13,8 +13,11 @@ namespace Main
     {
         public record EnemySpawnerRecord
         {
+            public Func<Vector3> GetCenter = () => Vector3.zero;
+            /// <summary>
+            /// 敵が湧く範囲。GetCenter + ランダムでこの範囲からSpawnする
+            /// </summary>
             public float SpawnRadius = 50;
-            public Func<Vector3> GetOffset = () => Vector3.zero;
             public NetworkRunner Runner;
         } 
         CancellationTokenSource _cts;
@@ -22,7 +25,7 @@ namespace Main
 
         readonly IPrefabSpawner<NetworkEnemyController> _enemyPrefabSpawner;
 
-        private EnemySpawnerRecord _record;
+        EnemySpawnerRecord _record;
         
         public EnemySpawner(EnemySpawnerRecord record)
         {
@@ -57,7 +60,8 @@ namespace Main
             if (enemyContainer.Enemies.Count() >= enemyContainer.MaxEnemyCount) return;
             var x = Random.Range(-_record.SpawnRadius, _record.SpawnRadius);
             var z = Random.Range(-_record.SpawnRadius, _record.SpawnRadius);
-            var position = new Vector3(x, 1, z) + _record.GetOffset();
+            // var position = new Vector3(x, 1, z);
+            var position = _record.GetCenter() + new Vector3(x, 0f, z);
             var networkObject = _enemyPrefabSpawner.SpawnPrefab(position, Quaternion.identity, PlayerRef.None);
             var enemy = networkObject.GetComponent<NetworkEnemyController>();
             enemy.OnDespawn += () => enemyContainer.RemoveEnemy(enemy);

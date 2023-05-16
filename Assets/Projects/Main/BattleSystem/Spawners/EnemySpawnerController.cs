@@ -15,35 +15,43 @@ namespace Main
     /// </summary>
     public class EnemySpawnerController : NetworkBehaviour
     {
-        private const string EnemySpawnerTransform = "EnemySpawnerTransform";
+        const string EnemySpawnerTransformTagName = "EnemySpawnerTransform";
 
-        [SerializeField] private List<Transform> spawnTransforms;
+        [SerializeField] List<Transform> spawnTransforms;
 
-        private List<EnemySpawner> _enemySpawners = new();
-        
+        List<EnemySpawner> _enemySpawners = new();
+
         public override void Spawned()
         {
             if (HasStateAuthority)
             {
                 SetUpSpawnTransforms();
-                _enemySpawners = spawnTransforms
-                    .Map(st => new EnemySpawner(
-                        new EnemySpawner.EnemySpawnerRecord
-                        {
-                            GetOffset = () => st.position,
-                            Runner = Runner,
-                            SpawnRadius = st.GetComponent<SphereCollider>()?.radius ?? 1f,
-                        }))
-                    .ToList();
+                SetUpEnemySpawners();
             }
+        }
+
+        void SetUpEnemySpawners()
+        {
+            _enemySpawners = spawnTransforms
+                .Map(st => new EnemySpawner(
+                    new EnemySpawner.EnemySpawnerRecord
+                    {
+                        GetCenter = () => st.position,
+                        Runner = Runner,
+                        SpawnRadius = st.GetComponent<SphereCollider>()?.radius ?? 1f,
+                    }))
+                .ToList();
         }
 
         void SetUpSpawnTransforms()
         {
-            var st = GameObject
-                .FindGameObjectsWithTag(EnemySpawnerTransform)
+            var transforms = GameObject
+                .FindGameObjectsWithTag(EnemySpawnerTransformTagName)
                 .Map(g => g.transform);
-            spawnTransforms = spawnTransforms.Union(st).ToList();
+            
+            spawnTransforms = spawnTransforms
+                .Union(transforms)
+                .ToList();
         }
 
         public void CancelSpawning()
@@ -53,11 +61,20 @@ namespace Main
 
         public void StartSimpleSpawner(NetworkEnemyContainer networkEnemyContainer, bool stopBeforeSpawner = true)
         {
+            if (_enemySpawners.Count == 0)
+            {
+                Debug.LogWarning("EnemySpawners is empty. No enemies will be spawned");    
+            }
+            
             if (stopBeforeSpawner)
             {
                 CancelSpawning();
             }
-            _enemySpawners.ForEach(s => s.StartSimpleSpawner(0, 5, networkEnemyContainer));
+
+            _enemySpawners.ForEach(s =>
+            {
+                var _ = s.StartSimpleSpawner(0, 5, networkEnemyContainer);
+            });
         }
     }
 }
