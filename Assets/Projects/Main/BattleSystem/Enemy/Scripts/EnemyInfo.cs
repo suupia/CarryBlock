@@ -1,6 +1,7 @@
 using UnityEngine;
+using Main;
 
-namespace Main
+namespace Enemy
 {
     public interface IEnemy : IMove
     {

@@ -3,6 +3,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using UnityEngine;
+using Enemy;
 
 namespace Main
 {

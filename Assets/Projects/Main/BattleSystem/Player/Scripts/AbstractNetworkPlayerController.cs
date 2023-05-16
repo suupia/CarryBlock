@@ -3,6 +3,7 @@ using Animations;
 using Decoration;
 using Fusion;
 using UnityEngine;
+using Enemy;
 
 namespace Main
 {
@@ -11,7 +12,7 @@ namespace Main
     ///     Note: Objects to which this class is attached do not move themselves.
     ///     Attachment on the inspector is done to the Info class.
     /// </summary>
-    public abstract class AbstractNetworkPlayerController : NetworkBehaviour
+    public abstract class AbstractNetworkPlayerController : NetworkBehaviour, IPlayerOnAttacked
     {
         [SerializeField]
         Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.

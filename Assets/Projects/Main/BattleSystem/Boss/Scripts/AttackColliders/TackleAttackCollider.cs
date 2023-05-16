@@ -1,21 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Enemy;
 
-public class TackleAttackCollider : AttackCollider
+namespace Boss
 {
-    Collider _collider;
-
-    void Start()
+    public class TackleAttackCollider : AttackCollider
     {
-        _collider = GetComponent<Collider>();
-        
-    }
+        Collider _collider;
 
-    void OnTriggerEnter(Collider other)
-    {
-        if(!other.gameObject.CompareTag("Player"))return;
+        void Start()
+        {
+            _collider = GetComponent<Collider>();
         
-        Debug.Log("OnTriggerEnter TackleCollider");
+        }
+
+        void OnTriggerEnter(Collider other)
+        {
+            if(!other.gameObject.CompareTag("Player"))return;
+        
+            Debug.Log("OnTriggerEnter TackleCollider");
+        }
     }
 }

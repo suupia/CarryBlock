@@ -2,8 +2,9 @@ using System;
 using System.Linq;
 using Fusion;
 using UnityEngine;
+using Main;
 
-namespace Main
+namespace Enemy
 {
     [RequireComponent(typeof(NetworkRigidbody))]
     public class NetworkEnemyController : PoolableObject
@@ -71,7 +72,7 @@ namespace Main
             var colliders = Physics.OverlapSphere(gameObject.transform.position, _detectionRange);
             var players = colliders.Where(collider => collider.CompareTag("Player"))
                 .Select(collider => collider.gameObject);
-            Debug.Log($"players = {string.Join(",", players)}");
+            // Debug.Log($"players = {string.Join(",", players)}");
             if (players.Any())
             {
                 _targetPlayerObj = Utility.ChooseRandomObject(players);

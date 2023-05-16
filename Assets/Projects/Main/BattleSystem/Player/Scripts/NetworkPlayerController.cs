@@ -9,10 +9,8 @@ namespace Main
     ///     Note: Objects to which this class is attached do not move themselves.
     ///     Attachment on the inspector is done to the Info class.
     /// </summary>
-    public class NetworkPlayerController : AbstractNetworkPlayerController, IPlayerOnAttacked
+    public class NetworkPlayerController : AbstractNetworkPlayerController
     {
-        public NetworkPlayerStruct NetworkPlayerStruct => PlayerStruct;
-
         ReturnToMainBaseGauge _returnToMainBaseGauge;
 
         void Update()
@@ -41,10 +39,6 @@ namespace Main
                 _returnToMainBaseGauge.SetOnReturnToMainBase(RPC_SetToOrigin);
             }
         }
-        
-        public void OnAttacked(NetworkPlayerStruct afterStats)
-        {
-            PlayerStruct.Hp = afterStats.Hp;
-        }
+
     }
 }
