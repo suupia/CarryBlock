@@ -123,13 +123,13 @@ namespace Boss
     
     public class ChargeJumpAction : IEnemyActionExecutor
     {
-        public float ActionCoolTime => 0;
+        public float ActionCoolTime => 0.5f;
         bool _isCharging;
         bool _isCompleted;
         public float chargeTime { get; init; } = 0.5f;
         readonly IBoss1State _nextState;
         readonly IBoss1Context _context;
-        readonly CancellationTokenSource _cts;
+         CancellationTokenSource _cts;
 
         public ChargeJumpAction(IBoss1State nextState, IBoss1Context context)
         {
@@ -177,7 +177,8 @@ namespace Boss
         {
             _isCharging = false;
             _isCompleted = false;
-            _cts.Cancel();
+            _cts.Dispose();
+            _cts = new CancellationTokenSource();
         }
     }
 
@@ -193,7 +194,7 @@ namespace Boss
         readonly IBoss1State _nextState;
         readonly IBoss1Context _context;
         readonly Rigidbody _rb;
-        readonly CancellationTokenSource _cts;
+         CancellationTokenSource _cts;
 
         public JumpAction(IBoss1State nextState,IBoss1Context context, Transform parent, Rigidbody rb)
         {
@@ -210,6 +211,7 @@ namespace Boss
         
         public void StartAction()
         {
+            Debug.Log($"JumpAction StartAction _isCompleted:{_isCompleted}");
             if (_isCompleted)
             {
                 Reset();
@@ -230,6 +232,7 @@ namespace Boss
         {
             if (_isJumping) return;
             _isJumping = true;
+            Debug.Log($"Jump!!!!");
             MoveUtility.Jump(_rb,jumpTime);
             
             try
@@ -248,6 +251,8 @@ namespace Boss
         {
             _isJumping = false;
             _isCompleted = false;
+            _cts.Dispose();
+            _cts = new CancellationTokenSource();
         }
     }
 
