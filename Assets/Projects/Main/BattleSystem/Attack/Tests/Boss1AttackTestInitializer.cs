@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Boss.Tests
 {
-    public class Boss1AttackTestInitializer : NetworkBehaviour
+    public class Boss1AttackTestInitializer : NetworkBehaviour, IPlayerJoined, IPlayerLeft
     {
         readonly NetworkPlayerContainer _abstractNetworkPlayerContainer = new();
         readonly NetworkEnemyContainer _networkEnemyContainer = new();
@@ -85,6 +85,18 @@ namespace Boss.Tests
             var boss1Obj = Runner.Spawn(boss1Prefab, position, Quaternion.identity, PlayerRef.None);
             var boss1 = boss1Obj.GetComponent<Boss1Controller_Net>();
             return boss1;
+        }
+        void IPlayerJoined.PlayerJoined(PlayerRef player)
+        {
+            if (_networkPlayerSpawner == null) return;
+            if (Runner.IsServer) _networkPlayerSpawner.SpawnPlayer(player, _abstractNetworkPlayerContainer);
+            // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
+        }
+
+
+        void IPlayerLeft.PlayerLeft(PlayerRef player)
+        {
+            if (Runner.IsServer) _networkPlayerSpawner.DespawnPlayer(player, _abstractNetworkPlayerContainer);
         }
 
         
