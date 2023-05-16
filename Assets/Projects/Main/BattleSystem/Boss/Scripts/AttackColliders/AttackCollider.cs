@@ -34,15 +34,16 @@ public abstract class NetworkTargetAttackCollider : PoolableObject
     public abstract void Init(Transform target);
 }
 
-// 以下はUnit側のインターフェース
+/// <summary>
+/// 攻撃する側がGetComponetで取得するために必要なインターフェース
+/// </summary>
 public interface IPlayerOnAttacked
 {
-    NetworkPlayerStruct NetworkPlayerStruct { get; }
-    
     /// <summary>
-    /// 外部からNetworkPlayerStructを受け取り被ダメージの処理をする
+    /// 外部からdamageを与えて被ダメージの処理をする
+    /// 実際の処理はIUnitStatsが担う
     /// </summary>
-    /// <param name="networkPlayerStruct"></param>
-    void OnAttacked(NetworkPlayerStruct networkPlayerStruct);
+    /// <param name="damage"></param>
+    void OnAttacked(int damage);
 }
 

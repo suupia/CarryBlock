@@ -40,8 +40,7 @@ public class SpitOutAttackCollider : NetworkTargetAttackCollider
             return;
         }
 
-        var afterStats = CalculateDamage(player.NetworkPlayerStruct);
-        player.OnAttacked(afterStats);
+        player.OnAttacked(_damage);
     }
 
 
@@ -63,10 +62,5 @@ public class SpitOutAttackCollider : NetworkTargetAttackCollider
         _rb.velocity = Vector3.zero;
     }
     
-    NetworkPlayerStruct CalculateDamage(NetworkPlayerStruct playerStruct)
-    {
-        playerStruct.Hp -= _damage;
-            Debug.Log($"playerStruct.Hp: {playerStruct.Hp}");
-        return playerStruct;
-    }
+
 }
