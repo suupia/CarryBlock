@@ -41,7 +41,7 @@ namespace Main
         [Networked]
         protected ref PlayerDecorationDetector.Data DecorationDataRef => ref MakeRef<PlayerDecorationDetector.Data>();
 
-        [Networked] protected ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
+        [Networked] public ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
 
         protected void Update()
         {
