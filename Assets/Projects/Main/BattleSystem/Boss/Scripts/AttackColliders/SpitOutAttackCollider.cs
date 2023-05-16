@@ -43,6 +43,7 @@ namespace Boss
             }
     
             player.OnAttacked(_damage);
+            DestroyThisObject();
         }
     
     
