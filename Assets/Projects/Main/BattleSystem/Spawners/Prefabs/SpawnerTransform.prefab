@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6160587556682440260}
   m_Layer: 2
   m_Name: SpawnerTransform
-  m_TagString: EnemySpawnerTransform
+  m_TagString: SpawnerTransform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
