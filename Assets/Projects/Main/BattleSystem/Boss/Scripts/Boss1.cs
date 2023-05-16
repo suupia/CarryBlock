@@ -39,6 +39,7 @@ namespace Boss
 
     public interface IEnemyActionExecutor
     {
+        bool IsActionCompleted { get; }
         float ActionCoolTime { get; }　//ToDo: 関数でもいいかも
         void StartAction();
         void EndAction();
@@ -116,13 +117,13 @@ namespace Boss
 
             _context = new Boss1Context(_idleState);
             _idleState = new WanderState(record);
-            var jumpState = new JumpState(_record,_idleState, _context);
+            var jumpState = new JumpState(_record);
             _actionStates = new IBoss1State[]
             {
                 new TackleState(_record),
                 new SpitOutState(_record, runner),
                 new VacuumState(_record),
-                new ChargeJumpState(_record, jumpState, _context) // 内部でJumpStateに遷移するため、contextに依存している
+                new ChargeJumpState(_record) 
             };
         }
     

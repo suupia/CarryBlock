@@ -19,6 +19,8 @@ namespace Boss
     /// </summary>
     public class DoNothingAction : IEnemyActionExecutor
     {
+        public bool IsActionCompleted { get; set; } = false;
+
         public float ActionCoolTime => 0;
 
         public DoNothingAction()
@@ -35,34 +37,23 @@ namespace Boss
     }
     public class IdleAction : IEnemyActionExecutor
     {
+        public bool IsActionCompleted { get; set; }
         public float ActionCoolTime => 0.6f;
         bool _isDelaying;
-        bool _isCompleted;
         CancellationTokenSource _cts;
         public float delayTime { get; init; } = 0.3f;
-        readonly IBoss1State _nextState;
-        readonly IBoss1Context _context;
 
-        public IdleAction(IBoss1State nextState, IBoss1Context context)
+        public IdleAction()
         {
-            _nextState = nextState;
-            _context = context;
             _cts = new CancellationTokenSource();
         }
         
         
         public void StartAction()
         {
-            Debug.Log($"IdleAction StartAction _isCompleted:{_isCompleted}");
-            if (_isCompleted)
-            {
-                Reset();
-                _context.ChangeState(_nextState);
-            }
-            else
-            {
-                Delay().Forget();
-            }
+            Debug.Log($"IdleAction StartAction _isCompleted:{IsActionCompleted}");
+            Delay().Forget();
+            
         }
 
         public void EndAction()
@@ -83,19 +74,21 @@ namespace Boss
                 return;
             }
             _isDelaying = false;
-            _isCompleted = true;
+            IsActionCompleted = true;
         }
 
         void Reset()
         {
             _isDelaying = false;
-            _isCompleted = false;
+            IsActionCompleted = false;
+            _cts.Dispose();
             _cts = new CancellationTokenSource();
         }
     }
 
     public class TackleAction : IEnemyActionExecutor
     {
+        public bool IsActionCompleted { get; set; } = false;
         public float ActionCoolTime { get; init; } = 1.0f;
         ComponentPrefabInstantiate<AttackCollider> _attackColliderInstantiate;
         readonly AttackCollider _attackCollider;
@@ -123,28 +116,23 @@ namespace Boss
     
     public class ChargeJumpAction : IEnemyActionExecutor
     {
+        public  bool IsActionCompleted { get; set; }
         public float ActionCoolTime => 0.5f;
         bool _isCharging;
-        bool _isCompleted;
         public float chargeTime { get; init; } = 0.5f;
-        readonly IBoss1State _nextState;
-        readonly IBoss1Context _context;
-         CancellationTokenSource _cts;
+        CancellationTokenSource _cts;
 
-        public ChargeJumpAction(IBoss1State nextState, IBoss1Context context)
+        public ChargeJumpAction()
         {
-            _nextState = nextState;
-            _context = context;
             _cts = new CancellationTokenSource();
         }
         
         
         public void StartAction()
         {
-            if (_isCompleted)
+            if (IsActionCompleted)
             {
                 Reset();
-                _context.ChangeState(_nextState);
             }
             else
             {
@@ -170,13 +158,13 @@ namespace Boss
                 return;
             }
             _isCharging = false;
-            _isCompleted = true;
+            IsActionCompleted = true;
         }
 
         void Reset()
         {
             _isCharging = false;
-            _isCompleted = false;
+            IsActionCompleted = false;
             _cts.Dispose();
             _cts = new CancellationTokenSource();
         }
@@ -184,26 +172,22 @@ namespace Boss
 
     public class JumpAction : IEnemyActionExecutor
     {
+       public  bool IsActionCompleted { get; set; }
         public float ActionCoolTime { get; init; } = 4.0f;
         ComponentPrefabInstantiate<AttackCollider> _attackColliderInstantiate;
         bool _isJumping;
-        bool _isCompleted;
         public float jumpTime { get; init; } = 2f;
         readonly AttackCollider _attackCollider;
         readonly string _prefabName = "JumpAttackCollider";
-        readonly IBoss1State _nextState;
-        readonly IBoss1Context _context;
         readonly Rigidbody _rb;
          CancellationTokenSource _cts;
 
-        public JumpAction(IBoss1State nextState,IBoss1Context context, Transform parent, Rigidbody rb)
+        public JumpAction( Transform parent, Rigidbody rb)
         {
             _attackColliderInstantiate = new(
                 new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks"), 
                 "JumpCollider"); // ToDo: _prefabNameを代入する
             _attackCollider = _attackColliderInstantiate.InstantiatePrefab(parent);
-            _nextState = nextState;
-            _context = context;
             _rb = rb;
 
             _cts = new CancellationTokenSource();
@@ -211,11 +195,10 @@ namespace Boss
         
         public void StartAction()
         {
-            Debug.Log($"JumpAction StartAction _isCompleted:{_isCompleted}");
-            if (_isCompleted)
+            Debug.Log($"JumpAction StartAction _isCompleted:{IsActionCompleted}");
+            if (IsActionCompleted)
             {
                 Reset();
-                _context.ChangeState(_nextState);
             }
             else
             {
@@ -244,13 +227,13 @@ namespace Boss
                 return;
             }
             _isJumping = false;
-            _isCompleted = true;
+            IsActionCompleted = true;
         }
 
         void Reset()
         {
             _isJumping = false;
-            _isCompleted = false;
+            IsActionCompleted = false;
             _cts.Dispose();
             _cts = new CancellationTokenSource();
         }
@@ -258,9 +241,10 @@ namespace Boss
 
     public class SpitOutAction : IEnemyTargetActionExecutor
     {
+        public bool IsActionCompleted { get; set; } = false;
+        public float ActionCoolTime { get; init; } = 4.0f;
         public Transform Target { get; set; }
         NetworkBehaviourPrefabSpawner<NetworkTargetAttackCollider> _attackColliderSpawner;
-        public float ActionCoolTime { get; init; } = 4.0f;
         readonly float _yOffset = 1.0f;
         readonly Transform _transform;
         readonly string _prefabName = "SpitOutAttackCollider";
@@ -288,8 +272,10 @@ namespace Boss
 
     public class VacuumAction : IEnemyTargetActionExecutor
     {
-        public Transform? Target { get; set; }
+        public bool IsActionCompleted { get; set; } = false;
         public float ActionCoolTime { get; init; } = 4.0f;
+
+        public Transform? Target { get; set; }
         public VacuumAction()
         {
             
