@@ -8,11 +8,13 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.Serialization;
 
 # nullable enable
-public class ShowPlayerHp : MonoBehaviour
+public class ShowPlayerHp : MonoBehaviour, ICameraSetter
 {
-    NetworkRunnerManager _runnerManger;
+    NetworkRunnerManager? _runnerManger;
    [SerializeField] AbstractNetworkPlayerController? playerController;
    [SerializeField] TextMeshProUGUI? hpText;
+   
+   Camera? _playerCamera;
    Vector3 offset = new Vector3(0, 1.5f, 0);
    
     RectTransform? _rectTransform;
@@ -24,17 +26,19 @@ public class ShowPlayerHp : MonoBehaviour
     }
     void Update()
     {
-        if(!_runnerManger.IsReady)return;
+        if(_runnerManger == null ||  !_runnerManger.IsReady)return;
+        if(_playerCamera == null) return;
         _rectTransform.position 
-            = RectTransformUtility.WorldToScreenPoint(Camera.main, playerController.gameObject.transform.position + offset);
+            = RectTransformUtility.WorldToScreenPoint(_playerCamera, playerController.gameObject.transform.position + offset);
         hpText.text = $"HP = {playerController.PlayerStruct.Hp.ToString()}";
     }
 
     public void SetCamera(Camera playerCamera)
     {
-        
+        _playerCamera = playerCamera;
     }
     
     // 動的に生成されたカメラを設定する必要がある....
 
 }
+

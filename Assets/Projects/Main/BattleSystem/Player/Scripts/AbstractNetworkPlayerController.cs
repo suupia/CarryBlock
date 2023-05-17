@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Animations;
 using Decoration;
 using Fusion;
@@ -18,7 +19,8 @@ namespace Main
         Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
 
         [SerializeField] GameObject cameraPrefab;
-
+        [SerializeReference] List<ICameraSetter> cameraSetters;
+        
         [SerializeField] GameObject[] playerUnitPrefabs;
         [SerializeField] UnitType _unitType;
 
@@ -62,8 +64,15 @@ namespace Main
             if (Object.HasInputAuthority)
             {
                 // spawn camera
-                var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
+                var cameraObj = Instantiate(cameraPrefab);
+                var followtarget = cameraObj.GetComponent<CameraFollowTarget>();
+                var playerCamera = cameraObj.GetComponent<Camera>();
                 followtarget.SetTarget(unitObjectParent.transform);
+                foreach (var cameraSetter in cameraSetters)
+                {
+                    cameraSetter.SetCamera(playerCamera);
+                }
+                
             }
         }
 
