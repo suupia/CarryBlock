@@ -5,6 +5,7 @@ using Decoration;
 using Fusion;
 using UnityEngine;
 using Enemy;
+using TNRD;
 
 namespace Main
 {
@@ -19,7 +20,7 @@ namespace Main
         Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
 
         [SerializeField] GameObject cameraPrefab;
-        [SerializeReference] List<ICameraSetter> cameraSetters;
+        [SerializeField] List<SerializableInterface<ICameraSetter>> cameraSetters;
         
         [SerializeField] GameObject[] playerUnitPrefabs;
         [SerializeField] UnitType _unitType;
@@ -70,7 +71,7 @@ namespace Main
                 followtarget.SetTarget(unitObjectParent.transform);
                 foreach (var cameraSetter in cameraSetters)
                 {
-                    cameraSetter.SetCamera(playerCamera);
+                    cameraSetter.Value.SetCamera(playerCamera);
                 }
                 
             }

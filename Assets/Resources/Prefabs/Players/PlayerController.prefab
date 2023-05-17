@@ -110,7 +110,10 @@ MonoBehaviour:
   unitObjectParent: {fileID: 1291537846645682617}
   cameraPrefab: {fileID: 1202765848162463428, guid: 80edd889efc2b4e25a505fa35c177efe, type: 3}
   cameraSetters:
-  - rid: -2
+  - mode: 0
+    unityReference: {fileID: 6220953022697603195}
+    rawReference:
+      rid: -2
   playerUnitPrefabs:
   - {fileID: 5382565514109228338, guid: 3e617250fe2faeb429c30e5d618aa013, type: 3}
   - {fileID: 129457298326952244, guid: a302a749f7736b148b56ee79b6af8253, type: 3}
@@ -365,8 +368,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4294932015
+  m_fontColor: {r: 0.18396229, g: 0.4625328, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -383,8 +386,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

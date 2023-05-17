@@ -15,7 +15,7 @@ public class ShowPlayerHp : MonoBehaviour, ICameraSetter
    [SerializeField] TextMeshProUGUI? hpText;
    
    Camera? _playerCamera;
-   Vector3 offset = new Vector3(0, 1.5f, 0);
+   Vector3 offset = new Vector3(2.0f, 2.2f, 0);
    
     RectTransform? _rectTransform;
     async void  Start()
@@ -24,7 +24,7 @@ public class ShowPlayerHp : MonoBehaviour, ICameraSetter
         _runnerManger = FindObjectOfType<NetworkRunnerManager>();
         
     }
-    void Update()
+    void LateUpdate()
     {
         if(_runnerManger == null ||  !_runnerManger.IsReady)return;
         if(_playerCamera == null) return;
