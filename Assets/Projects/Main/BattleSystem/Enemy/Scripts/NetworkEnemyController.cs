@@ -15,7 +15,7 @@ namespace Enemy
         [SerializeField] NetworkPrefabRef resourcePrefab;
         
         // Tmp
-        public int Hp;
+        [Networked] public int Hp { get; set; }
         
         public Action OnDespawn = () => { };
         
