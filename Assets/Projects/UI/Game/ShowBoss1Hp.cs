@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Boss;
+using Enemy;
 using Main;
 using UnityEngine;
 using TMPro;
-using Cysharp.Threading.Tasks;
-using ExitGames.Client.Photon;
-using UnityEngine.Serialization;
 
 # nullable enable
-public class ShowPlayerHp : MonoBehaviour
+public class ShowBoss1Hp : MonoBehaviour
 {
     NetworkRunnerManager? _runnerManger;
-   [SerializeField] AbstractNetworkPlayerController? playerController;
-   [SerializeField] TextMeshProUGUI? hpText;
+    [SerializeField] Boss1Controller_Net enemyController;
+    [SerializeField] TextMeshProUGUI? hpText;
    
-   Vector3 offset = new Vector3(2.0f, 2.2f, 0);
+    Transform _playerTransform;
+    Vector3 offset = new Vector3(2.0f, 2.2f, 0);
    
     RectTransform? _rectTransform;
     async void  Start()
@@ -28,9 +28,8 @@ public class ShowPlayerHp : MonoBehaviour
     {
         if(_runnerManger == null ||  !_runnerManger.IsReady)return;
         _rectTransform.position 
-            = RectTransformUtility.WorldToScreenPoint(Camera.main, playerController.InterpolationTransform.position + offset);
-        hpText.text = $"HP = {playerController.PlayerStruct.Hp.ToString()}";
+            = RectTransformUtility.WorldToScreenPoint(Camera.main, enemyController.InterpolationTransform.position + offset);
+        hpText.text = $"HP = {enemyController.Hp.ToString()}";
     }
     
 }
-

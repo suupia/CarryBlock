@@ -10,19 +10,21 @@ using UnityEngine;
 
 namespace Boss
 {
-    public class Boss1Controller_Net : PoolableObject
+    public class Boss1Controller_Net : PoolableObject, IEnemyOnAttacked
     {
         // Serialize Record
         [SerializeField] Boss1Record _record;
         [SerializeField] GameObject _modelPrefab; // ToDo: インスペクタで設定する作りはよくない ロードする作りに変える
         [SerializeField] Transform modelParent;
 
+        public Transform InterpolationTransform => modelParent;
+
         // Networked Properties
         [Networked] ref Boss1DecorationDetector.Data DecorationDataRef => ref MakeRef<Boss1DecorationDetector.Data>();
         [Networked] TickTimer AttackCooldown { get; set; }
 
         // Tmp
-        [Networked] int Hp { get; set; } = 1;
+        [Networked] public int Hp { get; set; }
 
         // Decoration Detector
         Boss1DecorationDetector _decorationDetector;
@@ -51,6 +53,8 @@ namespace Boss
         {
             // Init Host Domain
             _actionSelector = attackSelector;
+
+            Hp = 10; // 一時的にここに書いておく
 
             RPC_LocalInit();
         }
@@ -135,6 +139,13 @@ namespace Boss
             _decorationDetector.OnRendered(DecorationDataRef, Hp);
         }
 
+        public void OnAttacked(int damage)
+        {
+            if(!HasStateAuthority) return;
+            Hp -= damage;
+            if(Hp <= 0)OnDefeated();
+        }
+
         void DecideNextState()
         {
             _beforeState = _context.CurrentState;
@@ -180,6 +191,12 @@ namespace Boss
                     }
                 }
             }
+        }
+
+        void OnDefeated()
+        {
+            // ボスを倒したときのドロップアイテムを出す　c.f. EnemyController
+            Runner.Despawn(Object);
         }
         
 

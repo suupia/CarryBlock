@@ -109,11 +109,6 @@ MonoBehaviour:
   _interpolationDataSource: 0
   unitObjectParent: {fileID: 1291537846645682617}
   cameraPrefab: {fileID: 1202765848162463428, guid: 80edd889efc2b4e25a505fa35c177efe, type: 3}
-  cameraSetters:
-  - mode: 0
-    unityReference: {fileID: 6220953022697603195}
-    rawReference:
-      rid: -2
   playerUnitPrefabs:
   - {fileID: 5382565514109228338, guid: 3e617250fe2faeb429c30e5d618aa013, type: 3}
   - {fileID: 129457298326952244, guid: a302a749f7736b148b56ee79b6af8253, type: 3}
@@ -129,11 +124,6 @@ MonoBehaviour:
     playerRd: {fileID: 0}
   _IsReady:
     _value: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
 --- !u!54 &7061470108438375560
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -305,7 +295,7 @@ GameObject:
   - component: {fileID: 5505923965803997987}
   - component: {fileID: 6220953022697603195}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: HPText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
