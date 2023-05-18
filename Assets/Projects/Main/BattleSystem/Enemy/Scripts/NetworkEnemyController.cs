@@ -9,25 +9,30 @@ namespace Enemy
     [RequireComponent(typeof(NetworkRigidbody))]
     public class NetworkEnemyController : PoolableObject
     {
+        // ToDo: enemyObjectParentの子にモデルを配置する（まだ、Cubeが仮置きされている）
+        // [SerializeField]  Transform enemyObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
+        public Transform InterpolationTransform => transform; // これは仮置きであることに注意。本来はenemyObjectParentを返す。
+        [SerializeField] NetworkPrefabRef resourcePrefab;
+        
+        // Tmp
+        public int Hp;
+        public Action OnDespawn = () => { };
+        
+        readonly float _detectionRange = 30;
+        
+        
+
+        Rigidbody _rb;
+        GameObject _targetPlayerObj;
+        IMove _move;
+        EnemyState _state = EnemyState.Idle;
+
+        bool _isInitialized;
         public enum EnemyState
         {
             Idle,
             ChasingPlayer
         }
-
-        [SerializeField] NetworkPrefabRef resourcePrefab;
-        readonly float _detectionRange = 30;
-
-        bool _isInitialized;
-
-        IMove _move;
-
-        Rigidbody _rb;
-
-        EnemyState _state = EnemyState.Idle;
-        GameObject _targetPlayerObj;
-
-        public Action OnDespawn = () => { };
 
         void OnDisable()
         {
