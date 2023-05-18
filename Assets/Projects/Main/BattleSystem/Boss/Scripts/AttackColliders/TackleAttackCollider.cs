@@ -15,7 +15,7 @@ namespace Boss
     {
         readonly int  _damage = 1;
         readonly float _attackInterval = 1;
-         bool _isCoolDown = false;
+         bool _isCoolDown ;
          CancellationTokenSource? _cts;
             
         // 今のところ外部から引数をもらう必要がないのでInit()は不要
@@ -49,15 +49,14 @@ namespace Boss
                 Debug.LogError("The game object with the 'Player' tag does not have the 'IPlayerOnAttacked' component attached.");
                 return;
             }
-            player.OnAttacked(_damage);
             try
             {
+                player.OnAttacked(_damage);
                 await UniTask.Delay(TimeSpan.FromSeconds(_attackInterval), cancellationToken: _cts.Token);
                 _isCoolDown = false;
             }catch(OperationCanceledException)
             {
                 Reset();
-                return;
             }
             
         }
