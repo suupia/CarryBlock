@@ -16,23 +16,15 @@ namespace Main
     /// </summary>
     public abstract class AbstractNetworkPlayerController : NetworkBehaviour, IPlayerOnAttacked
     {
-        [SerializeField]
-        Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
+        [SerializeField]  Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
+        public Transform InterpolationTransform => unitObjectParent;
 
         [SerializeField] GameObject cameraPrefab;
-        [SerializeField] List<SerializableInterface<ICameraSetter>> cameraSetters;
         
         [SerializeField] GameObject[] playerUnitPrefabs;
         [SerializeField] UnitType _unitType;
 
         [SerializeField] PlayerInfo _info;
-        PlayerDecorationDetector _decorationDetector;
-        IUnitAttack _shooter;
-        IUnit _unit;
-
-
-        GameObject _unitObj;
-        IUnitStats _unitStats;
 
         [Networked] NetworkButtons PreButtons { get; set; }
         [Networked] public NetworkBool IsReady { get; set; }
@@ -46,6 +38,13 @@ namespace Main
 
         [Networked] public ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
 
+        PlayerDecorationDetector _decorationDetector;
+        IUnitAttack _shooter;
+        IUnit _unit;
+
+        GameObject _unitObj;
+        IUnitStats _unitStats;
+        
         protected void Update()
         {
             if (Object.HasInputAuthority)
@@ -69,11 +68,7 @@ namespace Main
                 var followtarget = cameraObj.GetComponent<CameraFollowTarget>();
                 var playerCamera = cameraObj.GetComponent<Camera>();
                 followtarget.SetTarget(unitObjectParent.transform);
-                foreach (var cameraSetter in cameraSetters)
-                {
-                    cameraSetter.Value.SetCamera(playerCamera);
-                }
-                
+
             }
         }
 
