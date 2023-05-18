@@ -92,14 +92,15 @@ namespace Boss
         public float ActionCoolTime { get; init; } = 1.0f;
         ComponentPrefabInstantiate<AttackCollider> _attackColliderInstantiate;
         readonly AttackCollider _attackCollider;
-        readonly string _prefabName = "TackleAttackCollider";
+        readonly string _prefabName = "TackleCollider";
 
         public TackleAction(Transform parent)
         {
             _attackColliderInstantiate = new(
                 new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks"), 
-                "TackleCollider"); // ToDo: _prefabNameを代入する
+                _prefabName); // ToDo: _prefabNameを代入する
             _attackCollider = _attackColliderInstantiate.InstantiatePrefab(parent);
+            _attackCollider.gameObject.SetActive(false);
         }
         
         
@@ -182,12 +183,13 @@ namespace Boss
         readonly Rigidbody _rb;
          CancellationTokenSource _cts;
 
-        public JumpAction( Transform parent, Rigidbody rb)
+        public JumpAction(Transform parent, Rigidbody rb)
         {
             _attackColliderInstantiate = new(
                 new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks"), 
                 "JumpCollider"); // ToDo: _prefabNameを代入する
             _attackCollider = _attackColliderInstantiate.InstantiatePrefab(parent);
+            _attackCollider.gameObject.SetActive(false);
             _rb = rb;
 
             _cts = new CancellationTokenSource();
@@ -217,7 +219,8 @@ namespace Boss
             _isJumping = true;
             Debug.Log($"Jump!!!!");
             MoveUtility.Jump(_rb,jumpTime);
-            
+            _attackCollider.gameObject.SetActive(true);
+
             try
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(jumpTime), cancellationToken: _cts.Token);
@@ -232,6 +235,7 @@ namespace Boss
 
         void Reset()
         {
+            _attackCollider.gameObject.SetActive(false);
             _isJumping = false;
             IsActionCompleted = false;
             _cts.Dispose();

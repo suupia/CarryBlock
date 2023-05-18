@@ -21,6 +21,7 @@ public class NetworkRunnerManager : MonoBehaviour
     [SerializeField] NetworkObjectPoolDefault networkObjectPoolDefault;
     public NetworkRunner Runner => _runner;
     NetworkRunner _runner;
+    public bool IsReady => _runner.SceneManager.IsReady(_runner);
 
     [SerializeField] private bool autoStart;
     [SerializeField] private string overrideRoomName;
