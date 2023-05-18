@@ -7,7 +7,7 @@ using Main;
 namespace Enemy
 {
     [RequireComponent(typeof(NetworkRigidbody))]
-    public class NetworkEnemyController : PoolableObject
+    public class NetworkEnemyController : PoolableObject , IEnemyOnAttacked
     {
         // ToDo: enemyObjectParentの子にモデルを配置する（まだ、Cubeが仮置きされている）
         // [SerializeField]  Transform enemyObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
@@ -16,10 +16,10 @@ namespace Enemy
         
         // Tmp
         public int Hp;
+        
         public Action OnDespawn = () => { };
         
         readonly float _detectionRange = 30;
-        
         
 
         Rigidbody _rb;
@@ -54,6 +54,7 @@ namespace Enemy
                 transform = transform,
                 rd = _rb
             };
+            Hp = 3;
             _isInitialized = true;
         }
 
@@ -70,6 +71,14 @@ namespace Enemy
                     Chase();
                     break;
             }
+        }
+
+        public void OnAttacked(int damage)
+        {
+            if(!HasStateAuthority)return;
+            // Debug.Log($"Hp = {Hp}");
+            Hp -= damage;
+            if(Hp <= 0)OnDefeated();
         }
 
         void Search()
