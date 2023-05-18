@@ -27,7 +27,6 @@ public class ShowPlayerHp : MonoBehaviour, ICameraSetter
     void LateUpdate()
     {
         if(_runnerManger == null ||  !_runnerManger.IsReady)return;
-        if(_playerCamera == null) return;
         _rectTransform.position 
             = RectTransformUtility.WorldToScreenPoint(_playerCamera, playerController.gameObject.transform.position + offset);
         hpText.text = $"HP = {playerController.PlayerStruct.Hp.ToString()}";
