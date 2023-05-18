@@ -10,20 +10,19 @@ using Cysharp.Threading.Tasks;
 
 namespace Boss
 {
+    [RequireComponent(typeof(Collider))]
     public class TackleAttackCollider : AttackCollider
     {
-        Collider _collider;
         readonly int  _damage = 1;
         readonly float _attackInterval = 1;
          bool _isCoolDown = false;
          CancellationTokenSource? _cts;
             
-
-        
         // 今のところ外部から引数をもらう必要がないのでInit()は不要
-        void Start()
+        
+        // GameObjectのactiveを切り替えて制御する
+        void OnEnable()
         {
-            _collider = GetComponent<Collider>();
             _cts = new CancellationTokenSource();
         }
 
