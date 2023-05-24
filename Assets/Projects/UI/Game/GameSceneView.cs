@@ -72,7 +72,7 @@ namespace UI
         void FixedUpdateNetwork_Playing()
         {
             // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
-            Score = _resourceAggregator.getAmount;
+            Score = _resourceAggregator.GetAmount;
         }
 
         void FixedUpdateNetwork_Result()
@@ -83,7 +83,7 @@ namespace UI
         void Render_Playing()
         {
             // サーバー用のドメインの反映
-            scoreText.text = $"Score : {Score}";
+            scoreText.text = $"Score : {Score} / {_resourceAggregator.QuotaAmount}";
             waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
 
             // ローカル用のドメインの反映

@@ -79,7 +79,7 @@ namespace Main
     public class NetworkEnemyContainer
     {
         readonly List<NetworkEnemyController> enemies = new();
-        public int MaxEnemyCount { get; set; } = 128;
+        public int MaxEnemyCount { get; set; } = 5;
         public IEnumerable<NetworkEnemyController> Enemies => enemies;
 
         public void AddEnemy(NetworkEnemyController enemyController)

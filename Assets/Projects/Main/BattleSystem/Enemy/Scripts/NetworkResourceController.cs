@@ -66,19 +66,19 @@ namespace Enemy
 
     public class ResourceAggregator
     {
-        readonly int _quotaAmount = 15;
-        public int getAmount { get; private set; }
+        public readonly int QuotaAmount = 15;
+        public int GetAmount { get; private set; }
 
-        public bool IsQuotaReached => getAmount >= _quotaAmount;
+        public bool IsQuotaReached => GetAmount >= QuotaAmount;
 
         public void AddResource(int amount)
         {
-            getAmount += amount;
+            GetAmount += amount;
         }
 
         public bool IsSuccess()
         {
-            return getAmount >= _quotaAmount;
+            return GetAmount >= QuotaAmount;
         }
     }
 }
