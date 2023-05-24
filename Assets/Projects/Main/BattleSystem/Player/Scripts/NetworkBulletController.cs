@@ -1,5 +1,6 @@
 using Fusion;
 using UnityEngine;
+using Enemy;
 
 namespace Main
 {
@@ -12,8 +13,8 @@ namespace Main
     public class NetworkBulletController : PoolableObject
     {
         readonly float _lifeTime = 5;
-
         readonly float _speed = 30;
+        readonly int _damage = 1;
         Rigidbody _rb;
         bool isInitialized;
         [Networked] TickTimer LifeTimer { get; set; }
@@ -24,11 +25,15 @@ namespace Main
 
             if (other.CompareTag("Enemy"))
             {
-                var enemy = other.GetComponent<NetworkEnemyController>();
+                var enemy = other.GetComponent<IEnemyOnAttacked>();
                 if (enemy == null)
+                {
+                    
                     Debug.LogError(
-                        "The game object with the 'Enemy' tag does not have the 'NetworkEnemyController' component attached.");
-                enemy.OnDefeated();
+                        "The game object with the 'Enemy' tag does not have the 'IEnemyOnAttacked' component attached.");
+                    return;
+                }
+                enemy.OnAttacked(_damage);
                 DestroyBullet();
             }
         }

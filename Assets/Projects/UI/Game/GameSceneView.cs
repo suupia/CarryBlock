@@ -3,6 +3,7 @@ using Main;
 using TMPro;
 using UnityEngine;
 using VContainer;
+using Enemy;
 
 namespace UI
 {

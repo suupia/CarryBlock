@@ -150,6 +150,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RangeDetector
       objectReference: {fileID: 0}
+    - target: {fileID: 3311785164613393470, guid: aeab45b941d59f04789f481124dc1665, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aeab45b941d59f04789f481124dc1665, type: 3}
 --- !u!4 &1844359760056226181 stripped

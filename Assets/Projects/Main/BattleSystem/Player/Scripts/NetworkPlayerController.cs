@@ -39,5 +39,6 @@ namespace Main
                 _returnToMainBaseGauge.SetOnReturnToMainBase(RPC_SetToOrigin);
             }
         }
+
     }
 }

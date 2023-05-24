@@ -58,11 +58,11 @@ namespace Boss.Tests
         }
         
 
-        NetworkBoss1Controller SpawnBoss1()
+        Boss1Controller_Net SpawnBoss1()
         {
             var position = gameObject.transform.position;
             var boss1Obj = Runner.Spawn(boss1Prefab, position, Quaternion.identity, PlayerRef.None);
-            var boss1 = boss1Obj.GetComponent<NetworkBoss1Controller>();
+            var boss1 = boss1Obj.GetComponent<Boss1Controller_Net>();
             return boss1;
         }
 
@@ -74,6 +74,9 @@ namespace Boss.Tests
 
     }
 
+    /// <summary>
+    /// 特定の攻撃状態だけを返す
+    /// </summary>
     public class FixedAttackSelector : IBoss1AttackSelector
     {
         readonly int _attackIndex;
@@ -83,7 +86,7 @@ namespace Boss.Tests
             _attackIndex = attackIndex;
         }
 
-        public IBoss1State SelectAttack(params IBoss1State[] attacks)
+        public IBoss1State SelectAction(params IBoss1State[] attacks)
         {
             if (0 <= _attackIndex && _attackIndex < attacks.Length) return attacks[_attackIndex];
 

@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using Animations;
 using Decoration;
 using Fusion;
 using UnityEngine;
+using Enemy;
+using TNRD;
 
 namespace Main
 {
@@ -11,24 +14,17 @@ namespace Main
     ///     Note: Objects to which this class is attached do not move themselves.
     ///     Attachment on the inspector is done to the Info class.
     /// </summary>
-    public abstract class AbstractNetworkPlayerController : NetworkBehaviour
+    public abstract class AbstractNetworkPlayerController : NetworkBehaviour, IPlayerOnAttacked
     {
-        [SerializeField]
-        Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
+        [SerializeField]  Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
+        public Transform InterpolationTransform => unitObjectParent;
 
         [SerializeField] GameObject cameraPrefab;
-
+        
         [SerializeField] GameObject[] playerUnitPrefabs;
         [SerializeField] UnitType _unitType;
 
         [SerializeField] PlayerInfo _info;
-        PlayerDecorationDetector _decorationDetector;
-        IUnitAttack _shooter;
-        IUnit _unit;
-
-
-        GameObject _unitObj;
-        IUnitStats _unitStats;
 
         [Networked] NetworkButtons PreButtons { get; set; }
         [Networked] public NetworkBool IsReady { get; set; }
@@ -40,8 +36,15 @@ namespace Main
         [Networked]
         protected ref PlayerDecorationDetector.Data DecorationDataRef => ref MakeRef<PlayerDecorationDetector.Data>();
 
-        [Networked] protected ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
+        [Networked] public ref NetworkPlayerStruct PlayerStruct => ref MakeRef<NetworkPlayerStruct>();
 
+        PlayerDecorationDetector _decorationDetector;
+        IUnitAttack _shooter;
+        IUnit _unit;
+
+        GameObject _unitObj;
+        IUnitStats _unitStats;
+        
         protected void Update()
         {
             if (Object.HasInputAuthority)
@@ -61,8 +64,11 @@ namespace Main
             if (Object.HasInputAuthority)
             {
                 // spawn camera
-                var followtarget = Instantiate(cameraPrefab).GetComponent<CameraFollowTarget>();
+                var cameraObj = Instantiate(cameraPrefab);
+                var followtarget = cameraObj.GetComponent<CameraFollowTarget>();
+                var playerCamera = cameraObj.GetComponent<Camera>();
                 followtarget.SetTarget(unitObjectParent.transform);
+
             }
         }
 
@@ -110,7 +116,12 @@ namespace Main
             _decorationDetector.OnRendered(DecorationDataRef, PlayerStruct.Hp);
         }
 
-
+        public void OnAttacked(int damage)
+        {
+            if (!HasStateAuthority) return;
+            _unitStats.OnAttacked(ref PlayerStruct, damage);
+        }
+        
         //Deal as RPC for changing unit
         [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
         public void RPC_ChangeNextUnit()
@@ -174,11 +185,7 @@ namespace Main
             _decorationDetector.OnSpawned();
         }
 
-        public void OnAttacked(int damage)
-        {
-            if (!HasStateAuthority) return;
-            _unitStats.OnAttacked(ref PlayerStruct, damage);
-        }
+
 
         void SetToOrigin()
         {

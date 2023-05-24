@@ -24,7 +24,7 @@ namespace Boss
         // componets
         public GameObject GameObject { get; private set; } // NetworkControllerのGameObject
         public Transform Transform => GameObject.transform;
-        public Rigidbody Rd { get; private set; }
+        public Rigidbody Rb { get; private set; }
 
         NetworkRunner _runner;
 
@@ -37,7 +37,7 @@ namespace Boss
         {
             _runner = runner;
             GameObject = gameObject;
-            Rd = gameObject.GetComponent<Rigidbody>();
+            Rb = gameObject.GetComponent<Rigidbody>();
         }
     }
 }

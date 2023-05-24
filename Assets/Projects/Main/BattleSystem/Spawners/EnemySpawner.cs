@@ -6,6 +6,8 @@ using Cysharp.Threading.Tasks;
 using Fusion;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Enemy;
+
 
 namespace Main
 {
@@ -83,6 +85,56 @@ namespace Main
         public void RemoveEnemy(NetworkEnemyController enemyController)
         {
             enemies.Remove(enemyController);
+        }
+    }
+    
+    public class NetworkEnemyPrefabSpawner : IPrefabSpawner<NetworkEnemyController>
+    {
+        readonly NetworkBehaviourPrefabSpawner<NetworkEnemyController> _playerPrefabPrefabSpawner;
+
+        public NetworkEnemyPrefabSpawner(NetworkRunner runner)
+        {
+            _playerPrefabPrefabSpawner = new NetworkBehaviourPrefabSpawner<NetworkEnemyController>(runner,
+                new PrefabLoaderFromResources<NetworkEnemyController>("Prefabs/Enemys"), "Enemy");
+        }
+
+        public NetworkEnemyController SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef)
+        {
+            return _playerPrefabPrefabSpawner.SpawnPrefab(position, rotation, playerRef);
+        }
+    }
+    
+    // The following classes specifically determine which prefab to spawn
+    public class NetworkPlayerPrefabSpawner : IPrefabSpawner<NetworkPlayerController>
+    {
+        readonly NetworkBehaviourPrefabSpawner<NetworkPlayerController> _playerPrefabPrefabSpawner;
+
+        public NetworkPlayerPrefabSpawner(NetworkRunner runner)
+        {
+            _playerPrefabPrefabSpawner = new NetworkBehaviourPrefabSpawner<NetworkPlayerController>(runner,
+                new PrefabLoaderFromResources<NetworkPlayerController>("Prefabs/Players"), "PlayerController");
+        }
+
+        public NetworkPlayerController SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef)
+        {
+            return _playerPrefabPrefabSpawner.SpawnPrefab(position, rotation, playerRef);
+        }
+    }
+
+    public class LobbyNetworkPlayerPrefabSpawner : IPrefabSpawner<LobbyNetworkPlayerController>
+    {
+        readonly NetworkBehaviourPrefabSpawner<LobbyNetworkPlayerController> _playerPrefabPrefabSpawner;
+
+        public LobbyNetworkPlayerPrefabSpawner(NetworkRunner runner)
+        {
+            _playerPrefabPrefabSpawner = new NetworkBehaviourPrefabSpawner<LobbyNetworkPlayerController>(runner,
+                new PrefabLoaderFromResources<LobbyNetworkPlayerController>("Prefabs/Players"),
+                "LobbyPlayerController");
+        }
+
+        public LobbyNetworkPlayerController SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef)
+        {
+            return _playerPrefabPrefabSpawner.SpawnPrefab(position, rotation, playerRef);
         }
     }
 }
