@@ -7,7 +7,7 @@ namespace Main.Tests
     {
         readonly NetworkEnemyContainer _networkEnemyContainer = new();
         readonly SpawnerTransformContainer _enemySpawnerTransformContainer = new();
-        EnemySpawnersController _enemySpawnersController;
+        EnemySpawnersBatchExecutor _enemySpawnersBatchExecutor;
 
         [SerializeField] string overrideSessionName;
 
@@ -34,7 +34,7 @@ namespace Main.Tests
             //ControllerによってTransformの数だけEnemySpawnerがインスタンス化され
             //Controllerがそれらの責任を負う
             _enemySpawnerTransformContainer.AddRangeByTag();
-            _enemySpawnersController = new EnemySpawnersController(Runner, _enemySpawnerTransformContainer);
+            _enemySpawnersBatchExecutor = new EnemySpawnersBatchExecutor(Runner, _enemySpawnerTransformContainer);
 
             Debug.Log("Please press F1 to start spawning");
         }
@@ -43,17 +43,18 @@ namespace Main.Tests
         {
             if (Input.GetKeyDown(KeyCode.F1))
             {
-                _enemySpawnersController.StartSimpleSpawner(_networkEnemyContainer);
+                _enemySpawnersBatchExecutor.StartSimpleSpawner(_networkEnemyContainer);
                 Debug.Log("Spawn Loop was Started");
             }
             else if (Input.GetKeyDown(KeyCode.F2))
             {
-                _enemySpawnersController.CancelSpawning();
+                _enemySpawnersBatchExecutor.CancelSpawning();
                 Debug.Log("Spawn Loop was Canceled");
             }
             else if (Input.GetKeyDown(KeyCode.F3))
             {
-                _enemySpawnersController.StartSimpleSpawner(_networkEnemyContainer,
+                _enemySpawnersBatchExecutor.StartSimpleSpawner(
+                    _networkEnemyContainer,
                     startSimpleSpawnerDelegate: (i, _) => new StartSimpleSpawnerRecord()
                     {
                         Index = 0,

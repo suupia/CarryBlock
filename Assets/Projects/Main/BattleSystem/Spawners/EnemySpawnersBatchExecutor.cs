@@ -17,19 +17,18 @@ namespace Main
     /// Transformの取得は他のクラスが責務を負う
     /// 具体的には、すべてのEnemySpawnerに対して何かをしたいときに、このクラスが責任を負う
     /// </summary>
-    public class EnemySpawnersController
+    public class EnemySpawnersBatchExecutor
     {
         readonly List<EnemySpawner> _enemySpawners;
         readonly StartSimpleSpawnerRecord _defaultRecord = new();
 
-        public EnemySpawnersController(NetworkRunner runner, SpawnerTransformContainer container)
+        public EnemySpawnersBatchExecutor(NetworkRunner runner, SpawnerTransformContainer container)
         {
             _enemySpawners = container.Transforms
-                .Select(st => new EnemySpawner(
+                .Select(st => new EnemySpawner(runner, 
                     new EnemySpawner.EnemySpawnerRecord
                     {
                         GetCenter = () => st.position,
-                        Runner = runner,
                         SpawnRadius = st.GetComponent<SphereCollider>()?.radius ?? 1f,
                     }))
                 .ToList();

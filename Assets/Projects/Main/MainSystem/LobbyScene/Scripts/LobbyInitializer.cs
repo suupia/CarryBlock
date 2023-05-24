@@ -25,7 +25,7 @@ namespace Main
             // Domain
             var playerPrefabSpawner = new LobbyNetworkPlayerPrefabSpawner(Runner);
             _lobbyNetworkPlayerSpawner = new LobbyNetworkPlayerSpawner(Runner, playerPrefabSpawner);
-            _enemySpawner = new EnemySpawner(new EnemySpawner.EnemySpawnerRecord(){ Runner = Runner});
+            _enemySpawner = new EnemySpawner(Runner);
 
             if (Runner.IsServer) _lobbyNetworkPlayerSpawner.RespawnAllPlayer(_lobbyNetworkPlayerContainer);
 

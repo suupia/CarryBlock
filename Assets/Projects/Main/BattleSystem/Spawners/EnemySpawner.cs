@@ -20,7 +20,6 @@ namespace Main
             /// 敵が湧く範囲。GetCenter + ランダムでこの範囲からSpawnする
             /// </summary>
             public float SpawnRadius = 50;
-            public NetworkRunner Runner;
         } 
         CancellationTokenSource _cts;
         CancellationToken _token;
@@ -29,10 +28,10 @@ namespace Main
 
         EnemySpawnerRecord _record;
         
-        public EnemySpawner(EnemySpawnerRecord record)
+        public EnemySpawner(NetworkRunner runner, EnemySpawnerRecord record = default)
         {
             _record = record;
-            _enemyPrefabSpawner = new NetworkEnemyPrefabSpawner(record.Runner);
+            _enemyPrefabSpawner = new NetworkEnemyPrefabSpawner(runner);
         }
 
         public void CancelSpawning()
