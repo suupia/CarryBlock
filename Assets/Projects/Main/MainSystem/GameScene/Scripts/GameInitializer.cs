@@ -8,16 +8,19 @@ namespace Main
     public class GameInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
         [SerializeField] NetworkWaveTimer _networkWaveTimer;
+        NetworkPlayerSpawner _networkPlayerSpawner;
         readonly NetworkPlayerContainer _abstractNetworkPlayerContainer = new();
         readonly NetworkEnemyContainer _networkEnemyContainer = new();
-        EnemySpawner _enemySpawner;
-        NetworkPlayerSpawner _networkPlayerSpawner;
+        readonly SpawnerTransformContainer _enemySpawnerTransformContainer = new();
+        EnemySpawnersBatchExecutor _enemySpawnersBatchExecutor;
+
+        [SerializeField] string overrideSessionName;
 
         async void Start()
         {
             var runnerManager = FindObjectOfType<NetworkRunnerManager>();
             // Runner.StartGame() if it has not been run.
-            await runnerManager.AttemptStartScene("GameSceneTestRoom");
+            await runnerManager.AttemptStartScene(overrideSessionName);
             runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner),
                 cancellationToken: new CancellationToken());
@@ -25,18 +28,21 @@ namespace Main
             // Domain
             var playerPrefabSpawner = new NetworkPlayerPrefabSpawner(Runner);
             _networkPlayerSpawner = new NetworkPlayerSpawner(Runner, playerPrefabSpawner);
-            _enemySpawner = new EnemySpawner(Runner);
             Runner.AddSimulationBehaviour(_networkWaveTimer);
             _networkWaveTimer.Init();
+            
+            //スポナーの位置を決定しているTransformを取得し、Controllerにわたす
+            //ControllerによってTransformの数だけEnemySpawnerがインスタンス化され
+            //Controllerがそれらの責任を負う
+            _enemySpawnerTransformContainer.AddRangeByTag();
+            _enemySpawnersBatchExecutor = new EnemySpawnersBatchExecutor(Runner, _enemySpawnerTransformContainer);
+
+            Debug.Log("Please press F1 to start spawning");
 
 
             if (Runner.IsServer) _networkPlayerSpawner.RespawnAllPlayer(_abstractNetworkPlayerContainer);
 
-            if (Runner.IsServer)
-            {
-                _networkEnemyContainer.MaxEnemyCount = 5;
-                var _ = _enemySpawner.StartSimpleSpawner(0, 5f, _networkEnemyContainer);
-            }
+
         }
 
         void IPlayerJoined.PlayerJoined(PlayerRef player)
@@ -55,6 +61,31 @@ namespace Main
         public void SetActiveLobbyScene()
         {
             if (Runner.IsServer) SceneTransition.TransitioningScene(Runner, SceneName.LobbyScene);
+        }
+        
+        
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                _enemySpawnersBatchExecutor.StartSimpleSpawner(_networkEnemyContainer);
+                Debug.Log("Spawn Loop was Started");
+            }
+            else if (Input.GetKeyDown(KeyCode.F2))
+            {
+                _enemySpawnersBatchExecutor.CancelSpawning();
+                Debug.Log("Spawn Loop was Canceled");
+            }
+            else if (Input.GetKeyDown(KeyCode.F3))
+            {
+                _enemySpawnersBatchExecutor.StartSimpleSpawner(
+                    _networkEnemyContainer,
+                    startSimpleSpawnerDelegate: (i, _) => new StartSimpleSpawnerRecord()
+                    {
+                        Index = 0,
+                        Interval = i + 2f
+                    });
+            }
         }
     }
 }
