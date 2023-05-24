@@ -27,8 +27,14 @@ namespace Main
         readonly IPrefabSpawner<NetworkEnemyController> _enemyPrefabSpawner;
 
         EnemySpawnerRecord _record;
+
+        public EnemySpawner(NetworkRunner runner)
+        {
+            _record = new EnemySpawnerRecord();
+            _enemyPrefabSpawner = new NetworkEnemyPrefabSpawner(runner);
+        }
         
-        public EnemySpawner(NetworkRunner runner, EnemySpawnerRecord record = default)
+        public EnemySpawner(NetworkRunner runner, EnemySpawnerRecord record)
         {
             _record = record;
             _enemyPrefabSpawner = new NetworkEnemyPrefabSpawner(runner);
