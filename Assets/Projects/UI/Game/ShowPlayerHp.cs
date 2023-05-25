@@ -22,10 +22,19 @@ public class ShowPlayerHp : MonoBehaviour
     {
         _rectTransform = gameObject.GetComponent<RectTransform>();
         _runnerManger = FindObjectOfType<NetworkRunnerManager>();
+        if (_runnerManger != null)
+        {
+            Debug.Log($"ShowPlayerHp内においてNetworkRunnerManagerが見つかりました。");
+        }
+        else
+        {
+            Debug.Log($"ShowPlayerHp内においてNetworkRunnerManagerが見つかりませんでした");
+        }
         
     }
     void LateUpdate()
     {
+        if(_runnerManger !=null) Debug.Log($"_runnerManager.IsReady = {_runnerManger.IsReady}");
         if(_runnerManger == null ||  !_runnerManger.IsReady)return;
         _rectTransform.position 
             = RectTransformUtility.WorldToScreenPoint(Camera.main, playerController.InterpolationTransform.position + offset);

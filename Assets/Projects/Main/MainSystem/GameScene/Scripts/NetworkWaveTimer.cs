@@ -18,8 +18,8 @@ public class NetworkWaveTimer : NetworkBehaviour
 
     public void Init()
     {
-        _isInitialized = true;
         tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime); // ここに書くの良くないかも
+        _isInitialized = true;
     }
 
     public override void FixedUpdateNetwork()
