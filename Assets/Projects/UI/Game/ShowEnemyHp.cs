@@ -9,7 +9,7 @@ using TMPro;
 # nullable enable
 public class ShowEnemyHp : MonoBehaviour
 {
-    NetworkRunnerManager? _runnerManger;
+    GameInitializer? _gameInitializer;
     [SerializeField] NetworkEnemyController enemyController;
     [SerializeField] TextMeshProUGUI? hpText;
    
@@ -20,12 +20,12 @@ public class ShowEnemyHp : MonoBehaviour
     async void  Start()
     {
         _rectTransform = gameObject.GetComponent<RectTransform>();
-        _runnerManger = FindObjectOfType<NetworkRunnerManager>();
+        _gameInitializer = FindObjectOfType<GameInitializer>();
         
     }
     void LateUpdate()
     {
-        if(_runnerManger == null ||  !_runnerManger.IsReady)return;
+        if(_gameInitializer == null ||  !_gameInitializer.IsInitialized)return;
         _rectTransform.position 
             = RectTransformUtility.WorldToScreenPoint(Camera.main, enemyController.InterpolationTransform.position + offset);
         hpText.text = $"HP = {enemyController.Hp.ToString()}";

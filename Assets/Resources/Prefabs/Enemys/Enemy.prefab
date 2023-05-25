@@ -137,7 +137,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -336, y: -220}
+  m_AnchoredPosition: {x: -1000, y: -220}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5574390999656403851
@@ -304,7 +304,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   resourcePrefab:
     RawGuidValue: 31f19cb8b576944189a17141242207f5
-  Hp: 0
+  _Hp: 0
 --- !u!114 &6627201459361083076
 MonoBehaviour:
   m_ObjectHideFlags: 0

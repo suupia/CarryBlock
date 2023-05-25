@@ -15,7 +15,7 @@ namespace Main
         readonly NetworkPlayerContainer _abstractNetworkPlayerContainer = new();
         
         // enemy
-         SpawnerTransformContainer _enemySpawnerTransformContainer;
+        SpawnerTransformContainer _enemySpawnerTransformContainer;
         readonly NetworkEnemyContainer _networkEnemyContainer = new();
         EnemySpawnersBatchExecutor _enemySpawnersBatchExecutor;
         
@@ -25,6 +25,8 @@ namespace Main
         Boss1SpawnersBatchExecutor _boss1SpawnersBatchExecutor;
 
         [SerializeField] string overrideSessionName;
+        
+        public bool IsInitialized { get; private set; }
 
         async void Start()
         {
@@ -57,6 +59,7 @@ namespace Main
 
             if (Runner.IsServer) _networkPlayerSpawner.RespawnAllPlayer(_abstractNetworkPlayerContainer);
 
+            IsInitialized = true;
 
         }
 

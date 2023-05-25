@@ -11,7 +11,7 @@ using UnityEngine.Serialization;
 # nullable enable
 public class ShowPlayerHp : MonoBehaviour
 {
-    NetworkRunnerManager? _runnerManger;
+    GameInitializer? _gameInitializer;
    [SerializeField] AbstractNetworkPlayerController? playerController;
    [SerializeField] TextMeshProUGUI? hpText;
    
@@ -21,21 +21,12 @@ public class ShowPlayerHp : MonoBehaviour
     async void  Start()
     {
         _rectTransform = gameObject.GetComponent<RectTransform>();
-        _runnerManger = FindObjectOfType<NetworkRunnerManager>();
-        if (_runnerManger != null)
-        {
-            Debug.Log($"ShowPlayerHp内においてNetworkRunnerManagerが見つかりました。");
-        }
-        else
-        {
-            Debug.Log($"ShowPlayerHp内においてNetworkRunnerManagerが見つかりませんでした");
-        }
-        
+        _gameInitializer = FindObjectOfType<GameInitializer>();
+
     }
     void LateUpdate()
     {
-        if(_runnerManger !=null) Debug.Log($"_runnerManager.IsReady = {_runnerManger.IsReady}");
-        if(_runnerManger == null ||  !_runnerManger.IsReady)return;
+        if(_gameInitializer == null ||  !_gameInitializer.IsInitialized)return;
         _rectTransform.position 
             = RectTransformUtility.WorldToScreenPoint(Camera.main, playerController.InterpolationTransform.position + offset);
         hpText.text = $"HP = {playerController.PlayerStruct.Hp.ToString()}";
