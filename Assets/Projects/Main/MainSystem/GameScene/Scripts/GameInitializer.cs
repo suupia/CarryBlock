@@ -1,4 +1,7 @@
+using System;
 using System.Threading;
+using Boss;
+using Boss.Tests;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using UnityEngine;
@@ -10,9 +13,16 @@ namespace Main
         [SerializeField] NetworkWaveTimer _networkWaveTimer;
         NetworkPlayerSpawner _networkPlayerSpawner;
         readonly NetworkPlayerContainer _abstractNetworkPlayerContainer = new();
+        
+        // enemy
+         SpawnerTransformContainer _enemySpawnerTransformContainer;
         readonly NetworkEnemyContainer _networkEnemyContainer = new();
-        readonly SpawnerTransformContainer _enemySpawnerTransformContainer = new();
         EnemySpawnersBatchExecutor _enemySpawnersBatchExecutor;
+        
+        // boss1
+         SpawnerTransformContainer _boss1SpawnerTransformContainer;
+        readonly Boss1Container _boss1Container = new();
+        Boss1SpawnersBatchExecutor _boss1SpawnersBatchExecutor;
 
         [SerializeField] string overrideSessionName;
 
@@ -34,8 +44,13 @@ namespace Main
             //スポナーの位置を決定しているTransformを取得し、Controllerにわたす
             //ControllerによってTransformの数だけEnemySpawnerがインスタンス化され
             //Controllerがそれらの責任を負う
+            _enemySpawnerTransformContainer = new SpawnerTransformContainer("EnemySpawnerTransform");
             _enemySpawnerTransformContainer.AddRangeByTag();
             _enemySpawnersBatchExecutor = new EnemySpawnersBatchExecutor(Runner, _enemySpawnerTransformContainer);
+            
+            _boss1SpawnerTransformContainer = new SpawnerTransformContainer("BossSpawnerTransform");
+            _boss1SpawnerTransformContainer.AddRangeByTag();
+            _boss1SpawnersBatchExecutor = new Boss1SpawnersBatchExecutor(Runner, _boss1SpawnerTransformContainer);
 
             Debug.Log("Please press F1 to start spawning");
 
@@ -69,6 +84,7 @@ namespace Main
             if (Input.GetKeyDown(KeyCode.F1))
             {
                 _enemySpawnersBatchExecutor.StartSimpleSpawner(_networkEnemyContainer);
+                _boss1SpawnersBatchExecutor.StartSimpleSpawner(_boss1Container);
                 Debug.Log("Spawn Loop was Started");
             }
             else if (Input.GetKeyDown(KeyCode.F2))
@@ -87,5 +103,38 @@ namespace Main
                     });
             }
         }
+        
+        [SerializeField] NetworkPrefabRef boss1Prefab; // 本来はResourceフォルダかAddressable(?)から取得する
+
+        bool _isSetupComplete;
+
+        enum StateUnderTest
+        {
+            Tackle,
+            SpitOut,
+            Vacuum,
+            Jump,
+            Random
+        }
+
+
+        void SpawnBoss1dads()
+        {
+            var boss1 = SpawnBoss1();
+            var actionSelector = new RandomAttackSelector(); // アクションの決定方法はランダム
+            boss1.Init(actionSelector);
+        }
+        
+
+        Boss1Controller_Net SpawnBoss1()
+        {
+            var position = gameObject.transform.position;
+            var boss1Obj = Runner.Spawn(boss1Prefab, position, Quaternion.identity, PlayerRef.None);
+            var boss1 = boss1Obj.GetComponent<Boss1Controller_Net>();
+            return boss1;
+        }
+
+
+        
     }
 }

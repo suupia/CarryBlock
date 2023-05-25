@@ -17,7 +17,7 @@ namespace Enemy
         // Tmp
         [Networked] public int Hp { get; set; }
         
-        public Action OnDespawn = () => { };
+        public Action OnDespawn = () => { }; // EnemyContainerから削除する処理が入る
         
         readonly float _detectionRange = 30;
         

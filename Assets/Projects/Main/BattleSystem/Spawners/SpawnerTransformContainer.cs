@@ -8,13 +8,14 @@ namespace Main
 {
     public class SpawnerTransformContainer
     {
-        const string SpawnerTransformTagName = "SpawnerTransform";
+        readonly string _spawnerTransformTagName = "SpawnerTransform";
 
         readonly List<Transform> _transforms;
         public IEnumerable<Transform> Transforms => _transforms;
 
-        public SpawnerTransformContainer()
+        public SpawnerTransformContainer(string spawnerTransformTagName)
         {
+            _spawnerTransformTagName = spawnerTransformTagName;
             _transforms = new List<Transform>();
         }
 
@@ -23,10 +24,10 @@ namespace Main
             _transforms = transforms;
         }
 
-        public void AddRangeByTag(string tagName = SpawnerTransformTagName)
+        public void AddRangeByTag()
         {
             var transforms = GameObject
-                .FindGameObjectsWithTag(tagName)
+                .FindGameObjectsWithTag(_spawnerTransformTagName)
                 .Map(g => g.transform);
 
             _transforms.AddRange(transforms);

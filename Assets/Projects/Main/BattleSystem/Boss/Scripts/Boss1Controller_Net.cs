@@ -5,6 +5,7 @@ using Fusion;
 using JetBrains.Annotations;
 using Main;
 using UnityEngine;
+using System;
 
 #nullable  enable
 
@@ -40,6 +41,8 @@ namespace Boss
         IBoss1State _beforeState;
 
          Transform? _targetUnit;
+         
+         public Action OnDespawn = () => { }; // EnemyContainerから削除する処理が入る
 
         // For Debug
         [SerializeField] bool showGizmos;
@@ -82,8 +85,8 @@ namespace Boss
             
             // Instantiate
             var prefab = _modelPrefab;
-            var modelObject = Instantiate(prefab, gameObject.transform, modelParent);
-            
+            var modelObject = Instantiate(prefab, modelParent);
+           
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
 
             _isInitialized = true;
@@ -196,6 +199,7 @@ namespace Boss
         void OnDefeated()
         {
             // ボスを倒したときのドロップアイテムを出す　c.f. EnemyController
+            OnDespawn();
             Runner.Despawn(Object);
         }
         

@@ -6,7 +6,7 @@ namespace Main.Tests
     public class TestInitializer : SimulationBehaviour
     {
         readonly NetworkEnemyContainer _networkEnemyContainer = new();
-        readonly SpawnerTransformContainer _enemySpawnerTransformContainer = new();
+         SpawnerTransformContainer _enemySpawnerTransformContainer;
         EnemySpawnersBatchExecutor _enemySpawnersBatchExecutor;
 
         [SerializeField] string overrideSessionName;
@@ -33,6 +33,7 @@ namespace Main.Tests
             //スポナーの位置を決定しているTransformを取得し、Controllerにわたす
             //ControllerによってTransformの数だけEnemySpawnerがインスタンス化され
             //Controllerがそれらの責任を負う
+            _enemySpawnerTransformContainer = new SpawnerTransformContainer("SpawnerTransform");
             _enemySpawnerTransformContainer.AddRangeByTag();
             _enemySpawnersBatchExecutor = new EnemySpawnersBatchExecutor(Runner, _enemySpawnerTransformContainer);
 
