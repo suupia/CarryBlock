@@ -19,14 +19,14 @@ public class NetworkWaveTimer : NetworkBehaviour
     public void Init()
     {
         _isInitialized = true;
-        tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime); // ここに書くの良くないかも
+        // tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime); // ここに書くの良くないかも
     }
 
     public override void FixedUpdateNetwork()
     {
         if (_isInitialized == false) return;
         // if(Object?.IsValid == false) return;
-        // if(tickTimer.ExpiredOrNotRunning(Runner)) tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime);
+        if(tickTimer.ExpiredOrNotRunning(Runner)) tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime);
         _waveTimer.tickTimer = tickTimer;
         _waveTimer.NotifyObservers(Runner);
     }

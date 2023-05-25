@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Projects/Main/BattleSystem/Boss/Tests/Test.unity
     guid: 74638b9a0e6a074419c9864b60e09898
   - enabled: 1
