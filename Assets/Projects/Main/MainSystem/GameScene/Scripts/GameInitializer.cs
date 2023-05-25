@@ -84,7 +84,13 @@ namespace Main
             if (Input.GetKeyDown(KeyCode.F1))
             {
                 _enemySpawnersBatchExecutor.StartSimpleSpawner(_networkEnemyContainer);
-                _boss1SpawnersBatchExecutor.StartSimpleSpawner(_boss1Container);
+                _boss1SpawnersBatchExecutor.StartSimpleSpawner(
+                    _boss1Container,
+                    startSimpleSpawnerDelegate:(_, _) => new StartSimpleSpawnerRecord()
+                    {
+                        Index = 0,
+                        Interval = 10f,
+                    });
                 Debug.Log("Spawn Loop was Started");
             }
             else if (Input.GetKeyDown(KeyCode.F2))

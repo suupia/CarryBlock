@@ -28,7 +28,7 @@ namespace Main
 
         readonly IPrefabSpawner<Boss1Controller_Net> _boss1PrefabSpawner;
 
-        Boss1SpawnerRecord _record;
+        readonly Boss1SpawnerRecord _record;
 
         public Boss1Spawner(NetworkRunner runner)
         {
@@ -83,7 +83,7 @@ namespace Main
     public class Boss1Container
     {
         readonly List<Boss1Controller_Net> bosses = new();
-        public int MaxBossCount { get; set; } = 3;
+        public int MaxBossCount { get; set; } = 2;
         public IEnumerable<Boss1Controller_Net> Bosses => bosses;
 
         public void AddBoss(Boss1Controller_Net enemyController)

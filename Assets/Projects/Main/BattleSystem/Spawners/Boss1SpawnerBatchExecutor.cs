@@ -14,12 +14,12 @@ namespace Main
     /// </summary>
     public class Boss1SpawnersBatchExecutor
     {
-        readonly List<Boss1Spawner> _enemySpawners;
+        readonly List<Boss1Spawner> _bossSpawners;
         readonly StartSimpleSpawnerRecord _defaultRecord = new();
 
         public Boss1SpawnersBatchExecutor(NetworkRunner runner, SpawnerTransformContainer container)
         {
-            _enemySpawners = container.Transforms
+            _bossSpawners = container.Transforms
                 .Select(st => new Boss1Spawner(runner, 
                     new Boss1Spawner.Boss1SpawnerRecord
                     {
@@ -31,7 +31,7 @@ namespace Main
 
         public void CancelSpawning()
         {
-            _enemySpawners.ForEach(s => s.CancelSpawning());
+            _bossSpawners.ForEach(s => s.CancelSpawning());
         }
 
         /// <summary>
@@ -45,9 +45,9 @@ namespace Main
             bool stopBeforeSpawn = true,
             Func<int, Boss1Spawner, StartSimpleSpawnerRecord> startSimpleSpawnerDelegate = null)
         {
-            if (_enemySpawners.Count == 0)
+            if (_bossSpawners.Count == 0)
             {
-                Debug.LogWarning("EnemySpawners is empty. No enemies will be spawned");
+                Debug.LogWarning("BossSpawners is empty. No bosses will be spawned");
             }
 
             if (stopBeforeSpawn)
@@ -55,9 +55,9 @@ namespace Main
                 CancelSpawning();
             }
 
-            for (var i = 0; i < _enemySpawners.Count; i++)
+            for (var i = 0; i < _bossSpawners.Count; i++)
             {
-                var spawner = _enemySpawners[i];
+                var spawner = _bossSpawners[i];
                 var record = startSimpleSpawnerDelegate?.Invoke(i, spawner) ?? _defaultRecord;
                 var _ = spawner.StartSimpleSpawner(record.Index, record.Interval, networkEnemyContainer);
             }
