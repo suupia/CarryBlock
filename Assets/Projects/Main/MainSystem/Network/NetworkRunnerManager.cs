@@ -8,7 +8,8 @@ using Fusion;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Serialization;
-using Random = UnityEngine.Random;
+
+#nullable enable
 
 namespace Main
 {
@@ -16,15 +17,15 @@ namespace Main
 // シーン上にNetworkRunnerがないならインスタンス化し、runner.StartGame()を実行
 public class NetworkRunnerManager : MonoBehaviour
 {
-    [SerializeField] NetworkRunner networkRunner;
-    [SerializeField] NetworkSceneManagerDefault networkSceneManagerDefault;
-    [SerializeField] NetworkObjectPoolDefault networkObjectPoolDefault;
-    public NetworkRunner Runner => _runner;
-    NetworkRunner _runner;
-    public bool IsReady => _runner.SceneManager.IsReady(_runner);
+    [SerializeField] NetworkRunner? networkRunner;
+    [SerializeField] NetworkSceneManagerDefault? networkSceneManagerDefault;
+    [SerializeField] NetworkObjectPoolDefault? networkObjectPoolDefault;
+    public NetworkRunner? Runner => _runner;
+    NetworkRunner? _runner;
+    public bool IsReady => _runner?.SceneManager.IsReady(_runner) ?? false;
 
     [SerializeField] private bool autoStart;
-    [SerializeField] private string overrideRoomName;
+    [SerializeField] private string? overrideRoomName;
     private async void Start()
     {
         if (autoStart) await AttemptStartScene(overrideRoomName);
