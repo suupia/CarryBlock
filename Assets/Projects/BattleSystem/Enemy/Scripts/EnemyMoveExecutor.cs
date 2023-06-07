@@ -4,10 +4,10 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Main;
 using Nuts.BattleSystem.Boss.Scripts;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;
+using Nuts.BattleSystem.Move.Scripts;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts
+namespace Nuts.BattleSystem.Enemy.Scripts
 {
     /// <summary>
     /// 何もしないIEnemyMoveExecutorの実装クラス

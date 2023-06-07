@@ -3,7 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Scripts
+namespace Nuts.BattleSystem.Enemy.Scripts.Player.Scripts
 {
     public class ReturnToMainBaseGauge
     {

@@ -1,7 +1,7 @@
 ﻿using Main;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners
+namespace Nuts.BattleSystem.Enemy.Scripts.Spawners
 {
     public class ComponentPrefabInstantiate<T> where  T : Component
     {

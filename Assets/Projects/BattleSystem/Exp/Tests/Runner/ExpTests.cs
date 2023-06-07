@@ -1,6 +1,7 @@
 using NUnit.Framework;
+using Nuts.BattleSystem.Exp.Scripts;
 
-namespace Nuts.Projects.BattleSystem.Exp.Tests.Runner
+namespace Nuts.BattleSystem.Exp.Tests
 {
     public class ExpTests
     {

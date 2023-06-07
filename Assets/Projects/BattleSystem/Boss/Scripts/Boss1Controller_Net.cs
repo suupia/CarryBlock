@@ -6,7 +6,7 @@ using Fusion;
 using NetworkUtility.ObjectPool;
 using Nuts.BattleSystem.Decoration.Scripts;
 using Nuts.Projects.BattleSystem.Decoration.Scripts;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Attack;
+using Nuts.BattleSystem.Enemy.Scripts.Player.Attack;
 using UnityEngine;
 
 namespace Nuts.BattleSystem.Boss.Scripts

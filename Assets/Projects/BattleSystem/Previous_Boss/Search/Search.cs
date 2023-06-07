@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Search
+namespace Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Search
 {
     public interface IBoss1Search
     {

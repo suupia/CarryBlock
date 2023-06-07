@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Attack.TargetAttack
+namespace Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack.TargetAttack
 {
     /// <summary>
     /// attackで指定した攻撃を行う

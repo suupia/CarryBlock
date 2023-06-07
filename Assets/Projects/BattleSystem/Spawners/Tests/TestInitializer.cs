@@ -1,6 +1,6 @@
 ﻿using Fusion;
 using NetworkUtility.NetworkRunnerManager;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners;
+using Nuts.BattleSystem.Enemy.Scripts.Spawners;
 using UnityEngine;
 
 namespace Main.Tests

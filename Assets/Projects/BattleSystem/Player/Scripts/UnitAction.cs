@@ -3,11 +3,11 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners;
+using Nuts.BattleSystem.Enemy.Scripts;
+using Nuts.BattleSystem.Enemy.Scripts.Spawners;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Scripts
+namespace Nuts.BattleSystem.Enemy.Scripts.Player.Scripts
 {
     public interface IUnitAction
     {

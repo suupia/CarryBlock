@@ -3,12 +3,12 @@ using System.Linq;
 using Fusion;
 using Main;
 using NetworkUtility.ObjectPool;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Attack;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Scripts;
+using Nuts.BattleSystem.Move.Scripts;
+using Nuts.BattleSystem.Enemy.Scripts.Player.Attack;
+using Nuts.BattleSystem.Enemy.Scripts.Player.Scripts;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts
+namespace Nuts.BattleSystem.Enemy.Scripts
 {
     [RequireComponent(typeof(NetworkRigidbody))]
     public class NetworkEnemyController : PoolableObject , IEnemyOnAttacked

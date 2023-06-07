@@ -3,11 +3,11 @@ using Fusion;
 using Main;
 using NetworkUtility.Inputs;
 using Nuts.BattleSystem.Decoration.Scripts;
+using Nuts.BattleSystem.Enemy.Scripts;
 using Nuts.Projects.BattleSystem.Decoration.Scripts;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Scripts
+namespace Nuts.BattleSystem.Enemy.Scripts.Player.Scripts
 {
     /// <summary>
     ///     The only NetworkBehaviour to control the character.

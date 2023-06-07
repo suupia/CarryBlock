@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using Main;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
+using Nuts.BattleSystem.Enemy.Scripts;
 
 # nullable enable
 namespace BattleSystem.Boss.AttackColliders

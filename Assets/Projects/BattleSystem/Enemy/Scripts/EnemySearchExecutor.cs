@@ -4,7 +4,7 @@ using Fusion;
 using Nuts.BattleSystem.Boss.Scripts;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts
+namespace Nuts.BattleSystem.Enemy.Scripts
 {
     public class DoNothingSearch : IEnemySearchExecutor
     {

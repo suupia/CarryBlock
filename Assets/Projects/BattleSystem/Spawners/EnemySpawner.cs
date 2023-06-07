@@ -5,13 +5,13 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Scripts;
+using Nuts.BattleSystem.Enemy.Scripts;
+using Nuts.BattleSystem.Enemy.Scripts.Player.Scripts;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners
+namespace Nuts.BattleSystem.Enemy.Scripts.Spawners
 {
     public class EnemySpawner
     {

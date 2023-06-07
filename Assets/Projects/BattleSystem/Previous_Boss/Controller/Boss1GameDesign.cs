@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Main;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Attack;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Attack.TargetAttack;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Attack.TargetBufferAttack;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Search;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;
+using Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack;
+using Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack.TargetAttack;
+using Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack.TargetBufferAttack;
+using Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Search;
+using Nuts.BattleSystem.Move.Scripts;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Controller
+namespace Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Controller
 {
     public partial class Boss1Controller
     {

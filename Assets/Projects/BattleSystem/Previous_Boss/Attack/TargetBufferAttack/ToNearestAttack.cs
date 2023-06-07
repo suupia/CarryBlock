@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Attack.TargetBufferAttack
+namespace Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack.TargetBufferAttack
 {
 
     /// <summary>

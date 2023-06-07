@@ -4,7 +4,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts
+namespace Nuts.BattleSystem.Enemy.Scripts
 {
     [RequireComponent(typeof(NetworkObject))]
     public class NetworkResourceController : PoolableObject

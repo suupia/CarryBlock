@@ -4,9 +4,9 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners;
+using Nuts.BattleSystem.Enemy.Scripts;
+using Nuts.BattleSystem.Move.Scripts;
+using Nuts.BattleSystem.Enemy.Scripts.Spawners;
 using UnityEngine;
 
 namespace Nuts.BattleSystem.Boss.Scripts

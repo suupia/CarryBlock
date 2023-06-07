@@ -6,10 +6,10 @@ using Main;
 using NetworkUtility.NetworkRunnerManager;
 using Nuts.BattleSystem.BattleSystem.Boss.Tests;
 using Nuts.BattleSystem.Boss.Scripts;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners;
+using Nuts.BattleSystem.Enemy.Scripts.Spawners;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Attack.Tests
+namespace Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack.Tests
 {
     public class Boss1AttackTestInitializer : NetworkBehaviour, IPlayerJoined, IPlayerLeft
     {

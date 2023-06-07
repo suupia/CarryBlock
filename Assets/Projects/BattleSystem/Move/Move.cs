@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 using Main;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Move
+namespace Nuts.BattleSystem.Move.Scripts
 {
     public interface IMove
     {

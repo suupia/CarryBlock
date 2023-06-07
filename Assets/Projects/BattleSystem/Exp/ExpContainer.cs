@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Exp
+namespace Nuts.BattleSystem.Exp.Scripts
 {
     /// <summary>
     ///     経験値を管理するクラス。使用するかどうかは検討

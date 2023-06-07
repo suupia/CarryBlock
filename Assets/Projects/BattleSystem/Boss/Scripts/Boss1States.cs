@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Fusion;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
+using Nuts.BattleSystem.Enemy.Scripts;
 using UnityEngine;
 
 namespace Nuts.BattleSystem.Boss.Scripts

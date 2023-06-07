@@ -2,7 +2,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Move
+namespace Nuts.BattleSystem.Move.Scripts
 {
     public static class MoveUtility
     {

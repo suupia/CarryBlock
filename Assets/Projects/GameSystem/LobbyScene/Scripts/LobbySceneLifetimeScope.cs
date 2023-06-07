@@ -1,4 +1,4 @@
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
+using Nuts.BattleSystem.Enemy.Scripts;
 using VContainer;
 using VContainer.Unity;
 using Nuts.Projects.GameSystem.GameScene.Scripts;
