@@ -6,31 +6,18 @@ using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
 
 namespace Nuts.BattleSystem.Boss.Scripts
 {
-    
-    //Stateパターン
-    public interface IBoss1Context
+
+
+    public class Monster1Context : IMonster1Context
     {
-        public IBoss1State CurrentState { get; }
-        public void ChangeState(IBoss1State state);
-    }
+        public IMonster1State CurrentState { get; private set; }
 
-    public interface IBoss1State : IEnemyMove, IEnemyAction, IEnemySearch
-    {
-        IEnemyMove EnemyMove { get; } 
-        IEnemyAction EnemyAction { get; }
-    }
-
-
-    public class Boss1Context : IBoss1Context
-    {
-        public IBoss1State CurrentState { get; private set; }
-
-        public Boss1Context(IBoss1State initState)
+        public Monster1Context(IMonster1State initState)
         {
             CurrentState = initState;
         }
 
-        public void ChangeState(IBoss1State state)
+        public void ChangeState(IMonster1State state)
         {
             CurrentState = state;
         }
@@ -39,19 +26,19 @@ namespace Nuts.BattleSystem.Boss.Scripts
     /// <summary>
     ///     各IBoss1Stateの抽象クラス
     /// </summary>
-    public abstract class Boss1AbstractState : IBoss1State
+    public abstract class Monster1AbstractState : IMonster1State
     {
         public IEnemyMove EnemyMove => move;
         public IEnemyAction EnemyAction => action;
         public bool IsActionCompleted => action.IsActionCompleted;
-        Boss1Record Record { get; }
+        Monster1Record Record { get; }
         protected IEnemyAction action;
         protected IEnemyMove move;
         protected IEnemySearch search;
         
         public float ActionCoolTime => action.ActionCoolTime;
 
-        protected Boss1AbstractState(Boss1Record record)
+        protected Monster1AbstractState(Monster1Record record)
         {
             Record = record;
         }
@@ -82,10 +69,10 @@ namespace Nuts.BattleSystem.Boss.Scripts
         }
     }
     
-    public class IdleState : Boss1AbstractState
+    public class IdleState : Monster1AbstractState
     {
         readonly WanderState _wanderState;
-        public IdleState(Boss1Record record) : base(record)
+        public IdleState(Monster1Record record) : base(record)
         {
             move = new DoNothingMove();
 
@@ -95,9 +82,9 @@ namespace Nuts.BattleSystem.Boss.Scripts
         }
     }
 
-    public class WanderState : Boss1AbstractState
+    public class WanderState : Monster1AbstractState
     {
-        public WanderState(Boss1Record record) : base(record)
+        public WanderState(Monster1Record record) : base(record)
         {
             move =
                 new RandomMove(simulationInterval: 2f,
@@ -110,9 +97,9 @@ namespace Nuts.BattleSystem.Boss.Scripts
         }
     }
 
-    public class TackleState : Boss1AbstractState
+    public class TackleState : Monster1AbstractState
     {
-        public TackleState(Boss1Record record) : base(record)
+        public TackleState(Monster1Record record) : base(record)
         {
             move = new TargetMove(record.Transform,
                 new NonTorqueRegularMove(
@@ -125,12 +112,12 @@ namespace Nuts.BattleSystem.Boss.Scripts
         
     }
 
-    public class ChargeJumpState : Boss1AbstractState
+    public class ChargeJumpState : Monster1AbstractState
     {
         bool _isCharging;
         bool _isCompleted;
 
-        public ChargeJumpState(Boss1Record record) : base(record)
+        public ChargeJumpState(Monster1Record record) : base(record)
         {
             move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             
@@ -141,12 +128,12 @@ namespace Nuts.BattleSystem.Boss.Scripts
         
     }
 
-    public class JumpState : Boss1AbstractState
+    public class JumpState : Monster1AbstractState
     {
         bool _isJumping;
         bool _isCompleted;
 
-        public JumpState(Boss1Record record) : base(record)
+        public JumpState(Monster1Record record) : base(record)
         {
             move = new TargetMove(record.Transform,
                 new NonTorqueRegularMove(
@@ -159,9 +146,9 @@ namespace Nuts.BattleSystem.Boss.Scripts
         
     }
 
-    public class SpitOutState : Boss1AbstractState
+    public class SpitOutState : Monster1AbstractState
     {
-        public SpitOutState(Boss1Record record, NetworkRunner runner) : base(record)
+        public SpitOutState(Monster1Record record, NetworkRunner runner) : base(record)
         {
             move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             
@@ -172,9 +159,9 @@ namespace Nuts.BattleSystem.Boss.Scripts
         
     }
 
-    public class VacuumState : Boss1AbstractState
+    public class VacuumState : Monster1AbstractState
     {
-        public VacuumState(Boss1Record record) : base(record)
+        public VacuumState(Monster1Record record) : base(record)
         {
             move = new TargetMove(record.Transform, new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
 

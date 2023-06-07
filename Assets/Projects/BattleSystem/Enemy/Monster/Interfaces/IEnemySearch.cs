@@ -4,8 +4,6 @@ using UnityEngine;
 
 namespace Nuts.BattleSystem.Enemy.Monster.Interfaces
 {
-
-
     public interface IEnemySearch
     {
         Transform[]?  Search();

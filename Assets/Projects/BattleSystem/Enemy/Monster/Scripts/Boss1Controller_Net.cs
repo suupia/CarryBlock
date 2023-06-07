@@ -15,7 +15,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
     public class Boss1Controller_Net : PoolableObject, IEnemyOnAttacked
     {
         // Serialize Record
-        [SerializeField] Boss1Record _record;
+        [SerializeField] Monster1Record _record;
         [SerializeField] GameObject _modelPrefab; // ToDo: インスペクタで設定する作りはよくない ロードする作りに変える
         [SerializeField] Transform modelParent;
 
@@ -33,13 +33,13 @@ namespace Nuts.BattleSystem.Boss.Scripts
 
         // Domain
         IBoss1ActionSelector _actionSelector;
-        IBoss1State _idleState;
-        IBoss1State _wanderState;
-        IBoss1State _jumpState;
-        IBoss1State[] _actionStates;
-        IBoss1Context _context;
+        IMonster1State _idleState;
+        IMonster1State _wanderState;
+        IMonster1State _jumpState;
+        IMonster1State[] _actionStates;
+        IMonster1Context _context;
         
-        IBoss1State _beforeState;
+        IMonster1State _beforeState;
 
          Transform? _targetUnit;
          
@@ -74,8 +74,8 @@ namespace Nuts.BattleSystem.Boss.Scripts
             _wanderState = new WanderState(_record);
             _idleState = new IdleState(_record);
             _jumpState = new JumpState(_record);
-            _context = new Boss1Context(_idleState);
-            _actionStates = new IBoss1State[]
+            _context = new Monster1Context(_idleState);
+            _actionStates = new IMonster1State[]
             {
                 new TackleState(_record),
                 new SpitOutState(_record, Runner),

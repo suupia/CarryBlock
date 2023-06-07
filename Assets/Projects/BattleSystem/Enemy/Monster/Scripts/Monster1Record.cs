@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Nuts.BattleSystem.Boss.Scripts
 {
     [Serializable]
-    public record Boss1Record
+    public record Monster1Record
     {
         // constant fields
         public readonly float JumpTime = 2f;
@@ -29,7 +29,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         NetworkRunner _runner;
 
         // This record will initialize by SerializeField
-        Boss1Record()
+        Monster1Record()
         {
         }
 

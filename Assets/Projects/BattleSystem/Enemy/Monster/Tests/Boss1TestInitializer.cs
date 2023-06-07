@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using Fusion;
 using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
 using Nuts.BattleSystem.Boss.Scripts;
+using Nuts.BattleSystem.Enemy.Monster.Interfaces;
 using UnityEngine;
 
 namespace Nuts.BattleSystem.BattleSystem.Boss.Tests
@@ -75,26 +76,7 @@ namespace Nuts.BattleSystem.BattleSystem.Boss.Tests
 
     }
 
-    /// <summary>
-    /// 特定の攻撃状態だけを返す
-    /// </summary>
-    public class FixedActionSelector : IBoss1ActionSelector
-    {
-        readonly int _attackIndex;
 
-        public FixedActionSelector(int attackIndex)
-        {
-            _attackIndex = attackIndex;
-        }
-
-        public IBoss1State SelectAction(params IBoss1State[] attacks)
-        {
-            if (0 <= _attackIndex && _attackIndex < attacks.Length) return attacks[_attackIndex];
-
-            Debug.LogError($"_attackIndex({_attackIndex}) is out of range.");
-            return attacks[0];
-        }
-    }
     
 
 }
