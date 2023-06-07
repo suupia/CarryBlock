@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Main.Tests
+namespace Nuts.Utility.Tests
 {
     public class UtilityTests
     {
@@ -11,15 +11,15 @@ namespace Main.Tests
         {
             var vector1 = new Vector3(1, 0, 2);
             var axis1 = new Vector3(0, 0, 1);
-            Assert.That(Utility.ReflectVectorYZero(vector1, axis1), Is.EqualTo(new Vector3(-1, 0, 2)));
+            Assert.That(Scripts.NutsUtility.ReflectVectorYZero(vector1, axis1), Is.EqualTo(new Vector3(-1, 0, 2)));
 
             var vector2 = new Vector3(-1, 0, 2);
             var axis2 = new Vector3(0, 0, 1);
-            Assert.That(Utility.ReflectVectorYZero(vector2, axis2), Is.EqualTo(new Vector3(1, 0, 2)));
+            Assert.That(Scripts.NutsUtility.ReflectVectorYZero(vector2, axis2), Is.EqualTo(new Vector3(1, 0, 2)));
 
             var vector3 = new Vector3(1, 2, 2);
             var axis3 = new Vector3(0, -4, 1);
-            Assert.That(Utility.ReflectVectorYZero(vector1, axis1), Is.EqualTo(new Vector3(-1, 0, 2)));
+            Assert.That(Scripts.NutsUtility.ReflectVectorYZero(vector1, axis1), Is.EqualTo(new Vector3(-1, 0, 2)));
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace Main.Tests
             };
             var b = new double[] { 10, 12, 21 };
             var eps = 1e-15;
-            var result = Utility.GaussSeidel(matrix, b, 10000, eps);
+            var result = Scripts.NutsUtility.GaussSeidel(matrix, b, 10000, eps);
 
             Debug.Log("Error:" + result.Error);
             Debug.Log("Count:" + result.Iterator);

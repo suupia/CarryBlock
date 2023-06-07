@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
-using Main;
+using Nuts.Utility.Scripts;
 using UnityEngine;
 
 namespace Nuts.BattleSystem.Move.Scripts
@@ -139,7 +139,7 @@ namespace Nuts.BattleSystem.Move.Scripts
             Debug.Log($"ToTargetMove Transform.name{_record.Transform.name} -> {Target?.name}");
             if (Target != null)
             {
-                input = Utility.SetYToZero(Target.position - _record.Transform.position + _record.GetOffset())
+                input = NutsUtility.SetYToZero(Target.position - _record.Transform.position + _record.GetOffset())
                     .normalized;
             }
 
@@ -273,7 +273,7 @@ namespace Nuts.BattleSystem.Move.Scripts
         {
             _record.Rb.AddForce(input * _record.Acceleration, ForceMode.Acceleration);
 
-            var velocity = Utility.SetYToZero(_record.Rb.velocity);
+            var velocity = NutsUtility.SetYToZero(_record.Rb.velocity);
             if (velocity.magnitude >= _record.MaxVelocity)
             {
                 velocity = _record.MaxVelocity * velocity.normalized;

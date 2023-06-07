@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Main
+namespace Nuts.Utility.Scripts
 {
     public class RangeDetector : MonoBehaviour
     {

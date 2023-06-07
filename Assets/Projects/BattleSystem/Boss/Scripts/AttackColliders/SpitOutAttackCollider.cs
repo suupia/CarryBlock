@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
-using Main;
+using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts;
 
 # nullable enable

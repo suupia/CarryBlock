@@ -1,5 +1,5 @@
 using Fusion;
-using Main;
+using Nuts.Utility.Scripts;
 using UnityEngine;
 
 namespace Nuts.BattleSystem.Spawners.Scripts

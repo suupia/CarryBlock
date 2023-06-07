@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Fusion;
-using Main;
+using Nuts.Utility.Scripts;
 using Nuts.NetworkUtility.ObjectPool.Scripts;
 using Nuts.BattleSystem.Move.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts.Player.Attack;
@@ -93,7 +93,7 @@ namespace Nuts.BattleSystem.Enemy.Scripts
             // Debug.Log($"players = {string.Join(",", players)}");
             if (players.Any())
             {
-                _targetPlayerObj = Utility.ChooseRandomObject(players);
+                _targetPlayerObj = NutsUtility.ChooseRandomObject(players);
                 _state = EnemyState.ChasingPlayer;
             }
             else
@@ -104,7 +104,7 @@ namespace Nuts.BattleSystem.Enemy.Scripts
 
         void Chase()
         {
-            var direction = Utility.SetYToZero(_targetPlayerObj.transform.position - gameObject.transform.position)
+            var direction = NutsUtility.SetYToZero(_targetPlayerObj.transform.position - gameObject.transform.position)
                 .normalized;
             _move.Move(direction);
         }

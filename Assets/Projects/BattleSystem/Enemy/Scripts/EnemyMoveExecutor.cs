@@ -2,7 +2,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Main;
+using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Boss.Scripts;
 using Nuts.BattleSystem.Move.Scripts;
 using UnityEngine;
@@ -179,7 +179,7 @@ namespace Nuts.BattleSystem.Enemy.Scripts
             var unitInput = input.normalized;
             _rb.AddForce(unitInput * acceleration, ForceMode.Acceleration);
 
-            var velocity = Utility.SetYToZero(_rb.velocity);
+            var velocity = NutsUtility.SetYToZero(_rb.velocity);
             if (velocity.magnitude >= maxVelocity)
             {
                 velocity = maxVelocity * velocity.normalized;

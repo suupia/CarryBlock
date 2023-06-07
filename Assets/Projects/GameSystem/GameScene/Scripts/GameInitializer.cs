@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Main;
+using Nuts.Utility.Scripts;
 using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
 using Nuts.BattleSystem.Boss.Scripts;
 using Nuts.BattleSystem.Spawners.Scripts;

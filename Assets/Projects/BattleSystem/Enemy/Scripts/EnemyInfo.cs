@@ -1,4 +1,4 @@
-using Main;
+using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Move.Scripts;
 using Nuts.BattleSystem.Player.Scripts;
 using UnityEngine;

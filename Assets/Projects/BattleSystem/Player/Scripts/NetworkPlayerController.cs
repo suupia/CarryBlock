@@ -1,4 +1,4 @@
-using Main;
+using Nuts.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;

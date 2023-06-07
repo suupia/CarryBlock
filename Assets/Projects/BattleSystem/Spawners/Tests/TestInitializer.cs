@@ -3,7 +3,7 @@ using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
 using Nuts.BattleSystem.Spawners.Scripts;
 using UnityEngine;
 
-namespace Main.Tests
+namespace Nuts.Utility.Tests
 {
     public class TestInitializer : SimulationBehaviour
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Main;
+using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Boss.Scripts;
 using UnityEngine;
 using Random = UnityEngine.Random;

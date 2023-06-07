@@ -1,6 +1,6 @@
 using System;
 using Fusion;
-using Main;
+using Nuts.Utility.Scripts;
 using Nuts.NetworkUtility.Inputs.Scripts;
 using Nuts.BattleSystem.Decoration.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts;

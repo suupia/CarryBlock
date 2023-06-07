@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Main;
+using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts;
 using Nuts.BattleSystem.Spawners.Scripts;
 using UnityEngine;
@@ -101,7 +101,7 @@ namespace Nuts.BattleSystem.Player.Scripts
         bool AttemptCollectResource()
         {
             var colliders =
-                Physics.OverlapSphere(Utility.SetYToZero(_playerObj.transform.position), _detectionRange);
+                Physics.OverlapSphere(NutsUtility.SetYToZero(_playerObj.transform.position), _detectionRange);
             Debug.Log($"colliders.Length = {colliders.Length}, colliders = {colliders}");
             var resources = colliders.Where(collider => collider.CompareTag("Resource"))
                 .Where(collider => collider.gameObject.GetComponent<NetworkResourceController>().canAccess)
@@ -159,7 +159,7 @@ namespace Nuts.BattleSystem.Player.Scripts
         bool IsNearMainBase()
         {
             var colliders =
-                Physics.OverlapSphere(Utility.SetYToZero(_playerObj.transform.position), _submitResourceRange);
+                Physics.OverlapSphere(NutsUtility.SetYToZero(_playerObj.transform.position), _submitResourceRange);
             var mainBases = colliders.Where(collider => collider.CompareTag("MainBase"))
                 .Select(collider => collider.gameObject);
             Debug.Log($"IsNearMainBase():{mainBases.Any()}");

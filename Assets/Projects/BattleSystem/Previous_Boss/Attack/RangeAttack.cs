@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Object = UnityEngine.Object;
 
-namespace Main
+namespace Nuts.Utility.Scripts
 {
     /// <summary>
     /// 範囲攻撃をする。Radiusだけ渡せば、Attackを呼び出したタイミングで機能する

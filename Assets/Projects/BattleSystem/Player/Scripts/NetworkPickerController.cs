@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Main;
 using Nuts.NetworkUtility.ObjectPool.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts;
 using UnityEngine;
+using Nuts.Utility.Scripts;
 
 namespace Nuts.BattleSystem.Player.Scripts
 {
@@ -202,7 +202,7 @@ namespace Nuts.BattleSystem.Player.Scripts
         {
             if (state != MoveState.ForwardNormal)
             {
-                var dummyEndPos = Utility.SetYToZero(info.pickerObj.transform.position) + moveVector;
+                var dummyEndPos = NutsUtility.SetYToZero(info.pickerObj.transform.position) + moveVector;
                 Reset(MoveState.ForwardNormal, dummyEndPos);
             }
 
@@ -230,24 +230,24 @@ namespace Nuts.BattleSystem.Player.Scripts
         void Reset(MoveState state, Vector3 endPos)
         {
             this.state = state;
-            var pickerPos = Utility.SetYToZero(info.pickerObj.transform.position);
-            initDeltaVector = Utility.SetYToZero(endPos - pickerPos); // This vector is assumed to not be zero
+            var pickerPos = NutsUtility.SetYToZero(info.pickerObj.transform.position);
+            initDeltaVector = NutsUtility.SetYToZero(endPos - pickerPos); // This vector is assumed to not be zero
         }
 
         void Move(Vector3 moveVector, float acceleration, float maxVelocity)
         {
-            var directionVec = Utility.SetYToZero(moveVector).normalized;
+            var directionVec = NutsUtility.SetYToZero(moveVector).normalized;
             AddForceByLimitVelocity(acceleration * directionVec, maxVelocity);
         }
 
         void AccelerateMove(Vector3 endPos, float acceleration, float maxVelocity)
         {
-            var pickerPos = Utility.SetYToZero(info.pickerObj.transform.position);
-            var pickerVelocity = Utility.SetYToZero(info.pickerRd.velocity);
+            var pickerPos = NutsUtility.SetYToZero(info.pickerObj.transform.position);
+            var pickerVelocity = NutsUtility.SetYToZero(info.pickerRd.velocity);
 
-            var deltaVector = Utility.SetYToZero(endPos - pickerPos); // This vector is assumed to not be zero
+            var deltaVector = NutsUtility.SetYToZero(endPos - pickerPos); // This vector is assumed to not be zero
 
-            var directionVec = Utility.SetYToZero(deltaVector).normalized;
+            var directionVec = NutsUtility.SetYToZero(deltaVector).normalized;
             var nextVelocity =
                 maxVelocity *
                 directionVec; // Calculate the acceleration so that the velocity in the next frame aligns with the direction of deltaVector
@@ -264,9 +264,9 @@ namespace Nuts.BattleSystem.Player.Scripts
 
         void MoveToFixedPos(Vector3 endPos, float acceleration, float maxVelocity)
         {
-            var pickerPos = Utility.SetYToZero(info.pickerObj.transform.position);
-            var pickerVelocity = Utility.SetYToZero(info.pickerRd.velocity);
-            var deltaVector = Utility.SetYToZero(endPos - pickerPos); // This vector is assumed to not be zero
+            var pickerPos = NutsUtility.SetYToZero(info.pickerObj.transform.position);
+            var pickerVelocity = NutsUtility.SetYToZero(info.pickerRd.velocity);
+            var deltaVector = NutsUtility.SetYToZero(endPos - pickerPos); // This vector is assumed to not be zero
             var distance = deltaVector.magnitude;
 
             if (Mathf.Abs(Vector3.Angle(initDeltaVector, deltaVector)) >= 90) isPast = true;
@@ -288,7 +288,7 @@ namespace Nuts.BattleSystem.Player.Scripts
                 var preAccelerationVector = 2 / Mathf.Pow(info.estimatedStopTime, 2) *
                                             (toEndVector -
                                              prevVelocity * info.estimatedStopTime); // Note that it is a constant.
-                var accelerationVector = Utility.SetYToZero(preAccelerationVector);
+                var accelerationVector = NutsUtility.SetYToZero(preAccelerationVector);
                 //Debug.Log($"accelerationVector:{accelerationVector}, accelerationVector.magnitude:{accelerationVector.magnitude}");
                 info.pickerRd.AddForce(accelerationVector, ForceMode.Acceleration);
             }
@@ -351,7 +351,7 @@ namespace Nuts.BattleSystem.Player.Scripts
 
         void AttemptTakeResource(IPickerContext context)
         {
-            Collider[] colliders = Physics.OverlapSphere(Utility.SetYToZero(info.pickerObj.transform.position),
+            Collider[] colliders = Physics.OverlapSphere(NutsUtility.SetYToZero(info.pickerObj.transform.position),
                 info.detectionRange);
             var resources = colliders.Where(collider => collider.CompareTag("Resource"))
                 .Where(collider => collider.gameObject.GetComponent<NetworkResourceController>().canAccess)
@@ -387,7 +387,7 @@ namespace Nuts.BattleSystem.Player.Scripts
 
         bool CanSwitchState()
         {
-            var vector = Utility.SetYToZero(info.playerObj.transform.position - info.pickerObj.transform.position);
+            var vector = NutsUtility.SetYToZero(info.playerObj.transform.position - info.pickerObj.transform.position);
             return vector.magnitude <= info.returnToPlayerRange;
         }
     }
@@ -410,7 +410,7 @@ namespace Nuts.BattleSystem.Player.Scripts
         bool CanSwitchState()
         {
             var vector =
-                Utility.SetYToZero(info.targetResourceObj.transform.position - info.pickerObj.transform.position);
+                NutsUtility.SetYToZero(info.targetResourceObj.transform.position - info.pickerObj.transform.position);
             return vector.magnitude <= info.collectRange;
         }
     }
@@ -507,7 +507,7 @@ namespace Nuts.BattleSystem.Player.Scripts
 
         bool CanSwitchState()
         {
-            var vector = Utility.SetYToZero(GetNearestBasePos() - info.pickerObj.transform.position);
+            var vector = NutsUtility.SetYToZero(GetNearestBasePos() - info.pickerObj.transform.position);
             return vector.magnitude <= info.returnToMainBaseRange;
         }
     }

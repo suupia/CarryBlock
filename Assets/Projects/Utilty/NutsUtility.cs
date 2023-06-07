@@ -6,9 +6,9 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Main
+namespace Nuts.Utility.Scripts
 {
-    public class Utility
+    public class NutsUtility
     {
         public static Vector3 SetYToZero(Vector3 vector)
         {

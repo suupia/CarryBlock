@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Main;
+using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack;
 using Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack.TargetAttack;
 using Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack.TargetBufferAttack;

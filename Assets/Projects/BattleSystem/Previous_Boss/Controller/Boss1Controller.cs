@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Fusion;
-using Main;
+using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Decoration.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack;
 using Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Search;

@@ -1,5 +1,5 @@
 using Fusion;
-using Main;
+using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts;
 using Nuts.BattleSystem.Player.Scripts;
 using TMPro;

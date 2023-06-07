@@ -1,7 +1,7 @@
 using VContainer;
 using VContainer.Unity;
 using Nuts.GameSystem.GameScene.Scripts;
-using Main;
+using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts;
 using Nuts.BattleSystem.Player.Scripts;
 
