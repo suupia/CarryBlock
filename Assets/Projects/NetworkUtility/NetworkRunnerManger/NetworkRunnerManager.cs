@@ -11,23 +11,21 @@ using Nuts.NetworkUtility.Inputs.Scripts;
 using UnityEngine.Serialization;
 using  Nuts.NetworkUtility.ObjectPool.Scripts;
 
-#nullable enable
-
 namespace Nuts.NetworkUtility.NetworkRunnerManager.Scripts
 {
     // 全てのシーンにこれを配置しておけば、NetworkRunnerを使える
 // シーン上にNetworkRunnerがないならインスタンス化し、runner.StartGame()を実行
 public class NetworkRunnerManager : MonoBehaviour
 {
-    [SerializeField] NetworkRunner? networkRunner;
-    [SerializeField] NetworkSceneManagerDefault? networkSceneManagerDefault;
-    [SerializeField] NetworkObjectPoolDefault? networkObjectPoolDefault;
-    public NetworkRunner? Runner => _runner;
-    NetworkRunner? _runner;
-    public bool IsReady => _runner?.SceneManager.IsReady(_runner) ?? false;
+    [SerializeField] NetworkRunner networkRunner;
+    [SerializeField] NetworkSceneManagerDefault networkSceneManagerDefault;
+    [SerializeField] NetworkObjectPoolDefault networkObjectPoolDefault;
+    public NetworkRunner Runner => _runner;
+    NetworkRunner _runner;
+    public bool IsReady => Runner != null && Runner.SceneManager.IsReady(_runner);
 
     [SerializeField] private bool autoStart;
-    [SerializeField] private string? overrideRoomName;
+    [SerializeField] private string overrideRoomName;
     private async void Start()
     {
         if (autoStart) await AttemptStartScene(overrideRoomName);

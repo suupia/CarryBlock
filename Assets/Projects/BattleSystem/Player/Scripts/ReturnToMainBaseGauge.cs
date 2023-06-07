@@ -36,7 +36,7 @@ namespace Nuts.BattleSystem.Player.Scripts
                 await UniTask.Delay(TimeSpan.FromSeconds(_fillTime), cancellationToken: _token);
                 ReturnToMainBase();
             }
-            catch (OperationCanceledException e)
+            catch (OperationCanceledException)
             {
                 Debug.Log("Canceled ReturnToMainBase");
                 IsReturnToMainBase = false;
