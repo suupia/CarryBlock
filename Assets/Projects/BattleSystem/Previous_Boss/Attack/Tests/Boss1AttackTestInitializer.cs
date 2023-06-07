@@ -75,10 +75,10 @@ namespace Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack.Tests
                     var boss1 = SpawnBoss1();
                     if (i == stateEnums.Length - 1)
                         // Random
-                        boss1.Init(new RandomAttackSelector());
+                        boss1.Init(new RandomActionSelector());
                     else
                         // Fixed
-                        boss1.Init(new FixedAttackSelector(i));
+                        boss1.Init(new FixedActionSelector(i));
                 }
         }
         

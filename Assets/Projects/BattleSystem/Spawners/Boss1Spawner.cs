@@ -74,7 +74,7 @@ namespace Nuts.BattleSystem.Spawners.Scripts
             var networkObject = _boss1PrefabSpawner.SpawnPrefab(position, Quaternion.identity, PlayerRef.None);
             var boss = networkObject.GetComponent<Boss1Controller_Net>();
             boss.OnDespawn += () => enemyContainer.RemoveBoss(boss);
-            var actionSelector = new RandomAttackSelector(); // アクションの決定方法はランダム
+            var actionSelector = new RandomActionSelector(); // アクションの決定方法はランダム
             boss.Init(actionSelector);
             enemyContainer.AddBoss(boss);
         }

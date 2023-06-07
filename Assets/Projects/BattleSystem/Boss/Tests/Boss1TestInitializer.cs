@@ -51,7 +51,7 @@ namespace Nuts.BattleSystem.BattleSystem.Boss.Tests
                     var boss1 = SpawnBoss1();
                     if (i == stateEnums.Length - 1)
                         // Random
-                        boss1.Init(new RandomAttackSelector());
+                        boss1.Init(new RandomActionSelector());
                     else
                         // Fixed
                         boss1.Init(CreateTestAttackSelector(i));
@@ -67,9 +67,9 @@ namespace Nuts.BattleSystem.BattleSystem.Boss.Tests
             return boss1;
         }
 
-        IBoss1AttackSelector CreateTestAttackSelector(int index)
+        IBoss1ActionSelector CreateTestAttackSelector(int index)
         {
-            return new FixedAttackSelector(index);
+            return new FixedActionSelector(index);
         }
 
 
@@ -78,11 +78,11 @@ namespace Nuts.BattleSystem.BattleSystem.Boss.Tests
     /// <summary>
     /// 特定の攻撃状態だけを返す
     /// </summary>
-    public class FixedAttackSelector : IBoss1AttackSelector
+    public class FixedActionSelector : IBoss1ActionSelector
     {
         readonly int _attackIndex;
 
-        public FixedAttackSelector(int attackIndex)
+        public FixedActionSelector(int attackIndex)
         {
             _attackIndex = attackIndex;
         }

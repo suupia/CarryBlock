@@ -133,7 +133,7 @@ namespace Nuts.GameSystem.GameScene.Scripts
         void SpawnBoss1dads()
         {
             var boss1 = SpawnBoss1();
-            var actionSelector = new RandomAttackSelector(); // アクションの決定方法はランダム
+            var actionSelector = new RandomActionSelector(); // アクションの決定方法はランダム
             boss1.Init(actionSelector);
         }
         

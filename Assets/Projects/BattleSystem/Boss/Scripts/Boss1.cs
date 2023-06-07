@@ -100,7 +100,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
     {
         public float ActionCoolTime => _context.CurrentState.ActionCoolTime;
         readonly Boss1Record _record;
-        readonly IBoss1AttackSelector _actionSelector;
+        readonly IBoss1ActionSelector _actionSelector;
         readonly IBoss1State[] _actionStates;
         readonly IBoss1State _idleState;
         readonly IBoss1Context _context;
@@ -108,7 +108,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
 
         Transform? _targetUnit;
 
-        public ExampleStateEnemy(NetworkRunner runner, Boss1Record record, IBoss1AttackSelector actionSelector)
+        public ExampleStateEnemy(NetworkRunner runner, Boss1Record record, IBoss1ActionSelector actionSelector)
         {
             _record = record;
             _actionSelector = actionSelector;

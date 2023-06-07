@@ -31,7 +31,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         Boss1DecorationDetector _decorationDetector;
 
         // Domain
-        IBoss1AttackSelector _actionSelector;
+        IBoss1ActionSelector _actionSelector;
         IBoss1State _idleState;
         IBoss1State _wanderState;
         IBoss1State _jumpState;
@@ -52,10 +52,10 @@ namespace Nuts.BattleSystem.Boss.Scripts
 
         // Initializerから注入したいオブジェクトを受け取る
         // よっぽどのことがない限り、初期化の処理はRPCの方に書いた方が安全
-        public void Init(IBoss1AttackSelector attackSelector)
+        public void Init(IBoss1ActionSelector actionSelector)
         {
             // Init Host Domain
-            _actionSelector = attackSelector;
+            _actionSelector = actionSelector;
 
             Hp = 10; // 一時的にここに書いておく
 
