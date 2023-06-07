@@ -4,7 +4,6 @@ using System.Threading;
 using Main;
 using UnityEngine;
 using TMPro;
-using Cysharp.Threading.Tasks;
 using ExitGames.Client.Photon;
 using UnityEngine.Serialization;
 

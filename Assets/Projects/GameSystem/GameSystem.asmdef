@@ -1,13 +1,14 @@
 {
-    "name": "SceneSystem",
+    "name": "GameSystem",
     "rootNamespace": "",
     "references": [
         "GUID:476e5a37a6f1144719c702a3016d4704",
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
         "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:23eed6c2401dca1419d1ebd180e58c5a",
         "GUID:28fbbd0c3dd00114a966a5857c8db17c",
-        "GUID:8e7495f7261b7e34c92d6f695c58777a",
-        "GUID:23eed6c2401dca1419d1ebd180e58c5a"
+        "GUID:6ffa9e38294648c4fb6b8c2748395d16",
+        "GUID:5be020ac2bcb12c46ab9c5b8637eb933"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
