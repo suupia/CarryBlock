@@ -1,4 +1,4 @@
-using NetworkUtility.ObjectPool;
+using Nuts.NetworkUtility.ObjectPool.Scripts;
 using UnityEngine;
 
 namespace Nuts.BattleSystem.Enemy.Scripts

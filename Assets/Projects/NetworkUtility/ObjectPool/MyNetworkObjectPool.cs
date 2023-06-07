@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace  NetworkUtility.ObjectPool
+namespace  Nuts.NetworkUtility.ObjectPool.Scripts
 {
 # nullable enable
     public class MyNetworkObjectPool

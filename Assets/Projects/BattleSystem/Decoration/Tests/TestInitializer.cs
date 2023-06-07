@@ -1,5 +1,5 @@
 using Fusion;
-using NetworkUtility.NetworkRunnerManager;
+using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
 using UnityEngine;
 
 namespace Nuts.Projects.BattleSystem.Decoration.Tests

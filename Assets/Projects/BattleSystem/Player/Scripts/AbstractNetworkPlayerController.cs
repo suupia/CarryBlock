@@ -1,7 +1,7 @@
 using System;
 using Fusion;
 using Main;
-using NetworkUtility.Inputs;
+using Nuts.NetworkUtility.Inputs.Scripts;
 using Nuts.BattleSystem.Decoration.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts;
 using Nuts.Projects.BattleSystem.Decoration.Scripts;

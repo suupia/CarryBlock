@@ -5,9 +5,9 @@ using Nuts.BattleSystem.Player.Scripts;
 using TMPro;
 using UnityEngine;
 using VContainer;
-using Nuts.Projects.GameSystem.GameScene.Scripts;
+using Nuts.GameSystem.GameScene.Scripts;
 
-namespace UI
+namespace Nuts.UISystem.Game.Scripts
 {
     public class GameSceneView : NetworkBehaviour
     {

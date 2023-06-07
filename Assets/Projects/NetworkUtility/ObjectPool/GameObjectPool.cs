@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace NetworkUtility.ObjectPool
+namespace Nuts.NetworkUtility.ObjectPool.Scripts
 {
 # nullable enable
     public class GameObjectPool

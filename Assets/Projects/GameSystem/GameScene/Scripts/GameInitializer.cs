@@ -3,13 +3,13 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
-using NetworkUtility.NetworkRunnerManager;
+using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
 using Nuts.BattleSystem.Boss.Scripts;
 using Nuts.BattleSystem.Spawners.Scripts;
-using Nuts.Projects.GameSystem.Scripts;
+using Nuts.GameSystem.Scripts;
 using UnityEngine;
 
-namespace Nuts.Projects.GameSystem.GameScene.Scripts
+namespace Nuts.GameSystem.GameScene.Scripts
 {
     public class GameInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Fusion;
 using Main;
-using NetworkUtility.ObjectPool;
+using Nuts.NetworkUtility.ObjectPool.Scripts;
 using Nuts.BattleSystem.Move.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts.Player.Attack;
 using Nuts.BattleSystem.Player.Scripts;

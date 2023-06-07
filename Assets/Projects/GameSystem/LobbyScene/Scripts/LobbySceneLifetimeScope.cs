@@ -1,9 +1,9 @@
 using Nuts.BattleSystem.Enemy.Scripts;
 using VContainer;
 using VContainer.Unity;
-using Nuts.Projects.GameSystem.GameScene.Scripts;
+using Nuts.GameSystem.GameScene.Scripts;
 
-namespace Nuts.Projects.GameSystem.LobbyScene.Scripts
+namespace Nuts.GameSystem.LobbyScene.Scripts
 {
     public sealed class LobbySceneLifetimeScope : LifetimeScope
     {

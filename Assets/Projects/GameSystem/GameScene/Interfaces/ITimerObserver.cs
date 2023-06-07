@@ -1,6 +1,6 @@
 ﻿using Fusion;
 
-namespace Nuts.Projects.GameSystem.GameScene.Interfaces
+namespace Nuts.GameSystem.GameScene.Interfaces
 {
     public interface ITimerObserver
     {

@@ -1,5 +1,5 @@
 using Fusion;
-using NetworkUtility.ObjectPool;
+using Nuts.NetworkUtility.ObjectPool.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts.Player.Attack;
 using UnityEngine;
 

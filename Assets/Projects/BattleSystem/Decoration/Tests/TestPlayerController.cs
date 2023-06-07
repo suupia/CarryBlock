@@ -1,5 +1,5 @@
 using Fusion;
-using NetworkUtility.Inputs;
+using Nuts.NetworkUtility.Inputs.Scripts;
 using Nuts.BattleSystem.Decoration.Scripts;
 using Nuts.Projects.BattleSystem.Decoration.Scripts;
 using UnityEngine;

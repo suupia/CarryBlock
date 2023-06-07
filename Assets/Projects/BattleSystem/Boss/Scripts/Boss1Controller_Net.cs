@@ -3,7 +3,7 @@
 using System;
 using System.Linq;
 using Fusion;
-using NetworkUtility.ObjectPool;
+using Nuts.NetworkUtility.ObjectPool.Scripts;
 using Nuts.BattleSystem.Decoration.Scripts;
 using Nuts.Projects.BattleSystem.Decoration.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts.Player.Attack;

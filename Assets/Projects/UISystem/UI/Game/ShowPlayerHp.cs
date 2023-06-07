@@ -7,7 +7,7 @@ using TMPro;
 using ExitGames.Client.Photon;
 using Nuts.BattleSystem.Player.Scripts;
 using UnityEngine.Serialization;
-using Nuts.Projects.GameSystem.GameScene.Scripts;
+using Nuts.GameSystem.GameScene.Scripts;
 
 
 # nullable enable

@@ -5,7 +5,7 @@ using Main;
 using Nuts.BattleSystem.Enemy.Scripts;
 using UnityEngine;
 using TMPro;
-using Nuts.Projects.GameSystem.GameScene.Scripts;
+using Nuts.GameSystem.GameScene.Scripts;
 
 # nullable enable
 public class ShowEnemyHp : MonoBehaviour

@@ -4,7 +4,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
-using NetworkUtility.ObjectPool;
+using Nuts.NetworkUtility.ObjectPool.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts;
 using UnityEngine;
 

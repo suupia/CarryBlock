@@ -1,5 +1,5 @@
 ﻿using Fusion;
-using NetworkUtility.NetworkRunnerManager;
+using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
 using Nuts.BattleSystem.Spawners.Scripts;
 using UnityEngine;
 
