@@ -1,10 +1,12 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
+using Main;
 using NetworkUtility.NetworkRunnerManager;
+using Nuts.Projects.GameSystem.Scripts;
 using UnityEngine;
 
-namespace Main
+namespace Nuts.Projects.GameSystem.LobbyScene.Scripts
 {
     [DisallowMultipleComponent]
     public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft

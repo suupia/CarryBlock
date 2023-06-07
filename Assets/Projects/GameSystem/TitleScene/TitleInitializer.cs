@@ -1,7 +1,8 @@
 using NetworkUtility.NetworkRunnerManager;
+using Nuts.Projects.GameSystem.Scripts;
 using UnityEngine;
 
-namespace Main
+namespace Nuts.Projects.GameSystem.TitleScene
 {
     public class TitleInitializer : MonoBehaviour
     {

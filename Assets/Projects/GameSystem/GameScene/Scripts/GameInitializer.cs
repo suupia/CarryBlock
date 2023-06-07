@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
 using NetworkUtility.NetworkRunnerManager;
+using Nuts.Projects.GameSystem.Scripts;
 using UnityEngine;
 
 namespace Nuts.Projects.GameSystem.GameScene.Scripts

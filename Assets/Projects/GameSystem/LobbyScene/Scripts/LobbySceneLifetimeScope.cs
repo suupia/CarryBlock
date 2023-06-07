@@ -3,7 +3,7 @@ using VContainer.Unity;
 using Enemy;
 using Nuts.Projects.GameSystem.GameScene.Scripts;
 
-namespace Main.VContainer
+namespace Nuts.Projects.GameSystem.LobbyScene.Scripts
 {
     public sealed class LobbySceneLifetimeScope : LifetimeScope
     {
