@@ -3,7 +3,7 @@ using Fusion;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Boss
+namespace Nuts.BattleSystem.Boss.Scripts
 {
     
     //Stateパターン

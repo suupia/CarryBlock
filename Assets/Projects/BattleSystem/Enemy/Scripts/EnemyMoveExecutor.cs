@@ -1,10 +1,9 @@
 # nullable enable
 using System;
 using System.Threading;
-using Boss;
 using Cysharp.Threading.Tasks;
 using Main;
-using Nuts.BattleSystem.Boss;
+using Nuts.BattleSystem.Boss.Scripts;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;
 using UnityEngine;
 

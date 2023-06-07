@@ -1,6 +1,6 @@
 using Fusion;
 using NetworkUtility.Inputs;
-using Nuts.Projects.BattleSystem.Decoration.Animations.Scripts;
+using Nuts.BattleSystem.Decoration.Scripts;
 using Nuts.Projects.BattleSystem.Decoration.Scripts;
 using UnityEngine;
 

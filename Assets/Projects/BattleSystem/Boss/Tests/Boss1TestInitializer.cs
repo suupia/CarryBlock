@@ -1,13 +1,12 @@
 using System;
 using System.Threading;
-using Boss;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using NetworkUtility.NetworkRunnerManager;
-using Nuts.BattleSystem.Boss;
+using Nuts.BattleSystem.Boss.Scripts;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Boss.Tests
+namespace Nuts.BattleSystem.BattleSystem.Boss.Tests
 {
     public class Boss1TestInitializer : NetworkBehaviour
     {

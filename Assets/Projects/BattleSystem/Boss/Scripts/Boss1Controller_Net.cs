@@ -2,15 +2,14 @@
 
 using System;
 using System.Linq;
-using Boss;
 using Fusion;
 using NetworkUtility.ObjectPool;
-using Nuts.Projects.BattleSystem.Decoration.Animations.Scripts;
+using Nuts.BattleSystem.Decoration.Scripts;
 using Nuts.Projects.BattleSystem.Decoration.Scripts;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Attack;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Boss
+namespace Nuts.BattleSystem.Boss.Scripts
 {
     public class Boss1Controller_Net : PoolableObject, IEnemyOnAttacked
     {

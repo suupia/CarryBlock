@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Boss;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
-using Nuts.BattleSystem.Boss;
+using Nuts.BattleSystem.Boss.Scripts;
 using UnityEngine;
 using Random = UnityEngine.Random;
 

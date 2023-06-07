@@ -8,7 +8,7 @@ using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
 
 # nullable enable
 
-namespace Boss
+namespace BattleSystem.Boss.AttackColliders
 {
     [RequireComponent(typeof(Collider))]
     public class TackleAttackCollider : AttackCollider

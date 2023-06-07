@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading;
-using Boss;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
@@ -10,7 +9,7 @@ using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Boss
+namespace Nuts.BattleSystem.Boss.Scripts
 {
     /// <summary>
     /// 何もしないIEnemyAttackExecutorの実装クラス

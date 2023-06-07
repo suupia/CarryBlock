@@ -2,11 +2,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Boss;
 using Fusion;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Boss
+namespace Nuts.BattleSystem.Boss.Scripts
 {
     // 以下はNetworkBehaviourのためのインターフェース
     public interface IEnemyMove

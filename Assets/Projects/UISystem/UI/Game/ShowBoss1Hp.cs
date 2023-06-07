@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Boss;
 using Nuts.Projects.GameSystem.GameScene.Scripts;
 using Main;
-using Nuts.BattleSystem.Boss;
+using Nuts.BattleSystem.Boss.Scripts;
 using UnityEngine;
 using TMPro;
 

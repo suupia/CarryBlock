@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using Boss;
 using UnityEngine;
 using Fusion;
 using Main;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
 
 # nullable enable
-namespace Boss
+namespace BattleSystem.Boss.AttackColliders
 {
     [RequireComponent(typeof(Collider))]
     public class SpitOutAttackCollider : NetworkTargetAttackCollider

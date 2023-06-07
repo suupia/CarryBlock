@@ -1,8 +1,7 @@
 # nullable enable
 using System.Collections.Generic;
-using Boss;
 using Fusion;
-using Nuts.BattleSystem.Boss;
+using Nuts.BattleSystem.Boss.Scripts;
 using UnityEngine;
 
 namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Boss
+namespace Nuts.BattleSystem.Boss.Scripts
 {
     [Serializable]
     public record Boss1Record

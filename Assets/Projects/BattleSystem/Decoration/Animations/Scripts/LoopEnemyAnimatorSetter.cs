@@ -1,7 +1,7 @@
 using Nuts.Projects.BattleSystem.Decoration.Scripts;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Decoration.Animations.Scripts
+namespace Nuts.BattleSystem.Decoration.Scripts
 {
     public class LoopEnemyAnimatorSetter : IEnemyDecoration
     {
