@@ -10,7 +10,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-namespace Nuts.BattleSystem.Enemy.Scripts.Spawners
+namespace Nuts.BattleSystem.Spawners.Scripts
 {
 
     public class Boss1Spawner

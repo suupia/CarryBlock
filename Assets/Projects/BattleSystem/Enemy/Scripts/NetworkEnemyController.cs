@@ -5,7 +5,7 @@ using Main;
 using NetworkUtility.ObjectPool;
 using Nuts.BattleSystem.Move.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts.Player.Attack;
-using Nuts.BattleSystem.Enemy.Scripts.Player.Scripts;
+using Nuts.BattleSystem.Player.Scripts;
 using UnityEngine;
 
 namespace Nuts.BattleSystem.Enemy.Scripts

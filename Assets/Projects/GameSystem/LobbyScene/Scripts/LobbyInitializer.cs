@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
 using NetworkUtility.NetworkRunnerManager;
-using Nuts.BattleSystem.Enemy.Scripts.Spawners;
+using Nuts.BattleSystem.Spawners.Scripts;
 using Nuts.Projects.GameSystem.Scripts;
 using UnityEngine;
 

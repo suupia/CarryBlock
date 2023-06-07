@@ -1,6 +1,6 @@
 using Main;
 using Nuts.BattleSystem.Move.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts.Player.Scripts;
+using Nuts.BattleSystem.Player.Scripts;
 using UnityEngine;
 
 namespace Nuts.BattleSystem.Enemy.Scripts

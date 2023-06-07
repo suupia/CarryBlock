@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using Fusion;
 using Nuts.BattleSystem.Enemy.Scripts;
 using Nuts.BattleSystem.Move.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts.Spawners;
+using Nuts.BattleSystem.Spawners.Scripts;
 using UnityEngine;
 
 namespace Nuts.BattleSystem.Boss.Scripts

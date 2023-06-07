@@ -3,7 +3,7 @@ using NetworkUtility.ObjectPool;
 using Nuts.BattleSystem.Enemy.Scripts.Player.Attack;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Enemy.Scripts.Player.Scripts
+namespace Nuts.BattleSystem.Player.Scripts
 {
     /// <summary>
     ///     とりあえずNetworkObjectとする。

@@ -1,7 +1,7 @@
 using Fusion;
 using Main;
 using Nuts.BattleSystem.Enemy.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts.Player.Scripts;
+using Nuts.BattleSystem.Player.Scripts;
 using TMPro;
 using UnityEngine;
 using VContainer;

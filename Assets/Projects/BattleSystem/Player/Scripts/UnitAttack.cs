@@ -2,7 +2,7 @@ using System.Linq;
 using Fusion;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Enemy.Scripts.Player.Scripts
+namespace Nuts.BattleSystem.Player.Scripts
 {
     public interface IUnitAttack
     {

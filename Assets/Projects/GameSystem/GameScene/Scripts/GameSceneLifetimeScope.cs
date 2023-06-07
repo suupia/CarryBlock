@@ -3,7 +3,7 @@ using VContainer.Unity;
 using Nuts.Projects.GameSystem.GameScene.Scripts;
 using Main;
 using Nuts.BattleSystem.Enemy.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts.Player.Scripts;
+using Nuts.BattleSystem.Player.Scripts;
 
 namespace Nuts.Projects.GameSystem.GameScene.Scripts
 {

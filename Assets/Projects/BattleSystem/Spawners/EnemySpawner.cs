@@ -6,12 +6,12 @@ using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
 using Nuts.BattleSystem.Enemy.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts.Player.Scripts;
+using Nuts.BattleSystem.Player.Scripts;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-namespace Nuts.BattleSystem.Enemy.Scripts.Spawners
+namespace Nuts.BattleSystem.Spawners.Scripts
 {
     public class EnemySpawner
     {

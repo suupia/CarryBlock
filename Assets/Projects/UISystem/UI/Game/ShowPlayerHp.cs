@@ -5,7 +5,7 @@ using Main;
 using UnityEngine;
 using TMPro;
 using ExitGames.Client.Photon;
-using Nuts.BattleSystem.Enemy.Scripts.Player.Scripts;
+using Nuts.BattleSystem.Player.Scripts;
 using UnityEngine.Serialization;
 using Nuts.Projects.GameSystem.GameScene.Scripts;
 

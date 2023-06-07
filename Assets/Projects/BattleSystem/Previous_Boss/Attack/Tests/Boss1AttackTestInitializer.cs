@@ -6,7 +6,7 @@ using Main;
 using NetworkUtility.NetworkRunnerManager;
 using Nuts.BattleSystem.BattleSystem.Boss.Tests;
 using Nuts.BattleSystem.Boss.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts.Spawners;
+using Nuts.BattleSystem.Spawners.Scripts;
 using UnityEngine;
 
 namespace Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack.Tests

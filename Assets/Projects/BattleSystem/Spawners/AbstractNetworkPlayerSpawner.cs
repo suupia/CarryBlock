@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Fusion;
 using Main;
-using Nuts.BattleSystem.Enemy.Scripts.Player.Scripts;
+using Nuts.BattleSystem.Player.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Enemy.Scripts.Spawners
+namespace Nuts.BattleSystem.Spawners.Scripts
 {
     public abstract class AbstractNetworkPlayerSpawner<T> where T : AbstractNetworkPlayerController
     {

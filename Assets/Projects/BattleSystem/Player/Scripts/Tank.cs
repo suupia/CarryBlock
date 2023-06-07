@@ -3,7 +3,7 @@ using Main;
 using Nuts.BattleSystem.Move.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Enemy.Scripts.Player.Scripts
+namespace Nuts.BattleSystem.Player.Scripts
 {
     public class Tank : IUnit
     {

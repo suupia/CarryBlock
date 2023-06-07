@@ -3,7 +3,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Nuts.BattleSystem.Enemy.Scripts.Player.Scripts
+namespace Nuts.BattleSystem.Player.Scripts
 {
     /// <summary>
     ///     The only NetworkBehaviour to control the character.

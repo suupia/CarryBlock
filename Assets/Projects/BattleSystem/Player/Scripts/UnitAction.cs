@@ -4,10 +4,10 @@ using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
 using Nuts.BattleSystem.Enemy.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts.Spawners;
+using Nuts.BattleSystem.Spawners.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Enemy.Scripts.Player.Scripts
+namespace Nuts.BattleSystem.Player.Scripts
 {
     public interface IUnitAction
     {
