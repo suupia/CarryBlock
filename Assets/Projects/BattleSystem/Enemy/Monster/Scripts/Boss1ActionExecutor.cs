@@ -8,13 +8,14 @@ using Nuts.BattleSystem.Enemy.Scripts;
 using Nuts.BattleSystem.Move.Scripts;
 using Nuts.BattleSystem.Spawners.Scripts;
 using UnityEngine;
+using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
 
 namespace Nuts.BattleSystem.Boss.Scripts
 {
     /// <summary>
     /// 何もしないIEnemyAttackExecutorの実装クラス
     /// </summary>
-    public class DoNothingAction : IEnemyActionExecutor
+    public class DoNothingAction : IEnemyAction
     {
         public bool IsActionCompleted { get; set; } = false;
 
@@ -32,7 +33,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         {
         }
     }
-    public class IdleAction : IEnemyActionExecutor
+    public class IdleAction : IEnemyAction
     {
         public bool IsActionCompleted { get; set; }
         public float ActionCoolTime => 0.6f;
@@ -83,7 +84,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         }
     }
 
-    public class TackleAction : IEnemyActionExecutor
+    public class TackleAction : IEnemyAction
     {
         public bool IsActionCompleted { get; set; } = false;
         public float ActionCoolTime { get; init; } = 1.0f;
@@ -112,7 +113,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         }
     }
     
-    public class ChargeJumpAction : IEnemyActionExecutor
+    public class ChargeJumpAction : IEnemyAction
     {
         public  bool IsActionCompleted { get; set; }
         public float ActionCoolTime => 0.5f;
@@ -168,7 +169,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         }
     }
 
-    public class JumpAction : IEnemyActionExecutor
+    public class JumpAction : IEnemyAction
     {
        public  bool IsActionCompleted { get; set; }
         public float ActionCoolTime { get; init; } = 4.0f;
@@ -240,7 +241,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         }
     }
 
-    public class SpitOutAction : IEnemyTargetActionExecutor
+    public class SpitOutAction : IEnemyTargetAction
     {
         public bool IsActionCompleted { get; set; } = false;
         public float ActionCoolTime { get; init; } = 4.0f;
@@ -271,7 +272,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         }
     }
 
-    public class VacuumAction : IEnemyTargetActionExecutor
+    public class VacuumAction : IEnemyTargetAction
     {
         public bool IsActionCompleted { get; set; } = false;
         public float ActionCoolTime { get; init; } = 4.0f;

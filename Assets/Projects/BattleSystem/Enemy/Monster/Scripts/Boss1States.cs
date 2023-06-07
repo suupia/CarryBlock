@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Fusion;
 using Nuts.BattleSystem.Enemy.Scripts;
 using UnityEngine;
+using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
 
 namespace Nuts.BattleSystem.Boss.Scripts
 {
@@ -13,10 +14,10 @@ namespace Nuts.BattleSystem.Boss.Scripts
         public void ChangeState(IBoss1State state);
     }
 
-    public interface IBoss1State : IEnemyMoveExecutor, IEnemyActionExecutor, IEnemySearchExecutor
+    public interface IBoss1State : IEnemyMove, IEnemyAction, IEnemySearch
     {
-        IEnemyMoveExecutor EnemyMove { get; } 
-        IEnemyActionExecutor EnemyAction { get; }
+        IEnemyMove EnemyMove { get; } 
+        IEnemyAction EnemyAction { get; }
     }
 
 
@@ -40,13 +41,13 @@ namespace Nuts.BattleSystem.Boss.Scripts
     /// </summary>
     public abstract class Boss1AbstractState : IBoss1State
     {
-        public IEnemyMoveExecutor EnemyMove => move;
-        public IEnemyActionExecutor EnemyAction => action;
+        public IEnemyMove EnemyMove => move;
+        public IEnemyAction EnemyAction => action;
         public bool IsActionCompleted => action.IsActionCompleted;
         Boss1Record Record { get; }
-        protected IEnemyActionExecutor action;
-        protected IEnemyMoveExecutor move;
-        protected IEnemySearchExecutor search;
+        protected IEnemyAction action;
+        protected IEnemyMove move;
+        protected IEnemySearch search;
         
         public float ActionCoolTime => action.ActionCoolTime;
 

@@ -8,6 +8,7 @@ using Nuts.BattleSystem.Decoration.Scripts;
 using Nuts.Projects.BattleSystem.Decoration.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts.Player.Attack;
 using UnityEngine;
+using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
 
 namespace Nuts.BattleSystem.Boss.Scripts
 {
@@ -174,9 +175,9 @@ namespace Nuts.BattleSystem.Boss.Scripts
 
                     // targetを決定し、必要があればtargetをセットする
                     _targetUnit = _context.CurrentState.DetermineTarget(units);
-                    if(_context.CurrentState.EnemyMove is IEnemyTargetMoveExecutor targetMoveExecutor)
+                    if(_context.CurrentState.EnemyMove is IEnemyTargetMove targetMoveExecutor)
                         targetMoveExecutor.Target = _targetUnit;
-                    if(_context.CurrentState.EnemyAction is IEnemyTargetActionExecutor targetActionExecutor)
+                    if(_context.CurrentState.EnemyAction is IEnemyTargetAction targetActionExecutor)
                         targetActionExecutor.Target = _targetUnit;
 
                 }

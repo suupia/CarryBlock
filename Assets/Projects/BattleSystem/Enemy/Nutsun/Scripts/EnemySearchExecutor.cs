@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using Fusion;
 using Nuts.BattleSystem.Boss.Scripts;
 using UnityEngine;
+using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
+
 
 namespace Nuts.BattleSystem.Enemy.Scripts
 {
-    public class DoNothingSearch : IEnemySearchExecutor
+    public class DoNothingSearch : IEnemySearch
     {
         public DoNothingSearch()
         {
@@ -22,7 +24,7 @@ namespace Nuts.BattleSystem.Enemy.Scripts
             return null;
         }
     }
-    public class NearestSearch : IEnemySearchExecutor
+    public class NearestSearch : IEnemySearch
     {
         readonly int _layerMask;
         readonly float _radius;
@@ -59,7 +61,7 @@ namespace Nuts.BattleSystem.Enemy.Scripts
         }
     }
     
-    public class FarthestSearch : IEnemySearchExecutor
+    public class FarthestSearch : IEnemySearch
     {
         readonly int _layerMask;
         readonly float _radius;

@@ -6,13 +6,14 @@ using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Boss.Scripts;
 using Nuts.BattleSystem.Move.Scripts;
 using UnityEngine;
+using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
 
 namespace Nuts.BattleSystem.Enemy.Scripts
 {
     /// <summary>
     /// 何もしないIEnemyMoveExecutorの実装クラス
     /// </summary>
-    public class DoNothingMove : IEnemyMoveExecutor
+    public class DoNothingMove : IEnemyMove
     {
         public DoNothingMove()
         {
@@ -24,7 +25,7 @@ namespace Nuts.BattleSystem.Enemy.Scripts
     /// <summary>
     /// IInputMoveExecutorにランダムな入力をinputとして与える
     /// </summary>
-    public class RandomMove : IEnemyMoveExecutor
+    public class RandomMove : IEnemyMove
     {
         readonly float _simulationInterval;
         readonly IInputMoveExecutor _move;
@@ -59,7 +60,7 @@ namespace Nuts.BattleSystem.Enemy.Scripts
     /// <summary>
     /// IInputMoveExecutorに_transform.forwardをinputとして与える
     /// </summary>
-    public class ForwardMove : IEnemyMoveExecutor
+    public class ForwardMove : IEnemyMove
     {
         readonly Transform _transform;
         readonly IInputMoveExecutor _move;
@@ -79,7 +80,7 @@ namespace Nuts.BattleSystem.Enemy.Scripts
     /// IInputMoveExecutorにtargetの方向をinputとして与える
     /// Targetがnullのときは、_transform.forwardをinputとして与える
     /// </summary>
-    public class TargetMove : IEnemyTargetMoveExecutor
+    public class TargetMove : IEnemyTargetMove
     {
         readonly Transform _transform;
         readonly IInputMoveExecutor _move;
