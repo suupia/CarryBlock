@@ -10,7 +10,7 @@ namespace Nuts.BattleSystem.Enemy.Monster.Interfaces
     
     public interface IEnemyTargetMove : IEnemyMove
     {
-        Transform Target { get; set; }
+        Transform? Target { get; set; }
     }
 
 }

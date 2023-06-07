@@ -62,7 +62,7 @@ namespace BattleSystem.Boss.AttackColliders
         protected override void OnInactive()
         {
             if (!_isInitialized) return;
-            _rb.velocity = Vector3.zero;
+            if(_rb != null) _rb.velocity = Vector3.zero;
         }
         
     

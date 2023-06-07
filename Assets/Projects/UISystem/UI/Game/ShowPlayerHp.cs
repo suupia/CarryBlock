@@ -9,20 +9,19 @@ using Nuts.BattleSystem.Player.Scripts;
 using UnityEngine.Serialization;
 using Nuts.GameSystem.GameScene.Scripts;
 
-# nullable enable
 
 namespace Nuts.UISystem.Game.Scripts
 {
     public class ShowPlayerHp : MonoBehaviour
     {
-        GameInitializer? _gameInitializer;
-        [SerializeField] AbstractNetworkPlayerController? playerController;
-        [SerializeField] TextMeshProUGUI? hpText;
+        GameInitializer _gameInitializer;
+        [SerializeField] AbstractNetworkPlayerController playerController;
+        [SerializeField] TextMeshProUGUI hpText;
    
-        Vector3 offset = new Vector3(2.0f, 2.2f, 0);
+        readonly Vector3 _offset = new Vector3(2.0f, 2.2f, 0);
    
-        RectTransform? _rectTransform;
-        async void  Start()
+        RectTransform _rectTransform;
+         void  Start()
         {
             _rectTransform = gameObject.GetComponent<RectTransform>();
             _gameInitializer = FindObjectOfType<GameInitializer>();
@@ -32,7 +31,7 @@ namespace Nuts.UISystem.Game.Scripts
         {
             if(_gameInitializer == null ||  !_gameInitializer.IsInitialized)return;
             _rectTransform.position 
-                = RectTransformUtility.WorldToScreenPoint(Camera.main, playerController.InterpolationTransform.position + offset);
+                = RectTransformUtility.WorldToScreenPoint(Camera.main, playerController.InterpolationTransform.position + _offset);
             hpText.text = $"HP = {playerController.PlayerStruct.Hp.ToString()}";
         }
     

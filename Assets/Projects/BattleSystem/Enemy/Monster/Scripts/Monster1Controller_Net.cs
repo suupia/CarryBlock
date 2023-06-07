@@ -1,5 +1,3 @@
-#nullable  enable
-
 using System;
 using System.Linq;
 using Fusion;
@@ -17,9 +15,9 @@ namespace Nuts.BattleSystem.Boss.Scripts
     public class Monster1Controller_Net : PoolableObject, IEnemyOnAttacked
     {
         // Serialize Record
-        [SerializeField] Monster1Record? record;
-        [SerializeField] GameObject? modelPrefab; // ToDo: インスペクタで設定する作りはよくない ロードする作りに変える
-        [SerializeField] Transform? modelParent;
+        [SerializeField] Monster1Record record;
+        [SerializeField] GameObject modelPrefab; // ToDo: インスペクタで設定する作りはよくない ロードする作りに変える
+        [SerializeField] Transform modelParent;
 
         public Transform InterpolationTransform => modelParent;
 
@@ -34,16 +32,16 @@ namespace Nuts.BattleSystem.Boss.Scripts
         Boss1DecorationDetector _decorationDetector;
 
         // Domain
-        IBoss1ActionSelector? _actionSelector;
-        IMonster1State? _idleState;
-        IMonster1State? _wanderState;
-        IMonster1State? _jumpState;
-        IMonster1State?[]? _actionStates;
-        IMonster1Context? _context;
+        IBoss1ActionSelector _actionSelector;
+        IMonster1State _idleState;
+        IMonster1State _wanderState;
+        IMonster1State _jumpState;
+        IMonster1State[] _actionStates;
+        IMonster1Context _context;
         
-        IMonster1State? _beforeState;
+        IMonster1State _beforeState;
 
-         Transform? _targetUnit;
+         Transform _targetUnit;
          
          public Action OnDespawn = () => { }; // EnemyContainerから削除する処理が入る
 
@@ -257,6 +255,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         void OnDrawGizmos()
         {
             if (!showGizmos) return;
+            if(record ==null)return;
             //サーチ範囲を表示
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, record.SearchRadius);

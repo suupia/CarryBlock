@@ -3,13 +3,15 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
+#nullable enable
+
 namespace Nuts.BattleSystem.Player.Scripts
 {
     public class ReturnToMainBaseGauge
     {
         readonly int _fillTime = 3;
 
-        CancellationTokenSource _cts;
+        CancellationTokenSource? _cts;
         Action _onReturnToMainBase = () => { };
         float _startTime;
         CancellationToken _token;
@@ -43,7 +45,7 @@ namespace Nuts.BattleSystem.Player.Scripts
 
         public void ResetGauge()
         {
-            _cts.Cancel();
+            _cts?.Cancel();
             IsReturnToMainBase = false;
         }
 

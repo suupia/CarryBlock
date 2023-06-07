@@ -50,7 +50,7 @@ namespace BattleSystem.Boss.AttackColliders
             {
                 Debug.Log($"JumpAttack ! damage = {_damage}");
                 player.OnAttacked(_damage);
-                await UniTask.Delay(TimeSpan.FromSeconds(_attackInterval), cancellationToken: _cts.Token);
+                await UniTask.Delay(TimeSpan.FromSeconds(_attackInterval), cancellationToken: _cts?.Token ?? CancellationToken.None);
                 _isCoolDown = false;
             }catch(OperationCanceledException)
             {

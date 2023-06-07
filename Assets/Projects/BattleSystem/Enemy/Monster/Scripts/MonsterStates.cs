@@ -4,10 +4,10 @@ using Nuts.BattleSystem.Enemy.Scripts;
 using UnityEngine;
 using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
 
+#nullable  enable
+
 namespace Nuts.BattleSystem.Boss.Scripts
 {
-
-
     public class Monster1Context : IMonster1Context
     {
         public IMonster1State CurrentState { get; private set; }
@@ -38,7 +38,9 @@ namespace Nuts.BattleSystem.Boss.Scripts
 
         public float ActionCoolTime => MonsterAction?.ActionCoolTime ?? 0;
 
+#pragma warning disable CS8618
         protected Monster1AbstractState(Monster1Record record)
+#pragma warning restore CS8618
         {
             Record = record;
         }

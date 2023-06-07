@@ -177,7 +177,6 @@ namespace Nuts.BattleSystem.Boss.Scripts
         bool _isJumping;
         public float jumpTime { get; init; } = 2f;
         readonly AttackCollider _attackCollider;
-        readonly string _prefabName = "JumpAttackCollider";
         readonly Rigidbody _rb;
          CancellationTokenSource _cts;
 
@@ -245,11 +244,10 @@ namespace Nuts.BattleSystem.Boss.Scripts
     {
         public bool IsActionCompleted { get; set; } = false;
         public float ActionCoolTime { get; init; } = 4.0f;
-        public Transform Target { get; set; }
+        public Transform? Target { get; set; }
         NetworkBehaviourPrefabSpawner<NetworkTargetAttackCollider> _attackColliderSpawner;
         readonly float _yOffset = 1.0f;
         readonly Transform _transform;
-        readonly string _prefabName = "SpitOutAttackCollider";
 
         public SpitOutAction(NetworkRunner runner, Transform transform)
         {

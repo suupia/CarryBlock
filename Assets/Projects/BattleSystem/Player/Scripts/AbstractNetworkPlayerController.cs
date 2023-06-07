@@ -45,7 +45,7 @@ namespace Nuts.BattleSystem.Player.Scripts
         GameObject _unitObj;
         IUnitStats _unitStats;
         
-        protected void Update()
+        protected virtual void Update()
         {
             if (Object.HasInputAuthority)
                 if (Input.GetKeyDown(KeyCode.C))

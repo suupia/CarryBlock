@@ -7,7 +7,6 @@ namespace Nuts.BattleSystem.Enemy.Scripts
 {
     public interface IEnemy : IMove
     {
-        void Move(Vector3 direction);
         void Action();
         bool InAction();
         float ActionCooldown();

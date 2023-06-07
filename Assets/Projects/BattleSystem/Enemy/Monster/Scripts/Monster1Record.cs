@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
+# nullable enable
+
 namespace Nuts.BattleSystem.Boss.Scripts
 {
     [Serializable]
@@ -22,13 +24,15 @@ namespace Nuts.BattleSystem.Boss.Scripts
         public HashSet<Transform> TargetBuffer { get; set; } = new();
 
         // componets
-        public GameObject? GameObject { get; private set; } // NetworkControllerのGameObject
-        public Transform? Transform => GameObject == null ? null : GameObject.transform;
-        public Rigidbody? Rb { get; private set; }
+        public GameObject GameObject { get; private set; } // NetworkControllerのGameObject
+        public Transform Transform => GameObject.transform;
+        public Rigidbody Rb { get; private set; }
         
 
         // This record will initialize by SerializeField
+#pragma warning disable CS8618
         Monster1Record()
+#pragma warning restore CS8618
         {
         }
 
