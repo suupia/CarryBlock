@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
-namespace Main
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners
 {
     public class SpawnerTransformContainer
     {

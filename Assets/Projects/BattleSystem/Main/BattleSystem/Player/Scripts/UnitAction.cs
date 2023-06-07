@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Fusion;
+using Main;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners;
 using UnityEngine;
-using Enemy;
 
-namespace Main
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Scripts
 {
     public interface IUnitAction
     {

@@ -1,7 +1,9 @@
 using Fusion;
+using Main;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;
 using UnityEngine;
 
-namespace Main
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Scripts
 {
     public class Tank : IUnit
     {

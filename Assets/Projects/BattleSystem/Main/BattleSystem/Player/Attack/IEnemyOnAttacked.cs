@@ -1,4 +1,4 @@
-﻿namespace Main
+﻿namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Attack
 {
     public interface IEnemyOnAttacked
     {

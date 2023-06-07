@@ -1,7 +1,7 @@
-﻿using Fusion;
+﻿using Main;
 using UnityEngine;
 
-namespace Main
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners
 {
     public class ComponentPrefabInstantiate<T> where  T : Component
     {

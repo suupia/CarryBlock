@@ -1,14 +1,13 @@
 using System;
-using System.Collections.Generic;
 using Animations;
 using Decoration;
 using Fusion;
-using UnityEngine;
-using Enemy;
+using Main;
 using NetworkUtility.Inputs;
-using TNRD;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
+using UnityEngine;
 
-namespace Main
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Scripts
 {
     /// <summary>
     ///     The only NetworkBehaviour to control the character.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Main
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Attack.TargetBufferAttack
 {
 
     public class TargetBufferAttack:  AttackWrapper, ITargetAttack

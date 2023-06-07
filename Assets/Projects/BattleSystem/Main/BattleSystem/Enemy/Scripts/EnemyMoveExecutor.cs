@@ -1,15 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using Fusion;
-using Main;
-using UnityEngine;
-using Cysharp.Threading.Tasks;
-using System.Threading;
-using System;
-using Boss;
-
 # nullable enable
-namespace Enemy
+using System;
+using System.Threading;
+using Boss;
+using Cysharp.Threading.Tasks;
+using Main;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;
+using UnityEngine;
+
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts
 {
     /// <summary>
     /// 何もしないIEnemyMoveExecutorの実装クラス

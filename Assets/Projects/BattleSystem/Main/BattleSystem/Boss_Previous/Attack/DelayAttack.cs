@@ -2,7 +2,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 
-namespace Main
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Attack
 {
     /// <summary>
     /// Attackが呼ばれてから遅延してattackの攻撃を呼び出す

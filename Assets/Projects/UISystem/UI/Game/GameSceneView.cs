@@ -1,9 +1,10 @@
 using Fusion;
 using Main;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Scripts;
 using TMPro;
 using UnityEngine;
 using VContainer;
-using Enemy;
 using Nuts.Projects.GameSystem.GameScene.Scripts;
 
 namespace UI

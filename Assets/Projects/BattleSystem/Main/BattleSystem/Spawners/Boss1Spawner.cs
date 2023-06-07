@@ -5,12 +5,12 @@ using System.Threading;
 using Boss;
 using Cysharp.Threading.Tasks;
 using Fusion;
+using Main;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using Enemy;
 
 
-namespace Main
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners
 {
 
     public class Boss1Spawner

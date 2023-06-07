@@ -1,6 +1,6 @@
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
 using VContainer;
 using VContainer.Unity;
-using Enemy;
 using Nuts.Projects.GameSystem.GameScene.Scripts;
 
 namespace Nuts.Projects.GameSystem.LobbyScene.Scripts

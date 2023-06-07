@@ -3,9 +3,10 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
+using Main;
 using UnityEngine;
 
-namespace Main
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Move
 {
     public interface IMove
     {

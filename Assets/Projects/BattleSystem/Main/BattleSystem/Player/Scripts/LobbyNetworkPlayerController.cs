@@ -1,4 +1,4 @@
-namespace Main
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Scripts
 {
     /// <summary>
     ///     The only NetworkBehaviour to control the character.

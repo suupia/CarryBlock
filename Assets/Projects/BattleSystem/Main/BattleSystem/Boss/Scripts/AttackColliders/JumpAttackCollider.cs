@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
-using Enemy;
 using Cysharp.Threading.Tasks;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
 
 # nullable enable
 

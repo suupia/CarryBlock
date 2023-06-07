@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Attack;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Object = UnityEngine.Object;

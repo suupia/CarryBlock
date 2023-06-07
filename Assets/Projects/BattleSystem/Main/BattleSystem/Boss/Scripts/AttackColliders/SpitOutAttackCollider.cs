@@ -4,7 +4,7 @@ using Boss;
 using UnityEngine;
 using Fusion;
 using Main;
-using Enemy;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
 
 # nullable enable
 namespace Boss

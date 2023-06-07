@@ -1,10 +1,10 @@
+using Animations;
 using Decoration;
 using Fusion;
-using Main;
 using NetworkUtility.Inputs;
 using UnityEngine;
 
-namespace Animations.Tests
+namespace Nuts.Projects.BattleSystem.Decoration.Tests
 {
     public class TestPlayerController : NetworkBehaviour
     {

@@ -8,7 +8,9 @@ using System.Threading;
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Enemy;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners;
 
 # nullable enable
 

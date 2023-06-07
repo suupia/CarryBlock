@@ -1,12 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using Fusion;
-using Main;
-using UnityEngine;
-using UnityEngine.PlayerLoop;
 using NetworkUtility.ObjectPool;
+using UnityEngine;
 
-namespace Enemy
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts
 {
     [RequireComponent(typeof(Collider))]
     public abstract class AttackCollider : MonoBehaviour

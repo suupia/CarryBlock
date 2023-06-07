@@ -1,11 +1,14 @@
 using System;
 using System.Linq;
 using Fusion;
-using UnityEngine;
 using Main;
 using NetworkUtility.ObjectPool;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Attack;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Scripts;
+using UnityEngine;
 
-namespace Enemy
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts
 {
     [RequireComponent(typeof(NetworkRigidbody))]
     public class NetworkEnemyController : PoolableObject , IEnemyOnAttacked

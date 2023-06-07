@@ -3,7 +3,7 @@ using Fusion;
 using Main;
 using UnityEngine;
 using System.Collections.Generic;
-using Enemy;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
 
 
 namespace Boss

@@ -1,12 +1,15 @@
 using System;
 using System.Threading;
+using Boss;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
 using NetworkUtility.NetworkRunnerManager;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Boss.Tests;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners;
 using UnityEngine;
 
-namespace Boss.Tests
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Attack.Tests
 {
     public class Boss1AttackTestInitializer : NetworkBehaviour, IPlayerJoined, IPlayerLeft
     {

@@ -1,7 +1,6 @@
-﻿using Fusion;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Main
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners
 {
     public interface IPrefabLoader<out T> where T : Object
     {

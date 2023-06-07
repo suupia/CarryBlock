@@ -4,11 +4,14 @@ using Animations;
 using Decoration;
 using Fusion;
 using Main;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Attack;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Search;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
 using Random = UnityEngine.Random;
 
-namespace Boss
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Controller
 {
     public partial class Boss1Controller : NetworkBehaviour
     {
@@ -113,7 +116,7 @@ namespace Boss
         {
             var state = overrideOnDetectedState != State.None
                 ? overrideOnDetectedState
-                : _detectedStates[Random.Range(0, _detectedStates.Length)];
+                : _detectedStates[Random.Range((int)0, (int)_detectedStates.Length)];
             return state;
         }
 
@@ -223,12 +226,12 @@ namespace Boss
                     _decorationDetector.OnStartTackle(ref DecorationDataRef);
                     break;
                 case State.Jumping:
-                    MoveUtility.Jump(_rd, JumpTime); //ジャンプのインパルスを与える
-                    DelaySetState(State.Lost, JumpTime);
+                    MoveUtility.Jump(_rd, Boss1Controller.JumpTime); //ジャンプのインパルスを与える
+                    DelaySetState(State.Lost, Boss1Controller.JumpTime);
                     break;
                 case State.ChargingJump:
                     _decorationDetector.OnStartJump(ref DecorationDataRef);
-                    DelaySetState(State.Jumping, ChargeJumpTime);
+                    DelaySetState(State.Jumping, Boss1Controller.ChargeJumpTime);
                     break;
                 case State.SpitOut:
                     _onAttack = () => { _decorationDetector.OnSpitOut(ref DecorationDataRef); };
@@ -274,7 +277,7 @@ namespace Boss
             if (!showGizmos) return;
             //サーチ範囲を表示
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, SearchRadius);
+            Gizmos.DrawWireSphere(transform.position, Boss1Controller.SearchRadius);
         }
     }
 }

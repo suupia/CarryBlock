@@ -1,10 +1,10 @@
 # nullable enable
 using System.Collections.Generic;
+using Boss;
 using Fusion;
 using UnityEngine;
-using Boss;
 
-namespace Enemy
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts
 {
     public class DoNothingSearch : IEnemySearchExecutor
     {

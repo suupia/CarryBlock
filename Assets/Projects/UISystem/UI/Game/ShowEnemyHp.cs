@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Enemy;
 using Main;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
 using UnityEngine;
 using TMPro;
 using Nuts.Projects.GameSystem.GameScene.Scripts;

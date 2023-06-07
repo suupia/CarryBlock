@@ -1,15 +1,13 @@
 using System;
 using Fusion;
+using Main;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;
 using UnityEngine;
 
-namespace Main
+namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Scripts
 {
     public interface IUnit : IMove, IUnitAction
     {
-        void Move(Vector3 direction);
-        void Action();
-        bool InAction();
-        float ActionCooldown();
     }
 
     [Serializable]
