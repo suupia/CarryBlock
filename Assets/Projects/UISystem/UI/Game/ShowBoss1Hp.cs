@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Boss;
 using Enemy;
-using GameSystem.GameScene.Scripts;
+using Nuts.Projects.GameSystem.GameScene.Scripts;
 using Main;
 using UnityEngine;
 using TMPro;

@@ -8,7 +8,7 @@ using Main;
 using NetworkUtility.NetworkRunnerManager;
 using UnityEngine;
 
-namespace GameSystem.GameScene.Scripts
+namespace Nuts.Projects.GameSystem.GameScene.Scripts
 {
     public class GameInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {

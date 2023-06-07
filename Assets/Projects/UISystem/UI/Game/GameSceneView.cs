@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using VContainer;
 using Enemy;
-using GameSystem.GameScene.Scripts;
+using Nuts.Projects.GameSystem.GameScene.Scripts;
 
 namespace UI
 {
