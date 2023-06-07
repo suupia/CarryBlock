@@ -165,9 +165,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  _record:
+  record:
     finSpawnerTransform: {fileID: 2627756533478098386}
-  _modelPrefab: {fileID: 8558192740856323878, guid: 5e15e76b6c7d66048a78149e8ddfe99a, type: 3}
+  modelPrefab: {fileID: 8558192740856323878, guid: 5e15e76b6c7d66048a78149e8ddfe99a, type: 3}
   modelParent: {fileID: 106986818877319159}
   _Hp: 1
   showGizmos: 0

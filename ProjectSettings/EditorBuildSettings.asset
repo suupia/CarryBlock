@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Projects/BattleSystem/Main/BattleSystem/Boss/Tests/Test.unity
+    path: Assets/Projects/BattleSystem/Enemy/Monster/Tests/Test.unity
     guid: 74638b9a0e6a074419c9864b60e09898
   - enabled: 1
     path: Assets/Projects/GameSystem/TitleScene/TitleScene.unity

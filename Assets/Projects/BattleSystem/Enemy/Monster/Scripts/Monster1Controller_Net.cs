@@ -9,15 +9,16 @@ using Nuts.Projects.BattleSystem.Decoration.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts.Player.Attack;
 using UnityEngine;
 using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
+using UnityEngine.Serialization;
 
 namespace Nuts.BattleSystem.Boss.Scripts
 {
     public class Monster1Controller_Net : PoolableObject, IEnemyOnAttacked
     {
         // Serialize Record
-        [SerializeField] Monster1Record _record;
-        [SerializeField] GameObject _modelPrefab; // ToDo: インスペクタで設定する作りはよくない ロードする作りに変える
-        [SerializeField] Transform modelParent;
+        [SerializeField] Monster1Record? record;
+        [SerializeField] GameObject? modelPrefab; // ToDo: インスペクタで設定する作りはよくない ロードする作りに変える
+        [SerializeField] Transform? modelParent;
 
         public Transform InterpolationTransform => modelParent;
 
@@ -32,14 +33,14 @@ namespace Nuts.BattleSystem.Boss.Scripts
         Boss1DecorationDetector _decorationDetector;
 
         // Domain
-        IBoss1ActionSelector _actionSelector;
-        IMonster1State _idleState;
-        IMonster1State _wanderState;
-        IMonster1State _jumpState;
-        IMonster1State[] _actionStates;
-        IMonster1Context _context;
+        IBoss1ActionSelector? _actionSelector;
+        IMonster1State? _idleState;
+        IMonster1State? _wanderState;
+        IMonster1State? _jumpState;
+        IMonster1State?[]? _actionStates;
+        IMonster1Context? _context;
         
-        IMonster1State _beforeState;
+        IMonster1State? _beforeState;
 
          Transform? _targetUnit;
          
@@ -67,25 +68,24 @@ namespace Nuts.BattleSystem.Boss.Scripts
         public void RPC_LocalInit()
         {
             // Init Record
-            _record.Init(Runner, gameObject);
+            record.Init(Runner, gameObject);
             
             // Init Host Domain
             // newの順番に注意！
-            _wanderState = new WanderState(_record);
-            _idleState = new IdleState(_record);
-            _jumpState = new JumpState(_record);
+            _wanderState = new WanderState(record);
+            _idleState = new IdleState(record);
+            _jumpState = new JumpState(record);
             _context = new Monster1Context(_idleState);
             _actionStates = new IMonster1State[]
             {
-                new TackleState(_record),
-                new SpitOutState(_record, Runner),
-                new VacuumState(_record),
-                new ChargeJumpState(_record)
+                new TackleState(record),
+                new SpitOutState(record, Runner),
+                new VacuumState(record),
+                new ChargeJumpState(record)
             };
-
             
             // Instantiate
-            var prefab = _modelPrefab;
+            var prefab = modelPrefab;
             var modelObject = Instantiate(prefab, modelParent);
            
             _decorationDetector = new Boss1DecorationDetector(new Boss1AnimatorSetter(modelObject));
@@ -98,7 +98,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         {
             if (!_isInitialized) return;
             //　SetActive(false)された時の処理を書く
-            _record.Rb.velocity = Vector3.zero;
+            record.Rb.velocity = Vector3.zero;
         }
 
         public override void FixedUpdateNetwork()
@@ -258,7 +258,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
             if (!showGizmos) return;
             //サーチ範囲を表示
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, _record.SearchRadius);
+            Gizmos.DrawWireSphere(transform.position, record.SearchRadius);
         }
 
     }
