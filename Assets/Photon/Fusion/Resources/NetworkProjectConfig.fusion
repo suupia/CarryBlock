@@ -157,8 +157,10 @@
         "Assembly-CSharp",
         "Assembly-CSharp-firstpass",
         "Fusion",
-        "Main",
-        "UI"
+        "GameSystem",
+        "BattleSystem",
+        "UISystem",
+        "NetworkUtility"
     ],
     "UseSerializableDictionary": true,
     "NullChecksForNetworkedProperties": true,

@@ -7,11 +7,13 @@ using UnityEngine.SceneManagement;
 using Fusion;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using NetworkUtility.Inputs;
 using UnityEngine.Serialization;
+using  NetworkUtility.ObjectPool;
 
 #nullable enable
 
-namespace Main
+namespace NetworkUtility.NetworkRunnerManager
 {
     // 全てのシーンにこれを配置しておけば、NetworkRunnerを使える
 // シーン上にNetworkRunnerがないならインスタンス化し、runner.StartGame()を実行

@@ -4,7 +4,7 @@ using Fusion;
 using Fusion.Sockets;
 using UnityEngine;
 
-namespace Main
+namespace NetworkUtility.Inputs
 {
     public enum PlayerOperation
     {

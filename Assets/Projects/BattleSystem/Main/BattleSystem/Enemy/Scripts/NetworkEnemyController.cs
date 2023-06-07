@@ -3,6 +3,7 @@ using System.Linq;
 using Fusion;
 using UnityEngine;
 using Main;
+using NetworkUtility.ObjectPool;
 
 namespace Enemy
 {

@@ -1,4 +1,5 @@
 ﻿using Fusion;
+using NetworkUtility.NetworkRunnerManager;
 using UnityEngine;
 
 namespace Main.Tests

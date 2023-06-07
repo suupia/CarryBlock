@@ -1,6 +1,6 @@
 using Fusion;
 
-namespace Main
+namespace  NetworkUtility.ObjectPool
 {
     public abstract class PoolableObject : NetworkBehaviour
     {

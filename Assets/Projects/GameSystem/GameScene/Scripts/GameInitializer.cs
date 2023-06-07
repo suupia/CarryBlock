@@ -4,6 +4,7 @@ using Boss;
 using Boss.Tests;
 using Cysharp.Threading.Tasks;
 using Fusion;
+using NetworkUtility.NetworkRunnerManager;
 using UnityEngine;
 
 namespace Main

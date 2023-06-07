@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Main
+namespace  NetworkUtility.ObjectPool
 {
     public class PoolTestManager : MonoBehaviour
     {

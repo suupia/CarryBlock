@@ -1,6 +1,7 @@
 using Decoration;
 using Fusion;
 using Main;
+using NetworkUtility.Inputs;
 using UnityEngine;
 
 namespace Animations.Tests

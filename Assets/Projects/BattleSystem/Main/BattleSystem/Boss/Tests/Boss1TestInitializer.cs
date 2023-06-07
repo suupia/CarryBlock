@@ -3,6 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
+using NetworkUtility.NetworkRunnerManager;
 using UnityEngine;
 
 namespace Boss.Tests
