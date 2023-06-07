@@ -26,7 +26,7 @@ namespace Nuts.BattleSystem.Spawners.Scripts
         CancellationTokenSource _cts;
         CancellationToken _token;
 
-        readonly IPrefabSpawner<Boss1Controller_Net> _boss1PrefabSpawner;
+        readonly IPrefabSpawner<Monster1Controller_Net> _boss1PrefabSpawner;
 
         readonly Boss1SpawnerRecord _record;
 
@@ -72,7 +72,7 @@ namespace Nuts.BattleSystem.Spawners.Scripts
             // var position = new Vector3(x, 1, z);
             var position = _record.GetCenter() + new Vector3(x, 0f, z);
             var networkObject = _boss1PrefabSpawner.SpawnPrefab(position, Quaternion.identity, PlayerRef.None);
-            var boss = networkObject.GetComponent<Boss1Controller_Net>();
+            var boss = networkObject.GetComponent<Monster1Controller_Net>();
             boss.OnDespawn += () => enemyContainer.RemoveBoss(boss);
             var actionSelector = new RandomActionSelector(); // アクションの決定方法はランダム
             boss.Init(actionSelector);
@@ -82,32 +82,32 @@ namespace Nuts.BattleSystem.Spawners.Scripts
 
     public class Boss1Container
     {
-        readonly List<Boss1Controller_Net> bosses = new();
+        readonly List<Monster1Controller_Net> bosses = new();
         public int MaxBossCount { get; set; } = 2;
-        public IEnumerable<Boss1Controller_Net> Bosses => bosses;
+        public IEnumerable<Monster1Controller_Net> Bosses => bosses;
 
-        public void AddBoss(Boss1Controller_Net enemyController)
+        public void AddBoss(Monster1Controller_Net enemyController)
         {
             bosses.Add(enemyController);
         }
 
-        public void RemoveBoss(Boss1Controller_Net enemyController)
+        public void RemoveBoss(Monster1Controller_Net enemyController)
         {
             bosses.Remove(enemyController);
         }
     }
     
-    public class BossPrefabSpawner : IPrefabSpawner<Boss1Controller_Net>
+    public class BossPrefabSpawner : IPrefabSpawner<Monster1Controller_Net>
     {
-        readonly NetworkBehaviourPrefabSpawner<Boss1Controller_Net> _bossPrefabSpawner;
+        readonly NetworkBehaviourPrefabSpawner<Monster1Controller_Net> _bossPrefabSpawner;
 
         public BossPrefabSpawner(NetworkRunner runner)
         {
-            _bossPrefabSpawner = new NetworkBehaviourPrefabSpawner<Boss1Controller_Net>(runner,
-                new PrefabLoaderFromResources<Boss1Controller_Net>("Prefabs/Bosses"), "Boss1");
+            _bossPrefabSpawner = new NetworkBehaviourPrefabSpawner<Monster1Controller_Net>(runner,
+                new PrefabLoaderFromResources<Monster1Controller_Net>("Prefabs/Bosses"), "Boss1");
         }
 
-        public Boss1Controller_Net SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef)
+        public Monster1Controller_Net SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef)
         {
             return _bossPrefabSpawner.SpawnPrefab(position, rotation, playerRef);
         }

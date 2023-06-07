@@ -13,7 +13,7 @@ namespace  Nuts.UISystem.Game.Scripts
     public class ShowBoss1Hp : MonoBehaviour
     {
         GameInitializer? _gameInitializer;
-        [SerializeField] Boss1Controller_Net enemyController;
+        [SerializeField] Monster1Controller_Net enemyController;
         [SerializeField] TextMeshProUGUI? hpText;
    
         Transform _playerTransform;

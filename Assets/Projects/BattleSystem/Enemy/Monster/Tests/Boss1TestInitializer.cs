@@ -60,11 +60,11 @@ namespace Nuts.BattleSystem.BattleSystem.Boss.Tests
         }
         
 
-        Boss1Controller_Net SpawnBoss1()
+        Monster1Controller_Net SpawnBoss1()
         {
             var position = gameObject.transform.position;
             var boss1Obj = Runner.Spawn(boss1Prefab, position, Quaternion.identity, PlayerRef.None);
-            var boss1 = boss1Obj.GetComponent<Boss1Controller_Net>();
+            var boss1 = boss1Obj.GetComponent<Monster1Controller_Net>();
             return boss1;
         }
 

@@ -12,7 +12,7 @@ using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
 
 namespace Nuts.BattleSystem.Boss.Scripts
 {
-    public class Boss1Controller_Net : PoolableObject, IEnemyOnAttacked
+    public class Monster1Controller_Net : PoolableObject, IEnemyOnAttacked
     {
         // Serialize Record
         [SerializeField] Monster1Record _record;
