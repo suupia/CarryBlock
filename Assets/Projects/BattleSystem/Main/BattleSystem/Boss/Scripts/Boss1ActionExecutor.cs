@@ -1,20 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using Fusion;
-using Main;
-using UnityEngine;
-using Cysharp.Threading.Tasks;
-using System.Threading;
+# nullable enable
+
 using System;
-using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Threading;
+using Boss;
+using Cysharp.Threading.Tasks;
+using Fusion;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners;
+using UnityEngine;
 
-# nullable enable
-
-namespace Boss
+namespace Nuts.BattleSystem.Boss
 {
     /// <summary>
     /// 何もしないIEnemyAttackExecutorの実装クラス

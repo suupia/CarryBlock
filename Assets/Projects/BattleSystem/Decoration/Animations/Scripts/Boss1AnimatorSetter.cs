@@ -1,8 +1,8 @@
-using Decoration;
+using Nuts.Projects.BattleSystem.Decoration.Scripts;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Animations
+namespace Nuts.Projects.BattleSystem.Decoration.Animations.Scripts
 {
     public class Boss1AnimatorSetter: IBoss1Decoration
     {

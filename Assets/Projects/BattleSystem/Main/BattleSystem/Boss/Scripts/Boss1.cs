@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Fusion;
-using UnityEngine;
-using Main;
-
 # nullable enable
 
-namespace Boss
+using System.Collections.Generic;
+using System.Linq;
+using Boss;
+using Fusion;
+using UnityEngine;
+
+namespace Nuts.BattleSystem.Boss
 {
     // 以下はNetworkBehaviourのためのインターフェース
     public interface IEnemyMove

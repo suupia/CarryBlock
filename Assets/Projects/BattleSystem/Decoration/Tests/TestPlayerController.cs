@@ -1,7 +1,7 @@
-using Animations;
-using Decoration;
 using Fusion;
 using NetworkUtility.Inputs;
+using Nuts.Projects.BattleSystem.Decoration.Animations.Scripts;
+using Nuts.Projects.BattleSystem.Decoration.Scripts;
 using UnityEngine;
 
 namespace Nuts.Projects.BattleSystem.Decoration.Tests

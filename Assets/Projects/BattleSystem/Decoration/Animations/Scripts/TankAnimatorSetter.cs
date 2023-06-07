@@ -1,7 +1,7 @@
-using Decoration;
+using Nuts.Projects.BattleSystem.Decoration.Scripts;
 using UnityEngine;
 
-namespace Animations
+namespace Nuts.Projects.BattleSystem.Decoration.Animations.Scripts
 {
     public class TankAnimatorSetter : IPlayerDecoration
     {

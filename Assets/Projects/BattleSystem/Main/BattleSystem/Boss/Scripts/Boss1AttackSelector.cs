@@ -1,6 +1,7 @@
+using Boss;
 using UnityEngine;
 
-namespace Boss
+namespace Nuts.BattleSystem.Boss
 {
     public interface IBoss1AttackSelector
     {

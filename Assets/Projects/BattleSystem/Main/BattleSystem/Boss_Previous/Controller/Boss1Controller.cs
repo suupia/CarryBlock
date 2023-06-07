@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Animations;
-using Decoration;
 using Fusion;
 using Main;
+using Nuts.Projects.BattleSystem.Decoration.Animations.Scripts;
+using Nuts.Projects.BattleSystem.Decoration.Scripts;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Attack;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Boss_Previous.Search;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Move;

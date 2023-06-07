@@ -4,6 +4,7 @@ using Boss;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using NetworkUtility.NetworkRunnerManager;
+using Nuts.BattleSystem.Boss;
 using UnityEngine;
 
 namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Boss.Tests

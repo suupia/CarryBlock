@@ -6,6 +6,7 @@ using Boss;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
+using Nuts.BattleSystem.Boss;
 using UnityEngine;
 using Random = UnityEngine.Random;
 

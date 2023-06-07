@@ -1,12 +1,9 @@
-using Cysharp.Threading.Tasks;
-using Fusion;
-using Main;
-using UnityEngine;
 using System.Collections.Generic;
+using Fusion;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
+using UnityEngine;
 
-
-namespace Boss
+namespace Nuts.BattleSystem.Boss
 {
     
     //Stateパターン

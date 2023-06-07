@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
-namespace Boss
+namespace Nuts.BattleSystem.Boss
 {
     [Serializable]
     public record Boss1Record

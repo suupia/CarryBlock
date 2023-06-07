@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Boss;
 using Fusion;
+using Nuts.BattleSystem.Boss;
 using UnityEngine;
 
 namespace Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts

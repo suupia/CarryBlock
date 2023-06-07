@@ -3,8 +3,7 @@ using System.Linq;
 using Fusion;
 using UnityEngine;
 
-
-namespace Decoration
+namespace Nuts.Projects.BattleSystem.Decoration.Scripts
 {
     /// <summary>
     /// デコレーション系のすべてを管理する

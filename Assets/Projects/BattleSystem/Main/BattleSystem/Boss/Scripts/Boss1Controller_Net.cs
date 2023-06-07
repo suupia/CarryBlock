@@ -1,17 +1,16 @@
-using System.Linq;
-using Animations;
-using Decoration;
-using Fusion;
-using JetBrains.Annotations;
-using Main;
-using UnityEngine;
-using System;
-using NetworkUtility.ObjectPool;
-using Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Attack;
-
 #nullable  enable
 
-namespace Boss
+using System;
+using System.Linq;
+using Boss;
+using Fusion;
+using NetworkUtility.ObjectPool;
+using Nuts.Projects.BattleSystem.Decoration.Animations.Scripts;
+using Nuts.Projects.BattleSystem.Decoration.Scripts;
+using Nuts.Projects.BattleSystem.Main.BattleSystem.Player.Attack;
+using UnityEngine;
+
+namespace Nuts.BattleSystem.Boss
 {
     public class Boss1Controller_Net : PoolableObject, IEnemyOnAttacked
     {

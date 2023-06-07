@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Fusion;
 using Main;
 using NetworkUtility.NetworkRunnerManager;
+using Nuts.BattleSystem.Boss;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Boss.Tests;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Spawners;
 using UnityEngine;

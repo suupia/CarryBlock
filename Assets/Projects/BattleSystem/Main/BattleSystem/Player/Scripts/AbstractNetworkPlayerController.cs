@@ -1,9 +1,9 @@
 using System;
-using Animations;
-using Decoration;
 using Fusion;
 using Main;
 using NetworkUtility.Inputs;
+using Nuts.Projects.BattleSystem.Decoration.Animations.Scripts;
+using Nuts.Projects.BattleSystem.Decoration.Scripts;
 using Nuts.Projects.BattleSystem.Main.BattleSystem.Enemy.Scripts;
 using UnityEngine;
 
