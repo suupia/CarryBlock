@@ -6,6 +6,8 @@ using UnityEngine;
 using TMPro;
 using ExitGames.Client.Photon;
 using UnityEngine.Serialization;
+using GameSystem.GameScene.Scripts;
+
 
 # nullable enable
 public class ShowPlayerHp : MonoBehaviour

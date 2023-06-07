@@ -4,10 +4,11 @@ using Boss;
 using Boss.Tests;
 using Cysharp.Threading.Tasks;
 using Fusion;
+using Main;
 using NetworkUtility.NetworkRunnerManager;
 using UnityEngine;
 
-namespace Main
+namespace GameSystem.GameScene.Scripts
 {
     public class GameInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {

@@ -1,61 +1,65 @@
 using Fusion;
+using GameSystem.GameScene.Interfaces;
 using UnityEngine;
 using VContainer;
 
-public class NetworkWaveTimer : NetworkBehaviour
+namespace GameSystem.GameScene.Scripts
 {
-    readonly float _waveTime = 60f;
-    bool _isInitialized;
-    WaveTimer _waveTimer;
-    [Networked] public TickTimer tickTimer { get; set; }
-
-    [Inject]
-    public void Construct(WaveTimer waveTimer)
+    public class NetworkWaveTimer : NetworkBehaviour
     {
-        _waveTimer = waveTimer;
-        Debug.Log($"_waveTimer : {_waveTimer}");
+        readonly float _waveTime = 60f;
+        bool _isInitialized;
+        WaveTimer _waveTimer;
+        [Networked] public TickTimer tickTimer { get; set; }
+    
+        [Inject]
+        public void Construct(WaveTimer waveTimer)
+        {
+            _waveTimer = waveTimer;
+            Debug.Log($"_waveTimer : {_waveTimer}");
+        }
+    
+        public void Init()
+        {
+            _isInitialized = true;
+            // tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime); // ここに書くの良くないかも
+        }
+    
+        public override void FixedUpdateNetwork()
+        {
+            if (_isInitialized == false) return;
+            // if(Object?.IsValid == false) return;
+            if(tickTimer.ExpiredOrNotRunning(Runner)) tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime);
+            _waveTimer.tickTimer = tickTimer;
+            _waveTimer.NotifyObservers(Runner);
+        }
     }
-
-    public void Init()
+    
+    public class WaveTimer : ITimer
     {
-        _isInitialized = true;
-        // tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime); // ここに書くの良くないかも
-    }
-
-    public override void FixedUpdateNetwork()
-    {
-        if (_isInitialized == false) return;
-        // if(Object?.IsValid == false) return;
-        if(tickTimer.ExpiredOrNotRunning(Runner)) tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime);
-        _waveTimer.tickTimer = tickTimer;
-        _waveTimer.NotifyObservers(Runner);
-    }
-}
-
-public class WaveTimer : ITimer
-{
-    readonly GameContext _gameContext;
-
-    [Inject]
-    public WaveTimer(GameContext gameContext)
-    {
-        _gameContext = gameContext;
-    }
-
-    public TickTimer tickTimer { get; set; }
-
-    public void NotifyObservers(NetworkRunner runner)
-    {
-        _gameContext.Update(runner, this);
-    }
-
-    public float getRemainingTime(NetworkRunner Runner)
-    {
-        return tickTimer.RemainingTime(Runner).HasValue ? tickTimer.RemainingTime(Runner).Value : 0f;
-    }
-
-    public bool isExpired(NetworkRunner Runner)
-    {
-        return tickTimer.ExpiredOrNotRunning(Runner);
+        readonly GameContext _gameContext;
+    
+        [Inject]
+        public WaveTimer(GameContext gameContext)
+        {
+            _gameContext = gameContext;
+        }
+    
+        public TickTimer tickTimer { get; set; }
+    
+        public void NotifyObservers(NetworkRunner runner)
+        {
+            _gameContext.Update(runner, this);
+        }
+    
+        public float getRemainingTime(NetworkRunner Runner)
+        {
+            return tickTimer.RemainingTime(Runner).HasValue ? tickTimer.RemainingTime(Runner).Value : 0f;
+        }
+    
+        public bool isExpired(NetworkRunner Runner)
+        {
+            return tickTimer.ExpiredOrNotRunning(Runner);
+        }
     }
 }
