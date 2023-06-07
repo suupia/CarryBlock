@@ -16,26 +16,24 @@ namespace Nuts.BattleSystem.Boss.Scripts
         public readonly float SearchRadius = 6f;
         public readonly float DefaultAttackCoolTime = 4f;
 
-        [SerializeField] public Transform finSpawnerTransform;
+        [SerializeField] public Transform? finSpawnerTransform;
 
         // target buffer
         public HashSet<Transform> TargetBuffer { get; set; } = new();
 
         // componets
-        public GameObject GameObject { get; private set; } // NetworkControllerのGameObject
-        public Transform Transform => GameObject.transform;
-        public Rigidbody Rb { get; private set; }
-
-        NetworkRunner _runner;
+        public GameObject? GameObject { get; private set; } // NetworkControllerのGameObject
+        public Transform? Transform => GameObject == null ? null : GameObject.transform;
+        public Rigidbody? Rb { get; private set; }
+        
 
         // This record will initialize by SerializeField
         Monster1Record()
         {
         }
 
-        public void Init(NetworkRunner runner, GameObject gameObject)
+        public void Init(GameObject gameObject)
         {
-            _runner = runner;
             GameObject = gameObject;
             Rb = gameObject.GetComponent<Rigidbody>();
         }

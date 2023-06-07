@@ -13,6 +13,7 @@ using UnityEngine.Serialization;
 
 namespace Nuts.BattleSystem.Boss.Scripts
 {
+    // ReSharper disable once InconsistentNaming
     public class Monster1Controller_Net : PoolableObject, IEnemyOnAttacked
     {
         // Serialize Record
@@ -68,7 +69,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         public void RPC_LocalInit()
         {
             // Init Record
-            record.Init(Runner, gameObject);
+            record.Init(gameObject);
             
             // Init Host Domain
             // newの順番に注意！

@@ -28,15 +28,15 @@ namespace Nuts.BattleSystem.Boss.Scripts
     /// </summary>
     public abstract class Monster1AbstractState : IMonster1State
     {
-        public IEnemyMove EnemyMove => move;
-        public IEnemyAction EnemyAction => action;
-        public bool IsActionCompleted => action.IsActionCompleted;
-        Monster1Record Record { get; }
-        protected IEnemyAction action;
-        protected IEnemyMove move;
-        protected IEnemySearch search;
-        
-        public float ActionCoolTime => action.ActionCoolTime;
+        public IEnemyMove EnemyMove => MonsterMove;
+        public IEnemyAction EnemyAction => MonsterAction;
+        public bool IsActionCompleted => MonsterAction.IsActionCompleted;
+        protected Monster1Record Record { get; }
+        protected IEnemyAction MonsterAction;
+        protected IEnemyMove MonsterMove;
+        protected IEnemySearch MonsterSearch;
+
+        public float ActionCoolTime => MonsterAction?.ActionCoolTime ?? 0;
 
         protected Monster1AbstractState(Monster1Record record)
         {
@@ -45,40 +45,40 @@ namespace Nuts.BattleSystem.Boss.Scripts
 
         public void Move()
         {
-            move.Move();
+            MonsterMove?.Move();
         }
         
         public void StartAction()
         {
-            action.StartAction();
+            MonsterAction?.StartAction();
         }
 
         public void EndAction()
         {
-            action.EndAction();
+            MonsterAction?.EndAction();
         }
         
         public Transform[]? Search()
         {
-            return search.Search();
+            return MonsterSearch?.Search();
         }
         
         public Transform? DetermineTarget(IEnumerable<Transform> targetUnits)
         {
-            return search.DetermineTarget(targetUnits);
+            return MonsterSearch?.DetermineTarget(targetUnits);
         }
     }
     
     public class IdleState : Monster1AbstractState
     {
-        readonly WanderState _wanderState;
+        readonly WanderState? _wanderState;
         public IdleState(Monster1Record record) : base(record)
         {
-            move = new DoNothingMove();
+            MonsterMove = new DoNothingMove();
 
-            action = new IdleAction();
+            MonsterAction = new IdleAction();
 
-            search = new DoNothingSearch();
+            MonsterSearch = new DoNothingSearch();
         }
     }
 
@@ -86,14 +86,14 @@ namespace Nuts.BattleSystem.Boss.Scripts
     {
         public WanderState(Monster1Record record) : base(record)
         {
-            move =
+            MonsterMove =
                 new RandomMove(simulationInterval: 2f,
                     new NonTorqueRegularMove(
                         record.Transform, record.Rb, acceleration: 20f, maxVelocity: 1.0f));
 
-            action = new DoNothingAction();
+            MonsterAction = new DoNothingAction();
 
-            search = new NearestSearch(record.Transform, record.SearchRadius, LayerMask.GetMask("Player"));
+            MonsterSearch = new NearestSearch(record.Transform, record.SearchRadius, LayerMask.GetMask("Player"));
         }
     }
 
@@ -101,13 +101,13 @@ namespace Nuts.BattleSystem.Boss.Scripts
     {
         public TackleState(Monster1Record record) : base(record)
         {
-            move = new TargetMove(record.Transform,
+            MonsterMove = new TargetMove(record.Transform,
                 new NonTorqueRegularMove(
                 record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
             
-            action = new TackleAction(record.Transform);
+            MonsterAction = new TackleAction(record.Transform);
             
-            search = new NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
+            MonsterSearch = new NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }
         
     }
@@ -119,11 +119,11 @@ namespace Nuts.BattleSystem.Boss.Scripts
 
         public ChargeJumpState(Monster1Record record) : base(record)
         {
-            move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
+            MonsterMove = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             
-            action = new ChargeJumpAction();
+            MonsterAction = new ChargeJumpAction();
             
-            search = new  NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
+            MonsterSearch = new  NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }
         
     }
@@ -135,13 +135,13 @@ namespace Nuts.BattleSystem.Boss.Scripts
 
         public JumpState(Monster1Record record) : base(record)
         {
-            move = new TargetMove(record.Transform,
+            MonsterMove = new TargetMove(record.Transform,
                 new NonTorqueRegularMove(
                     record.Transform, record.Rb, acceleration: 30f, maxVelocity: 2.5f));
 
-            action = new JumpAction(record.Transform,record.Rb);
+            MonsterAction = new JumpAction(record.Transform,record.Rb);
             
-            search = new  NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
+            MonsterSearch = new  NearestSearch(record.Transform,record.SearchRadius, LayerMask.GetMask("Player"));
         }
         
     }
@@ -150,11 +150,11 @@ namespace Nuts.BattleSystem.Boss.Scripts
     {
         public SpitOutState(Monster1Record record, NetworkRunner runner) : base(record)
         {
-            move = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
+            MonsterMove = new TargetMove(record.Transform,new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
             
-            action = new SpitOutAction(runner,record.Transform);
+            MonsterAction = new SpitOutAction(runner,record.Transform);
             
-            search = new FarthestSearch(record.Transform, record.SearchRadius, LayerMask.GetMask("Player"));
+            MonsterSearch = new FarthestSearch(record.Transform, record.SearchRadius, LayerMask.GetMask("Player"));
         }
         
     }
@@ -163,11 +163,11 @@ namespace Nuts.BattleSystem.Boss.Scripts
     {
         public VacuumState(Monster1Record record) : base(record)
         {
-            move = new TargetMove(record.Transform, new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
+            MonsterMove = new TargetMove(record.Transform, new LookAtInputMoveDecorator(record.Transform, new DoNothingInputMove()));
 
-            action = new VacuumAction();
+            MonsterAction = new VacuumAction();
             
-            search = new NearestSearch(record.Transform, record.SearchRadius, LayerMask.GetMask("Player"));
+            MonsterSearch = new NearestSearch(record.Transform, record.SearchRadius, LayerMask.GetMask("Player"));
         }
         
     }

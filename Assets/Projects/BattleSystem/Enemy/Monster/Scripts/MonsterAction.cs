@@ -39,7 +39,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         public float ActionCoolTime => 0.6f;
         bool _isDelaying;
         CancellationTokenSource _cts;
-        public float delayTime { get; init; } = 0.3f;
+        public float DelayTime { get; init; } = 0.3f;
 
         public IdleAction()
         {
@@ -65,7 +65,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
             _isDelaying = true;
             try
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(delayTime), cancellationToken: _cts.Token);
+                await UniTask.Delay(TimeSpan.FromSeconds(DelayTime), cancellationToken: _cts.Token);
             }catch(OperationCanceledException)
             {
                 Reset();
@@ -118,7 +118,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         public  bool IsActionCompleted { get; set; }
         public float ActionCoolTime => 0.5f;
         bool _isCharging;
-        public float chargeTime { get; init; } = 0.5f;
+        public float ChargeTime { get; init; } = 0.5f;
         CancellationTokenSource _cts;
 
         public ChargeJumpAction()
@@ -150,7 +150,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
             _isCharging = true;
             try
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(chargeTime), cancellationToken: _cts.Token);
+                await UniTask.Delay(TimeSpan.FromSeconds(ChargeTime), cancellationToken: _cts.Token);
             }catch(OperationCanceledException)
             {
                 Reset();
