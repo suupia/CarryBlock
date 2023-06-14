@@ -13,8 +13,8 @@ namespace Carry.CarrySystem.SetActiveTest
         [SerializeField] GameObject targetObject;
         [Networked] NetworkButtons PreButtons { get; set; }
         
-        [Networked] int ChangeActiveCount { get; set; }
-        [Networked] int PreChangeActiveCount { get; set; }
+        [Networked] NetworkBool ChangeActiveFlag { get; set; }
+        NetworkBool _preChangeActiveFlag;
 
         public override void FixedUpdateNetwork()
         {
@@ -24,8 +24,8 @@ namespace Carry.CarrySystem.SetActiveTest
             {
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
-                    ChangeActiveCount++;
-                    Debug.Log($" ChangeActiveCount -> {ChangeActiveCount}");
+                    ChangeActiveFlag = !ChangeActiveFlag;
+                    Debug.Log($" ChangeActiveCount -> {ChangeActiveFlag}");
                 }
                 
                 PreButtons = input.Buttons;
@@ -45,9 +45,9 @@ namespace Carry.CarrySystem.SetActiveTest
 
         public override void Render()
         {
-            if (ChangeActiveCount > PreChangeActiveCount)
+            if (ChangeActiveFlag != _preChangeActiveFlag)
             {
-                PreChangeActiveCount = ChangeActiveCount;
+                _preChangeActiveFlag = ChangeActiveFlag;
                 targetObject.SetActive(!targetObject.activeSelf);
             }
 
