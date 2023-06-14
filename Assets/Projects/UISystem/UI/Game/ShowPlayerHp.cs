@@ -7,7 +7,7 @@ using TMPro;
 using ExitGames.Client.Photon;
 using Nuts.BattleSystem.Player.Scripts;
 using UnityEngine.Serialization;
-using Nuts.GameSystem.GameScene.Scripts;
+using Nuts.BattleSystem.GameScene.Scripts;
 
 
 namespace Nuts.UISystem.Game.Scripts

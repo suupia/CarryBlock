@@ -5,7 +5,7 @@ using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts;
 using UnityEngine;
 using TMPro;
-using Nuts.GameSystem.GameScene.Scripts;
+using Nuts.BattleSystem.GameScene.Scripts;
 
 
 namespace  Nuts.UISystem.Game.Scripts

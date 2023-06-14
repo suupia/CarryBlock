@@ -5,11 +5,11 @@ using Fusion;
 using Nuts.Utility.Scripts;
 using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
 using Nuts.BattleSystem.Boss.Scripts;
+using Nuts.BattleSystem.Scripts;
 using Nuts.BattleSystem.Spawners.Scripts;
-using Nuts.GameSystem.Scripts;
 using UnityEngine;
 
-namespace Nuts.GameSystem.GameScene.Scripts
+namespace Nuts.BattleSystem.GameScene.Scripts
 {
     public class GameInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {

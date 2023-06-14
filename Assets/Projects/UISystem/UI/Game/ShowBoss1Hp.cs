@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Nuts.GameSystem.GameScene.Scripts;
+using Nuts.BattleSystem.GameScene.Scripts;
 using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Boss.Scripts;
 using UnityEngine;

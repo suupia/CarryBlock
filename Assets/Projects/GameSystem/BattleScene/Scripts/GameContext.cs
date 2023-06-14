@@ -1,7 +1,7 @@
 using Fusion;
-using Nuts.GameSystem.GameScene.Interfaces;
+using Nuts.BattleSystem.GameScene.Interfaces;
 
-namespace Nuts.GameSystem.GameScene.Scripts
+namespace Nuts.BattleSystem.GameScene.Scripts
 {
     public class GameContext : ITimerObserver
     {

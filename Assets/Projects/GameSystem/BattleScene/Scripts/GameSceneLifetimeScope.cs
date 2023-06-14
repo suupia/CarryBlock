@@ -1,11 +1,11 @@
 using VContainer;
 using VContainer.Unity;
-using Nuts.GameSystem.GameScene.Scripts;
+using Nuts.BattleSystem.GameScene.Scripts;
 using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts;
 using Nuts.BattleSystem.Player.Scripts;
 
-namespace Nuts.GameSystem.GameScene.Scripts
+namespace Nuts.BattleSystem.GameScene.Scripts
 {
     public sealed class GameSceneLifetimeScope : LifetimeScope
     {

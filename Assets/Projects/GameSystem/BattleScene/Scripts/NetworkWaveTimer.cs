@@ -1,9 +1,9 @@
 using Fusion;
-using Nuts.GameSystem.GameScene.Interfaces;
+using Nuts.BattleSystem.GameScene.Interfaces;
 using UnityEngine;
 using VContainer;
 
-namespace Nuts.GameSystem.GameScene.Scripts
+namespace Nuts.BattleSystem.GameScene.Scripts
 {
     public class NetworkWaveTimer : NetworkBehaviour
     {

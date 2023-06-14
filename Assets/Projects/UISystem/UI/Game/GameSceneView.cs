@@ -5,7 +5,7 @@ using Nuts.BattleSystem.Player.Scripts;
 using TMPro;
 using UnityEngine;
 using VContainer;
-using Nuts.GameSystem.GameScene.Scripts;
+using Nuts.BattleSystem.GameScene.Scripts;
 
 namespace Nuts.UISystem.Game.Scripts
 {
