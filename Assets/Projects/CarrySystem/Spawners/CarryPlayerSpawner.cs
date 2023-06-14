@@ -1,6 +1,6 @@
 ﻿using Carry.CarrySystem.Player.Scripts;
 using Fusion;
-using Nuts.BattleSystem.Spawners.Scripts;
+using Nuts.Utility.Scripts;
 
 namespace Carry.CarrySystem.Spawners
 {

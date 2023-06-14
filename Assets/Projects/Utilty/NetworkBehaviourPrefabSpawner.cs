@@ -2,7 +2,7 @@ using Fusion;
 using Nuts.Utility.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Spawners.Scripts
+namespace Nuts.Utility.Scripts
 {
     public class NetworkBehaviourPrefabSpawner<T> where T : NetworkBehaviour
     {

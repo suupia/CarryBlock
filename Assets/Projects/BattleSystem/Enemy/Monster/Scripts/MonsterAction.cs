@@ -9,6 +9,7 @@ using Nuts.BattleSystem.Move.Scripts;
 using Nuts.BattleSystem.Spawners.Scripts;
 using UnityEngine;
 using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
+using Nuts.Utility.Scripts;
 
 namespace Nuts.BattleSystem.Boss.Scripts
 {

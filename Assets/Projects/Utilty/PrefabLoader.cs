@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Nuts.BattleSystem.Spawners.Scripts
+namespace Nuts.Utility.Scripts
 {
     public interface IPrefabLoader<out T> where T : Object
     {
