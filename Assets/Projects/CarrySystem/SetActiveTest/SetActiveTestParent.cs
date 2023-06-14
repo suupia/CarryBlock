@@ -12,6 +12,9 @@ namespace Carry.CarrySystem.SetActiveTest
     {
         [SerializeField] GameObject targetObject;
         [Networked] NetworkButtons PreButtons { get; set; }
+        
+        [Networked] int ChangeActiveCount { get; set; }
+        [Networked] int PreChangeActiveCount { get; set; }
 
         public override void FixedUpdateNetwork()
         {
@@ -21,8 +24,8 @@ namespace Carry.CarrySystem.SetActiveTest
             {
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
-                    targetObject.SetActive(!targetObject.activeSelf);
-                    Debug.Log($"Toggled Active -> {targetObject.activeSelf}");
+                    ChangeActiveCount++;
+                    Debug.Log($" ChangeActiveCount -> {ChangeActiveCount}");
                 }
                 
                 PreButtons = input.Buttons;
@@ -38,6 +41,16 @@ namespace Carry.CarrySystem.SetActiveTest
                     RPC_ChangeActive();
                 }
             }
+        }
+
+        public override void Render()
+        {
+            if (ChangeActiveCount > PreChangeActiveCount)
+            {
+                PreChangeActiveCount = ChangeActiveCount;
+                targetObject.SetActive(!targetObject.activeSelf);
+            }
+
         }
 
         [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
