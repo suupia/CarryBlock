@@ -3,55 +3,55 @@ using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Entity.Interfaces;
 using UnityEngine;
+
 #nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class NumericHexagonMap
+    public class NumericGridMap
     {
         //数字だけを格納することができる六角形のマップ
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-        private readonly long[] _values = null;
-        public int GetLength() => _values.Length;
-        public int InitValue { get; } = -1;
-        public int OutOfRangeValue { get; } = -88;
+        protected int Width { get; private set; }
+        protected int Height { get; private set; }
+        protected int GetLength() => _values.Length;
+        int InitValue { get; } = -1;
+        int OutOfRangeValue { get; } = -88;
 
-        //データが存在する領域、端の領域、それ以外　の３つの領域がある
+        readonly long[] _values;
 
-        //コンストラクタ
-        public NumericHexagonMap(int width, int height)
+        // dataArea, edgeArea, outOfRangeArea の３つの領域に分けて考える
+
+        public NumericGridMap(int width, int height)
         {
             if (width <= 0 || height <= 0)
             {
-                Debug.LogWarning("Mapの幅または高さが0以下になっています");
+                Debug.LogError("Mapの幅または高さが0以下になっています");
                 return;
             }
 
-            this.Width = width;
-            this.Height = height;
+            Width = width;
+            Height = height;
 
-            if (width % 2 == 0 || height % 2 == 0)
-            {
-                _values = new long[(width * height) / 2];
-            }
-            else
-            {
-                _values = new long[(width * height + 1) / 2];
-            }
-
+            _values = new long[width * height];
 
             FillAll(InitValue);
         }
 
+        //初期化で利用
+        public void FillAll(int value)
+        {
+            for (int i = 0; i < _values.Length; i++)
+            {
+                _values[i] = value;
+            }
+        }
 
-        //Getter
-
+        // Getter
         public long GetValue(int index)
         {
             if (index < 0 || index > _values.Length)
             {
-                Debug.LogWarning("領域外の値を習得しようとしました");
+                Debug.LogError("領域外の値を習得しようとしました");
                 return OutOfRangeValue;
             }
 
@@ -60,23 +60,18 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public long GetValue(int x, int y)
         {
-            if (IsOutOfEdge(x, y))
+            if (IsOutOfEdgeArea(x, y))
             {
                 //edgeの外側
-                Debug.LogWarning($"IsOutOfEdge({x},{y})がtrueです");
+                Debug.LogError($"IsOutOfEdgeArea({x},{y})がtrueです");
                 return OutOfRangeValue;
             }
 
-            if (IsOnTheEdge(x, y))
+            if (IsOnTheEdgeArea(x, y))
             {
                 //edgeの上
                 //データは存在しないが、判定のために初期値を使いたい場合
                 return InitValue;
-            }
-
-            if (x + y % 2 == 1)
-            {
-                Debug.LogWarning($"x座標とy座標の和が奇数になっているため、対応するマスが存在しません");
             }
 
             //Debug.Log($"ToSubscript:{ToSubscript(x,y)}, x:{x}, y:{y}, IsOnTheEdge({x},{y}):{IsOnTheEdge(x,y)}, IsOutOfEdge({x},{y}):{IsOutOfEdge(x,y)}, Width:{Width}, Height:{Height}");
@@ -95,7 +90,12 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public int GetIndexFromVector(Vector2Int vector)
         {
-            if (IsOutOfEdge(vector.x, vector.y)) Debug.LogError($"IsOutOfEdge({vector.x}, {vector.y})がtrueです");
+            if (IsOutOfEdgeArea(vector.x, vector.y))
+            {
+                Debug.LogError($"IsOutOfEdgeArea({vector.x}, {vector.y})がtrueです");
+                return -1;
+            }
+
             return ToSubscript(vector.x, vector.y);
         }
 
@@ -105,7 +105,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             if (index < 0 || index > _values.Length - 1)
             {
-                Debug.LogWarning("領域外の値を習得しようとしました");
+                Debug.LogError("領域外の値を習得しようとしました");
                 return;
             }
 
@@ -114,15 +114,10 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void SetValue(int x, int y, long value)
         {
-            if (IsOutOfEdge(x, y))
+            if (IsOutOfEdgeArea(x, y))
             {
-                Debug.LogWarning($"IsOutOfEdge({x},{y})がtrueです");
+                Debug.LogError($"IsOutOfEdgeArea({x},{y})がtrueです");
                 return;
-            }
-
-            if ((x + y) % 2 == 1)
-            {
-                Debug.LogWarning($"x座標とy座標の和が奇数になっているため、対応するマスが存在しません");
             }
 
             _values[ToSubscript(x, y)] = value;
@@ -145,15 +140,10 @@ namespace Carry.CarrySystem.Map.Scripts
             var x = vector.x;
             var y = vector.y;
 
-            if (IsOutOfEdge(x, y))
+            if (IsOutOfEdgeArea(x, y))
             {
-                Debug.LogWarning($"IsOutOfEdge({x},{y})がtrueです");
+                Debug.LogError($"IsOutOfEdgeArea({x},{y})がtrueです");
                 return;
-            }
-
-            if (x + y % 2 != 0)
-            {
-                Debug.LogWarning($"x座標とy座標の和が奇数になっているため、対応するマスが存在しません");
             }
 
             _values[ToSubscript(x, y)] *= value;
@@ -164,20 +154,15 @@ namespace Carry.CarrySystem.Map.Scripts
             var x = vector.x;
             var y = vector.y;
 
-            if (IsOutOfEdge(x, y))
+            if (IsOutOfEdgeArea(x, y))
             {
-                Debug.LogWarning($"IsOutOfEdge({x},{y})がtrueです");
+                Debug.LogError($"IsOutOfEdgeArea({x},{y})がtrueです");
                 return;
-            }
-
-            if (x + y % 2 == 1)
-            {
-                Debug.LogWarning($"x座標とy座標の和が奇数になっているため、対応するマスが存在しません");
             }
 
             if (GetValue(x, y) % value != 0)
             {
-                Debug.LogWarning($"DivisionalSetValue(vector:{vector},value:{value})で余りが出たため実行できません");
+                Debug.LogError($"DivisionalSetValue(vector:{vector},value:{value})で余りが出たため実行できません");
                 return;
             }
 
@@ -188,139 +173,67 @@ namespace Carry.CarrySystem.Map.Scripts
         //添え字を変換する
         protected int ToSubscript(int x, int y)
         {
-            //xを常に0からスタートさせるために必要
-            if (y % 2 == 1)
-            {
-                x--;
-            }
-
-            if (Width % 2 == 0)
-            {
-                //偶数×偶数や偶数×奇数の時
-
-                return x / 2 + Width / 2 * y;
-            }
-            else
-            {
-                //奇数×偶数や奇数×奇数の時
-                if (y % 2 == 0)
-                {
-                    return x / 2 + Width * y / 2;
-                }
-                else
-                {
-                    return x / 2 + (Width * y + 1) / 2;
-                }
-            }
+            return x + Width * y;
         }
 
         protected Vector2Int DivideSubscript(int subscript)
         {
             int preXSub, xSub, ySub;
 
-            if (Width % 2 == 0)
-            {
-                preXSub = subscript % (Width / 2);
-                xSub = preXSub * 2;
-                ySub = (subscript - preXSub) / (Width / 2);
-                if (ySub % 2 == 1)
-                {
-                    xSub++;
-                }
-            }
-            else
-            {
-                int r = subscript % Width;
-                int halfWidth = (Width + 1) / 2;
-
-
-                if (r < halfWidth)
-                {
-                    preXSub = r;
-                    xSub = preXSub * 2;
-                    ySub = (subscript - preXSub) / Width * 2;
-                }
-                else
-                {
-                    preXSub = r - halfWidth;
-                    xSub = preXSub * 2 + 1;
-                    ySub = (subscript - preXSub - halfWidth) / Width * 2 + 1;
-                }
-            }
-
-            //Debug.Log($"subscript:{subscript}preXSub:{preXSub}, xSub:{xSub}, ySub:{ySub}");
-            return new Vector2Int(xSub, ySub);
+            int x = subscript % Width;
+            int y = subscript / Width;
+            return new Vector2Int(x, y);
         }
 
         //判定用関数
-        public bool IsOutOfEdge(int x, int y) //edgeの外側。つまり、データがedgeValueすらない
+        /// <summary>
+        /// edgeArea(データは存在しないが、_initValueを返す領域)の外側であればtrueを返す
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        protected bool IsOutOfEdgeArea(int x, int y)
         {
             if (x < -1 || Width < x) return true;
-            if (y < -2 || Height + 1 < y) return true;
-            if (Width % 2 == 0)
-            {
-                if (Height % 2 == 0)
-                {
-                    if (x == -1 && y == Height + 1 || x == Width && y == -2) return true; //左上と右下に空きがある
-                }
-                else
-                {
-                    if (x == Width && y == Height + 1 || x == Width && y == -2) return true; //右上と右下に空きがある
-                }
-            }
-            else
-            {
-                if (Height % 2 == 0)
-                {
-                    if (x == -1 && y == Height + 1 || x == Width && y == Height + 1) return true; //左上と右上に空きがある
-                }
-                else
-                {
-                    //空きはない
-                }
-            }
-
-            //mapの中
+            if (y < -1 || Height < y) return true;
             return false;
         }
 
-        public bool IsOnTheEdge(int x, int y) //データは存在しないが、_initValueを返すマス
+        /// <summary>
+        /// edgeArea(データは存在しないが、_initValueを返す領域)の上であればtrueを返す
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        protected bool IsOnTheEdgeArea(int x, int y)
         {
-            //if ((Mathf.Abs(x)  + Mathf.Abs(y)) % 2 != 0) return false;
             if ((x == -1 || x == Width) && (-1 <= y && y <= Height)) return true; //左右の両端
-            if ((y == -1 || y == Height) && (-1 <= x && x <= Width)) return true; //上下の両端（へこんだ方）
-            if ((y == -2 || y == Height + 1) && (0 <= x && x <= Width - 1)) return true; //上下の両端（膨らんだ方）
-
+            if ((y == -1 || y == Height) && (-1 <= x && x <= Width)) return true; //上下の両端
             return false;
         }
 
-        public bool IsOutOfDataRange(int x, int y) //座標(0,0)～(mapWidht-1,mapHeight-1)のデータが存在する領域の外側
+        /// <summary>
+        /// dataArea(座標(0,0)～(mapWidht-1,mapHeight-1)のデータが存在する領域)の外側であればtrueを返す
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        protected bool IsOutOfDataRangeArea(int x, int y)
         {
-            if ((x + y) % 2 != 0) return true; //六角形のマス目上の座標でなければtrue
-            //Debug.Log($"IsOutOfDataRange ({x},{y}):{IsOutOfEdge(x, y) || IsOnTheEdge(x, y)}");
-            return IsOutOfEdge(x, y) || IsOnTheEdge(x, y);
-        }
-
-        //初期化で利用
-        public void FillAll(int value)
-        {
-            for (int i = 0; i < _values.Length; i++)
-            {
-                _values[i] = value;
-            }
+            return IsOutOfEdgeArea(x, y) || IsOnTheEdgeArea(x, y);
         }
     }
 
 
-    public class EntityHexagonMap : NumericHexagonMap
+    public class EntityGridMap : NumericGridMap
     {
-         List<IEntity>[] _entityMaps;
-        
+        List<IEntity>[] _entityMaps;
+
 
         public int AdvancedCells = 0; //緑化したマスの最前線のｘ座標
 
         //コンストラクタ
-        public EntityHexagonMap(int width, int height) : base(width, height)
+        public EntityGridMap(int width, int height) : base(width, height)
         {
             _entityMaps = new List<IEntity>[GetLength()];
             for (int i = 0; i < GetLength(); i++)
@@ -331,9 +244,9 @@ namespace Carry.CarrySystem.Map.Scripts
             // if (GameManager.instance == null) return;
         }
 
-        public EntityHexagonMap CloneMap()
+        public EntityGridMap CloneMap()
         {
-            return (EntityHexagonMap)MemberwiseClone();
+            return (EntityGridMap)MemberwiseClone();
         }
 
         //Getter
@@ -343,7 +256,7 @@ namespace Carry.CarrySystem.Map.Scripts
             x = vector.x;
             y = vector.y;
 
-            if (IsOutOfDataRange(x, y)) return default(EntityType);
+            if (IsOutOfDataRangeArea(x, y)) return default(EntityType);
 
             return GetSingleEntity<EntityType>(ToSubscript(x, y));
         }
@@ -390,7 +303,7 @@ namespace Carry.CarrySystem.Map.Scripts
             x = vector.x;
             y = vector.y;
 
-            if (IsOutOfDataRange(x, y)) return default(List<EntityType>);
+            if (IsOutOfDataRangeArea(x, y)) return default(List<EntityType>);
 
             return GetSingleEntityList<EntityType>(ToSubscript(x, y));
         }
@@ -426,7 +339,7 @@ namespace Carry.CarrySystem.Map.Scripts
             x = vector.x;
             y = vector.y;
 
-            if (IsOutOfDataRange(x, y)) return default(List<IEntity>);
+            if (IsOutOfDataRangeArea(x, y)) return default(List<IEntity>);
 
             int index = ToSubscript(vector.x, vector.y);
 
@@ -446,7 +359,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var x = vector.x;
             var y = vector.y;
 
-            if (IsOutOfDataRange(x, y))
+            if (IsOutOfDataRangeArea(x, y))
             {
                 Debug.LogWarning($"IsOutOfDataRange({x},{y})がtrueです");
                 return;
@@ -475,7 +388,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void RemoveEntity(int x, int y, IEntity entity)
         {
-            if (IsOutOfDataRange(x, y))
+            if (IsOutOfDataRangeArea(x, y))
             {
                 Debug.LogWarning($"IsOutOfDataRange({x},{y})がtrueです");
                 return;
@@ -527,7 +440,7 @@ namespace Carry.CarrySystem.Map.Scripts
             bool isComplete = false;
             int maxDistance = 0;
 
-            var numericHexagonMap = new NumericHexagonMap(Width, Height);
+            var numericHexagonMap = new NumericGridMap(Width, Height);
 
             //引数が適切かどうかチェックする
 
@@ -673,231 +586,232 @@ namespace Carry.CarrySystem.Map.Scripts
             }
         }
     }
-    
-    
+
+
     public static class HexagonFunction
-{
-    public enum Direction
     {
-        Up,
-        UpLeft,
-        DownLeft,
-        Down,
-        DownRight,
-        UpRight,
-    }
-
-    //真上から始まって時計回りで6方向ある
-    public static Vector2Int GetUnitDirectionVector(int index)
-    {
-        var direction = index switch
+        public enum Direction
         {
-            0 => new Vector2Int(0, 2),
-            1 => new Vector2Int(1, 1),
-            2 => new Vector2Int(1, -1),
-            3 => new Vector2Int(0, -2),
-            4 => new Vector2Int(-1, -1),
-            5 => new Vector2Int(-1, 1),
-            _ => throw new InvalidOperationException()
-        };
-        return direction;
-    }
-    public static float GetAngleFromUnitDirectionVector(Direction direction)
-    {
-
-        //Debug.Log($"direction:{direction}");
-
-        return direction switch
-        {
-            Direction.Up => Vector2.SignedAngle(Vector2.up, Quaternion.Euler(0, 0, 0) * Vector2.up),
-            Direction.UpLeft => Vector2.SignedAngle(Vector2.up, Quaternion.Euler(0, 0, 57.850638470217f) * Vector2.up),
-            Direction.DownLeft => Vector2.SignedAngle(Vector2.up, Quaternion.Euler(0, 0, 122.149361529783f) * Vector2.up),
-            Direction.Down => Vector2.SignedAngle(Vector2.up, Quaternion.Euler(0, 0, 180) * Vector2.up),
-            Direction.DownRight => Vector2.SignedAngle(Vector2.up, Quaternion.Euler(0, 0, 237.850638470217f) * Vector2.up),
-            Direction.UpRight => Vector2.SignedAngle(Vector2.up, Quaternion.Euler(0, 0, 302.149361529783f) * Vector2.up),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    public static Direction ToDirection(Vector2 unitDirectionVector)
-    {
-        //六角形のマス目に沿う単位ベクトルから六角形のマス目上の向きを求める
-        if (unitDirectionVector == Vector2.zero)
-        {
-            //Debug.LogError($"unitDirectionVector:{unitDirectionVector}");
-            return Direction.Up;
+            Up,
+            UpLeft,
+            DownLeft,
+            Down,
+            DownRight,
+            UpRight,
         }
 
-        if (unitDirectionVector == Vector2.left || unitDirectionVector == Vector2.right)
+        //真上から始まって時計回りで6方向ある
+        public static Vector2Int GetUnitDirectionVector(int index)
         {
-            //単位ベクトルが真横になることはない
-            Debug.LogError($"unitDirectionVector:{unitDirectionVector}");
-            return Direction.Up;
-        }
-
-        var direction = Direction.Up;
-        float angle = Vector2.SignedAngle(Vector2.up, unitDirectionVector);
-
-        //Debug.Log($"angle:{angle}");
-
-        if (-30.0f <= angle && angle < 30.0f)
-        {
-            direction = Direction.Up;
-
-        }
-        else if (30.0f <= angle && angle < 90.0f)
-        {
-            direction = Direction.UpLeft;
-
-        }
-        else if (90.0f <= angle && angle < 150.0f)
-
-        {
-            direction = Direction.DownLeft;
-
-        }
-        else if (150.0f <= angle || angle < -150.0f)
-        {
-            direction = Direction.Down;
-
-        }
-        else if (-150.0f <= angle && angle < -90.0f)
-        {
-            direction = Direction.DownRight;
-            ;
-        }
-        else if (-90.0f <= angle && angle < -30.0f)
-        {
-            direction = Direction.UpRight;
-
-        }
-        else
-        {
-            Debug.LogError($"angle:{angle}");
-            throw new System.Exception();
-        }
-
-        //Debug.Log($"ToDirection({unitDirectionVector}):{direction}");
-
-        return direction;
-    }
-
-    public static Vector2Int GetDirectionVector(Direction direction)
-    {
-        return direction switch
-        {
-            Direction.Up => new Vector2Int(0, 2),
-            Direction.UpLeft => new Vector2Int(-1, 1),
-            Direction.DownLeft => new Vector2Int(-1, -1),
-            Direction.Down => new Vector2Int(0, -2),
-            Direction.DownRight => new Vector2Int(1, -1),
-            Direction.UpRight => new Vector2Int(1, 1),
-            _ => throw new InvalidOperationException()
-        };
-
-    }
-
-
-    public static List<Vector2Int> GetCircumferenceVector(int radius)
-    {
-        //時計回りの順番でリストに入れる
-        var resultList = new List<Vector2Int>();
-
-        if (radius == 0)
-        {
-            resultList.Add(Vector2Int.zero);
-            return resultList;
-        }
-
-        //上の頂点
-        resultList.Add(new Vector2Int(0, 2 * radius));
-        //右上の辺
-        for (int i = 0; i < radius - 1; i++)
-        {
-            resultList.Add(new Vector2Int(1 + i, 2 * radius - 1 - i));
-        }
-        //右上の頂点
-        resultList.Add(new Vector2Int(radius, radius));
-        //右の辺
-        for (int i = 0; i < radius - 1; i++)
-        {
-            resultList.Add(new Vector2Int(radius, radius - 2 - 2 * i));
-        }
-        //右下の頂点
-        resultList.Add(new Vector2Int(radius, -radius));
-        //右下の辺
-        for (int i = 0; i < radius - 1; i++)
-        {
-            resultList.Add(new Vector2Int(radius - 1 - i, -radius - 1 - i));
-        }
-        //下の頂点
-        resultList.Add(new Vector2Int(0, -2 * radius));
-        //左下の辺
-        for (int i = 0; i < radius - 1; i++)
-        {
-            resultList.Add(new Vector2Int(-1 - i, -2 * radius + 1 + i));
-        }
-        //左下の頂点
-        resultList.Add(new Vector2Int(-radius, -radius));
-        //左の辺
-        for (int i = 0; i < radius - 1; i++)
-        {
-            resultList.Add(new Vector2Int(-radius, -radius + 2 + 2 * i));
-        }
-        //左上の頂点
-        resultList.Add(new Vector2Int(-radius, radius));
-        //左上の辺
-        for (int i = 0; i < radius - 1; i++)
-        {
-            resultList.Add(new Vector2Int(-radius + 1 + i, radius + 1 + i));
-        }
-
-        return resultList;
-    }
-
-    public static List<Vector2Int> GetSurroundingVector(Vector2Int centerPos, int radius)
-    {
-        var circlePosList = new List<Vector2Int>();
-
-        for (int r = 0; r <= radius; r++)
-        {
-            circlePosList.AddRange(GetCircumferenceVector(r));
-        }
-
-        return new List<Vector2Int>(circlePosList).ConvertAll(vec => vec + centerPos);
-    }
-
-    public static Vector2Int CalcMoveVectorInHexagon(Vector2Int gridPos, Vector2Int inputVector)
-    {
-
-        //Debug.Log($"gridPos:{gridPos}, inputVector:{inputVector}");
-        Vector2Int resultVector = Vector2Int.zero;
-        if (inputVector.x == 0 && inputVector.y == 0)
-        {
-            //何もしない
-        }
-        else if (inputVector.x == 0 && inputVector.y != 0)
-        {
-            resultVector = new Vector2Int(0, inputVector.y * 2);
-        }
-        else if (inputVector.x != 0 && inputVector.y == 0)
-        {
-            if (gridPos.x % 2 == 0)
+            var direction = index switch
             {
-                resultVector = new Vector2Int(inputVector.x, 1);
+                0 => new Vector2Int(0, 2),
+                1 => new Vector2Int(1, 1),
+                2 => new Vector2Int(1, -1),
+                3 => new Vector2Int(0, -2),
+                4 => new Vector2Int(-1, -1),
+                5 => new Vector2Int(-1, 1),
+                _ => throw new InvalidOperationException()
+            };
+            return direction;
+        }
+
+        public static float GetAngleFromUnitDirectionVector(Direction direction)
+        {
+            //Debug.Log($"direction:{direction}");
+
+            return direction switch
+            {
+                Direction.Up => Vector2.SignedAngle(Vector2.up, Quaternion.Euler(0, 0, 0) * Vector2.up),
+                Direction.UpLeft => Vector2.SignedAngle(Vector2.up,
+                    Quaternion.Euler(0, 0, 57.850638470217f) * Vector2.up),
+                Direction.DownLeft => Vector2.SignedAngle(Vector2.up,
+                    Quaternion.Euler(0, 0, 122.149361529783f) * Vector2.up),
+                Direction.Down => Vector2.SignedAngle(Vector2.up, Quaternion.Euler(0, 0, 180) * Vector2.up),
+                Direction.DownRight => Vector2.SignedAngle(Vector2.up,
+                    Quaternion.Euler(0, 0, 237.850638470217f) * Vector2.up),
+                Direction.UpRight => Vector2.SignedAngle(Vector2.up,
+                    Quaternion.Euler(0, 0, 302.149361529783f) * Vector2.up),
+                _ => throw new InvalidOperationException()
+            };
+        }
+
+        public static Direction ToDirection(Vector2 unitDirectionVector)
+        {
+            //六角形のマス目に沿う単位ベクトルから六角形のマス目上の向きを求める
+            if (unitDirectionVector == Vector2.zero)
+            {
+                //Debug.LogError($"unitDirectionVector:{unitDirectionVector}");
+                return Direction.Up;
+            }
+
+            if (unitDirectionVector == Vector2.left || unitDirectionVector == Vector2.right)
+            {
+                //単位ベクトルが真横になることはない
+                Debug.LogError($"unitDirectionVector:{unitDirectionVector}");
+                return Direction.Up;
+            }
+
+            var direction = Direction.Up;
+            float angle = Vector2.SignedAngle(Vector2.up, unitDirectionVector);
+
+            //Debug.Log($"angle:{angle}");
+
+            if (-30.0f <= angle && angle < 30.0f)
+            {
+                direction = Direction.Up;
+            }
+            else if (30.0f <= angle && angle < 90.0f)
+            {
+                direction = Direction.UpLeft;
+            }
+            else if (90.0f <= angle && angle < 150.0f)
+
+            {
+                direction = Direction.DownLeft;
+            }
+            else if (150.0f <= angle || angle < -150.0f)
+            {
+                direction = Direction.Down;
+            }
+            else if (-150.0f <= angle && angle < -90.0f)
+            {
+                direction = Direction.DownRight;
+                ;
+            }
+            else if (-90.0f <= angle && angle < -30.0f)
+            {
+                direction = Direction.UpRight;
             }
             else
             {
-                resultVector = new Vector2Int(inputVector.x, -1);
+                Debug.LogError($"angle:{angle}");
+                throw new System.Exception();
             }
+
+            //Debug.Log($"ToDirection({unitDirectionVector}):{direction}");
+
+            return direction;
         }
-        else
+
+        public static Vector2Int GetDirectionVector(Direction direction)
         {
-            resultVector = new Vector2Int(inputVector.x, inputVector.y);
+            return direction switch
+            {
+                Direction.Up => new Vector2Int(0, 2),
+                Direction.UpLeft => new Vector2Int(-1, 1),
+                Direction.DownLeft => new Vector2Int(-1, -1),
+                Direction.Down => new Vector2Int(0, -2),
+                Direction.DownRight => new Vector2Int(1, -1),
+                Direction.UpRight => new Vector2Int(1, 1),
+                _ => throw new InvalidOperationException()
+            };
         }
 
-        return resultVector;
-    }
 
-}
+        public static List<Vector2Int> GetCircumferenceVector(int radius)
+        {
+            //時計回りの順番でリストに入れる
+            var resultList = new List<Vector2Int>();
+
+            if (radius == 0)
+            {
+                resultList.Add(Vector2Int.zero);
+                return resultList;
+            }
+
+            //上の頂点
+            resultList.Add(new Vector2Int(0, 2 * radius));
+            //右上の辺
+            for (int i = 0; i < radius - 1; i++)
+            {
+                resultList.Add(new Vector2Int(1 + i, 2 * radius - 1 - i));
+            }
+
+            //右上の頂点
+            resultList.Add(new Vector2Int(radius, radius));
+            //右の辺
+            for (int i = 0; i < radius - 1; i++)
+            {
+                resultList.Add(new Vector2Int(radius, radius - 2 - 2 * i));
+            }
+
+            //右下の頂点
+            resultList.Add(new Vector2Int(radius, -radius));
+            //右下の辺
+            for (int i = 0; i < radius - 1; i++)
+            {
+                resultList.Add(new Vector2Int(radius - 1 - i, -radius - 1 - i));
+            }
+
+            //下の頂点
+            resultList.Add(new Vector2Int(0, -2 * radius));
+            //左下の辺
+            for (int i = 0; i < radius - 1; i++)
+            {
+                resultList.Add(new Vector2Int(-1 - i, -2 * radius + 1 + i));
+            }
+
+            //左下の頂点
+            resultList.Add(new Vector2Int(-radius, -radius));
+            //左の辺
+            for (int i = 0; i < radius - 1; i++)
+            {
+                resultList.Add(new Vector2Int(-radius, -radius + 2 + 2 * i));
+            }
+
+            //左上の頂点
+            resultList.Add(new Vector2Int(-radius, radius));
+            //左上の辺
+            for (int i = 0; i < radius - 1; i++)
+            {
+                resultList.Add(new Vector2Int(-radius + 1 + i, radius + 1 + i));
+            }
+
+            return resultList;
+        }
+
+        public static List<Vector2Int> GetSurroundingVector(Vector2Int centerPos, int radius)
+        {
+            var circlePosList = new List<Vector2Int>();
+
+            for (int r = 0; r <= radius; r++)
+            {
+                circlePosList.AddRange(GetCircumferenceVector(r));
+            }
+
+            return new List<Vector2Int>(circlePosList).ConvertAll(vec => vec + centerPos);
+        }
+
+        public static Vector2Int CalcMoveVectorInHexagon(Vector2Int gridPos, Vector2Int inputVector)
+        {
+            //Debug.Log($"gridPos:{gridPos}, inputVector:{inputVector}");
+            Vector2Int resultVector = Vector2Int.zero;
+            if (inputVector.x == 0 && inputVector.y == 0)
+            {
+                //何もしない
+            }
+            else if (inputVector.x == 0 && inputVector.y != 0)
+            {
+                resultVector = new Vector2Int(0, inputVector.y * 2);
+            }
+            else if (inputVector.x != 0 && inputVector.y == 0)
+            {
+                if (gridPos.x % 2 == 0)
+                {
+                    resultVector = new Vector2Int(inputVector.x, 1);
+                }
+                else
+                {
+                    resultVector = new Vector2Int(inputVector.x, -1);
+                }
+            }
+            else
+            {
+                resultVector = new Vector2Int(inputVector.x, inputVector.y);
+            }
+
+            return resultVector;
+        }
+    }
 }
