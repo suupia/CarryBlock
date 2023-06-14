@@ -7,7 +7,7 @@ namespace Nuts.BattleSystem.Scripts
     public enum SceneName
     {
         TitleScene,
-        GameScene,
+        CarryScene,
         LobbyScene
     }
 
@@ -16,7 +16,7 @@ namespace Nuts.BattleSystem.Scripts
         static readonly Dictionary<SceneName, string> sceneNameTable = new()
         {
             { SceneName.TitleScene, "TitleScene" },
-            { SceneName.GameScene, "GameScene" },
+            { SceneName.CarryScene, "CarryScene" },
             { SceneName.LobbyScene, "LobbyScene" }
         };
 

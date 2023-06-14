@@ -60,7 +60,7 @@ namespace Nuts.BattleSystem.LobbyScene.Scripts
                 if (_lobbyNetworkPlayerContainer.IsAllReady)
                 {
                     _enemySpawner.CancelSpawning();
-                    SceneTransition.TransitioningScene(Runner, SceneName.GameScene);
+                    SceneTransition.TransitioningScene(Runner, SceneName.CarryScene);
                 }
                 else
                 {

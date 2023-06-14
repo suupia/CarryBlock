@@ -160,7 +160,8 @@
         "GameSystem",
         "BattleSystem",
         "UISystem",
-        "NetworkUtility"
+        "NetworkUtility",
+        "CarrySystem"
     ],
     "UseSerializableDictionary": true,
     "NullChecksForNetworkedProperties": true,
