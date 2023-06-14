@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class SetActiveTestInitializer : SimulationBehaviour
 {
-    [SerializeField]  GameObject gameObjectToSetActive;
+    [SerializeField] NetworkPrefabRef setActiveTestPrefabRef;
     bool _isInitialized;
     async void Start()
     {
@@ -20,6 +20,9 @@ public class SetActiveTestInitializer : SimulationBehaviour
         await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner),
             cancellationToken: new CancellationToken());
 
+
+        Runner.Spawn(setActiveTestPrefabRef,Vector3.zero, Quaternion.identity,Runner.LocalPlayer);
+        
         _isInitialized = true;
 
     }
@@ -28,9 +31,5 @@ public class SetActiveTestInitializer : SimulationBehaviour
     void Update()
     {
         if(!_isInitialized) return;
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            gameObjectToSetActive.SetActive(!gameObjectToSetActive.activeSelf);
-        }
     }
 }
