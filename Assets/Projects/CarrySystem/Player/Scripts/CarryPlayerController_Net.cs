@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class PlayerController_Net : NetworkBehaviour
+    public class CarryPlayerController_Net : AbstractNetworkPlayerController
     {
         [SerializeField]  Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
         public Transform InterpolationTransform => unitObjectParent;

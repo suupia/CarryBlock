@@ -5,9 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Projects/BattleSystem/Enemy/Monster/Tests/Test.unity
-    guid: 74638b9a0e6a074419c9864b60e09898
   - enabled: 1
     path: Assets/Projects/GameSystem/TitleScene/TitleScene.unity
     guid: bd7cdc17b4c75664393d89b83e1265bf
@@ -17,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Projects/GameSystem/BattleScene/BattleScene.unity
     guid: e50d632ddebfd7541ba07025ea92ac8b
+  - enabled: 1
+    path: Assets/Projects/GameSystem/CarryScene/CarryScene.unity
+    guid: c1d0d4dd590c7ce4fad02acd059d3100
   m_configObjects: {}
