@@ -13,8 +13,10 @@ namespace Carry.CarrySystem.SetActiveTest
         [SerializeField] GameObject targetObject;
         [Networked] NetworkButtons PreButtons { get; set; }
         
-        [Networked] NetworkBool ChangeActiveFlag { get; set; }
-        NetworkBool _preChangeActiveFlag;
+        // _preChangeActiveFlagはマス目の中のEntity一つに対して一つ存在することになる
+        // DecorationDetectorのようにクラスを分けると思う
+        [Networked] NetworkBool ChangeActiveFlag { get; set; } // クライアントが変更を検知する必要があるので、[Networked]が必要
+        NetworkBool _preChangeActiveFlag; // ホストのみが持てばよいので、[Networked]は不要
 
         public override void FixedUpdateNetwork()
         {
