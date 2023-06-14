@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Projects/GameSystem/LobbyScene/LobbyScene.unity
     guid: 257710ad330680b499a216f7257118df
   - enabled: 1
-    path: Assets/Projects/GameSystem/GameScene/GameScene.unity
+    path: Assets/Projects/GameSystem/BattleScene/BattleScene.unity
     guid: e50d632ddebfd7541ba07025ea92ac8b
   m_configObjects: {}
