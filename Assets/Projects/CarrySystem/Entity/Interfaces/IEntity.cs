@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
-#nullable  enable
+
+#nullable enable
 
 namespace Carry.CarrySystem.Entity.Interfaces
 {
-    public interface IEntity
+    public interface  IEntity
     {
-         Vector2Int GridPosition { get;  set; }
-
+        System.Type GetType();
+         Vector2Int GridPosition { get; set; }
     }
 }
