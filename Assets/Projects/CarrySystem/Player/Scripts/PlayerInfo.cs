@@ -12,8 +12,8 @@ namespace Carry.CarrySystem.Player.Scripts
         [NonSerialized] public NetworkRunner runner;
         
         // Property
-        public GameObject playerObj;
-        public Rigidbody playerRb;
+        [NonSerialized] public GameObject playerObj;
+        [NonSerialized] public Rigidbody playerRb;
 
         // constant fields 
         public readonly float acceleration = 30f;

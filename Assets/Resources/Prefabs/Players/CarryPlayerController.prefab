@@ -41,12 +41,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3756329797796214364}
   - component: {fileID: 6353211947961749652}
-  - component: {fileID: 5883042663122797409}
+  - component: {fileID: 549920036781230307}
   - component: {fileID: 7061470108438375560}
   - component: {fileID: 5120211856711664290}
   - component: {fileID: 7929560215822842881}
   m_Layer: 6
-  m_Name: PlayerController
+  m_Name: CarryPlayerController
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91,10 +91,10 @@ MonoBehaviour:
     RawGuidValue: 5cd987591420747f4a42a564d5daafbe
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 5883042663122797409}
+  - {fileID: 549920036781230307}
   - {fileID: 5120211856711664290}
   SimulationBehaviours: []
---- !u!114 &5883042663122797409
+--- !u!114 &549920036781230307
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,25 +103,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 4021678394862295774}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0183fb45aa00af943a45c5631e76cdca, type: 3}
+  m_Script: {fileID: 11500000, guid: b20080aeb0a01074db66ed4276cb37ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   unitObjectParent: {fileID: 1291537846645682617}
-  cameraPrefab: {fileID: 1202765848162463428, guid: 80edd889efc2b4e25a505fa35c177efe, type: 3}
+  cameraPrefab: {fileID: 0}
   playerUnitPrefabs:
   - {fileID: 5382565514109228338, guid: 3e617250fe2faeb429c30e5d618aa013, type: 3}
-  - {fileID: 129457298326952244, guid: a302a749f7736b148b56ee79b6af8253, type: 3}
-  - {fileID: 129457298326952244, guid: a302a749f7736b148b56ee79b6af8253, type: 3}
   - {fileID: 5382565514109228338, guid: 3e617250fe2faeb429c30e5d618aa013, type: 3}
-  _unitType: 0
-  _info:
-    pickerPrefab:
-      RawGuidValue: 115ee077661dd4786a1dd3a81452ca62
-    bulletPrefab:
-      RawGuidValue: 240b58989da6e405798d34a38c9be1df
-    playerObj: {fileID: 0}
-    playerRd: {fileID: 0}
+  - {fileID: 5382565514109228338, guid: 3e617250fe2faeb429c30e5d618aa013, type: 3}
+  - {fileID: 5382565514109228338, guid: 3e617250fe2faeb429c30e5d618aa013, type: 3}
+  characterType: 0
   _IsReady:
     _value: 0
 --- !u!54 &7061470108438375560
@@ -300,7 +293,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6963606240966860348
 RectTransform:
   m_ObjectHideFlags: 0
@@ -430,5 +423,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa89d2d2fcf7ef84894e36f7f25d4384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 5883042663122797409}
+  playerController: {fileID: 0}
   hpText: {fileID: 5505923965803997987}
