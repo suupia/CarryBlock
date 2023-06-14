@@ -33,8 +33,6 @@ namespace Nuts.Utility.Scripts
         // Client does not need to know prefab name
         T SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef);
     }
-
-
-
+    
 
 }

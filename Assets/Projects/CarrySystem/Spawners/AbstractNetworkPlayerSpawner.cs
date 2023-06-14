@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Nuts.Utility.Scripts;

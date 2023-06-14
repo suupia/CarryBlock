@@ -5,7 +5,7 @@ using System;
 using Fusion;
 using Nuts.NetworkUtility.Inputs.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
-using UnityEngine.Serialization;
+
 
 namespace Carry.CarrySystem.Player.Scripts
 {
