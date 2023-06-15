@@ -19,7 +19,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 maxVelocity = info.maxVelocity,
                 rotateTime = info.targetRotationTime,
             };
-            _action = new CharacterAction();
+            _action = new CharacterAction(info.playerObj.transform);
             info.playerRb.useGravity = true;
         }
 
