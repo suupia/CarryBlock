@@ -8,8 +8,8 @@ using Fusion;
 using Carry.CarrySystem.Spawners;
 using Cysharp.Threading.Tasks;
 using Nuts.BattleSystem.Scripts;
-using Nuts.NetworkUtility.NetworkRunnerManager.Scripts; 
-
+using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
+using VContainer.Unity;
 
 
 namespace Carry.CarrySystem.CarryScene.Scripts
@@ -38,7 +38,8 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             _carryPlayerSpawner = new CarryPlayerSpawner(Runner, playerPrefabSpawner);
             
             // Generate map
-            var mapGenerator = new MapGenerator(Runner);
+             var mapGenerator = new MapGenerator(Runner);
+            // var LifeTimeScope = FindObjectOfType<LifetimeScope>()
 
             if (Runner.IsServer) _carryPlayerSpawner.RespawnAllPlayer(_carryPlayerContainer);
 
