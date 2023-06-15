@@ -38,7 +38,8 @@ namespace Carry.CarrySystem.Player.Scripts
             // そのGridPosにRockがあるかどうかを確認
             var index = _map.GetIndexFromVector(forwardGridPos);
             Debug.Log($"index : {index}のRockは{_map.GetSingleEntity<Rock>(index)}です");
-            if (_map.GetSingleEntity<Rock>(forwardGridPos) != null)
+            var rock = _map.GetSingleEntity<Rock>(forwardGridPos);
+            if (rock != null)
             {
                 Debug.Log($"Rockがあります！！！");
                 if (_isCarrying)
@@ -48,6 +49,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 else
                 {
                     // ドメインのRockを削除
+                    _map.RemoveEntity(forwardGridPos, rock);
                     
                     // プレゼンターに通知して見た目を反映
                     
