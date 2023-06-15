@@ -17,22 +17,41 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         public void GenerateMap(NetworkRunner runner, EntityGridMap map)
         {
-            var groundSpawner = new GroundSpawner(runner);
-            var rockSpawner = new RockSpawner(runner);
-            
+            // var groundSpawner = new GroundSpawner(runner);
+            // var rockSpawner = new RockSpawner(runner);
+            //
+            // for (int i = 0; i < map.GetLength(); i++)
+            // {
+            //     var girdPos = map.GetVectorFromIndex(i);
+            //     var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
+            //     if (map.GetSingleEntity<Ground>(i) != null)
+            //     {
+            //         groundSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+            //     }
+            //     if (map.GetSingleEntity<Rock>(i) != null)
+            //     {
+            //         rockSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+            //     }
+            //
+            // }
+
+            var tilePresenterSpawner = new TilePresenterSpawner(runner);
+
             for (int i = 0; i < map.GetLength(); i++)
             {
                 var girdPos = map.GetVectorFromIndex(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
+                var tilePresenter = tilePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                var presentData = tilePresenter.presentDataRef;
                 if (map.GetSingleEntity<Ground>(i) != null)
                 {
-                    groundSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                    presentData.isGroundActive = true;
                 }
                 if (map.GetSingleEntity<Rock>(i) != null)
                 {
-                    rockSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                    presentData.isRockActive = true;
                 }
-
+                tilePresenter.SetPresentData(ref presentData);
             }
         }
         

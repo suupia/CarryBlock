@@ -6,7 +6,7 @@ using Fusion;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class TilePresenter : NetworkBehaviour
+    public class TilePresenter_Net : NetworkBehaviour
     {
         // [Networked] NetworkBool ChangeActiveFlag { get; set; } // クライアントが変更を検知する必要があるので、[Networked]が必要
         // NetworkBool _preChangeActiveFlag; // それぞれのローカルが持てばよいので、[Networked]は不要
@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Map.Scripts
         // [Networked] Vector2Int UpdatePos { set; get; }
         // [Networked] NetworkBool IsActive { set; get; }
 
-        [Networked] ref PresentData presentDataRef => ref MakeRef<PresentData>();
+        [Networked] public ref PresentData presentDataRef => ref MakeRef<PresentData>();
         
         // 一旦、べた貼り付けにする
         [SerializeField] GameObject groundObject;
@@ -25,6 +25,15 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             // UpdatePosにあるタイルの子オブジェクトのactiveSelfの状態をIsActiveに一致させる
             // どうやってもらうか？
+            if (groundObject.activeSelf != presentDataRef.isGroundActive)
+            {
+                groundObject.SetActive(presentDataRef.isGroundActive);
+            }
+
+            if (rockObject.activeSelf != presentDataRef.isRockActive)
+            {
+                rockObject.SetActive(presentDataRef.isRockActive);
+            }
         }
 
         public void SetPresentData(ref PresentData presentData)
