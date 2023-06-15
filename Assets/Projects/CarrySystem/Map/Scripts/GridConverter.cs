@@ -4,20 +4,14 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class GridConverter
+    public static class GridConverter
     {   
-       readonly float _lengthBetweenHorizontal;
-       readonly float _lengthBetweenVertical;
-        
-        public GridConverter(float lengthBetweenHorizontal, float lengthBetweenVertical)
+       static readonly float LengthBetweenHorizontal;
+       static readonly float LengthBetweenVertical;
+       
+        public static  Vector3 GridPositionToWorldPosition(Vector2Int gridPos)
         {
-            _lengthBetweenHorizontal = lengthBetweenHorizontal;
-            _lengthBetweenVertical = lengthBetweenVertical;
-        }
-        
-        public  Vector3 GridPositionToWorldPosition(Vector2Int gridPos)
-        {
-            return new Vector3(gridPos.x * _lengthBetweenHorizontal,0 , gridPos.y * _lengthBetweenVertical);
+            return new Vector3(gridPos.x * LengthBetweenHorizontal,0 , gridPos.y * LengthBetweenVertical);
         }
         
         // public Vector2Int WorldPositionToGridPosition(Vector3 worldPos)

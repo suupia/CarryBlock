@@ -17,8 +17,6 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         NetworkRunner _runner;
 
-        readonly GridConverter _gridConverter;
-        
         // Spawner
         readonly GroundSpawner _groundSpawner;
         readonly RockSpawner _rockSpawner;
@@ -26,10 +24,10 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             _runner = runner;
             
-            _gridConverter = new GridConverter(1, 1);
             _groundSpawner = new GroundSpawner(_runner);
             _rockSpawner = new RockSpawner(_runner);
             
+            // この二つをDIするようにしてコンテナに登録したらどうだろう？
             var gridMapGenerator = new EntityGridMapGenerator();
             var entityGridMap =   gridMapGenerator.GenerateEntityGridMap(0); // indexはとりあえず0にしておく
 
@@ -41,7 +39,7 @@ namespace Carry.CarrySystem.Map.Scripts
             for (int i = 0; i < map.GetLength(); i++)
             {
                 var girdPos = map.GetVectorFromIndex(i);
-                var worldPos = _gridConverter.GridPositionToWorldPosition(girdPos);
+                var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
                 if (map.GetSingleEntity<Ground>(i) != null)
                 {
                     _groundSpawner.SpawnPrefab(worldPos, Quaternion.identity);
