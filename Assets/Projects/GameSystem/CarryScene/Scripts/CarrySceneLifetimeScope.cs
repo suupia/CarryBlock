@@ -15,7 +15,9 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
         protected override void Configure(IContainerBuilder builder)
         {
             // Serverのドメインスクリプト
+            builder.Register<EntityGridMapGenerator>(Lifetime.Singleton);
             builder.Register<EntityGridMapSwitcher>(Lifetime.Singleton);
+            builder.Register<MapGenerator>(Lifetime.Singleton);
             // Localのドメインスクリプト
             // builder.Register<ReturnToMainBaseGauge>(Lifetime.Singleton);
         }

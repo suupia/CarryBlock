@@ -10,6 +10,7 @@ using Cysharp.Threading.Tasks;
 using Nuts.BattleSystem.Scripts;
 using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
 using VContainer.Unity;
+using VContainer;
 
 
 namespace Carry.CarrySystem.CarryScene.Scripts
@@ -23,6 +24,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         [SerializeField] string overrideSessionName;
         
         public bool IsInitialized { get; private set; }
+
 
         async void Start()
         {
@@ -38,12 +40,10 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             _carryPlayerSpawner = new CarryPlayerSpawner(Runner, playerPrefabSpawner);
             
             // Generate map
-            var gridMapGenerator = new EntityGridMapGenerator();
-            var entityGridMap =   gridMapGenerator.GenerateEntityGridMap(0); // indexはとりあえず0にしておく
-
-            var mapGenerator = new MapGenerator();
-                mapGenerator.GenerateMap(Runner, entityGridMap);
-            // var LifeTimeScope = FindObjectOfType<LifetimeScope>()
+            var vContainer = FindObjectOfType<LifetimeScope>().Container;
+            var entityGridMap = vContainer.Resolve<EntityGridMapSwitcher>().GetMap();
+            var mapGenerator = vContainer.Resolve<MapGenerator>(); 
+            mapGenerator.GenerateMap(Runner, entityGridMap);
 
             if (Runner.IsServer) _carryPlayerSpawner.RespawnAllPlayer(_carryPlayerContainer);
 
