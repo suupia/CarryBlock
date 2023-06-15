@@ -117,9 +117,32 @@ namespace Carry.CarrySystem.Map.Scripts
 
         void PlaceRock()
         {
-            rockRecords[0].kind = Rock.Kind.Kind1;
-            rockRecords[2].kind = Rock.Kind.Kind1;
-            rockRecords[width + 1].kind = Rock.Kind.Kind1;
+            List<int> rockPosList = new List<int>();
+
+            for (int i = 1 ;i < height; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    rockPosList.Add(i * width -1);
+                    rockPosList.Add(i * width - 3);
+                }
+                else
+                {
+                    rockPosList.Add(i * width -2);
+                    rockPosList.Add(i * width - 4);
+                }
+
+            }
+            // Debug.Log($"rockPosList : {string.Join(",", rockPosList)}");
+
+            for (int i = 0; i < _length; i++)
+            {
+                if (rockPosList.Contains(i))
+                {
+                    rockRecords[i].kind = Rock.Kind.Kind1;
+                }
+            }
+
         }
     }
 }
