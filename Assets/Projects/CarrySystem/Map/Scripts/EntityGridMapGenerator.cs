@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Spawners;
 using UnityEngine;
 
 #nullable enable
@@ -12,7 +13,7 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         readonly string _folderPath;
 
-        public EntityGridMapGenerator()
+        public  EntityGridMapGenerator()
         {
             _folderPath = Application.streamingAssetsPath + "/JsonFiles";
             Debug.Log($"セーブデータのファイルパスは {_folderPath}");
@@ -26,7 +27,12 @@ namespace Carry.CarrySystem.Map.Scripts
             
             for (int i = 0; i < map.GetLength(); i++)
             {
-                //Rock
+                // Ground
+                if (gridMapData.groundRecords[i].kind != Ground.Kind.None)
+                {
+                    map.AddEntity<Ground>(i, new Ground(gridMapData.groundRecords[i].kind, map.GetVectorFromIndex(i)));
+                }
+                // Rock
                 if (gridMapData.rockRecords[i].kind != Rock.Kind.None)
                 {
                     map.AddEntity<Rock>(i, new Rock(gridMapData.rockRecords[i].kind, map.GetVectorFromIndex(i)));
@@ -83,9 +89,11 @@ namespace Carry.CarrySystem.Map.Scripts
             width = 20;
             height = 11;
             _length = width * height;
+            groundRecords = new GroundRecord[_length];
             rockRecords = new RockRecord[_length];
 
             FillAll();
+            PlaceGround();
             PlaceRock();
         }
         
@@ -93,7 +101,17 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             for (int i = 0; i < _length; i++)
             {
+                groundRecords[i] = new GroundRecord();
                 rockRecords[i] = new RockRecord();
+            }
+        }
+
+        void PlaceGround()
+        {
+            // すべてのマスに対してGroundを配置する
+            for (int i = 0; i < _length; i++)
+            {
+                groundRecords[i].kind = Ground.Kind.Kind1;
             }
         }
 

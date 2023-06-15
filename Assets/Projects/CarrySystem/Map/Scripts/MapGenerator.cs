@@ -5,8 +5,8 @@ using Carry.CarrySystem.Spawners;
 using UnityEngine;
 using Fusion;
 using Nuts.Utility.Scripts;
-
 #nullable  enable
+
 namespace Carry.CarrySystem.Map.Scripts
 {
     /// <summary>
@@ -20,12 +20,14 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly GridConverter _gridConverter;
         
         // Spawner
+        readonly GroundSpawner _groundSpawner;
         readonly RockSpawner _rockSpawner;
         public  MapGenerator(NetworkRunner runner)
         {
             _runner = runner;
             
             _gridConverter = new GridConverter(1, 1);
+            _groundSpawner = new GroundSpawner(_runner);
             _rockSpawner = new RockSpawner(_runner);
             
             var gridMapGenerator = new EntityGridMapGenerator();
@@ -38,69 +40,19 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             for (int i = 0; i < map.GetLength(); i++)
             {
+                var girdPos = map.GetVectorFromIndex(i);
+                var worldPos = _gridConverter.GridPositionToWorldPosition(girdPos);
+                if (map.GetSingleEntity<Ground>(i) != null)
+                {
+                    _groundSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                }
                 if (map.GetSingleEntity<Rock>(i) != null)
                 {
-                    var girdPos = map.GetVectorFromIndex(i);
-                    var worldPos = _gridConverter.GridPositionToWorldPosition(girdPos);
                     _rockSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 }
 
             }
         }
         
-
-
-        // public void SetupMap(ICameraPos iCameraPosInstance, Peripheral peripheral, int stageIndex)
-        // {
-        //     _cameraPosInstance = iCameraPosInstance;
-        //     StageIndex = stageIndex;
-        //
-        //     //子オブジェクトをすべて削除
-        //     foreach (Transform child in _hexagonTilesParent.transform)
-        //     {
-        //         Destroy(child.gameObject);
-        //     }
-        //
-        //     foreach (Transform child in _visualizationParent.transform)
-        //     {
-        //         Destroy(child.gameObject);
-        //     }
-        //
-        //     //マップを生成するたびにする処理
-        //     _map = new EntityGridMap(_width, _height);
-        //     var hexagonMapData = new HexagonMapDataMGR();
-        //
-        //
-        //     //stageIndexからmapDataIndexを計算する
-        //     var mapDataIndexToLoad = _mapDataIndexesToLoad[stageIndex];
-        //
-        //     if (_isLoadMap)
-        //     {
-        //         hexagonMapData.LoadMap(Map, mapDataIndexToLoad, _edgeWidth, _edgeHeight);
-        //     }
-        //     else
-        //     {
-        //         hexagonMapData.DefaultMap(Map, _edgeWidth, _edgeHeight);
-        //     }
-        //
-        //
-        //     _visualization = new HexagonTileVisualization(Map, this, _visualizationParent);
-        //     
-        //
-        //
-        //     //マス目にスプライトを置くためのゲームオブジェクトを生成する
-        //     _poolContainer.InstantiatePoolObjects(_hexagonTilesParent);
-        //     var neighborhoodPoss = Peripheral.GetPeripheralPositions(_cameraPosInstance.GetCameraAnchorGridPos(), Map);
-        //     _poolContainer.InitializePoolGridPositions(neighborhoodPoss);
-        //     _poolContainer.UpdatePoolObjects(neighborhoodPoss);
-        //
-        //
-        //     
-        //     //Pen3の位置を設定する
-        //     _character.Initialization(this);
-        //
-        //
-        //     UpdateAppearanceOfMap(_cameraPosInstance);
-        // }
     }
 }

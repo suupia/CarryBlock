@@ -11,6 +11,7 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         public int width;
         public int height;
+        public GroundRecord[] groundRecords;
         public RockRecord[] rockRecords;
     }
 

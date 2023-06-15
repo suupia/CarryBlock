@@ -5,23 +5,38 @@ using UnityEngine;
 #nullable enable
 namespace Carry.CarrySystem.Spawners
 {
-    public class RockSpawner
+    public class GroundSpawner
     {
-        readonly NetworkRunner _runner;
         readonly string _prefabName = "Ground";
-        NetworkObjectPrefabSpawner _groundPrefabPrefabSpawner;
+        readonly NetworkObjectPrefabSpawner _rockPrefabPrefabSpawner;
 
-        public RockSpawner(NetworkRunner runner)
+        public GroundSpawner(NetworkRunner runner)
         {
-            _runner = runner;
-            _groundPrefabPrefabSpawner = new(_runner,
+            _rockPrefabPrefabSpawner = new(runner,
                 new PrefabLoaderFromResources<NetworkObject>("Prefabs/Map"), 
                 _prefabName);
         }
 
         public void SpawnPrefab(Vector3 position, Quaternion rotation)
         {
-            _groundPrefabPrefabSpawner.SpawnPrefab(position, rotation, PlayerRef.None);
+            _rockPrefabPrefabSpawner.SpawnPrefab(position, rotation, PlayerRef.None);
+        }
+    }
+    public class RockSpawner
+    {
+        readonly string _prefabName = "Rock";
+        readonly NetworkObjectPrefabSpawner _rockPrefabPrefabSpawner;
+
+        public RockSpawner(NetworkRunner runner)
+        {
+            _rockPrefabPrefabSpawner = new(runner,
+                new PrefabLoaderFromResources<NetworkObject>("Prefabs/Map"), 
+                _prefabName);
+        }
+
+        public void SpawnPrefab(Vector3 position, Quaternion rotation)
+        {
+            _rockPrefabPrefabSpawner.SpawnPrefab(position, rotation, PlayerRef.None);
         }
     }
 
