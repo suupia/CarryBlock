@@ -38,7 +38,11 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             _carryPlayerSpawner = new CarryPlayerSpawner(Runner, playerPrefabSpawner);
             
             // Generate map
-             var mapGenerator = new MapGenerator(Runner);
+            var gridMapGenerator = new EntityGridMapGenerator();
+            var entityGridMap =   gridMapGenerator.GenerateEntityGridMap(0); // indexはとりあえず0にしておく
+
+            var mapGenerator = new MapGenerator();
+                mapGenerator.GenerateMap(Runner, entityGridMap);
             // var LifeTimeScope = FindObjectOfType<LifetimeScope>()
 
             if (Runner.IsServer) _carryPlayerSpawner.RespawnAllPlayer(_carryPlayerContainer);

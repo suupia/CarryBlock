@@ -15,38 +15,22 @@ namespace Carry.CarrySystem.Map.Scripts
     /// </summary>
     public class MapGenerator
     {
-        NetworkRunner _runner;
-
-        // Spawner
-        readonly GroundSpawner _groundSpawner;
-        readonly RockSpawner _rockSpawner;
-        public  MapGenerator(NetworkRunner runner)
+        public void GenerateMap(NetworkRunner runner, EntityGridMap map)
         {
-            _runner = runner;
+            var groundSpawner = new GroundSpawner(runner);
+            var rockSpawner = new RockSpawner(runner);
             
-            _groundSpawner = new GroundSpawner(_runner);
-            _rockSpawner = new RockSpawner(_runner);
-            
-            // この二つをDIするようにしてコンテナに登録したらどうだろう？
-            var gridMapGenerator = new EntityGridMapGenerator();
-            var entityGridMap =   gridMapGenerator.GenerateEntityGridMap(0); // indexはとりあえず0にしておく
-
-            SetupMap(entityGridMap);
-        }
-
-        void SetupMap(EntityGridMap map)
-        {
             for (int i = 0; i < map.GetLength(); i++)
             {
                 var girdPos = map.GetVectorFromIndex(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
                 if (map.GetSingleEntity<Ground>(i) != null)
                 {
-                    _groundSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                    groundSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 }
                 if (map.GetSingleEntity<Rock>(i) != null)
                 {
-                    _rockSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                    rockSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 }
 
             }
