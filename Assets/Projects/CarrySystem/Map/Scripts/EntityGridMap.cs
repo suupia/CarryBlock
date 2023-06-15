@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Carry.CarrySystem.Entity.Interfaces;
 using System.Linq;
 using UnityEngine;
+using  Carry.CarrySystem.Map.Interfaces;
+using Fusion.Collections;
 
 #nullable enable
 
@@ -12,10 +14,12 @@ namespace Carry.CarrySystem.Map.Scripts
     public class EntityGridMap : NumericGridMap
     {
         readonly List<IEntity>[] _entityMaps;
+        ITilePresenter?[] _tilePresenter;
         
         public EntityGridMap(int width, int height) : base(width, height)
         {
             _entityMaps = new List<IEntity>[GetLength()];
+            _tilePresenter = new ITilePresenter?[GetLength()];
             for (int i = 0; i < GetLength(); i++)
             {
                 _entityMaps[i] = new List<IEntity>();
@@ -25,6 +29,11 @@ namespace Carry.CarrySystem.Map.Scripts
         public EntityGridMap CloneMap()
         {
             return (EntityGridMap)MemberwiseClone();
+        }
+        
+        public void RegisterTilePresenter(ITilePresenter tilePresenter, int index)
+        {
+            _tilePresenter[index] = tilePresenter;
         }
 
         //Getter
@@ -156,7 +165,11 @@ namespace Carry.CarrySystem.Map.Scripts
                     $"[注意!!] GetEntityList<EntityType>(index).Countが0より大きいため、既に{typeof(TEntity)}が入っています");
             }
 
+            // domain
             _entityMaps[index].Add(entity);
+            
+            // presenter
+             _tilePresenter[index]?.SetEntityActiveData(entity, true);
         }
 
         public void RemoveEntity(int x, int y, IEntity entity)
@@ -167,7 +180,12 @@ namespace Carry.CarrySystem.Map.Scripts
                 return;
             }
 
-            _entityMaps[ToSubscript(x, y)].Remove(entity);
+            var index = ToSubscript(x, y);
+            // domain
+            _entityMaps[index].Remove(entity);
+            
+            // presenter
+            _tilePresenter[index]?.SetEntityActiveData(entity, false);
         }
 
         public void RemoveEntity(Vector2Int vector, IEntity entity)

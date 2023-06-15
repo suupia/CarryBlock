@@ -24,16 +24,21 @@ namespace Carry.CarrySystem.Map.Scripts
                 var girdPos = map.GetVectorFromIndex(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
                 var tilePresenter = tilePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
-                var presentData = tilePresenter.presentDataRef;
+                var presentData = tilePresenter.PresentDataRef;
                 if (map.GetSingleEntity<Ground>(i) != null)
                 {
                     presentData.isGroundActive = true;
+                    tilePresenter.SetEntityActiveData(map.GetSingleEntity<Ground>(i), true);
                 }
                 if (map.GetSingleEntity<Rock>(i) != null)
                 {
                     presentData.isRockActive = true;
+                    tilePresenter.SetEntityActiveData(map.GetSingleEntity<Rock>(i), true);
                 }
                 tilePresenter.SetPresentData(presentData);
+                
+                // mapにTilePresenterを登録
+                map.RegisterTilePresenter(tilePresenter, i);
             }
         }
         
