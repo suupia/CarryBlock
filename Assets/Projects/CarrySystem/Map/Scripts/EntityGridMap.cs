@@ -30,11 +30,10 @@ namespace Carry.CarrySystem.Map.Scripts
         //Getter
         public TEntity? GetSingleEntity<TEntity>(Vector2Int vector) where TEntity : IEntity
         {
-            int x, y;
-            x = vector.x;
-            y = vector.y;
+            int x = vector.x;
+            int y = vector.y;
 
-            if (IsOutOfDataRangeArea(x, y)) return default(TEntity);
+            if (IsOutOfDataRangeArea(x, y)) {return default(TEntity);}
 
             return GetSingleEntity<TEntity>(ToSubscript(x, y));
         }

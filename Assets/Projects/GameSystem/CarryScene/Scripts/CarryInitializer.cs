@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
 using UnityEngine;
@@ -46,6 +47,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
                 var entityGridMap = vContainer.Resolve<EntityGridMapSwitcher>().GetMap();
                 var mapGenerator = vContainer.Resolve<MapGenerator>(); 
                 mapGenerator.GenerateMap(Runner, entityGridMap);
+
             }
 
 

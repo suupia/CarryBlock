@@ -118,7 +118,8 @@ namespace Carry.CarrySystem.Map.Scripts
         void PlaceRock()
         {
             List<int> rockPosList = new List<int>();
-
+            
+            rockPosList.Add(0); //原点に置く
             for (int i = 1 ;i < height; i++)
             {
                 if (i % 2 == 0)

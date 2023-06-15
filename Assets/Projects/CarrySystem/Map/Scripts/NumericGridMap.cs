@@ -7,8 +7,8 @@ namespace Carry.CarrySystem.Map.Scripts
     public class NumericGridMap
     {
         //数字だけを格納することができる六角形のマップ
-        protected int Width { get; private set; }
-        protected int Height { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
         public int GetLength() => _values.Length;
         int InitValue { get; } = -1;
         int OutOfRangeValue { get; } = -88;

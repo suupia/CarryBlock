@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Map.Scripts;
+﻿using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 using VContainer;
@@ -14,8 +15,8 @@ namespace Carry.CarrySystem.Player.Scripts
         public CharacterAction(Transform transform)
         {
             _transform = transform;
-            // var mapSwitcher = Object.FindObjectOfType<LifetimeScope>().Container.Resolve<EntityGridMapSwitcher>();
-            // _map = mapSwitcher.GetMap();
+            var resolver = Object.FindObjectOfType<LifetimeScope>().Container; // このコンストラクタはNetworkBehaviour内で実行されるため、ここで取得してよい
+            _map = resolver.Resolve<EntityGridMapSwitcher>().GetMap();
         }
         public void Action()
         {
@@ -25,13 +26,24 @@ namespace Carry.CarrySystem.Player.Scripts
             var gridPos = GridConverter.WorldPositionToGridPosition(_transform.position);
             Debug.Log($"Player GridPos: {gridPos}");
 
-            var direction = new Vector2(_transform.forward.x, _transform.forward.z);
-            var gridDirection = GridConverter.WorldDirectionToGridDirection(direction);
             // 前方のGridPosを表示
+            var forward = _transform.forward;
+            var direction = new Vector2(forward.x, forward.z);
+            var gridDirection = GridConverter.WorldDirectionToGridDirection(direction);
             var forwardGridPos = gridPos + gridDirection;
             Debug.Log($"Player Forward GridPos: {forwardGridPos}");
-            // そのGridPosにアイテムがあるかどうかを確認
-
+            
+            // そのGridPosにRockがあるかどうかを確認
+            var index = _map.GetIndexFromVector(forwardGridPos);
+            Debug.Log($"index : {index}のRockは{_map.GetSingleEntity<Rock>(index)}です");
+            if (_map.GetSingleEntity<Rock>(forwardGridPos) != null)
+            {
+                Debug.Log($"Rockがあります！！！");
+            }
+            else
+            {
+                Debug.Log($"Rockがありません");
+            }
 
             // アイテムがある場合は、アイテムを拾う
 

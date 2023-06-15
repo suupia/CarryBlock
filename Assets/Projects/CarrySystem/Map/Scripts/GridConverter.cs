@@ -11,7 +11,9 @@ namespace Carry.CarrySystem.Map.Scripts
        
         public static  Vector3 GridPositionToWorldPosition(Vector2Int gridPos)
         {
-            return new Vector3(gridPos.x * LengthBetweenHorizontal,0 , gridPos.y * LengthBetweenVertical);
+            float x = gridPos.x * LengthBetweenHorizontal + LengthBetweenHorizontal / 2;
+            float z = gridPos.y * LengthBetweenVertical + LengthBetweenVertical / 2;
+            return new Vector3(x,0,z);
         }
 
         public static Vector2Int WorldPositionToGridPosition(Vector3 worldPos)
