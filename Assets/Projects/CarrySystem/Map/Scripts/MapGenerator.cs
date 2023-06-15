@@ -1,7 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Spawners;
 using UnityEngine;
+using Fusion;
+using Nuts.Utility.Scripts;
 
+#nullable  enable
 namespace Carry.CarrySystem.Map.Scripts
 {
     /// <summary>
@@ -10,11 +15,39 @@ namespace Carry.CarrySystem.Map.Scripts
     /// </summary>
     public class MapGenerator
     {
-        readonly EntityGridMap _map;
-        public  MapGenerator()
-        {
+        NetworkRunner _runner;
 
+        readonly GridConverter _gridConverter;
+        
+        // Spawner
+        RockSpawner _rockSpawner;
+        public  MapGenerator(NetworkRunner runner)
+        {
+            _runner = runner;
+            
+            _gridConverter = new GridConverter(1, 1);
+            
+            var gridMapGenerator = new EntityGridMapGenerator();
+            var entityGridMap =   gridMapGenerator.GenerateEntityGridMap(0); // indexはとりあえず0にしておく
+
+            SetupMap(entityGridMap);
         }
+
+        void SetupMap(EntityGridMap map)
+        {
+            for (int i = 0; i < map.GetLength(); i++)
+            {
+                if (map.GetSingleEntity<Rock>(i) != null)
+                {
+                    var girdPos = map.GetVectorFromIndex(i);
+                    var worldPos = _gridConverter.GridPositionToWorldPosition(girdPos);
+                    _rockSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                }
+
+            }
+        }
+        
+
 
         // public void SetupMap(ICameraPos iCameraPosInstance, Peripheral peripheral, int stageIndex)
         // {

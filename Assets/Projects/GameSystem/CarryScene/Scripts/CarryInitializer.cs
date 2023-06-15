@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
 using UnityEngine;
 using Fusion;
@@ -31,13 +32,14 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner),
                 cancellationToken: new CancellationToken());
-
-            // Domain
+            
+            // Spawn player
             var playerPrefabSpawner = new CarryPlayerPrefabSpawner(Runner);
             _carryPlayerSpawner = new CarryPlayerSpawner(Runner, playerPrefabSpawner);
-            // Runner.AddSimulationBehaviour(_networkWaveTimer);
-            // _networkWaveTimer.Init();
             
+            // Generate map
+            var mapGenerator = new MapGenerator(Runner);
+
 
             if (Runner.IsServer) _carryPlayerSpawner.RespawnAllPlayer(_carryPlayerContainer);
 

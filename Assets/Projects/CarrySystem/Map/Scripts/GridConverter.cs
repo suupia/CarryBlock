@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class GridConversion
+    public class GridConverter
     {   
        readonly float _lengthBetweenHorizontal;
        readonly float _lengthBetweenVertical;
         
-        public GridConversion(float lengthBetweenHorizontal, float lengthBetweenVertical)
+        public GridConverter(float lengthBetweenHorizontal, float lengthBetweenVertical)
         {
             _lengthBetweenHorizontal = lengthBetweenHorizontal;
             _lengthBetweenVertical = lengthBetweenVertical;
