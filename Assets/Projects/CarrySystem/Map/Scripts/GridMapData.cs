@@ -9,6 +9,8 @@ namespace Carry.CarrySystem.Map.Scripts
     [Serializable]
     public class GridMapData
     {
+        public int width;
+        public int height;
         public RockRecord[] rockRecords;
     }
 

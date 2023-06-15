@@ -9,7 +9,7 @@ namespace Carry.CarrySystem.Map.Scripts
         //数字だけを格納することができる六角形のマップ
         protected int Width { get; private set; }
         protected int Height { get; private set; }
-        protected int GetLength() => _values.Length;
+        public int GetLength() => _values.Length;
         int InitValue { get; } = -1;
         int OutOfRangeValue { get; } = -88;
 

@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Entity.Scripts
             Kind1,
         }
 
-        public Rock(Vector2Int gridPosition)
+        public Rock(Kind kind,Vector2Int gridPosition)
         {
             GridPosition = gridPosition;
         }
