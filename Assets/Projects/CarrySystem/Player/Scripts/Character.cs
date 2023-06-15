@@ -13,12 +13,11 @@ namespace Carry.CarrySystem.Player.Scripts
         public Character(PlayerInfo info)
         {
             _runner = info.runner;
-            _move = new CharacterMove(info.playerObj.transform, info.playerRb)
+            _move = new QuickTurnMove(info.playerObj.transform, info.playerRb)
             {
                 acceleration = info.acceleration,
                 maxVelocity = info.maxVelocity,
-                targetRotationTime = info.targetRotationTime,
-                maxAngularVelocity = info.maxAngularVelocity
+                rotateTime = info.targetRotationTime,
             };
             _action = new CharacterAction();
             info.playerRb.useGravity = true;
