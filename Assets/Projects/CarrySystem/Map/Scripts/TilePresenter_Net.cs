@@ -36,7 +36,7 @@ namespace Carry.CarrySystem.Map.Scripts
             }
         }
 
-        public void SetPresentData(ref PresentData presentData)
+        public void SetPresentData(PresentData presentData)
         {
             presentDataRef = presentData;
         }
