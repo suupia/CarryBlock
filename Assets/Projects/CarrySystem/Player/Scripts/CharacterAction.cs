@@ -12,6 +12,8 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         readonly Transform _transform;
         readonly EntityGridMap _map;
+        
+        bool _isCarrying = false;
         public CharacterAction(Transform transform)
         {
             _transform = transform;
@@ -39,6 +41,18 @@ namespace Carry.CarrySystem.Player.Scripts
             if (_map.GetSingleEntity<Rock>(forwardGridPos) != null)
             {
                 Debug.Log($"Rockがあります！！！");
+                if (_isCarrying)
+                {
+                    return;
+                }
+                else
+                {
+                    // ドメインのRockを削除
+                    
+                    // プレゼンターに通知して見た目を反映
+                    
+                    // プレイヤーがRockを持つようにする
+                }
             }
             else
             {
