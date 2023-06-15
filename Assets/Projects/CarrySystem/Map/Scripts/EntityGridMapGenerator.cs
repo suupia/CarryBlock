@@ -21,7 +21,6 @@ namespace Carry.CarrySystem.Map.Scripts
         public EntityGridMap GenerateEntityGridMap(int mapDataIndex)
         {
             var gridMapData = Load(mapDataIndex);
-            gridMapData ??= new DefaultGridMapData(); // nullだったら代入
 
             var map = new EntityGridMap(gridMapData.width, gridMapData.height);
             
@@ -37,9 +36,9 @@ namespace Carry.CarrySystem.Map.Scripts
             return map;
         }
 
-        GridMapData? Load(int mapDataIndex)
+        GridMapData Load(int mapDataIndex)
         {
-            GridMapData? gridMapData;
+            GridMapData gridMapData;
 
             string filePath = GetFilePath(mapDataIndex);
 
@@ -54,8 +53,8 @@ namespace Carry.CarrySystem.Map.Scripts
             }
             else
             {
-                Debug.LogError($"パス:{filePath}にjsonファイルが存在しません");
-                gridMapData = null;
+                Debug.LogWarning($"パス:{filePath}にjsonファイルが存在しません");
+                gridMapData = new DefaultGridMapData();
             }
 
             return gridMapData;
@@ -76,22 +75,33 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         // 適当に作っている
         // エクセルからデータを読み込めるようになるまではこれを使用する
-
-        readonly int _width = 20;
-        readonly int _height = 11;
+        
+        readonly int _length;
         public DefaultGridMapData()
         {
-            var length = _width * _height;
-            rockRecords = new RockRecord[length];
-            
+            // 親クラスのフィールドを書き換えていることに注意
+            width = 20;
+            height = 11;
+            _length = width * height;
+            rockRecords = new RockRecord[_length];
+
+            FillAll();
             PlaceRock();
+        }
+        
+        void FillAll()
+        {
+            for (int i = 0; i < _length; i++)
+            {
+                rockRecords[i] = new RockRecord();
+            }
         }
 
         void PlaceRock()
         {
             rockRecords[0].kind = Rock.Kind.Kind1;
             rockRecords[2].kind = Rock.Kind.Kind1;
-            rockRecords[_width + 1].kind = Rock.Kind.Kind1;
+            rockRecords[width + 1].kind = Rock.Kind.Kind1;
         }
     }
 }

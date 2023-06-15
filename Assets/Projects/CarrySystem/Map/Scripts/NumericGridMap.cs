@@ -19,6 +19,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public NumericGridMap(int width, int height)
         {
+            Debug.Log($"width:{width}, height:{height}");
             Assert.IsTrue(width > 0 && height > 0, "Mapの幅または高さが0以下になっています");
             Width = width;
             Height = height;

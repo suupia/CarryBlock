@@ -40,7 +40,6 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             // Generate map
             var mapGenerator = new MapGenerator(Runner);
 
-
             if (Runner.IsServer) _carryPlayerSpawner.RespawnAllPlayer(_carryPlayerContainer);
 
             IsInitialized = true;

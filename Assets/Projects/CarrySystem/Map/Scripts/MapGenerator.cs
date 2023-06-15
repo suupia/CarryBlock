@@ -20,12 +20,13 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly GridConverter _gridConverter;
         
         // Spawner
-        RockSpawner _rockSpawner;
+        readonly RockSpawner _rockSpawner;
         public  MapGenerator(NetworkRunner runner)
         {
             _runner = runner;
             
             _gridConverter = new GridConverter(1, 1);
+            _rockSpawner = new RockSpawner(_runner);
             
             var gridMapGenerator = new EntityGridMapGenerator();
             var entityGridMap =   gridMapGenerator.GenerateEntityGridMap(0); // indexはとりあえず0にしておく
