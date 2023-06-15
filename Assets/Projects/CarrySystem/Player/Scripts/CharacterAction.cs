@@ -48,10 +48,8 @@ namespace Carry.CarrySystem.Player.Scripts
                 }
                 else
                 {
-                    // ドメインのRockを削除
+                    // ドメインのRockを削除（内部のプレゼンターを通して見た目も変わる）
                     _map.RemoveEntity(forwardGridPos, rock);
-                    
-                    // プレゼンターに通知して見た目を反映
                     
                     // プレイヤーがRockを持つようにする
                 }
