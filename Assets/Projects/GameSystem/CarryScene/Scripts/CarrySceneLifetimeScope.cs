@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Map.Scripts;
+using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts;
 using Nuts.BattleSystem.GameScene.Scripts;
@@ -21,8 +22,9 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<TilePresenterRegister>(Lifetime.Singleton);
             
             // Player
-            builder.Register<QuickTurnMove>(Lifetime.Singleton);
-            builder.Register<CharacterAction>(Lifetime.Singleton);
+            builder.Register<ICharacterMove,QuickTurnMove>(Lifetime.Singleton);
+            builder.Register<ICharacterAction,CharacterAction>(Lifetime.Singleton);
+            builder.Register<Character>(Lifetime.Singleton);
 
             // Clientのドメインスクリプト
             // builder.Register<ReturnToMainBaseGauge>(Lifetime.Singleton);

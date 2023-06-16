@@ -13,28 +13,19 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         readonly ICharacterAction _action;
         readonly ICharacterMove _move;
-        readonly NetworkRunner _runner;
 
-        public Character(PlayerInfo info)
+        [Inject]
+        public Character(ICharacterMove move, ICharacterAction action)
         {
-            _runner = info.runner;
-            // _move = new QuickTurnMove()
-            // {
-            //     acceleration = info.acceleration,
-            //     maxVelocity = info.maxVelocity,
-            //     rotateTime = info.targetRotationTime,
-            // };
-            // _action = new CharacterAction();
-            var resolver = Object.FindObjectOfType<LifetimeScope>().Container;
-            _move = resolver.Resolve<QuickTurnMove>();
-            _action = resolver.Resolve<CharacterAction>();
-            info.playerRb.useGravity = true;
+            _move = move;
+            _action = action;
         }
-        
+
         public void Setup(PlayerInfo info)
         {
             _move.Setup(info);
-            _action.Setup( info);
+            _action.Setup(info);
+            info.playerRb.useGravity = true;
         }
 
         public void Move(Vector3 direction)

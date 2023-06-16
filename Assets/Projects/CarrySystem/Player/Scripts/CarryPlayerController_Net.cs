@@ -6,6 +6,8 @@ using Fusion;
 using Nuts.NetworkUtility.Inputs.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Info;
+using VContainer.Unity;
+using VContainer;
 
 
 namespace Carry.CarrySystem.Player.Scripts
@@ -111,42 +113,46 @@ namespace Carry.CarrySystem.Player.Scripts
             // Instantiate the unit.
             var prefab = playerUnitPrefabs[(int)characterType];
             _characterObj = Instantiate(prefab, unitObjectParent);
+            var resolver = UnityEngine.Object.FindObjectOfType<LifetimeScope>().Container;
+            _character = resolver.Resolve<Character>();
+            _character.Setup(info);
 
-            switch (this.characterType)
-            {
-                case CharacterType.Red:
-                    _character = new Character(info);
-                    _character.Setup(info);
-                    // _decorationDetector = new PlayerDecorationDetector(
-                    //     new TankAnimatorSetter(_characterObj)
-                    // );
-                    // _unitStats = new PlayerStats(ref PlayerStruct);
-                    break;
-                case CharacterType.Blue:
-                    _character = new Character(info);
-                    _character.Setup(info);
-                    // _decorationDetector = new PlayerDecorationDetector(
-                    //     new PlaneAnimatorSetter(_characterObj)
-                    // );
-                    // _unitStats = new PlayerStats(ref PlayerStruct);
-                    break;
-                case CharacterType.Green:
-                    _character = new Character(info);
-                    _character.Setup(info);
-                    // _decorationDetector = new PlayerDecorationDetector(
-                    //     new PlaneAnimatorSetter(_characterObj)
-                    // );
-                    // _unitStats = new PlayerStats(ref PlayerStruct);
-                    break;
-                case CharacterType.Yellow:
-                    _character = new Character(info);
-                    _character.Setup(info);
-                    // _decorationDetector = new PlayerDecorationDetector(
-                    //     new TankAnimatorSetter(_characterObj)
-                    // );
-                    // _unitStats = new PlayerStats(ref PlayerStruct);
-                    break;
-            }
+            // ToDo: 4人色分けしてスポーンさせる
+            // switch (this.characterType)
+            // {
+            //     case CharacterType.Red:
+            //         _character = new Character(info);
+            //         _character.Setup(info);
+            //         // _decorationDetector = new PlayerDecorationDetector(
+            //         //     new TankAnimatorSetter(_characterObj)
+            //         // );
+            //         // _unitStats = new PlayerStats(ref PlayerStruct);
+            //         break;
+            //     case CharacterType.Blue:
+            //         _character = new Character(info);
+            //         _character.Setup(info);
+            //         // _decorationDetector = new PlayerDecorationDetector(
+            //         //     new PlaneAnimatorSetter(_characterObj)
+            //         // );
+            //         // _unitStats = new PlayerStats(ref PlayerStruct);
+            //         break;
+            //     case CharacterType.Green:
+            //         _character = new Character(info);
+            //         _character.Setup(info);
+            //         // _decorationDetector = new PlayerDecorationDetector(
+            //         //     new PlaneAnimatorSetter(_characterObj)
+            //         // );
+            //         // _unitStats = new PlayerStats(ref PlayerStruct);
+            //         break;
+            //     case CharacterType.Yellow:
+            //         _character = new Character(info);
+            //         _character.Setup(info);
+            //         // _decorationDetector = new PlayerDecorationDetector(
+            //         //     new TankAnimatorSetter(_characterObj)
+            //         // );
+            //         // _unitStats = new PlayerStats(ref PlayerStruct);
+            //         break;
+            // }
 
             // Play spawn animation
             // _decorationDetector.OnSpawned();
