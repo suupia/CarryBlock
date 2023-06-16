@@ -7,13 +7,16 @@ namespace Carry.CarrySystem.Player.Scripts
     public class QuickTurnMove : ICharacterMove
     {
         PlayerInfo _info;
-        public float acceleration { get; set; } = 30f;
-        public float maxVelocity { get; set; } = 8f;
-        public float rotateTime { get; set; } = 0.2f;
+         float _acceleration = 30f;
+         float _maxVelocity = 8f;
+         float _rotateTime  = 0.2f;
 
         public void Setup(PlayerInfo info)
         {
             _info = info;
+            _acceleration = info.acceleration;
+            _maxVelocity = info.maxVelocity;
+            _rotateTime = info.targetRotationTime;
         }
         public void Move(Vector3 input)
         {
@@ -40,10 +43,10 @@ namespace Carry.CarrySystem.Player.Scripts
                 }
                 
                 // ToDo: _rb.MovePosition()で素早く移動させる
-                rb.AddForce(acceleration * input, ForceMode.Acceleration);
+                rb.AddForce(_acceleration * input, ForceMode.Acceleration);
 
-                if (rb.velocity.magnitude >= maxVelocity)
-                    rb.velocity = maxVelocity * rb.velocity.normalized;
+                if (rb.velocity.magnitude >= _maxVelocity)
+                    rb.velocity = _maxVelocity * rb.velocity.normalized;
             }
         }
     }
@@ -51,14 +54,18 @@ namespace Carry.CarrySystem.Player.Scripts
     public class CharacterMove : ICharacterMove
     {
         PlayerInfo _info;
-        public float acceleration { get; set; } = 30f;
-        public float maxVelocity { get; set; } = 8f;
-        public float targetRotationTime { get; set; } = 0.2f;
-        public float maxAngularVelocity { get; set; } = 100f;
+         float _acceleration  = 30f;
+         float _maxVelocity = 8f;
+         float _targetRotationTime= 0.2f;
+         float _maxAngularVelocity = 100f;
         
         public void Setup(PlayerInfo info)
         {
             _info = info;
+            _acceleration = info.acceleration;
+            _maxVelocity = info.maxVelocity;
+            _targetRotationTime = info.targetRotationTime;
+            _maxAngularVelocity = info.maxAngularVelocity;
         }
 
         public void Move(Vector3 input)
@@ -74,17 +81,17 @@ namespace Carry.CarrySystem.Player.Scripts
                 // Rotate if there is a difference of more than Epsilon degrees
                 if (Mathf.Abs(deltaAngle) >= float.Epsilon)
                 {
-                    var torque = (2 * deltaAngle) / Mathf.Sqrt(targetRotationTime);
+                    var torque = (2 * deltaAngle) / Mathf.Sqrt(_targetRotationTime);
                     rb.AddTorque(torque * Vector3.up, ForceMode.Acceleration);
                 }
 
                 if (rb.angularVelocity.magnitude >= rb.maxAngularVelocity)
-                    rb.angularVelocity = maxAngularVelocity * rb.angularVelocity.normalized;
+                    rb.angularVelocity = _maxAngularVelocity * rb.angularVelocity.normalized;
 
-                rb.AddForce(acceleration * input, ForceMode.Acceleration);
+                rb.AddForce(_acceleration * input, ForceMode.Acceleration);
 
-                if (rb.velocity.magnitude >= maxVelocity)
-                    rb.velocity = maxVelocity * rb.velocity.normalized;
+                if (rb.velocity.magnitude >= _maxVelocity)
+                    rb.velocity = _maxVelocity * rb.velocity.normalized;
             }
         }
     }

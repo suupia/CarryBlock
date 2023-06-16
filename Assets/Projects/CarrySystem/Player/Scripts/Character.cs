@@ -18,14 +18,15 @@ namespace Carry.CarrySystem.Player.Scripts
         public Character(PlayerInfo info)
         {
             _runner = info.runner;
-            _move = new QuickTurnMove()
-            {
-                acceleration = info.acceleration,
-                maxVelocity = info.maxVelocity,
-                rotateTime = info.targetRotationTime,
-            };
+            // _move = new QuickTurnMove()
+            // {
+            //     acceleration = info.acceleration,
+            //     maxVelocity = info.maxVelocity,
+            //     rotateTime = info.targetRotationTime,
+            // };
             // _action = new CharacterAction();
             var resolver = Object.FindObjectOfType<LifetimeScope>().Container;
+            _move = resolver.Resolve<QuickTurnMove>();
             _action = resolver.Resolve<CharacterAction>();
             info.playerRb.useGravity = true;
         }

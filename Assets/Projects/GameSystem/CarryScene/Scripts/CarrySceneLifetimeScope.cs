@@ -21,6 +21,7 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<TilePresenterRegister>(Lifetime.Singleton);
             
             // Player
+            builder.Register<QuickTurnMove>(Lifetime.Singleton);
             builder.Register<CharacterAction>(Lifetime.Singleton);
 
             // Clientのドメインスクリプト
