@@ -2,8 +2,6 @@
 using Fusion;
 using UnityEngine;
 using Carry.CarrySystem.Player.Info;
-using VContainer.Unity;
-using VContainer;
 
 #nullable enable
 
@@ -13,8 +11,7 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         readonly ICharacterAction _action;
         readonly ICharacterMove _move;
-
-        [Inject]
+        
         public Character(ICharacterMove move, ICharacterAction action)
         {
             _move = move;

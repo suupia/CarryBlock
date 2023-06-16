@@ -7,8 +7,6 @@ using UnityEngine;
 using Fusion;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
-using VContainer.Unity;
-using VContainer;
 
 
 namespace Carry.CarrySystem.Player.Scripts
@@ -31,15 +29,17 @@ namespace Carry.CarrySystem.Player.Scripts
         
         HoldAction _holdAction;
         
+        bool _isInitialized;
 
-        public override void Spawned()
+        public void Init(HoldAction holdAction)
         {
-            var resolver = FindObjectOfType<LifetimeScope>().Container;
-            _holdAction = resolver.Resolve<HoldAction>();
+            _holdAction = holdAction;
+            _isInitialized = true;
         }
 
         public void FixedUpdate()
         {
+            if(!_isInitialized) return;
             if(!HasStateAuthority)return;
 
             PresentDataRef.IsHoldingRock = _holdAction.IsHoldingRock;
@@ -49,6 +49,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public override void Render()
         {
+            if(!_isInitialized) return;
+
             if (holdingRock.activeSelf != PresentDataRef.IsHoldingRock)
             {
                 holdingRock.SetActive(PresentDataRef.IsHoldingRock);

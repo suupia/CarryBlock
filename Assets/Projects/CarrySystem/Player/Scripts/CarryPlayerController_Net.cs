@@ -6,8 +6,6 @@ using Fusion;
 using Nuts.NetworkUtility.Inputs.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Info;
-using VContainer.Unity;
-using VContainer;
 
 
 namespace Carry.CarrySystem.Player.Scripts
@@ -113,15 +111,16 @@ namespace Carry.CarrySystem.Player.Scripts
             // Instantiate the unit.
             var prefab = playerUnitPrefabs[(int)characterType];
             _characterObj = Instantiate(prefab, unitObjectParent);
-            var resolver = FindObjectOfType<LifetimeScope>().Container;
-            
+
             // domain
-            _character = resolver.Resolve<Character>();
+            var move = new QuickTurnMove();
+            var action = new HoldAction();
+            _character = new Character(move,action );
             _character.Setup(info);
             
             // presenter
-            
-            
+            GetComponent<HoldPresenter_Net>()?.Init(action);
+
 
             // ToDo: 4人色分けしてスポーンさせる
             // switch (this.characterType)

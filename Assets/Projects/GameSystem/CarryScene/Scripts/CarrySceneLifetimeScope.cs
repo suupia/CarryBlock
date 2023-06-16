@@ -20,12 +20,6 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<EntityGridMapGenerator>(Lifetime.Singleton);
             builder.Register<EntityGridMapSwitcher>(Lifetime.Singleton);
             builder.Register<TilePresenterRegister>(Lifetime.Singleton);
-            
-            // Player
-            builder.Register<ICharacterMove,QuickTurnMove>(Lifetime.Singleton);
-            builder.Register<ICharacterAction,HoldAction>(Lifetime.Singleton).AsSelf();
-            builder.Register<Character>(Lifetime.Singleton);
-
 
             // Clientのドメインスクリプト
             // builder.Register<ReturnToMainBaseGauge>(Lifetime.Singleton);
