@@ -9,12 +9,13 @@ using Carry.CarrySystem.Player.Info;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class CharacterAction : ICharacterAction
+    public class HoldAction : ICharacterAction
     {
         PlayerInfo _info;
         EntityGridMap _map;
-        
-        bool _isCarrying = false;
+
+        public bool IsHoldingRock { get; set; } = false;
+
         public void Setup(PlayerInfo info)
         {
             _info = info;
@@ -45,8 +46,9 @@ namespace Carry.CarrySystem.Player.Scripts
             if (rock != null)
             {
                 Debug.Log($"Rockがあります！！！");
-                if (_isCarrying)
+                if (IsHoldingRock)
                 {
+                    // 何もできない
                     return;
                 }
                 else
@@ -55,11 +57,14 @@ namespace Carry.CarrySystem.Player.Scripts
                     _map.RemoveEntity(forwardGridPos, rock);
                     
                     // プレイヤーがRockを持つようにする
+                    IsHoldingRock = true;
                 }
             }
             else
             {
                 Debug.Log($"Rockがありません");
+                
+                // 持っていたら置く処理をする
             }
 
             // アイテムがある場合は、アイテムを拾う

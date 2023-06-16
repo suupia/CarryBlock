@@ -113,9 +113,15 @@ namespace Carry.CarrySystem.Player.Scripts
             // Instantiate the unit.
             var prefab = playerUnitPrefabs[(int)characterType];
             _characterObj = Instantiate(prefab, unitObjectParent);
-            var resolver = UnityEngine.Object.FindObjectOfType<LifetimeScope>().Container;
+            var resolver = FindObjectOfType<LifetimeScope>().Container;
+            
+            // domain
             _character = resolver.Resolve<Character>();
             _character.Setup(info);
+            
+            // presenter
+            
+            
 
             // ToDo: 4人色分けしてスポーンさせる
             // switch (this.characterType)

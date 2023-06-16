@@ -23,8 +23,9 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             
             // Player
             builder.Register<ICharacterMove,QuickTurnMove>(Lifetime.Singleton);
-            builder.Register<ICharacterAction,CharacterAction>(Lifetime.Singleton);
+            builder.Register<ICharacterAction,HoldAction>(Lifetime.Singleton).AsSelf();
             builder.Register<Character>(Lifetime.Singleton);
+
 
             // Clientのドメインスクリプト
             // builder.Register<ReturnToMainBaseGauge>(Lifetime.Singleton);

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -6,6 +7,9 @@ using UnityEngine;
 using Fusion;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
+using VContainer.Unity;
+using VContainer;
+
 
 namespace Carry.CarrySystem.Player.Scripts
 {
@@ -25,6 +29,24 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField] GameObject holdingRock;
         [SerializeField] GameObject holdingDoubleRock;
         
+        HoldAction _holdAction;
+        
+
+        public override void Spawned()
+        {
+            var resolver = FindObjectOfType<LifetimeScope>().Container;
+            _holdAction = resolver.Resolve<HoldAction>();
+        }
+
+        public void FixedUpdate()
+        {
+            if(!HasStateAuthority)return;
+
+            PresentDataRef.IsHoldingRock = _holdAction.IsHoldingRock;
+
+            
+        }
+
         public override void Render()
         {
             if (holdingRock.activeSelf != PresentDataRef.IsHoldingRock)
