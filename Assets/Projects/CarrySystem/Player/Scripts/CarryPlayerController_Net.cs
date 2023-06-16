@@ -14,9 +14,6 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField]  Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
         public Transform InterpolationTransform => unitObjectParent;
 
-        [SerializeField] GameObject holdingRock;
-        [SerializeField] GameObject holdingDoubleRock;
-        
         [SerializeField] GameObject[] playerUnitPrefabs;
         [SerializeField] CharacterType characterType;
 
@@ -30,8 +27,12 @@ namespace Carry.CarrySystem.Player.Scripts
         // protected ref PlayerDecorationDetector.Data DecorationDataRef => ref MakeRef<PlayerDecorationDetector.Data>();
         // PlayerDecorationDetector _decorationDetector;
         
+        // 運べるオブジェクト
+        [SerializeField] GameObject holdingRock;
+        [SerializeField] GameObject holdingDoubleRock;
+        // [Networked] public ref HoldingData HoldingDataRef => ref MakeRef<HoldingData>();
+        
         ICharacter _character;
-
         GameObject _characterObj;
 
         protected virtual void Update()
@@ -88,6 +89,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public override void Render()
         {
             // _decorationDetector.OnRendered(DecorationDataRef, PlayerStruct.Hp);
+            
         }
         
         //Deal as RPC for changing unit

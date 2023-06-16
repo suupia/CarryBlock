@@ -12,11 +12,11 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class TilePresenter_Net : NetworkBehaviour, ITilePresenter
     {
-        // [Networked] NetworkBool ChangeActiveFlag { get; set; } // クライアントが変更を検知する必要があるので、[Networked]が必要
-        // NetworkBool _preChangeActiveFlag; // それぞれのローカルが持てばよいので、[Networked]は不要
-
-        // [Networked] Vector2Int UpdatePos { set; get; }
-        // [Networked] NetworkBool IsActive { set; get; }
+        public struct PresentData : INetworkStruct
+        {
+            public NetworkBool isGroundActive;
+            public NetworkBool isRockActive;
+        }
 
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
         
@@ -54,9 +54,5 @@ namespace Carry.CarrySystem.Map.Scripts
         }
 
     }
-    public struct PresentData : INetworkStruct
-    {
-        public NetworkBool isGroundActive;
-        public NetworkBool isRockActive;
-    }
+
 }
