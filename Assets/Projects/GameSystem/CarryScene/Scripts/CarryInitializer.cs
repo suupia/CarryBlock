@@ -38,7 +38,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             
             // Start Timer
             Runner.AddSimulationBehaviour(networkWaveTimer);
-            networkWaveTimer.Init();
+            networkWaveTimer.StartTimer();
 
             // Spawn player
             var playerPrefabSpawner = new CarryPlayerPrefabSpawner(Runner);

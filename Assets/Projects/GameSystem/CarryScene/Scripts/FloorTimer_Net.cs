@@ -7,40 +7,41 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 {
     public class FloorTimer_Net : NetworkBehaviour
     {
-        readonly float _waveTime = 10f;
-        bool _isInitialized;
-        WaveTimer _waveTimer;
+        readonly float _floorTime = 10f;
+        bool _isCounting;
+        FloorTimer _floorTimer;
         [Networked] public TickTimer tickTimer { get; set; }
     
         [Inject]
-        public void Construct(WaveTimer waveTimer)
+        public void Construct(FloorTimer floorTimer)
         {
-            _waveTimer = waveTimer;
-            Debug.Log($"_waveTimer : {_waveTimer}");
+            _floorTimer = floorTimer;
+            Debug.Log($"_waveTimer : {_floorTimer}");
         }
-    
-        public void Init()
+        
+        public void StartTimer()
         {
-            _isInitialized = true;
-            // tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime); // ここに書くの良くないかも
+            tickTimer = TickTimer.CreateFromSeconds(Runner, _floorTime);
+            _isCounting = true;
         }
     
         public override void FixedUpdateNetwork()
         {
-            if (_isInitialized == false) return;
+            if (_isCounting == false) return;
             // if(Object?.IsValid == false) return;
-            if(tickTimer.ExpiredOrNotRunning(Runner)) tickTimer = TickTimer.CreateFromSeconds(Runner, _waveTime);
-            _waveTimer.tickTimer = tickTimer;
-            _waveTimer.NotifyObservers(Runner);
+            // if(tickTimer.ExpiredOrNotRunning(Runner)) tickTimer = TickTimer.CreateFromSeconds(Runner, _floorTime);
+            if(tickTimer.ExpiredOrNotRunning(Runner) ) _isCounting = false;
+            _floorTimer.tickTimer = tickTimer;
+            _floorTimer.NotifyObservers(Runner);
         }
     }
     
-    public class WaveTimer : ITimer
+    public class FloorTimer : ITimer
     {
         readonly GameContext _gameContext;
     
         [Inject]
-        public WaveTimer(GameContext gameContext)
+        public FloorTimer(GameContext gameContext)
         {
             _gameContext = gameContext;
         }

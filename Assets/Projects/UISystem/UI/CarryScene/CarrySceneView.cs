@@ -20,7 +20,7 @@ namespace Carry.UISystem.UI.CarryScene
 
         GameContext _gameContext;
         
-        WaveTimer _waveTimer;
+        FloorTimer _floorTimer;
 
         [Networked] int Score { get; set; }
         [Networked] NetworkString<_16> Result { get; set; }
@@ -29,16 +29,16 @@ namespace Carry.UISystem.UI.CarryScene
         [Inject]
         public void Construct(
             GameContext gameContext,
-            WaveTimer waveTimer)
+            FloorTimer floorTimer)
         {
             _gameContext = gameContext;
-            _waveTimer = waveTimer;
+            _floorTimer = floorTimer;
         }
 
         public override void FixedUpdateNetwork()
         {
             if (!HasStateAuthority) return;
-            switch (_gameContext.gameState)
+            switch (_gameContext.CurrentState)
             {
                 case GameContext.GameState.Playing:
                     FixedUpdateNetwork_Playing();
@@ -52,8 +52,8 @@ namespace Carry.UISystem.UI.CarryScene
 
         public override void Render()
         {
-            Debug.Log($"_gameContext.gameState: {_gameContext.gameState}");
-            switch (_gameContext.gameState)
+            Debug.Log($"_gameContext.gameState: {_gameContext.CurrentState}");
+            switch (_gameContext.CurrentState)
             {
                 case GameContext.GameState.Playing:
                     Render_Playing();
@@ -80,7 +80,7 @@ namespace Carry.UISystem.UI.CarryScene
         {
             // サーバー用のドメインの反映
             // scoreText.text = $"Score : {Score} / {_resourceAggregator.QuotaAmount}";
-            waveTimerText.text = $"Time : {Mathf.Floor(_waveTimer.getRemainingTime(Runner))}";
+            waveTimerText.text = $"Time : {Mathf.Floor(_floorTimer.getRemainingTime(Runner))}";
 
             // ローカル用のドメインの反映
             // remainingTimeToReturnText.text = _returnToMainBaseGauge.IsReturnToMainBase

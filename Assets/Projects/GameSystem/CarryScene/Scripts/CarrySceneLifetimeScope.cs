@@ -21,7 +21,7 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             
             // UI
             builder.Register<GameContext>(Lifetime.Singleton);
-            builder.Register<WaveTimer>(Lifetime.Singleton);
+            builder.Register<FloorTimer>(Lifetime.Singleton);
 
             // Clientのドメインスクリプト
             // builder.Register<ReturnToMainBaseGauge>(Lifetime.Singleton);
