@@ -5,6 +5,7 @@ using System;
 using Fusion;
 using Nuts.NetworkUtility.Inputs.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.Player.Info;
 
 
 namespace Carry.CarrySystem.Player.Scripts
@@ -67,7 +68,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
-                    _character.Action();
+                    _character.Action(info);
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
 
@@ -115,6 +116,7 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 case CharacterType.Red:
                     _character = new Character(info);
+                    _character.Setup();
                     // _decorationDetector = new PlayerDecorationDetector(
                     //     new TankAnimatorSetter(_characterObj)
                     // );
@@ -122,6 +124,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     break;
                 case CharacterType.Blue:
                     _character = new Character(info);
+                    _character.Setup();
                     // _decorationDetector = new PlayerDecorationDetector(
                     //     new PlaneAnimatorSetter(_characterObj)
                     // );
@@ -129,6 +132,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     break;
                 case CharacterType.Green:
                     _character = new Character(info);
+                    _character.Setup();
                     // _decorationDetector = new PlayerDecorationDetector(
                     //     new PlaneAnimatorSetter(_characterObj)
                     // );
@@ -136,6 +140,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     break;
                 case CharacterType.Yellow:
                     _character = new Character(info);
+                    _character.Setup();
                     // _decorationDetector = new PlayerDecorationDetector(
                     //     new TankAnimatorSetter(_characterObj)
                     // );

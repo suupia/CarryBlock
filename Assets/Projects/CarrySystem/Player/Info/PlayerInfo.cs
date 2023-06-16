@@ -4,10 +4,10 @@ using Nuts.Utility.Scripts;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Carry.CarrySystem.Player.Scripts
+namespace Carry.CarrySystem.Player.Info
 {
     [Serializable]
-    public class PlayerInfo
+    public record PlayerInfo
     {
         [NonSerialized] public NetworkRunner runner;
         

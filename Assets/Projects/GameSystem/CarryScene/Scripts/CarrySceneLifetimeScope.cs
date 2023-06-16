@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Map.Scripts;
+using Carry.CarrySystem.Player.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts;
 using Nuts.BattleSystem.GameScene.Scripts;
 using Nuts.BattleSystem.Player.Scripts;
@@ -18,7 +19,11 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<EntityGridMapGenerator>(Lifetime.Singleton);
             builder.Register<EntityGridMapSwitcher>(Lifetime.Singleton);
             builder.Register<TilePresenterRegister>(Lifetime.Singleton);
-            // Localのドメインスクリプト
+            
+            // Player
+            builder.Register<CharacterAction>(Lifetime.Singleton);
+
+            // Clientのドメインスクリプト
             // builder.Register<ReturnToMainBaseGauge>(Lifetime.Singleton);
         }
     }

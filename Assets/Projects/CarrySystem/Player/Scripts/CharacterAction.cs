@@ -4,32 +4,33 @@ using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using Carry.CarrySystem.Player.Info;
 #nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {
     public class CharacterAction : ICharacterAction
     {
-        readonly Transform _transform;
-        readonly EntityGridMap _map;
+         EntityGridMap _map;
         
         bool _isCarrying = false;
-        public CharacterAction(Transform transform)
+        public void Setup()
         {
-            _transform = transform;
             var resolver = Object.FindObjectOfType<LifetimeScope>().Container; // このコンストラクタはNetworkBehaviour内で実行されるため、ここで取得してよい
             _map = resolver.Resolve<EntityGridMapSwitcher>().GetMap();
         }
-        public void Action()
+        public void Action(PlayerInfo info)
         {
+            var transform = info.playerObj.transform;
+            
             Debug.Log($"ものを拾ったり、置いたりします");
 
             // 自身のGridPosを表示
-            var gridPos = GridConverter.WorldPositionToGridPosition(_transform.position);
+            var gridPos = GridConverter.WorldPositionToGridPosition(transform.position);
             Debug.Log($"Player GridPos: {gridPos}");
 
             // 前方のGridPosを表示
-            var forward = _transform.forward;
+            var forward = transform.forward;
             var direction = new Vector2(forward.x, forward.z);
             var gridDirection = GridConverter.WorldDirectionToGridDirection(direction);
             var forwardGridPos = gridPos + gridDirection;

@@ -1,7 +1,11 @@
-﻿namespace Carry.CarrySystem.Player.Interfaces
+﻿using UnityEngine;
+using Carry.CarrySystem.Player.Info;
+
+namespace Carry.CarrySystem.Player.Interfaces
 {
     public interface ICharacterAction
     {
-        void Action();
+        void Setup();
+        void Action(PlayerInfo info);
     }
 }

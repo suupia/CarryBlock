@@ -1,6 +1,11 @@
 ﻿using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using UnityEngine;
+using Carry.CarrySystem.Player.Info;
+using VContainer.Unity;
+using VContainer;
+
+#nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {
@@ -19,8 +24,15 @@ namespace Carry.CarrySystem.Player.Scripts
                 maxVelocity = info.maxVelocity,
                 rotateTime = info.targetRotationTime,
             };
-            _action = new CharacterAction(info.playerObj.transform);
+            // _action = new CharacterAction();
+            var resolver = Object.FindObjectOfType<LifetimeScope>().Container;
+            _action = resolver.Resolve<CharacterAction>();
             info.playerRb.useGravity = true;
+        }
+        
+        public void Setup()
+        {
+            _action.Setup();
         }
 
         public void Move(Vector3 direction)
@@ -28,10 +40,9 @@ namespace Carry.CarrySystem.Player.Scripts
             _move.Move(direction);
         }
 
-        public void Action()
+        public void Action(PlayerInfo info)
         {
-            _action.Action();
+            _action.Action(info);
         }
-        
     }
 }
