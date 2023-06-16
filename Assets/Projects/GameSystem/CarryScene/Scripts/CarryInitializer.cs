@@ -10,6 +10,7 @@ using Carry.CarrySystem.Spawners;
 using Cysharp.Threading.Tasks;
 using Nuts.BattleSystem.Scripts;
 using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
+using UnityEngine.Serialization;
 using VContainer.Unity;
 using VContainer;
 
@@ -18,7 +19,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 {
     public class CarryInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {    
-        [SerializeField] FloorTimer_Net networkWaveTimer;
+        [SerializeField] FloorTimer_Net floorTimerNet;
         AbstractNetworkPlayerSpawner<CarryPlayerController_Net> _carryPlayerSpawner;
         readonly CarryPlayerContainer _carryPlayerContainer = new();
 
@@ -33,12 +34,15 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             // Runner.StartGame() if it has not been run.
             await runnerManager.AttemptStartScene(overrideSessionName);
             runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
-            await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner),
-                cancellationToken: new CancellationToken());
+            await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
             
             // Start Timer
-            Runner.AddSimulationBehaviour(networkWaveTimer);
-            networkWaveTimer.StartTimer();
+            if (Runner.IsServer)
+            {
+                Runner.AddSimulationBehaviour(floorTimerNet);
+                floorTimerNet.StartTimer();
+            }
+
 
             // Spawn player
             var playerPrefabSpawner = new CarryPlayerPrefabSpawner(Runner);

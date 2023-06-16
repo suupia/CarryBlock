@@ -10,7 +10,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         readonly float _floorTime = 10f;
         bool _isCounting;
         FloorTimer _floorTimer;
-        [Networked] public TickTimer tickTimer { get; set; }
+        [Networked] TickTimer tickTimer { get; set; }
     
         [Inject]
         public void Construct(FloorTimer floorTimer)
@@ -18,6 +18,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             _floorTimer = floorTimer;
             Debug.Log($"_waveTimer : {_floorTimer}");
         }
+        
         
         public void StartTimer()
         {
