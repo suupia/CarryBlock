@@ -31,12 +31,12 @@ namespace Carry.CarrySystem.Map.Scripts
                 if (map.GetSingleEntity<Ground>(i) != null)
                 {
                     presentData.IsGroundActive = true;
-                    tilePresenter.SetEntityActiveData(map.GetSingleEntity<Ground>(i), true);
+                    tilePresenter.SetInitEntityActiveData(map.GetSingleEntity<Ground>(i), true);
                 }
                 if (map.GetSingleEntity<Rock>(i) != null)
                 {
                     presentData.IsRockActive = true;
-                    tilePresenter.SetEntityActiveData(map.GetSingleEntity<Rock>(i), true);
+                    tilePresenter.SetInitEntityActiveData(map.GetSingleEntity<Rock>(i), true);
                 }
 
                 // mapにTilePresenterを登録

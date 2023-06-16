@@ -1,10 +1,12 @@
-﻿using Carry.CarrySystem.Entity.Scripts;
+﻿using System.Linq;
+using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Carry.CarrySystem.Player.Info;
+
 #nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
@@ -15,6 +17,7 @@ namespace Carry.CarrySystem.Player.Scripts
         EntityGridMap _map;
         IHoldActionPresenter? _presenter;
         bool _isHoldingRock = false;
+        int _maxHoldRockCount = 2;
 
         public HoldAction(IHoldActionPresenter? presenter)
         {
@@ -24,47 +27,68 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Setup(PlayerInfo info)
         {
             _info = info;
-            var resolver = Object.FindObjectOfType<LifetimeScope>().Container; // このコンストラクタはNetworkBehaviour内で実行されるため、ここで取得してよい
+            var resolver =
+                Object.FindObjectOfType<LifetimeScope>().Container; // このコンストラクタはNetworkBehaviour内で実行されるため、ここで取得してよい
             _map = resolver.Resolve<EntityGridMapSwitcher>().GetMap();
         }
+
         public void Action()
         {
             var transform = _info.playerObj.transform;
-            
+
             // 前方のGridPosを取得
             var forwardGridPos = GetForwardGridPos(transform);
             // Debug.Log($"Player Forward GridPos: {forwardGridPos}");
-            
+
             // そのGridPosにRockがあるかどうかを確認
             var index = _map.GetIndexFromVector(forwardGridPos);
             Debug.Log($"index : {index}のRockは{_map.GetSingleEntity<Rock>(index)}です");
-            var rock = _map.GetSingleEntity<Rock>(forwardGridPos);
-            if (rock == null)
+            var rocks = _map.GetSingleEntityList<Rock>(forwardGridPos);
+            var rockCount = rocks.Count;
+            
+            if (_isHoldingRock)
             {
-                Debug.Log($"forwardGridPos: {forwardGridPos}にRockはありません");
-                if (_isHoldingRock)
+                if (rockCount < _maxHoldRockCount)
                 {
-                    PutDownRock(forwardGridPos);
-                }
-                else
-                {
-                    // 何もしない
+                    PutDownRock(forwardGridPos,rockCount);
                 }
             }
             else
             {
-                Debug.Log($"forwardGridPos: {forwardGridPos}にRockがあります");
-                if (_isHoldingRock)
+                if (rockCount != 0)
                 {
-                    // 何もしない
-                }
-                else
-                {
-                    PickUpRock(forwardGridPos, rock);
+                    PickUpRock(forwardGridPos, rocks.First());
                 }
             }
 
+
+            // if (rocks == null)
+            // {
+            //     Debug.Log($"forwardGridPos: {forwardGridPos}にRockはありません");
+            //     if (_isHoldingRock)
+            //     {
+            //         PutDownRock(forwardGridPos);
+            //     }
+            //     else
+            //     {
+            //         // 何もしない
+            //     }
+            // }
+            // else
+            // {
+            //     Debug.Log($"forwardGridPos: {forwardGridPos}にRockがあります");
+            //     if (_isHoldingRock)
+            //     {
+            //         // 何もしない
+            //     }
+            //     else
+            //     {
+            //         var rock = rocks.First();
+            //         PickUpRock(forwardGridPos, rock);
+            //     }
+            // }
         }
+
         Vector2Int GetForwardGridPos(Transform transform)
         {
             var gridPos = GridConverter.WorldPositionToGridPosition(transform.position);
@@ -78,20 +102,21 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             // ドメインのRockを削除（内部のプレゼンターを通して見た目も変わる）
             _map.RemoveEntity(forwardGridPos, rock);
-            
+
             _isHoldingRock = true;
-                    
+
             _presenter?.PickUpRock();
         }
 
-        void PutDownRock(Vector2Int forwardGridPos)
+        void PutDownRock(Vector2Int forwardGridPos, int rockCount)
         {
             // 新しくRockを生成して置く
             _map.AddEntity<Rock>(forwardGridPos, new Rock(Rock.Kind.Kind1, forwardGridPos));
 
             _isHoldingRock = false;
-                    
+            
             _presenter?.PutDownRock();
+            
         }
     }
 }

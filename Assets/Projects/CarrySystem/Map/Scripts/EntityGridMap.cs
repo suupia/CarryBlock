@@ -87,7 +87,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var x = vector.x;
             var y = vector.y;
 
-            if (IsOutOfDataRangeArea(x, y)) return default(List<TEntity>);
+            if (IsOutOfDataRangeArea(x, y)) return new List<TEntity>();
 
             return GetSingleEntityList<TEntity>(ToSubscript(x, y));
         }
@@ -99,13 +99,13 @@ namespace Carry.CarrySystem.Map.Scripts
             if (index < 0 || index > GetLength())
             {
                 Debug.LogError("領域外の値を習得しようとしました");
-                return default(List<TEntity>);
+                return new List<TEntity>();
             }
 
             if (_entityMaps[index].Count(s => s.GetType() == typeof(TEntity)) == 0)
             {
                 //Debug.Log($"_entityMaps[{index}]の{typeof(EntityType)}のCountが0です");
-                return default(List<TEntity>);
+                return new List<TEntity>();
             }
 
             foreach (var entity in _entityMaps[index])
@@ -169,7 +169,9 @@ namespace Carry.CarrySystem.Map.Scripts
             _entityMaps[index].Add(entity);
             
             // presenter
-             _tilePresenter[index]?.SetEntityActiveData(entity, true);
+            var count = _entityMaps[index].Count(s => s.GetType() == entity.GetType());
+            Debug.Log($"AddEntity({index}) count:{count}");
+             _tilePresenter[index]?.SetEntityActiveData(entity, count);
         }
 
         public void RemoveEntity(int x, int y, IEntity entity)
@@ -185,7 +187,9 @@ namespace Carry.CarrySystem.Map.Scripts
             _entityMaps[index].Remove(entity);
             
             // presenter
-            _tilePresenter[index]?.SetEntityActiveData(entity, false);
+            var count = _entityMaps[index].Count(s => s.GetType() == entity.GetType());
+            Debug.Log($"RemoveEntity({x},{y}) count:{count}");
+            _tilePresenter[index]?.SetEntityActiveData(entity, count);
         }
 
         public void RemoveEntity(Vector2Int vector, IEntity entity)

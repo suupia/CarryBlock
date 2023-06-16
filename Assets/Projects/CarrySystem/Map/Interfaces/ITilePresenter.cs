@@ -6,6 +6,6 @@ namespace Carry.CarrySystem.Map.Interfaces
     public interface ITilePresenter
     {
         public ref TilePresenter_Net.PresentData PresentDataRef { get; }
-        public void SetEntityActiveData(IEntity entity, bool isActive);
+        public void SetEntityActiveData(IEntity entity, int count);
     }
 }

@@ -20,7 +20,6 @@ namespace Carry.CarrySystem.Player.Scripts
         public struct PresentData : INetworkStruct
         {
             public NetworkBool IsHoldingRock;
-            public NetworkBool IsHoldingDoubleRock;
         }
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
@@ -36,11 +35,7 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 holdingRock.SetActive(PresentDataRef.IsHoldingRock);
             }
-
-            if (holdingDoubleRock.activeSelf != PresentDataRef.IsHoldingDoubleRock)
-            {
-                holdingDoubleRock.SetActive(PresentDataRef.IsHoldingDoubleRock);
-            }
+            
         }
 
         // ホストのみで呼ばれることに注意
@@ -53,16 +48,6 @@ namespace Carry.CarrySystem.Player.Scripts
         public void PutDownRock()
         {
             PresentDataRef.IsHoldingRock = false;
-        }
-
-        public void PickUpDoubleRock()
-        {
-            PresentDataRef.IsHoldingDoubleRock = true;
-        }
-        
-        public void PutDownDoubleRock()
-        {
-            PresentDataRef.IsHoldingDoubleRock = false;
         }
     }
 }

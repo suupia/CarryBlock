@@ -4,7 +4,5 @@
     {
         void PickUpRock();
         void PutDownRock();
-        void PickUpDoubleRock();
-        void PutDownDoubleRock();
     }
 }

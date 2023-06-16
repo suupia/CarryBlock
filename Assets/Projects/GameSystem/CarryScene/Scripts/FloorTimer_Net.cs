@@ -7,7 +7,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 {
     public class FloorTimer_Net : NetworkBehaviour
     {
-        readonly float _floorTime = 10f;
+        readonly float _floorTime = 60f;
         bool _isCounting;
         FloorTimer _floorTimer;
         [Networked] TickTimer tickTimer { get; set; }
