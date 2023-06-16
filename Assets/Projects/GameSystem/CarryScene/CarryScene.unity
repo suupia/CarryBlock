@@ -1599,7 +1599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b501c5c376a8a04ea075928fe9546fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkWaveTimer: {fileID: 1239956156}
+  floorTimerNet: {fileID: 1239956156}
   overrideSessionName: 
 --- !u!4 &1717441965
 Transform:
@@ -1692,7 +1692,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   scoreText: {fileID: 1321647572}
-  waveTimerText: {fileID: 1215399131}
+  floorTimerText: {fileID: 1215399131}
   resultText: {fileID: 401239354}
   remainingTimeToReturnText: {fileID: 392975202}
 --- !u!1 &2139302357
