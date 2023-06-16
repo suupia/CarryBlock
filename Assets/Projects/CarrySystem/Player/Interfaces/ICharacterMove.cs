@@ -5,6 +5,7 @@ namespace Carry.CarrySystem.Player.Interfaces
 {
     public interface ICharacterMove
     {
-        void Move(PlayerInfo info, Vector3 input);
+        void Setup(PlayerInfo info);
+        void Move(Vector3 input);
     }
 }

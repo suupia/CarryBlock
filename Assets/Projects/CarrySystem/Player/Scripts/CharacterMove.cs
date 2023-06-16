@@ -6,14 +6,19 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class QuickTurnMove : ICharacterMove
     {
+        PlayerInfo _info;
         public float acceleration { get; set; } = 30f;
         public float maxVelocity { get; set; } = 8f;
         public float rotateTime { get; set; } = 0.2f;
-        
-        public void Move(PlayerInfo info,Vector3 input)
+
+        public void Setup(PlayerInfo info)
         {
-            var transform = info.playerObj.transform;
-            var rb = info.playerRb;
+            _info = info;
+        }
+        public void Move(Vector3 input)
+        {
+            var transform = _info.playerObj.transform;
+            var rb = _info.playerRb;
             
             var deltaAngle = Vector3.SignedAngle(transform.forward, input, Vector3.up);
             // Debug.Log($"deltaAngle = {deltaAngle}");
@@ -45,16 +50,21 @@ namespace Carry.CarrySystem.Player.Scripts
 
     public class CharacterMove : ICharacterMove
     {
+        PlayerInfo _info;
         public float acceleration { get; set; } = 30f;
         public float maxVelocity { get; set; } = 8f;
         public float targetRotationTime { get; set; } = 0.2f;
         public float maxAngularVelocity { get; set; } = 100f;
         
-
-        public void Move(PlayerInfo info, Vector3 input)
+        public void Setup(PlayerInfo info)
         {
-            var transform = info.playerObj.transform;
-            var rb = info.playerRb;
+            _info = info;
+        }
+
+        public void Move(Vector3 input)
+        {
+            var transform = _info.playerObj.transform;
+            var rb = _info.playerRb;
             
             var deltaAngle = Vector3.SignedAngle(transform.forward, input, Vector3.up);
             // Debug.Log($"deltaAngle = {deltaAngle}");

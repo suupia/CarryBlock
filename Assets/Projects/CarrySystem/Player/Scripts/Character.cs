@@ -32,12 +32,13 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void Setup(PlayerInfo info)
         {
+            _move.Setup(info);
             _action.Setup( info);
         }
 
-        public void Move(PlayerInfo info, Vector3 direction)
+        public void Move(Vector3 direction)
         {
-            _move.Move(info, direction);
+            _move.Move(direction);
         }
 
         public void Action()
