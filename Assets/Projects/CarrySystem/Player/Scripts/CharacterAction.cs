@@ -11,17 +11,19 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class CharacterAction : ICharacterAction
     {
-         EntityGridMap _map;
+        PlayerInfo _info;
+        EntityGridMap _map;
         
         bool _isCarrying = false;
-        public void Setup()
+        public void Setup(PlayerInfo info)
         {
+            _info = info;
             var resolver = Object.FindObjectOfType<LifetimeScope>().Container; // このコンストラクタはNetworkBehaviour内で実行されるため、ここで取得してよい
             _map = resolver.Resolve<EntityGridMapSwitcher>().GetMap();
         }
-        public void Action(PlayerInfo info)
+        public void Action()
         {
-            var transform = info.playerObj.transform;
+            var transform = _info.playerObj.transform;
             
             Debug.Log($"ものを拾ったり、置いたりします");
 

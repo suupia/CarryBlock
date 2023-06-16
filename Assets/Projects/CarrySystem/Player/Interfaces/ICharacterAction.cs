@@ -5,7 +5,7 @@ namespace Carry.CarrySystem.Player.Interfaces
 {
     public interface ICharacterAction
     {
-        void Setup();
-        void Action(PlayerInfo info);
+        void Setup(PlayerInfo info);
+        void Action();
     }
 }

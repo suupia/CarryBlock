@@ -30,9 +30,9 @@ namespace Carry.CarrySystem.Player.Scripts
             info.playerRb.useGravity = true;
         }
         
-        public void Setup()
+        public void Setup(PlayerInfo info)
         {
-            _action.Setup();
+            _action.Setup( info);
         }
 
         public void Move(PlayerInfo info, Vector3 direction)
@@ -40,9 +40,9 @@ namespace Carry.CarrySystem.Player.Scripts
             _move.Move(info, direction);
         }
 
-        public void Action(PlayerInfo info)
+        public void Action()
         {
-            _action.Action(info);
+            _action.Action();
         }
     }
 }

@@ -68,7 +68,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
-                    _character.Action(info);
+                    _character.Action();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
 
@@ -116,7 +116,7 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 case CharacterType.Red:
                     _character = new Character(info);
-                    _character.Setup();
+                    _character.Setup(info);
                     // _decorationDetector = new PlayerDecorationDetector(
                     //     new TankAnimatorSetter(_characterObj)
                     // );
@@ -124,7 +124,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     break;
                 case CharacterType.Blue:
                     _character = new Character(info);
-                    _character.Setup();
+                    _character.Setup(info);
                     // _decorationDetector = new PlayerDecorationDetector(
                     //     new PlaneAnimatorSetter(_characterObj)
                     // );
@@ -132,7 +132,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     break;
                 case CharacterType.Green:
                     _character = new Character(info);
-                    _character.Setup();
+                    _character.Setup(info);
                     // _decorationDetector = new PlayerDecorationDetector(
                     //     new PlaneAnimatorSetter(_characterObj)
                     // );
@@ -140,7 +140,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     break;
                 case CharacterType.Yellow:
                     _character = new Character(info);
-                    _character.Setup();
+                    _character.Setup(info);
                     // _decorationDetector = new PlayerDecorationDetector(
                     //     new TankAnimatorSetter(_characterObj)
                     // );
