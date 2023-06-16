@@ -39,17 +39,19 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void FixedUpdate()
         {
-            if(!_isInitialized) return;
+            if(!_isInitialized)return;
             if(!HasStateAuthority)return;
 
             PresentDataRef.IsHoldingRock = _holdAction.IsHoldingRock;
 
-            
+            Debug.Log($"PresentDataRef.IsHoldingRock = {_holdAction.IsHoldingRock}");
         }
 
         public override void Render()
         {
             if(!_isInitialized) return;
+            
+            Debug.Log($"PresentDataRef.IsHoldingRock = {PresentDataRef.IsHoldingRock}");
 
             if (holdingRock.activeSelf != PresentDataRef.IsHoldingRock)
             {
