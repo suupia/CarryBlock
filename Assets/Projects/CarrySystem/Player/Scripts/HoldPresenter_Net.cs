@@ -7,12 +7,13 @@ using UnityEngine;
 using Fusion;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Player.Interfaces;
 
 
 namespace Carry.CarrySystem.Player.Scripts
 {
     [RequireComponent(typeof(CarryPlayerController_Net))]
-    public class HoldPresenter_Net : NetworkBehaviour
+    public class HoldPresenter_Net : NetworkBehaviour, IHoldActionPresenter
     {
         // Presenter系のクラスはホストとクライアントで状態を一致させるためにNetworkedプロパティを持つので、
         // ドメインの情報を持ってはいけない
@@ -21,37 +22,14 @@ namespace Carry.CarrySystem.Player.Scripts
             public NetworkBool IsHoldingRock;
             public NetworkBool IsHoldingDoubleRock;
         }
-
-        [Networked] public bool IsInitialized { get; set; } // ホストで初期化されるのでNetworkedである必要がある
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
         // 一旦、べた貼り付けにする
         [SerializeField] GameObject holdingRock;
         [SerializeField] GameObject holdingDoubleRock;
 
-        HoldAction _holdAction;
-
-
-        public void Init(HoldAction holdAction)
-        {
-            _holdAction = holdAction;
-            IsInitialized = true;
-        }
-
-        public void FixedUpdate()
-        {
-            if (!IsInitialized) return;
-            if (!HasStateAuthority) return;
-
-            PresentDataRef.IsHoldingRock = _holdAction.IsHoldingRock;
-
-            Debug.Log($"PresentDataRef.IsHoldingRock = {_holdAction.IsHoldingRock}");
-        }
-
         public override void Render()
         {
-            if (!IsInitialized) return;
-
             Debug.Log($"PresentDataRef.IsHoldingRock = {PresentDataRef.IsHoldingRock}");
 
             if (holdingRock.activeSelf != PresentDataRef.IsHoldingRock)
@@ -65,9 +43,26 @@ namespace Carry.CarrySystem.Player.Scripts
             }
         }
 
-        public void SetHoldData(IEntity entity, bool isActive)
+        // ホストのみで呼ばれることに注意
+        // 以下の処理はアニメーション、音、エフェクトの再生を行いたくなったら、それぞれのクラスの対応するメソッドを呼ぶようにするかも
+        public void PickUpRock()
         {
-            // DoubleRockクラスがないからどう書くか。。。
+            PresentDataRef.IsHoldingRock = true;
+        }
+
+        public void PutDownRock()
+        {
+            PresentDataRef.IsHoldingRock = false;
+        }
+
+        public void PickUpDoubleRock()
+        {
+            PresentDataRef.IsHoldingDoubleRock = true;
+        }
+        
+        public void PutDownDoubleRock()
+        {
+            PresentDataRef.IsHoldingDoubleRock = false;
         }
     }
 }

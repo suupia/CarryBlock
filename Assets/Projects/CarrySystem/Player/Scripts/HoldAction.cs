@@ -13,8 +13,13 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         PlayerInfo _info;
         EntityGridMap _map;
-
+        IHoldActionPresenter? _presenter;
         public bool IsHoldingRock { get; set; } = false;
+
+        public HoldAction(IHoldActionPresenter? presenter)
+        {
+            _presenter = presenter;
+        }
 
         public void Setup(PlayerInfo info)
         {
@@ -55,6 +60,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
                     IsHoldingRock = false;
                     
+                    _presenter?.PutDownRock();
+                    
                     return;
                 }
                 else
@@ -78,6 +85,9 @@ namespace Carry.CarrySystem.Player.Scripts
                     
                     // プレイヤーがRockを持つようにする
                     IsHoldingRock = true;
+                    
+                    _presenter?.PickUpRock();
+
                 }
             }
 

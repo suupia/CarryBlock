@@ -112,15 +112,15 @@ namespace Carry.CarrySystem.Player.Scripts
             var prefab = playerUnitPrefabs[(int)characterType];
             _characterObj = Instantiate(prefab, unitObjectParent);
 
+            // presenter
+            IHoldActionPresenter holdActionPresenter = GetComponent<HoldPresenter_Net>();
+            
             // domain
             var move = new QuickTurnMove();
-            var action = new HoldAction();
+            var action = new HoldAction(holdActionPresenter);
             _character = new Character(move,action );
             _character.Setup(info);
             
-            // presenter
-            GetComponent<HoldPresenter_Net>()?.Init(action);
-
 
             // ToDo: 4人色分けしてスポーンさせる
             // switch (this.characterType)
