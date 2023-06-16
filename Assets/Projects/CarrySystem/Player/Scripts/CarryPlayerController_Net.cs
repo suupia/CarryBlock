@@ -27,10 +27,6 @@ namespace Carry.CarrySystem.Player.Scripts
         // protected ref PlayerDecorationDetector.Data DecorationDataRef => ref MakeRef<PlayerDecorationDetector.Data>();
         // PlayerDecorationDetector _decorationDetector;
         
-        // 運べるオブジェクト
-        [SerializeField] GameObject holdingRock;
-        [SerializeField] GameObject holdingDoubleRock;
-        // [Networked] public ref HoldingData HoldingDataRef => ref MakeRef<HoldingData>();
         
         ICharacter _character;
         GameObject _characterObj;

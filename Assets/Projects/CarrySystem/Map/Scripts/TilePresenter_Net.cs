@@ -14,8 +14,8 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         public struct PresentData : INetworkStruct
         {
-            public NetworkBool isGroundActive;
-            public NetworkBool isRockActive;
+            public NetworkBool IsGroundActive;
+            public NetworkBool IsRockActive;
         }
 
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
@@ -27,14 +27,14 @@ namespace Carry.CarrySystem.Map.Scripts
         EntityGridMap _map;
         public override void Render()
         {
-            if (groundObject.activeSelf != PresentDataRef.isGroundActive)
+            if (groundObject.activeSelf != PresentDataRef.IsGroundActive)
             {
-                groundObject.SetActive(PresentDataRef.isGroundActive);
+                groundObject.SetActive(PresentDataRef.IsGroundActive);
             }
 
-            if (rockObject.activeSelf != PresentDataRef.isRockActive)
+            if (rockObject.activeSelf != PresentDataRef.IsRockActive)
             {
-                rockObject.SetActive(PresentDataRef.isRockActive);
+                rockObject.SetActive(PresentDataRef.IsRockActive);
             }
         }
         
@@ -42,10 +42,10 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             if (entity is Ground)
             {
-                PresentDataRef.isGroundActive = isActive;
+                PresentDataRef.IsGroundActive = isActive;
             }else if (entity is Rock)
             {
-                PresentDataRef.isRockActive = isActive;
+                PresentDataRef.IsRockActive = isActive;
             }
             else
             {

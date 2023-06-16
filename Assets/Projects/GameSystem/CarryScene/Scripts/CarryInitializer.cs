@@ -45,7 +45,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             {
                 var vContainer = FindObjectOfType<LifetimeScope>().Container;
                 var entityGridMap = vContainer.Resolve<EntityGridMapSwitcher>().GetMap();
-                var mapGenerator = vContainer.Resolve<MapGenerator>(); 
+                var mapGenerator = vContainer.Resolve<TilePresenterRegister>(); 
                 mapGenerator.GenerateMap(Runner, entityGridMap);
 
             }

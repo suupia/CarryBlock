@@ -13,7 +13,7 @@ namespace Carry.CarrySystem.Map.Scripts
     /// シーン上にマップを生成するクラス
     /// ホストで呼ばれることを想定している
     /// </summary>
-    public class MapGenerator
+    public class TilePresenterRegister
     {
         public void GenerateMap(NetworkRunner runner, EntityGridMap map)
         {
@@ -30,12 +30,12 @@ namespace Carry.CarrySystem.Map.Scripts
                 // RegisterTilePresenter()の前なのでSetEntityActiveData()を実行する必要がある
                 if (map.GetSingleEntity<Ground>(i) != null)
                 {
-                    presentData.isGroundActive = true;
+                    presentData.IsGroundActive = true;
                     tilePresenter.SetEntityActiveData(map.GetSingleEntity<Ground>(i), true);
                 }
                 if (map.GetSingleEntity<Rock>(i) != null)
                 {
-                    presentData.isRockActive = true;
+                    presentData.IsRockActive = true;
                     tilePresenter.SetEntityActiveData(map.GetSingleEntity<Rock>(i), true);
                 }
 
