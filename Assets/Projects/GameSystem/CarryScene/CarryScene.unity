@@ -1276,10 +1276,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1239956155}
-  - component: {fileID: 1239956154}
+  - component: {fileID: 1239956156}
   - component: {fileID: 1239956153}
   m_Layer: 0
-  m_Name: WaveTimer
+  m_Name: FloorTimer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1307,21 +1307,8 @@ MonoBehaviour:
     RawGuidValue: 0fef4be831694711a3ce5a6fceb6c1e2
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 1239956154}
+  - {fileID: 1239956156}
   SimulationBehaviours: []
---- !u!114 &1239956154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1239956152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 572cc8050a3f247b9bc3b30000e36ad6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
 --- !u!4 &1239956155
 Transform:
   m_ObjectHideFlags: 0
@@ -1337,6 +1324,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1239956156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239956152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7959364992bb45ec9479eb9f4693d076, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
 --- !u!1 &1286401540
 GameObject:
   m_ObjectHideFlags: 0
@@ -1599,7 +1599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b501c5c376a8a04ea075928fe9546fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkWaveTimer: {fileID: 1239956154}
+  networkWaveTimer: {fileID: 1239956156}
   overrideSessionName: 
 --- !u!4 &1717441965
 Transform:
