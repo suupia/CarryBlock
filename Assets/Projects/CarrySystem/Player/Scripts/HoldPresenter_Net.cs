@@ -21,26 +21,27 @@ namespace Carry.CarrySystem.Player.Scripts
             public NetworkBool IsHoldingRock;
             public NetworkBool IsHoldingDoubleRock;
         }
+
+        [Networked] public bool IsInitialized { get; set; } // ホストで初期化されるのでNetworkedである必要がある
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
-        
+
         // 一旦、べた貼り付けにする
         [SerializeField] GameObject holdingRock;
         [SerializeField] GameObject holdingDoubleRock;
-        
+
         HoldAction _holdAction;
-        
-        bool _isInitialized;
+
 
         public void Init(HoldAction holdAction)
         {
             _holdAction = holdAction;
-            _isInitialized = true;
+            IsInitialized = true;
         }
 
         public void FixedUpdate()
         {
-            if(!_isInitialized)return;
-            if(!HasStateAuthority)return;
+            if (!IsInitialized) return;
+            if (!HasStateAuthority) return;
 
             PresentDataRef.IsHoldingRock = _holdAction.IsHoldingRock;
 
@@ -49,8 +50,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public override void Render()
         {
-            if(!_isInitialized) return;
-            
+            if (!IsInitialized) return;
+
             Debug.Log($"PresentDataRef.IsHoldingRock = {PresentDataRef.IsHoldingRock}");
 
             if (holdingRock.activeSelf != PresentDataRef.IsHoldingRock)
@@ -63,10 +64,10 @@ namespace Carry.CarrySystem.Player.Scripts
                 holdingDoubleRock.SetActive(PresentDataRef.IsHoldingDoubleRock);
             }
         }
-        
+
         public void SetHoldData(IEntity entity, bool isActive)
         {
-            // DobｓleRockクラスがないからどう書くか。。。
+            // DoubleRockクラスがないからどう書くか。。。
         }
     }
 }
