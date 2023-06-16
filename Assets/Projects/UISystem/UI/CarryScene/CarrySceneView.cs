@@ -76,6 +76,7 @@ namespace Carry.UISystem.UI.CarryScene
         void FixedUpdateNetwork_Result()
         {
             // Result = _resourceAggregator.IsSuccess() ? "Success" : "Failure";
+            Result = "Failure"; // とりあえず失敗にしておく
         }
 
         void Render_Playing()
