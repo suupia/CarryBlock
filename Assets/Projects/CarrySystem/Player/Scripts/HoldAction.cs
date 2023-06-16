@@ -43,12 +43,32 @@ namespace Carry.CarrySystem.Player.Scripts
             var index = _map.GetIndexFromVector(forwardGridPos);
             Debug.Log($"index : {index}のRockは{_map.GetSingleEntity<Rock>(index)}です");
             var rock = _map.GetSingleEntity<Rock>(forwardGridPos);
-            if (rock != null)
+            if (rock == null)
+            {
+                Debug.Log($"Rockがありません");
+                
+                // 持っていたら置く処理をする
+                if (IsHoldingRock)
+                {
+                    // 持っていいるRockを置く
+                    _map.AddEntity<Rock>(forwardGridPos, new Rock(Rock.Kind.Kind1, forwardGridPos));
+
+                    IsHoldingRock = false;
+                    
+                    return;
+                }
+                else
+                {
+                    // 何もしない
+                }
+
+            }
+            else
             {
                 Debug.Log($"Rockがあります！！！");
                 if (IsHoldingRock)
                 {
-                    // 何もできない
+                    // 何もしない
                     return;
                 }
                 else
@@ -59,12 +79,6 @@ namespace Carry.CarrySystem.Player.Scripts
                     // プレイヤーがRockを持つようにする
                     IsHoldingRock = true;
                 }
-            }
-            else
-            {
-                Debug.Log($"Rockがありません");
-                
-                // 持っていたら置く処理をする
             }
 
             // アイテムがある場合は、アイテムを拾う
