@@ -18,7 +18,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public Character(PlayerInfo info)
         {
             _runner = info.runner;
-            _move = new QuickTurnMove(info.playerObj.transform, info.playerRb)
+            _move = new QuickTurnMove()
             {
                 acceleration = info.acceleration,
                 maxVelocity = info.maxVelocity,
@@ -35,9 +35,9 @@ namespace Carry.CarrySystem.Player.Scripts
             _action.Setup();
         }
 
-        public void Move(Vector3 direction)
+        public void Move(PlayerInfo info, Vector3 direction)
         {
-            _move.Move(direction);
+            _move.Move(info, direction);
         }
 
         public void Action(PlayerInfo info)

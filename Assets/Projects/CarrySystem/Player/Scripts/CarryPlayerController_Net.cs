@@ -77,7 +77,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
                 // Debug.Log($"_character = {_character}");
-                _character.Move(direction);
+                _character.Move(info, direction);
 
                 PreButtons = input.Buttons;
             }

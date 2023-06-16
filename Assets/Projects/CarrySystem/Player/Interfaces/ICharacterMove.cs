@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Carry.CarrySystem.Player.Info;
+using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Interfaces
 {
     public interface ICharacterMove
     {
-        void Move(Vector3 input);
+        void Move(PlayerInfo info, Vector3 input);
     }
 }
