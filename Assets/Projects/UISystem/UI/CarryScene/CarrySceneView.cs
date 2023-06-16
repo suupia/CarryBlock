@@ -5,6 +5,7 @@ using TMPro;
 using VContainer;
 using Fusion;
 using Carry.CarrySystem.CarryScene.Scripts;
+using UnityEngine.Serialization;
 
 
 namespace Carry.UISystem.UI.CarryScene
@@ -13,16 +14,16 @@ namespace Carry.UISystem.UI.CarryScene
     {
         // NetworkObject must be attached to the parent of this script.
         [SerializeField] TextMeshProUGUI scoreText;
-        [SerializeField] TextMeshProUGUI waveTimerText;
+        [SerializeField] TextMeshProUGUI floorTimerText;
         [SerializeField] TextMeshProUGUI resultText;
         [SerializeField] TextMeshProUGUI remainingTimeToReturnText;
 
 
         GameContext _gameContext;
-        
+
         FloorTimer _floorTimer;
 
-        [Networked] int Score { get; set; }
+        [Networked] float FloorTimerValue { get; set; }
         [Networked] NetworkString<_16> Result { get; set; }
 
 
@@ -69,6 +70,7 @@ namespace Carry.UISystem.UI.CarryScene
         {
             // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
             // Score = _resourceAggregator.GetAmount;
+            FloorTimerValue = Mathf.Floor(_floorTimer.getRemainingTime(Runner));
         }
 
         void FixedUpdateNetwork_Result()
@@ -80,7 +82,7 @@ namespace Carry.UISystem.UI.CarryScene
         {
             // サーバー用のドメインの反映
             // scoreText.text = $"Score : {Score} / {_resourceAggregator.QuotaAmount}";
-            waveTimerText.text = $"Time : {Mathf.Floor(_floorTimer.getRemainingTime(Runner))}";
+            floorTimerText.text = $"Time : {FloorTimerValue}";
 
             // ローカル用のドメインの反映
             // remainingTimeToReturnText.text = _returnToMainBaseGauge.IsReturnToMainBase

@@ -33,7 +33,9 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             if(tickTimer.ExpiredOrNotRunning(Runner) ) _isCounting = false;
             _floorTimer.tickTimer = tickTimer;
             _floorTimer.NotifyObservers(Runner);
+
         }
+
     }
     
     public class FloorTimer : ITimer
