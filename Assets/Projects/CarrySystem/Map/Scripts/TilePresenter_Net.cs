@@ -38,16 +38,6 @@ namespace Carry.CarrySystem.Map.Scripts
             }
         }
         
-        /// <summary>
-        /// ランタイムでTilePresenter_Netが生成される関係上、インターフェイスでのSetEntityActiveDataをドメインの処理に挟み込めない
-        /// そのため、最初にこのメソッドを一度呼ぶことにする
-        /// </summary>
-        /// <param name="presentData"></param>
-        public void SetPresentData(PresentData presentData)
-        {
-            PresentDataRef = presentData;
-        }
-
         public void SetEntityActiveData(IEntity entity, bool isActive)
         {
             if (entity is Ground)

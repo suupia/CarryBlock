@@ -24,7 +24,10 @@ namespace Carry.CarrySystem.Map.Scripts
                 var girdPos = map.GetVectorFromIndex(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
                 var tilePresenter = tilePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                // ReSharper disable once NotAccessedVariable
                 var presentData = tilePresenter.PresentDataRef;
+                
+                // RegisterTilePresenter()の前なのでSetEntityActiveData()を実行する必要がある
                 if (map.GetSingleEntity<Ground>(i) != null)
                 {
                     presentData.isGroundActive = true;
@@ -35,8 +38,7 @@ namespace Carry.CarrySystem.Map.Scripts
                     presentData.isRockActive = true;
                     tilePresenter.SetEntityActiveData(map.GetSingleEntity<Rock>(i), true);
                 }
-                // tilePresenter.SetPresentData(presentData);
-                
+
                 // mapにTilePresenterを登録
                 map.RegisterTilePresenter(tilePresenter, i);
             }
