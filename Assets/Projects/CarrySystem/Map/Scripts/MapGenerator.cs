@@ -35,7 +35,7 @@ namespace Carry.CarrySystem.Map.Scripts
                     presentData.isRockActive = true;
                     tilePresenter.SetEntityActiveData(map.GetSingleEntity<Rock>(i), true);
                 }
-                tilePresenter.SetPresentData(presentData);
+                // tilePresenter.SetPresentData(presentData);
                 
                 // mapにTilePresenterを登録
                 map.RegisterTilePresenter(tilePresenter, i);

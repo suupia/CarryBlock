@@ -14,7 +14,8 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField]  Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
         public Transform InterpolationTransform => unitObjectParent;
 
-        [SerializeField] GameObject cameraPrefab;
+        [SerializeField] GameObject holdingRock;
+        [SerializeField] GameObject holdingDoubleRock;
         
         [SerializeField] GameObject[] playerUnitPrefabs;
         [SerializeField] CharacterType characterType;
