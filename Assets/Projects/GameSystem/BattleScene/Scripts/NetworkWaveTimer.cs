@@ -7,7 +7,7 @@ namespace Nuts.BattleSystem.GameScene.Scripts
 {
     public class NetworkWaveTimer : NetworkBehaviour
     {
-        readonly float _waveTime = 60f;
+        readonly float _waveTime = 7f;
         bool _isInitialized;
         WaveTimer _waveTimer;
         [Networked] public TickTimer tickTimer { get; set; }
