@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using VContainer;
 using Fusion;
-using Nuts.BattleSystem.GameScene.Scripts;
+using Carry.CarrySystem.CarryScene.Scripts;
 
 
 namespace Carry.UISystem.UI.CarryScene

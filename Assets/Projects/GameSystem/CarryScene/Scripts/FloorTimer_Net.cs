@@ -1,13 +1,13 @@
-using Fusion;
-using Nuts.BattleSystem.GameScene.Interfaces;
+﻿using Fusion;
+using Carry.CarrySystem.CarryScene.Interfaces;
 using UnityEngine;
 using VContainer;
 
-namespace Nuts.BattleSystem.GameScene.Scripts
+namespace Carry.CarrySystem.CarryScene.Scripts
 {
-    public class NetworkWaveTimer : NetworkBehaviour
+    public class FloorTimer_Net : NetworkBehaviour
     {
-        readonly float _waveTime = 30f;
+        readonly float _waveTime = 10f;
         bool _isInitialized;
         WaveTimer _waveTimer;
         [Networked] public TickTimer tickTimer { get; set; }

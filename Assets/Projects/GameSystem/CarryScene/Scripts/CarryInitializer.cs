@@ -8,7 +8,6 @@ using UnityEngine;
 using Fusion;
 using Carry.CarrySystem.Spawners;
 using Cysharp.Threading.Tasks;
-using Nuts.BattleSystem.GameScene.Scripts;
 using Nuts.BattleSystem.Scripts;
 using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
 using VContainer.Unity;
@@ -19,7 +18,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 {
     public class CarryInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {    
-        [SerializeField] NetworkWaveTimer networkWaveTimer;
+        [SerializeField] FloorTimer_Net networkWaveTimer;
         AbstractNetworkPlayerSpawner<CarryPlayerController_Net> _carryPlayerSpawner;
         readonly CarryPlayerContainer _carryPlayerContainer = new();
 
