@@ -45,26 +45,13 @@ namespace Carry.CarrySystem.Map.Scripts
 
         EntityGridMapData Load(int mapDataIndex)
         {
-            EntityGridMapData entityGridMapData;
-
-            string filePath = GetFilePath(mapDataIndex);
-
-            if (IsExitFile(mapDataIndex))
+            return mapDataIndex switch
             {
-                using (StreamReader streamReader = new StreamReader(filePath))
-                {
-                    string data = streamReader.ReadToEnd();
-                    streamReader.Close();
-                    entityGridMapData = JsonUtility.FromJson<EntityGridMapData>(data);
-                }
-            }
-            else
-            {
-                Debug.LogWarning($"パス:{filePath}にjsonファイルが存在しません");
-                entityGridMapData = new DefaultEntityGridMapData();
-            }
-
-            return entityGridMapData;
+                0 => new DefaultEntityGridMapData(),
+                1 => new EntityGridMapData1(),
+                2 => new EntityGridMapData2(),
+                _ => new DefaultEntityGridMapData(),
+            };
         }
 
         string GetFilePath(int index)
