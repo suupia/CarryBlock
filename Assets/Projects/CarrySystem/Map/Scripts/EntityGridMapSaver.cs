@@ -28,23 +28,24 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void SaveMap(EntityGridMap map, int mapDataIndex)
         {
-            EntityGridMapData entityGridMapData = new EntityGridMapData();
             var mapLength = map.GetLength();
             var rockRecords = new RockRecord[mapLength];
             var groundRecords = new GroundRecord[mapLength];
 
-
             for (int i = 0; i < mapLength; i++)
             {
-                // //Rock
-                // if (map.GetSingleEntity<Rock>(i) != null) rockRecords[i] = map.GetSingleEntity<Rock>(i).Kind;
-                //
-                // //Ground
-                // if (map.GetSingleEntity<Ground>(i) != null) groundRecords[i] = map.GetSingleEntity<Ground>(i).Kind;
-
-
+                // Ground
+                if (map.GetSingleEntity<Ground>(i) is {} ground) groundRecords[i] = ground.Record;
+                
+                // Rock
+                if (map.GetSingleEntity<Rock>(i) is {} rock) rockRecords[i] = rock.Record;
+                
             }
 
+            // 保存するデータの作成
+            EntityGridMapData entityGridMapData = new EntityGridMapData();
+            entityGridMapData.width = map.Width;
+            entityGridMapData.height = map.Height;
             entityGridMapData.rockRecords = rockRecords;
             entityGridMapData.groundRecords = groundRecords;
 
