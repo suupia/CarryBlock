@@ -9,17 +9,17 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EntityGridMapGenerator
+    public class EntityGridMapLoader
     {
         readonly string _folderPath;
 
-        public  EntityGridMapGenerator()
+        public  EntityGridMapLoader()
         {
             _folderPath = Application.streamingAssetsPath + "/JsonFiles";
             Debug.Log($"セーブデータのファイルパスは {_folderPath}");
         }
 
-        public EntityGridMap GenerateEntityGridMap(int mapDataIndex)
+        public EntityGridMap LoadEntityGridMap(int mapDataIndex)
         {
             var gridMapData = Load(mapDataIndex);
 
@@ -42,9 +42,9 @@ namespace Carry.CarrySystem.Map.Scripts
             return map;
         }
 
-        GridMapData Load(int mapDataIndex)
+        EntityGridMapData Load(int mapDataIndex)
         {
-            GridMapData gridMapData;
+            EntityGridMapData entityGridMapData;
 
             string filePath = GetFilePath(mapDataIndex);
 
@@ -54,16 +54,16 @@ namespace Carry.CarrySystem.Map.Scripts
                 {
                     string data = streamReader.ReadToEnd();
                     streamReader.Close();
-                    gridMapData = JsonUtility.FromJson<GridMapData>(data);
+                    entityGridMapData = JsonUtility.FromJson<EntityGridMapData>(data);
                 }
             }
             else
             {
                 Debug.LogWarning($"パス:{filePath}にjsonファイルが存在しません");
-                gridMapData = new DefaultGridMapData();
+                entityGridMapData = new DefaultEntityGridMapData();
             }
 
-            return gridMapData;
+            return entityGridMapData;
         }
 
         string GetFilePath(int index)
@@ -77,13 +77,13 @@ namespace Carry.CarrySystem.Map.Scripts
         }
     }
     
-    public class DefaultGridMapData : GridMapData
+    public class DefaultEntityGridMapData : EntityGridMapData
     {
         // 適当に作っている
         // エクセルからデータを読み込めるようになるまではこれを使用する
         
         readonly int _length;
-        public DefaultGridMapData()
+        public DefaultEntityGridMapData()
         {
             // 親クラスのフィールドを書き換えていることに注意
             width = 20;

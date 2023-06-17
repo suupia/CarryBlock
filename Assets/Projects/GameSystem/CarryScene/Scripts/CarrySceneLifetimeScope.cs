@@ -15,7 +15,7 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
         {
             // Serverのドメインスクリプト
             // Map
-            builder.Register<EntityGridMapGenerator>(Lifetime.Singleton);
+            builder.Register<EntityGridMapLoader>(Lifetime.Singleton);
             builder.Register<EntityGridMapSwitcher>(Lifetime.Singleton);
             builder.Register<TilePresenterRegister>(Lifetime.Singleton);
             

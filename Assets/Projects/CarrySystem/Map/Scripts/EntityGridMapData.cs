@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Carry.CarrySystem.Map.Scripts
 {
     [Serializable]
-    public class GridMapData
+    public class EntityGridMapData
     {
         public int width;
         public int height;

@@ -11,14 +11,14 @@ namespace Carry.CarrySystem.Map.Scripts
     /// </summary>
     public class EntityGridMapSwitcher
     {
-        readonly EntityGridMapGenerator _gridMapGenerator;
+        readonly EntityGridMapLoader _gridMapLoader;
         EntityGridMap _currentMap;
         
         [Inject]
-        public EntityGridMapSwitcher(EntityGridMapGenerator gridMapGridMapGenerator)
+        public EntityGridMapSwitcher(EntityGridMapLoader gridMapGridMapLoader)
         {
-            _gridMapGenerator = gridMapGridMapGenerator;
-            _currentMap = _gridMapGenerator.GenerateEntityGridMap(0); // indexはとりあえず0にしておく
+            _gridMapLoader = gridMapGridMapLoader;
+            _currentMap = _gridMapLoader.LoadEntityGridMap(0); // indexはとりあえず0にしておく
         }
         public EntityGridMap GetMap()
         {
@@ -28,7 +28,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public void NextFloor()
         {
             // Todo：　ちゃんと実装する 雰囲気はこんな感じ
-            var nextMap = _gridMapGenerator.GenerateEntityGridMap(1);
+            var nextMap = _gridMapLoader.LoadEntityGridMap(1);
             _currentMap = nextMap;
         }
     }
