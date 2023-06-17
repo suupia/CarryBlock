@@ -45,47 +45,46 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public void SetInitEntityActiveData(IEntity entity, bool isActive)
         {
-            if (entity is Ground)
+            switch (entity)
             {
-                PresentDataRef.IsGroundActive = isActive;
-            }else if (entity is Rock)
-            {
-                PresentDataRef.IsRockActive = isActive;
-            }
-            else
-            {
-                throw new System.Exception("想定外のEntityが渡されました");
+                case Ground _:
+                    PresentDataRef.IsGroundActive = isActive;
+                    break;
+                case Rock _:
+                    PresentDataRef.IsRockActive = isActive;
+                    break;
+                default:
+                    throw new System.Exception("想定外のEntityが渡されました");
             }
         }
         public void SetEntityActiveData(IEntity entity,int count)
         {
-            if (entity is Ground)
+            switch (entity)
             {
-                PresentDataRef.IsGroundActive = true; // とりあえずGroundは常にtrue
-            }else if (entity is Rock)
-            {
-                switch (count)
-                {
-                    case 0:
-                        PresentDataRef.IsRockActive = false;
-                        PresentDataRef.IsDoubleRockActive = false;
-                        break;
-                    case 1:
-                        PresentDataRef.IsRockActive = true;
-                        PresentDataRef.IsDoubleRockActive = false;
-                        break;
-                    case 2:
-                        PresentDataRef.IsRockActive = false;
-                        PresentDataRef.IsDoubleRockActive = true;
-                        break;
-                    default:
-                        throw new System.Exception("想定外のcountが渡されました");
-                        break;
-                }
-            }
-            else
-            {
-                throw new System.Exception("想定外のEntityが渡されました");
+                case Ground _:
+                    PresentDataRef.IsGroundActive = true;
+                    break;
+                case Rock _:
+                    switch (count)
+                    {
+                        case 0:
+                            PresentDataRef.IsRockActive = false;
+                            PresentDataRef.IsDoubleRockActive = false;
+                            break;
+                        case 1:
+                            PresentDataRef.IsRockActive = true;
+                            PresentDataRef.IsDoubleRockActive = false;
+                            break;
+                        case 2:
+                            PresentDataRef.IsRockActive = false;
+                            PresentDataRef.IsDoubleRockActive = true;
+                            break;
+                        default:
+                            throw new System.Exception("想定外のcountが渡されました");
+                    }
+                    break;
+                default:
+                    throw new System.Exception("想定外のEntityが渡されました");
             }
         }
 
