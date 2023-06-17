@@ -16,15 +16,17 @@ namespace Carry.CarrySystem.Entity.Scripts
     public class Rock : IEntity
     {
         public Vector2Int GridPosition { get; set; }
-        
+        public RockRecord Record { get; }
+
         public enum Kind
         {
             None,
             Kind1,
         }
 
-        public Rock(Kind kind,Vector2Int gridPosition)
+        public Rock(RockRecord record,Vector2Int gridPosition)
         {
+            Record = record;
             GridPosition = gridPosition;
         }
 

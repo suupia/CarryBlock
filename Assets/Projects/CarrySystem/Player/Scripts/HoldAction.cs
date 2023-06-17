@@ -111,7 +111,8 @@ namespace Carry.CarrySystem.Player.Scripts
         void PutDownRock(Vector2Int forwardGridPos, int rockCount)
         {
             // 新しくRockを生成して置く
-            _map.AddEntity<Rock>(forwardGridPos, new Rock(Rock.Kind.Kind1, forwardGridPos));
+            var record = new RockRecord() { kind = Rock.Kind.Kind1 };
+            _map.AddEntity<Rock>(forwardGridPos, new Rock(record, forwardGridPos));
 
             _isHoldingRock = false;
             
