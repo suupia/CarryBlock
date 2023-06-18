@@ -82,7 +82,8 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         {
             if (Runner.IsServer) SceneTransition.TransitioningScene(Runner, SceneName.LobbyScene);
         }
-        
+
+
     }
 
 }

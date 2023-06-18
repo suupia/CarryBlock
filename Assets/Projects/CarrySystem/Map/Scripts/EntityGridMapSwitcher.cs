@@ -29,6 +29,7 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public void NextFloor()
         {
+            Debug.Log($"次のフロアに変更します nextIndex: {_currentIndex + 1}");
             _currentIndex++;
             var nextMap = _gridMapLoader.LoadEntityGridMap(_currentIndex);
             _currentMap = nextMap;
