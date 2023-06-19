@@ -50,6 +50,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 0 => new DefaultEntityGridMapData(),
                 1 => new EntityGridMapData1(),
                 2 => new EntityGridMapData2(),
+                3 => new EntityGridMapData3(),
                 _ => new DefaultEntityGridMapData(),
             };
         }

@@ -6,11 +6,11 @@ using Carry.CarrySystem.Map.Scripts;
 #nullable enable
 namespace Carry.CarrySystem.Map.MapData
 {
-    public class EntityGridMapData2 : EntityGridMapData
+    public class EntityGridMapData3 : EntityGridMapData
     {
         readonly int _length;
 
-        public EntityGridMapData2()
+        public EntityGridMapData3()
         {
             // 親クラスのフィールドを書き換えていることに注意
             width = 20;
@@ -52,7 +52,9 @@ namespace Carry.CarrySystem.Map.MapData
                 rockPosList.Add(i * width - 1);
                 rockPosList.Add(i * width - 3);
                 rockPosList.Add(i * width - 5);
+                rockPosList.Add(i * width - 6);
                 rockPosList.Add(i * width - 7);
+                rockPosList.Add(i * width - 8);
 
             }
             // Debug.Log($"rockPosList : {string.Join(",", rockPosList)}");
