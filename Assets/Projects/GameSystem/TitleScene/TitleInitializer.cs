@@ -14,7 +14,7 @@ namespace Nuts.BattleSystem.TitleScene.Scripts
         public async void StartGameWithRoomName()
         {
             var runnerManager = FindObjectOfType<NetworkRunnerManager>();
-            await runnerManager.AttemptStartScene("RoomName");
+            await runnerManager.AttemptStartScene(RoomName);
             Debug.Log("Transitioning to LobbySceneTestRoom");
             SceneTransition.TransitioningScene(runnerManager.Runner, SceneName.LobbyScene);
         }
