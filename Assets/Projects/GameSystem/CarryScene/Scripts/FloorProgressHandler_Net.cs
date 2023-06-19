@@ -11,7 +11,6 @@ namespace Carry.CarrySystem.CarryScene.Scripts
     public class FloorProgressHandler_Net : NetworkBehaviour
     {
         // ToDo: 仮置きクラス　ドメインの設計やコンテナの関係をしっかり考えれば、NetworkBehaviourである必要がないかも
-        [Networked] TickTimer FloorTimer { get; set; } // 仮置き
         float _updateTime = 7;
 
         EntityGridMapSwitcher _mapSwitcher;
@@ -19,7 +18,6 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         {
             var resolver = FindObjectOfType<LifetimeScope>().Container;
             _mapSwitcher = resolver.Resolve<EntityGridMapSwitcher>();
-            FloorTimer = TickTimer.CreateFromSeconds(Runner, _updateTime);
         }
 
         public override void FixedUpdateNetwork()
