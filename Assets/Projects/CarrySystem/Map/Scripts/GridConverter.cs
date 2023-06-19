@@ -6,8 +6,8 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public static class  GridConverter
     {   
-       static readonly float LengthBetweenHorizontal = 1.0f;
-       static readonly float LengthBetweenVertical = 1.0f;
+       static readonly float LengthBetweenHorizontal = 1.2f;
+       static readonly float LengthBetweenVertical = 1.2f;
        
         public static  Vector3 GridPositionToWorldPosition(Vector2Int gridPos)
         {
