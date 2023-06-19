@@ -15,6 +15,7 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         PlayerInfo _info;
         EntityGridMap _map;
+        EntityGridMapSwitcher _mapSwitcher;
         IHoldActionPresenter? _presenter;
         bool _isHoldingRock = false;
         int _maxHoldRockCount = 2;
@@ -29,7 +30,16 @@ namespace Carry.CarrySystem.Player.Scripts
             _info = info;
             var resolver =
                 Object.FindObjectOfType<LifetimeScope>().Container; // このコンストラクタはNetworkBehaviour内で実行されるため、ここで取得してよい
-            _map = resolver.Resolve<EntityGridMapSwitcher>().GetMap();
+            _mapSwitcher = resolver.Resolve<EntityGridMapSwitcher>();
+            _map =_mapSwitcher.GetMap();
+        }
+
+        public void Reset()
+        {
+            _isHoldingRock = false;
+            _presenter?.PutDownRock();
+            _map =_mapSwitcher.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
+
         }
 
         public void Action()
@@ -38,7 +48,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
             // 前方のGridPosを取得
             var forwardGridPos = GetForwardGridPos(transform);
-            // Debug.Log($"Player Forward GridPos: {forwardGridPos}");
+             Debug.Log($"Player Forward GridPos: {forwardGridPos}");
 
             // そのGridPosにRockがあるかどうかを確認
             var index = _map.GetIndexFromVector(forwardGridPos);
@@ -60,33 +70,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     PickUpRock(forwardGridPos, rocks.First());
                 }
             }
-
-
-            // if (rocks == null)
-            // {
-            //     Debug.Log($"forwardGridPos: {forwardGridPos}にRockはありません");
-            //     if (_isHoldingRock)
-            //     {
-            //         PutDownRock(forwardGridPos);
-            //     }
-            //     else
-            //     {
-            //         // 何もしない
-            //     }
-            // }
-            // else
-            // {
-            //     Debug.Log($"forwardGridPos: {forwardGridPos}にRockがあります");
-            //     if (_isHoldingRock)
-            //     {
-            //         // 何もしない
-            //     }
-            //     else
-            //     {
-            //         var rock = rocks.First();
-            //         PickUpRock(forwardGridPos, rock);
-            //     }
-            // }
+            
         }
 
         Vector2Int GetForwardGridPos(Transform transform)

@@ -1,7 +1,10 @@
 ﻿using Carry.CarrySystem.Map.Scripts;
+using Cysharp.Threading.Tasks.Triggers;
 using Fusion;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+
 
 namespace Carry.CarrySystem.CarryScene.Scripts
 {
@@ -16,14 +19,20 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         {
             var resolver = FindObjectOfType<LifetimeScope>().Container;
             _mapSwitcher = resolver.Resolve<EntityGridMapSwitcher>();
+            FloorTimer = TickTimer.CreateFromSeconds(Runner, _updateTime);
         }
 
         public override void FixedUpdateNetwork()
         {
-            if (FloorTimer.ExpiredOrNotRunning(Runner))
+            // if (FloorTimer.ExpiredOrNotRunning(Runner))
+            // {
+            //     _mapSwitcher.NextFloor();
+            //     FloorTimer = TickTimer.CreateFromSeconds(Runner, _updateTime);
+            // }
+            
+            if(Runner.IsServer && Input.GetKeyDown(KeyCode.N))
             {
                 _mapSwitcher.NextFloor();
-                FloorTimer = TickTimer.CreateFromSeconds(Runner, _updateTime);
             }
         }
     }

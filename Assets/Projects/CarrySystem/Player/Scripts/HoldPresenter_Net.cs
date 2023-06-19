@@ -29,7 +29,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public override void Render()
         {
-            Debug.Log($"PresentDataRef.IsHoldingRock = {PresentDataRef.IsHoldingRock}");
+            // Debug.Log($"PresentDataRef.IsHoldingRock = {PresentDataRef.IsHoldingRock}");
 
             if (holdingRock.activeSelf != PresentDataRef.IsHoldingRock)
             {

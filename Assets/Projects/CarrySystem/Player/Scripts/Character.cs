@@ -18,6 +18,11 @@ namespace Carry.CarrySystem.Player.Scripts
             _action = action;
         }
 
+        public void Reset()
+        {
+            _action.Reset();
+        }
+
         public void Setup(PlayerInfo info)
         {
             _move.Setup(info);

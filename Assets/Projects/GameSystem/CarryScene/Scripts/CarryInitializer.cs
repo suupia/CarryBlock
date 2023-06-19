@@ -52,10 +52,12 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             if (Runner.IsServer)
             {
                 var vContainer = FindObjectOfType<LifetimeScope>().Container;
-                var entityGridMap = vContainer.Resolve<EntityGridMapSwitcher>().GetMap();
-                var mapGenerator = vContainer.Resolve<TilePresenterRegister>(); 
-                mapGenerator.GenerateMap(Runner, entityGridMap);
-
+                var entityGridMapSwitcher = vContainer.Resolve<EntityGridMapSwitcher>();
+                var tilePresenterRegister = vContainer.Resolve<TilePresenterRegister>(); 
+                var tilePresentContainer = new TilePresenterContainer();
+                tilePresentContainer.SpawnTilePresenter(Runner, entityGridMapSwitcher.GetMap());
+                // entityGridMapSwitcher.RegisterTilePresenter(Runner, tilePresenterRegister);
+                entityGridMapSwitcher.RegisterTilePresenterContainer(tilePresentContainer);
             }
 
 

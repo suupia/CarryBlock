@@ -53,7 +53,7 @@ namespace Carry.UISystem.UI.CarryScene
 
         public override void Render()
         {
-            Debug.Log($"_gameContext.gameState: {_gameContext.CurrentState}");
+            // Debug.Log($"_gameContext.gameState: {_gameContext.CurrentState}");
             switch (_gameContext.CurrentState)
             {
                 case GameContext.GameState.Playing:

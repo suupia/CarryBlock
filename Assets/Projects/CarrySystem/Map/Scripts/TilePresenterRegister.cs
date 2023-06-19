@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.Map.Scripts
     /// </summary>
     public class TilePresenterRegister
     {
-        public void GenerateMap(NetworkRunner runner, EntityGridMap map)
+        public void RegisterTilePresenter(NetworkRunner runner, EntityGridMap map)
         {
             var tilePresenterSpawner = new TilePresenterSpawner(runner);
 

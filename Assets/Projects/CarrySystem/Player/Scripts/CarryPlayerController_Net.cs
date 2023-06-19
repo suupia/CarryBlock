@@ -30,6 +30,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         
         ICharacter _character;
+        ICharacterAction _characterAction; // Resetのために保持　よくない
         GameObject _characterObj;
 
         protected virtual void Update()
@@ -117,8 +118,8 @@ namespace Carry.CarrySystem.Player.Scripts
             
             // domain
             var move = new QuickTurnMove();
-            var action = new HoldAction(holdActionPresenter);
-            _character = new Character(move,action );
+            _characterAction = new HoldAction(holdActionPresenter);
+            _character = new Character(move,_characterAction );
             _character.Setup(info);
             
 
@@ -161,6 +162,14 @@ namespace Carry.CarrySystem.Player.Scripts
 
             // Play spawn animation
             // _decorationDetector.OnSpawned();
+        }
+
+        public void Reset()
+        {
+            // フロア移動の際に呼ばれる
+            Debug.Log($"_characterAction = {_characterAction}");
+            _characterAction?.Reset();
+            SetToOrigin();
         }
 
 

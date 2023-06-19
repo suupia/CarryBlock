@@ -170,7 +170,7 @@ namespace Carry.CarrySystem.Map.Scripts
             
             // presenter
             var count = _entityMaps[index].Count(s => s.GetType() == entity.GetType());
-            Debug.Log($"AddEntity({index}) count:{count}");
+            // Debug.Log($"AddEntity({index}) count:{count}");
              _tilePresenter[index]?.SetEntityActiveData(entity, count);
         }
 
@@ -188,7 +188,7 @@ namespace Carry.CarrySystem.Map.Scripts
             
             // presenter
             var count = _entityMaps[index].Count(s => s.GetType() == entity.GetType());
-            Debug.Log($"RemoveEntity({x},{y}) count:{count}");
+            // Debug.Log($"RemoveEntity({x},{y}) count:{count}");
             _tilePresenter[index]?.SetEntityActiveData(entity, count);
         }
 

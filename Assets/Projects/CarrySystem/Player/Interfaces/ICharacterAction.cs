@@ -6,6 +6,7 @@ namespace Carry.CarrySystem.Player.Interfaces
     public interface ICharacterAction
     {
         void Setup(PlayerInfo info);
+        void Reset();
         void Action();
     }
 }

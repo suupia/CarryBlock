@@ -53,8 +53,12 @@ namespace Carry.CarrySystem.Map.Scripts
                 case Rock _:
                     PresentDataRef.IsRockActive = isActive;
                     break;
+                case null :
+                    PresentDataRef.IsRockActive = false;
+                    PresentDataRef.IsDoubleRockActive = false;
+                    break;
                 default:
-                    throw new System.Exception("想定外のEntityが渡されました");
+                    throw new System.Exception($"想定外のEntityが渡されました entity : {entity}");
             }
         }
         public void SetEntityActiveData(IEntity entity,int count)
