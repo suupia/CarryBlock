@@ -33,13 +33,13 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public CarryPlayerController_Net Build(PlayerColorType colorType, Vector3 position, Quaternion rotation, PlayerRef playerRef)
         {
-            // 各MonoBehaviourを準備
+            // プレハブをロード
             var playerController = _carryPlayerControllerLoader.Load();
             
-            // ドメインスクリプトを準備
+            // ドメインスクリプトをnew
             var character = _carryPlayerFactory.Create(colorType);
             
-            // Spawn
+            // プレハブをスポーン
             var playerControllerObj = _runner.Spawn(playerController,position, rotation, playerRef);
             
             // 各MonoBehaviourにドメインを設定
@@ -47,16 +47,12 @@ namespace Carry.CarrySystem.Player.Scripts
             var holdPresenter = playerControllerObj.GetComponent<HoldPresenter_Net>();
             holdPresenter.Init(character);
 
-            // 今は特に注入するべきものがない
             // _resolver.InjectGameObject(playerControllerObj);
+            // とできるならこの方がよいが、Factoryで生成したものをInjectするのは難しい
 
             return playerControllerObj;
         }
-        
-        // Buildの流れ
-        // ControllerをLoadする
-        // ドメインスクリプトをnewする（ファクトリーから生成でもよい） <- これをInjectで受け取るようにする
-        // Presenterにドメインを設定する
+
         
     }
 }
