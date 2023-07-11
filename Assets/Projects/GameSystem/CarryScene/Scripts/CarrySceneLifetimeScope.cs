@@ -34,14 +34,10 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             
             // Player
             builder.Register<CarryPlayerFactory>(Lifetime.Scoped);
-            Debug.Log($"Register CarryPlayerFactory");
             builder.Register<CarryPlayerBuilder>(Lifetime.Scoped);
-            Debug.Log($"Register CarryPlayerBuilder");
             builder.Register<CarryPlayerSpawner>(Lifetime.Scoped);
-            Debug.Log($"Register CarryPlayerSpawner");
 
             builder.RegisterComponentInHierarchy<CarryInitializer>();
-            Debug.Log($"Register CarryInitializer");
 
             // Serverのドメインスクリプト
             // Map

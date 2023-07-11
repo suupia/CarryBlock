@@ -25,7 +25,6 @@ namespace Carry.CarrySystem.Player.Scripts
         [Inject]
         public CarryPlayerBuilder(NetworkRunner runner, IObjectResolver resolver ,IPrefabLoader<CarryPlayerController_Net> carryPlayerControllerLoader, CarryPlayerFactory carryPlayerFactory)
         {
-            Debug.Log($"CarryPlayerBuilder Constructor");
             _runner = runner;
             _resolver = resolver;
             _carryPlayerControllerLoader = carryPlayerControllerLoader;

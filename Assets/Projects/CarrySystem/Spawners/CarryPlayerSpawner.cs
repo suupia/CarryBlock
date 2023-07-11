@@ -16,8 +16,6 @@ namespace Carry.CarrySystem.Spawners
         [Inject]
         public CarryPlayerSpawner(NetworkRunner runner, CarryPlayerBuilder carryPlayerBuilder)
         {
-            Debug.Log($"CarryPlayerSpawner Constructor");
-
             _runner = runner;
             _carryPlayerBuilder = carryPlayerBuilder;
         }
