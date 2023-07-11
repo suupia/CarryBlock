@@ -1,5 +1,6 @@
 ﻿using Fusion;
 using Nuts.Utility.Scripts;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -30,7 +31,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _carryPlayerFactory = carryPlayerFactory;
         }
 
-        public void Spawn(PlayerColorType colorType)
+        public void Build(PlayerColorType colorType, Vector3 position, Quaternion rotation, PlayerRef playerRef)
         {
             // 各MonoBehaviourを準備
             var playerController = _carryPlayerControllerLoader.Load();
@@ -38,7 +39,8 @@ namespace Carry.CarrySystem.Player.Scripts
             // ドメインスクリプトを準備
             var character = _carryPlayerFactory.Create(colorType);
             
-            var playerControllerObj = _runner.Spawn(playerController);
+            // Spawn
+            var playerControllerObj = _runner.Spawn(playerController,position, rotation, playerRef);
             
             // 各MonoBehaviourにドメインを設定
             playerControllerObj.Init(character);

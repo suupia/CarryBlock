@@ -34,11 +34,10 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.RegisterComponentInHierarchy<CarryInitializer>();
             
             // Player
-            builder.Register<QuickTurnMove>(Lifetime.Scoped).As<ICharacterMove>();
-            builder.Register<HoldAction>(Lifetime.Scoped).As<ICharacterHoldAction>();
-            builder.Register<Character>(Lifetime.Scoped).As<ICharacter>();
-            
-            
+            builder.Register<CarryPlayerFactory>(Lifetime.Scoped);
+            builder.Register<CarryPlayerBuilder>(Lifetime.Scoped);
+
+
             // Serverのドメインスクリプト
             // Map
             builder.Register<EntityGridMapLoader>(Lifetime.Singleton);
