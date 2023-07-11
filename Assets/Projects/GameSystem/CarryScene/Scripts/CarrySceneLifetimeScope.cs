@@ -24,6 +24,7 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             // NetworkRunnerに依存するスクリプト
             builder.Register<CarryPlayerPrefabSpawner>(Lifetime.Scoped).As< IPrefabSpawner<CarryPlayerController_Net>>();
             builder.Register<CarryPlayerSpawner>(Lifetime.Scoped);
+            builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
             
             builder.RegisterComponentInHierarchy<CarryInitializer>();
             

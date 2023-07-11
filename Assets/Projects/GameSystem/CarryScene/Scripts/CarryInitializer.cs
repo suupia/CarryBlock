@@ -21,16 +21,14 @@ namespace Carry.CarrySystem.CarryScene.Scripts
     {    
         [SerializeField] FloorTimer_Net floorTimerNet;
         AbstractNetworkPlayerSpawner<CarryPlayerController_Net> _carryPlayerSpawner;
-        readonly CarryPlayerContainer _carryPlayerContainer = new();
-
-        [SerializeField] string overrideSessionName;
-        
+        CarryPlayerContainer _carryPlayerContainer;
         public bool IsInitialized { get; private set; }
         
         [Inject]
-        public void Construct(CarryPlayerSpawner carryPlayerSpawner)
+        public void Construct(CarryPlayerSpawner carryPlayerSpawner, CarryPlayerContainer carryPlayerContainer)
         {
             _carryPlayerSpawner = carryPlayerSpawner;
+            _carryPlayerContainer = carryPlayerContainer;
         }
 
 
