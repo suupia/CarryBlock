@@ -17,9 +17,14 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
     {
         protected override void Configure(IContainerBuilder builder)
         {
+            // NetworkRunner
             var runner = FindObjectOfType<NetworkRunner>();
             Debug.Log($"NetworkRunner : {runner}");
             builder.RegisterComponent(runner);
+            
+            
+            builder.Register<PrefabLoaderFromResources<CarryPlayerController_Net>>(Lifetime.Singleton)
+                .As<IPrefabLoader<CarryPlayerController_Net>>().WithParameter("folderPath", "Prefabs/Players");
             
             // NetworkRunnerに依存するスクリプト
             builder.Register<CarryPlayerPrefabSpawner>(Lifetime.Scoped).As< IPrefabSpawner<CarryPlayerController_Net>>();
@@ -27,6 +32,11 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
             
             builder.RegisterComponentInHierarchy<CarryInitializer>();
+            
+            // Player
+            builder.Register<QuickTurnMove>(Lifetime.Scoped).As<ICharacterMove>();
+            builder.Register<HoldAction>(Lifetime.Scoped).As<ICharacterAction>();
+            builder.Register<Character>(Lifetime.Scoped).As<ICharacter>();
             
             
             // Serverのドメインスクリプト

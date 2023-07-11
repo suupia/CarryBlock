@@ -6,10 +6,12 @@ using Fusion;
 using Nuts.NetworkUtility.Inputs.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Info;
+using VContainer;
 
 
 namespace Carry.CarrySystem.Player.Scripts
 {
+    [RequireComponent(typeof(HoldPresenter_Net))]
     public class CarryPlayerController_Net : AbstractNetworkPlayerController
     {
         [SerializeField]  Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
@@ -30,8 +32,13 @@ namespace Carry.CarrySystem.Player.Scripts
         
         
         ICharacter _character;
-        ICharacterAction _characterAction; // Resetのために保持　よくない
         GameObject _characterObj;
+        
+        [Inject]
+        public void Construct(ICharacter character)
+        {
+            _character = character;
+        }
 
         protected virtual void Update()
         {
@@ -118,8 +125,8 @@ namespace Carry.CarrySystem.Player.Scripts
             
             // domain
             var move = new QuickTurnMove();
-            _characterAction = new HoldAction(holdActionPresenter);
-            _character = new Character(move,_characterAction );
+            var action = new HoldAction(holdActionPresenter);
+            _character = new Character(move, action);
             _character.Setup(info);
             
 
@@ -167,8 +174,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Reset()
         {
             // フロア移動の際に呼ばれる
-            Debug.Log($"_characterAction = {_characterAction}");
-            _characterAction?.Reset();
+            _character?.Reset();
             SetToOrigin();
         }
 
