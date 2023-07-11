@@ -19,12 +19,10 @@ namespace Nuts.BattleSystem.LobbyScene.Scripts
 
         async void Start()
         {
-            var runnerManager = FindObjectOfType<NetworkRunnerManager>();
-            // Runner.StartGame() if it has not been run.
-            await runnerManager.AttemptStartScene("LobbySceneTestRoom");
-            runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
-            await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner),
-                cancellationToken: new CancellationToken());
+            var runner = FindObjectOfType<NetworkRunner>();
+            runner.AddSimulationBehaviour(this); // Register this class with the runner
+            await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner));
+
 
             // Domain
             var playerPrefabSpawner = new LobbyNetworkPlayerPrefabSpawner(Runner);

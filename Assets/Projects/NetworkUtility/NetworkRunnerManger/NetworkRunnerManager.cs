@@ -31,9 +31,6 @@ public class NetworkRunnerManager : MonoBehaviour
         _runner = FindObjectOfType<NetworkRunner>();
         if (_runner == null)
         {
-            // Register this gameObject with DontDestroyOnLoad 
-            DontDestroyOnLoad(gameObject);
-            
             // Set up NetworkRunner
             _runner = Instantiate(networkRunner);
             DontDestroyOnLoad(_runner);
