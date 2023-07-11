@@ -36,13 +36,18 @@ namespace Carry.CarrySystem.Player.Scripts
             
             //ToDo 以下をcolorTypeによって切り替える
             var move = new QuickTurnMove();
-            var action = new HoldAction(holdPresenter);
+            var action = new HoldAction();
             var character = new Character(move, action);
 
             var playerControllerObj = _runner.Spawn(playerController).gameObject;
             
             _resolver.InjectGameObject(playerControllerObj);
         }
+        
+        // Buildの流れ
+        // ControllerをLoadする
+        // ドメインスクリプトをnewする（ファクトリーから生成でもよい） <- これをInjectで受け取るようにする
+        // Presenterにドメインを設定する
         
     }
 }

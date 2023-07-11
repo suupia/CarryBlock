@@ -19,8 +19,8 @@ namespace Carry.CarrySystem.Player.Scripts
         IHoldActionPresenter? _presenter;
         bool _isHoldingRock = false;
         int _maxHoldRockCount = 2;
-
-        public HoldAction(IHoldActionPresenter? presenter)
+        
+        public void SetHoldPresenter(IHoldActionPresenter presenter)
         {
             _presenter = presenter;
         }

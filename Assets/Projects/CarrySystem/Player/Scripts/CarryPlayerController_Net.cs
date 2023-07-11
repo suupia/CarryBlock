@@ -121,11 +121,12 @@ namespace Carry.CarrySystem.Player.Scripts
             _characterObj = Instantiate(prefab, unitObjectParent);
 
             // presenter
-            IHoldActionPresenter holdActionPresenter = GetComponent<HoldPresenter_Net>();
+            HoldPresenter_Net holdActionPresenter = GetComponent<HoldPresenter_Net>();
             
             // domain
             var move = new QuickTurnMove();
-            var action = new HoldAction(holdActionPresenter);
+            var action = new HoldAction();
+            holdActionPresenter.Construct(action);
             _character = new Character(move, action);
             _character.Setup(info);
             

@@ -8,6 +8,7 @@ using Fusion;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
+using VContainer;
 
 
 namespace Carry.CarrySystem.Player.Scripts
@@ -26,6 +27,12 @@ namespace Carry.CarrySystem.Player.Scripts
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
         [SerializeField] GameObject holdingRock;
         [SerializeField] GameObject holdingDoubleRock;
+        
+        [Inject]
+        public void Construct(HoldAction holdAction)
+        {
+            holdAction.SetHoldPresenter(this);
+        }
 
         public override void Render()
         {
