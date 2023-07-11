@@ -1251,7 +1251,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4256690449260173394, guid: 092b3ca5ef79944649b0372529fa1bdb, type: 3}
       propertyPath: Flags
-      value: 2561
+      value: 133633
       objectReference: {fileID: 0}
     - target: {fileID: 4256690449260173394, guid: 092b3ca5ef79944649b0372529fa1bdb, type: 3}
       propertyPath: NetworkGuid.RawGuidValue.Array.data[0]
@@ -1264,6 +1264,10 @@ PrefabInstance:
     - target: {fileID: 4722130429993137154, guid: 092b3ca5ef79944649b0372529fa1bdb, type: 3}
       propertyPath: m_Name
       value: NetworkManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722130429993137154, guid: 092b3ca5ef79944649b0372529fa1bdb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 092b3ca5ef79944649b0372529fa1bdb, type: 3}
