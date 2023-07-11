@@ -36,11 +36,10 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 
         async void Start()
         {
-            var runnerManager = FindObjectOfType<NetworkRunnerManager>();
-            // Runner.StartGame() if it has not been run.
-            await runnerManager.AttemptStartScene(overrideSessionName);
-            runnerManager.Runner.AddSimulationBehaviour(this); // Register this class with the runner
-            await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner), cancellationToken: new CancellationToken());
+            var runner = FindObjectOfType<NetworkRunner>();
+            runner.AddSimulationBehaviour(this); // Register this class with the runner
+            await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner));
+
             
             // Start Timer
             if (Runner.IsServer)
