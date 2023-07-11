@@ -34,8 +34,7 @@ namespace Carry.CarrySystem.Player.Scripts
         ICharacter _character;
         GameObject _characterObj;
         
-        [Inject]
-        public void Construct(ICharacter character)
+        public void Init(ICharacter character)
         {
             _character = character;
         }
@@ -126,8 +125,8 @@ namespace Carry.CarrySystem.Player.Scripts
             // domain
             var move = new QuickTurnMove();
             var action = new HoldAction();
-            holdActionPresenter.Construct(action);
             _character = new Character(move, action);
+            holdActionPresenter.Init(_character);
             _character.Setup(info);
             
 

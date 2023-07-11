@@ -28,10 +28,9 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField] GameObject holdingRock;
         [SerializeField] GameObject holdingDoubleRock;
         
-        [Inject]
-        public void Construct(HoldAction holdAction)
+        public void Init(ICharacter character)
         {
-            holdAction.SetHoldPresenter(this);
+            character.SetHoldPresenter(this);
         }
 
         public override void Render()

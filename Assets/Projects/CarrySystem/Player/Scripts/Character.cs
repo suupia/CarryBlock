@@ -9,24 +9,24 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class Character : ICharacter
     {
-        readonly ICharacterAction _action;
+        readonly ICharacterHoldAction _holdAction;
         readonly ICharacterMove _move;
         
-        public Character(ICharacterMove move, ICharacterAction action)
+        public Character(ICharacterMove move, ICharacterHoldAction holdAction)
         {
             _move = move;
-            _action = action;
+            _holdAction = holdAction;
         }
 
         public void Reset()
         {
-            _action.Reset();
+            _holdAction.Reset();
         }
 
         public void Setup(PlayerInfo info)
         {
             _move.Setup(info);
-            _action.Setup(info);
+            _holdAction.Setup(info);
             info.playerRb.useGravity = true;
         }
 
@@ -34,10 +34,15 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _move.Move(direction);
         }
+        
+        public void SetHoldPresenter(IHoldActionPresenter presenter)
+        {
+            _holdAction.SetHoldPresenter(presenter);
+        }
 
         public void Action()
         {
-            _action.Action();
+            _holdAction.Action();
         }
     }
 }

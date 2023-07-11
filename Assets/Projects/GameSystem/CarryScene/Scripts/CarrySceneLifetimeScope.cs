@@ -35,7 +35,7 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             
             // Player
             builder.Register<QuickTurnMove>(Lifetime.Scoped).As<ICharacterMove>();
-            builder.Register<HoldAction>(Lifetime.Scoped).As<ICharacterAction>();
+            builder.Register<HoldAction>(Lifetime.Scoped).As<ICharacterHoldAction>();
             builder.Register<Character>(Lifetime.Scoped).As<ICharacter>();
             
             

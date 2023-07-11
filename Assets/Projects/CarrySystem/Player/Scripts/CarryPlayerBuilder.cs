@@ -18,30 +18,35 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly NetworkRunner _runner;
         readonly IObjectResolver _resolver;
         readonly IPrefabLoader<CarryPlayerController_Net> _carryPlayerControllerLoader;
+        readonly CarryPlayerFactory _carryPlayerFactory;
         // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などがありそう
 
         [Inject]
-        public CarryPlayerBuilder(NetworkRunner runner, IObjectResolver resolver ,IPrefabLoader<CarryPlayerController_Net> carryPlayerControllerLoader)
+        public CarryPlayerBuilder(NetworkRunner runner, IObjectResolver resolver ,IPrefabLoader<CarryPlayerController_Net> carryPlayerControllerLoader, CarryPlayerFactory carryPlayerFactory)
         {
             _runner = runner;
             _resolver = resolver;
             _carryPlayerControllerLoader = carryPlayerControllerLoader;
-            
+            _carryPlayerFactory = carryPlayerFactory;
         }
 
-        public void Build(PlayerColorType colorType)
+        public void Spawn(PlayerColorType colorType)
         {
+            // 各MonoBehaviourを準備
             var playerController = _carryPlayerControllerLoader.Load();
-            var holdPresenter = playerController.GetComponent<HoldPresenter_Net>();
             
-            //ToDo 以下をcolorTypeによって切り替える
-            var move = new QuickTurnMove();
-            var action = new HoldAction();
-            var character = new Character(move, action);
+            // ドメインスクリプトを準備
+            var character = _carryPlayerFactory.Create(colorType);
+            
+            var playerControllerObj = _runner.Spawn(playerController);
+            
+            // 各MonoBehaviourにドメインを設定
+            playerControllerObj.Init(character);
+            var holdPresenter = playerControllerObj.GetComponent<HoldPresenter_Net>();
+            holdPresenter.Init(character);
 
-            var playerControllerObj = _runner.Spawn(playerController).gameObject;
-            
-            _resolver.InjectGameObject(playerControllerObj);
+            // 今は特に注入するべきものがない
+            // _resolver.InjectGameObject(playerControllerObj);
         }
         
         // Buildの流れ

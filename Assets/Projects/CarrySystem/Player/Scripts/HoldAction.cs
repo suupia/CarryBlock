@@ -11,7 +11,7 @@ using Carry.CarrySystem.Player.Info;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class HoldAction : ICharacterAction
+    public class HoldAction : ICharacterHoldAction
     {
         PlayerInfo _info;
         EntityGridMap _map;
