@@ -8,6 +8,7 @@ using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Enemy.Scripts;
 using Nuts.BattleSystem.Player.Scripts;
 using UnityEngine;
+using VContainer;
 using Random = UnityEngine.Random;
 
 
@@ -30,6 +31,7 @@ namespace Nuts.BattleSystem.Spawners.Scripts
 
         EnemySpawnerRecord _record;
 
+        [Inject]
         public EnemySpawner(NetworkRunner runner)
         {
             _record = new EnemySpawnerRecord();
@@ -132,6 +134,7 @@ namespace Nuts.BattleSystem.Spawners.Scripts
     {
         readonly NetworkBehaviourPrefabSpawner<LobbyNetworkPlayerController> _playerPrefabPrefabSpawner;
 
+        [Inject]
         public LobbyNetworkPlayerPrefabSpawner(NetworkRunner runner)
         {
             _playerPrefabPrefabSpawner = new NetworkBehaviourPrefabSpawner<LobbyNetworkPlayerController>(runner,

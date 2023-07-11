@@ -4,6 +4,7 @@ using Fusion;
 using Nuts.Utility.Scripts;
 using Nuts.BattleSystem.Player.Scripts;
 using UnityEngine;
+using VContainer;
 
 namespace Nuts.BattleSystem.Spawners.Scripts
 {
@@ -60,6 +61,7 @@ namespace Nuts.BattleSystem.Spawners.Scripts
 
     public class LobbyNetworkPlayerSpawner : AbstractNetworkPlayerSpawner<LobbyNetworkPlayerController>
     {
+        [Inject]
         public LobbyNetworkPlayerSpawner(NetworkRunner runner,
             IPrefabSpawner<LobbyNetworkPlayerController> playerPrefabSpawner) : base(runner, playerPrefabSpawner)
         {

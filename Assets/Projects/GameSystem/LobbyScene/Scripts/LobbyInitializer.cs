@@ -6,28 +6,35 @@ using Nuts.Utility.Scripts;
 using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
 using Nuts.BattleSystem.Spawners.Scripts;
 using UnityEngine;
+using VContainer;
 
 namespace Nuts.BattleSystem.LobbyScene.Scripts
 {
     [DisallowMultipleComponent]
     public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
-        readonly LobbyNetworkPlayerContainer _lobbyNetworkPlayerContainer = new();
-        readonly NetworkEnemyContainer _networkEnemyContainer = new();
+        LobbyNetworkPlayerContainer _lobbyNetworkPlayerContainer;
+        NetworkEnemyContainer _networkEnemyContainer;
         EnemySpawner _enemySpawner;
         LobbyNetworkPlayerSpawner _lobbyNetworkPlayerSpawner;
+
+        [Inject]
+        public void Construct(LobbyNetworkPlayerSpawner lobbyNetworkPlayerSpawner,
+            LobbyNetworkPlayerContainer lobbyNetworkPlayerContainer,
+            EnemySpawner enemySpawner, NetworkEnemyContainer networkEnemyContainer)
+        {
+            _lobbyNetworkPlayerSpawner = lobbyNetworkPlayerSpawner;
+            _lobbyNetworkPlayerContainer = lobbyNetworkPlayerContainer;
+            _enemySpawner = enemySpawner;
+            _networkEnemyContainer = networkEnemyContainer;
+        }
 
         async void Start()
         {
             var runner = FindObjectOfType<NetworkRunner>();
             runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner));
-
-
-            // Domain
-            var playerPrefabSpawner = new LobbyNetworkPlayerPrefabSpawner(Runner);
-            _lobbyNetworkPlayerSpawner = new LobbyNetworkPlayerSpawner(Runner, playerPrefabSpawner);
-            _enemySpawner = new EnemySpawner(Runner);
+            
 
             if (Runner.IsServer) _lobbyNetworkPlayerSpawner.RespawnAllPlayer(_lobbyNetworkPlayerContainer);
 
