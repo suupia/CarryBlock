@@ -21,13 +21,17 @@ namespace Carry.CarrySystem.CarryScene.Scripts
     {    
         [SerializeField] FloorTimer_Net floorTimerNet;
         CarryPlayerSpawner _carryPlayerSpawner;
+        
+        TilePresenterBuilder _tilePresenterBuilder;
         public bool IsInitialized { get; private set; }
         
         [Inject]
-        public void Construct(CarryPlayerSpawner carryPlayerSpawner)
+        public void Construct(CarryPlayerSpawner carryPlayerSpawner, TilePresenterBuilder tilePresenterBuilder)
         {
             _carryPlayerSpawner = carryPlayerSpawner;
+            _tilePresenterBuilder = tilePresenterBuilder;
         }
+
 
 
         async void Start()
@@ -51,9 +55,9 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             {
                 var vContainer = FindObjectOfType<LifetimeScope>().Container;
                 var entityGridMapSwitcher = vContainer.Resolve<EntityGridMapSwitcher>();
-                var tilePresenterRegister = vContainer.Resolve<TilePresenterRegister>(); 
-                var tilePresentContainer = new TilePresenterContainer();
-                tilePresentContainer.SpawnTilePresenter(Runner, entityGridMapSwitcher.GetMap());
+                var tilePresentContainer = new TilePresenterAttacher();
+                var tilePresenters = _tilePresenterBuilder.Build(entityGridMapSwitcher.GetMap());
+                tilePresentContainer.SetTilePresenters(tilePresenters);
                 // entityGridMapSwitcher.RegisterTilePresenter(Runner, tilePresenterRegister);
                 entityGridMapSwitcher.RegisterTilePresenterContainer(tilePresentContainer);
             }

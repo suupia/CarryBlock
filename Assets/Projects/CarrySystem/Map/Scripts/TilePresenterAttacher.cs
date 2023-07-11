@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Spawners;
 using UnityEngine;
@@ -13,32 +14,22 @@ namespace Carry.CarrySystem.Map.Scripts
     /// <summary>
     /// TilePresenterを保持しておく
     /// </summary>
-    public class TilePresenterContainer
-    {
-        readonly List<TilePresenter_Net> _tilePresenters = new List<TilePresenter_Net>();
-        bool _isInitialized;
+    public class TilePresenterAttacher
+    { 
+        IEnumerable <TilePresenter_Net> _tilePresenters = new List<TilePresenter_Net>();
 
-        // ToDo: AttachTilePresenter()を呼び出す前にSpawnTilePresenter()を呼び出す必要がある
-
-        public void SpawnTilePresenter(NetworkRunner runner, EntityGridMap map)
+        // AttachTilePresenter()を呼び出す前にSetTilePresenters()を呼び出す必要がある
+        public void SetTilePresenters(IEnumerable<TilePresenter_Net> tilePresenters)
         {
-            var tilePresenterSpawner = new TilePresenterSpawner(runner);
-
-            for (int i = 0; i < map.GetLength(); i++)
-            {
-                var girdPos = map.GetVectorFromIndex(i);
-                var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
-                var tilePresenter = tilePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
-                _tilePresenters.Add(tilePresenter);
-            }
+            _tilePresenters = tilePresenters;
         }
 
 
         public void AttachTilePresenter(EntityGridMap map)
         {
-            for (int i = 0; i < _tilePresenters.Count; i++)
+            for (int i = 0; i < _tilePresenters.Count(); i++)
             {
-                var tilePresenter = _tilePresenters[i];
+                var tilePresenter = _tilePresenters.ElementAt(i);
                 // ReSharper disable once NotAccessedVariable
                 var presentData = tilePresenter.PresentDataRef;
 

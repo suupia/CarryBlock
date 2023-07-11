@@ -17,8 +17,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly EntityGridMapLoader _gridMapLoader;
         int _currentIndex;
         EntityGridMap _currentMap;
-        TilePresenterRegister _tilePresenterRegister;
-        TilePresenterContainer _tilePresenterContainer;
+        TilePresenterAttacher _tilePresenterAttacher;
         
         [Inject]
         public EntityGridMapSwitcher(EntityGridMapLoader gridMapGridMapLoader)
@@ -27,18 +26,10 @@ namespace Carry.CarrySystem.Map.Scripts
             _currentIndex = 1; //Floor1から始まる
             _currentMap = _gridMapLoader.LoadEntityGridMap(_currentIndex); // indexはとりあえず0にしておく
         }
-
-        // ToDo: 後でコンストラクタに移動させる -> _tilePresenterRegisterが没かも
-        public void RegisterTilePresenter(NetworkRunner runner,TilePresenterRegister tilePresenterRegister)
+        public void RegisterTilePresenterContainer( TilePresenterAttacher tilePresenterAttacher)
         {
-            _tilePresenterRegister = tilePresenterRegister;
-            _tilePresenterRegister.RegisterTilePresenter(runner, _currentMap);
-        }
-
-        public void RegisterTilePresenterContainer( TilePresenterContainer tilePresenterContainer)
-        {
-            _tilePresenterContainer = tilePresenterContainer;
-            _tilePresenterContainer.AttachTilePresenter(_currentMap);
+            _tilePresenterAttacher = tilePresenterAttacher;
+            _tilePresenterAttacher.AttachTilePresenter(_currentMap);
         }
         public EntityGridMap GetMap()
         {
@@ -52,7 +43,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var nextMap = _gridMapLoader.LoadEntityGridMap(_currentIndex);
             _currentMap = nextMap;
             // _tilePresenterRegister?.RegisterTilePresenter(runner, _currentMap);
-            _tilePresenterContainer?.AttachTilePresenter(_currentMap);
+            _tilePresenterAttacher?.AttachTilePresenter(_currentMap);
             
             // 以下リセット処理
             var players = GameObject.FindObjectsByType<CarryPlayerController_Net>(FindObjectsSortMode.None);
