@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
+using Carry.CarrySystem.Spawners;
+using Fusion;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
+using Nuts.Utility.Scripts;
 
 namespace  Carry.CarrySystem.CarryScene.Scripts
 {
@@ -13,6 +17,17 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
     {
         protected override void Configure(IContainerBuilder builder)
         {
+            var runner = FindObjectOfType<NetworkRunner>();
+            Debug.Log($"NetworkRunner : {runner}");
+            builder.RegisterComponent(runner);
+            
+            // NetworkRunnerに依存するスクリプト
+            builder.Register<CarryPlayerPrefabSpawner>(Lifetime.Scoped).As< IPrefabSpawner<CarryPlayerController_Net>>();
+            builder.Register<CarryPlayerSpawner>(Lifetime.Scoped);
+            
+            builder.RegisterComponentInHierarchy<CarryInitializer>();
+            
+            
             // Serverのドメインスクリプト
             // Map
             builder.Register<EntityGridMapLoader>(Lifetime.Singleton);

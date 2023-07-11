@@ -2,6 +2,7 @@
 using Fusion;
 using Nuts.Utility.Scripts;
 using UnityEngine;
+using VContainer;
 
 namespace Carry.CarrySystem.Spawners
 {
@@ -9,6 +10,7 @@ namespace Carry.CarrySystem.Spawners
     {
         readonly NetworkBehaviourPrefabSpawner<CarryPlayerController_Net> _playerPrefabPrefabSpawner;
 
+        [Inject]
         public CarryPlayerPrefabSpawner(NetworkRunner runner)
         {
             _playerPrefabPrefabSpawner = new NetworkBehaviourPrefabSpawner<CarryPlayerController_Net>(runner,

@@ -26,6 +26,12 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         [SerializeField] string overrideSessionName;
         
         public bool IsInitialized { get; private set; }
+        
+        [Inject]
+        public void Construct(CarryPlayerSpawner carryPlayerSpawner)
+        {
+            _carryPlayerSpawner = carryPlayerSpawner;
+        }
 
 
         async void Start()
@@ -44,9 +50,6 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             }
 
 
-            // Spawn player
-            var playerPrefabSpawner = new CarryPlayerPrefabSpawner(Runner);
-            _carryPlayerSpawner = new CarryPlayerSpawner(Runner, playerPrefabSpawner);
             
             // Generate map
             if (Runner.IsServer)
