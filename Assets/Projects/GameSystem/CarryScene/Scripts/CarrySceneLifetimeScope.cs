@@ -24,19 +24,24 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             
             
             builder.Register<PrefabLoaderFromResources<CarryPlayerController_Net>>(Lifetime.Singleton)
-                .As<IPrefabLoader<CarryPlayerController_Net>>().WithParameter("folderPath", "Prefabs/Players");
+                .As<IPrefabLoader<CarryPlayerController_Net>>()
+                .WithParameter("folderPath", "Prefabs/Players")
+                .WithParameter("prefabName", "CarryPlayerController");
             
             // NetworkRunnerに依存するスクリプト
-            builder.Register<CarryPlayerPrefabSpawner>(Lifetime.Scoped).As< IPrefabSpawner<CarryPlayerController_Net>>();
-            builder.Register<CarryPlayerSpawner>(Lifetime.Scoped);
-            builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
-            
-            builder.RegisterComponentInHierarchy<CarryInitializer>();
+            // builder.Register<CarryPlayerPrefabSpawner>(Lifetime.Scoped).As< IPrefabSpawner<CarryPlayerController_Net>>();
+
             
             // Player
             builder.Register<CarryPlayerFactory>(Lifetime.Scoped);
+            Debug.Log($"Register CarryPlayerFactory");
             builder.Register<CarryPlayerBuilder>(Lifetime.Scoped);
+            Debug.Log($"Register CarryPlayerBuilder");
+            builder.Register<CarryPlayerSpawner>(Lifetime.Scoped);
+            Debug.Log($"Register CarryPlayerSpawner");
 
+            builder.RegisterComponentInHierarchy<CarryInitializer>();
+            Debug.Log($"Register CarryInitializer");
 
             // Serverのドメインスクリプト
             // Map

@@ -25,13 +25,14 @@ namespace Carry.CarrySystem.Player.Scripts
         [Inject]
         public CarryPlayerBuilder(NetworkRunner runner, IObjectResolver resolver ,IPrefabLoader<CarryPlayerController_Net> carryPlayerControllerLoader, CarryPlayerFactory carryPlayerFactory)
         {
+            Debug.Log($"CarryPlayerBuilder Constructor");
             _runner = runner;
             _resolver = resolver;
             _carryPlayerControllerLoader = carryPlayerControllerLoader;
             _carryPlayerFactory = carryPlayerFactory;
         }
 
-        public void Build(PlayerColorType colorType, Vector3 position, Quaternion rotation, PlayerRef playerRef)
+        public CarryPlayerController_Net Build(PlayerColorType colorType, Vector3 position, Quaternion rotation, PlayerRef playerRef)
         {
             // 各MonoBehaviourを準備
             var playerController = _carryPlayerControllerLoader.Load();
@@ -49,6 +50,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
             // 今は特に注入するべきものがない
             // _resolver.InjectGameObject(playerControllerObj);
+
+            return playerControllerObj;
         }
         
         // Buildの流れ

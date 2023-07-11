@@ -34,9 +34,20 @@ namespace Carry.CarrySystem.Player.Scripts
         ICharacter _character;
         GameObject _characterObj;
         
+        bool _isInitialized;
+        
         public void Init(ICharacter character)
         {
             _character = character;
+            
+            // init info
+            info.Init(Runner, gameObject);
+
+            // Instantiate the character.
+            InstantiateCharacter(characterType);
+            
+            
+            _isInitialized = true;
         }
 
         protected virtual void Update()
@@ -51,18 +62,9 @@ namespace Carry.CarrySystem.Player.Scripts
         }
 
 
-        public override void Spawned()
-        {
-            // init info
-            info.Init(Runner, gameObject);
-
-            // Instantiate the character.
-            InstantiateCharacter(characterType);
-            
-        }
-
         public override void FixedUpdateNetwork()
         {
+            if(!_isInitialized)return;
             if (!HasStateAuthority) return;
 
             if (GetInput(out NetworkInputData input))
@@ -123,10 +125,10 @@ namespace Carry.CarrySystem.Player.Scripts
             HoldPresenter_Net holdActionPresenter = GetComponent<HoldPresenter_Net>();
             
             // domain
-            var move = new QuickTurnMove();
-            var action = new HoldAction();
-            _character = new Character(move, action);
-            holdActionPresenter.Init(_character);
+            // var move = new QuickTurnMove();
+            // var action = new HoldAction();
+            // _character = new Character(move, action);
+            // holdActionPresenter.Init(_character);
             _character.Setup(info);
             
 
