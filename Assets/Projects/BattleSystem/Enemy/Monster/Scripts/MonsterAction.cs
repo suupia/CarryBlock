@@ -95,9 +95,8 @@ namespace Nuts.BattleSystem.Boss.Scripts
 
         public TackleAction(Transform parent)
         {
-            _attackColliderInstantiate = new(
-                new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks"), 
-                _prefabName); // ToDo: _prefabNameを代入する
+            _attackColliderInstantiate = new (
+                new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks",  "TackleCollider")); // ToDo: _prefabNameを代入する
             _attackCollider = _attackColliderInstantiate.InstantiatePrefab(parent);
             _attackCollider.gameObject.SetActive(false);
         }
@@ -184,8 +183,7 @@ namespace Nuts.BattleSystem.Boss.Scripts
         public JumpAction(Transform parent, Rigidbody rb)
         {
             _attackColliderInstantiate = new(
-                new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks"), 
-                "JumpCollider"); // ToDo: _prefabNameを代入する
+                new PrefabLoaderFromResources<AttackCollider>("Prefabs/Attacks", "JumpCollider")); // ToDo: _prefabNameを代入する
             _attackCollider = _attackColliderInstantiate.InstantiatePrefab(parent);
             _attackCollider.gameObject.SetActive(false);
             _rb = rb;
@@ -254,8 +252,8 @@ namespace Nuts.BattleSystem.Boss.Scripts
         {
             _transform = transform;
             _attackColliderSpawner = new(runner,
-                new PrefabLoaderFromResources<NetworkTargetAttackCollider>("Prefabs/Attacks"), 
-                "SpitOutCollider"); // ToDo: _prefabNameを代入する
+                new PrefabLoaderFromResources<NetworkTargetAttackCollider>("Prefabs/Attacks","SpitOutCollider") 
+                ); // ToDo: _prefabNameを代入する
         }
 
         public void StartAction()

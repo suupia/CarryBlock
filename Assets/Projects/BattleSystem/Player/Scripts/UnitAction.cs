@@ -30,7 +30,7 @@ namespace Nuts.BattleSystem.Player.Scripts
             _runner = runner;
             _playerObj = playerObj;
             _info = playerInfoForPicker;
-            _prefabLoaderFromResources = new PrefabLoaderFromResources<NetworkPickerController>("Prefabs/Players");
+            _prefabLoaderFromResources = new PrefabLoaderFromResources<NetworkPickerController>("Prefabs/Players","Picker");
         }
 
         public float ActionCooldown()
@@ -48,8 +48,8 @@ namespace Nuts.BattleSystem.Player.Scripts
             Debug.Log("Action()");
             var pickerPos = _playerObj.transform.position + new Vector3(0, _pickerHeight, 0);
             Debug.Log(
-                $"_runner = {_runner}, _info.pickerPrefab = {_prefabLoaderFromResources.Load("Picker")}, pickerPos = {pickerPos}, PlayerRef.None = {PlayerRef.None}");
-            var picker = _runner.Spawn(_prefabLoaderFromResources.Load("Picker"), pickerPos, Quaternion.identity,
+                $"_runner = {_runner}, _info.pickerPrefab = {_prefabLoaderFromResources.Load()}, pickerPos = {pickerPos}, PlayerRef.None = {PlayerRef.None}");
+            var picker = _runner.Spawn(_prefabLoaderFromResources.Load(), pickerPos, Quaternion.identity,
                 PlayerRef.None);
             Debug.Log($"picker = {picker}");
             picker.Init(_runner, _playerObj, _info);
@@ -179,7 +179,7 @@ namespace Nuts.BattleSystem.Player.Scripts
         {
             _runner = runner;
             _playerObj = playerObj;
-            _prefabLoaderFromResources = new PrefabLoaderFromResources<NetworkObject>("Prefabs/Players");
+            _prefabLoaderFromResources = new PrefabLoaderFromResources<NetworkObject>("Prefabs/Players","SubBase");
         }
 
         public float ActionCooldown()
@@ -196,7 +196,7 @@ namespace Nuts.BattleSystem.Player.Scripts
         {
             Debug.Log("Action()");
             var subBasePos = _playerObj.transform.position + new Vector3(0, _subBaseHeight, 0);
-            var _ = _runner.Spawn(_prefabLoaderFromResources.Load("SubBase"), subBasePos, Quaternion.identity,
+            var _ = _runner.Spawn(_prefabLoaderFromResources.Load(), subBasePos, Quaternion.identity,
                 PlayerRef.None);
         }
     }

@@ -31,7 +31,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Build(PlayerColorType colorType)
         {
-            var playerController = _carryPlayerControllerLoader.Load("CarryPlayerController");
+            var playerController = _carryPlayerControllerLoader.Load();
             var holdPresenter = playerController.GetComponent<HoldPresenter_Net>();
             
             //ToDo 以下をcolorTypeによって切り替える

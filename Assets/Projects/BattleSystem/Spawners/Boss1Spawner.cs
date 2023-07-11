@@ -104,7 +104,7 @@ namespace Nuts.BattleSystem.Spawners.Scripts
         public BossPrefabSpawner(NetworkRunner runner)
         {
             _bossPrefabSpawner = new NetworkBehaviourPrefabSpawner<Monster1Controller_Net>(runner,
-                new PrefabLoaderFromResources<Monster1Controller_Net>("Prefabs/Bosses"), "Boss1");
+                new PrefabLoaderFromResources<Monster1Controller_Net>("Prefabs/Bosses", "Boss1"));
         }
 
         public Monster1Controller_Net SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef)

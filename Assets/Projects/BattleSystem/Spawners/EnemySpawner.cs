@@ -104,7 +104,7 @@ namespace Nuts.BattleSystem.Spawners.Scripts
         public NetworkEnemyPrefabSpawner(NetworkRunner runner)
         {
             _playerPrefabPrefabSpawner = new NetworkBehaviourPrefabSpawner<NetworkEnemyController>(runner,
-                new PrefabLoaderFromResources<NetworkEnemyController>("Prefabs/Enemys"), "Enemy");
+                new PrefabLoaderFromResources<NetworkEnemyController>("Prefabs/Enemys", "Enemy"));
         }
 
         public NetworkEnemyController SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef)
@@ -121,7 +121,7 @@ namespace Nuts.BattleSystem.Spawners.Scripts
         public NetworkPlayerPrefabSpawner(NetworkRunner runner)
         {
             _playerPrefabPrefabSpawner = new NetworkBehaviourPrefabSpawner<NetworkPlayerController>(runner,
-                new PrefabLoaderFromResources<NetworkPlayerController>("Prefabs/Players"), "PlayerController");
+                new PrefabLoaderFromResources<NetworkPlayerController>("Prefabs/Players","PlayerController"));
         }
 
         public NetworkPlayerController SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef)
@@ -138,8 +138,8 @@ namespace Nuts.BattleSystem.Spawners.Scripts
         public LobbyNetworkPlayerPrefabSpawner(NetworkRunner runner)
         {
             _playerPrefabPrefabSpawner = new NetworkBehaviourPrefabSpawner<LobbyNetworkPlayerController>(runner,
-                new PrefabLoaderFromResources<LobbyNetworkPlayerController>("Prefabs/Players"),
-                "LobbyPlayerController");
+                new PrefabLoaderFromResources<LobbyNetworkPlayerController>("Prefabs/Players","LobbyPlayerController")
+                );
         }
 
         public LobbyNetworkPlayerController SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef)

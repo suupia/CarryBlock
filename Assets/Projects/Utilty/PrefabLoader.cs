@@ -4,7 +4,8 @@ namespace Nuts.Utility.Scripts
 {
     public interface IPrefabLoader<out T> where T : Object
     {
-        T Load(string prefabName);
+        T Load();
+        T[] LoadAll();
     }
 
 
@@ -12,18 +13,34 @@ namespace Nuts.Utility.Scripts
     public class PrefabLoaderFromResources<T> : IPrefabLoader<T> where T : Object
     {
         readonly string _folderPath;
+        readonly string _prefabName;
 
-        public PrefabLoaderFromResources(string folderPath)
+        public PrefabLoaderFromResources(string folderPath, string prefabName)
         {
             _folderPath = folderPath;
+            _prefabName = prefabName;
         }
 
-        public T Load(string prefabName)
+        public T Load()
         {
-            var result = Resources.Load<T>(_folderPath + "/" + prefabName);
+            var result = Resources.Load<T>(_folderPath + "/" + _prefabName);
             if (result == null)
             {
-                Debug.LogError($"Failed to load prefab. folderPath ={_folderPath+"/"+prefabName} prefabName = {prefabName}");
+                Debug.LogError($"Failed to load prefab. folderPath ={_folderPath+"/"+_prefabName} prefabName = {_prefabName}");
+                return null;
+            }
+            else
+            {
+                return result;
+            }
+        }
+
+        public T[] LoadAll()
+        {
+            var result = Resources.LoadAll<T>(_folderPath );
+            if (result == null)
+            {
+                Debug.LogError($"Failed to load prefab. folderPath ={_folderPath}");
                 return null;
             }
             else

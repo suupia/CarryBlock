@@ -10,54 +10,58 @@ namespace Carry.CarrySystem.Spawners
 {
     public class TilePresenterSpawner
     {
-        readonly string _prefabName = "TilePresenter";
-        readonly NetworkBehaviourPrefabSpawner<TilePresenter_Net> _tilePresenterPrefabSpawner;
+        readonly NetworkRunner _runner;
+        readonly IPrefabLoader<TilePresenter_Net> _tilePresenterPrefabSpawner;
 
         public TilePresenterSpawner(NetworkRunner runner)
         {
-            _tilePresenterPrefabSpawner = new(runner,
-                new PrefabLoaderFromResources<TilePresenter_Net>("Prefabs/Map"), 
-                _prefabName);
+            _runner = runner;
+            _tilePresenterPrefabSpawner =
+                new PrefabLoaderFromResources<TilePresenter_Net>("Prefabs/Map", "TilePresenter");
         }
 
         public TilePresenter_Net SpawnPrefab(Vector3 position, Quaternion rotation)
         {
-            return _tilePresenterPrefabSpawner.SpawnPrefab(position, rotation, PlayerRef.None);
+            var tilePresenter = _tilePresenterPrefabSpawner.Load();
+            return _runner.Spawn(tilePresenter, position, rotation, PlayerRef.None);
         }
     }
+
     public class GroundSpawner
     {
-        readonly string _prefabName = "Ground";
-        readonly NetworkObjectPrefabSpawner _rockPrefabSpawner;
+        readonly NetworkRunner _runner;
+        readonly IPrefabLoader<NetworkObject> _groundPrefabSpawner;
 
         public GroundSpawner(NetworkRunner runner)
         {
-            _rockPrefabSpawner = new(runner,
-                new PrefabLoaderFromResources<NetworkObject>("Prefabs/Map"), 
-                _prefabName);
+            _runner = runner;
+            _groundPrefabSpawner =
+                new PrefabLoaderFromResources<NetworkObject>("Prefabs/Map", "Ground");
         }
 
         public void SpawnPrefab(Vector3 position, Quaternion rotation)
         {
-            _rockPrefabSpawner.SpawnPrefab(position, rotation, PlayerRef.None);
+            var ground = _groundPrefabSpawner.Load();
+            _runner.Spawn(ground, position, rotation, PlayerRef.None);
         }
     }
+
     public class RockSpawner
     {
-        readonly string _prefabName = "Rock";
-        readonly NetworkObjectPrefabSpawner _rockPrefabSpawner;
+        readonly NetworkRunner _runner;
+        readonly IPrefabLoader<NetworkObject> _rockPrefabSpawner;
 
         public RockSpawner(NetworkRunner runner)
         {
-            _rockPrefabSpawner = new(runner,
-                new PrefabLoaderFromResources<NetworkObject>("Prefabs/Map"), 
-                _prefabName);
+            _runner = runner;
+            _rockPrefabSpawner =
+                new PrefabLoaderFromResources<NetworkObject>("Prefabs/Map", "Rock");
         }
 
         public void SpawnPrefab(Vector3 position, Quaternion rotation)
         {
-            _rockPrefabSpawner.SpawnPrefab(position, rotation, PlayerRef.None);
+            var rock = _rockPrefabSpawner.Load();
+            _runner.Spawn(rock, position, rotation, PlayerRef.None);
         }
     }
-
 }
