@@ -1,4 +1,5 @@
-﻿using Fusion;
+﻿using Carry.CarrySystem.Player.Interfaces;
+using Fusion;
 using Nuts.Utility.Scripts;
 using UnityEngine;
 using VContainer;
@@ -19,11 +20,11 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly NetworkRunner _runner;
         readonly IObjectResolver _resolver;
         readonly IPrefabLoader<CarryPlayerController_Net> _carryPlayerControllerLoader;
-        readonly CarryPlayerFactory _carryPlayerFactory;
+        readonly ICarryPlayerFactory _carryPlayerFactory;
         // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などがありそう
 
         [Inject]
-        public CarryPlayerBuilder(NetworkRunner runner, IObjectResolver resolver ,IPrefabLoader<CarryPlayerController_Net> carryPlayerControllerLoader, CarryPlayerFactory carryPlayerFactory)
+        public CarryPlayerBuilder(NetworkRunner runner, IObjectResolver resolver ,IPrefabLoader<CarryPlayerController_Net> carryPlayerControllerLoader, ICarryPlayerFactory carryPlayerFactory)
         {
             _runner = runner;
             _resolver = resolver;
@@ -49,6 +50,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
             // _resolver.InjectGameObject(playerControllerObj);
             // とできるならこの方がよいが、Factoryで生成したものをInjectするのは難しい
+            // Factoryの差し替えが簡単にできるので、Injectを使わなくても良い
+            // BuilderとPlayerControllerが蜜結合なのは問題ないはず
 
             return playerControllerObj;
         }

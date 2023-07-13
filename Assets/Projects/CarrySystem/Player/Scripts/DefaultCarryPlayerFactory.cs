@@ -1,9 +1,8 @@
-﻿using Carry.CarrySystem.Player.Interfaces;
-using VContainer;
+using Carry.CarrySystem.Player.Interfaces;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class CarryPlayerFactory : ICarryPlayerFactory
+    public class DefaultCarryPlayerFactory : ICarryPlayerFactory
     {
         public ICharacter Create(PlayerColorType colorType)
         {
