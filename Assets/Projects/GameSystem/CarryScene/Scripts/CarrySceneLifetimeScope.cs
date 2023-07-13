@@ -17,7 +17,7 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            // NetworkRunner
+            // このシーンに遷移した時点でNetworkRunnerは存在していると仮定している
             var runner = FindObjectOfType<NetworkRunner>();
             Debug.Log($"NetworkRunner : {runner}");
             builder.RegisterComponent(runner);
@@ -29,25 +29,27 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
                 .WithParameter("prefabName", "CarryPlayerController");
             
             // NetworkRunnerに依存するスクリプト
-            // builder.Register<CarryPlayerPrefabSpawner>(Lifetime.Scoped).As< IPrefabSpawner<CarryPlayerController_Net>>();
 
-            
             // Player
             builder.Register<CarryPlayerFactory>(Lifetime.Scoped);
             builder.Register<CarryPlayerBuilder>(Lifetime.Scoped);
             builder.Register<CarryPlayerSpawner>(Lifetime.Scoped);
 
-            builder.RegisterComponentInHierarchy<CarryInitializer>();
 
             // Serverのドメインスクリプト
             // Map
             builder.Register<EntityGridMapLoader>(Lifetime.Singleton);
             builder.Register<TilePresenterBuilder>(Lifetime.Singleton);
             builder.Register<EntityGridMapSwitcher>(Lifetime.Singleton);
+            builder.Register<TilePresenterAttacher>(Lifetime.Scoped);
             
             // UI
             builder.Register<GameContext>(Lifetime.Singleton);
             builder.Register<FloorTimer>(Lifetime.Singleton);
+            
+            // Initializer
+            builder.RegisterComponentInHierarchy<CarryInitializer>();
+
 
             // Clientのドメインスクリプト
             // builder.Register<ReturnToMainBaseGauge>(Lifetime.Singleton);

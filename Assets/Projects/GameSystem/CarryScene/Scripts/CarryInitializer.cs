@@ -21,15 +21,21 @@ namespace Carry.CarrySystem.CarryScene.Scripts
     {    
         [SerializeField] FloorTimer_Net floorTimerNet;
         CarryPlayerSpawner _carryPlayerSpawner;
-        
         TilePresenterBuilder _tilePresenterBuilder;
+        TilePresenterAttacher _tilePresenterAttacher;
+        EntityGridMapSwitcher _entityGridMapSwitcher;
         public bool IsInitialized { get; private set; }
         
         [Inject]
-        public void Construct(CarryPlayerSpawner carryPlayerSpawner, TilePresenterBuilder tilePresenterBuilder)
+        public void Construct(CarryPlayerSpawner carryPlayerSpawner,
+            TilePresenterBuilder tilePresenterBuilder,
+            TilePresenterAttacher tilePresenterAttacher,
+            EntityGridMapSwitcher entityGridMapSwitcher)
         {
             _carryPlayerSpawner = carryPlayerSpawner;
             _tilePresenterBuilder = tilePresenterBuilder;
+            _tilePresenterAttacher = tilePresenterAttacher;
+            _entityGridMapSwitcher = entityGridMapSwitcher;
         }
 
 
@@ -53,13 +59,9 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             // Generate map
             if (Runner.IsServer)
             {
-                var vContainer = FindObjectOfType<LifetimeScope>().Container;
-                var entityGridMapSwitcher = vContainer.Resolve<EntityGridMapSwitcher>();
-                var tilePresentContainer = new TilePresenterAttacher();
-                var tilePresenters = _tilePresenterBuilder.Build(entityGridMapSwitcher.GetMap());
-                tilePresentContainer.SetTilePresenters(tilePresenters);
-                // entityGridMapSwitcher.RegisterTilePresenter(Runner, tilePresenterRegister);
-                entityGridMapSwitcher.RegisterTilePresenterContainer(tilePresentContainer);
+                var tilePresenters = _tilePresenterBuilder.Build(_entityGridMapSwitcher.GetMap());
+                _tilePresenterAttacher.SetTilePresenters(tilePresenters);
+                _entityGridMapSwitcher.RegisterTilePresenterContainer(_tilePresenterAttacher);
             }
 
 
