@@ -18,7 +18,7 @@ namespace Carry.CarrySystem.Player.Scripts
         EntityGridMapSwitcher _mapSwitcher;
         IHoldActionPresenter? _presenter;
         bool _isHoldingRock = false;
-        int _maxHoldRockCount = 2;
+        readonly int _maxHoldRockCount = 2;
         
         public void SetHoldPresenter(IHoldActionPresenter presenter)
         {

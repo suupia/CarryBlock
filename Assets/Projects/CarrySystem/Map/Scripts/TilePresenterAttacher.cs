@@ -12,7 +12,7 @@ using Nuts.Utility.Scripts;
 namespace Carry.CarrySystem.Map.Scripts
 {
     /// <summary>
-    /// TilePresenterを保持しておく
+    /// 保持しているTilePresentersをドメインのmapに対して紐づける
     /// </summary>
     public class TilePresenterAttacher
     { 
@@ -41,7 +41,6 @@ namespace Carry.CarrySystem.Map.Scripts
                 tilePresenter.SetInitEntityActiveData(map.GetSingleEntity<Ground>(i), existGround);
 
                 tilePresenter.SetInitEntityActiveData(map.GetSingleEntity<Rock>(i), existRock);
-
 
                 // mapにTilePresenterを登録
                 map.RegisterTilePresenter(tilePresenter, i);

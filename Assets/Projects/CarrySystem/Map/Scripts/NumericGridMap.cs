@@ -204,7 +204,7 @@ namespace Carry.CarrySystem.Map.Scripts
         }
 
         /// <summary>
-        /// dataArea(座標(0,0)～(mapWidht-1,mapHeight-1)のデータが存在する領域)の外側であればtrueを返す
+        /// dataArea(座標(0,0)～(mapWidth-1,mapHeight-1)のデータが存在する領域)の外側であればtrueを返す
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>

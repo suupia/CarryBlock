@@ -121,54 +121,8 @@ namespace Carry.CarrySystem.Player.Scripts
             var prefab = playerUnitPrefabs[(int)characterType];
             _characterObj = Instantiate(prefab, unitObjectParent);
 
-            // presenter
-            HoldPresenter_Net holdActionPresenter = GetComponent<HoldPresenter_Net>();
-            
-            // domain
-            // var move = new QuickTurnMove();
-            // var action = new HoldAction();
-            // _character = new Character(move, action);
-            // holdActionPresenter.Init(_character);
             _character.Setup(info);
             
-
-            // ToDo: 4人色分けしてスポーンさせる
-            // switch (this.characterType)
-            // {
-            //     case CharacterType.Red:
-            //         _character = new Character(info);
-            //         _character.Setup(info);
-            //         // _decorationDetector = new PlayerDecorationDetector(
-            //         //     new TankAnimatorSetter(_characterObj)
-            //         // );
-            //         // _unitStats = new PlayerStats(ref PlayerStruct);
-            //         break;
-            //     case CharacterType.Blue:
-            //         _character = new Character(info);
-            //         _character.Setup(info);
-            //         // _decorationDetector = new PlayerDecorationDetector(
-            //         //     new PlaneAnimatorSetter(_characterObj)
-            //         // );
-            //         // _unitStats = new PlayerStats(ref PlayerStruct);
-            //         break;
-            //     case CharacterType.Green:
-            //         _character = new Character(info);
-            //         _character.Setup(info);
-            //         // _decorationDetector = new PlayerDecorationDetector(
-            //         //     new PlaneAnimatorSetter(_characterObj)
-            //         // );
-            //         // _unitStats = new PlayerStats(ref PlayerStruct);
-            //         break;
-            //     case CharacterType.Yellow:
-            //         _character = new Character(info);
-            //         _character.Setup(info);
-            //         // _decorationDetector = new PlayerDecorationDetector(
-            //         //     new TankAnimatorSetter(_characterObj)
-            //         // );
-            //         // _unitStats = new PlayerStats(ref PlayerStruct);
-            //         break;
-            // }
-
             // Play spawn animation
             // _decorationDetector.OnSpawned();
         }

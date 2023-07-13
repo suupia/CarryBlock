@@ -6,7 +6,6 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         public ICharacter Create(PlayerColorType colorType)
         {
-            // ToDo: switch文で分ける
             var move = new QuickTurnMove();
             var action = new HoldAction();
             var character = new Character(move, action);

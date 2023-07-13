@@ -21,7 +21,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
         
-        // 一旦、べた貼り付けにする
+        // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
         [SerializeField] GameObject groundObject;
         [SerializeField] GameObject rockObject;
         [SerializeField] GameObject doubleRockObject;
