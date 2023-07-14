@@ -84,7 +84,8 @@ namespace Carry.CarrySystem.Map.Scripts
                             PresentDataRef.IsDoubleRockActive = true;
                             break;
                         default:
-                            throw new System.Exception("想定外のcountが渡されました");
+                            // 何もしない
+                            break;
                     }
                     break;
                 default:
