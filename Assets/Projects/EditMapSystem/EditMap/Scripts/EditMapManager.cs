@@ -18,7 +18,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public EditMapManager(EntityGridMapLoader entityGridMapLoader)
         {
             _gridMapLoader = entityGridMapLoader;
-            _map = _gridMapLoader.LoadEntityGridMap(0); // indexはとりあえず0にしておく
+            _map = _gridMapLoader.LoadEntityGridMap(1); // indexはとりあえず0にしておく
         }
         
         public void RegisterTilePresenterContainer( TilePresenterAttacher tilePresenterAttacher)
@@ -35,6 +35,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             var record = new RockRecord() { kind = Rock.Kind.Kind1 };
             if(_map.IsInDataRangeArea(gridPos)) _map.AddEntity<Rock>(gridPos, new Rock(record, gridPos));
+        }
+
+        public void LoadMap()
+        {
+            var key = MapKey.Default;
+            var index = 11;
+            // _map = _gridMapLoader.LoadEntityGridMap(key, index);
         }
         
     }

@@ -38,6 +38,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 var index = 11;
                 _entityGridMapSaver.SaveMap(_editMapManager.GetMap(),key,index );
             }
+            
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                Debug.Log($"LoadMap()を実行します");  
+
+                _editMapManager.LoadMap();
+            }
         }
     }
 }

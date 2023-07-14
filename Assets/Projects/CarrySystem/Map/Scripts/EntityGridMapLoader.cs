@@ -45,6 +45,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         EntityGridMapData Load(int mapDataIndex)
         {
+            Debug.Log($"mapDataIndex: {mapDataIndex}");
             return mapDataIndex switch
             {
                 0 => new DefaultEntityGridMapData(),
