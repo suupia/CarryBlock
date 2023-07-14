@@ -40,11 +40,11 @@ public class EditMapPrepareInitializer : MonoBehaviour
     {
         while (true)
         {
-            loadingText.text = "Load.";
+            loadingText.text = "Loading.";
             yield return new WaitForSeconds(0.5f);
-            loadingText.text = "Load..";
+            loadingText.text = "Loading..";
             yield return new WaitForSeconds(0.5f);
-            loadingText.text = "Load...";
+            loadingText.text = "Loading...";
             yield return new WaitForSeconds(0.5f);
         }
     }
