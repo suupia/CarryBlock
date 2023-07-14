@@ -25,8 +25,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             // Map
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
-            builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped);
+            builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped); // ToDo: 消す
             builder.Register<TilePresenterAttacher>(Lifetime.Scoped);
+
+            builder.Register<EditMapManager>(Lifetime.Scoped);
+            
+            // Input
+            builder.RegisterComponentInHierarchy<EditMapInput>();
+            
             
             // Initializer
             builder.RegisterComponentInHierarchy<EditMapInitializer>();

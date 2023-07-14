@@ -15,17 +15,17 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     {
         TilePresenterBuilder _tilePresenterBuilder;
         TilePresenterAttacher _tilePresenterAttacher;
-        EntityGridMapSwitcher _entityGridMapSwitcher;
+        EditMapManager _editMapManager;
         
         [Inject]
         public void Construct(
             TilePresenterBuilder tilePresenterBuilder,
             TilePresenterAttacher tilePresenterAttacher,
-            EntityGridMapSwitcher entityGridMapSwitcher)
+            EditMapManager editMapManager)
         {
             _tilePresenterBuilder = tilePresenterBuilder;
             _tilePresenterAttacher = tilePresenterAttacher;
-            _entityGridMapSwitcher = entityGridMapSwitcher;
+            _editMapManager = editMapManager;
 
         }
 
@@ -34,9 +34,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             var runner = FindObjectOfType<NetworkRunner>();
             await UniTask.WaitUntil(() => runner.SceneManager.IsReady(runner));
             
-            var tilePresenters = _tilePresenterBuilder.Build(_entityGridMapSwitcher.GetMap());
+            var tilePresenters = _tilePresenterBuilder.Build(_editMapManager.GetMap());
             _tilePresenterAttacher.SetTilePresenters(tilePresenters);
-            _entityGridMapSwitcher.RegisterTilePresenterContainer(_tilePresenterAttacher);
+            _editMapManager.RegisterTilePresenterContainer(_tilePresenterAttacher);
         }
     }
 }
