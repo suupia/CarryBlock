@@ -1,6 +1,7 @@
 ﻿
 
 using System;
+using System.Linq;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners;
 using UnityEngine;
@@ -23,11 +24,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             _tilePresenterBuilder = tilePresenterBuilder;
             _tilePresenterAttacher = tilePresenterAttacher;
             _entityGridMapSwitcher = entityGridMapSwitcher;
+
         }
 
         void Start()
         {
             var tilePresenters = _tilePresenterBuilder.Build(_entityGridMapSwitcher.GetMap());
+            Debug.Log($"tilePresenters : {tilePresenters}");
+            Debug.Log($"tilePresenters.Count : {tilePresenters.Count()}");
             _tilePresenterAttacher.SetTilePresenters(tilePresenters);
             _entityGridMapSwitcher.RegisterTilePresenterContainer(_tilePresenterAttacher);
         }

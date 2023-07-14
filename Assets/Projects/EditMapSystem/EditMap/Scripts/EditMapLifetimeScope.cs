@@ -17,6 +17,11 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     {
         protected override void Configure(IContainerBuilder builder)
         {
+            // このシーンに遷移した時点でNetworkRunnerは存在していると仮定している
+            var runner = FindObjectOfType<NetworkRunner>();
+            Debug.Log($"NetworkRunner : {runner}");
+            builder.RegisterComponent(runner);
+            
             // Map
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
@@ -24,7 +29,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<TilePresenterAttacher>(Lifetime.Scoped);
             
             // Initializer
-            builder.Register<EditMapInitializer>(Lifetime.Scoped);
+            builder.RegisterComponentInHierarchy<EditMapInitializer>();
         }
 
     }

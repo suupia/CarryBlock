@@ -8,7 +8,8 @@ namespace Nuts.BattleSystem.Scripts
     {
         TitleScene,
         CarryScene,
-        LobbyScene
+        LobbyScene,
+        EditMapScene,
     }
 
     public static class SceneTransition
@@ -17,7 +18,8 @@ namespace Nuts.BattleSystem.Scripts
         {
             { SceneName.TitleScene, "TitleScene" },
             { SceneName.CarryScene, "CarryScene" },
-            { SceneName.LobbyScene, "LobbyScene" }
+            { SceneName.LobbyScene, "LobbyScene" },
+            { SceneName.EditMapScene, "EditMapScene" },
         };
 
         public static void TransitioningScene(NetworkRunner runner, SceneName nextScene)
