@@ -24,17 +24,16 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             if (Input.GetMouseButtonDown(0))
             {
-                var clickGridPos = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
-                Debug.Log($"mousePosOnGround : {mousePosOnGround},  clickGridPos: {clickGridPos}");
+                var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
+                Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
                 
                 // とりあえずRockを足す
-                Debug.Log($"_editMapManager : {_editMapManager}");
-                _editMapManager.AddRock(clickGridPos);
+                _editMapManager.AddRock(mouseGridPosOnGround);
             }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
-                Debug.Log($"Saveします");  
+                Debug.Log($"SaveMap()を実行します");  
                 var key = MapKey.Default;
                 var index = 11;
                 _entityGridMapSaver.SaveMap(_editMapManager.GetMap(),key,index );
