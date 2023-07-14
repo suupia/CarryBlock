@@ -6,6 +6,7 @@ using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners;
 using Cysharp.Threading.Tasks;
 using Fusion;
+using TMPro;
 using UnityEngine;
 using VContainer;
 
@@ -13,6 +14,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 {
     public class EditMapInitializer : MonoBehaviour
     {
+        [SerializeField] TextMeshProUGUI mapKeyText;
         TilePresenterBuilder _tilePresenterBuilder;
         EditMapManager _editMapManager;
         
@@ -34,8 +36,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             _tilePresenterBuilder.Build(_editMapManager.GetMap());
 
+            // 準備シーンからMapKeyを受け取る
             var mapKeyContainer = FindObjectOfType<MapKeyContainer>();
             _editMapManager.SetMapKey(mapKeyContainer.MapKey);
+            mapKeyText.text = $"MapKey : {mapKeyContainer.MapKey.ToString()}" ;
         }
     }
 }
