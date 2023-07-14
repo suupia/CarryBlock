@@ -38,7 +38,21 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void Init(ICharacter character)
         {
+            Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
             _character = character;
+            
+            // // init info
+            // info.Init(Runner, gameObject);
+            //
+            // // Instantiate the character.
+            // InstantiateCharacter(characterType);
+            //
+            
+        }
+
+        public override void Spawned()
+        {
+            Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {_character}");
             
             // init info
             info.Init(Runner, gameObject);
@@ -46,8 +60,8 @@ namespace Carry.CarrySystem.Player.Scripts
             // Instantiate the character.
             InstantiateCharacter(characterType);
             
-            
             _isInitialized = true;
+
         }
 
         protected virtual void Update()
