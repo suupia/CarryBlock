@@ -11,12 +11,9 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EntityGridMapSaver
     {
-        readonly string _folderPath;
 
         public EntityGridMapSaver()
         {
-            _folderPath = Application.streamingAssetsPath + "/JsonFiles/MapData";
-            Debug.Log($"セーブデータのファイルパスは　{_folderPath}");
         }
 
         public void SaveMap(EntityGridMap map,MapKey key, int mapDataIndex)
@@ -48,7 +45,7 @@ namespace Carry.CarrySystem.Map.Scripts
          void Save(EntityGridMapData entityGridMapData, MapKey key,int mapDataIndex)
         {
             string json = JsonUtility.ToJson(entityGridMapData);
-            string filePath = GetFilePath(key, mapDataIndex);
+            string filePath =  EntityGridMapFileUtility.GetFilePath( key, mapDataIndex);
             using (StreamWriter
                    streamWriter = new StreamWriter(filePath)) //using構文によってDispose()（Close()と同じようなもの）が自動的に呼ばれる
             {
@@ -56,16 +53,6 @@ namespace Carry.CarrySystem.Map.Scripts
                 streamWriter.Flush();
             }
         }
-        
-         string GetFilePath(MapKey key,  int index)
-        {
-            return _folderPath + $"/MapData_{key}_{index}.json";
-
-        }
-
-        public bool IsExitFile(MapKey key, int index)
-        {
-            return File.Exists(GetFilePath(key,index));
-        }
+         
     }
 }

@@ -24,7 +24,8 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             _gridMapLoader = gridMapGridMapLoader;
             _currentIndex = 1; //Floor1から始まる
-            _currentMap = _gridMapLoader.LoadEntityGridMap(_currentIndex); // indexはとりあえず0にしておく
+            var key = MapKey.Default; // Todo: キーを決める関数を作る
+            _currentMap = _gridMapLoader.LoadEntityGridMap(key,_currentIndex); // indexはとりあえず0にしておく
         }
         public void RegisterTilePresenterContainer( TilePresenterAttacher tilePresenterAttacher)
         {
@@ -40,7 +41,8 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             Debug.Log($"次のフロアに変更します nextIndex: {_currentIndex + 1}");
             _currentIndex++;
-            var nextMap = _gridMapLoader.LoadEntityGridMap(_currentIndex);
+            var key = MapKey.Default; // Todo: キーを決める関数を作る
+            var nextMap = _gridMapLoader.LoadEntityGridMap(key,_currentIndex);
             _currentMap = nextMap;
             // _tilePresenterRegister?.RegisterTilePresenter(runner, _currentMap);
             _tilePresenterAttacher?.AttachTilePresenter(_currentMap);

@@ -12,17 +12,14 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EntityGridMapLoader
     {
-        readonly string _folderPath;
-
         public  EntityGridMapLoader()
         {
-            _folderPath = Application.streamingAssetsPath + "/JsonFiles";
-            Debug.Log($"セーブデータのファイルパスは {_folderPath}");
+
         }
 
-        public EntityGridMap LoadEntityGridMap(int mapDataIndex)
+        public EntityGridMap LoadEntityGridMap(MapKey key, int mapDataIndex)
         {
-            var gridMapData = Load(mapDataIndex);
+            var gridMapData = Load(key,mapDataIndex);
 
             var map = new EntityGridMap(gridMapData.width, gridMapData.height);
             
@@ -42,29 +39,32 @@ namespace Carry.CarrySystem.Map.Scripts
 
             return map;
         }
-
-        EntityGridMapData Load(int mapDataIndex)
+        
+        EntityGridMapData? Load(MapKey key, int mapDataIndex)
         {
-            Debug.Log($"mapDataIndex: {mapDataIndex}");
-            return mapDataIndex switch
+            EntityGridMapData? entityGridMapData;
+            string filePath = EntityGridMapFileUtility.GetFilePath( key, mapDataIndex);
+            
+            if (EntityGridMapFileUtility. IsExitFile(key,mapDataIndex))
             {
-                0 => new DefaultEntityGridMapData(),
-                1 => new EntityGridMapData1(),
-                2 => new EntityGridMapData2(),
-                3 => new EntityGridMapData3(),
-                _ => new DefaultEntityGridMapData(),
-            };
-        }
+                using (StreamReader streamReader = new StreamReader(filePath))
+                {
+                    string data = streamReader.ReadToEnd();
+                    streamReader.Close();
+                    entityGridMapData = JsonUtility.FromJson<EntityGridMapData>(data);
+                }
 
-        string GetFilePath(int index)
-        {
-            return _folderPath + $"/HexagonMapData{index}.json";
-        }
+            }
+            else
+            {
+                Debug.LogError($"パス:{filePath}にjsonファイルが存在しません");
+                entityGridMapData = null;
+            }
 
-        bool IsExitFile(int index)
-        {
-            return File.Exists(GetFilePath(index));
+            return entityGridMapData;
         }
+        
+        
     }
 
 }

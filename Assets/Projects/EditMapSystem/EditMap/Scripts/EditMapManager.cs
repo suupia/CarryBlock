@@ -18,7 +18,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public EditMapManager(EntityGridMapLoader entityGridMapLoader)
         {
             _gridMapLoader = entityGridMapLoader;
-            _map = _gridMapLoader.LoadEntityGridMap(1); // indexはとりあえず0にしておく
+            var key = MapKey.Default;
+            var index = 11;
+            _map = _gridMapLoader.LoadEntityGridMap(key,index); // indexはとりあえず0にしておく
         }
         
         public void RegisterTilePresenterContainer( TilePresenterAttacher tilePresenterAttacher)
