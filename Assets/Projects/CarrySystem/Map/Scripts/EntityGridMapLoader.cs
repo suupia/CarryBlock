@@ -43,7 +43,7 @@ namespace Carry.CarrySystem.Map.Scripts
         EntityGridMapData Load(MapKey key, int mapDataIndex)
         {
             EntityGridMapData entityGridMapData;
-            string filePath = EntityGridMapFileUtility.GetDefaultFilePath();
+            string filePath = EntityGridMapFileUtility.GetFilePath(key, mapDataIndex);
 
             if (!EntityGridMapFileUtility.IsExitFile(key, mapDataIndex))
             {
@@ -57,6 +57,8 @@ namespace Carry.CarrySystem.Map.Scripts
                 streamReader.Close();
                 entityGridMapData = JsonUtility.FromJson<EntityGridMapData>(data);
             }
+            
+            Debug.Log($"Complete Load MapData:{key}_{mapDataIndex}\nfilePath:{filePath}");
 
             return entityGridMapData;
         }
