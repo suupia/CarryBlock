@@ -136,7 +136,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         void DecideOverrideProcess()
         {
-            messageText.text = "A file with the same index already exists. Do you want to overwrite it? (Y/N)";
+            messageText.text = "A file with the same index already exists.\nDo you want to overwrite it? (Y/N)";
             if (Input.GetKeyDown(KeyCode.Y))
             {
                 _inputState = CUIInputState.OverrideSave;
