@@ -7,6 +7,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 {
     public class EditMapInput : MonoBehaviour
     {
+        [SerializeField] EditMapCUIInput editMapCUIInput;
         EditMapManager _editMapManager;
         EntityGridMapSaver _entityGridMapSaver;
         
@@ -42,10 +43,12 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
             if (Input.GetKeyDown(KeyCode.S))
             {
-                Debug.Log($"SaveMap()を実行します");  
-                var key = MapKey.Default;
-                var index = 0;
-                _entityGridMapSaver.SaveMap(_editMapManager.GetMap(),key,index );
+                // Debug.Log($"SaveMap()を実行します");  
+                // var key = MapKey.Koki;
+                // var index = 0;
+                // _entityGridMapSaver.SaveMap(_editMapManager.GetMap(),key,index );
+                
+                editMapCUIInput.OpenSaveUI();
             }
             
             if (Input.GetKeyDown(KeyCode.L))

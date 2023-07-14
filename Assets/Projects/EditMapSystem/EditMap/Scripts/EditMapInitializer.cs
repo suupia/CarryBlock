@@ -32,6 +32,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         async void Start()
         {
             var runner = FindObjectOfType<NetworkRunner>();
+            if(runner == null) Debug.LogError($"NetworkRunner is not found.");
             await UniTask.WaitUntil(() => runner.SceneManager.IsReady(runner));
             
             var tilePresenters = _tilePresenterBuilder.Build(_editMapManager.GetMap());

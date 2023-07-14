@@ -10,10 +10,16 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     public class EditMapCUIInput : MonoBehaviour
     {
         [SerializeField] GameObject CUICanvas;
-        TextMeshProUGUI messageText;
+        [SerializeField] TextMeshProUGUI messageText;
+        [SerializeField] TextMeshProUGUI inputText;
         EditMapManager _editMapManager;
         EntityGridMapSaver _entityGridMapSaver;
         CUIInputState _inputState;
+
+        readonly int _maxDigit = 10; // インデックスの最大の桁数
+        bool _isOpened = false;
+        int _index = 0;
+
         enum CUIInputState
         {
             InputIndex,
@@ -23,6 +29,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             CancelOverride,
             Cancel,
         }
+
         [Inject]
         public void Construct(EditMapManager editMapManager, EntityGridMapSaver entityGridMapSaver)
         {
@@ -30,14 +37,21 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             _entityGridMapSaver = entityGridMapSaver;
         }
 
-        void OnEnable()
+        public void OpenSaveUI()
         {
             CUICanvas.SetActive(true);
+            _isOpened = true;
         }
 
-        void OnDisable()
+        public void CloseSaveUI()
         {
             CUICanvas.SetActive(false);
+            _isOpened = false;
+        }
+
+        void Start()
+        {
+            CloseSaveUI();
         }
 
         void Update()
@@ -45,9 +59,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             // Escキーでどのような時でも中断する
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                gameObject.SetActive(false);
+                CloseSaveUI();
             }
-            
+
             switch (_inputState)
             {
                 case CUIInputState.InputIndex:
@@ -75,27 +89,50 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         void InputIndex()
         {
-            messageText.text = "ファイルのインデックスを入力してください";
+            messageText.text = "Please enter the index of the file. (Enter)";
+            inputText.text = _index.ToString();
+            HandleNumberInput();
         }
+
         void SaveDone()
         {
-            messageText.text = "保存しました";
+            messageText.text = "Saved in.";
         }
+
         void DecideOverride()
         {
-            messageText.text = "同一名のファイルが存在します\n上書きしますか？";
+            messageText.text = "Do you want to overwrite the file because it has the same name? (Y/N)";
         }
+
         void OverrideSaveDone()
         {
-            messageText.text = "上書き保存しました";
+            messageText.text = "Overwrite saved.";
         }
+
         void CancelOverride()
         {
-            messageText.text = "上書き保存をキャンセルしました";
+            messageText.text = "Save Overwrite canceled.";
         }
+
         void Cancel()
         {
-            messageText.text = "キャンセルしました";
+            messageText.text = "Canceled";
+        }
+
+        void HandleNumberInput()
+        {
+            for (int i = 0; i <= 9; i++)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha0 + i) || Input.GetKeyDown(KeyCode.Keypad0 + i))
+                {
+                    if(_index.ToString().Length < _maxDigit) _index = _index * 10 + i;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                _index = _index / 10;
+            }
         }
     }
 }
