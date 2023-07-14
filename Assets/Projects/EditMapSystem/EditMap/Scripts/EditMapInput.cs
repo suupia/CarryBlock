@@ -3,6 +3,7 @@ using Carry.CarrySystem.Map.Scripts;
 using UnityEngine;
 using UnityEngine.Serialization;
 using VContainer;
+using UniRx;
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
@@ -30,7 +31,26 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         void Start()
         {
-           // UniRxを使用する
+           this.ObserveEveryValueChanged(_ =>  editMapCuiSave.IsOpened).Subscribe(isOpened =>
+           {
+               if (isOpened)
+               {
+                   _cuiState = CUIState.OpenSaveCUI;
+               }else if (_cuiState == CUIState.OpenSaveCUI)
+               {
+                   _cuiState = CUIState.Idle;
+               }
+           });
+           this.ObserveEveryValueChanged(_ => editMapCUILoad.IsOpened).Subscribe(isOpened =>
+           {
+               if (isOpened)
+               {
+                   _cuiState = CUIState.OpenLoadCUI;
+               }else if (_cuiState == CUIState.OpenLoadCUI)
+               {
+                   _cuiState = CUIState.Idle;
+               }
+           });
         }
 
         void Update()
@@ -64,8 +84,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             if (Input.GetKeyDown(KeyCode.L))
             {
-                Debug.Log($"LoadMap()を実行します");  
-
                 if(_cuiState == CUIState.Idle) editMapCUILoad.OpenLoadUI();
             }
         }

@@ -21,7 +21,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         CUIInputState _inputState;
 
 
-        readonly float _displayTime = 2.0f; // メッセージを表示する時間
+        readonly float _displayTime = 1.5f; // メッセージを表示する時間
         bool _isOpened = false;
 
         MapKey _key;
