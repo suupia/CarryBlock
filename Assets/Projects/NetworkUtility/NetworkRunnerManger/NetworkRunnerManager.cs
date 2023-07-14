@@ -24,7 +24,6 @@ public class NetworkRunnerManager : MonoBehaviour
     NetworkRunner _runner;
     public bool IsReady => Runner != null && Runner.SceneManager.IsReady(_runner);
 
-    [SerializeField] private string overrideRoomName;
     public async UniTask AttemptStartScene(string sessionName = default)
     {
         sessionName ??= RandomString(5);

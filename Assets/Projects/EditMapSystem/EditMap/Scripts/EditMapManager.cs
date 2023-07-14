@@ -14,6 +14,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         
         readonly EntityGridMapLoader _gridMapLoader;
         EntityGridMap _map;
+        MapKey _mapKey;
 
         [Inject]
         public EditMapManager(EntityGridMapLoader entityGridMapLoader)
@@ -32,6 +33,11 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public EntityGridMap GetMap()
         {
             return _map;
+        }
+        
+        public void SetMapKey(MapKey mapKey)
+        {
+            _mapKey = mapKey;
         }
 
         public void AddRock(Vector2Int gridPos)
