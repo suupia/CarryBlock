@@ -18,12 +18,13 @@ namespace Carry.CarrySystem.Player.Scripts
         public Transform InterpolationTransform => unitObjectParent;
 
         [SerializeField] GameObject[] playerUnitPrefabs;
-        [SerializeField] CharacterType characterType;
 
         [SerializeField] PlayerInfo info;
 
         [Networked] NetworkButtons PreButtons { get; set; }
         [Networked] public NetworkBool IsReady { get; set; }
+
+        [Networked] PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
 
         // Detector
         // [Networked]
@@ -34,34 +35,26 @@ namespace Carry.CarrySystem.Player.Scripts
         ICharacter _character;
         GameObject _characterObj;
         
-        bool _isInitialized;
+        bool _isSpawned; // FixedUpdateNetwork()が呼ばれる前にSpawned()が呼ばれるため必要ないと言えば必要ない
         
-        public void Init(ICharacter character)
+        public void Init(ICharacter character, PlayerColorType colorType)
         {
             Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
             _character = character;
-            
-            // // init info
-            // info.Init(Runner, gameObject);
-            //
-            // // Instantiate the character.
-            // InstantiateCharacter(characterType);
-            //
-            
+            ColorType = colorType;
         }
 
         public override void Spawned()
         {
             Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {_character}");
-            
+
             // init info
             info.Init(Runner, gameObject);
 
             // Instantiate the character.
-            InstantiateCharacter(characterType);
+            InstantiateCharacter();
             
-            _isInitialized = true;
-
+            _isSpawned = true;
         }
 
         protected virtual void Update()
@@ -78,7 +71,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public override void FixedUpdateNetwork()
         {
-            if(!_isInitialized)return;
+            if(!_isSpawned)return;
             if (!HasStateAuthority) return;
 
             if (GetInput(out NetworkInputData input))
@@ -116,9 +109,9 @@ namespace Carry.CarrySystem.Player.Scripts
         [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
         public void RPC_ChangeNextUnit()
         {
-            characterType = (CharacterType)(((int)characterType + 1) % Enum.GetValues(typeof(CharacterType)).Length);
+            ColorType = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
             Destroy(_characterObj);
-            InstantiateCharacter(characterType);
+            InstantiateCharacter();
 
             SetToOrigin();
         }
@@ -129,13 +122,13 @@ namespace Carry.CarrySystem.Player.Scripts
             SetToOrigin();
         }
 
-        void InstantiateCharacter(CharacterType characterType)
+        void InstantiateCharacter()
         {
             // Instantiate the unit.
-            var prefab = playerUnitPrefabs[(int)characterType];
+            var prefab = playerUnitPrefabs[(int)ColorType];
             _characterObj = Instantiate(prefab, unitObjectParent);
 
-            _character.Setup(info);
+            _character?.Setup(info);
             
             // Play spawn animation
             // _decorationDetector.OnSpawned();
@@ -157,14 +150,7 @@ namespace Carry.CarrySystem.Player.Scripts
             info.playerRb.velocity = Vector3.zero;
         }
 
-
-        enum CharacterType
-        {
-            Red,
-            Blue,
-            Green,
-            Yellow,
-        }
+        
     }
 }
 

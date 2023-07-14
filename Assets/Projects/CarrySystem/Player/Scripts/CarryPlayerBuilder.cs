@@ -44,7 +44,8 @@ namespace Carry.CarrySystem.Player.Scripts
             var playerControllerObj = _runner.Spawn(playerController,position, rotation, playerRef,
                 (runner, networkObj) =>
                 {
-                    networkObj.GetComponent<CarryPlayerController_Net>().Init(character);
+                    Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
+                    networkObj.GetComponent<CarryPlayerController_Net>().Init(character,colorType);
                     networkObj.GetComponent<HoldPresenter_Net>().Init(character);
                 });
             
