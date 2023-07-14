@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners;
+using Cysharp.Threading.Tasks;
+using Fusion;
 using UnityEngine;
 using VContainer;
 
@@ -27,11 +29,12 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         }
 
-        void Start()
+        async void Start()
         {
+            var runner = FindObjectOfType<NetworkRunner>();
+            await UniTask.WaitUntil(() => runner.SceneManager.IsReady(runner));
+            
             var tilePresenters = _tilePresenterBuilder.Build(_entityGridMapSwitcher.GetMap());
-            Debug.Log($"tilePresenters : {tilePresenters}");
-            Debug.Log($"tilePresenters.Count : {tilePresenters.Count()}");
             _tilePresenterAttacher.SetTilePresenters(tilePresenters);
             _entityGridMapSwitcher.RegisterTilePresenterContainer(_tilePresenterAttacher);
         }
