@@ -44,6 +44,9 @@ namespace Carry.CarrySystem.Map.Scripts
         
         void DestroyTilePresenter()
         {
+            // マップの大きさが変わっても対応できるようにDestroyが必要
+            // ToDo: マップの大きさを変えてテストをする 
+            
             foreach (var tilePresenter in _tilePresenters)
             {
                 _runner.Despawn(tilePresenter.Object);

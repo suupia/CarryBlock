@@ -1,13 +1,15 @@
 ﻿using System;
 using Carry.CarrySystem.Map.Scripts;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
     public class EditMapInput : MonoBehaviour
     {
-        [SerializeField] EditMapCUIInput editMapCUIInput;
+        [FormerlySerializedAs("editMapCUIInput")] [SerializeField] EditMapCUISave editMapCuiSave;
+        [SerializeField] EditMapCUILoad editMapCUILoad;
         EditMapManager _editMapManager;
         EntityGridMapSaver _entityGridMapSaver;
         
@@ -43,14 +45,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
             if (Input.GetKeyDown(KeyCode.S))
             {
-                editMapCUIInput.OpenSaveUI();
+                editMapCuiSave.OpenSaveUI();
             }
             
             if (Input.GetKeyDown(KeyCode.L))
             {
                 Debug.Log($"LoadMap()を実行します");  
 
-                _editMapManager.LoadMap();
+                editMapCUILoad.OpenLoadUI();
             }
         }
     }

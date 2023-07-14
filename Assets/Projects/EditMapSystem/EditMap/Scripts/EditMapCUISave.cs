@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
-    public class EditMapCUIInput : MonoBehaviour
+    public class EditMapCUISave : MonoBehaviour
     {
         [SerializeField] GameObject CUICanvas;
         [SerializeField] TextMeshProUGUI messageText;

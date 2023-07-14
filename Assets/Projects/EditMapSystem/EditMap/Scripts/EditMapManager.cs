@@ -13,13 +13,15 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         // ToDo: クラス名を具体的に決める
         
         readonly EntityGridMapLoader _gridMapLoader;
+        readonly TilePresenterBuilder _tilePresenterBuilder;
         EntityGridMap _map;
         MapKey _mapKey;
 
         [Inject]
-        public EditMapManager(EntityGridMapLoader entityGridMapLoader)
+        public EditMapManager(EntityGridMapLoader entityGridMapLoader, TilePresenterBuilder tilePresenterBuilder)
         {
             _gridMapLoader = entityGridMapLoader;
+            _tilePresenterBuilder = tilePresenterBuilder;
             var key = MapKey.Morita;
             var index = 11;
             _map = _gridMapLoader.LoadEntityGridMap(key,index); // indexはとりあえず0にしておく
@@ -34,6 +36,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             _mapKey = mapKey;
         }
+        
+        // ToDo: 以下の関数をMapEditorクラスに移して、このクラスをコンテナの役割に特化させる
 
         public void AddRock(Vector2Int gridPos)
         {
@@ -48,12 +52,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             if(_map.IsInDataRangeArea(gridPos)) _map.RemoveEntity(gridPos,rock);
         }
 
-        public void LoadMap()
-        {
-            var key = MapKey.Morita;
-            var index = 11;
-            // _map = _gridMapLoader.LoadEntityGridMap(key, index);
-        }
+
         
     }
 }

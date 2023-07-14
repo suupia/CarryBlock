@@ -33,7 +33,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             // Input
             builder.RegisterComponentInHierarchy<EditMapInput>();
-            builder.RegisterComponentInHierarchy<EditMapCUIInput>();
+            builder.RegisterComponentInHierarchy<EditMapCUISave>();
             
             
             // Initializer
