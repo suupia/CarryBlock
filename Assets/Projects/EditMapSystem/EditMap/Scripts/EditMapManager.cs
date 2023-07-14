@@ -20,7 +20,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public EditMapManager(EntityGridMapLoader entityGridMapLoader)
         {
             _gridMapLoader = entityGridMapLoader;
-            var key = MapKey.Koki;
+            var key = MapKey.Morita;
             var index = 11;
             _map = _gridMapLoader.LoadEntityGridMap(key,index); // indexはとりあえず0にしておく
         }
@@ -55,7 +55,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         public void LoadMap()
         {
-            var key = MapKey.Koki;
+            var key = MapKey.Morita;
             var index = 11;
             // _map = _gridMapLoader.LoadEntityGridMap(key, index);
         }

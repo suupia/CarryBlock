@@ -13,9 +13,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 {
     public class EditMapInitializer : MonoBehaviour
     {
-        [Tooltip("ファイル名に使用するマップキーを設定してください")]
-        [SerializeField] MapKey mapKey;
-        
         TilePresenterBuilder _tilePresenterBuilder;
         TilePresenterAttacher _tilePresenterAttacher;
         EditMapManager _editMapManager;
@@ -41,7 +38,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             var tilePresenters = _tilePresenterBuilder.Build(_editMapManager.GetMap());
             _tilePresenterAttacher.SetTilePresenters(tilePresenters);
             _editMapManager.RegisterTilePresenterContainer(_tilePresenterAttacher);
-            _editMapManager.SetMapKey(mapKey);
+            
+            var mapKeyContainer = FindObjectOfType<MapKeyContainer>();
+            _editMapManager.SetMapKey(mapKeyContainer.MapKey);
         }
     }
 }

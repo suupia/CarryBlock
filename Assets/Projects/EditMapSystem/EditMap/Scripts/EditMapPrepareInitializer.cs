@@ -1,19 +1,33 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Map.Scripts;
+using Carry.EditMapSystem.EditMap.Scripts;
 using Nuts.BattleSystem.Scripts;
 using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
 public class EditMapPrepareInitializer : MonoBehaviour
 {
-    public TextMeshProUGUI loadingText;
+    [Tooltip("ファイル名に使用するマップキーを設定してください")]
+    [SerializeField] MapKey mapKey;
+    [SerializeField] TextMeshProUGUI mapKeyText;
+    [SerializeField] TextMeshProUGUI loadingText;
+           
 
     async void Start()
     {
         // ローディングアニメーションを開始する
         StartCoroutine(LoadingAnimation());
+        
+        // マップキーの確認用のテキストを表示する
+        mapKeyText.text =  $"MapKey : <color=\"red\">{mapKey.ToString()}</color>";
+        
+        // マップキーをコンテナに登録して、次のシーンに渡す
+        var mapKeyContainer = new GameObject("MapKeyContainer");
+        mapKeyContainer.AddComponent<MapKeyContainer>().SetMapKey(mapKey);
         
         // シーン開始直後にEditMapSceneに遷移する
         var runnerManager = FindObjectOfType<NetworkRunnerManager>();

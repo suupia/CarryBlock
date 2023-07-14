@@ -18,7 +18,16 @@ namespace Carry.CarrySystem.Map.Scripts
     public enum MapKey
     {
         Default,
-        Koki,
+        Morita,
+        Osawa,
+        Hasegawa,
+        Suzuki,
+        Kaburagi,
+        Tsukamoto,
+        Kurauchi,
+        Harano,
+        Isikawa,
+        Abe,
         // EditMapシーン開始時にこのenumの中から識別子を選ぶ
     }
 

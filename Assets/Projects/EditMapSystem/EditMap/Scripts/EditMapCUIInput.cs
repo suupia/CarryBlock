@@ -23,7 +23,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         bool _isOpened = false;
         int _index = 0;
 
-        MapKey _key = MapKey.Koki; // ToDo: とりあえずKokiで固定
+        MapKey _key = MapKey.Morita; // ToDo: とりあえずKokiで固定
         
 
         enum CUIInputState
@@ -170,7 +170,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
             {
-                if (EntityGridMapFileUtility.IsExitFile(MapKey.Koki, _index))
+                if (EntityGridMapFileUtility.IsExitFile(MapKey.Morita, _index))
                 {
                     _inputState = CUIInputState.DecideOverride;
                 }
