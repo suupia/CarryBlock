@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net;
 using Carry.CarrySystem.Map.Scripts;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
 using TMPro;
@@ -17,17 +19,22 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         CUIInputState _inputState;
 
         readonly int _maxDigit = 10; // インデックスの最大の桁数
+        readonly float _displayTime = 2.0f; // メッセージを表示する時間
         bool _isOpened = false;
         int _index = 0;
+
+        MapKey _key = MapKey.Koki; // ToDo: とりあえずKokiで固定
+        
 
         enum CUIInputState
         {
             InputIndex,
-            SaveDone,
+            Save,
             DecideOverride,
-            OverrideSaveDone,
+            OverrideSave,
             CancelOverride,
             Cancel,
+            End,
         }
 
         [Inject]
@@ -40,10 +47,12 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public void OpenSaveUI()
         {
             CUICanvas.SetActive(true);
+            _inputState = CUIInputState.InputIndex;
+            _index = 0;
             _isOpened = true;
         }
 
-        public void CloseSaveUI()
+        void CloseSaveUI()
         {
             CUICanvas.SetActive(false);
             _isOpened = false;
@@ -65,58 +74,83 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             switch (_inputState)
             {
                 case CUIInputState.InputIndex:
-                    InputIndex();
+                    InputIndexProcess();
                     break;
-                case CUIInputState.SaveDone:
-                    SaveDone();
+                case CUIInputState.Save:
+                    SaveProcess();
                     break;
                 case CUIInputState.DecideOverride:
-                    DecideOverride();
+                    DecideOverrideProcess();
                     break;
-                case CUIInputState.OverrideSaveDone:
-                    OverrideSaveDone();
+                case CUIInputState.OverrideSave:
+                    OverrideSaveProcess();
                     break;
                 case CUIInputState.CancelOverride:
-                    CancelOverride();
+                    CancelOverrideProcess();
                     break;
                 case CUIInputState.Cancel:
-                    Cancel();
+                    CancelProcess();
+                    break;
+                case CUIInputState.End:
+                    EndProcess();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        void InputIndex()
+        void InputIndexProcess()
         {
-            messageText.text = "Please enter the index of the file. (Enter)";
+            messageText.text = "Please enter the index of the file and press Enter.";
             inputText.text = _index.ToString();
             HandleNumberInput();
         }
 
-        void SaveDone()
+        async void SaveProcess()
         {
             messageText.text = "Saved in.";
+            _entityGridMapSaver.SaveMap( _editMapManager.GetMap(), _key, _index);
+            await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
+            _inputState = CUIInputState.End;
         }
 
-        void DecideOverride()
+        void DecideOverrideProcess()
         {
-            messageText.text = "Do you want to overwrite the file because it has the same name? (Y/N)";
+            messageText.text = "A file with the same index already exists. Do you want to overwrite it? (Y/N)";
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                _inputState = CUIInputState.OverrideSave;
+            }else if (Input.GetKeyDown(KeyCode.N))
+            {
+                _inputState = CUIInputState.CancelOverride;
+            }
         }
 
-        void OverrideSaveDone()
+        async void OverrideSaveProcess()
         {
             messageText.text = "Overwrite saved.";
+            _entityGridMapSaver.SaveMap( _editMapManager.GetMap(), _key, _index);
+            await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
+            _inputState = CUIInputState.End;
         }
 
-        void CancelOverride()
+        async void CancelOverrideProcess()
         {
-            messageText.text = "Save Overwrite canceled.";
+            messageText.text = "Overwrite cancelled.";
+            await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
+            _inputState = CUIInputState.End;
         }
 
-        void Cancel()
+        async void CancelProcess()
         {
-            messageText.text = "Canceled";
+            messageText.text = "Operation cancelled.";
+            await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
+            _inputState = CUIInputState.End;
+        }
+
+        void EndProcess()
+        {
+            CloseSaveUI();
         }
 
         void HandleNumberInput()
@@ -132,6 +166,18 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             if (Input.GetKeyDown(KeyCode.Backspace))
             {
                 _index = _index / 10;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                if (EntityGridMapFileUtility.IsExitFile(MapKey.Koki, _index))
+                {
+                    _inputState = CUIInputState.DecideOverride;
+                }
+                else
+                {
+                    _inputState = CUIInputState.Save;
+                }
             }
         }
     }
