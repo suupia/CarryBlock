@@ -11,20 +11,21 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 {
     public class EditMapCUISave : MonoBehaviour
     {
-        [SerializeField] GameObject CUICanvas;
+        [SerializeField] GameObject CUISaveCanvas;
         [SerializeField] TextMeshProUGUI messageText;
         [SerializeField] TextMeshProUGUI inputText;
         EditMapManager _editMapManager;
         EntityGridMapSaver _entityGridMapSaver;
+        CUIHandleNumber _handleNumber;
         CUIInputState _inputState;
 
         readonly int _maxDigit = 10; // インデックスの最大の桁数
         readonly float _displayTime = 2.0f; // メッセージを表示する時間
         bool _isOpened = false;
-        int _index = 0;
 
-        MapKey _key = MapKey.Morita; // ToDo: とりあえずKokiで固定
-        
+
+        MapKey _key;
+        int _index;
 
         enum CUIInputState
         {
@@ -38,23 +39,28 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         }
 
         [Inject]
-        public void Construct(EditMapManager editMapManager, EntityGridMapSaver entityGridMapSaver)
+        public void Construct(
+            EditMapManager editMapManager,
+            EntityGridMapSaver entityGridMapSaver,
+            CUIHandleNumber handleNumber)
         {
             _editMapManager = editMapManager;
             _entityGridMapSaver = entityGridMapSaver;
+            _handleNumber = handleNumber;
         }
 
         public void OpenSaveUI()
         {
-            CUICanvas.SetActive(true);
+            CUISaveCanvas.SetActive(true);
             _inputState = CUIInputState.InputIndex;
+            _key = _editMapManager.MapKey;
             _index = 0;
             _isOpened = true;
         }
 
         void CloseSaveUI()
         {
-            CUICanvas.SetActive(false);
+            CUISaveCanvas.SetActive(false);
             _isOpened = false;
         }
 
@@ -103,13 +109,24 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             messageText.text = "Please enter the index of the file and press Enter.";
             inputText.text = _index.ToString();
-            HandleNumberInput();
+            _index = _handleNumber.HandleNumberInput(_index);
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                if (EntityGridMapFileUtility.IsExitFile(_key, _index))
+                {
+                    _inputState = CUIInputState.DecideOverride;
+                }
+                else
+                {
+                    _inputState = CUIInputState.Save;
+                }
+            }
         }
 
         async void SaveProcess()
         {
             messageText.text = "Saved in.";
-            _entityGridMapSaver.SaveMap( _editMapManager.GetMap(), _key, _index);
+            _entityGridMapSaver.SaveMap(_editMapManager.GetMap(), _key, _index);
             await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
             _inputState = CUIInputState.End;
         }
@@ -120,7 +137,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             if (Input.GetKeyDown(KeyCode.Y))
             {
                 _inputState = CUIInputState.OverrideSave;
-            }else if (Input.GetKeyDown(KeyCode.N))
+            }
+            else if (Input.GetKeyDown(KeyCode.N))
             {
                 _inputState = CUIInputState.CancelOverride;
             }
@@ -129,7 +147,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         async void OverrideSaveProcess()
         {
             messageText.text = "Overwrite saved.";
-            _entityGridMapSaver.SaveMap( _editMapManager.GetMap(), _key, _index);
+            _entityGridMapSaver.SaveMap(_editMapManager.GetMap(), _key, _index);
             await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
             _inputState = CUIInputState.End;
         }
@@ -151,34 +169,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         void EndProcess()
         {
             CloseSaveUI();
-        }
-
-        void HandleNumberInput()
-        {
-            for (int i = 0; i <= 9; i++)
-            {
-                if (Input.GetKeyDown(KeyCode.Alpha0 + i) || Input.GetKeyDown(KeyCode.Keypad0 + i))
-                {
-                    if(_index.ToString().Length < _maxDigit) _index = _index * 10 + i;
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.Backspace))
-            {
-                _index = _index / 10;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
-            {
-                if (EntityGridMapFileUtility.IsExitFile(MapKey.Morita, _index))
-                {
-                    _inputState = CUIInputState.DecideOverride;
-                }
-                else
-                {
-                    _inputState = CUIInputState.Save;
-                }
-            }
         }
     }
 }

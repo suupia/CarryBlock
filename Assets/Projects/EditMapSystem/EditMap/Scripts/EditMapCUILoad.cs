@@ -1,45 +1,132 @@
-﻿using Carry.CarrySystem.Map.Scripts;
+﻿using System;
+using Carry.CarrySystem.Map.Scripts;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using VContainer;
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
-    public class EditMapCUILoad
+    public class EditMapCUILoad : MonoBehaviour
     {
-        [SerializeField] GameObject CUICanvas;
+        [SerializeField] GameObject CUILoadCanvas;
         [SerializeField] TextMeshProUGUI messageText;
         [SerializeField] TextMeshProUGUI inputText;
         EditMapManager _editMapManager;
-        EntityGridMapSaver _entityGridMapSaver;
+        EntityGridMapLoader _entityGridMapLoader;
+        CUIHandleNumber _handleNumber;
+        CUIInputState _inputState;
 
-        readonly int _maxDigit = 10; // インデックスの最大の桁数
+
         readonly float _displayTime = 2.0f; // メッセージを表示する時間
         bool _isOpened = false;
-        int _index = 0;
 
-        MapKey _key = MapKey.Morita; // ToDo: とりあえずKokiで固定
+        MapKey _key;
+        int _index;
         
 
         enum CUIInputState
         {
             InputIndex,
-            Save,
-            DecideOverride,
-            OverrideSave,
-            CancelOverride,
-            Cancel,
+            Load,
+            NotExist,
             End,
         }
+        
+        
         [Inject]
-        public void Construct(EditMapManager editMapManager, EntityGridMapSaver entityGridMapSaver)
+        public void Construct(
+            EditMapManager editMapManager,
+            EntityGridMapLoader entityGridMapLoader,
+            CUIHandleNumber handleNumber)
         {
             _editMapManager = editMapManager;
-            _entityGridMapSaver = entityGridMapSaver;
+            _entityGridMapLoader = entityGridMapLoader;
+            _handleNumber = handleNumber;
         }
         public void OpenLoadUI()
         {
+            CUILoadCanvas.SetActive(true);
+            _inputState = CUIInputState.InputIndex;
+            _key = _editMapManager.MapKey;
+            _index = 0;
+            _isOpened = true;
+        }
+        
+        void CloseLoadUI()
+        {
+            CUILoadCanvas.SetActive(false);
+            _isOpened = false;
+        }
+        
+        void Start()
+        {
+            CloseLoadUI();
+        }
 
+        void Update()
+        {
+            // Escキーでどのような時でも中断する
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                CloseLoadUI();
+            }
+
+            switch (_inputState)
+            {
+                case CUIInputState.InputIndex:
+                    InputIndexProcess();
+                    break;
+                case CUIInputState.Load:
+                    LoadProcess();
+                    break;
+                case CUIInputState.NotExist:
+                    NotExistProcess();
+                    break;
+                case CUIInputState.End:
+                    EndProcess();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        void InputIndexProcess()
+        {
+            messageText.text = "Please enter the index of the file and press Enter.";
+            inputText.text = _index.ToString();
+            _index = _handleNumber. HandleNumberInput(_index);
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                if (EntityGridMapFileUtility.IsExitFile(_key, _index))
+                {
+                    _inputState = CUIInputState.Load;
+                }
+                else
+                {
+                    _inputState = CUIInputState.NotExist;
+                }
+            }
+        }
+
+        async void LoadProcess()
+        {
+            messageText.text = "Loaded.";
+            var map = _entityGridMapLoader.LoadEntityGridMap(_key, _index); // Todo: マップをロード
+            await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
+            _inputState = CUIInputState.End;
+        }
+
+        async void NotExistProcess()
+        {
+            messageText.text = "The file does not exist.";
+            await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
+            _inputState = CUIInputState.End;
+        }
+        
+        void EndProcess()
+        {
+            CloseLoadUI();
         }
     }
 }

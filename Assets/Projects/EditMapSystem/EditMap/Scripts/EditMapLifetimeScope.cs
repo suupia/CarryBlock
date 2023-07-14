@@ -32,8 +32,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<EditMapManager>(Lifetime.Scoped);
             
             // Input
+            builder.Register<CUIHandleNumber>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<EditMapInput>();
             builder.RegisterComponentInHierarchy<EditMapCUISave>();
+            builder.RegisterComponentInHierarchy<EditMapCUILoad>();
             
             
             // Initializer

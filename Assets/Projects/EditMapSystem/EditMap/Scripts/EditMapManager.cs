@@ -12,6 +12,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     {
         // ToDo: クラス名を具体的に決める
         
+        public MapKey MapKey => _mapKey;
+        
         readonly EntityGridMapLoader _gridMapLoader;
         readonly TilePresenterBuilder _tilePresenterBuilder;
         EntityGridMap _map;
