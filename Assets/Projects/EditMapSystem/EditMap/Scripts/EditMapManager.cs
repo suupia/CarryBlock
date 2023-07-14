@@ -39,6 +39,12 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             _mapKey = mapKey;
         }
         
+        public void UpdateMap(MapKey mapKey, int index)
+        {
+            _map = _gridMapLoader.LoadEntityGridMap(mapKey,index);
+            _tilePresenterBuilder.Build(_map);
+        }
+        
         // ToDo: 以下の関数をMapEditorクラスに移して、このクラスをコンテナの役割に特化させる
 
         public void AddRock(Vector2Int gridPos)

@@ -93,7 +93,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         void InputIndexProcess()
         {
-            messageText.text = "Please enter the index of the file and press Enter.";
+            messageText.text = "Enter the index of the file to be loaded and press Enter.";
             inputText.text = _index.ToString();
             _index = _handleNumber. HandleNumberInput(_index);
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
@@ -112,7 +112,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         async void LoadProcess()
         {
             messageText.text = "Loaded.";
-            var map = _entityGridMapLoader.LoadEntityGridMap(_key, _index); // Todo: マップをロード
+            _editMapManager.UpdateMap(_key,_index);
             await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
             _inputState = CUIInputState.End;
         }
