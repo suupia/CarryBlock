@@ -12,24 +12,17 @@ using Nuts.Utility.Scripts;
 namespace Carry.CarrySystem.Map.Scripts
 {
     /// <summary>
-    /// 保持しているTilePresentersをドメインのmapに対して紐づける
+    /// TilePresentersをドメインのEntityGridMapに紐づける
     /// </summary>
     public class TilePresenterAttacher
-    { 
-        IEnumerable <TilePresenter_Net> _tilePresenters = new List<TilePresenter_Net>();
-
-        // AttachTilePresenter()を呼び出す前にSetTilePresenters()を呼び出す必要がある
-        public void SetTilePresenters(IEnumerable<TilePresenter_Net> tilePresenters)
+    {
+        // TilePresenterBuilderのみに依存するようにする
+        // なんならメソッドにしてメンバにした方がよいまである
+        public void AttachTilePresenter(IEnumerable<TilePresenter_Net> tilePresenters , EntityGridMap map)
         {
-            _tilePresenters = tilePresenters;
-        }
-
-
-        public void AttachTilePresenter(EntityGridMap map)
-        {
-            for (int i = 0; i < _tilePresenters.Count(); i++)
+            for (int i = 0; i < tilePresenters.Count(); i++)
             {
-                var tilePresenter = _tilePresenters.ElementAt(i);
+                var tilePresenter = tilePresenters.ElementAt(i);
                 // ReSharper disable once NotAccessedVariable
                 var presentData = tilePresenter.PresentDataRef;
 

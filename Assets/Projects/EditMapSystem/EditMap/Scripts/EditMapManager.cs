@@ -24,12 +24,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             var index = 11;
             _map = _gridMapLoader.LoadEntityGridMap(key,index); // indexはとりあえず0にしておく
         }
-        
-        public void RegisterTilePresenterContainer( TilePresenterAttacher tilePresenterAttacher)
-        {
-            tilePresenterAttacher.AttachTilePresenter(_map);
-        }
-        
+
         public EntityGridMap GetMap()
         {
             return _map;

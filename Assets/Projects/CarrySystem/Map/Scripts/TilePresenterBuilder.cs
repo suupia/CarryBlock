@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Carry.CarrySystem.Spawners;
 using Fusion;
 using UnityEngine;
@@ -9,13 +10,24 @@ namespace Carry.CarrySystem.Map.Scripts
     public class TilePresenterBuilder
     {
         [Inject] NetworkRunner _runner;
-
-        public IEnumerable<TilePresenter_Net> Build(EntityGridMap map)
+        readonly TilePresenterAttacher _tilePresenterAttacher;
+        IEnumerable<TilePresenter_Net> _tilePresenters =  new List<TilePresenter_Net>();
+        
+        [Inject]
+        public TilePresenterBuilder(TilePresenterAttacher tilePresenterAttacher)
         {
-            // TilePresenterをスポーンさせる
+            _tilePresenterAttacher = tilePresenterAttacher;
+        }
+        
+        public void Build(EntityGridMap map)
+        {
             var tilePresenterSpawner = new TilePresenterSpawner(_runner);
             var tilePresenters = new List<TilePresenter_Net>();
 
+            // 以前のTilePresenterを削除
+            DestroyTilePresenter();
+            
+            // TilePresenterをスポーンさせる
             for (int i = 0; i < map.GetLength(); i++)
             {
                 var girdPos = map.GetVectorFromIndex(i);
@@ -23,10 +35,21 @@ namespace Carry.CarrySystem.Map.Scripts
                 var tilePresenter = tilePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 tilePresenters.Add(tilePresenter);
             }
+            
+            // TilePresenterをドメインのEntityGridMapに紐づける
+            _tilePresenterAttacher.AttachTilePresenter(tilePresenters, map);
 
-            return tilePresenters;
+            _tilePresenters = tilePresenters;
         }
         
+        void DestroyTilePresenter()
+        {
+            foreach (var tilePresenter in _tilePresenters)
+            {
+                _runner.Despawn(tilePresenter.Object);
+            }
+            _tilePresenters = new List<TilePresenter_Net>();
+        }
         
     }
 }

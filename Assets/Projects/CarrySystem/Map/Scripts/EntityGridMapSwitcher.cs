@@ -15,23 +15,20 @@ namespace Carry.CarrySystem.Map.Scripts
     public class EntityGridMapSwitcher
     {
         readonly EntityGridMapLoader _gridMapLoader;
+        readonly TilePresenterBuilder _tilePresenterBuilder;
         int _currentIndex;
         EntityGridMap _currentMap;
-        TilePresenterAttacher _tilePresenterAttacher;
         
         [Inject]
-        public EntityGridMapSwitcher(EntityGridMapLoader gridMapGridMapLoader)
+        public EntityGridMapSwitcher(EntityGridMapLoader gridMapGridMapLoader, TilePresenterBuilder tilePresenterBuilder)
         {
             _gridMapLoader = gridMapGridMapLoader;
+            _tilePresenterBuilder = tilePresenterBuilder;
             _currentIndex = 1; //Floor1から始まる
             var key = MapKey.Default; // Todo: キーを決める関数を作る
             _currentMap = _gridMapLoader.LoadEntityGridMap(key,_currentIndex); // indexはとりあえず0にしておく
         }
-        public void RegisterTilePresenterContainer( TilePresenterAttacher tilePresenterAttacher)
-        {
-            _tilePresenterAttacher = tilePresenterAttacher;
-            _tilePresenterAttacher.AttachTilePresenter(_currentMap);
-        }
+        
         public EntityGridMap GetMap()
         {
             return _currentMap;
@@ -44,8 +41,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var key = MapKey.Default; // Todo: キーを決める関数を作る
             var nextMap = _gridMapLoader.LoadEntityGridMap(key,_currentIndex);
             _currentMap = nextMap;
-            // _tilePresenterRegister?.RegisterTilePresenter(runner, _currentMap);
-            _tilePresenterAttacher?.AttachTilePresenter(_currentMap);
+            _tilePresenterBuilder.Build(_currentMap);
             
             // 以下リセット処理
             var players = GameObject.FindObjectsByType<CarryPlayerController_Net>(FindObjectsSortMode.None);

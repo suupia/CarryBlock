@@ -14,17 +14,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     public class EditMapInitializer : MonoBehaviour
     {
         TilePresenterBuilder _tilePresenterBuilder;
-        TilePresenterAttacher _tilePresenterAttacher;
         EditMapManager _editMapManager;
         
         [Inject]
         public void Construct(
             TilePresenterBuilder tilePresenterBuilder,
-            TilePresenterAttacher tilePresenterAttacher,
             EditMapManager editMapManager)
         {
             _tilePresenterBuilder = tilePresenterBuilder;
-            _tilePresenterAttacher = tilePresenterAttacher;
             _editMapManager = editMapManager;
 
         }
@@ -35,10 +32,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             if(runner == null) Debug.LogError($"NetworkRunner is not found.");
             await UniTask.WaitUntil(() => runner.SceneManager.IsReady(runner));
             
-            var tilePresenters = _tilePresenterBuilder.Build(_editMapManager.GetMap());
-            _tilePresenterAttacher.SetTilePresenters(tilePresenters);
-            _editMapManager.RegisterTilePresenterContainer(_tilePresenterAttacher);
-            
+            _tilePresenterBuilder.Build(_editMapManager.GetMap());
+
             var mapKeyContainer = FindObjectOfType<MapKeyContainer>();
             _editMapManager.SetMapKey(mapKeyContainer.MapKey);
         }
