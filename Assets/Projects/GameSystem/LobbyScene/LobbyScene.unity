@@ -727,7 +727,7 @@ GameObject:
   - component: {fileID: 964040787}
   - component: {fileID: 964040786}
   m_Layer: 0
-  m_Name: LobbySceneLifeTimeScope
+  m_Name: LobbyLifeTimeScope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

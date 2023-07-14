@@ -14,7 +14,7 @@ using GameContext = Nuts.BattleSystem.GameScene.Scripts.GameContext;
 
 namespace Nuts.BattleSystem.LobbyScene.Scripts
 {
-    public sealed class LobbySceneLifetimeScope : LifetimeScope
+    public sealed class LobbyLifetimeScope : LifetimeScope
     {
         protected override void Configure(IContainerBuilder builder)
         {

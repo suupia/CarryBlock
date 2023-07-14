@@ -13,7 +13,7 @@ using Nuts.Utility.Scripts;
 
 namespace  Carry.CarrySystem.CarryScene.Scripts
 {
-    public sealed class CarrySceneLifetimeScope : LifetimeScope
+    public sealed class CarryLifetimeScope : LifetimeScope
     {
         protected override void Configure(IContainerBuilder builder)
         {
