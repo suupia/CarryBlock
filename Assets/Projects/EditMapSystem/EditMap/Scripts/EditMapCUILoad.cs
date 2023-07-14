@@ -16,7 +16,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public bool IsOpened => _isOpened;
 
         EditMapManager _editMapManager;
-        EntityGridMapLoader _entityGridMapLoader;
         CUIHandleNumber _handleNumber;
         CUIInputState _inputState;
 
@@ -40,11 +39,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         [Inject]
         public void Construct(
             EditMapManager editMapManager,
-            EntityGridMapLoader entityGridMapLoader,
             CUIHandleNumber handleNumber)
         {
             _editMapManager = editMapManager;
-            _entityGridMapLoader = entityGridMapLoader;
             _handleNumber = handleNumber;
         }
         public void OpenLoadUI()
