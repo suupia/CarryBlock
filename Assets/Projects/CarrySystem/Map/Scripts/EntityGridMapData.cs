@@ -15,5 +15,12 @@ namespace Carry.CarrySystem.Map.Scripts
         public RockRecord[] rockRecords;
     }
 
+    public enum MapKey
+    {
+        Default,
+        Koki,
+        // EditMapシーン開始時にこのenumの中から識別子を選ぶ
+    }
+
 }
 

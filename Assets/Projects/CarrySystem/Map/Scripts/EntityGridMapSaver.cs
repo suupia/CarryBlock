@@ -15,18 +15,11 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public EntityGridMapSaver()
         {
-            _folderPath = Application.streamingAssetsPath + "/JsonFiles";
+            _folderPath = Application.streamingAssetsPath + "/JsonFiles/MapData";
             Debug.Log($"セーブデータのファイルパスは　{_folderPath}");
         }
-        // public class GridMapData
-        // {
-        //     public int width;
-        //     public int height;
-        //     public GroundRecord[] groundRecords;
-        //     public RockRecord[] rockRecords;
-        // }
 
-        public void SaveMap(EntityGridMap map, int mapDataIndex)
+        public void SaveMap(EntityGridMap map,MapKey key, int mapDataIndex)
         {
             var mapLength = map.GetLength();
             var rockRecords = new RockRecord[mapLength];
@@ -49,13 +42,13 @@ namespace Carry.CarrySystem.Map.Scripts
             entityGridMapData.rockRecords = rockRecords;
             entityGridMapData.groundRecords = groundRecords;
 
-            Save(entityGridMapData, mapDataIndex);
+            Save(entityGridMapData,key, mapDataIndex);
         }
 
-         void Save(EntityGridMapData entityGridMapData, int mapDataIndex)
+         void Save(EntityGridMapData entityGridMapData, MapKey key,int mapDataIndex)
         {
             string json = JsonUtility.ToJson(entityGridMapData);
-            string filePath = GetFilePath(mapDataIndex);
+            string filePath = GetFilePath(key, mapDataIndex);
             using (StreamWriter
                    streamWriter = new StreamWriter(filePath)) //using構文によってDispose()（Close()と同じようなもの）が自動的に呼ばれる
             {
@@ -64,15 +57,15 @@ namespace Carry.CarrySystem.Map.Scripts
             }
         }
         
-         string GetFilePath(int index)
+         string GetFilePath(MapKey key,  int index)
         {
-            return _folderPath + $"/HexagonMapData{index}.json";
+            return _folderPath + $"/MapData_{key}_{index}.json";
 
         }
 
-        public bool IsExitFile(int index)
+        public bool IsExitFile(MapKey key, int index)
         {
-            return File.Exists(GetFilePath(index));
+            return File.Exists(GetFilePath(key,index));
         }
     }
 }

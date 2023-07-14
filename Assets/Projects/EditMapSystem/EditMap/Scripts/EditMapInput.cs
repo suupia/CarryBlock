@@ -8,10 +8,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     public class EditMapInput : MonoBehaviour
     {
         EditMapManager _editMapManager;
+        EntityGridMapSaver _entityGridMapSaver;
+        
         [Inject]
-        public void Construct(EditMapManager editMapManager)
+        public void Construct(EditMapManager editMapManager, EntityGridMapSaver entityGridMapSaver)
         {
             _editMapManager = editMapManager;
+            _entityGridMapSaver = entityGridMapSaver;
         }
         void Update()
         {
@@ -27,6 +30,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 // とりあえずRockを足す
                 Debug.Log($"_editMapManager : {_editMapManager}");
                 _editMapManager.AddRock(clickGridPos);
+            }
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                Debug.Log($"Saveします");  
+                var key = MapKey.Default;
+                var index = 11;
+                _entityGridMapSaver.SaveMap(_editMapManager.GetMap(),key,index );
             }
         }
     }

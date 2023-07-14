@@ -28,6 +28,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped); // ToDo: 消す
             builder.Register<TilePresenterAttacher>(Lifetime.Scoped);
 
+            builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
             builder.Register<EditMapManager>(Lifetime.Scoped);
             
             // Input
