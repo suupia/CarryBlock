@@ -41,12 +41,17 @@ namespace Carry.CarrySystem.Player.Scripts
             var character = _carryPlayerFactory.Create(colorType);
             
             // プレハブをスポーン
-            var playerControllerObj = _runner.Spawn(playerController,position, rotation, playerRef);
+            var playerControllerObj = _runner.Spawn(playerController,position, rotation, playerRef,
+                (runner, networkObj) =>
+                {
+                    networkObj.GetComponent<CarryPlayerController_Net>().Init(character);
+                    networkObj.GetComponent<HoldPresenter_Net>().Init(character);
+                });
             
             // 各MonoBehaviourにドメインを設定
-            playerControllerObj.Init(character);
-            var holdPresenter = playerControllerObj.GetComponent<HoldPresenter_Net>();
-            holdPresenter.Init(character);
+            // playerControllerObj.Init(character);
+            // var holdPresenter = playerControllerObj.GetComponent<HoldPresenter_Net>();
+            // holdPresenter.Init(character);
             
             // Factoryの差し替えが簡単にできるので、_resolver.InjectGameObjectを使う必要はない
             // BuilderとPlayerControllerが蜜結合なのは問題ないはず
