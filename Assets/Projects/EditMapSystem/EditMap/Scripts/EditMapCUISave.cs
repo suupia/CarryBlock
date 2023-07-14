@@ -14,6 +14,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         [SerializeField] GameObject CUISaveCanvas;
         [SerializeField] TextMeshProUGUI messageText;
         [SerializeField] TextMeshProUGUI inputText;
+        
+        public bool IsOpened => _isOpened;
+        
         EditMapManager _editMapManager;
         EntityGridMapSaver _entityGridMapSaver;
         CUIHandleNumber _handleNumber;

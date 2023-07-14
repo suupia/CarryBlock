@@ -13,12 +13,26 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         EditMapManager _editMapManager;
         EntityGridMapSaver _entityGridMapSaver;
         
+        CUIState _cuiState = CUIState.Idle;
+
+        enum CUIState
+        {
+            Idle,
+            OpenSaveCUI,
+            OpenLoadCUI,
+        }
+        
         [Inject]
-        public void Construct(EditMapManager editMapManager, EntityGridMapSaver entityGridMapSaver)
+        public void Construct(EditMapManager editMapManager)
         {
             _editMapManager = editMapManager;
-            _entityGridMapSaver = entityGridMapSaver;
         }
+
+        void Start()
+        {
+           // UniRxを使用する
+        }
+
         void Update()
         {
             var mouseXYPos = Input.mousePosition; // xy座標であることに注意
@@ -45,14 +59,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
             if (Input.GetKeyDown(KeyCode.S))
             {
-                editMapCuiSave.OpenSaveUI();
+               if(_cuiState == CUIState.Idle) editMapCuiSave.OpenSaveUI();
             }
             
             if (Input.GetKeyDown(KeyCode.L))
             {
                 Debug.Log($"LoadMap()を実行します");  
 
-                editMapCUILoad.OpenLoadUI();
+                if(_cuiState == CUIState.Idle) editMapCUILoad.OpenLoadUI();
             }
         }
     }
