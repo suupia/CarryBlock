@@ -51,7 +51,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public long GetValue(int x, int y)
         {
-            if (IsOutOfEdgeArea(x, y))
+            if (IsOutOfIncludeEdgeArea(x, y))
             {
                 //edgeの外側
                 Debug.LogError($"IsOutOfEdgeArea({x},{y})がtrueです");
@@ -81,7 +81,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public int GetIndexFromVector(Vector2Int vector)
         {
-            if (IsOutOfEdgeArea(vector.x, vector.y))
+            if (IsOutOfIncludeEdgeArea(vector.x, vector.y))
             {
                 Debug.LogError($"IsOutOfEdgeArea({vector.x}, {vector.y})がtrueです");
                 return -1;
@@ -105,7 +105,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void SetValue(int x, int y, long value)
         {
-            if (IsOutOfEdgeArea(x, y))
+            if (IsOutOfIncludeEdgeArea(x, y))
             {
                 Debug.LogError($"IsOutOfEdgeArea({x},{y})がtrueです");
                 return;
@@ -131,7 +131,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var x = vector.x;
             var y = vector.y;
 
-            if (IsOutOfEdgeArea(x, y))
+            if (IsOutOfIncludeEdgeArea(x, y))
             {
                 Debug.LogError($"IsOutOfEdgeArea({x},{y})がtrueです");
                 return;
@@ -145,7 +145,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var x = vector.x;
             var y = vector.y;
 
-            if (IsOutOfEdgeArea(x, y))
+            if (IsOutOfIncludeEdgeArea(x, y))
             {
                 Debug.LogError($"IsOutOfEdgeArea({x},{y})がtrueです");
                 return;
@@ -158,6 +158,39 @@ namespace Carry.CarrySystem.Map.Scripts
             }
 
             _values[ToSubscript(x, y)] /= value;
+        }
+        
+        // クライアント側で使用することを想定する判定用関数
+        
+        /// <summary>
+        /// edgeArea(データは存在しないが、_initValueを返す領域)の内側であればtrueを返す
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public bool IsInIncludeEdgeArea(int x, int y)
+        {
+            return !IsOutOfIncludeEdgeArea(x, y);
+        }
+        public bool IsInIncludeEdgeArea(Vector2Int vector)
+        {
+            return IsInIncludeEdgeArea(vector.x, vector.y);
+        }
+
+        
+        /// <summary>
+        /// dataArea(座標(0,0)～(mapWidth-1,mapHeight-1)のデータが存在する領域)の内側であればtrueを返す
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public bool IsInDataRangeArea(int x, int y)
+        {
+            return !IsOutOfDataRangeArea(x, y);
+        }
+        public bool IsInDataRangeArea(Vector2Int vector)
+        {
+            return IsInDataRangeArea(vector.x, vector.y);
         }
 
 
@@ -176,14 +209,16 @@ namespace Carry.CarrySystem.Map.Scripts
             return new Vector2Int(x, y);
         }
 
-        //判定用関数
+        // エラーを出すための判定用関数
+        // クライアント側でIsInIncludeEdgeAreaやIsInDataRangeAreaの呼び出しを忘れないようにエラーを投げるときに使う
+        
         /// <summary>
         /// edgeArea(データは存在しないが、_initValueを返す領域)の外側であればtrueを返す
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        protected bool IsOutOfEdgeArea(int x, int y)
+        protected bool IsOutOfIncludeEdgeArea(int x, int y)
         {
             if (x < -1 || Width < x) return true;
             if (y < -1 || Height < y) return true;
@@ -211,7 +246,7 @@ namespace Carry.CarrySystem.Map.Scripts
         /// <returns></returns>
         protected bool IsOutOfDataRangeArea(int x, int y)
         {
-            return IsOutOfEdgeArea(x, y) || IsOnTheEdgeArea(x, y);
+            return IsOutOfIncludeEdgeArea(x, y) || IsOnTheEdgeArea(x, y);
         }
     }
 }
