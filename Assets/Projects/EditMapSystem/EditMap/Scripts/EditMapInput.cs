@@ -43,11 +43,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
             if (Input.GetKeyDown(KeyCode.S))
             {
-                // Debug.Log($"SaveMap()を実行します");  
-                // var key = MapKey.Koki;
-                // var index = 0;
-                // _entityGridMapSaver.SaveMap(_editMapManager.GetMap(),key,index );
-                
                 editMapCUIInput.OpenSaveUI();
             }
             
