@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Linq;
+using System.Numerics;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Scripts;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public EditMapManager(EntityGridMapLoader entityGridMapLoader)
         {
             _gridMapLoader = entityGridMapLoader;
-            var key = MapKey.Default;
+            var key = MapKey.Koki;
             var index = 11;
             _map = _gridMapLoader.LoadEntityGridMap(key,index); // indexはとりあえず0にしておく
         }
@@ -38,10 +39,17 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             var record = new RockRecord() { kind = Rock.Kind.Kind1 };
             if(_map.IsInDataRangeArea(gridPos)) _map.AddEntity<Rock>(gridPos, new Rock(record, gridPos));
         }
+        
+        public void RemoveRock(Vector2Int gridPos)
+        {
+            var rocks = _map.GetSingleEntityList<Rock>(gridPos);
+            var rock = rocks.First();
+            if(_map.IsInDataRangeArea(gridPos)) _map.RemoveEntity(gridPos,rock);
+        }
 
         public void LoadMap()
         {
-            var key = MapKey.Default;
+            var key = MapKey.Koki;
             var index = 11;
             // _map = _gridMapLoader.LoadEntityGridMap(key, index);
         }

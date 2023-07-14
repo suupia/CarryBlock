@@ -30,12 +30,21 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 // とりあえずRockを足す
                 _editMapManager.AddRock(mouseGridPosOnGround);
             }
+            
+            if (Input.GetMouseButtonDown(1))
+            {
+                var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
+                Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
+                
+                // とりあえずRockを消す
+                _editMapManager.RemoveRock(mouseGridPosOnGround);
+            }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
                 Debug.Log($"SaveMap()を実行します");  
                 var key = MapKey.Default;
-                var index = 11;
+                var index = 0;
                 _entityGridMapSaver.SaveMap(_editMapManager.GetMap(),key,index );
             }
             
