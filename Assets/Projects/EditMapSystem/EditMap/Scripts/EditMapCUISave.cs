@@ -151,7 +151,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         async void CannotOverwriteAutoSaveProcess()
         {
-            messageText.text = "Index 0 is for auto save and cannot be overwritten";
+            messageText.text = "<color=\"red\">Index 0 is for auto save and cannot be overwritten</color>";
             await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
             _inputState = CUIInputState.InputIndex;
         }
