@@ -15,9 +15,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         [SerializeField] GameObject CUISaveCanvas;
         [SerializeField] TextMeshProUGUI messageText;
         [SerializeField] TextMeshProUGUI inputText;
-        
+
         public bool IsOpened => _isOpened;
-        
+
         EditMapManager _editMapManager;
         EntityGridMapSaver _entityGridMapSaver;
         CUIHandleNumber _handleNumber;
@@ -59,7 +59,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             CUISaveCanvas.SetActive(true);
             _inputState = CUIInputState.InputIndex;
-            _key = _editMapManager.MapKey;
+            _key = FindObjectOfType<MapKeyContainer>().MapKey;
             _index = 0;
             _isOpened = true;
         }
@@ -75,11 +75,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             CloseSaveUI();
             Observable.Interval(TimeSpan.FromSeconds(_autoSaveInterval))
                 .Subscribe(_ => AutoSave())
-                .AddTo(this); 
+                .AddTo(this);
         }
 
         void Update()
         {
+            if (!_isOpened) return;
+
             // Escキーでどのような時でも中断する
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -127,7 +129,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 if (_index == 0)
                 {
                     _inputState = CUIInputState.CannotOverwriteAutoSave;
-                } 
+                }
                 else if (EntityGridMapFileUtility.IsExitFile(_key, _index))
                 {
                     _inputState = CUIInputState.DecideOverwrite;
@@ -197,6 +199,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         void AutoSave()
         {
             // オートセーブはインデックス0に保存する
+            if (_key == MapKey.Default && _index == 0) return; // デフォルトのマップ0はオートセーブしない
             _entityGridMapSaver.SaveMap(_editMapManager.GetMap(), _key, 0);
         }
     }

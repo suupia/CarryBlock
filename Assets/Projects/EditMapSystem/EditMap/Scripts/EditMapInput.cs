@@ -1,5 +1,6 @@
 ﻿using System;
 using Carry.CarrySystem.Map.Scripts;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using VContainer;
@@ -9,8 +10,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 {
     public class EditMapInput : MonoBehaviour
     {
-        [FormerlySerializedAs("editMapCUIInput")] [SerializeField] EditMapCUISave editMapCuiSave;
+        [SerializeField] EditMapCUISave editMapCuiSave;
         [SerializeField] EditMapCUILoad editMapCUILoad;
+        [SerializeField] TextMeshProUGUI loadedFileText;
+
         EditMapManager _editMapManager;
         EntityGridMapSaver _entityGridMapSaver;
         
@@ -51,6 +54,15 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                    _cuiState = CUIState.Idle;
                }
            });
+           this.ObserveEveryValueChanged(_ => _editMapManager.MapKey).Subscribe(key =>
+           {
+                FormatLoadedFileText(key, _editMapManager.Index);
+           });
+           this.ObserveEveryValueChanged(_ => _editMapManager.Index).Subscribe(index =>
+           {
+               FormatLoadedFileText(_editMapManager.MapKey,index);
+           });
+           
         }
 
         void Update()
@@ -86,6 +98,11 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             {
                 if(_cuiState == CUIState.Idle) editMapCUILoad.OpenLoadUI();
             }
+        }
+        
+        void  FormatLoadedFileText(MapKey mapKey, int index)
+        {
+            loadedFileText.text = $"Loaded File: {mapKey}_{index}";
         }
     }
 }

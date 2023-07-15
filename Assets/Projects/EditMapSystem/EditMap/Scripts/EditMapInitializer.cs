@@ -38,7 +38,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
             // 準備シーンからMapKeyを受け取る
             var mapKeyContainer = FindObjectOfType<MapKeyContainer>();
-            _editMapManager.SetMapKey(mapKeyContainer.MapKey);
             mapKeyText.text = $"MapKey : {mapKeyContainer.MapKey.ToString()}" ;
         }
     }

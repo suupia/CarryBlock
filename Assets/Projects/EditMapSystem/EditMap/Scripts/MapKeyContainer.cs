@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
+    /// <summary>
+    /// DontDestroyOnLoadでシーンを跨いでMapKeyを保持するためのクラス
+    /// </summary>
     public class MapKeyContainer : MonoBehaviour
     {
         public MapKey MapKey { get; private set; }

@@ -48,7 +48,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             CUILoadCanvas.SetActive(true);
             _inputState = CUIInputState.InputIndex;
-            _key = _editMapManager.MapKey;
+            _key =  FindObjectOfType<MapKeyContainer>().MapKey;
             _index = 0;
             _isOpened = true;
         }
@@ -66,6 +66,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         void Update()
         {
+            if(!_isOpened) return;
+
             // Escキーでどのような時でも中断する
             if (Input.GetKeyDown(KeyCode.Escape))
             {
