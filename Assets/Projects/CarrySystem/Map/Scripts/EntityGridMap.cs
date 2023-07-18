@@ -46,40 +46,27 @@ namespace Carry.CarrySystem.Map.Scripts
 
             return GetSingleEntity<TEntity>(ToSubscript(x, y));
         }
-
+        
         public TEntity? GetSingleEntity<TEntity>(int index) where TEntity : IEntity
         {
-            var resultEntityList = new List<TEntity>();
-
             if (index < 0 || index > GetLength())
             {
                 Debug.LogError("領域外の値を習得しようとしました");
                 return default(TEntity);
             }
+            
+            var entity = _entityMaps[index].OfType<TEntity>().FirstOrDefault();
 
-            if (_entityMaps[index].Count(s => s.GetType() == typeof(TEntity)) == 0)
+            if (entity == null)
             {
-                //Debug.Log($"_entityMaps[{index}]の{typeof(EntityType)}のCountが0です");
+                //Debug.Log($"_entityMaps[{index}].OfType<TEntity>().FirstOrDefault()がnullです");
                 return default(TEntity);
             }
-
-            foreach (var entity in _entityMaps[index])
+            else
             {
-                if (entity.GetType() == typeof(TEntity)) resultEntityList.Add((TEntity)entity);
+                //探しているEntityTypeの先頭のものを返す（存在しない場合はdefault）
+                return entity;
             }
-
-
-            ////今はリストであることは使わない
-            //return resultEntityList[0];
-
-            foreach (var entity in resultEntityList)
-            {
-                //探しているEntityTypeの先頭のものを返す
-                if (entity.GetType() == typeof(TEntity)) return entity;
-            }
-
-            //なかった場合
-            return default(TEntity);
         }
 
         public List<TEntity> GetSingleEntityList<TEntity>(Vector2Int vector) where TEntity : IEntity
