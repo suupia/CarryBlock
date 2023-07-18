@@ -27,13 +27,13 @@ namespace Carry.CarrySystem.Map.Scripts
                 // Ground
                 if (gridMapData.groundRecords[i].kind != Ground.Kind.None)
                 {
-                    map.AddEntity<Ground>(i, new Ground(gridMapData.groundRecords[i], map.GetVectorFromIndex(i)));
+                    map.AddEntity(i, new Ground(gridMapData.groundRecords[i], map.GetVectorFromIndex(i)));
                 }
 
                 // Rock
                 if (gridMapData.rockRecords[i].kind != Rock.Kind.None)
                 {
-                    map.AddEntity<Rock>(i, new Rock(gridMapData.rockRecords[i], map.GetVectorFromIndex(i)));
+                    map.AddEntity(i, new Rock(gridMapData.rockRecords[i], map.GetVectorFromIndex(i)));
                 }
             }
 

@@ -59,7 +59,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
             if (entity == null)
             {
-                //Debug.Log($"_entityMaps[{index}].OfType<TEntity>().FirstOrDefault()がnullです");
+                Debug.Log($"_entityMaps[{index}].OfType<TEntity>().FirstOrDefault()がnullです");
                 return default(TEntity);
             }
             else
@@ -121,7 +121,7 @@ namespace Carry.CarrySystem.Map.Scripts
             return _entityMaps[index];
         }
 
-        public void AddEntity<TEntity>(Vector2Int vector, IEntity entity) where TEntity : IEntity
+        public void AddEntity<TEntity>(Vector2Int vector, TEntity entity) where TEntity : IEntity
         {
             var x = vector.x;
             var y = vector.y;
@@ -132,10 +132,11 @@ namespace Carry.CarrySystem.Map.Scripts
                 return;
             }
 
-            AddEntity<TEntity>(ToSubscript(x, y), entity);
+            AddEntity(ToSubscript(x, y), entity);
         }
-
-        public void AddEntity<TEntity>(int index, IEntity entity) where TEntity : IEntity
+        
+        
+        public void AddEntity<TEntity>(int index, TEntity entity) where TEntity : IEntity
         {
             if (index < 0 || index > GetLength())
             {
@@ -143,22 +144,26 @@ namespace Carry.CarrySystem.Map.Scripts
                 return;
             }
 
-            if (_entityMaps[index].Count(s => s.GetType() == typeof(TEntity)) > 0)
+            var entities = _entityMaps[index].OfType<TEntity>().ToList();
+
+            if (entities.Any())
             {
                 Debug.LogWarning(
-                    $"[注意!!] GetEntityList<EntityType>(index).Countが0より大きいため、既に{typeof(TEntity)}が入っています");
+                    $"[注意!!] 既に{typeof(TEntity)}が入っています。現在の数: {entities.Count}");
             }
 
             // domain
             _entityMaps[index].Add(entity);
-            
+            Debug.Log($"index:{index}に{entity}を追加しました");
+
             // presenter
-            var count = _entityMaps[index].Count(s => s.GetType() == entity.GetType());
+            var count =_entityMaps[index].OfType<TEntity>().Count();
             // Debug.Log($"AddEntity({index}) count:{count}");
-             _tilePresenter[index]?.SetEntityActiveData(entity, count);
+            _tilePresenter[index]?.SetEntityActiveData(entity, count);
         }
 
-        public void RemoveEntity(int x, int y, IEntity entity)
+        
+        public void RemoveEntity<TEntity>(int x, int y, TEntity entity) where TEntity : IEntity
         {
             if (IsOutOfDataRangeArea(x, y))
             {
@@ -167,16 +172,22 @@ namespace Carry.CarrySystem.Map.Scripts
             }
 
             var index = ToSubscript(x, y);
+            
+            Debug.Log($"before count : {_entityMaps[index].OfType<TEntity>().Count()}, TEntity:{typeof(TEntity)}");
+
             // domain
             _entityMaps[index].Remove(entity);
             
+            Debug.Log($"after count : {_entityMaps[index].OfType<TEntity>().Count()}");
+
             // presenter
-            var count = _entityMaps[index].Count(s => s.GetType() == entity.GetType());
+            var count = _entityMaps[index].OfType<TEntity>().Count();
             // Debug.Log($"RemoveEntity({x},{y}) count:{count}");
             _tilePresenter[index]?.SetEntityActiveData(entity, count);
+            Debug.Log($"RemoveEntity({x},{y}) count:{count}");
         }
 
-        public void RemoveEntity(Vector2Int vector, IEntity entity)
+        public void RemoveEntity<TEntity>(Vector2Int vector, TEntity entity) where TEntity : IEntity
         {
             RemoveEntity(vector.x, vector.y, entity);
         }

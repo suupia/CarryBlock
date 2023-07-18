@@ -96,7 +96,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             // 新しくRockを生成して置く
             var record = new RockRecord() { kind = Rock.Kind.Kind1 };
-            _map.AddEntity<Rock>(forwardGridPos, new Rock(record, forwardGridPos));
+            _map.AddEntity(forwardGridPos, new Rock(record, forwardGridPos));
 
             _isHoldingRock = false;
             

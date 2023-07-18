@@ -49,7 +49,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public void AddRock(Vector2Int gridPos)
         {
             var record = new RockRecord() { kind = Rock.Kind.Kind1 };
-            if(_map.IsInDataRangeArea(gridPos)) _map.AddEntity<Rock>(gridPos, new Rock(record, gridPos));
+            if(_map.IsInDataRangeArea(gridPos)) _map.AddEntity(gridPos, new Rock(record, gridPos));
         }
         
         public void RemoveRock(Vector2Int gridPos)
