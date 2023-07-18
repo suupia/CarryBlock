@@ -4,6 +4,6 @@ namespace Projects.CarrySystem.Block.Interfaces
 {
     public interface IBlock : IEntity
     {
-        
+        bool BeingCarried { get; set; }
     }
 }

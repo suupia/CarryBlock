@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using Projects.CarrySystem.Block.Interfaces;
 using UnityEngine;
 
 namespace Projects.CarrySystem.Block.Scripts
@@ -10,9 +11,11 @@ namespace Projects.CarrySystem.Block.Scripts
     {
         public BasicBlock.Kind kind;
     }
-    public class BasicBlock :Block
+
+    public class BasicBlock : IBlock
     {
-        public override Vector2Int GridPosition { get; set; }
+        public Vector2Int GridPosition { get; set; }
+        public bool BeingCarried { get; set; }
         public BasicBlockRecord Record { get; }
 
         public enum Kind
@@ -21,11 +24,10 @@ namespace Projects.CarrySystem.Block.Scripts
             Kind1,
         }
 
-        public BasicBlock(BasicBlockRecord record,Vector2Int gridPosition)
+        public BasicBlock(BasicBlockRecord record, Vector2Int gridPosition)
         {
             Record = record;
             GridPosition = gridPosition;
         }
-
     }
 }
