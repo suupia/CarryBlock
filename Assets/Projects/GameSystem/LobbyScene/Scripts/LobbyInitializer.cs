@@ -62,15 +62,18 @@ namespace Nuts.BattleSystem.LobbyScene.Scripts
         {
             if (Runner.IsServer)
             {
-                if (_lobbyNetworkPlayerContainer.IsAllReady)
-                {
-                    _enemySpawner.CancelSpawning();
-                    SceneTransition.TransitioningScene(Runner, SceneName.CarryScene);
-                }
-                else
-                {
-                    Debug.Log("Not All Ready");
-                }
+                Debug.Log("全員が準備完了かどうかを無視し、ゲームを開始します");
+                SceneTransition.TransitioningScene(Runner, SceneName.CarryScene);
+                
+                // if (_lobbyNetworkPlayerContainer.IsAllReady)
+                // {
+                //     _enemySpawner.CancelSpawning();
+                //     SceneTransition.TransitioningScene(Runner, SceneName.CarryScene);
+                // }
+                // else
+                // {
+                //     Debug.Log("Not All Ready");
+                // }
             }
         }
     }
