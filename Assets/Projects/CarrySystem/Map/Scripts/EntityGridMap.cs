@@ -81,27 +81,24 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public List<TEntity> GetSingleEntityList<TEntity>(int index) where TEntity : IEntity
         {
-            var resultEntityList = new List<TEntity>();
-
+            
             if (index < 0 || index > GetLength())
             {
                 Debug.LogError("領域外の値を習得しようとしました");
-                return new List<TEntity>();
+                return new List<TEntity>(); // 空のリストを返す
             }
 
-            if (_entityMaps[index].Count(s => s.GetType() == typeof(TEntity)) == 0)
+            var filteredEntities = _entityMaps[index].OfType<TEntity>().ToList();
+    
+            if (!filteredEntities.Any())
             {
                 //Debug.Log($"_entityMaps[{index}]の{typeof(EntityType)}のCountが0です");
-                return new List<TEntity>();
+                return  new List<TEntity>(); // 空のリストを返す
             }
 
-            foreach (var entity in _entityMaps[index])
-            {
-                if (entity.GetType() == typeof(TEntity)) resultEntityList.Add((TEntity)entity);
-            }
-
-            return resultEntityList;
+            return filteredEntities;
         }
+
 
         public List<IEntity> GetAllEntityList(Vector2Int vector)
         {
