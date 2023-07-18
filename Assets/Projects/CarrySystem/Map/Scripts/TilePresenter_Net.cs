@@ -99,7 +99,18 @@ namespace Carry.CarrySystem.Map.Scripts
                     }
                     break;
                 case BasicBlock _:
-                    PresentDataRef.IsBasicBlockActive = true;
+                    switch (count)
+                    {
+                        case 0:
+                            PresentDataRef.IsBasicBlockActive = false;
+                            break;
+                        case 1:
+                            PresentDataRef.IsBasicBlockActive = true;
+                            break;
+                        default:
+                            // 何もしない
+                            break;
+                    }
                     break;
                 default:
                     throw new System.Exception("想定外のEntityが渡されました");

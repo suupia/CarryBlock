@@ -8,6 +8,7 @@ using Fusion;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
+using UnityEngine.Serialization;
 using VContainer;
 
 
@@ -20,13 +21,14 @@ namespace Carry.CarrySystem.Player.Scripts
         // ドメインの情報を持ってはいけない
         public struct PresentData : INetworkStruct
         {
-            public NetworkBool IsHoldingRock;
+            public NetworkBool IsHoldingBlock;
         }
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
-        [SerializeField] GameObject holdingRock;
+        [FormerlySerializedAs("holdingBlock")] [SerializeField] GameObject holdingRock;
         [SerializeField] GameObject holdingDoubleRock;
+        [SerializeField] GameObject holdingBasicBlock;
         
         public void Init(ICharacter character)
         {
@@ -36,24 +38,30 @@ namespace Carry.CarrySystem.Player.Scripts
         public override void Render()
         {
             // Debug.Log($"PresentDataRef.IsHoldingRock = {PresentDataRef.IsHoldingRock}");
-
-            if (holdingRock.activeSelf != PresentDataRef.IsHoldingRock)
-            {
-                holdingRock.SetActive(PresentDataRef.IsHoldingRock);
-            }
             
+            // Rock
+            // if (holdingRock.activeSelf != PresentDataRef.IsHoldingBlock)
+            // {
+            //     holdingRock.SetActive(PresentDataRef.IsHoldingBlock);
+            // }
+            
+            // BasicBlock
+            if (holdingBasicBlock.activeSelf != PresentDataRef.IsHoldingBlock)
+            {
+                holdingBasicBlock.SetActive(PresentDataRef.IsHoldingBlock);
+            }
         }
 
         // ホストのみで呼ばれることに注意
         // 以下の処理はアニメーション、音、エフェクトの再生を行いたくなったら、それぞれのクラスの対応するメソッドを呼ぶようにするかも
         public void PickUpRock()
         {
-            PresentDataRef.IsHoldingRock = true;
+            PresentDataRef.IsHoldingBlock = true;
         }
 
         public void PutDownRock()
         {
-            PresentDataRef.IsHoldingRock = false;
+            PresentDataRef.IsHoldingBlock = false;
         }
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Carry.CarrySystem.Player.Info;
+using Projects.CarrySystem.Block.Interfaces;
 
 #nullable enable
 
@@ -13,12 +14,14 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class HoldAction : ICharacterHoldAction
     {
+        readonly int _maxHoldBlockCount = 2;
+        
         PlayerInfo _info;
         EntityGridMap _map;
         EntityGridMapSwitcher _mapSwitcher;
         IHoldActionPresenter? _presenter;
-        bool _isHoldingRock = false;
-        readonly int _maxHoldRockCount = 2;
+        bool _isHoldingBlock = false;
+        IBlock? _holdingBlock = null;
         
         public void SetHoldPresenter(IHoldActionPresenter presenter)
         {
@@ -36,7 +39,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Reset()
         {
-            _isHoldingRock = false;
+            _isHoldingBlock = false;
             _presenter?.PutDownRock();
             _map =_mapSwitcher.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
 
@@ -50,24 +53,24 @@ namespace Carry.CarrySystem.Player.Scripts
             var forwardGridPos = GetForwardGridPos(transform);
              Debug.Log($"Player Forward GridPos: {forwardGridPos}");
 
-            // そのGridPosにRockがあるかどうかを確認
+            // そのGridPosにBlockがあるかどうかを確認
             var index = _map.GetIndexFromVector(forwardGridPos);
-            Debug.Log($"index : {index}のRockは{_map.GetSingleEntity<Rock>(index)}です");
-            var rocks = _map.GetSingleEntityList<Rock>(forwardGridPos);
-            var rockCount = rocks.Count;
+            Debug.Log($"index : {index}のIBlockは{_map.GetSingleEntity<IBlock>(index)}です");
+            var blocks = _map.GetSingleEntityList<IBlock>(forwardGridPos);
+            var blocksCount = blocks.Count;
             
-            if (_isHoldingRock)
+            if (_isHoldingBlock)
             {
-                if (rockCount < _maxHoldRockCount)
+                if (blocksCount < _maxHoldBlockCount)
                 {
-                    PutDownRock(forwardGridPos,rockCount);
+                    PutDownBlock(forwardGridPos,blocksCount);
                 }
             }
             else
             {
-                if (rockCount != 0)
+                if (blocksCount != 0)
                 {
-                    PickUpRock(forwardGridPos, rocks.First());
+                    PickUpBlock(forwardGridPos, blocks.First());
                 }
             }
             
@@ -82,23 +85,27 @@ namespace Carry.CarrySystem.Player.Scripts
             return gridPos + gridDirection;
         }
 
-        void PickUpRock(Vector2Int forwardGridPos, Rock rock)
+        void PickUpBlock(Vector2Int forwardGridPos, IBlock block)
         {
-            // ドメインのRockを削除（内部のプレゼンターを通して見た目も変わる）
-            _map.RemoveEntity(forwardGridPos, rock);
+            // ドメインのBlockを削除（内部のプレゼンターを通して見た目も変わる）
+            _map.RemoveEntity(forwardGridPos, block);
 
-            _isHoldingRock = true;
+            _isHoldingBlock = true;
+            _holdingBlock = block;
 
             _presenter?.PickUpRock();
         }
 
-        void PutDownRock(Vector2Int forwardGridPos, int rockCount)
+        void PutDownBlock(Vector2Int forwardGridPos, int blocksCount)
         {
-            // 新しくRockを生成して置く
-            var record = new RockRecord() { kind = Rock.Kind.Kind1 };
-            _map.AddEntity(forwardGridPos, new Rock(record, forwardGridPos));
+            if (_holdingBlock == null)
+            {
+                Debug.LogError($"_holdingBlockがnullです");
+                return;
+            }
+            _map.AddEntity(forwardGridPos, _holdingBlock);
 
-            _isHoldingRock = false;
+            _isHoldingBlock = false;
             
             _presenter?.PutDownRock();
             
