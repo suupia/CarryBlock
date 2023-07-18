@@ -6,6 +6,7 @@ using UnityEngine;
 using Fusion;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
+using Projects.CarrySystem.Block.Scripts;
 
 
 namespace Carry.CarrySystem.Map.Scripts
@@ -17,6 +18,7 @@ namespace Carry.CarrySystem.Map.Scripts
             public NetworkBool IsGroundActive;
             public NetworkBool IsRockActive;
             public NetworkBool IsDoubleRockActive;
+            public NetworkBool IsBasicBlockActive;
         }
 
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
@@ -25,6 +27,7 @@ namespace Carry.CarrySystem.Map.Scripts
         [SerializeField] GameObject groundObject;
         [SerializeField] GameObject rockObject;
         [SerializeField] GameObject doubleRockObject;
+        [SerializeField] GameObject basicBlockObject;
         
         EntityGridMap _map;
         public override void Render()
@@ -41,6 +44,10 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 doubleRockObject.SetActive(PresentDataRef.IsDoubleRockActive);
             }
+            if (basicBlockObject.activeSelf != PresentDataRef.IsBasicBlockActive)
+            {
+                basicBlockObject.SetActive(PresentDataRef.IsBasicBlockActive);
+            }
         }
         
         public void SetInitEntityActiveData(IEntity entity, bool isActive)
@@ -52,6 +59,9 @@ namespace Carry.CarrySystem.Map.Scripts
                     break;
                 case Rock _:
                     PresentDataRef.IsRockActive = isActive;
+                    break;
+                case BasicBlock  _ :
+                    PresentDataRef.IsBasicBlockActive = isActive;
                     break;
                 case null :
                     PresentDataRef.IsRockActive = false;
@@ -87,6 +97,9 @@ namespace Carry.CarrySystem.Map.Scripts
                             // 何もしない
                             break;
                     }
+                    break;
+                case BasicBlock _:
+                    PresentDataRef.IsBasicBlockActive = true;
                     break;
                 default:
                     throw new System.Exception("想定外のEntityが渡されました");

@@ -2,6 +2,7 @@
 using System.Numerics;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Scripts;
+using Projects.CarrySystem.Block.Scripts;
 using TMPro;
 using UnityEngine;
 using VContainer;
@@ -59,6 +60,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             if(_map.IsInDataRangeArea(gridPos)) _map.RemoveEntity(gridPos,rock);
         }
 
+
+        public void AddBasicBlock(Vector2Int gridPos)
+        {
+            var record = new BasicBlockRecord() { kind =  BasicBlock.Kind.Kind1};
+            if(_map.IsInDataRangeArea(gridPos)) _map.AddEntity(gridPos, new BasicBlock(record, gridPos));
+
+        }
 
         
     }

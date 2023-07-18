@@ -6,6 +6,7 @@ using Carry.CarrySystem.Spawners;
 using UnityEngine;
 using Fusion;
 using Nuts.Utility.Scripts;
+using Projects.CarrySystem.Block.Scripts;
 
 #nullable enable
 
@@ -30,10 +31,13 @@ namespace Carry.CarrySystem.Map.Scripts
                 // Presenterの初期化処理みたいなもの
                 var existGround = map.GetSingleEntity<Ground>(i) != null;
                 var existRock = map.GetSingleEntity<Rock>(i) != null;
+                var existBasicBlock = map.GetSingleEntity<BasicBlock>(i) != null;
 
                 tilePresenter.SetInitEntityActiveData(map.GetSingleEntity<Ground>(i), existGround);
 
                 tilePresenter.SetInitEntityActiveData(map.GetSingleEntity<Rock>(i), existRock);
+                
+                tilePresenter.SetInitEntityActiveData(map.GetSingleEntity<BasicBlock>(i), existBasicBlock);
 
                 // mapにTilePresenterを登録
                 map.RegisterTilePresenter(tilePresenter, i);

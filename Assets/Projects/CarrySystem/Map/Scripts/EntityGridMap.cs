@@ -59,7 +59,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
             if (entity == null)
             {
-                Debug.Log($"_entityMaps[{index}].OfType<TEntity>().FirstOrDefault()がnullです");
+                // Debug.Log($"_entityMaps[{index}].OfType<TEntity>().FirstOrDefault()がnullです");
                 return default(TEntity);
             }
             else
@@ -154,7 +154,6 @@ namespace Carry.CarrySystem.Map.Scripts
 
             // domain
             _entityMaps[index].Add(entity);
-            Debug.Log($"index:{index}に{entity}を追加しました");
 
             // presenter
             var count =_entityMaps[index].OfType<TEntity>().Count();
@@ -173,18 +172,14 @@ namespace Carry.CarrySystem.Map.Scripts
 
             var index = ToSubscript(x, y);
             
-            Debug.Log($"before count : {_entityMaps[index].OfType<TEntity>().Count()}, TEntity:{typeof(TEntity)}");
-
             // domain
             _entityMaps[index].Remove(entity);
             
-            Debug.Log($"after count : {_entityMaps[index].OfType<TEntity>().Count()}");
 
             // presenter
             var count = _entityMaps[index].OfType<TEntity>().Count();
             // Debug.Log($"RemoveEntity({x},{y}) count:{count}");
             _tilePresenter[index]?.SetEntityActiveData(entity, count);
-            Debug.Log($"RemoveEntity({x},{y}) count:{count}");
         }
 
         public void RemoveEntity<TEntity>(Vector2Int vector, TEntity entity) where TEntity : IEntity

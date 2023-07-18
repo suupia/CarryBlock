@@ -199,7 +199,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         void AutoSave()
         {
             // オートセーブはインデックス0に保存する
-            if (_key == MapKey.Default && _index == 0) return; // デフォルトのマップ0はオートセーブしない
+            if (_key == MapKey.Default ) return; // ToDo: とりあえずMapKeyがデフォルトの時はオートセーブしない
             _entityGridMapSaver.SaveMap(_editMapManager.GetMap(), _key, 0);
         }
     }
