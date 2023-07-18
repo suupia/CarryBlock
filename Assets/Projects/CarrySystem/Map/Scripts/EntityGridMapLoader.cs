@@ -5,6 +5,7 @@ using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Spawners;
 using UnityEngine;
 using Carry.CarrySystem.Map.MapData;
+using Projects.CarrySystem.Block.Scripts;
 
 #nullable enable
 
@@ -25,15 +26,42 @@ namespace Carry.CarrySystem.Map.Scripts
             for (int i = 0; i < map.GetLength(); i++)
             {
                 // Ground
-                if (gridMapData.groundRecords[i].kind != Ground.Kind.None)
+                if (gridMapData.groundRecords != null)
                 {
-                    map.AddEntity(i, new Ground(gridMapData.groundRecords[i], map.GetVectorFromIndex(i)));
+                    if (gridMapData.groundRecords[i].kind != Ground.Kind.None)
+                    {
+                        map.AddEntity(i, new Ground(gridMapData.groundRecords[i], map.GetVectorFromIndex(i)));
+                    }
+                }
+                else
+                {
+                    Debug.LogError("groundRecords is not initialized properly!");
                 }
 
                 // Rock
-                if (gridMapData.rockRecords[i].kind != Rock.Kind.None)
+                if (gridMapData.rockRecords != null)
                 {
-                    map.AddEntity(i, new Rock(gridMapData.rockRecords[i], map.GetVectorFromIndex(i)));
+                    if (gridMapData.rockRecords[i].kind != Rock.Kind.None)
+                    {
+                        map.AddEntity(i, new Rock(gridMapData.rockRecords[i], map.GetVectorFromIndex(i)));
+                    }
+                }
+                else
+                {
+                    Debug.LogError("rockRecords is not initialized properly!");
+                }
+    
+                // BasicBlock
+                if (gridMapData.basicBlockRecords != null)
+                {
+                    if (gridMapData.basicBlockRecords[i].kind != BasicBlock.Kind.None)
+                    {
+                        map.AddEntity(i, new BasicBlock(gridMapData.basicBlockRecords[i], map.GetVectorFromIndex(i)));
+                    }
+                }
+                else
+                {
+                    Debug.LogError("basicBlockRecords is not initialized properly!");
                 }
             }
 
