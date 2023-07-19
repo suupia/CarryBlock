@@ -2,13 +2,13 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Nuts.Utility.Scripts;
-using Nuts.BattleSystem.Boss.Scripts;
-using Nuts.BattleSystem.Move.Scripts;
+using Projects.BattleSystem.Boss.Scripts;
 using UnityEngine;
-using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
+using Projects.BattleSystem.Enemy.Monster.Interfaces;
+using Projects.BattleSystem.Move.Scripts;
+using Projects.Utility.Scripts;
 
-namespace Nuts.BattleSystem.Enemy.Scripts
+namespace Projects.BattleSystem.Enemy.Scripts
 {
     /// <summary>
     /// 何もしないIEnemyMoveExecutorの実装クラス

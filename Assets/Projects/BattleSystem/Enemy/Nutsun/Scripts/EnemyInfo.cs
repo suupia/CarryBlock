@@ -1,9 +1,9 @@
-using Nuts.Utility.Scripts;
-using Nuts.BattleSystem.Move.Scripts;
-using Nuts.BattleSystem.Player.Scripts;
+using Projects.Utility.Scripts;
+using Projects.BattleSystem.Move.Scripts;
+using Projects.BattleSystem.Player.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Enemy.Scripts
+namespace Projects.BattleSystem.Enemy.Scripts
 {
     public interface IEnemy : IMove
     {

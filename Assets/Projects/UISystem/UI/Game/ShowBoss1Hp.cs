@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Nuts.BattleSystem.GameScene.Scripts;
-using Nuts.Utility.Scripts;
-using Nuts.BattleSystem.Boss.Scripts;
+using Projects.Utility.Scripts;
+using Projects.BattleSystem.Boss.Scripts;
+using Projects.BattleSystem.GameScene.Scripts;
 using UnityEngine;
 using TMPro;
 
 
-namespace  Nuts.UISystem.Game.Scripts
+namespace  Projects.UISystem.Game.Scripts
 {
     public class ShowBoss1Hp : MonoBehaviour
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
-using Nuts.BattleSystem.Enemy.Scripts;
+using Projects.BattleSystem.Enemy.Scripts;
 
 # nullable enable
 

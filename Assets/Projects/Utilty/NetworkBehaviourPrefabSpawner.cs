@@ -1,8 +1,8 @@
 using Fusion;
-using Nuts.Utility.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 
-namespace Nuts.Utility.Scripts
+namespace Projects.Utility.Scripts
 {
     public class NetworkBehaviourPrefabSpawner<T> where T : NetworkBehaviour
     {

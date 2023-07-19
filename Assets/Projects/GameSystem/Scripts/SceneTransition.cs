@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Scripts
+namespace Projects.BattleSystem.Scripts
 {
     public enum SceneName
     {

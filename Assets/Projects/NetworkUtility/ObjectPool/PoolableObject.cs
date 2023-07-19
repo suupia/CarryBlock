@@ -1,6 +1,6 @@
 using Fusion;
 
-namespace  Nuts.NetworkUtility.ObjectPool.Scripts
+namespace  Projects.NetworkUtility.ObjectPool.Scripts
 {
     public abstract class PoolableObject : NetworkBehaviour
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Fusion;
-using Nuts.NetworkUtility.Inputs.Scripts;
+using Projects.NetworkUtility.Inputs.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Info;
 using VContainer;

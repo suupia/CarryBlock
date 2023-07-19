@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
-using Nuts.Utility.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 
 namespace Carry.CarrySystem.Spawners

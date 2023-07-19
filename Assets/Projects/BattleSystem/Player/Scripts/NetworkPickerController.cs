@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Nuts.NetworkUtility.ObjectPool.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts;
 using UnityEngine;
-using Nuts.Utility.Scripts;
+using Projects.BattleSystem.Enemy.Scripts;
+using Projects.NetworkUtility.ObjectPool.Scripts;
+using Projects.Utility.Scripts;
 
-namespace Nuts.BattleSystem.Player.Scripts
+namespace Projects.BattleSystem.Player.Scripts
 {
     public interface IPickerContext
     {

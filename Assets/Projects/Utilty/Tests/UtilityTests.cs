@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Nuts.Utility.Tests
+namespace Projects.Utility.Tests
 {
     public class UtilityTests
     {

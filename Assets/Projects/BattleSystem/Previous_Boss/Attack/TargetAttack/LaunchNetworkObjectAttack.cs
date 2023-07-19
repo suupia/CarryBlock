@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
 
-namespace Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack.TargetAttack
+namespace Projects.BattleSystem.Enemy.Scripts.Boss_Previous.Attack.TargetAttack
 {
     /// <summary>
     /// 打ち出す系の攻撃

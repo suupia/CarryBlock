@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using Fusion;
-using Nuts.BattleSystem.Enemy.Scripts;
 using UnityEngine;
-using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
+using Projects.BattleSystem.Enemy.Monster.Interfaces;
+using Projects.BattleSystem.Enemy.Scripts;
 
 #nullable  enable
 
-namespace Nuts.BattleSystem.Boss.Scripts
+namespace Projects.BattleSystem.Boss.Scripts
 {
     public class Monster1Context : IMonster1Context
     {

@@ -1,6 +1,5 @@
 ﻿using System;
 using Fusion;
-using Nuts.Utility.Scripts;
 using UnityEngine;
 using UnityEngine.Serialization;
 

@@ -1,6 +1,6 @@
 ﻿using Carry.CarrySystem.Player.Scripts;
 using Fusion;
-using Nuts.Utility.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 

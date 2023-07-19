@@ -1,7 +1,7 @@
 ﻿# nullable  enable
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Enemy.Monster.Interfaces
+namespace Projects.BattleSystem.Enemy.Monster.Interfaces
 {
     public interface IEnemyMove
     {

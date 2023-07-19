@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Nuts.Utility.Scripts
+namespace Projects.Utility.Scripts
 {
     public class NutsUtility
     {

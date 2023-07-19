@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Nuts.Utility.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 using TMPro;
 using ExitGames.Client.Photon;
-using Nuts.BattleSystem.Player.Scripts;
 using UnityEngine.Serialization;
-using Nuts.BattleSystem.GameScene.Scripts;
+using Projects.BattleSystem.GameScene.Scripts;
+using Projects.BattleSystem.Player.Scripts;
 
 
-namespace Nuts.UISystem.Game.Scripts
+namespace Projects.UISystem.Game.Scripts
 {
     public class ShowPlayerHp : MonoBehaviour
     {

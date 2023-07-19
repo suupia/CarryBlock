@@ -1,7 +1,7 @@
-using Nuts.NetworkUtility.ObjectPool.Scripts;
+using Projects.NetworkUtility.ObjectPool.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Enemy.Scripts
+namespace Projects.BattleSystem.Enemy.Scripts
 {
     [RequireComponent(typeof(Collider))]
     public abstract class AttackCollider : MonoBehaviour

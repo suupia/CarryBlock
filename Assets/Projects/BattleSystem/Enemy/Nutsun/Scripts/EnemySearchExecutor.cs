@@ -1,12 +1,12 @@
 # nullable enable
 using System.Collections.Generic;
 using Fusion;
-using Nuts.BattleSystem.Boss.Scripts;
+using Projects.BattleSystem.Boss.Scripts;
 using UnityEngine;
-using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
+using Projects.BattleSystem.Enemy.Monster.Interfaces;
 
 
-namespace Nuts.BattleSystem.Enemy.Scripts
+namespace Projects.BattleSystem.Enemy.Scripts
 {
     public class DoNothingSearch : IEnemySearch
     {

@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Player.Scripts
+namespace Projects.BattleSystem.Player.Scripts
 {
     public class Picker : NetworkBehaviour
     {

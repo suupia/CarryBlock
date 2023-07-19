@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Enemy.Monster.Interfaces
+namespace Projects.BattleSystem.Enemy.Monster.Interfaces
 {
     public interface IEnemySearch
     {

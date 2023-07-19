@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Nuts.Utility.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 using TMPro;
-using Nuts.BattleSystem.GameScene.Scripts;
+using Projects.BattleSystem.Enemy.Scripts;
+using Projects.BattleSystem.GameScene.Scripts;
 
 
-namespace  Nuts.UISystem.Game.Scripts
+namespace  Projects.UISystem.Game.Scripts
 {
     public class ShowEnemyHp : MonoBehaviour
     {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Fusion;
 
-namespace Nuts.Projects.BattleSystem.Decoration.Scripts
+namespace Projects.Projects.BattleSystem.Decoration.Scripts
 {
     public class EnemyDecorationDetector
     {

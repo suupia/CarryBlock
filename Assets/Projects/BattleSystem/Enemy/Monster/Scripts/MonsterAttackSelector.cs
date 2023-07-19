@@ -1,7 +1,7 @@
-using Nuts.BattleSystem.Enemy.Monster.Interfaces;
+using Projects.BattleSystem.Enemy.Monster.Interfaces;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Boss.Scripts
+namespace Projects.BattleSystem.Boss.Scripts
 {
     public class RandomActionSelector : IBoss1ActionSelector
     {

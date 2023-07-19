@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
-using Nuts.Utility.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Move.Scripts
+namespace Projects.BattleSystem.Move.Scripts
 {
     public interface IMove
     {

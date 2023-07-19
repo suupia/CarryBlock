@@ -1,9 +1,9 @@
 ﻿using Fusion;
-using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
-using Nuts.BattleSystem.Spawners.Scripts;
+using Projects.BattleSystem.Spawners.Scripts;
+using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
 using UnityEngine;
 
-namespace Nuts.Utility.Tests
+namespace Projects.Utility.Tests
 {
     public class TestInitializer : SimulationBehaviour
     {

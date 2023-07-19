@@ -1,10 +1,10 @@
 using Fusion;
-using Nuts.NetworkUtility.Inputs.Scripts;
-using Nuts.BattleSystem.Decoration.Scripts;
-using Nuts.Projects.BattleSystem.Decoration.Scripts;
+using Projects.BattleSystem.Decoration.Scripts;
+using Projects.NetworkUtility.Inputs.Scripts;
+using Projects.Projects.BattleSystem.Decoration.Scripts;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Decoration.Tests
+namespace Projects.Projects.BattleSystem.Decoration.Tests
 {
     public class TestPlayerController : NetworkBehaviour
     {

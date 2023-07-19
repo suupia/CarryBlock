@@ -1,9 +1,9 @@
 using Fusion;
-using Nuts.Utility.Scripts;
-using Nuts.BattleSystem.Move.Scripts;
+using Projects.Utility.Scripts;
+using Projects.BattleSystem.Move.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Player.Scripts
+namespace Projects.BattleSystem.Player.Scripts
 {
     public class CollectResourcePlane : IUnit
     {

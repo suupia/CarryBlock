@@ -1,4 +1,4 @@
-﻿namespace Nuts.BattleSystem.Enemy.Monster.Interfaces
+﻿namespace Projects.BattleSystem.Enemy.Monster.Interfaces
 {
     
     //Stateパターン

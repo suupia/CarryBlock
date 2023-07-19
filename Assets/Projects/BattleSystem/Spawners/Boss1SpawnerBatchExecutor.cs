@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
-using Nuts.Utility.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Spawners.Scripts
+namespace Projects.BattleSystem.Spawners.Scripts
 {
 
     /// <summary>

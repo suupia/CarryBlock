@@ -1,8 +1,8 @@
 using Fusion;
-using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
+using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Decoration.Tests
+namespace Projects.Projects.BattleSystem.Decoration.Tests
 {
     public class TestInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {

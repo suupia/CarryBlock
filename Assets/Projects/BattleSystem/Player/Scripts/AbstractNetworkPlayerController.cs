@@ -1,13 +1,13 @@
 using System;
 using Fusion;
-using Nuts.Utility.Scripts;
-using Nuts.NetworkUtility.Inputs.Scripts;
-using Nuts.BattleSystem.Decoration.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts;
-using Nuts.Projects.BattleSystem.Decoration.Scripts;
+using Projects.Utility.Scripts;
+using Projects.BattleSystem.Decoration.Scripts;
+using Projects.BattleSystem.Enemy.Scripts;
+using Projects.NetworkUtility.Inputs.Scripts;
+using Projects.Projects.BattleSystem.Decoration.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Player.Scripts
+namespace Projects.BattleSystem.Player.Scripts
 {
     /// <summary>
     ///     The only NetworkBehaviour to control the character.

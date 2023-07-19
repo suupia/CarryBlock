@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
+using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
 using UnityEngine;
 
 public class SetActiveTestInitializer : SimulationBehaviour

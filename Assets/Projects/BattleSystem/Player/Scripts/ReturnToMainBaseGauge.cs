@@ -5,7 +5,7 @@ using UnityEngine;
 
 #nullable enable
 
-namespace Nuts.BattleSystem.Player.Scripts
+namespace Projects.BattleSystem.Player.Scripts
 {
     public class ReturnToMainBaseGauge
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using Fusion;
 using UnityEngine;
 
-namespace  Nuts.NetworkUtility.ObjectPool.Scripts
+namespace  Projects.NetworkUtility.ObjectPool.Scripts
 {
     public class NetworkObjectPoolDefault : SimulationBehaviour, INetworkObjectPool, ISceneLoadDone
     {

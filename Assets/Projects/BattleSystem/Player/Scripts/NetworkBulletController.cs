@@ -1,9 +1,9 @@
 using Fusion;
-using Nuts.NetworkUtility.ObjectPool.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts.Player.Attack;
+using Projects.BattleSystem.Enemy.Scripts.Player.Attack;
+using Projects.NetworkUtility.ObjectPool.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Player.Scripts
+namespace Projects.BattleSystem.Player.Scripts
 {
     /// <summary>
     ///     とりあえずNetworkObjectとする。

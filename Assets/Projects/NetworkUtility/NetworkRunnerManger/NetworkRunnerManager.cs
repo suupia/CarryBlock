@@ -1,12 +1,12 @@
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Nuts.NetworkUtility.Inputs.Scripts;
-using Nuts.NetworkUtility.ObjectPool.Scripts;
+using Projects.NetworkUtility.Inputs.Scripts;
+using Projects.NetworkUtility.ObjectPool.Scripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
 
-namespace Nuts.NetworkUtility.NetworkRunnerManager.Scripts
+namespace Projects.NetworkUtility.NetworkRunnerManager.Scripts
 {
     // 全てのシーンにこれを配置しておけば、NetworkRunnerを使える
 // シーン上にNetworkRunnerがないならインスタンス化し、runner.StartGame()を実行

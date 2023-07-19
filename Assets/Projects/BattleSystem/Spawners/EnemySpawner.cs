@@ -4,15 +4,15 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Nuts.Utility.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts;
-using Nuts.BattleSystem.Player.Scripts;
+using Projects.BattleSystem.Enemy.Scripts;
+using Projects.BattleSystem.Player.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 using Random = UnityEngine.Random;
 
 
-namespace Nuts.BattleSystem.Spawners.Scripts
+namespace Projects.BattleSystem.Spawners.Scripts
 {
     public class EnemySpawner
     {

@@ -2,12 +2,12 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
-using Nuts.BattleSystem.Boss.Scripts;
-using Nuts.BattleSystem.Enemy.Monster.Interfaces;
+using Projects.BattleSystem.Boss.Scripts;
+using Projects.BattleSystem.Enemy.Monster.Interfaces;
+using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.BattleSystem.Boss.Tests
+namespace Projects.BattleSystem.BattleSystem.Boss.Tests
 {
     public class Boss1TestInitializer : NetworkBehaviour
     {

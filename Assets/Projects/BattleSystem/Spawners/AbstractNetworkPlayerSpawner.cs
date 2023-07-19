@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
-using Nuts.Utility.Scripts;
-using Nuts.BattleSystem.Player.Scripts;
+using Projects.BattleSystem.Player.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 
-namespace Nuts.BattleSystem.Spawners.Scripts
+namespace Projects.BattleSystem.Spawners.Scripts
 {
     public abstract class AbstractNetworkPlayerSpawner<T> where T : AbstractNetworkPlayerController
     {

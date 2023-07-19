@@ -1,11 +1,11 @@
 using System;
 using Cysharp.Threading.Tasks;
-using Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack;
+using Projects.BattleSystem.Enemy.Scripts.Boss_Previous.Attack;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Object = UnityEngine.Object;
 
-namespace Nuts.Utility.Scripts
+namespace Projects.Utility.Scripts
 {
     /// <summary>
     /// 範囲攻撃をする。Radiusだけ渡せば、Attackを呼び出したタイミングで機能する

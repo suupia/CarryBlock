@@ -1,13 +1,13 @@
 using Fusion;
-using Nuts.Utility.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts;
-using Nuts.BattleSystem.Player.Scripts;
+using Projects.Utility.Scripts;
 using TMPro;
 using UnityEngine;
 using VContainer;
-using Nuts.BattleSystem.GameScene.Scripts;
+using Projects.BattleSystem.Enemy.Scripts;
+using Projects.BattleSystem.GameScene.Scripts;
+using Projects.BattleSystem.Player.Scripts;
 
-namespace Nuts.UISystem.Game.Scripts
+namespace Projects.UISystem.Game.Scripts
 {
     public class GameSceneView : NetworkBehaviour
     {

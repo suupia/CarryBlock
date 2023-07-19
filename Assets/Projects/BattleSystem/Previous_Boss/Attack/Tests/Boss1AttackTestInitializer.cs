@@ -2,14 +2,14 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Nuts.Utility.Scripts;
-using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
-using Nuts.BattleSystem.BattleSystem.Boss.Tests;
-using Nuts.BattleSystem.Boss.Scripts;
-using Nuts.BattleSystem.Spawners.Scripts;
+using Projects.Utility.Scripts;
+using Projects.BattleSystem.BattleSystem.Boss.Tests;
+using Projects.BattleSystem.Boss.Scripts;
+using Projects.BattleSystem.Spawners.Scripts;
+using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack.Tests
+namespace Projects.BattleSystem.Enemy.Scripts.Boss_Previous.Attack.Tests
 {
     public class Boss1AttackTestInitializer : NetworkBehaviour, IPlayerJoined, IPlayerLeft
     {

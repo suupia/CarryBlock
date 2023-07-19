@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Nuts.Projects.BattleSystem.Decoration.Scripts
+namespace Projects.Projects.BattleSystem.Decoration.Scripts
 {
     public interface IForwardDecoration
     {

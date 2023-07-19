@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using Fusion;
-using Nuts.Utility.Scripts;
-using Nuts.BattleSystem.Decoration.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack;
-using Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Search;
-using Nuts.BattleSystem.Move.Scripts;
-using Nuts.Projects.BattleSystem.Decoration.Scripts;
+using Projects.Utility.Scripts;
+using Projects.BattleSystem.Decoration.Scripts;
+using Projects.BattleSystem.Enemy.Scripts.Boss_Previous.Attack;
+using Projects.BattleSystem.Enemy.Scripts.Boss_Previous.Search;
+using Projects.BattleSystem.Move.Scripts;
+using Projects.Projects.BattleSystem.Decoration.Scripts;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
 using Random = UnityEngine.Random;
 
-namespace Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Controller
+namespace Projects.BattleSystem.Enemy.Scripts.Boss_Previous.Controller
 {
     public partial class Boss1Controller : NetworkBehaviour
     {

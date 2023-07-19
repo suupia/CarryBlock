@@ -1,10 +1,10 @@
 using Fusion;
-using Nuts.BattleSystem.Scripts;
-using Nuts.NetworkUtility.NetworkRunnerManager.Scripts;
+using Projects.BattleSystem.Scripts;
+using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
 
-namespace Nuts.BattleSystem.TitleScene.Scripts
+namespace Projects.BattleSystem.TitleScene.Scripts
 {
     public class TitleInitializer : MonoBehaviour
     {

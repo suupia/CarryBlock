@@ -32,7 +32,7 @@ using UnityEngine;
 //     よって、この部分だけを見れば、「Attackを呼んだとき、一番近い奴に対して、３秒後に範囲５の攻撃が行われる」ことがわかるという設計
 //     かつ、一番のメリットはIAttackを継承なし、かつクライアントコードの負担を最小に組み合わせることができるため、
 // 様々な攻撃の構築が簡単にできる点である
-namespace Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack
+namespace Projects.BattleSystem.Enemy.Scripts.Boss_Previous.Attack
 {
     /// <summary>
     /// 攻撃を抽象化し、クライアントコードを簡潔に、再利用性を上げたい。

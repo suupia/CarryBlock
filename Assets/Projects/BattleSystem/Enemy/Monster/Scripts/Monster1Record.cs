@@ -5,7 +5,7 @@ using UnityEngine;
 
 # nullable enable
 
-namespace Nuts.BattleSystem.Boss.Scripts
+namespace Projects.BattleSystem.Boss.Scripts
 {
     [Serializable]
     public record Monster1Record

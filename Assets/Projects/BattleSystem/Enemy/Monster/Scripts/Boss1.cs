@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Fusion;
 using UnityEngine;
-using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
+using  Projects.BattleSystem.Enemy.Monster.Interfaces;
 
-namespace Nuts.BattleSystem.Boss.Scripts
+namespace Projects.BattleSystem.Boss.Scripts
 {
     // // 以下はNetworkBehaviourのためのインターフェース
     // public interface IEnemyMove

@@ -1,5 +1,5 @@
 using Fusion;
-using Nuts.BattleSystem.TitleScene.Scripts;
+using Projects.BattleSystem.TitleScene.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

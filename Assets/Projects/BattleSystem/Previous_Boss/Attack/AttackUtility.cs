@@ -2,7 +2,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Nuts.BattleSystem.Enemy.Scripts.Boss_Previous.Attack
+namespace Projects.BattleSystem.Enemy.Scripts.Boss_Previous.Attack
 {
     public static class AttackUtility
     {

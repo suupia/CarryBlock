@@ -4,14 +4,14 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Nuts.BattleSystem.Enemy.Scripts;
-using Nuts.BattleSystem.Move.Scripts;
-using Nuts.BattleSystem.Spawners.Scripts;
 using UnityEngine;
-using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
-using Nuts.Utility.Scripts;
+using Projects.BattleSystem.Enemy.Monster.Interfaces;
+using Projects.BattleSystem.Enemy.Scripts;
+using Projects.BattleSystem.Move.Scripts;
+using Projects.BattleSystem.Spawners.Scripts;
+using Projects.Utility.Scripts;
 
-namespace Nuts.BattleSystem.Boss.Scripts
+namespace Projects.BattleSystem.Boss.Scripts
 {
     /// <summary>
     /// 何もしないIEnemyAttackExecutorの実装クラス

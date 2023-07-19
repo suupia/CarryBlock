@@ -2,17 +2,17 @@ using Carry.CarrySystem.CarryScene.Scripts;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
 using Fusion;
-using Nuts.BattleSystem.Enemy.Scripts;
-using Nuts.BattleSystem.GameScene.Scripts;
-using Nuts.BattleSystem.Player.Scripts;
-using Nuts.BattleSystem.Spawners.Scripts;
-using Nuts.Utility.Scripts;
+using Projects.BattleSystem.Enemy.Scripts;
+using Projects.BattleSystem.GameScene.Scripts;
+using Projects.BattleSystem.Player.Scripts;
+using Projects.BattleSystem.Spawners.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using GameContext = Nuts.BattleSystem.GameScene.Scripts.GameContext;
+using GameContext = Projects.BattleSystem.GameScene.Scripts.GameContext;
 
-namespace Nuts.BattleSystem.LobbyScene.Scripts
+namespace Projects.BattleSystem.LobbyScene.Scripts
 {
     public sealed class LobbyLifetimeScope : LifetimeScope
     {
@@ -33,7 +33,7 @@ namespace Nuts.BattleSystem.LobbyScene.Scripts
             builder.RegisterComponentInHierarchy<LobbyInitializer>();
             
             builder.Register<ResourceAggregator>(Lifetime.Singleton);
-            builder.Register<GameContext>(Lifetime.Singleton);
+            builder.Register<GameScene.Scripts.GameContext>(Lifetime.Singleton);
             builder.Register<WaveTimer>(Lifetime.Singleton);
         }
     }

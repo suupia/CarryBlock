@@ -2,7 +2,7 @@
 using Fusion;
 using UnityEngine;
 
-namespace Nuts.BattleSystem.Spawners.Scripts
+namespace Projects.BattleSystem.Spawners.Scripts
 {
     public class SpawnerTransformContainer
     {

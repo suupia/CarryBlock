@@ -1,10 +1,10 @@
 using Fusion;
-using Nuts.NetworkUtility.ObjectPool.Scripts;
+using Projects.NetworkUtility.ObjectPool.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Nuts.BattleSystem.Enemy.Scripts
+namespace Projects.BattleSystem.Enemy.Scripts
 {
     [RequireComponent(typeof(NetworkObject))]
     public class NetworkResourceController : PoolableObject

@@ -1,15 +1,15 @@
 using System;
 using System.Linq;
 using Fusion;
-using Nuts.NetworkUtility.ObjectPool.Scripts;
-using Nuts.BattleSystem.Decoration.Scripts;
-using Nuts.Projects.BattleSystem.Decoration.Scripts;
-using Nuts.BattleSystem.Enemy.Scripts.Player.Attack;
 using UnityEngine;
-using  Nuts.BattleSystem.Enemy.Monster.Interfaces;
+using Projects.BattleSystem.Decoration.Scripts;
+using Projects.BattleSystem.Enemy.Monster.Interfaces;
+using Projects.BattleSystem.Enemy.Scripts.Player.Attack;
+using Projects.NetworkUtility.ObjectPool.Scripts;
+using Projects.Projects.BattleSystem.Decoration.Scripts;
 using UnityEngine.Serialization;
 
-namespace Nuts.BattleSystem.Boss.Scripts
+namespace Projects.BattleSystem.Boss.Scripts
 {
     // ReSharper disable once InconsistentNaming
     public class Monster1Controller_Net : PoolableObject, IEnemyOnAttacked
