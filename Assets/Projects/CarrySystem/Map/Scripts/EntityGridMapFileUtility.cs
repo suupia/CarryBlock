@@ -25,7 +25,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public static string GetDefaultFilePath()
         {
             // このパスに白紙のマップデータを必ず置いておく
-            return GetFolderPath() + $"/MapData_{MapKey.Default}_{0}.json";
+            return GetFolderPath() + $"/MapData_{MapKey.Default}_{-1}.json";
         }
     }
 }

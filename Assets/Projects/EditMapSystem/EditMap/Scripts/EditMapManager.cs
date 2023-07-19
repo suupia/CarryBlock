@@ -27,9 +27,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             _gridMapLoader = entityGridMapLoader;
             _tilePresenterBuilder = tilePresenterBuilder;
-            _mapKey = MapKey.Default;
-            _index = 0;
-            _map = _gridMapLoader.LoadEntityGridMap(_mapKey,_index); // Defaultのマップの0番目のデータを読み込む
+            _map = _gridMapLoader.LoadDefaultEntityGridMap(); // Defaultのマップデータを読み込む
         }
 
         public EntityGridMap GetMap()

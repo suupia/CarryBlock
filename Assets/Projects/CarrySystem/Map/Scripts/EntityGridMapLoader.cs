@@ -51,7 +51,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 {
                     Debug.LogError("rockRecords is not initialized properly!");
                 }
-    
+
                 // BasicBlock
                 if (gridMapData.basicBlockRecords != null)
                 {
@@ -67,6 +67,23 @@ namespace Carry.CarrySystem.Map.Scripts
             }
 
             return map;
+        }
+
+        public EntityGridMap LoadDefaultEntityGridMap()
+        {
+            EntityGridMapData entityGridMapData;
+
+            string filePath = EntityGridMapFileUtility.GetDefaultFilePath(); // このパスには白紙のマップデータを必ず置いておく
+
+            using (StreamReader streamReader = new StreamReader(filePath))
+            {
+                string data = streamReader.ReadToEnd();
+                streamReader.Close();
+                entityGridMapData = JsonUtility.FromJson<EntityGridMapData>(data);
+            }
+            
+
+            return new EntityGridMap(entityGridMapData.width, entityGridMapData.height);
         }
 
         EntityGridMapData Load(MapKey key, int mapDataIndex)
@@ -86,7 +103,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 streamReader.Close();
                 entityGridMapData = JsonUtility.FromJson<EntityGridMapData>(data);
             }
-            
+
             Debug.Log($"Complete Load MapData:{key}_{mapDataIndex}\nfilePath:{filePath}");
 
             return entityGridMapData;

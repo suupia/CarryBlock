@@ -30,6 +30,16 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             return (EntityGridMap)MemberwiseClone();
         }
+
+        public EntityGridMap ClearMap()
+        {
+            for (int i = 0; i < GetLength(); i++)
+            {
+                _entityMaps[i] = new List<IEntity>();
+            }
+
+            return this;
+        }
         
         public void RegisterTilePresenter(ITilePresenter tilePresenter, int index)
         {

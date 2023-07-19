@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Scripts;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -86,6 +87,11 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 CloseSaveUI();
+            }
+
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                SaveDefaultMap();
             }
 
             switch (_inputState)
@@ -199,8 +205,28 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         void AutoSave()
         {
             // オートセーブはインデックス0に保存する
-            if (_key == MapKey.Default ) return; // ToDo: とりあえずMapKeyがデフォルトの時はオートセーブしない
             _entityGridMapSaver.SaveMap(_editMapManager.GetMap(), _key, 0);
+        }
+
+        /// <summary>
+        /// Defaultのマップを保存する
+        /// </summary>
+        void SaveDefaultMap()
+        {
+            Debug.Log("SaveDefaultMap");
+            // インデックスが-1であるデフォルトマップを更新する
+
+            var clearedMap = _editMapManager.GetMap().ClearMap();
+            
+            // すべてのマスにGroundを設置する
+            for (int i = 0; i < clearedMap.GetLength(); i++)
+            {
+                var record = new GroundRecord() { kind = Ground.Kind.Kind1 };
+                var gridPosition = clearedMap.GetVectorFromIndex(i);
+
+                clearedMap.AddEntity(gridPosition, new Ground(record, gridPosition));
+            }
+            _entityGridMapSaver.SaveMap(_editMapManager.GetMap().ClearMap(), MapKey.Default, -1);
         }
     }
 }
