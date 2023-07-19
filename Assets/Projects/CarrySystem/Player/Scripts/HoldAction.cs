@@ -15,13 +15,19 @@ namespace Carry.CarrySystem.Player.Scripts
     public class HoldAction : ICharacterHoldAction
     {
         readonly int _maxHoldBlockCount = 2;
-        
+
+        IObjectResolver _resolver;
         PlayerInfo _info;
         EntityGridMap _map;
         EntityGridMapSwitcher _mapSwitcher;
         IHoldActionPresenter? _presenter;
         bool _isHoldingBlock = false;
         IBlock? _holdingBlock = null;
+        
+        public HoldAction(IObjectResolver resolver)
+        {
+            _resolver = resolver;
+        }
         
         public void SetHoldPresenter(IHoldActionPresenter presenter)
         {
@@ -31,9 +37,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Setup(PlayerInfo info)
         {
             _info = info;
-            var resolver =
-                Object.FindObjectOfType<LifetimeScope>().Container; // このコンストラクタはNetworkBehaviour内で実行されるため、ここで取得してよい
-            _mapSwitcher = resolver.Resolve<EntityGridMapSwitcher>();
+            _mapSwitcher = _resolver.Resolve<EntityGridMapSwitcher>();
             _map =_mapSwitcher.GetMap();
         }
 
