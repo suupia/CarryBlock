@@ -44,6 +44,7 @@ namespace Carry.CarrySystem.Map.Scripts
                     if (gridMapData.rockRecords[i].kind != Rock.Kind.None)
                     {
                         map.AddEntity(i, new Rock(gridMapData.rockRecords[i], map.GetVectorFromIndex(i)));
+                        Debug.Log($"RockをAdd");
                     }
                 }
                 else

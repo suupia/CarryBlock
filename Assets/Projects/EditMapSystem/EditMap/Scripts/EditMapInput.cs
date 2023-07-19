@@ -77,9 +77,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
                 
                 // とりあえずRockを足す
-                // _editMapManager.AddRock(mouseGridPosOnGround);
+                 _editMapManager.AddRock(mouseGridPosOnGround);
                 
-                _editMapManager.AddBasicBlock(mouseGridPosOnGround);
+                //  _editMapManager.AddBasicBlock(mouseGridPosOnGround);
             }
             
             if (Input.GetMouseButtonDown(1))

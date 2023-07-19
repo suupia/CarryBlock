@@ -22,6 +22,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         readonly float _displayTime = 1.5f; // メッセージを表示する時間
         bool _isOpened = false;
+        bool _isLoading = false;
 
         MapKey _key;
         int _index;
@@ -113,10 +114,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         async void LoadProcess()
         {
+            if(_isLoading) return;
             messageText.text = "Loaded.";
-            _editMapManager.UpdateMap(_key,_index);
+            _editMapManager.UpdateMap(_key,_index); // 何回も呼ばれていたUniRxを使った方が間違えがなかったかも
+            _isLoading = true;
             await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
             _inputState = CUIInputState.End;
+            _isLoading = false;
         }
 
         async void NotExistProcess()

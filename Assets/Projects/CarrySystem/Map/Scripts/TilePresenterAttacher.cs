@@ -32,12 +32,14 @@ namespace Carry.CarrySystem.Map.Scripts
                 var existGround = map.GetSingleEntity<Ground>(i) != null;
                 var existRock = map.GetSingleEntity<Rock>(i) != null;
                 var existBasicBlock = map.GetSingleEntity<BasicBlock>(i) != null;
-
-                tilePresenter.SetInitEntityActiveData(map.GetSingleEntity<Ground>(i), existGround);
-
-                tilePresenter.SetInitEntityActiveData(map.GetSingleEntity<Rock>(i), existRock);
                 
-                tilePresenter.SetInitEntityActiveData(map.GetSingleEntity<BasicBlock>(i), existBasicBlock);
+                if(existRock) Debug.Log($"existGround: {existGround}, existRock: {existRock}, existBasicBlock: {existBasicBlock}");
+
+                if(map.GetSingleEntity<Ground>(i) is {} ground) tilePresenter.SetInitEntityActiveData(ground, existGround);
+
+                if(map.GetSingleEntity<Rock>(i) is {} rock) tilePresenter.SetInitEntityActiveData(rock, existRock);
+                
+                if(map.GetSingleEntity<BasicBlock>(i) is {} basicBlock) tilePresenter.SetInitEntityActiveData(basicBlock, existBasicBlock);
 
                 // mapにTilePresenterを登録
                 map.RegisterTilePresenter(tilePresenter, i);

@@ -8,6 +8,7 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Projects.CarrySystem.Block.Scripts;
 
+#nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
@@ -24,12 +25,11 @@ namespace Carry.CarrySystem.Map.Scripts
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
         
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
-        [SerializeField] GameObject groundObject;
-        [SerializeField] GameObject rockObject;
-        [SerializeField] GameObject doubleRockObject;
-        [SerializeField] GameObject basicBlockObject;
+        [SerializeField] GameObject groundObject = null!;
+        [SerializeField] GameObject rockObject= null!;
+        [SerializeField] GameObject doubleRockObject= null!;
+        [SerializeField] GameObject basicBlockObject= null!;
         
-        EntityGridMap _map;
         public override void Render()
         {
             if (groundObject.activeSelf != PresentDataRef.IsGroundActive)
@@ -58,14 +58,10 @@ namespace Carry.CarrySystem.Map.Scripts
                     PresentDataRef.IsGroundActive = isActive;
                     break;
                 case Rock _:
-                    PresentDataRef.IsRockActive = isActive;
+                    PresentDataRef.IsRockActive= isActive;
                     break;
                 case BasicBlock  _ :
                     PresentDataRef.IsBasicBlockActive = isActive;
-                    break;
-                case null :
-                    PresentDataRef.IsRockActive = false;
-                    PresentDataRef.IsDoubleRockActive = false;
                     break;
                 default:
                     throw new System.Exception($"想定外のEntityが渡されました entity : {entity}");
@@ -86,7 +82,7 @@ namespace Carry.CarrySystem.Map.Scripts
                             PresentDataRef.IsDoubleRockActive = false;
                             break;
                         case 1:
-                            PresentDataRef.IsRockActive = true;
+                            PresentDataRef.IsRockActive= true;
                             PresentDataRef.IsDoubleRockActive = false;
                             break;
                         case 2:

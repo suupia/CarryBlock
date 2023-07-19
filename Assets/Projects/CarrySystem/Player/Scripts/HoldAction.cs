@@ -55,13 +55,11 @@ namespace Carry.CarrySystem.Player.Scripts
 
             // 前方のGridPosを取得
             var forwardGridPos = GetForwardGridPos(transform);
-             Debug.Log($"Player Forward GridPos: {forwardGridPos}");
 
             // そのGridPosにBlockがあるかどうかを確認
-            var index = _map.GetIndexFromVector(forwardGridPos);
-            Debug.Log($"index : {index}のIBlockは{_map.GetSingleEntity<IBlock>(index)}です");
             var blocks = _map.GetSingleEntityList<IBlock>(forwardGridPos);
             var blocksCount = blocks.Count;
+            Debug.Log($"forwardGridPos: {forwardGridPos}, blocks: {string.Join(",",blocks)}");
             
             if (_isHoldingBlock)
             {
