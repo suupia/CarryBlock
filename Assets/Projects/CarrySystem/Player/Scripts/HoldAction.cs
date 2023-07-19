@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class HoldAction : ICharacterHoldAction
     {
-        readonly int _maxHoldBlockCount = 2;
+        readonly int _maxPlacedBlockCount = 1;
 
         IObjectResolver _resolver;
         PlayerInfo _info;
@@ -63,7 +63,7 @@ namespace Carry.CarrySystem.Player.Scripts
             
             if (_isHoldingBlock)
             {
-                if (blocksCount < _maxHoldBlockCount)
+                if (blocksCount < _maxPlacedBlockCount)
                 {
                     PutDownBlock(forwardGridPos,blocksCount);
                 }
