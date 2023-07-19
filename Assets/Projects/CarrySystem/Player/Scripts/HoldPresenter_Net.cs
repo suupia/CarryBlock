@@ -26,9 +26,9 @@ namespace Carry.CarrySystem.Player.Scripts
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
-        [FormerlySerializedAs("holdingBlock")] [SerializeField] GameObject holdingRock;
-        [SerializeField] GameObject holdingDoubleRock;
-        [SerializeField] GameObject holdingBasicBlock;
+        [SerializeField] GameObject holdingRock= null!;
+        [SerializeField] GameObject holdingDoubleRock= null!;
+        [SerializeField] GameObject holdingBasicBlock= null!;
         
         public void Init(ICharacter character)
         {

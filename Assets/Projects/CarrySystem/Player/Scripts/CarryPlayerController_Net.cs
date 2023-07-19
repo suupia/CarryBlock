@@ -14,12 +14,12 @@ namespace Carry.CarrySystem.Player.Scripts
     [RequireComponent(typeof(HoldPresenter_Net))]
     public class CarryPlayerController_Net : AbstractNetworkPlayerController
     {
-        [SerializeField]  Transform unitObjectParent; // The NetworkCharacterControllerPrototype interpolates this transform.
+        [SerializeField]  Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
         public Transform InterpolationTransform => unitObjectParent;
 
-        [SerializeField] GameObject[] playerUnitPrefabs;
+        [SerializeField] GameObject[] playerUnitPrefabs= null!;
 
-        [SerializeField] PlayerInfo info;
+        [SerializeField] PlayerInfo info= null!;
 
         [Networked] NetworkButtons PreButtons { get; set; }
         [Networked] public NetworkBool IsReady { get; set; }
@@ -32,8 +32,8 @@ namespace Carry.CarrySystem.Player.Scripts
         // PlayerDecorationDetector _decorationDetector;
         
         
-        ICharacter _character;
-        GameObject _characterObj;
+        ICharacter _character = null!;
+        GameObject _characterObj= null!;
         
         bool _isSpawned; // FixedUpdateNetwork()が呼ばれる前にSpawned()が呼ばれるため必要ないと言えば必要ない
         

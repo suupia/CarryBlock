@@ -53,7 +53,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
     public class CharacterMove : ICharacterMove
     {
-        PlayerInfo _info;
+        PlayerInfo _info= null!;
          float _acceleration  = 30f;
          float _maxVelocity = 8f;
          float _targetRotationTime= 0.2f;
