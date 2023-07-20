@@ -6,7 +6,7 @@ using Carry.CarrySystem.Map.Scripts;
 #nullable enable
 namespace Carry.CarrySystem.Map.MapData
 {
-    public class EntityGridMapData3 : EntityGridMapData
+    public record EntityGridMapData3 : EntityGridMapData
     {
         readonly int _length;
 

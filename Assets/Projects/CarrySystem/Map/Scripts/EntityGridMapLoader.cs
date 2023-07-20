@@ -13,14 +13,61 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EntityGridMapLoader
     {
-        public EntityGridMapLoader()
-        {
-        }
-
         public EntityGridMap LoadEntityGridMap(MapKey key, int mapDataIndex)
         {
             var gridMapData = Load(key, mapDataIndex);
+            return BuildEntityGridMap(gridMapData);
+        }
 
+        public EntityGridMap LoadDefaultEntityGridMap()
+        {
+            var defaultGridMapData = LoadDefault();
+            return BuildEntityGridMap(defaultGridMapData);
+        }
+
+        EntityGridMapData LoadDefault()
+        {
+            EntityGridMapData entityGridMapData;
+
+            string filePath = EntityGridMapFileUtility.GetDefaultFilePath(); // このパスには白紙のマップデータを必ず置いておく
+
+            using (StreamReader streamReader = new StreamReader(filePath))
+            {
+                string data = streamReader.ReadToEnd();
+                streamReader.Close();
+                entityGridMapData = JsonUtility.FromJson<EntityGridMapData>(data);
+            }
+            
+            Debug.Log($"Complete Load DefaultMapData\nfilePath:{filePath}");
+
+            return entityGridMapData;
+        }
+
+        EntityGridMapData Load(MapKey key, int mapDataIndex)
+        {
+            EntityGridMapData entityGridMapData;
+            string filePath = EntityGridMapFileUtility.GetFilePath(key, mapDataIndex);
+
+            if (!EntityGridMapFileUtility.IsExitFile(key, mapDataIndex))
+            {
+                Debug.LogWarning($"パス:{filePath}にjsonファイルが存在しないためデフォルトのデータを読み込みます");
+                filePath = EntityGridMapFileUtility.GetDefaultFilePath(); // このパスには白紙のマップデータを必ず置いておく
+            }
+
+            using (StreamReader streamReader = new StreamReader(filePath))
+            {
+                string data = streamReader.ReadToEnd();
+                streamReader.Close();
+                entityGridMapData = JsonUtility.FromJson<EntityGridMapData>(data);
+            }
+
+            Debug.Log($"Complete Load MapData:{key}_{mapDataIndex}\nfilePath:{filePath}");
+
+            return entityGridMapData;
+        }
+
+        EntityGridMap BuildEntityGridMap(EntityGridMapData gridMapData)
+        {
             var map = new EntityGridMap(gridMapData.width, gridMapData.height);
 
             for (int i = 0; i < map.GetLength(); i++)
@@ -67,46 +114,6 @@ namespace Carry.CarrySystem.Map.Scripts
             }
 
             return map;
-        }
-
-        public EntityGridMap LoadDefaultEntityGridMap()
-        {
-            EntityGridMapData entityGridMapData;
-
-            string filePath = EntityGridMapFileUtility.GetDefaultFilePath(); // このパスには白紙のマップデータを必ず置いておく
-
-            using (StreamReader streamReader = new StreamReader(filePath))
-            {
-                string data = streamReader.ReadToEnd();
-                streamReader.Close();
-                entityGridMapData = JsonUtility.FromJson<EntityGridMapData>(data);
-            }
-            
-
-            return new EntityGridMap(entityGridMapData.width, entityGridMapData.height);
-        }
-
-        EntityGridMapData Load(MapKey key, int mapDataIndex)
-        {
-            EntityGridMapData entityGridMapData;
-            string filePath = EntityGridMapFileUtility.GetFilePath(key, mapDataIndex);
-
-            if (!EntityGridMapFileUtility.IsExitFile(key, mapDataIndex))
-            {
-                Debug.LogWarning($"パス:{filePath}にjsonファイルが存在しないためデフォルトのデータを読み込みます");
-                filePath = EntityGridMapFileUtility.GetDefaultFilePath(); // このパスには白紙のマップデータを必ず置いておく
-            }
-
-            using (StreamReader streamReader = new StreamReader(filePath))
-            {
-                string data = streamReader.ReadToEnd();
-                streamReader.Close();
-                entityGridMapData = JsonUtility.FromJson<EntityGridMapData>(data);
-            }
-
-            Debug.Log($"Complete Load MapData:{key}_{mapDataIndex}\nfilePath:{filePath}");
-
-            return entityGridMapData;
         }
     }
 }

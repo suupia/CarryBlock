@@ -226,7 +226,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
                 clearedMap.AddEntity(gridPosition, new Ground(record, gridPosition));
             }
-            _entityGridMapSaver.SaveMap(_editMapManager.GetMap().ClearMap(), MapKey.Default, -1);
+            _entityGridMapSaver.SaveMap(clearedMap, MapKey.Default, -1);
         }
     }
 }

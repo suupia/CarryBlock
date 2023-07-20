@@ -8,7 +8,7 @@ using Projects.CarrySystem.Block.Scripts;
 namespace Carry.CarrySystem.Map.Scripts
 {
     [Serializable]
-    public class EntityGridMapData
+    public record EntityGridMapData
     {
         public int width;
         public int height;

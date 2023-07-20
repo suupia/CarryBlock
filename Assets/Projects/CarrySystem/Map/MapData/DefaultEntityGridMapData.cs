@@ -10,7 +10,7 @@ using Carry.CarrySystem.Map.Scripts;
 
 namespace Carry.CarrySystem.Map.MapData
 {
-    public class DefaultEntityGridMapData : EntityGridMapData
+    public record DefaultEntityGridMapData : EntityGridMapData
     {
         // 適当に作っている
         // 必要があれば、マップ制作シーンで作れるようにする
