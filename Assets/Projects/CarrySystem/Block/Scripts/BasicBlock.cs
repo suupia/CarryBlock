@@ -1,5 +1,8 @@
 ﻿#nullable enable
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Carry.CarrySystem.Map.Scripts;
 using Projects.CarrySystem.Block.Interfaces;
 using UnityEngine;
 
@@ -16,7 +19,6 @@ namespace Projects.CarrySystem.Block.Scripts
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 2;
-        public bool BeingCarried { get; set; }
         public BasicBlock.Kind KindValue { get; }
 
         public enum Kind
@@ -29,6 +31,36 @@ namespace Projects.CarrySystem.Block.Scripts
         {
             KindValue = kind;
             GridPosition = gridPosition;
+        }
+
+        public bool CanPickUp()
+        {
+            return true;  // basicが持ち上げられない状況はない
+        }
+
+        public void  PickUp()
+        {
+            // 特になし
+        }
+
+        public bool CanPutDown(IList<IBlock> blocks)
+        {
+            var diffList = blocks.Select(x => x.GetType() != this.GetType());
+            Debug.Log($"forward different block count: {diffList.Count()}, list : {string.Join(",", diffList)}");
+            if (blocks.Count(x => x.GetType() != this.GetType()) > 0)
+            {
+                Debug.Log($"Basicと違う種類のBlockがあるため置けません");
+                return false;
+            }
+
+            if (blocks.Count >= MaxPlacedBlockCount) return false; // 現在持ち上げているBlockの設置上限数以上ならfalse
+
+            return true;
+        }
+        
+        public void PutDown()
+        {
+           // 特になし
         }
     }
 }

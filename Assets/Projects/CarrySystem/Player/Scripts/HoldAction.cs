@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
@@ -21,12 +23,12 @@ namespace Carry.CarrySystem.Player.Scripts
         IHoldActionPresenter? _presenter;
         bool _isHoldingBlock = false;
         IBlock? _holdingBlock = null;
-        
+
         public HoldAction(IObjectResolver resolver)
         {
             _resolver = resolver;
         }
-        
+
         public void SetHoldPresenter(IHoldActionPresenter presenter)
         {
             _presenter = presenter;
@@ -36,15 +38,14 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _info = info;
             _mapSwitcher = _resolver.Resolve<EntityGridMapSwitcher>();
-            _map =_mapSwitcher.GetMap();
+            _map = _mapSwitcher.GetMap();
         }
 
         public void Reset()
         {
             _isHoldingBlock = false;
             _presenter?.PutDownRock();
-            _map =_mapSwitcher.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
-
+            _map = _mapSwitcher.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
 
         public void Action()
@@ -56,25 +57,39 @@ namespace Carry.CarrySystem.Player.Scripts
 
             // そのGridPosにBlockがあるかどうかを確認
             var blocks = _map.GetSingleEntityList<IBlock>(forwardGridPos);
-            var blocksCount = blocks.Count;
-            Debug.Log($"forwardGridPos: {forwardGridPos}, blocks: {string.Join(",",blocks)}");
-            
+            Debug.Log($"forwardGridPos: {forwardGridPos}, blocks: {string.Join(",", blocks)}");
+
             if (_isHoldingBlock)
             {
-                
-                if (blocksCount <  (_holdingBlock?.MaxPlacedBlockCount ?? 0))  // 現在持ち上げているものから置ける数を取得
+                if (_holdingBlock == null)
                 {
-                    PutDownBlock(forwardGridPos,blocksCount);
+                    Debug.LogError($"_holdingBlockがnullです");
+                    return;
+                }
+
+                if (_holdingBlock.CanPutDown(blocks))
+                {
+                    _holdingBlock.PutDown();
+                    _map.AddEntity(forwardGridPos, _holdingBlock);
+                    _presenter?.PutDownRock();
+                    _isHoldingBlock = false;
                 }
             }
             else
             {
-                if (blocksCount != 0)
+                IBlock block = null!;
+                if (blocks.Any()) block = blocks.First(); // 一つのマスにはIBlockは一種類しかないという前提
+                else return;
+                
+                if (block.CanPickUp())
                 {
-                    PickUpBlock(forwardGridPos, blocks.First());
+                    block.PickUp();
+                    _map.RemoveEntity(forwardGridPos, block);
+                    _presenter?.PickUpRock();
+                    _holdingBlock = block;
+                    _isHoldingBlock = true;
                 }
             }
-            
         }
 
         Vector2Int GetForwardGridPos(Transform transform)
@@ -85,31 +100,6 @@ namespace Carry.CarrySystem.Player.Scripts
             var gridDirection = GridConverter.WorldDirectionToGridDirection(direction);
             return gridPos + gridDirection;
         }
-
-        void PickUpBlock(Vector2Int forwardGridPos, IBlock block)
-        {
-            // ドメインのBlockを削除（内部のプレゼンターを通して見た目も変わる）
-            _map.RemoveEntity(forwardGridPos, block);
-
-            _isHoldingBlock = true;
-            _holdingBlock = block;
-
-            _presenter?.PickUpRock();
-        }
-
-        void PutDownBlock(Vector2Int forwardGridPos, int blocksCount)
-        {
-            if (_holdingBlock == null)
-            {
-                Debug.LogError($"_holdingBlockがnullです");
-                return;
-            }
-            _map.AddEntity(forwardGridPos, _holdingBlock);
-
-            _isHoldingBlock = false;
-            
-            _presenter?.PutDownRock();
-            
-        }
+        
     }
 }

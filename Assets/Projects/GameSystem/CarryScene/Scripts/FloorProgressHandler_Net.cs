@@ -23,6 +23,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 
         void Update()
         {
+            if(Runner == null) return;
             if(Runner.IsServer && Input.GetKeyDown(KeyCode.N))
             {
                 _mapSwitcher.NextFloor();
