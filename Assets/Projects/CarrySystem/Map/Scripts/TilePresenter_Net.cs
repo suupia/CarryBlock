@@ -34,7 +34,6 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public override void Render()
         {
-            Debug.Log($"GroundCount: {PresentDataRef.GroundCount}, RockCount: {PresentDataRef.RockCount}, BasicBlockCount: {PresentDataRef.BasicBlockCount}");
             groundObject.SetActive(PresentDataRef.GroundCount switch
             {
                 0 => false,
@@ -75,39 +74,9 @@ namespace Carry.CarrySystem.Map.Scripts
         public void SetInitAllEntityActiveData(IEnumerable<IEntity> allEntities)
         {
             var allEntityList = allEntities.ToList();
-            groundObject.SetActive(allEntityList.OfType<Ground>().Count() switch
-            {
-                0 => false,
-                1 => true,
-                _ => throw new InvalidOperationException($"GroundCount : {PresentDataRef.GroundCount}")
-            });
-            
-            rockObject.SetActive(allEntityList.OfType<Rock>().Count()  switch
-            {
-                0 or 2 => false,
-                1 => true,
-                _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.RockCount}")
-            });
-
-            doubleRockObject.SetActive(allEntityList.OfType<Ground>().Count()  switch
-            {
-                0 or 1 => false,
-                2 => true,
-                _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.RockCount}")
-            });
-            
-            basicBlockObject.SetActive(allEntityList.OfType<BasicBlock>().Count() switch
-            {
-                0 or 2 => false,
-                1 => true,
-                _ => throw new InvalidOperationException($"BasicBlockCount : {PresentDataRef.BasicBlockCount}")
-            });
-            doubleBasicBlockObject.SetActive(allEntityList.OfType<BasicBlock>().Count() switch
-            {
-                0 or 1 => false,
-                2 => true,
-                _ => throw new InvalidOperationException($"BasicBlockCount : {PresentDataRef.BasicBlockCount}")
-            });
+            PresentDataRef.GroundCount = allEntityList.OfType<Ground>().Count();
+            PresentDataRef.RockCount = allEntityList.OfType<Rock>().Count();
+            PresentDataRef.BasicBlockCount = allEntityList.OfType<BasicBlock>().Count();
         }
 
         public void SetEntityActiveData(IEntity entity, int count) 
@@ -115,41 +84,13 @@ namespace Carry.CarrySystem.Map.Scripts
             switch (entity)
             {
                 case Ground _:
-                    groundObject.SetActive(count switch
-                    {
-                        0 => false,
-                        1 => true,
-                        _ => throw new InvalidOperationException($"GroundCount : {PresentDataRef.GroundCount}")
-                    });
+                    PresentDataRef.GroundCount = count;
                     break;
                 case Rock _:
-                    rockObject.SetActive(count  switch
-                    {
-                        0 or 2 => false,
-                        1 => true,
-                        _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.RockCount}")
-                    });
-
-                    doubleRockObject.SetActive(count  switch
-                    {
-                        0 or 1 => false,
-                        2 => true,
-                        _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.RockCount}")
-                    });
+                    PresentDataRef.RockCount = count;
                     break;
                 case BasicBlock _:
-                    basicBlockObject.SetActive(count switch
-                    {
-                        0 or 2 => false,
-                        1 => true,
-                        _ => throw new InvalidOperationException($"BasicBlockCount : {PresentDataRef.BasicBlockCount}")
-                    });
-                    doubleBasicBlockObject.SetActive(count switch
-                    {
-                        0 or 1 => false,
-                        2 => true,
-                        _ => throw new InvalidOperationException($"BasicBlockCount : {PresentDataRef.BasicBlockCount}")
-                    });
+                    PresentDataRef.BasicBlockCount = count;
                     break;
                 default:
                     throw new System.Exception("想定外のEntityが渡されました");
