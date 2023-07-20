@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Map.Scripts;
+﻿using System;
+using Carry.CarrySystem.Map.Scripts;
 using Cysharp.Threading.Tasks.Triggers;
 using Fusion;
 using UnityEngine;
@@ -20,18 +21,27 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             _mapSwitcher = resolver.Resolve<EntityGridMapSwitcher>();
         }
 
-        public override void FixedUpdateNetwork()
+        void Update()
         {
-            // if (FloorTimer.ExpiredOrNotRunning(Runner))
-            // {
-            //     _mapSwitcher.NextFloor();
-            //     FloorTimer = TickTimer.CreateFromSeconds(Runner, _updateTime);
-            // }
-            
             if(Runner.IsServer && Input.GetKeyDown(KeyCode.N))
             {
                 _mapSwitcher.NextFloor();
             }
+            
         }
+
+        // public override void FixedUpdateNetwork()
+        // {
+        //     // if (FloorTimer.ExpiredOrNotRunning(Runner))
+        //     // {
+        //     //     _mapSwitcher.NextFloor();
+        //     //     FloorTimer = TickTimer.CreateFromSeconds(Runner, _updateTime);
+        //     // }
+        //     
+        //     if(Runner.IsServer && Input.GetKeyDown(KeyCode.N))
+        //     {
+        //         _mapSwitcher.NextFloor();
+        //     }
+        // }
     }
 }
