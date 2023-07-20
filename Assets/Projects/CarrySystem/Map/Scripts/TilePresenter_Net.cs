@@ -20,6 +20,7 @@ namespace Carry.CarrySystem.Map.Scripts
             public NetworkBool IsRockActive;
             public NetworkBool IsDoubleRockActive;
             public NetworkBool IsBasicBlockActive;
+            public NetworkBool IsDoubleBasicBlockActive;
         }
 
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
@@ -29,6 +30,7 @@ namespace Carry.CarrySystem.Map.Scripts
         [SerializeField] GameObject rockObject= null!;
         [SerializeField] GameObject doubleRockObject= null!;
         [SerializeField] GameObject basicBlockObject= null!;
+        [SerializeField] GameObject doubleBasicBlockObject= null!;
         
         public override void Render()
         {
@@ -47,6 +49,11 @@ namespace Carry.CarrySystem.Map.Scripts
             if (basicBlockObject.activeSelf != PresentDataRef.IsBasicBlockActive)
             {
                 basicBlockObject.SetActive(PresentDataRef.IsBasicBlockActive);
+            }
+
+            if (doubleBasicBlockObject.activeSelf != PresentDataRef.IsDoubleBasicBlockActive)
+            {
+                doubleBasicBlockObject.SetActive(PresentDataRef.IsDoubleBasicBlockActive);
             }
         }
         
@@ -99,9 +106,15 @@ namespace Carry.CarrySystem.Map.Scripts
                     {
                         case 0:
                             PresentDataRef.IsBasicBlockActive = false;
+                            PresentDataRef.IsDoubleBasicBlockActive = false;
                             break;
                         case 1:
                             PresentDataRef.IsBasicBlockActive = true;
+                            PresentDataRef.IsDoubleBasicBlockActive = false;
+                            break;
+                        case 2:
+                            PresentDataRef.IsBasicBlockActive = false;
+                            PresentDataRef.IsDoubleBasicBlockActive = true;
                             break;
                         default:
                             // 何もしない

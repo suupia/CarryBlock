@@ -60,6 +60,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public void RemoveRock(Vector2Int gridPos)
         {
             var rocks = _map.GetSingleEntityList<Rock>(gridPos);
+            if(!rocks.Any()) return;
             var rock = rocks.First();
             if(_map.IsInDataRangeArea(gridPos)) _map.RemoveEntity(gridPos,rock);
         }
@@ -69,6 +70,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             if(_map.IsInDataRangeArea(gridPos)) _map.AddEntity(gridPos, new BasicBlock( BasicBlock.Kind.Kind1, gridPos));
 
+        }
+        
+        public void RemoveBasicBlock(Vector2Int gridPos)
+        {
+            var basics = _map.GetSingleEntityList<BasicBlock>(gridPos);
+            if(!basics.Any())return;
+            var basic = basics.First();
+            if(_map.IsInDataRangeArea(gridPos)) _map.RemoveEntity(gridPos,basic);
         }
 
         

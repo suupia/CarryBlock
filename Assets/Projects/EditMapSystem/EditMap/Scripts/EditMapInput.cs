@@ -18,12 +18,19 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         EntityGridMapSaver _entityGridMapSaver;
         
         CUIState _cuiState = CUIState.Idle;
+        EntityType _entityType;
 
         enum CUIState
         {
             Idle,
             OpenSaveCUI,
             OpenLoadCUI,
+        }
+        
+        enum EntityType
+        {
+            BasicBlock,
+            Rock,
         }
         
         [Inject]
@@ -76,10 +83,15 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
                 
-                // とりあえずRockを足す
-                 _editMapManager.AddRock(mouseGridPosOnGround);
-                
-                //  _editMapManager.AddBasicBlock(mouseGridPosOnGround);
+                 switch (_entityType)
+                 {
+                     case EntityType.BasicBlock:
+                         _editMapManager.AddBasicBlock(mouseGridPosOnGround);
+                         break;
+                     case EntityType.Rock:
+                         _editMapManager.AddRock(mouseGridPosOnGround);
+                         break;
+                 }
             }
             
             if (Input.GetMouseButtonDown(1))
@@ -87,8 +99,24 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
                 
-                // とりあえずRockを消す
-                _editMapManager.RemoveRock(mouseGridPosOnGround);
+                switch (_entityType)
+                {
+                    case EntityType.BasicBlock:
+                        _editMapManager.RemoveBasicBlock(mouseGridPosOnGround);
+                        break;
+                    case EntityType.Rock:
+                        _editMapManager.RemoveBasicBlock(mouseGridPosOnGround);
+                        break;
+                }
+            }
+            
+            if(Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+            {
+                _entityType = EntityType.BasicBlock;
+            }
+            if(Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+            {
+                _entityType = EntityType.Rock;
             }
 
             if (Input.GetKeyDown(KeyCode.S))

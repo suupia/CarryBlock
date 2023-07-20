@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class HoldAction : ICharacterHoldAction
     {
-        readonly int _maxPlacedBlockCount = 1;
+        readonly int _maxPlacedBlockCount = 2;
 
         IObjectResolver _resolver;
         PlayerInfo _info;
