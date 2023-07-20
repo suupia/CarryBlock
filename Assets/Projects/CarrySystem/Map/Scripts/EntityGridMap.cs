@@ -110,27 +110,29 @@ namespace Carry.CarrySystem.Map.Scripts
         }
 
 
-        public List<IEntity> GetAllEntityList(Vector2Int vector)
+        public IEnumerable<IEntity> GetAllEntityList(Vector2Int vector)
         {
             int x, y;
             x = vector.x;
             y = vector.y;
 
-            if (IsOutOfDataRangeArea(x, y)) return default(List<IEntity>);
+            if (IsOutOfDataRangeArea(x, y)) return  new List<IEntity>();
+            
+            return GetSingleEntityList<IEntity>(ToSubscript(x, y));
 
-            int index = ToSubscript(vector.x, vector.y);
-
-            var resultEntityList = new List<IEntity>();
-
+        }
+        
+        public IEnumerable<IEntity> GetAllEntityList(int  index)
+        {
             if (index < 0 || index > GetLength())
             {
                 Debug.LogError("領域外の値を習得しようとしました");
-                return default(List<IEntity>);
+                return new List<IEntity>(); // 空のリストを返す
             }
 
             return _entityMaps[index];
         }
-
+        
         public void AddEntity<TEntity>(Vector2Int vector, TEntity entity) where TEntity : IEntity
         {
             var x = vector.x;

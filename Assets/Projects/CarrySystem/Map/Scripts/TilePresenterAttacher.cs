@@ -23,8 +23,6 @@ namespace Carry.CarrySystem.Map.Scripts
             for (int i = 0; i < tilePresenters.Count(); i++)
             {
                 var tilePresenter = tilePresenters.ElementAt(i);
-                // ReSharper disable once NotAccessedVariable
-                var presentData = tilePresenter.PresentDataRef;
 
                 // RegisterTilePresenter()の前なのでSetEntityActiveData()を実行する必要がある
                 // Presenterの初期化処理みたいなもの
@@ -34,14 +32,13 @@ namespace Carry.CarrySystem.Map.Scripts
                 
                 if(existRock) Debug.Log($"existGround: {existGround}, existRock: {existRock}, existBasicBlock: {existBasicBlock}");
 
-                if(map.GetSingleEntity<Ground>(i) is {} ground) tilePresenter.SetInitEntityActiveData(ground, existGround);
-
-                if(map.GetSingleEntity<Rock>(i) is {} rock) tilePresenter.SetInitEntityActiveData(rock, existRock);
-                
-                if(map.GetSingleEntity<BasicBlock>(i) is {} basicBlock) tilePresenter.SetInitEntityActiveData(basicBlock, existBasicBlock);
+                tilePresenter.SetInitAllEntityActiveData(map.GetAllEntityList(i)  );
 
                 // mapにTilePresenterを登録
                 map.RegisterTilePresenter(tilePresenter, i);
+                
+                
+                
             }
         }
     }

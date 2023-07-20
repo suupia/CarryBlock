@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using UnityEngine;
@@ -16,11 +18,9 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         public struct PresentData : INetworkStruct
         {
-            public NetworkBool IsGroundActive;
-            public NetworkBool IsRockActive;
-            public NetworkBool IsDoubleRockActive;
-            public NetworkBool IsBasicBlockActive;
-            public NetworkBool IsDoubleBasicBlockActive;
+            public int GroundCount;
+            public int BasicBlockCount;
+            public int RockCount;
         }
 
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
@@ -34,92 +34,122 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public override void Render()
         {
-            if (groundObject.activeSelf != PresentDataRef.IsGroundActive)
+            Debug.Log($"GroundCount: {PresentDataRef.GroundCount}, RockCount: {PresentDataRef.RockCount}, BasicBlockCount: {PresentDataRef.BasicBlockCount}");
+            groundObject.SetActive(PresentDataRef.GroundCount switch
             {
-                groundObject.SetActive(PresentDataRef.IsGroundActive);
-            }
-            if (rockObject.activeSelf != PresentDataRef.IsRockActive)
+                0 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"GroundCount : {PresentDataRef.GroundCount}")
+            });
+            
+            rockObject.SetActive(PresentDataRef.RockCount switch
             {
-                rockObject.SetActive(PresentDataRef.IsRockActive);
-            }
-            if (doubleRockObject.activeSelf != PresentDataRef.IsDoubleRockActive)
-            {
-                doubleRockObject.SetActive(PresentDataRef.IsDoubleRockActive);
-            }
-            if (basicBlockObject.activeSelf != PresentDataRef.IsBasicBlockActive)
-            {
-                basicBlockObject.SetActive(PresentDataRef.IsBasicBlockActive);
-            }
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.RockCount}")
+            });
 
-            if (doubleBasicBlockObject.activeSelf != PresentDataRef.IsDoubleBasicBlockActive)
+            doubleRockObject.SetActive(PresentDataRef.RockCount switch
             {
-                doubleBasicBlockObject.SetActive(PresentDataRef.IsDoubleBasicBlockActive);
-            }
+                0 or 1 => false,
+                2 => true,
+                _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.RockCount}")
+            });
+            
+            basicBlockObject.SetActive(PresentDataRef.BasicBlockCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"BasicBlockCount : {PresentDataRef.BasicBlockCount}")
+            });
+            doubleBasicBlockObject.SetActive(PresentDataRef.BasicBlockCount switch
+            {
+                0 or 1 => false,
+                2 => true,
+                _ => throw new InvalidOperationException($"BasicBlockCount : {PresentDataRef.BasicBlockCount}")
+            });
+
         }
         
-        public void SetInitEntityActiveData(IEntity entity, bool isActive)
+
+        public void SetInitAllEntityActiveData(IEnumerable<IEntity> allEntities)
         {
-            switch (entity)
+            var allEntityList = allEntities.ToList();
+            groundObject.SetActive(allEntityList.OfType<Ground>().Count() switch
             {
-                case Ground _:
-                    PresentDataRef.IsGroundActive = isActive;
-                    break;
-                case Rock _:
-                    PresentDataRef.IsRockActive= isActive;
-                    break;
-                case BasicBlock  _ :
-                    PresentDataRef.IsBasicBlockActive = isActive;
-                    break;
-                default:
-                    throw new System.Exception($"想定外のEntityが渡されました entity : {entity}");
-            }
+                0 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"GroundCount : {PresentDataRef.GroundCount}")
+            });
+            
+            rockObject.SetActive(allEntityList.OfType<Rock>().Count()  switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.RockCount}")
+            });
+
+            doubleRockObject.SetActive(allEntityList.OfType<Ground>().Count()  switch
+            {
+                0 or 1 => false,
+                2 => true,
+                _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.RockCount}")
+            });
+            
+            basicBlockObject.SetActive(allEntityList.OfType<BasicBlock>().Count() switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"BasicBlockCount : {PresentDataRef.BasicBlockCount}")
+            });
+            doubleBasicBlockObject.SetActive(allEntityList.OfType<BasicBlock>().Count() switch
+            {
+                0 or 1 => false,
+                2 => true,
+                _ => throw new InvalidOperationException($"BasicBlockCount : {PresentDataRef.BasicBlockCount}")
+            });
         }
-        public void SetEntityActiveData(IEntity entity,int count)
+
+        public void SetEntityActiveData(IEntity entity, int count) 
         {
             switch (entity)
             {
                 case Ground _:
-                    PresentDataRef.IsGroundActive = true;
+                    groundObject.SetActive(count switch
+                    {
+                        0 => false,
+                        1 => true,
+                        _ => throw new InvalidOperationException($"GroundCount : {PresentDataRef.GroundCount}")
+                    });
                     break;
                 case Rock _:
-                    switch (count)
+                    rockObject.SetActive(count  switch
                     {
-                        case 0:
-                            PresentDataRef.IsRockActive = false;
-                            PresentDataRef.IsDoubleRockActive = false;
-                            break;
-                        case 1:
-                            PresentDataRef.IsRockActive= true;
-                            PresentDataRef.IsDoubleRockActive = false;
-                            break;
-                        case 2:
-                            PresentDataRef.IsRockActive = false;
-                            PresentDataRef.IsDoubleRockActive = true;
-                            break;
-                        default:
-                            // 何もしない
-                            break;
-                    }
+                        0 or 2 => false,
+                        1 => true,
+                        _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.RockCount}")
+                    });
+
+                    doubleRockObject.SetActive(count  switch
+                    {
+                        0 or 1 => false,
+                        2 => true,
+                        _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.RockCount}")
+                    });
                     break;
                 case BasicBlock _:
-                    switch (count)
+                    basicBlockObject.SetActive(count switch
                     {
-                        case 0:
-                            PresentDataRef.IsBasicBlockActive = false;
-                            PresentDataRef.IsDoubleBasicBlockActive = false;
-                            break;
-                        case 1:
-                            PresentDataRef.IsBasicBlockActive = true;
-                            PresentDataRef.IsDoubleBasicBlockActive = false;
-                            break;
-                        case 2:
-                            PresentDataRef.IsBasicBlockActive = false;
-                            PresentDataRef.IsDoubleBasicBlockActive = true;
-                            break;
-                        default:
-                            // 何もしない
-                            break;
-                    }
+                        0 or 2 => false,
+                        1 => true,
+                        _ => throw new InvalidOperationException($"BasicBlockCount : {PresentDataRef.BasicBlockCount}")
+                    });
+                    doubleBasicBlockObject.SetActive(count switch
+                    {
+                        0 or 1 => false,
+                        2 => true,
+                        _ => throw new InvalidOperationException($"BasicBlockCount : {PresentDataRef.BasicBlockCount}")
+                    });
                     break;
                 default:
                     throw new System.Exception("想定外のEntityが渡されました");
