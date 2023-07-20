@@ -4,7 +4,6 @@ using System.IO;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Spawners;
 using UnityEngine;
-using Carry.CarrySystem.Map.MapData;
 using Projects.CarrySystem.Block.Scripts;
 
 #nullable enable
@@ -75,9 +74,13 @@ namespace Carry.CarrySystem.Map.Scripts
                 // Ground
                 if (gridMapData.groundRecords != null)
                 {
-                    if (gridMapData.groundRecords[i].kind != Ground.Kind.None)
+                    foreach (var kind in gridMapData.groundRecords[i].kinds)
                     {
-                        map.AddEntity(i, new Ground(gridMapData.groundRecords[i], map.GetVectorFromIndex(i)));
+                        if (kind != Ground.Kind.None)
+                        {
+                            map.AddEntity(i, new Ground(kind, map.GetVectorFromIndex(i)));
+
+                        }
                     }
                 }
                 else
@@ -88,10 +91,13 @@ namespace Carry.CarrySystem.Map.Scripts
                 // Rock
                 if (gridMapData.rockRecords != null)
                 {
-                    if (gridMapData.rockRecords[i].kind != Rock.Kind.None)
+                    foreach (var kind in gridMapData.rockRecords[i].kinds)
                     {
-                        map.AddEntity(i, new Rock(gridMapData.rockRecords[i], map.GetVectorFromIndex(i)));
-                        Debug.Log($"RockをAdd");
+                        if (kind != Rock.Kind.None)
+                        {
+                            map.AddEntity(i, new Rock(kind, map.GetVectorFromIndex(i)));
+
+                        }
                     }
                 }
                 else
@@ -102,9 +108,13 @@ namespace Carry.CarrySystem.Map.Scripts
                 // BasicBlock
                 if (gridMapData.basicBlockRecords != null)
                 {
-                    if (gridMapData.basicBlockRecords[i].kind != BasicBlock.Kind.None)
+                    foreach (var kind in gridMapData.basicBlockRecords[i].kinds)
                     {
-                        map.AddEntity(i, new BasicBlock(gridMapData.basicBlockRecords[i], map.GetVectorFromIndex(i)));
+                        if (kind != BasicBlock.Kind.None)
+                        {
+                            map.AddEntity(i, new BasicBlock(kind, map.GetVectorFromIndex(i)));
+
+                        }
                     }
                 }
                 else

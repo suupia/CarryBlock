@@ -7,16 +7,16 @@ namespace Projects.CarrySystem.Block.Scripts
 {
     // JSONファイルに書き出すためにSerializableをつける
     [Serializable]
-    public class BasicBlockRecord
+    public record BasicBlockRecord
     {
-        public BasicBlock.Kind kind;
+        public BasicBlock.Kind[] kinds = new BasicBlock.Kind[10];
     }
 
     public class BasicBlock : IBlock
     {
         public Vector2Int GridPosition { get; set; }
         public bool BeingCarried { get; set; }
-        public BasicBlockRecord Record { get; }
+        public BasicBlock.Kind KindValue { get; }
 
         public enum Kind
         {
@@ -24,9 +24,9 @@ namespace Projects.CarrySystem.Block.Scripts
             Kind1,
         }
 
-        public BasicBlock(BasicBlockRecord record, Vector2Int gridPosition)
+        public BasicBlock(BasicBlock.Kind kind, Vector2Int gridPosition)
         {
-            Record = record;
+            KindValue = kind;
             GridPosition = gridPosition;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Spawners;
 using Projects.CarrySystem.Block.Scripts;
@@ -20,21 +21,27 @@ namespace Carry.CarrySystem.Map.Scripts
         public void SaveMap(EntityGridMap map,MapKey key, int mapDataIndex)
         {
             var mapLength = map.GetLength();
-            var rockRecords = new RockRecord[mapLength];
             var groundRecords = new GroundRecord[mapLength];
+            var rockRecords = new RockRecord[mapLength];
             var basicBlockRecords = new BasicBlockRecord[mapLength];
+            
+            for (int i = 0; i < mapLength; i++)
+            {
+                groundRecords[i] = new GroundRecord();
+                rockRecords[i] = new RockRecord();
+                basicBlockRecords[i] = new BasicBlockRecord();
+            }
 
             for (int i = 0; i < mapLength; i++)
             {
-                // Ground
-                if (map.GetSingleEntity<Ground>(i) is {} ground) groundRecords[i] = ground.Record;
+                var grounds = map.GetSingleEntityList<Ground>(i);
+                groundRecords[i].kinds = grounds.Select(x => x.KindValue).ToArray();
                 
-                // Rock
-                if (map.GetSingleEntity<Rock>(i) is {} rock) rockRecords[i] = rock.Record;
+                var rocks = map.GetSingleEntityList<Rock>(i);
+                rockRecords[i].kinds = rocks.Select(x => x.KindValue).ToArray();
                 
-                // BasicBlock
-                if (map.GetSingleEntity<BasicBlock>(i) is {} basicBlock) basicBlockRecords[i] = basicBlock.Record;
-                
+                var basicBlocks = map.GetSingleEntityList<BasicBlock>(i);
+                basicBlockRecords[i].kinds = basicBlocks.Select(x => x.KindValue).ToArray();
             }
 
             // 保存するデータの作成

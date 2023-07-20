@@ -218,13 +218,12 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
             var clearedMap = _editMapManager.GetMap().ClearMap();
             
-            // すべてのマスにGroundを設置する
+            // すべてのマスにGroundを1つ設置する
             for (int i = 0; i < clearedMap.GetLength(); i++)
             {
-                var record = new GroundRecord() { kind = Ground.Kind.Kind1 };
                 var gridPosition = clearedMap.GetVectorFromIndex(i);
 
-                clearedMap.AddEntity(gridPosition, new Ground(record, gridPosition));
+                clearedMap.AddEntity(gridPosition, new Ground(Ground.Kind.Kind1, gridPosition));
             }
             _entityGridMapSaver.SaveMap(clearedMap, MapKey.Default, -1);
         }

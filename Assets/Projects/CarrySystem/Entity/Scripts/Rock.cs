@@ -8,15 +8,15 @@ using UnityEngine;
 namespace Carry.CarrySystem.Entity.Scripts
 {
     [Serializable]
-    public class RockRecord
+    public record RockRecord
     {
-        public Rock.Kind kind;
+        public Rock.Kind[] kinds =new Rock.Kind[5];
     }
     
     public class Rock : IEntity
     {
         public Vector2Int GridPosition { get; set; }
-        public RockRecord Record { get; }
+        public Rock.Kind KindValue { get; }
 
         public enum Kind
         {
@@ -24,9 +24,9 @@ namespace Carry.CarrySystem.Entity.Scripts
             Kind1,
         }
 
-        public Rock(RockRecord record,Vector2Int gridPosition)
+        public Rock(Rock.Kind kind,Vector2Int gridPosition)
         {
-            Record = record;
+            KindValue = kind;
             GridPosition = gridPosition;
         }
 
