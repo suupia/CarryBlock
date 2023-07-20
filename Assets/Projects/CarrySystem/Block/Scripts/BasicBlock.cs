@@ -15,6 +15,7 @@ namespace Projects.CarrySystem.Block.Scripts
     public class BasicBlock : IBlock
     {
         public Vector2Int GridPosition { get; set; }
+        public int MaxPlacedBlockCount { get; } = 2;
         public bool BeingCarried { get; set; }
         public BasicBlock.Kind KindValue { get; }
 
