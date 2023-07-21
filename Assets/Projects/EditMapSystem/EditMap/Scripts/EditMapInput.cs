@@ -1,5 +1,7 @@
 ﻿using System;
+using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Scripts;
+using Projects.CarrySystem.Block.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -14,6 +16,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         [SerializeField] EditMapCUILoad editMapCUILoad;
         [SerializeField] TextMeshProUGUI loadedFileText;
 
+        BlockPlacer _blockPlacer;
         EditMapUpdater _editMapUpdater;
         EntityGridMapSaver _entityGridMapSaver;
         
@@ -34,8 +37,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         }
         
         [Inject]
-        public void Construct(EditMapUpdater editMapUpdater)
+        public void Construct(BlockPlacer blockPlacer, EditMapUpdater editMapUpdater)
         {
+            _blockPlacer = blockPlacer;
             _editMapUpdater = editMapUpdater;
         }
 
@@ -82,14 +86,17 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             {
                 var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
-                
+
+                var map = _editMapUpdater.GetMap();
                  switch (_entityType)
                  {
                      case EntityType.BasicBlock:
-                         _editMapUpdater.AddBasicBlock(mouseGridPosOnGround);
+                         var basicBlock = new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround);
+                         _blockPlacer.AddBlock(map,mouseGridPosOnGround,basicBlock );
                          break;
                      case EntityType.Rock:
-                         _editMapUpdater.AddRock(mouseGridPosOnGround);
+                         var rock = new Rock(Rock.Kind.Kind1,  mouseGridPosOnGround);
+                         _blockPlacer.AddBlock(map, mouseGridPosOnGround, rock);
                          break;
                  }
             }
@@ -99,13 +106,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
                 
+                var map = _editMapUpdater.GetMap();
                 switch (_entityType)
                 {
                     case EntityType.BasicBlock:
-                        _editMapUpdater.RemoveBasicBlock(mouseGridPosOnGround);
+                        _blockPlacer.RemoveBlock<BasicBlock>(map,mouseGridPosOnGround );
                         break;
                     case EntityType.Rock:
-                        _editMapUpdater.RemoveRock(mouseGridPosOnGround);
+                        _blockPlacer.RemoveBlock<Rock>(map,mouseGridPosOnGround);
                         break;
                 }
             }

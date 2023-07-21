@@ -28,6 +28,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<TilePresenterAttacher>(Lifetime.Scoped);
 
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
+            builder.Register<BlockPlacer>(Lifetime.Scoped);
             builder.Register<EditMapUpdater>(Lifetime.Scoped);
             
             // Input

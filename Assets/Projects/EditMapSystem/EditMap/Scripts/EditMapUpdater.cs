@@ -57,59 +57,5 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             _index = index;
         }
 
-        // ToDo: 以下の関数をMapEditorクラスに移して、このクラスをコンテナの役割に特化させる
-        // 以下のメソッドは抽象化したほうがよい
-
-        public void AddRock(Vector2Int gridPos)
-        {
-            if (!_map.IsInDataRangeArea(gridPos)) return;
-
-            var newRock = new Rock(Rock.Kind.Kind1, gridPos);
-            var allEntityList = _map.GetAllEntityList(gridPos).ToList();
-            var rockCount = allEntityList.OfType<Rock>().Count();
-            var groundCount = allEntityList.OfType<Ground>().Count();
-            var othersCount = allEntityList.Count() - rockCount - groundCount;
-
-            Debug.Log($"rockCount:{rockCount} groundCount:{groundCount} othersCount:{othersCount}");
-            if (rockCount >= newRock.MaxPlacedBlockCount) return;
-            if (othersCount > 0) return;
-
-            _map.AddEntity(gridPos, newRock);
-        }
-
-        public void RemoveRock(Vector2Int gridPos)
-        {
-            var rocks = _map.GetSingleEntityList<Rock>(gridPos);
-            if (!rocks.Any()) return;
-            var rock = rocks.First();
-            if (_map.IsInDataRangeArea(gridPos)) _map.RemoveEntity(gridPos, rock);
-        }
-
-
-        public void AddBasicBlock(Vector2Int gridPos)
-        {
-            if (!_map.IsInDataRangeArea(gridPos)) return;
-
-            var newBasicBlock = new BasicBlock(BasicBlock.Kind.Kind1, gridPos);
-            var allEntityList = _map.GetAllEntityList(gridPos).ToList();
-            var basicBlockCount = allEntityList.OfType<BasicBlock>().Count();
-            var groundCount = allEntityList.OfType<Ground>().Count();
-            var othersCount = allEntityList.Count() - basicBlockCount - groundCount;
-            
-            Debug.Log($"basicBlockCount:{basicBlockCount} groundCount:{groundCount} othersCount:{othersCount}");
-
-            if (basicBlockCount >= newBasicBlock.MaxPlacedBlockCount) return;
-            if (othersCount > 0) return;
-
-            _map.AddEntity(gridPos, newBasicBlock);
-        }
-
-        public void RemoveBasicBlock(Vector2Int gridPos)
-        {
-            var basics = _map.GetSingleEntityList<BasicBlock>(gridPos);
-            if (!basics.Any()) return;
-            var basic = basics.First();
-            if (_map.IsInDataRangeArea(gridPos)) _map.RemoveEntity(gridPos, basic);
-        }
     }
 }
