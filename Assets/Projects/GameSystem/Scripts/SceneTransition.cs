@@ -10,6 +10,7 @@ namespace Projects.BattleSystem.Scripts
         CarryScene,
         LobbyScene,
         EditMapScene,
+        RoutingAlgorithmScene,
     }
 
     public static class SceneTransition
@@ -20,6 +21,7 @@ namespace Projects.BattleSystem.Scripts
             { SceneName.CarryScene, "CarryScene" },
             { SceneName.LobbyScene, "LobbyScene" },
             { SceneName.EditMapScene, "EditMapScene" },
+            { SceneName.RoutingAlgorithmScene, "RoutingAlgorithmScene" },
         };
 
         public static void TransitioningScene(NetworkRunner runner, SceneName nextScene)
