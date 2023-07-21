@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Projects.CarrySystem.RoutingAlgorithm.Interfaces;
 using UnityEngine.Assertions;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Scripts
         int _initiValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
         int _wallValue = -1; // wallのマス
         int _errorValue = -88;
+        
+        IRoutePresenter?[] _routePresenter;
 
 
         public SearchShortestRoute(int width, int height)
@@ -33,6 +36,11 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Scripts
         //     shortestRouteList = NonDiagonalSearchShortestRoute(startPos, endPos, OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, IsWall);
         //     return shortestRouteList;
         // }
+        
+        public void RegisterRoutePresenter(IRoutePresenter routePresenter, int index)
+        {
+            _routePresenter[index] = routePresenter;
+        }
 
         List<Vector2Int> NonDiagonalSearchShortestRoute(Vector2Int startPos, Vector2Int endPos,
             Vector2Int[] orderInDirectionArray1,  Func<int, int, bool> isWall)
