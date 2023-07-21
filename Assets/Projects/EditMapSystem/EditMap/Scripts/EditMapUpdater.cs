@@ -32,10 +32,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             _mapKey = MapKey.Default;
             _index = -1; // LoadedFileを表示するために初期化が必要
             _map = _gridMapLoader.LoadDefaultEntityGridMap(); // Defaultのマップデータを読み込む
-            for (int i = 0; i < _map.GetLength(); i++)
-            {
-                if (_map.GetSingleEntity<Ground>(i) is { } ground) Debug.Log($"i:{i} ground:{ground}");
-            }
         }
 
         public EntityGridMap GetMap()

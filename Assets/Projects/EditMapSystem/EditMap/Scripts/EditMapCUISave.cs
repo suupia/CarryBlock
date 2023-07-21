@@ -54,13 +54,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             _editMapUpdater = editMapUpdater;
             _entityGridMapSaver = entityGridMapSaver;
             _handleNumber = handleNumber;
+            _key = FindObjectOfType<MapKeyContainer>().MapKey; //　ここで取得しておく
         }
+        
 
         public void OpenSaveUI()
         {
             CUISaveCanvas.SetActive(true);
             _inputState = CUIInputState.InputIndex;
-            _key = FindObjectOfType<MapKeyContainer>().MapKey;
             _index = 0;
             _isOpened = true;
         }
@@ -206,6 +207,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             // オートセーブはインデックス0に保存する
             _entityGridMapSaver.SaveMap(_editMapUpdater.GetMap(), _key, 0);
+            Debug.Log($"AutoSave key:{_key} index:0");
         }
 
         /// <summary>

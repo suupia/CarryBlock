@@ -18,6 +18,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public void SetMapKey(MapKey mapKey)
         {
             MapKey = mapKey;
+            Debug.Log($"Set mapKey: {mapKey}");
         }
     }
 }
