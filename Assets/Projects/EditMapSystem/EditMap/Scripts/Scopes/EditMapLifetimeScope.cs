@@ -28,7 +28,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<TilePresenterAttacher>(Lifetime.Scoped);
 
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
-            builder.Register<EditMapManager>(Lifetime.Scoped);
+            builder.Register<EditMapUpdater>(Lifetime.Scoped);
             
             // Input
             builder.Register<CUIHandleNumber>(Lifetime.Scoped);

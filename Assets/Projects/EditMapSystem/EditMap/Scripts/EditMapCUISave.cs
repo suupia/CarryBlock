@@ -19,7 +19,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         public bool IsOpened => _isOpened;
 
-        EditMapManager _editMapManager;
+        EditMapUpdater _editMapUpdater;
         EntityGridMapSaver _entityGridMapSaver;
         CUIHandleNumber _handleNumber;
         CUIInputState _inputState;
@@ -47,11 +47,11 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         [Inject]
         public void Construct(
-            EditMapManager editMapManager,
+            EditMapUpdater editMapUpdater,
             EntityGridMapSaver entityGridMapSaver,
             CUIHandleNumber handleNumber)
         {
-            _editMapManager = editMapManager;
+            _editMapUpdater = editMapUpdater;
             _entityGridMapSaver = entityGridMapSaver;
             _handleNumber = handleNumber;
         }
@@ -150,7 +150,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         async void SaveProcess()
         {
             messageText.text = "Saved in.";
-            _entityGridMapSaver.SaveMap(_editMapManager.GetMap(), _key, _index);
+            _entityGridMapSaver.SaveMap(_editMapUpdater.GetMap(), _key, _index);
             await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
             _inputState = CUIInputState.End;
         }
@@ -178,7 +178,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         async void OverwriteSaveProcess()
         {
             messageText.text = "Overwrite saved.";
-            _entityGridMapSaver.SaveMap(_editMapManager.GetMap(), _key, _index);
+            _entityGridMapSaver.SaveMap(_editMapUpdater.GetMap(), _key, _index);
             await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
             _inputState = CUIInputState.End;
         }
@@ -205,7 +205,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         void AutoSave()
         {
             // オートセーブはインデックス0に保存する
-            _entityGridMapSaver.SaveMap(_editMapManager.GetMap(), _key, 0);
+            _entityGridMapSaver.SaveMap(_editMapUpdater.GetMap(), _key, 0);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             Debug.Log("SaveDefaultMap");
             // インデックスが-1であるデフォルトマップを更新する
 
-            var clearedMap = _editMapManager.GetMap().ClearMap();
+            var clearedMap = _editMapUpdater.GetMap().ClearMap();
             
             // すべてのマスにGroundを1つ設置する
             for (int i = 0; i < clearedMap.GetLength(); i++)

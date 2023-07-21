@@ -15,7 +15,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         
         public bool IsOpened => _isOpened;
 
-        EditMapManager _editMapManager;
+        EditMapUpdater _editMapUpdater;
         CUIHandleNumber _handleNumber;
         CUIInputState _inputState;
 
@@ -39,10 +39,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         
         [Inject]
         public void Construct(
-            EditMapManager editMapManager,
+            EditMapUpdater editMapUpdater,
             CUIHandleNumber handleNumber)
         {
-            _editMapManager = editMapManager;
+            _editMapUpdater = editMapUpdater;
             _handleNumber = handleNumber;
         }
         public void OpenLoadUI()
@@ -116,7 +116,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             if(_isLoading) return;
             messageText.text = "Loaded.";
-            _editMapManager.UpdateMap(_key,_index); // 何回も呼ばれていたUniRxを使った方が間違えがなかったかも
+            _editMapUpdater.UpdateMap(_key,_index); // 何回も呼ばれていたUniRxを使った方が間違えがなかったかも
             _isLoading = true;
             await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
             _inputState = CUIInputState.End;

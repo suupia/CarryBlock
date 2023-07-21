@@ -26,23 +26,10 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             if(Runner == null) return;
             if(Runner.IsServer && Input.GetKeyDown(KeyCode.N))
             {
-                _mapSwitcher.NextFloor();
+                _mapSwitcher.UpdateMap(MapKey.Default, 0);  // ToDo : 現時点では引数は使われていないので適当でよい
             }
             
         }
 
-        // public override void FixedUpdateNetwork()
-        // {
-        //     // if (FloorTimer.ExpiredOrNotRunning(Runner))
-        //     // {
-        //     //     _mapSwitcher.NextFloor();
-        //     //     FloorTimer = TickTimer.CreateFromSeconds(Runner, _updateTime);
-        //     // }
-        //     
-        //     if(Runner.IsServer && Input.GetKeyDown(KeyCode.N))
-        //     {
-        //         _mapSwitcher.NextFloor();
-        //     }
-        // }
     }
 }

@@ -14,7 +14,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         [SerializeField] EditMapCUILoad editMapCUILoad;
         [SerializeField] TextMeshProUGUI loadedFileText;
 
-        EditMapManager _editMapManager;
+        EditMapUpdater _editMapUpdater;
         EntityGridMapSaver _entityGridMapSaver;
         
         CUIState _cuiState = CUIState.Idle;
@@ -34,9 +34,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         }
         
         [Inject]
-        public void Construct(EditMapManager editMapManager)
+        public void Construct(EditMapUpdater editMapUpdater)
         {
-            _editMapManager = editMapManager;
+            _editMapUpdater = editMapUpdater;
         }
 
         void Start()
@@ -61,13 +61,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                    _cuiState = CUIState.Idle;
                }
            });
-           this.ObserveEveryValueChanged(_ => _editMapManager.MapKey).Subscribe(key =>
+           this.ObserveEveryValueChanged(_ => _editMapUpdater.MapKey).Subscribe(key =>
            {
-                FormatLoadedFileText(key, _editMapManager.Index);
+                FormatLoadedFileText(key, _editMapUpdater.Index);
            });
-           this.ObserveEveryValueChanged(_ => _editMapManager.Index).Subscribe(index =>
+           this.ObserveEveryValueChanged(_ => _editMapUpdater.Index).Subscribe(index =>
            {
-               FormatLoadedFileText(_editMapManager.MapKey,index);
+               FormatLoadedFileText(_editMapUpdater.MapKey,index);
            });
            
         }
@@ -86,10 +86,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                  switch (_entityType)
                  {
                      case EntityType.BasicBlock:
-                         _editMapManager.AddBasicBlock(mouseGridPosOnGround);
+                         _editMapUpdater.AddBasicBlock(mouseGridPosOnGround);
                          break;
                      case EntityType.Rock:
-                         _editMapManager.AddRock(mouseGridPosOnGround);
+                         _editMapUpdater.AddRock(mouseGridPosOnGround);
                          break;
                  }
             }
@@ -102,10 +102,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 switch (_entityType)
                 {
                     case EntityType.BasicBlock:
-                        _editMapManager.RemoveBasicBlock(mouseGridPosOnGround);
+                        _editMapUpdater.RemoveBasicBlock(mouseGridPosOnGround);
                         break;
                     case EntityType.Rock:
-                        _editMapManager.RemoveBasicBlock(mouseGridPosOnGround);
+                        _editMapUpdater.RemoveBasicBlock(mouseGridPosOnGround);
                         break;
                 }
             }

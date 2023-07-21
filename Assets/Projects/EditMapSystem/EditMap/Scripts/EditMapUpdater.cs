@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Numerics;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Projects.CarrySystem.Block.Scripts;
 using TMPro;
@@ -10,7 +11,7 @@ using VContainer;
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
-    public class EditMapManager
+    public class EditMapUpdater : IMapUpdater
     {
         // ToDo: クラス名を具体的に決める
         public MapKey MapKey => _mapKey;
@@ -23,7 +24,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         int _index;
 
         [Inject]
-        public EditMapManager(EntityGridMapLoader entityGridMapLoader, TilePresenterBuilder tilePresenterBuilder)
+        public EditMapUpdater(EntityGridMapLoader entityGridMapLoader, TilePresenterBuilder tilePresenterBuilder)
         {
             _gridMapLoader = entityGridMapLoader;
             _tilePresenterBuilder = tilePresenterBuilder;
@@ -40,6 +41,11 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public EntityGridMap GetMap()
         {
             return _map;
+        }
+        public void InitUpdateMap(MapKey mapKey, int index)
+        {
+            _map = _gridMapLoader.LoadEntityGridMap(mapKey, index);
+            _tilePresenterBuilder.Build(_map);
         }
         
         public void UpdateMap(MapKey mapKey, int index)

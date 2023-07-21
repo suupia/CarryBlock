@@ -21,17 +21,14 @@ namespace Carry.CarrySystem.CarryScene.Scripts
     {    
         [SerializeField] FloorTimer_Net floorTimerNet;
         CarryPlayerSpawner _carryPlayerSpawner;
-        TilePresenterBuilder _tilePresenterBuilder;
         EntityGridMapSwitcher _entityGridMapSwitcher;
         public bool IsInitialized { get; private set; }
         
         [Inject]
         public void Construct(CarryPlayerSpawner carryPlayerSpawner,
-            TilePresenterBuilder tilePresenterBuilder,
             EntityGridMapSwitcher entityGridMapSwitcher)
         {
             _carryPlayerSpawner = carryPlayerSpawner;
-            _tilePresenterBuilder = tilePresenterBuilder;
             _entityGridMapSwitcher = entityGridMapSwitcher;
         }
 
@@ -56,7 +53,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             // Generate map
             if (Runner.IsServer)
             {
-                _tilePresenterBuilder.Build(_entityGridMapSwitcher.GetMap());
+                _entityGridMapSwitcher.InitUpdateMap(MapKey.Default, 1);  // ToDo : keyやindexの計算処理を追加する
             }
 
 
