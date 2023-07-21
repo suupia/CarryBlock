@@ -105,7 +105,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                         _editMapUpdater.RemoveBasicBlock(mouseGridPosOnGround);
                         break;
                     case EntityType.Rock:
-                        _editMapUpdater.RemoveBasicBlock(mouseGridPosOnGround);
+                        _editMapUpdater.RemoveRock(mouseGridPosOnGround);
                         break;
                 }
             }
