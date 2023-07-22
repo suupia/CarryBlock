@@ -4,9 +4,9 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Carry.CarrySystem.RoutingAlgorithm.Scripts
+namespace Carry.CarrySystem.SearchRoute.Scripts
 {
-    public class RoutingAlgorithmScope: LifetimeScope
+    public class SearchRouteScope: LifetimeScope
     {
         protected override void Configure(IContainerBuilder builder)
         {
@@ -22,7 +22,7 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Scripts
 
 
             // Initializer
-            builder.RegisterComponentInHierarchy<RoutingAlgorithmInitializer>();
+            builder.RegisterComponentInHierarchy<SearchRouteInitializer>();
         }
 
     }

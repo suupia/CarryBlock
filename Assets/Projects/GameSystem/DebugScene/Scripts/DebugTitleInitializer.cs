@@ -4,10 +4,11 @@ using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
 
-namespace Projects.BattleSystem.TitleScene.Scripts
+namespace Projects.GameSystem.DebugScene.Scripts
 {
-    public class TitleInitializer : MonoBehaviour
+    public class DebugTitleInitializer : MonoBehaviour
     {
+        [SerializeField] SceneName TransitionToSceneName;
         bool _isStarted; // StarGameWithRoomName() is called only once.
 
         // Called by UI Button
@@ -19,8 +20,8 @@ namespace Projects.BattleSystem.TitleScene.Scripts
 
             await runnerManager.AttemptStartScene(roomName, gameMode);
 
-            Debug.Log("Transitioning to LobbySceneTestRoom");
-            SceneTransition.TransitioningScene(runnerManager.Runner, SceneName.LobbyScene);
+            Debug.Log($"Transitioning to {TransitionToSceneName.ToString()}");
+            SceneTransition.TransitioningScene(runnerManager.Runner, TransitionToSceneName);
             _isStarted = true;
         }
     }

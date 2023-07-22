@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Carry.CarrySystem.RoutingAlgorithm.Scripts
+namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     public static class OrderInDirectionArrayContainer
     {

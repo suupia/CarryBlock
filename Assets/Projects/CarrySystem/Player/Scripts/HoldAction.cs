@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
         IObjectResolver _resolver;
         PlayerInfo _info;
         EntityGridMap _map;
-        EntityGridMapSwitcher _mapSwitcher;
+        IMapUpdater _mapSwitcher;
         IHoldActionPresenter? _presenter;
         bool _isHoldingBlock = false;
         IBlock? _holdingBlock = null;
@@ -37,7 +38,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Setup(PlayerInfo info)
         {
             _info = info;
-            _mapSwitcher = _resolver.Resolve<EntityGridMapSwitcher>();
+            _mapSwitcher = _resolver.Resolve<IMapUpdater>();
             _map = _mapSwitcher.GetMap();
         }
 

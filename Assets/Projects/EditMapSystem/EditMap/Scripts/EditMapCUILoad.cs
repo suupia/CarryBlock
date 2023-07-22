@@ -1,4 +1,5 @@
 ﻿using System;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -15,7 +16,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         
         public bool IsOpened => _isOpened;
 
-        EditMapUpdater _editMapUpdater;
+        IMapUpdater _editMapUpdater;
         CUIHandleNumber _handleNumber;
         CUIInputState _inputState;
 
@@ -39,7 +40,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         
         [Inject]
         public void Construct(
-            EditMapUpdater editMapUpdater,
+            IMapUpdater editMapUpdater,
             CUIHandleNumber handleNumber)
         {
             _editMapUpdater = editMapUpdater;

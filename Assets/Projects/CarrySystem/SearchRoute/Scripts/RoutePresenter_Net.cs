@@ -2,7 +2,7 @@
 using Projects.CarrySystem.RoutingAlgorithm.Interfaces;
 using UnityEngine;
 
-namespace Carry.CarrySystem.RoutingAlgorithm.Scripts
+namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     public class RoutePresenter_Net : NetworkBehaviour, IRoutePresenter
     {

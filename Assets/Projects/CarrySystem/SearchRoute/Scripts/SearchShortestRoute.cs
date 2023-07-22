@@ -4,7 +4,7 @@ using Projects.CarrySystem.RoutingAlgorithm.Interfaces;
 using UnityEngine.Assertions;
 using UnityEngine;
 
-namespace Carry.CarrySystem.RoutingAlgorithm.Scripts
+namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     public class SearchShortestRoute
     {

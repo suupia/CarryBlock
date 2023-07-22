@@ -14,10 +14,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 {
     public class EditMapUpdater : IMapUpdater
     {
-        // ToDo: クラス名を具体的に決める
         public MapKey MapKey => _mapKey;
         public int Index => _index;
 
+        readonly LoadedFilePresenter _loadedFilePresenter;
         readonly EntityGridMapLoader _gridMapLoader;
         readonly TilePresenterBuilder _tilePresenterBuilder;
         EntityGridMap _map;
@@ -25,8 +25,12 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         int _index;
 
         [Inject]
-        public EditMapUpdater(EntityGridMapLoader entityGridMapLoader, TilePresenterBuilder tilePresenterBuilder)
+        public EditMapUpdater(
+            LoadedFilePresenter loadedFilePresenter,
+            EntityGridMapLoader entityGridMapLoader,
+            TilePresenterBuilder tilePresenterBuilder)
         {
+            _loadedFilePresenter = loadedFilePresenter;
             _gridMapLoader = entityGridMapLoader;
             _tilePresenterBuilder = tilePresenterBuilder;
             _mapKey = MapKey.Default;
@@ -43,6 +47,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             _map = _gridMapLoader.LoadEntityGridMap(mapKey, index);
             _tilePresenterBuilder.Build(_map);
+            _loadedFilePresenter.FormatLoadedFileText(_mapKey,_index);
         }
 
         public void UpdateMap(MapKey mapKey, int index)
@@ -51,6 +56,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             _tilePresenterBuilder.Build(_map);
             _mapKey = mapKey;
             _index = index;
+            _loadedFilePresenter.FormatLoadedFileText(_mapKey,_index);
         }
 
     }
