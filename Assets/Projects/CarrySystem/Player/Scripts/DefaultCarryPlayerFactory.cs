@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public ICharacter Create(PlayerColorType colorType)
         {
-            var move = new QuickTurnMove();
+            var move = new TsukamotoMove();
             var action = new HoldAction(_resolver);
             var character = new Character(move, action);
             return character;
