@@ -17,6 +17,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         
         public void SetActive(bool isActive)
         {
+            Debug.Log($"RoutePresenter_Net.SetActive({isActive})");
             IsActive = isActive;
         }
     }

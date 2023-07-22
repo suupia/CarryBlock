@@ -13,13 +13,15 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     public class RoutePresenterBuilder
     {
         [Inject] NetworkRunner _runner;
+        readonly SearchShortestRoute _searchShortestRoute;
         IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
-        
+
         [Inject]
-        public RoutePresenterBuilder()
+        public RoutePresenterBuilder(SearchShortestRoute searchShortestRoute)
         {
+            _searchShortestRoute = searchShortestRoute;
         }
-        
+
         public void Build(EntityGridMap map)
         {
             var routePresenterSpawner = new RoutePresenterSpawner(_runner);
@@ -36,9 +38,10 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                 var routePresenter = routePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 routePresenters.Add(routePresenter);
             }
-            
+
             // TilePresenterをドメインのEntityGridMapに紐づける
             //   AttachTilePresenter(routePresenters, map);  // ToDo: searchShortestRouteを引数に渡す必要がある
+            AttachRoutePresenter(routePresenters, map);
 
             _routePresenters = routePresenters;
         }
@@ -55,7 +58,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             _routePresenters = new List<RoutePresenter_Net>();
         }
 
-         void AttachTilePresenter(IEnumerable<RoutePresenter_Net> routePresenters , SearchShortestRoute searchShortestRoute)
+         void AttachRoutePresenter(IEnumerable<RoutePresenter_Net> routePresenters , EntityGridMap map)
         {
             for (int i = 0; i < routePresenters.Count(); i++)
             {
@@ -75,9 +78,11 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                 // searchShortestRoute.RegisterTilePresenter(routePresenter, i);
                 
                 // RoutePresenter用に書き直し
-                routePresenter.SetActive(true);  // ToDo: 初期化の処理
+                routePresenter.SetActive(false);  // ToDo: 初期化の処理
                 
-                searchShortestRoute.RegisterRoutePresenter(routePresenter, i);
+                
+                _searchShortestRoute.Init(map.Width, map.Height);  // ToDo:　これはコンストラクタにしたい
+                _searchShortestRoute.RegisterRoutePresenter(routePresenter, i);
                 
                 
                 
