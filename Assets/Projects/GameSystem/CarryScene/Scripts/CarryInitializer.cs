@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
 using UnityEngine;
@@ -21,12 +22,12 @@ namespace Carry.CarrySystem.CarryScene.Scripts
     {    
         [SerializeField] FloorTimer_Net floorTimerNet;
         CarryPlayerSpawner _carryPlayerSpawner;
-        EntityGridMapSwitcher _entityGridMapSwitcher;
+        IMapUpdater _entityGridMapSwitcher;
         public bool IsInitialized { get; private set; }
         
         [Inject]
         public void Construct(CarryPlayerSpawner carryPlayerSpawner,
-            EntityGridMapSwitcher entityGridMapSwitcher)
+            IMapUpdater entityGridMapSwitcher)
         {
             _carryPlayerSpawner = carryPlayerSpawner;
             _entityGridMapSwitcher = entityGridMapSwitcher;

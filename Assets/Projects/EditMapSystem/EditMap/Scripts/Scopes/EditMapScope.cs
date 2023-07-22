@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
@@ -13,7 +14,7 @@ using Projects.Utility.Scripts;
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
-    public class EditMapLifetimeScope: LifetimeScope
+    public class EditMapScope: LifetimeScope
     {
         protected override void Configure(IContainerBuilder builder)
         {
@@ -29,7 +30,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
             builder.Register<BlockPlacer>(Lifetime.Scoped);
-            builder.Register<EditMapUpdater>(Lifetime.Scoped);
+            builder.Register<EditMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
             
             // Input
             builder.Register<CUIHandleNumber>(Lifetime.Scoped);

@@ -2,6 +2,10 @@
 {
     public class SearchRouteUpdater
     {
-        
+
+        public void InitUpdateMap()
+        {
+            
+        }
     }
 }

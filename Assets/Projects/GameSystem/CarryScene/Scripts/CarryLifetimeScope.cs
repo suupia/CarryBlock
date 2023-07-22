@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
@@ -40,7 +41,7 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             // Map
             builder.Register<EntityGridMapLoader>(Lifetime.Singleton);
             builder.Register<TilePresenterBuilder>(Lifetime.Singleton);
-            builder.Register<EntityGridMapSwitcher>(Lifetime.Singleton);
+            builder.Register<EntityGridMapSwitcher>(Lifetime.Singleton).As<IMapUpdater>();
             builder.Register<TilePresenterAttacher>(Lifetime.Scoped);
             
             // UI
