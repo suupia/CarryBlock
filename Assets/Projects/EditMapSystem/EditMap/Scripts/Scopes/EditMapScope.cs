@@ -38,6 +38,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.RegisterComponentInHierarchy<EditMapCUISave>();
             builder.RegisterComponentInHierarchy<EditMapCUILoad>();
             
+            // Presenter
+            builder.RegisterComponentInHierarchy<LoadedFilePresenter>();
+            
             
             // Initializer
             builder.RegisterComponentInHierarchy<EditMapInitializer>();

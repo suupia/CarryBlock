@@ -1,5 +1,6 @@
 ﻿using System;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Projects.CarrySystem.Block.Scripts;
 using TMPro;
@@ -14,10 +15,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     {
         [SerializeField] EditMapCUISave editMapCuiSave;
         [SerializeField] EditMapCUILoad editMapCUILoad;
-        [SerializeField] TextMeshProUGUI loadedFileText;
 
         BlockPlacer _blockPlacer;
-        EditMapUpdater _editMapUpdater;
+        IMapUpdater _editMapUpdater;
         EntityGridMapSaver _entityGridMapSaver;
         
         CUIState _cuiState = CUIState.Idle;
@@ -37,7 +37,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         }
         
         [Inject]
-        public void Construct(BlockPlacer blockPlacer, EditMapUpdater editMapUpdater)
+        public void Construct(BlockPlacer blockPlacer, IMapUpdater editMapUpdater)
         {
             _blockPlacer = blockPlacer;
             _editMapUpdater = editMapUpdater;
@@ -65,14 +65,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                    _cuiState = CUIState.Idle;
                }
            });
-           this.ObserveEveryValueChanged(_ => _editMapUpdater.MapKey).Subscribe(key =>
-           {
-                FormatLoadedFileText(key, _editMapUpdater.Index);
-           });
-           this.ObserveEveryValueChanged(_ => _editMapUpdater.Index).Subscribe(index =>
-           {
-               FormatLoadedFileText(_editMapUpdater.MapKey,index);
-           });
+
            
         }
 
@@ -138,9 +131,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             }
         }
         
-        void  FormatLoadedFileText(MapKey mapKey, int index)
-        {
-            loadedFileText.text = $"Loaded File: {mapKey}_{index}";
-        }
+
     }
 }
