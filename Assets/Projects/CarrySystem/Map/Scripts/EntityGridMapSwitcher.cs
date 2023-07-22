@@ -12,7 +12,7 @@ namespace Carry.CarrySystem.Map.Scripts
     /// <summary>
     /// フロアごとに別のマップを生成し、返すクラス
     /// </summary>
-    public class EntityGridMapSwitcher
+    public class EntityGridMapSwitcher : IMapUpdater
     {
         readonly EntityGridMapLoader _gridMapLoader;
         readonly TilePresenterBuilder _tilePresenterBuilder;
@@ -24,17 +24,21 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             _gridMapLoader = gridMapGridMapLoader;
             _tilePresenterBuilder = tilePresenterBuilder;
-            _currentIndex = 1; //Floor1から始まる
-            var key = MapKey.Default; // Todo: キーを決める関数を作る
-            _currentMap = _gridMapLoader.LoadEntityGridMap(key,_currentIndex); // indexはとりあえず0にしておく
         }
         
         public EntityGridMap GetMap()
         {
             return _currentMap;
         }
+
+        public void InitUpdateMap(MapKey mapKey, int index)
+        {
+            _currentIndex = index;
+            _currentMap = _gridMapLoader.LoadEntityGridMap(mapKey, _currentIndex);
+            _tilePresenterBuilder.Build(_currentMap);
+        }
         
-        public void NextFloor()
+        public void UpdateMap(MapKey mapKey, int index)
         {
             Debug.Log($"次のフロアに変更します nextIndex: {_currentIndex + 1}");
             _currentIndex++;

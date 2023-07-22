@@ -8,6 +8,7 @@ namespace Projects.BattleSystem.TitleScene.Scripts
 {
     public class TitleInitializer : MonoBehaviour
     {
+        [SerializeField] SceneName TransitionToSceneName;
         bool _isStarted; // StarGameWithRoomName() is called only once.
 
         // Called by UI Button
@@ -20,7 +21,7 @@ namespace Projects.BattleSystem.TitleScene.Scripts
             await runnerManager.AttemptStartScene(roomName, gameMode);
 
             Debug.Log("Transitioning to LobbySceneTestRoom");
-            SceneTransition.TransitioningScene(runnerManager.Runner, SceneName.LobbyScene);
+            SceneTransition.TransitioningScene(runnerManager.Runner, TransitionToSceneName);
             _isStarted = true;
         }
     }

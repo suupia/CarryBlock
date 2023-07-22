@@ -15,16 +15,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     public class EditMapInitializer : MonoBehaviour
     {
         [SerializeField] TextMeshProUGUI mapKeyText;
-        TilePresenterBuilder _tilePresenterBuilder;
-        EditMapManager _editMapManager;
+        EditMapUpdater _editMapUpdater;
         
         [Inject]
         public void Construct(
-            TilePresenterBuilder tilePresenterBuilder,
-            EditMapManager editMapManager)
+            EditMapUpdater editMapUpdater)
         {
-            _tilePresenterBuilder = tilePresenterBuilder;
-            _editMapManager = editMapManager;
+            _editMapUpdater = editMapUpdater;
 
         }
 
@@ -34,7 +31,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             if(runner == null) Debug.LogError($"NetworkRunner is not found.");
             await UniTask.WaitUntil(() => runner.SceneManager.IsReady(runner));
             
-            _tilePresenterBuilder.Build(_editMapManager.GetMap());
+            _editMapUpdater.InitUpdateMap(MapKey.Default,-1); // -1が初期マップ
 
             // 準備シーンからMapKeyを受け取る
             var mapKeyContainer = FindObjectOfType<MapKeyContainer>();

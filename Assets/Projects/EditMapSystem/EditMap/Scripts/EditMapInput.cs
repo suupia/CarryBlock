@@ -1,5 +1,7 @@
 ﻿using System;
+using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Scripts;
+using Projects.CarrySystem.Block.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -14,7 +16,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         [SerializeField] EditMapCUILoad editMapCUILoad;
         [SerializeField] TextMeshProUGUI loadedFileText;
 
-        EditMapManager _editMapManager;
+        BlockPlacer _blockPlacer;
+        EditMapUpdater _editMapUpdater;
         EntityGridMapSaver _entityGridMapSaver;
         
         CUIState _cuiState = CUIState.Idle;
@@ -34,9 +37,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         }
         
         [Inject]
-        public void Construct(EditMapManager editMapManager)
+        public void Construct(BlockPlacer blockPlacer, EditMapUpdater editMapUpdater)
         {
-            _editMapManager = editMapManager;
+            _blockPlacer = blockPlacer;
+            _editMapUpdater = editMapUpdater;
         }
 
         void Start()
@@ -61,13 +65,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                    _cuiState = CUIState.Idle;
                }
            });
-           this.ObserveEveryValueChanged(_ => _editMapManager.MapKey).Subscribe(key =>
+           this.ObserveEveryValueChanged(_ => _editMapUpdater.MapKey).Subscribe(key =>
            {
-                FormatLoadedFileText(key, _editMapManager.Index);
+                FormatLoadedFileText(key, _editMapUpdater.Index);
            });
-           this.ObserveEveryValueChanged(_ => _editMapManager.Index).Subscribe(index =>
+           this.ObserveEveryValueChanged(_ => _editMapUpdater.Index).Subscribe(index =>
            {
-               FormatLoadedFileText(_editMapManager.MapKey,index);
+               FormatLoadedFileText(_editMapUpdater.MapKey,index);
            });
            
         }
@@ -82,14 +86,17 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             {
                 var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
-                
+
+                var map = _editMapUpdater.GetMap();
                  switch (_entityType)
                  {
                      case EntityType.BasicBlock:
-                         _editMapManager.AddBasicBlock(mouseGridPosOnGround);
+                         var basicBlock = new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround);
+                         _blockPlacer.AddBlock(map,mouseGridPosOnGround,basicBlock );
                          break;
                      case EntityType.Rock:
-                         _editMapManager.AddRock(mouseGridPosOnGround);
+                         var rock = new Rock(Rock.Kind.Kind1,  mouseGridPosOnGround);
+                         _blockPlacer.AddBlock(map, mouseGridPosOnGround, rock);
                          break;
                  }
             }
@@ -99,13 +106,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
                 
+                var map = _editMapUpdater.GetMap();
                 switch (_entityType)
                 {
                     case EntityType.BasicBlock:
-                        _editMapManager.RemoveBasicBlock(mouseGridPosOnGround);
+                        _blockPlacer.RemoveBlock<BasicBlock>(map,mouseGridPosOnGround );
                         break;
                     case EntityType.Rock:
-                        _editMapManager.RemoveBasicBlock(mouseGridPosOnGround);
+                        _blockPlacer.RemoveBlock<Rock>(map,mouseGridPosOnGround);
                         break;
                 }
             }

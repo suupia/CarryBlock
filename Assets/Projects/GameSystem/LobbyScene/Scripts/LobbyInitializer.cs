@@ -41,7 +41,7 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             if (Runner.IsServer)
             {
                 _networkEnemyContainer.MaxEnemyCount = 5;
-                var _ = _enemySpawner.StartSimpleSpawner(0, 5f, _networkEnemyContainer);
+               //  var _ = _enemySpawner.StartSimpleSpawner(0, 5f, _networkEnemyContainer);
             }
         }
 
