@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         public bool IsOpened => _isOpened;
 
-        EditMapUpdater _editMapUpdater;
+        IMapUpdater _editMapUpdater;
         EntityGridMapSaver _entityGridMapSaver;
         CUIHandleNumber _handleNumber;
         CUIInputState _inputState;
@@ -47,7 +48,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         [Inject]
         public void Construct(
-            EditMapUpdater editMapUpdater,
+            IMapUpdater editMapUpdater,
             EntityGridMapSaver entityGridMapSaver,
             CUIHandleNumber handleNumber)
         {

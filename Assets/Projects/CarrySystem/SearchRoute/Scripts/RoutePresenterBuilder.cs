@@ -8,7 +8,7 @@ using Projects.CarrySystem.Block.Scripts;
 using UnityEngine;
 using VContainer;
 
-namespace Carry.CarrySystem.RoutingAlgorithm.Scripts
+namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     public class RoutePresenterBuilder
     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Cysharp.Threading.Tasks.Triggers;
 using Fusion;
@@ -14,11 +15,11 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         // ToDo: 仮置きクラス　ドメインの設計やコンテナの関係をしっかり考えれば、NetworkBehaviourである必要がないかも
         float _updateTime = 7;
 
-        EntityGridMapSwitcher _mapSwitcher;
+        IMapUpdater _mapSwitcher;
         public void Start()
         {
             var resolver = FindObjectOfType<LifetimeScope>().Container;
-            _mapSwitcher = resolver.Resolve<EntityGridMapSwitcher>();
+            _mapSwitcher = resolver.Resolve<IMapUpdater>();
         }
 
         void Update()

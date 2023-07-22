@@ -1,7 +1,7 @@
-﻿using Carry.CarrySystem.RoutingAlgorithm.Scripts;
+﻿using Carry.CarrySystem.SearchRoute.Scripts;
 using NUnit.Framework;
 using UnityEngine;
-using static Carry.CarrySystem.RoutingAlgorithm.Scripts.OrderInDirectionArrayContainer;
+using static Carry.CarrySystem.SearchRoute.Scripts.OrderInDirectionArrayContainer;
 
 namespace Projects.CarrySystem.RoutingAlgorithm.Tests
 {

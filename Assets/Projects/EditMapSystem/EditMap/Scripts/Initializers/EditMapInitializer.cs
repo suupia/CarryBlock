@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners;
 using Cysharp.Threading.Tasks;
@@ -15,11 +16,11 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     public class EditMapInitializer : MonoBehaviour
     {
         [SerializeField] TextMeshProUGUI mapKeyText;
-        EditMapUpdater _editMapUpdater;
+        IMapUpdater _editMapUpdater;
         
         [Inject]
         public void Construct(
-            EditMapUpdater editMapUpdater)
+            IMapUpdater editMapUpdater)
         {
             _editMapUpdater = editMapUpdater;
 

@@ -8,6 +8,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 {
     public class EditMapDefaultScope: LifetimeScope
     {
+        // Defaultマップのみを作成するシーンのスコープ
         protected override void Configure(IContainerBuilder builder)
         {
             // Map
