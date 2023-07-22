@@ -3,7 +3,7 @@ using Fusion;
 using Projects.Utility.Scripts;
 using UnityEngine;
 
-namespace Carry.CarrySystem.RoutingAlgorithm.Scripts
+namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     public class RoutePresenterSpawner
     {

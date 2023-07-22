@@ -14,7 +14,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 {
     public class EditMapUpdater : IMapUpdater
     {
-        // ToDo: クラス名を具体的に決める
         public MapKey MapKey => _mapKey;
         public int Index => _index;
 
