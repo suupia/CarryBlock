@@ -2,6 +2,6 @@
 {
     public interface IRoutePresenter
     {
-        
+         void SetActive(bool isActive);
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Carry.CarrySystem.Map.Scripts;
 using Cysharp.Threading.Tasks;
 using Fusion;
+using Projects.CarrySystem.Block.Interfaces;
 using UnityEngine;
 using VContainer;
 
@@ -11,10 +12,14 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     public class SearchRouteInitializer : MonoBehaviour
     {
+        SearchShortestRoute _searchShortestRoute;
         SearchRouteUpdater _searchRouteUpdater;
         [Inject]
-        public void Construct(SearchRouteUpdater searchRouteUpdater)
+        public void Construct(
+            SearchShortestRoute searchShortestRoute,
+            SearchRouteUpdater searchRouteUpdater)
         {
+            _searchShortestRoute = searchShortestRoute;
             _searchRouteUpdater = searchRouteUpdater;
         }
 
@@ -24,7 +29,18 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             if(runner == null) Debug.LogError($"NetworkRunner is not found.");
             await UniTask.WaitUntil(() => runner.SceneManager.IsReady(runner));
             
-            _searchRouteUpdater.InitUpdateMap(); 
+            _searchRouteUpdater.InitUpdateMap(MapKey.Default, 1);
+
+            Debug.Log($"before PresenterWasRegistered : {_searchShortestRoute.IsPresenterWasRegistered}");
+
+            var startPos = new Vector2Int(2, 2);
+            var endPos = new Vector2Int(10, 5);
+            var orderInDirection = OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections;
+            var map = _searchRouteUpdater.GetMap();
+            Func<int, int, bool> isWall = (x, y) => map.GetSingleEntityList<IBlock>(new Vector2Int(x, y)).Count > 0;
+            Debug.Log($"after PresenterWasRegistered : {_searchShortestRoute.IsPresenterWasRegistered}");
+
+            var shortestRoute = _searchShortestRoute.NonDiagonalSearchShortestRoute( startPos,endPos,orderInDirection,isWall);
 
         }
     }

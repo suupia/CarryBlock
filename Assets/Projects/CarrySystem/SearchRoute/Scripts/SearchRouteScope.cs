@@ -17,8 +17,13 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             
             // Map
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
-            builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
             builder.Register<TilePresenterAttacher>(Lifetime.Scoped);
+            builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
+            
+            // SearchRoute
+            builder.Register<SearchShortestRoute>(Lifetime.Scoped);
+            builder.Register<RoutePresenterBuilder>(Lifetime.Scoped);
+            builder.Register<SearchRouteUpdater>(Lifetime.Scoped);
 
 
             // Initializer
