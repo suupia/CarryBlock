@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners;
 using Fusion;
+using Projects.CarrySystem.Block.Interfaces;
 using Projects.CarrySystem.Block.Scripts;
 using UnityEngine;
 using VContainer;
@@ -60,6 +62,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
          void AttachRoutePresenter(IEnumerable<RoutePresenter_Net> routePresenters , EntityGridMap map)
         {
+            _searchShortestRoute.Init(map.Width, map.Height);  // ToDo:　これはコンストラクタにしたい
+
             for (int i = 0; i < routePresenters.Count(); i++)
             {
                 var routePresenter = routePresenters.ElementAt(i);
@@ -78,15 +82,16 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                 // searchShortestRoute.RegisterTilePresenter(routePresenter, i);
                 
                 // RoutePresenter用に書き直し
-                routePresenter.SetActive(false);  // ToDo: 初期化の処理
+                routePresenter.SetPresenterActive(false);  // ToDo: 初期化の処理
                 
                 
-                _searchShortestRoute.Init(map.Width, map.Height);  // ToDo:　これはコンストラクタにしたい
                 _searchShortestRoute.RegisterRoutePresenter(routePresenter, i);
                 
                 
+
                 
             }
+
         }
     }
 }

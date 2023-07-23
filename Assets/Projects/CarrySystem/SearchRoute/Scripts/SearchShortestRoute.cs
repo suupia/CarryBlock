@@ -21,8 +21,6 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         
         IRoutePresenter?[] _routePresenter;
 
-        public bool IsPresenterWasRegistered;
-
 
         public void Init(int width, int height)
         {
@@ -55,18 +53,11 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             int y = subscript / _width;
             return new Vector2Int(x, y);
         }
-
+        
         
         public void RegisterRoutePresenter(IRoutePresenter routePresenter, int index)
         {
             _routePresenter[index] = routePresenter;
-            Debug.Log($"_routePresenter[{index}] = {_routePresenter[index]} after register");
-            IsPresenterWasRegistered = true;
-
-            // for (int i = 0; i < _values.Length; i++)
-            // {
-            //     Debug.Log($"RegisterRoutePresenter() _routePresenter[{i}] = null ? {_routePresenter[i] == null}");
-            // }
 
         }
 
@@ -84,10 +75,6 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             bool orderInDirectionFlag = true; //探索するたびに優先順位を切り替えるのに必要
             Vector2Int[] orderInDirectionArray;
             
-            // for (int i = 0; i < _values.Length; i++)
-            // {
-            //     Debug.Log($"NonDiagonalSearchShortestRoute() _routePresenter[{i}] = null ? {_routePresenter[i] == null}");
-            // }
 
 
             if (isWall(startPos.x, startPos.y))
@@ -160,12 +147,10 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             // Presenterを更新
             for (int i = 0; i < _values.Length; i++)
             {
-                Debug.Log($"_values[{i}] = {_values[i]}, _wallValue = {_wallValue}, _initiValue = {_initiValue}, flag = {_values[i] != _wallValue && _values[i] != _initiValue}");
+                // Debug.Log($"_values[{i}] = {_values[i]}, _wallValue = {_wallValue}, _initiValue = {_initiValue}, flag = {_values[i] != _wallValue && _values[i] != _initiValue}");
                 if (_values[i] != _wallValue && _values[i] != _initiValue)
                 {
-                    Debug.Log($"_routePresenter[{i}]をアクティブにします");
-                    Debug.Log($"_routePresenter[{i}] = {_routePresenter[i]}");
-                    _routePresenter[i]?.SetActive(true);
+                    _routePresenter[i]?.SetPresenterActive(true);
                 }
             }
 

@@ -15,9 +15,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             routeHighlightObject.SetActive(IsActive);
         }
         
-        public void SetActive(bool isActive)
+        public void SetPresenterActive(bool isActive)
         {
-            Debug.Log($"RoutePresenter_Net.SetActive({isActive})");
             IsActive = isActive;
         }
     }

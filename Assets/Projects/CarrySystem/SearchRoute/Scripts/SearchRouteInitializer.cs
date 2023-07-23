@@ -31,15 +31,13 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             
             _searchRouteUpdater.InitUpdateMap(MapKey.Default, 1);
 
-            Debug.Log($"before PresenterWasRegistered : {_searchShortestRoute.IsPresenterWasRegistered}");
 
             var startPos = new Vector2Int(2, 2);
             var endPos = new Vector2Int(10, 5);
             var orderInDirection = OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections;
             var map = _searchRouteUpdater.GetMap();
             Func<int, int, bool> isWall = (x, y) => map.GetSingleEntityList<IBlock>(new Vector2Int(x, y)).Count > 0;
-            Debug.Log($"after PresenterWasRegistered : {_searchShortestRoute.IsPresenterWasRegistered}");
-
+            
             var shortestRoute = _searchShortestRoute.NonDiagonalSearchShortestRoute( startPos,endPos,orderInDirection,isWall);
 
         }
