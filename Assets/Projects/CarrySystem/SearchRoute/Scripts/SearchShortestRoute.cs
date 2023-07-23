@@ -28,10 +28,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             Assert.IsTrue(height >= 0);
             _width = width;
             _height = height;
-            _values = new int[_width * _height];
             _routePresenter = new IRoutePresenter[_width * _height];
 
-            FillAll(_initiValue); //mapの初期化は_initiValueで行う
         }
 
         //
@@ -75,6 +73,9 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             bool orderInDirectionFlag = true; //探索するたびに優先順位を切り替えるのに必要
             Vector2Int[] orderInDirectionArray;
             
+            // 初期化
+            _values = new int[_width * _height];
+            FillAll(_initiValue); //mapの初期化は_initiValueで行う
 
 
             if (isWall(startPos.x, startPos.y))

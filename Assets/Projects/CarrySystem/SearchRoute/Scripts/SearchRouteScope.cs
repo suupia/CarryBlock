@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Map.Scripts;
+﻿using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Fusion;
 using UnityEngine;
 using VContainer;
@@ -19,6 +20,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<TilePresenterAttacher>(Lifetime.Scoped);
             builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
+            builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
             
             // SearchRoute
             builder.Register<SearchShortestRoute>(Lifetime.Scoped);
@@ -28,6 +30,9 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
             // Initializer
             builder.RegisterComponentInHierarchy<SearchRouteInitializer>();
+            
+            // Handler
+            builder.RegisterComponentInHierarchy<SearchRouteHandler_Net>();
         }
 
     }
