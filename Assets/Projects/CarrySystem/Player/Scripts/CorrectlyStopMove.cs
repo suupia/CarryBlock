@@ -4,12 +4,14 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class TsukamotoMove : ICharacterMove
+    public class CorrectlyStopMove : ICharacterMove
     {
         PlayerInfo _info;
         float _acceleration = 60f;
         float _maxVelocity = 16f;
         float _rotateTime  = 0.4f;
+        float _stoppingForce = 5f;
+        
 
         public void Setup(PlayerInfo info)
         {
@@ -17,6 +19,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _acceleration = info.acceleration;
             _maxVelocity = info.maxVelocity;
             _rotateTime = info.targetRotationTime;
+           
         }
         public void Move(Vector3 input)
         {
@@ -33,20 +36,18 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     var rotateQuaternion = Quaternion.Euler(0, deltaAngle, 0);
                     rb.MoveRotation(rb.rotation * rotateQuaternion);
-
-                    // ToDo: DoTweenで回転させる
-                    // var rotateAngle = new Vector3(0, deltaAngle, 0);
-                    // _rb.DORotate(rotateAngle, rotateTime)
-                    //     .SetEase(Ease.OutExpo)
-                    //     .Play();
-
                 }
                 
-                // ToDo: _rb.MovePosition()で素早く移動させる
                 rb.AddForce(_acceleration * input, ForceMode.Acceleration);
 
                 if (rb.velocity.magnitude >= _maxVelocity)
                     rb.velocity = _maxVelocity * rb.velocity.normalized;
+                
+            }
+            else
+            {
+                // Stop if there is no key input
+                rb.velocity *= Mathf.Pow(1f - _stoppingForce * Time.deltaTime, rb.velocity.magnitude);
             }
         }
     }
