@@ -26,6 +26,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
         public void Build(EntityGridMap map)
         {
+            // ToDo: mapを受け取っているのはやりすぎ。もっと緩い制約でよいはず
             var routePresenterSpawner = new RoutePresenterSpawner(_runner);
             var routePresenters = new List<RoutePresenter_Net>();
 
@@ -40,9 +41,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                 var routePresenter = routePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 routePresenters.Add(routePresenter);
             }
-
-            // TilePresenterをドメインのEntityGridMapに紐づける
-            //   AttachTilePresenter(routePresenters, map);  // ToDo: searchShortestRouteを引数に渡す必要がある
+            
             AttachRoutePresenter(routePresenters, map);
 
             _routePresenters = routePresenters;
@@ -68,28 +67,12 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             {
                 var routePresenter = routePresenters.ElementAt(i);
 
-                // RegisterTilePresenter()の前なのでSetEntityActiveData()を実行する必要がある
-                // Presenterの初期化処理みたいなもの
-                // var existGround = searchShortestRoute.GetSingleEntity<Ground>(i) != null;
-                // var existRock = searchShortestRoute.GetSingleEntity<Rock>(i) != null;
-                // var existBasicBlock = searchShortestRoute.GetSingleEntity<BasicBlock>(i) != null;
-                
-                // if(existRock) Debug.Log($"existGround: {existGround}, existRock: {existRock}, existBasicBlock: {existBasicBlock}");
-
-                // routePresenter.SetInitAllEntityActiveData(searchShortestRoute.GetAllEntityList(i)  );
-                //
-                // // mapにTilePresenterを登録
-                // searchShortestRoute.RegisterTilePresenter(routePresenter, i);
-                
                 // RoutePresenter用に書き直し
                 routePresenter.SetPresenterActive(false);  // ToDo: 初期化の処理
                 
                 
                 _searchShortestRoute.RegisterRoutePresenter(routePresenter, i);
-                
-                
 
-                
             }
 
         }

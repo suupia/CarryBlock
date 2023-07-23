@@ -74,7 +74,6 @@ namespace Carry.CarrySystem.Map.Scripts
                 map.RegisterTilePresenter(tilePresenter, i);
                 
                 
-                
             }
         }
         

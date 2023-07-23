@@ -2,6 +2,9 @@
 
 namespace Carry.CarrySystem.Map.Interfaces
 {
+    /// <summary>
+    /// ドメインのEntityGridMapとPresenterをつなぐ役割を持つ
+    /// </summary>
     public interface IMapUpdater
     {
         EntityGridMap GetMap();

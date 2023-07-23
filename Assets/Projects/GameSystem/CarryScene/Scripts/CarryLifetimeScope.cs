@@ -4,6 +4,7 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
+using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners;
 using Fusion;
 using UnityEngine;
@@ -42,6 +43,10 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<EntityGridMapLoader>(Lifetime.Singleton);
             builder.Register<TilePresenterBuilder>(Lifetime.Singleton);
             builder.Register<EntityGridMapSwitcher>(Lifetime.Singleton).As<IMapUpdater>();
+            
+            // SearchRoute
+            builder.Register<SearchShortestRoute>(Lifetime.Singleton);
+            builder.Register<RoutePresenterBuilder>(Lifetime.Singleton);
             
             // UI
             builder.Register<GameContext>(Lifetime.Singleton);

@@ -18,16 +18,14 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         [SerializeField] Vector2Int endPos;
         Vector2Int[] orderInDirection = OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections;
 
-        IMapUpdater _mapSwitcher;
+        IMapUpdater _entityGridMapSwitcher;
         SearchShortestRoute _searchShortestRoute;
-        SearchRouteUpdater _searchRouteUpdater;
         
         [Inject]
-        public void Construct(IMapUpdater mapSwitcher, SearchShortestRoute searchShortestRoute, SearchRouteUpdater searchRouteUpdater)
+        public void Construct(IMapUpdater entityGridMapSwitcher, SearchShortestRoute searchShortestRoute )
         {
-            _mapSwitcher = mapSwitcher;
+            _entityGridMapSwitcher = entityGridMapSwitcher;
             _searchShortestRoute = searchShortestRoute;
-            _searchRouteUpdater = searchRouteUpdater;
         }
 
 
@@ -44,7 +42,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         void Search()
         {
             
-            var map = _searchRouteUpdater.GetMap();
+            var map = _entityGridMapSwitcher.GetMap();
             Func<int, int, bool> isWall = (x, y) => map.GetSingleEntityList<IBlock>(new Vector2Int(x, y)).Count > 0;
             
             var shortestRoute = _searchShortestRoute.NonDiagonalSearchShortestRoute( startPos,endPos,orderInDirection,isWall);
