@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Map.Scripts
         int _initValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
         int _wallValue = -1; // wallのマス
         int _errorValue = -88;
-        
+
         public NewSearchShortestRoute(int width, int height)
         {
             _width = width;
@@ -26,7 +26,7 @@ namespace Carry.CarrySystem.Map.Scripts
             Func<int, int, bool> isWall)
         {
             var resultBoolArray = new bool[_width * _height];
-            var waveletResult = WaveletSearch(startPos, endPos , isWall);
+            var waveletResult = WaveletSearch(startPos, endPos, isWall);
             for (int i = 0; i < resultBoolArray.Length; i++)
             {
                 resultBoolArray[i] = waveletResult[i] != _wallValue &&
@@ -36,16 +36,12 @@ namespace Carry.CarrySystem.Map.Scripts
             return resultBoolArray;
         }
 
-         int[] WaveletSearch(Vector2Int startPos, Vector2Int endPos,
+        int[] WaveletSearch(Vector2Int startPos, Vector2Int endPos,
             Func<int, int, bool> isWall)
         {
             var searchQue = new Queue<Vector2Int>();
             int n = 1; //1から始まることに注意!!
             bool isComplete = false;
-            int maxDistance = 0;
-
-            bool orderInDirectionFlag = true; //探索するたびに優先順位を切り替えるのに必要
-            Vector2Int[] orderInDirectionArray;
 
             // 初期化
             FillAll(_initValue); //mapの初期化は_initValueで行う
@@ -77,25 +73,25 @@ namespace Carry.CarrySystem.Map.Scripts
             }
 
             //壁でないマスに数字を順番に振っていく
-            Debug.Log($"WaveletSearchを実行します startPos:{startPos}");
+            // Debug.Log($"WaveletSearchを実行します startPos:{startPos}");
             WaveletSearch();
 
 
             //デバッグ用
-            StringBuilder debugCell = new StringBuilder();
-            for (int y = 0; y < _height; y++)
-            {
-                for (int x = 0; x < _width; x++)
-                {
-                    int value = GetValue(x, _height - y - 1);
-                    debugCell.AppendFormat("{0,4},",
-                        (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
-                }
-
-                debugCell.AppendLine();
-            }
-
-            Debug.Log($"WaveletSearchの結果は\n{debugCell}");
+            // StringBuilder debugCell = new StringBuilder();
+            // for (int y = 0; y < _height; y++)
+            // {
+            //     for (int x = 0; x < _width; x++)
+            //     {
+            //         int value = GetValue(x, _height - y - 1);
+            //         debugCell.AppendFormat("{0,4},",
+            //             (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
+            //     }
+            //
+            //     debugCell.AppendLine();
+            // }
+            //
+            // Debug.Log($"WaveletSearchの結果は\n{debugCell}");
 
 
             return _values;
@@ -130,7 +126,6 @@ namespace Carry.CarrySystem.Map.Scripts
                     }
                 }
             }
-            
 
 
             void PlaceNumAround(Vector2Int centerPos)
@@ -146,51 +141,32 @@ namespace Carry.CarrySystem.Map.Scripts
                         if (x != 0 && y != 0) continue; //斜めのマスも飛ばす
 
                         inspectPos = centerPos + new Vector2Int(x, y);
-                        //Debug.Log($"centerPos:{centerPos},inspectPos:{inspectPos}のとき、CanMove(centerPos, inspectPos):{CanMove(centerPos, inspectPos)}");
-                        if (GetValueFromVector(inspectPos) == _initValue && CanMoveDiagonally(centerPos, inspectPos))
+                        if (GetValueFromVector(inspectPos) == _initValue) // _edgeValueが帰ってくることもある
                         {
                             SetValueByVector(inspectPos, n);
                             searchQue.Enqueue(inspectPos);
                             //Debug.Log($"({inspectPos})を{n}にし、探索用キューに追加しました。");
                         }
-                        else //このelseはデバッグ用
-                        {
-                            //Debug.Log($"{inspectPos}は初期値が入っていない　または　斜め移動でいけません\nGetValueFromVector({inspectPos}):{GetValueFromVector(inspectPos)}, CanMoveDiagonally({centerPos}, {inspectPos}):{CanMoveDiagonally(centerPos, inspectPos)}");
-                        }
 
-                        if (inspectPos == endPos && CanMoveDiagonally(centerPos, inspectPos))
-                        {
-                            isComplete = true;
-                            SetValueByVector(inspectPos, n);
-                            maxDistance = n;
-                            //Debug.Log($"isCompleteをtrueにしました。maxDistance:{maxDistance}");
-                            break; //探索終了
-                        }
+                        // すべての範囲を探索したいので、コメントアウト
+                        // endPosに到達したら探索終了
+                        // if (inspectPos == endPos )
+                        // {
+                        //     isComplete = true;
+                        //     SetValueByVector(inspectPos, n);
+                        //     maxDistance = n;
+                        //     //Debug.Log($"isCompleteをtrueにしました。maxDistance:{maxDistance}");
+                        //     break; //探索終了
+                        // }
                     }
                 }
-            }
 
-            bool CanMoveDiagonally(Vector2Int prePos, Vector2Int afterPos)
-            {
-                Vector2Int directionVector = afterPos - prePos;
-
-                //斜め移動の時にブロックの角を移動することはできない
-                if (directionVector.x != 0 && directionVector.y != 0)
+                // endPosに到達したらではなく、キューが空になったら探索終了
+                if (searchQue.Count == 0)
                 {
-                    //水平方向の判定
-                    if (GetValue(prePos.x + directionVector.x, prePos.y) == _wallValue)
-                    {
-                        return false;
-                    }
-
-                    //垂直方向の判定
-                    if (GetValue(prePos.x, prePos.y + directionVector.y) == _wallValue)
-                    {
-                        return false;
-                    }
+                    isComplete = true;
+                    // Debug.Log("探索キューが空になりました");
                 }
-
-                return true;
             }
         }
 
@@ -222,7 +198,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
             if (IsOnTheEdge(x, y))
             {
-                Debug.Log($"IsOnTheEdge({x},{y})がtrueです");
+                // Debug.Log($"IsOnTheEdge({x},{y})がtrueです");
                 return _wallValue;
             }
 
@@ -285,4 +261,3 @@ namespace Carry.CarrySystem.Map.Scripts
         }
     }
 }
-
