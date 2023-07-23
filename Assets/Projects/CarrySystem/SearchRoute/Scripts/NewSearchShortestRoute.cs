@@ -1,63 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Cysharp.Threading.Tasks.Triggers;
-using Projects.CarrySystem.RoutingAlgorithm.Interfaces;
-using UnityEngine.Assertions;
+using Carry.CarrySystem.SearchRoute.Scripts;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
-namespace Carry.CarrySystem.SearchRoute.Scripts
+namespace Carry.CarrySystem.Map.Scripts
 {
-    public class SearchShortestRoute
+    public class NewSearchShortestRoute
     {
-        public int GetLength() => _values.Length;
+        public int InitValue => _initValue; 
+        public int WallValue => _wallValue;
         int _width;
         int _height;
-        int[] _values; // 2次元配列のように扱う
-        int _initiValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
+        int[] _values;
+        int _initValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
         int _wallValue = -1; // wallのマス
         int _errorValue = -88;
         
-        IRoutePresenter?[] _routePresenter;
-
-
-        public void Init(int width, int height)
+        public NewSearchShortestRoute(int width, int height)
         {
-            Assert.IsTrue(width >= 0);
-            Assert.IsTrue(height >= 0);
             _width = width;
             _height = height;
-            _routePresenter = new IRoutePresenter[_width * _height];
-
-        }
-        
-        
-        public Vector2Int GetVectorFromIndex(int index)
-        {
-            return DivideSubscript(index);
-        }
-        
-        Vector2Int DivideSubscript(int subscript)
-        {
-            int x = subscript % _width;
-            int y = subscript / _width;
-            return new Vector2Int(x, y);
-        }
-        
-        
-        public void RegisterRoutePresenter(IRoutePresenter routePresenter, int index)
-        {
-            _routePresenter[index] = routePresenter;
-
+            _values = new int[width * height];
         }
 
-       public  List<Vector2Int> NonDiagonalSearchShortestRoute( Vector2Int startPos, Vector2Int endPos,
-            Vector2Int[] orderInDirectionArray1,  Func<int, int, bool> isWall)
+        public int[] WaveletSearch(Vector2Int startPos, Vector2Int endPos,
+            Func<int, int, bool> isWall)
         {
-            var orderInDirectionArray2 = OrderInDirectionArrayContainer.SwapPairwise(orderInDirectionArray1);
-            var shortestRouteList = new List<Vector2Int>();
-
             var searchQue = new Queue<Vector2Int>();
             int n = 1; //1から始まることに注意!!
             bool isComplete = false;
@@ -65,22 +34,21 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
             bool orderInDirectionFlag = true; //探索するたびに優先順位を切り替えるのに必要
             Vector2Int[] orderInDirectionArray;
-            
+
             // 初期化
-            _values = new int[_width * _height];
-            FillAll(_initiValue); //mapの初期化は_initiValueで行う
+            FillAll(_initValue); //mapの初期化は_initValueで行う
 
 
             if (isWall(startPos.x, startPos.y))
             {
                 Debug.LogError($"startPos:{startPos}は壁です");
-                return new List<Vector2Int>(); // 空のリストを返す
+                return _values; // 空の配列
             }
 
             if (isWall(startPos.x, startPos.y))
             {
                 Debug.LogError($"endPos:{endPos}は壁です");
-                return new List<Vector2Int>(); // 空のリストを返す
+                return _values; // 空の配列
             }
 
 
@@ -102,57 +70,23 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
 
             //デバッグ用
-            // string debugCell = "";
-            // for (int y = 0; y < _height; y++)
-            // {
-            //     for (int x = 0; x < _width; x++)
-            //     {
-            //         debugCell += $"{GetValue(x, _height - y - 1)}".PadRight(3) + ",";
-            //     }
-            //
-            //     debugCell += "\n";
-            // }
-            // Debug.Log($"WaveletSearchの結果は\n{debugCell}");
-
-            //デバッグ用
             StringBuilder debugCell = new StringBuilder();
             for (int y = 0; y < _height; y++)
             {
                 for (int x = 0; x < _width; x++)
                 {
                     int value = GetValue(x, _height - y - 1);
-                    debugCell.AppendFormat("{0,4},", (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
+                    debugCell.AppendFormat("{0,4},",
+                        (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
                 }
+
                 debugCell.AppendLine();
             }
+
             Debug.Log($"WaveletSearchの結果は\n{debugCell}");
 
-            //数字をもとに、大きい数字から巻き戻すようにして最短ルートを配列に格納する
-            Debug.Log($"StoreRouteAround({endPos},{maxDistance})を実行します");
-            StoreShortestRoute(endPos, maxDistance);
 
-            shortestRouteList.Reverse(); //リストを反転させる
-
-
-            //デバッグ
-            //Debug.Log($"shortestRouteList:{string.Join(",", shortestRouteList)}");
-            // GameManager.instance.debugMGR.DebugRoute(shortestRouteList);
-            
-            // Presenterを更新
-            for (int i = 0; i < _values.Length; i++)
-            {
-                // Debug.Log($"_values[{i}] = {_values[i]}, _wallValue = {_wallValue}, _initiValue = {_initiValue}, flag = {_values[i] != _wallValue && _values[i] != _initiValue}");
-                if (_values[i] != _wallValue && _values[i] != _initiValue)
-                {
-                    _routePresenter[i]?.SetPresenterActive(true);
-                }
-                else
-                {
-                    _routePresenter[i]?.SetPresenterActive(false);
-                }
-            }
-
-            return shortestRouteList;
+            return _values;
 
             ////////////////////////////////////////////////////////////////////
 
@@ -184,42 +118,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                     }
                 }
             }
-
-            void StoreShortestRoute(Vector2Int centerPos, int distance) //再帰的に呼ぶ
-            {
-                if (distance == 0)
-                {
-                    shortestRouteList.Add(centerPos);
-                    return;
-                }
-
-                if (distance < 0) return; //0までQueに入れれば十分
-
-                Debug.Log($"GetValue({centerPos})は{GetValueFromVector(centerPos)}、distance:{distance}");
-
-
-                if (orderInDirectionFlag)
-                {
-                    orderInDirectionArray = orderInDirectionArray1;
-                    orderInDirectionFlag = false;
-                }
-                else
-                {
-                    orderInDirectionArray = orderInDirectionArray2;
-                    orderInDirectionFlag = true;
-                }
-
-                foreach (Vector2Int direction in orderInDirectionArray)
-                {
-                    if (GetValueFromVector(centerPos + direction) == distance - 1 &&
-                        CanMoveDiagonally(centerPos, centerPos + direction))
-                    {
-                        shortestRouteList.Add(centerPos);
-                        StoreShortestRoute(centerPos + direction, distance - 1);
-                        break;
-                    }
-                }
-            }
+            
 
 
             void PlaceNumAround(Vector2Int centerPos)
@@ -236,7 +135,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
                         inspectPos = centerPos + new Vector2Int(x, y);
                         //Debug.Log($"centerPos:{centerPos},inspectPos:{inspectPos}のとき、CanMove(centerPos, inspectPos):{CanMove(centerPos, inspectPos)}");
-                        if (GetValueFromVector(inspectPos) == _initiValue && CanMoveDiagonally(centerPos, inspectPos))
+                        if (GetValueFromVector(inspectPos) == _initValue && CanMoveDiagonally(centerPos, inspectPos))
                         {
                             SetValueByVector(inspectPos, n);
                             searchQue.Enqueue(inspectPos);
@@ -374,3 +273,4 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         }
     }
 }
+
