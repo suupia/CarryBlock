@@ -26,7 +26,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             // Map
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
-            builder.Register<TilePresenterAttacher>(Lifetime.Scoped);
 
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
             builder.Register<BlockPlacer>(Lifetime.Scoped);

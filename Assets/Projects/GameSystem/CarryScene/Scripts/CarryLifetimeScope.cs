@@ -42,7 +42,6 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<EntityGridMapLoader>(Lifetime.Singleton);
             builder.Register<TilePresenterBuilder>(Lifetime.Singleton);
             builder.Register<EntityGridMapSwitcher>(Lifetime.Singleton).As<IMapUpdater>();
-            builder.Register<TilePresenterAttacher>(Lifetime.Scoped);
             
             // UI
             builder.Register<GameContext>(Lifetime.Singleton);

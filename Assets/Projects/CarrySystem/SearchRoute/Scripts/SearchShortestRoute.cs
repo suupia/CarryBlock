@@ -31,14 +31,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             _routePresenter = new IRoutePresenter[_width * _height];
 
         }
-
-        //
-        // public List<Vector2Int> SearchShortestRouteFromTo(Vector2Int startPos, Vector2Int endPos)
-        // {
-        //     List<Vector2Int> shortestRouteList = new List<Vector2Int>();
-        //     shortestRouteList = NonDiagonalSearchShortestRoute(startPos, endPos, OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, IsWall);
-        //     return shortestRouteList;
-        // }
+        
         
         public Vector2Int GetVectorFromIndex(int index)
         {
