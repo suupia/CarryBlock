@@ -8,8 +8,6 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class NewSearchShortestRoute
     {
-        public int InitValue => _initValue; 
-        public int WallValue => _wallValue;
         int _width;
         int _height;
         int[] _values;
@@ -24,7 +22,21 @@ namespace Carry.CarrySystem.Map.Scripts
             _values = new int[width * height];
         }
 
-        public int[] WaveletSearch(Vector2Int startPos, Vector2Int endPos,
+        public bool[] SearchAccessiblePath(Vector2Int startPos, Vector2Int endPos,
+            Func<int, int, bool> isWall)
+        {
+            var resultBoolArray = new bool[_width * _height];
+            var waveletResult = WaveletSearch(startPos, endPos , isWall);
+            for (int i = 0; i < resultBoolArray.Length; i++)
+            {
+                resultBoolArray[i] = waveletResult[i] != _wallValue &&
+                                     waveletResult[i] != _initValue;
+            }
+
+            return resultBoolArray;
+        }
+
+         int[] WaveletSearch(Vector2Int startPos, Vector2Int endPos,
             Func<int, int, bool> isWall)
         {
             var searchQue = new Queue<Vector2Int>();
@@ -41,13 +53,13 @@ namespace Carry.CarrySystem.Map.Scripts
 
             if (isWall(startPos.x, startPos.y))
             {
-                Debug.LogError($"startPos:{startPos}は壁です");
+                // Debug.LogError($"startPos:{startPos}は壁です");
                 return _values; // 空の配列
             }
 
-            if (isWall(startPos.x, startPos.y))
+            if (isWall(endPos.x, endPos.y))
             {
-                Debug.LogError($"endPos:{endPos}は壁です");
+                // Debug.LogError($"endPos:{endPos}は壁です");
                 return _values; // 空の配列
             }
 
@@ -126,9 +138,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 Vector2Int inspectPos;
 
                 //8マス または 4マス判定する（真ん中のマスの判定は必要ない）（isDiagonalSearchに依る）
-                for (int y = -1; y < 2; y++)
+                for (int y = -1; y <= 1; y++)
                 {
-                    for (int x = -1; x < 2; x++)
+                    for (int x = -1; x <= 1; x++)
                     {
                         if (x == 0 && y == 0) continue; //真ん中のマスは飛ばす
                         if (x != 0 && y != 0) continue; //斜めのマスも飛ばす
