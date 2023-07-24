@@ -17,7 +17,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var expectedBoolArray = new bool[width * height];
             var allFalseArray = new bool[width * height];
             var resultBoolArray = new bool[width * height];
-            var newSearchShortestRoute = new NewSearchShortestRoute(width, height);
+            var newSearchShortestRoute = new WaveletSearchExecutor(width, height);
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -67,7 +67,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var expectedBoolArray = new bool[width * height];
             var allFalseArray = new bool[width * height];
             var resultBoolArray = new bool[width * height];
-            var newSearchShortestRoute = new NewSearchShortestRoute(width, height);
+            var newSearchShortestRoute = new WaveletSearchExecutor(width, height);
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -117,7 +117,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var expectedBoolArray = new bool[width * height];
             var allFalseArray = new bool[width * height];
             var resultBoolArray = new bool[width * height];
-            var newSearchShortestRoute = new NewSearchShortestRoute(width, height);
+            var newSearchShortestRoute = new WaveletSearchExecutor(width, height);
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 5, expectedTrueIndexes);
@@ -180,7 +180,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var expectedBoolArray = new bool[width * height];
             var allFalseArray = new bool[width * height];
             var resultBoolArray = new bool[width * height];
-            var newSearchShortestRoute = new NewSearchShortestRoute(width, height);
+            var newSearchShortestRoute = new WaveletSearchExecutor(width, height);
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -230,7 +230,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var expectedBoolArray = new bool[width * height];
             var allFalseArray = new bool[width * height];
             var resultBoolArray = new bool[width * height];
-            var newSearchShortestRoute = new NewSearchShortestRoute(width, height);
+            var newSearchShortestRoute = new WaveletSearchExecutor(width, height);
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -281,7 +281,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var expectedBoolArray = new bool[width * height];
             var allFalseArray = new bool[width * height];
             var resultBoolArray = new bool[width * height];
-            var newSearchShortestRoute = new NewSearchShortestRoute(width, height);
+            var newSearchShortestRoute = new WaveletSearchExecutor(width, height);
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 5, expectedTrueIndexes);

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class NewSearchShortestRoute
+    public class WaveletSearchExecutor
     {
         readonly int _width;
         readonly int _height;
@@ -21,7 +21,7 @@ namespace Carry.CarrySystem.Map.Scripts
             SizeThree
         }
 
-        public NewSearchShortestRoute(int width, int height)
+        public WaveletSearchExecutor(int width, int height)
         {
             _width = width;
             _height = height;
@@ -75,6 +75,8 @@ namespace Carry.CarrySystem.Map.Scripts
             return resultBoolArray;
         }
 
+
+
         int[] WaveletSearch(Vector2Int startPos, Vector2Int endPos,
             Func<int, int, bool> isWall, SearcherSize searcherSize = SearcherSize.SizeOne)
         {
@@ -118,20 +120,20 @@ namespace Carry.CarrySystem.Map.Scripts
 
 
             //デバッグ用
-            // StringBuilder debugCell = new StringBuilder();
-            // for (int y = 0; y < _height; y++)
-            // {
-            //     for (int x = 0; x < _width; x++)
-            //     {
-            //         int value = GetValue(x, _height - y - 1);
-            //         debugCell.AppendFormat("{0,4},",
-            //             (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
-            //     }
-            //
-            //     debugCell.AppendLine();
-            // }
-            //
-            // Debug.Log($"WaveletSearchの結果は\n{debugCell}");
+            StringBuilder debugCell = new StringBuilder();
+            for (int y = 0; y < _height; y++)
+            {
+                for (int x = 0; x < _width; x++)
+                {
+                    int value = GetValue(x, _height - y - 1);
+                    debugCell.AppendFormat("{0,4},",
+                        (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
+                }
+            
+                debugCell.AppendLine();
+            }
+            
+            Debug.Log($"WaveletSearchの結果は\n{debugCell}");
 
 
             return _values;
