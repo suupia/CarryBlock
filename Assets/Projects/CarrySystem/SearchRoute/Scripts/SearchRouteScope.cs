@@ -24,7 +24,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
             
             // SearchRoute
-            builder.Register<RoutePresenterBuilder>(Lifetime.Scoped);
+            builder.Register<WaveletSearchBuilder>(Lifetime.Scoped);
 
 
             // Initializer

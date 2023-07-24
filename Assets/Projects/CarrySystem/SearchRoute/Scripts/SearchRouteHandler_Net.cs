@@ -6,6 +6,7 @@ using Projects.CarrySystem.Block.Interfaces;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+
 #nullable enable
 
 
@@ -18,35 +19,34 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     {
         [SerializeField] Vector2Int startPos;
         [SerializeField] Vector2Int endPos;
+        WaveletSearchBuilder _waveletSearchBuilder = null!;
         IMapUpdater _entityGridMapSwitcher = null!;
-        
+
         [Inject]
-        public void Construct(IMapUpdater entityGridMapSwitcher
-            
-           )
+        public void Construct(IMapUpdater entityGridMapSwitcher,
+            WaveletSearchBuilder waveletSearchBuilder)
         {
+            _waveletSearchBuilder = waveletSearchBuilder;
             _entityGridMapSwitcher = entityGridMapSwitcher;
         }
 
 
         void Update()
         {
-            if(Runner == null) return;
-            if(Runner.IsServer && Input.GetKeyDown(KeyCode.S))
+            if (Runner == null) return;
+            if (Runner.IsServer && Input.GetKeyDown(KeyCode.S))
             {
                 Search();
             }
-            
         }
 
         void Search()
         {
             var map = _entityGridMapSwitcher.GetMap();
             Func<int, int, bool> isWall = (x, y) => map.GetSingleEntityList<IBlock>(new Vector2Int(x, y)).Count > 0;
-            
-            var switcher = _entityGridMapSwitcher as EntityGridMapSwitcher;
-            switcher.WaveletSearchExecutor.SearchAccessibleAreaSizeThree(startPos, endPos, isWall);
-        }
 
+            var waveletSearchExecutor = _waveletSearchBuilder.Build(_entityGridMapSwitcher.GetMap());
+            waveletSearchExecutor.SearchAccessibleAreaSizeThree(startPos, endPos, isWall);
+        }
     }
 }

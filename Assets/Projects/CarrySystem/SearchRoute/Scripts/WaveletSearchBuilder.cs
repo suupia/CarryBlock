@@ -14,19 +14,17 @@ using VContainer;
 
 namespace Carry.CarrySystem.SearchRoute.Scripts
 {
-    public class RoutePresenterBuilder
+    public class WaveletSearchBuilder
     {
         [Inject] NetworkRunner _runner;
-        public WaveletSearchExecutor? WaveletSearchExecutor => _waveletSearchExecutor;
-        WaveletSearchExecutor _waveletSearchExecutor;
         IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
 
         [Inject]
-        public RoutePresenterBuilder()
+        public WaveletSearchBuilder()
         {
         }
 
-        public void Build(EntityGridMap map)
+        public WaveletSearchExecutor Build(EntityGridMap map)
         {
             // ToDo: mapを受け取っているのはやりすぎ。もっと緩い制約でよいはず
             var routePresenterSpawner = new RoutePresenterSpawner(_runner);
@@ -44,9 +42,10 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                 routePresenters.Add(routePresenter);
             }
             
-            AttachRoutePresenter(routePresenters, map);
-
             _routePresenters = routePresenters;
+            
+           return  AttachRoutePresenter(routePresenters, map);
+
         }
         
         void DestroyRoutePresenter()
@@ -61,7 +60,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             _routePresenters = new List<RoutePresenter_Net>();
         }
 
-         void AttachRoutePresenter(IEnumerable<RoutePresenter_Net> routePresenters , EntityGridMap map)
+        WaveletSearchExecutor AttachRoutePresenter(IEnumerable<RoutePresenter_Net> routePresenters , EntityGridMap map)
         {
             for (int i = 0; i < routePresenters.Count(); i++)
             {
@@ -71,9 +70,9 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
             }
 
-            _waveletSearchExecutor = new WaveletSearchExecutor(map);
-            _waveletSearchExecutor.RegisterRoutePresenters( routePresenters);
-
+            var waveletSearchExecutor = new WaveletSearchExecutor(map);
+            waveletSearchExecutor.RegisterRoutePresenters( routePresenters);
+            return waveletSearchExecutor;
         }
     }
 }

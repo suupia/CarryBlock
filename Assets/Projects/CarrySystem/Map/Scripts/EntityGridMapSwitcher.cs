@@ -17,20 +17,17 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         readonly EntityGridMapLoader _gridMapLoader;
         readonly TilePresenterBuilder _tilePresenterBuilder;
-        readonly RoutePresenterBuilder _routePresenterBuilder;
         int _currentIndex;
         EntityGridMap _currentMap;
-        public WaveletSearchExecutor? WaveletSearchExecutor => _routePresenterBuilder.WaveletSearchExecutor;
         
         [Inject]
         public EntityGridMapSwitcher(
             EntityGridMapLoader gridMapGridMapLoader,
-            TilePresenterBuilder tilePresenterBuilder,
-            RoutePresenterBuilder routePresenterBuilder)
+            TilePresenterBuilder tilePresenterBuilder
+           )
         {
             _gridMapLoader = gridMapGridMapLoader;
             _tilePresenterBuilder = tilePresenterBuilder;
-            _routePresenterBuilder = routePresenterBuilder;
         }
         
         public EntityGridMap GetMap()
@@ -43,7 +40,6 @@ namespace Carry.CarrySystem.Map.Scripts
             _currentIndex = index;
             _currentMap = _gridMapLoader.LoadEntityGridMap(mapKey, _currentIndex);
             _tilePresenterBuilder.Build(_currentMap);
-            _routePresenterBuilder.Build(_currentMap);
         }
         
         public void UpdateMap(MapKey mapKey, int index)
@@ -54,7 +50,6 @@ namespace Carry.CarrySystem.Map.Scripts
             var nextMap = _gridMapLoader.LoadEntityGridMap(key,_currentIndex);
             _currentMap = nextMap;
             _tilePresenterBuilder.Build(_currentMap);
-            _routePresenterBuilder.Build(_currentMap);
 
             
             // 以下リセット処理
