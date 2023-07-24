@@ -59,23 +59,8 @@ namespace Carry.CarrySystem.Map.Scripts
             return resultBoolArray;
         }
 
-        void UpdatePresenter(bool[] resultBoolArray)
-        {
-            for (int i = 0; i < resultBoolArray.Length; i++)
-            {
-                if (resultBoolArray[i])
-                {
-                    _routePresenters[i]?.SetPresenterActive(true);
-                }
-                else
-                {
-                    _routePresenters[i]?.SetPresenterActive(false);
-                }
-            }
-        }
 
-
-        NumericGridMap WaveletSearch(Vector2Int startPos, Vector2Int endPos,
+        public NumericGridMap WaveletSearch(Vector2Int startPos, Vector2Int endPos,
             Func<int, int, bool> isWall, SearcherSize searcherSize = SearcherSize.SizeOne)
         {
             var searchQue = new Queue<Vector2Int>();
@@ -293,6 +278,14 @@ namespace Carry.CarrySystem.Map.Scripts
 
 
             return resultBoolArray;
+        }
+        
+        void UpdatePresenter(bool[] resultBoolArray)
+        {
+            for (int i = 0; i < resultBoolArray.Length; i++)
+            {
+                _routePresenters[i]?.SetPresenterActive(resultBoolArray[i]);
+            }
         }
     }
 }
