@@ -10,7 +10,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
     public class WaveletSearchTest
     {
         [Test]
-        public void WaveletSearchTest_7x7_A()
+        public void SearchAccessibleArea1_7x7_A()
         {
             int width = 7;
             int height = 7;
@@ -55,7 +55,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
         }
         
         [Test]
-        public void WaveletSearchTest_7x7_B()
+        public void SearchAccessibleArea1_7x7_B()
         {
             int width = 7;
             int height = 7;
@@ -100,7 +100,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
         }
         
         [Test]
-        public void WaveletSearchTest_10x8_A()
+        public void SearchAccessibleArea1_10x8_A()
         {
             int width = 10;
             int height = 8;
@@ -151,6 +151,58 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             
             // wallsIncludeEnd
             resultBoolArray = newSearchShortestRoute.SearchAccessibleAreaSizeOne(startPos, endPos , (x, y) => wallsIncludeEnd.Contains((x, y)));
+            Assert.AreEqual(allFalseArray, resultBoolArray);
+        }
+        
+                [Test]
+        public void SearchAccessibleArea3_7x7_A()
+        {
+            int width = 7;
+            int height = 7;
+            var expectedBoolArray = new bool[width * height];
+            var allFalseArray = new bool[width * height];
+            var resultBoolArray = new bool[width * height];
+            var newSearchShortestRoute = new NewSearchShortestRoute(width,height);
+
+            var expectedTrueIndexes = new List<int>();
+            expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
+            expectedTrueIndexes = ContinuousAdd(7, 9, expectedTrueIndexes);
+            expectedTrueIndexes = ContinuousAdd(14, 20, expectedTrueIndexes);
+            expectedTrueIndexes = ContinuousAdd(21, 27, expectedTrueIndexes);
+            expectedTrueIndexes = ContinuousAdd(28, 34, expectedTrueIndexes);
+            expectedTrueIndexes = ContinuousAdd(35, 41, expectedTrueIndexes);
+            expectedTrueIndexes = ContinuousAdd(42, 48, expectedTrueIndexes);
+
+            for (int i = 0; i < expectedBoolArray.Length; i++)
+            {
+                expectedBoolArray[i] = expectedTrueIndexes.Contains(i);
+            }
+
+            var startPos = new Vector2Int(0, 2);
+            var endPos = new Vector2Int(6, 6);
+            var walls = new List<(int, int)>() { (3,1), (4,1), (5,1), (6,1), (3,0) };
+            var wallsIncludeStart = new List<(int, int)>(walls);
+            wallsIncludeStart.Add((startPos.x, startPos.y));
+            var wallsIncludeEnd = new List<(int, int)>(walls);
+            wallsIncludeEnd.Add((endPos.x, endPos.y));
+            
+            // walls
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleAreaSizeThree(startPos, endPos , (x, y) => walls.Contains((x, y)));
+            for(int i= 0; i< resultBoolArray.Length; i++)
+            {
+                if (expectedBoolArray[i] != resultBoolArray[i])
+                {
+                    Debug.Log($"i:{i} expectedBoolArray[i]:{expectedBoolArray[i]} resultBoolArray[i]:{resultBoolArray[i]}");
+                }
+            }
+            Assert.AreEqual(expectedBoolArray, resultBoolArray);
+            
+            // wallsIncludeStart
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleAreaSizeThree(startPos, endPos , (x, y) => wallsIncludeStart.Contains((x, y)));
+            Assert.AreEqual(allFalseArray, resultBoolArray);
+            
+            // wallsIncludeEnd
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleAreaSizeThree(startPos, endPos , (x, y) => wallsIncludeEnd.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
         }
         

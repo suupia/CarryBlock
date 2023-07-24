@@ -14,6 +14,12 @@ namespace Carry.CarrySystem.Map.Scripts
         int _initValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
         int _wallValue = -1; // wallのマス
         int _errorValue = -88;
+        
+        enum SearcherSize
+        {
+            SizeOne,
+            SizeThree
+        }
 
         public NewSearchShortestRoute(int width, int height)
         {
@@ -38,34 +44,42 @@ namespace Carry.CarrySystem.Map.Scripts
         public bool[] SearchAccessibleAreaSizeThree(Vector2Int startPos, Vector2Int endPos,
             Func<int, int, bool> isWall)
         {
+            var tmpBoolArray = new bool[_width * _height];
             var resultBoolArray = new bool[_width * _height];
-            var waveletResult = WaveletSearch(startPos, endPos, isWall);  // ToDo : この関数を変える
+            var waveletResult = WaveletSearch(startPos, endPos, isWall,SearcherSize.SizeThree);
             // 数字がある部分をtrueにする
-            for (int i = 0; i < resultBoolArray.Length; i++)
+            for (int i = 0; i < tmpBoolArray.Length; i++)
             {
-                resultBoolArray[i] = waveletResult[i] != _wallValue &&
+                tmpBoolArray[i] = waveletResult[i] != _wallValue &&
                                      waveletResult[i] != _initValue;
             }
-            // 周囲のマスをtrueにする
-            for (int i = 0; i < resultBoolArray.Length; i++)
+            // tureの周囲のマスをtrueにする
+            for (int i = 0; i < tmpBoolArray.Length; i++)
             {
-                if (resultBoolArray[i])
+                if (tmpBoolArray[i])
                 {
                     for (int y = -1; y <= 1;y++)
                     {
                         for (int x = -1; x <= 1; x++)
                         {
                             var pos = ToVector(i);
+                            var newX = pos.x + x;
+                            var newY = pos.y + y;
+                            if(newX < 0 || newX >= _width || newY < 0 || newY >= _height) continue; // SetValueを使いたい
                             resultBoolArray[ToSubscript(pos.x + x, pos.y + y)] = true;
                         }
                     }
+                }
+                else
+                {
+                    resultBoolArray[i] = false;
                 }
             }
             return resultBoolArray;
         }
 
         int[] WaveletSearch(Vector2Int startPos, Vector2Int endPos,
-            Func<int, int, bool> isWall)
+            Func<int, int, bool> isWall, SearcherSize searcherSize = SearcherSize.SizeOne)
         {
             var searchQue = new Queue<Vector2Int>();
             int n = 1; //1から始まることに注意!!
@@ -85,6 +99,18 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 // Debug.LogError($"endPos:{endPos}は壁です");
                 return _values; // 空の配列
+            }
+
+            switch (searcherSize)
+            {
+                case SearcherSize.SizeOne:
+                    BasicSetWall(isWall);
+                    break;
+                case SearcherSize.SizeThree:
+                    SetWallSizeThree(isWall);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
             }
 
             BasicSetWall(isWall);
@@ -204,7 +230,7 @@ namespace Carry.CarrySystem.Map.Scripts
         }
 
         // 探索者の大きさが3*3の場合
-        void ThreeWidthSetWall(Func<int, int, bool> isWall)
+        void SetWallSizeThree(Func<int, int, bool> isWall)
         {
             //mapをコピーして、壁のマスを-1にする。
             for (int y = 0; y < _height; y++)
@@ -283,6 +309,11 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 Debug.LogError($"領域外に値を設定しようとしました (x,y):({x},{y})");
                 return;
+            }
+            if (IsOnTheEdge(x, y))
+            {
+                // Debug.Log($"IsOnTheEdge({x},{y})がtrueです");
+                return ;
             }
 
             _values[ToSubscript(x, y)] = value;
