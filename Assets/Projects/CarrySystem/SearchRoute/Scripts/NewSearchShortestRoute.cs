@@ -44,7 +44,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public bool[] SearchAccessibleAreaSizeThree(Vector2Int startPos, Vector2Int endPos,
             Func<int, int, bool> isWall)
         {
-            var tmpBoolArray = new bool[_width * _height];
+            var tmpBoolArray = new bool[_width * _height];  // Declare an another array so that the resultBoolArray is not affected when it is rewritten.
             var resultBoolArray = new bool[_width * _height];
             var waveletResult = WaveletSearch(startPos, endPos, isWall,SearcherSize.SizeThree);
             // 数字がある部分をtrueにする
@@ -67,12 +67,9 @@ namespace Carry.CarrySystem.Map.Scripts
                             var newY = pos.y + y;
                             if(newX < 0 || newX >= _width || newY < 0 || newY >= _height) continue; // SetValueを使いたい
                             resultBoolArray[ToSubscript(pos.x + x, pos.y + y)] = true;
+                            if(ToSubscript(pos.x + x, pos.y + y) == 44) Debug.Log($"44 is true");
                         }
                     }
-                }
-                else
-                {
-                    resultBoolArray[i] = false;
                 }
             }
             return resultBoolArray;
