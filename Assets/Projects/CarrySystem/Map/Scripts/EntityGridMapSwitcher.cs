@@ -20,6 +20,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly RoutePresenterBuilder _routePresenterBuilder;
         int _currentIndex;
         EntityGridMap _currentMap;
+        public WaveletSearchExecutor? WaveletSearchExecutor => _routePresenterBuilder.WaveletSearchExecutor;
         
         [Inject]
         public EntityGridMapSwitcher(

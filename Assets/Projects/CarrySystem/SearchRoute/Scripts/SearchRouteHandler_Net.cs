@@ -22,7 +22,9 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         SearchShortestRoute _searchShortestRoute;
         
         [Inject]
-        public void Construct(IMapUpdater entityGridMapSwitcher, SearchShortestRoute searchShortestRoute )
+        public void Construct(IMapUpdater entityGridMapSwitcher,
+            SearchShortestRoute searchShortestRoute 
+           )
         {
             _entityGridMapSwitcher = entityGridMapSwitcher;
             _searchShortestRoute = searchShortestRoute;
@@ -45,8 +47,9 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             var map = _entityGridMapSwitcher.GetMap();
             Func<int, int, bool> isWall = (x, y) => map.GetSingleEntityList<IBlock>(new Vector2Int(x, y)).Count > 0;
             
-            var shortestRoute = _searchShortestRoute.NonDiagonalSearchShortestRoute( startPos,endPos,orderInDirection,isWall);
-
+            // var shortestRoute = _searchShortestRoute.NonDiagonalSearchShortestRoute( startPos,endPos,orderInDirection,isWall);
+            var switcher = _entityGridMapSwitcher as EntityGridMapSwitcher;
+            switcher.WaveletSearchExecutor.SearchAccessibleAreaSizeThree(startPos, endPos, isWall);
         }
 
     }

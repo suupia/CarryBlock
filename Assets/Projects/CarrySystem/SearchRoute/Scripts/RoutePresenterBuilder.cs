@@ -5,17 +5,21 @@ using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners;
 using Fusion;
+using JetBrains.Annotations;
 using Projects.CarrySystem.Block.Interfaces;
 using Projects.CarrySystem.Block.Scripts;
 using UnityEngine;
 using VContainer;
+#nullable  enable
 
 namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     public class RoutePresenterBuilder
     {
         [Inject] NetworkRunner _runner;
+        public WaveletSearchExecutor? WaveletSearchExecutor => _waveletSearchExecutor;
         readonly SearchShortestRoute _searchShortestRoute;
+        WaveletSearchExecutor _waveletSearchExecutor;
         IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
 
         [Inject]
@@ -71,9 +75,12 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                 routePresenter.SetPresenterActive(false);  // ToDo: 初期化の処理
                 
                 
-                _searchShortestRoute.RegisterRoutePresenter(routePresenter, i);
-
+            //    _searchShortestRoute.RegisterRoutePresenter(routePresenter, i);
+                
             }
+
+            _waveletSearchExecutor = new WaveletSearchExecutor(map);
+            _waveletSearchExecutor.RegisterRoutePresenters( routePresenters);
 
         }
     }

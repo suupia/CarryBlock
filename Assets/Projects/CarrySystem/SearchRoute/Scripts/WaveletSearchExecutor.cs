@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Carry.CarrySystem.SearchRoute.Scripts;
+using JetBrains.Annotations;
+using Projects.CarrySystem.RoutingAlgorithm.Interfaces;
 using UnityEngine;
+#nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
     public class WaveletSearchExecutor
     {
-        readonly NumericGridMap _map;
+        NumericGridMap _map;
         readonly int _initValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
-        readonly int _wallValue = -1; // wallのマス
-        readonly int _errorValue = -88;
+        readonly int _wallValue = -5; // wallのマス
+        
+        IRoutePresenter?[] _routePresenters;
 
         enum SearcherSize
         {
@@ -22,6 +27,22 @@ namespace Carry.CarrySystem.Map.Scripts
         public WaveletSearchExecutor(NumericGridMap numericGridMap)
         {
             _map = numericGridMap;
+            _routePresenters = new IRoutePresenter[numericGridMap.GetLength()];
+        }
+        
+        public void RegisterRoutePresenters( IEnumerable<RoutePresenter_Net> routePresenters)
+        {
+            var routePresentersArray = routePresenters.ToArray();
+            if (routePresentersArray.Count() != _map.GetLength())
+            {
+                Debug.LogError($"routePresentersの数がmapのマスの数と一致しません。" +
+                               $"routePresentersの数: {routePresenters.Count()} " +
+                               $"mapのマスの数: {_map.GetLength()}");
+            }
+            for(int i = 0 ; i< routePresentersArray.Count(); i++)
+            {
+                _routePresenters[i] = routePresentersArray[i];
+            }
         }
 
         public bool[] SearchAccessibleAreaSizeOne(Vector2Int startPos, Vector2Int endPos,
@@ -34,6 +55,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 resultBoolArray[i] = waveletResult.GetValue(i) != _wallValue &&
                                      waveletResult.GetValue(i) != _initValue;
             }
+            
+            UpdatePresenter(resultBoolArray);
+
 
             return resultBoolArray;
         }
@@ -68,13 +92,29 @@ namespace Carry.CarrySystem.Map.Scripts
                             if (newX < 0 || newX >= _map.Width || newY < 0 || newY >= _map.Height)
                                 continue; // SetValueを使いたい
                             resultBoolArray[_map.ToSubscript(pos.x + x, pos.y + y)] = true;
-                            if (_map.ToSubscript(pos.x + x, pos.y + y) == 44) Debug.Log($"44 is true");
                         }
                     }
                 }
             }
+            
+            UpdatePresenter(resultBoolArray);
 
             return resultBoolArray;
+        }
+        
+        void UpdatePresenter(bool[] resultBoolArray)
+        {
+            for (int i = 0; i < resultBoolArray.Length; i++)
+            {
+                if (resultBoolArray[i])
+                {
+                    _routePresenters[i]?.SetPresenterActive(true);
+                }
+                else
+                {
+                    _routePresenters[i]?.SetPresenterActive(false);
+                }
+            }
         }
 
 
@@ -121,19 +161,19 @@ namespace Carry.CarrySystem.Map.Scripts
 
 
             //デバッグ用
-            // StringBuilder debugCell = new StringBuilder();
-            // for (int y = 0; y < _map.Height; y++)
-            // {
-            //     for (int x = 0; x < _map.Width; x++)
-            //     {
-            //         long value = _map.GetValue(x, _map.Height - y - 1);
-            //         debugCell.AppendFormat("{0,4},",
-            //             (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
-            //     }
-            //
-            //     debugCell.AppendLine();
-            // }
-            // Debug.Log($"WaveletSearchの結果は\n{debugCell}");
+            StringBuilder debugCell = new StringBuilder();
+            for (int y = 0; y < _map.Height; y++)
+            {
+                for (int x = 0; x < _map.Width; x++)
+                {
+                    long value = _map.GetValue(x, _map.Height - y - 1);
+                    debugCell.AppendFormat("{0,4},",
+                        (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
+                }
+            
+                debugCell.AppendLine();
+            }
+            Debug.Log($"WaveletSearchの結果は\n{debugCell}");
 
 
             return _map;
