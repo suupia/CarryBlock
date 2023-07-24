@@ -6,6 +6,7 @@ using Carry.CarrySystem.SearchRoute.Scripts;
 using JetBrains.Annotations;
 using Projects.CarrySystem.RoutingAlgorithm.Interfaces;
 using UnityEngine;
+
 #nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
@@ -15,12 +16,13 @@ namespace Carry.CarrySystem.Map.Scripts
         SizeOne,
         SizeThree
     }
+
     public class WaveletSearchExecutor
     {
         NumericGridMap _map;
         readonly int _initValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
         readonly int _wallValue = -5; // wallのマス
-        
+
         IRoutePresenter?[] _routePresenters;
 
 
@@ -29,8 +31,8 @@ namespace Carry.CarrySystem.Map.Scripts
             _map = numericGridMap;
             _routePresenters = new IRoutePresenter[numericGridMap.GetLength()];
         }
-        
-        public void RegisterRoutePresenters( IEnumerable<RoutePresenter_Net> routePresenters)
+
+        public void RegisterRoutePresenters(IEnumerable<RoutePresenter_Net> routePresenters)
         {
             var routePresentersArray = routePresenters.ToArray();
             if (routePresentersArray.Count() != _map.GetLength())
@@ -39,63 +41,24 @@ namespace Carry.CarrySystem.Map.Scripts
                                $"routePresentersの数: {routePresentersArray.Count()} " +
                                $"mapのマスの数: {_map.GetLength()}");
             }
-            for(int i = 0 ; i< routePresentersArray.Count(); i++)
+
+            for (int i = 0; i < routePresentersArray.Count(); i++)
             {
                 _routePresenters[i] = routePresentersArray[i];
             }
         }
-        
+
         public bool[] SearchAccessibleArea(Vector2Int startPos, Vector2Int endPos,
             Func<int, int, bool> isWall, SearcherSize searcherSize = SearcherSize.SizeOne)
         {
-            var tmpBoolArray =
-                new bool[_map
-                    .GetLength()]; // Declare an another array so that the resultBoolArray is not affected when it is rewritten.
-            var resultBoolArray = new bool[_map.GetLength()];
-            var waveletResult = WaveletSearch(startPos, endPos, isWall,searcherSize);
-            // 数字がある部分をtrueにする
-            for (int i = 0; i < tmpBoolArray.Length; i++)
-            {
-                tmpBoolArray[i] = waveletResult.GetValue(i) != _wallValue &&
-                                  waveletResult.GetValue(i) != _initValue;
-            }
+            var searchedMap = WaveletSearch(startPos, endPos, isWall, searcherSize);
+            var resultBoolArray = CalcAccessibleArea(searchedMap, searcherSize);
 
-            if (searcherSize == SearcherSize.SizeThree)
-            {
-                // tureの周囲のマスをtrueにする
-                for (int i = 0; i < tmpBoolArray.Length; i++)
-                {
-                    if (tmpBoolArray[i])
-                    {
-                        for (int y = -1; y <= 1; y++)
-                        {
-                            for (int x = -1; x <= 1; x++)
-                            {
-                                var pos = _map.ToVector(i);
-                                var newX = pos.x + x;
-                                var newY = pos.y + y;
-                                if (newX < 0 || newX >= _map.Width || newY < 0 || newY >= _map.Height)
-                                    continue; // SetValueを使いたい
-                                resultBoolArray[_map.ToSubscript(pos.x + x, pos.y + y)] = true;
-                            }
-                        }
-                    }
-                }
-            }else if (searcherSize == SearcherSize.SizeOne)
-            {
-                resultBoolArray = tmpBoolArray;
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
-            }
-
-            
             UpdatePresenter(resultBoolArray);
 
             return resultBoolArray;
         }
-        
+
         void UpdatePresenter(bool[] resultBoolArray)
         {
             for (int i = 0; i < resultBoolArray.Length; i++)
@@ -164,9 +127,10 @@ namespace Carry.CarrySystem.Map.Scripts
                     debugCell.AppendFormat("{0,4},",
                         (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
                 }
-            
+
                 debugCell.AppendLine();
             }
+
             Debug.Log($"WaveletSearchの結果は\n{debugCell}");
 
 
@@ -283,6 +247,52 @@ namespace Carry.CarrySystem.Map.Scripts
                     }
                 }
             }
+        }
+
+        bool[] CalcAccessibleArea(NumericGridMap map, SearcherSize searcherSize)
+        {
+            var tmpBoolArray = new bool[map.GetLength()];
+            var resultBoolArray = new bool[map.GetLength()];
+            var waveletResult = map;
+            // 数字がある部分をtrueにする
+            for (int i = 0; i < tmpBoolArray.Length; i++)
+            {
+                tmpBoolArray[i] = waveletResult.GetValue(i) != _wallValue &&
+                                  waveletResult.GetValue(i) != _initValue;
+            }
+
+            switch (searcherSize)
+            {
+                case SearcherSize.SizeOne:
+                    resultBoolArray = tmpBoolArray;
+                    break;
+                case SearcherSize.SizeThree:
+                    // set true to the squares around ture
+                    for (int i = 0; i < tmpBoolArray.Length; i++)
+                    {
+                        if (tmpBoolArray[i])
+                        {
+                            for (int y = -1; y <= 1; y++)
+                            {
+                                for (int x = -1; x <= 1; x++)
+                                {
+                                    var pos = map.ToVector(i);
+                                    var newX = pos.x + x;
+                                    var newY = pos.y + y;
+                                    if (!map.IsInDataRangeArea(newX, newY)) continue;
+                                    resultBoolArray[map.ToSubscript(pos.x + x, pos.y + y)] = true;
+                                }
+                            }
+                        }
+                    }
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
+            }
+
+
+            return resultBoolArray;
         }
     }
 }
