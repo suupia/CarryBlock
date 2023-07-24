@@ -8,13 +8,15 @@ using Fusion;
 using Projects.CarrySystem.Block.Interfaces;
 using UnityEngine;
 using VContainer;
+#nullable enable
+
 
 namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     public class SearchRouteInitializer : MonoBehaviour
     {
-        SearchShortestRoute _searchShortestRoute;
-        IMapUpdater _entityGridMapSwitcher;
+        SearchShortestRoute _searchShortestRoute = null!;
+        IMapUpdater _entityGridMapSwitcher = null!;
         [Inject]
         public void Construct(
             SearchShortestRoute searchShortestRoute,

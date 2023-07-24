@@ -2,6 +2,7 @@
 using Fusion;
 using Projects.Utility.Scripts;
 using UnityEngine;
+#nullable enable
 
 namespace Carry.CarrySystem.SearchRoute.Scripts
 {

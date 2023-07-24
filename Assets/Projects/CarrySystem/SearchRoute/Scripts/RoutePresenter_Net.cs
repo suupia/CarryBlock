@@ -1,6 +1,8 @@
 ﻿using Fusion;
 using Projects.CarrySystem.RoutingAlgorithm.Interfaces;
 using UnityEngine;
+#nullable enable
+
 
 namespace Carry.CarrySystem.SearchRoute.Scripts
 {

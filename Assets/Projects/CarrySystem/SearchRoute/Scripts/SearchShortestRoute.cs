@@ -7,19 +7,22 @@ using UnityEngine.Assertions;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
+#nullable enable
+
+
 namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     public class SearchShortestRoute
     {
-        public int GetLength() => _values.Length;
+        public int GetLength() => _values?.Length ?? -1;
         int _width;
         int _height;
-        int[] _values; // 2次元配列のように扱う
+        int[]? _values; // 2次元配列のように扱う
         int _initiValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
         int _wallValue = -1; // wallのマス
         int _errorValue = -88;
-        
-        IRoutePresenter?[] _routePresenter;
+
+        IRoutePresenter?[]? _routePresenter;
 
 
         public void Init(int width, int height)
@@ -29,31 +32,36 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             _width = width;
             _height = height;
             _routePresenter = new IRoutePresenter[_width * _height];
-
         }
-        
-        
+
+
         public Vector2Int GetVectorFromIndex(int index)
         {
             return DivideSubscript(index);
         }
-        
+
         Vector2Int DivideSubscript(int subscript)
         {
             int x = subscript % _width;
             int y = subscript / _width;
             return new Vector2Int(x, y);
         }
-        
-        
+
+
         public void RegisterRoutePresenter(IRoutePresenter routePresenter, int index)
         {
-            _routePresenter[index] = routePresenter;
-
+            if (_routePresenter == null)
+            {
+                Debug.LogError($"_routePresenter is null");
+            }
+            else
+            {
+                _routePresenter[index] = routePresenter;
+            }
         }
 
-       public  List<Vector2Int> NonDiagonalSearchShortestRoute( Vector2Int startPos, Vector2Int endPos,
-            Vector2Int[] orderInDirectionArray1,  Func<int, int, bool> isWall)
+        public List<Vector2Int> NonDiagonalSearchShortestRoute(Vector2Int startPos, Vector2Int endPos,
+            Vector2Int[] orderInDirectionArray1, Func<int, int, bool> isWall)
         {
             var orderInDirectionArray2 = OrderInDirectionArrayContainer.SwapPairwise(orderInDirectionArray1);
             var shortestRouteList = new List<Vector2Int>();
@@ -65,7 +73,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
             bool orderInDirectionFlag = true; //探索するたびに優先順位を切り替えるのに必要
             Vector2Int[] orderInDirectionArray;
-            
+
             // 初期化
             _values = new int[_width * _height];
             FillAll(_initiValue); //mapの初期化は_initiValueで行う
@@ -121,10 +129,13 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                 for (int x = 0; x < _width; x++)
                 {
                     int value = GetValue(x, _height - y - 1);
-                    debugCell.AppendFormat("{0,4},", (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
+                    debugCell.AppendFormat("{0,4},",
+                        (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
                 }
+
                 debugCell.AppendLine();
             }
+
             Debug.Log($"WaveletSearchの結果は\n{debugCell}");
 
             //数字をもとに、大きい数字から巻き戻すようにして最短ルートを配列に格納する
@@ -137,7 +148,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             //デバッグ
             //Debug.Log($"shortestRouteList:{string.Join(",", shortestRouteList)}");
             // GameManager.instance.debugMGR.DebugRoute(shortestRouteList);
-            
+
             // Presenterを更新
             for (int i = 0; i < _values.Length; i++)
             {

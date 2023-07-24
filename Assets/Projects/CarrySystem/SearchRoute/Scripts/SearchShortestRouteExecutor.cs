@@ -1,6 +1,7 @@
 ﻿// using System.Collections.Generic;
 // using Carry.CarrySystem.SearchRoute.Scripts;
 // using UnityEngine;
+// #nullable enable
 //
 // namespace Projects.CarrySystem.SearchRoute.Scripts
 // {

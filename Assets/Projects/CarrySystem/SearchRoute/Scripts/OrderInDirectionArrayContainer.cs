@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
+#nullable enable
 
 namespace Carry.CarrySystem.SearchRoute.Scripts
 {

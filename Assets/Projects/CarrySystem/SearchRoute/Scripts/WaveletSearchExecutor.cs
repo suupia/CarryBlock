@@ -36,7 +36,7 @@ namespace Carry.CarrySystem.Map.Scripts
             if (routePresentersArray.Count() != _map.GetLength())
             {
                 Debug.LogError($"routePresentersの数がmapのマスの数と一致しません。" +
-                               $"routePresentersの数: {routePresenters.Count()} " +
+                               $"routePresentersの数: {routePresentersArray.Count()} " +
                                $"mapのマスの数: {_map.GetLength()}");
             }
             for(int i = 0 ; i< routePresentersArray.Count(); i++)
