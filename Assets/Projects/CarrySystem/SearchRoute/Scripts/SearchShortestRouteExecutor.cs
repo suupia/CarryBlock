@@ -1,4 +1,5 @@
 ﻿// using System.Collections.Generic;
+// using Carry.CarrySystem.Map.Scripts;
 // using Carry.CarrySystem.SearchRoute.Scripts;
 // using UnityEngine;
 // #nullable enable
@@ -7,6 +8,11 @@
 // {
 //     public class SearchShortestRouteExecutor
 //     {
+//         readonly WaveletSearchExecutor _waveletSearchExecutor;
+//         public SearchShortestRouteExecutor(WaveletSearchExecutor waveletSearchExecutor)
+//         {
+//             _waveletSearchExecutor = waveletSearchExecutor;
+//         }
 //                 public List<Vector2Int> NonDiagonalSearchShortestRoute(Vector2Int startPos, Vector2Int endPos,
 //             Vector2Int[] orderInDirectionArray1)
 //         {
@@ -16,6 +22,7 @@
 //             bool orderInDirectionFlag = false;
 //             int maxDistance = 0;
 //
+//             var searchedMap = _waveletSearchExecutor.
 //             
 //             //数字をもとに、大きい数字から巻き戻すようにして最短ルートを配列に格納する
 //             Debug.Log($"StoreRouteAround({endPos},{maxDistance})を実行します");

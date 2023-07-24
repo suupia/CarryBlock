@@ -631,7 +631,8 @@ PlayerSettings:
     XboxOne: TextMeshPro
     iPhone: TextMeshPro
     tvOS: TextMeshPro
-  additionalCompilerArguments: {}
+  additionalCompilerArguments:
+    Standalone: []
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}

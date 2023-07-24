@@ -10,6 +10,11 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
+    public enum SearcherSize
+    {
+        SizeOne,
+        SizeThree
+    }
     public class WaveletSearchExecutor
     {
         NumericGridMap _map;
@@ -18,11 +23,6 @@ namespace Carry.CarrySystem.Map.Scripts
         
         IRoutePresenter?[] _routePresenters;
 
-        enum SearcherSize
-        {
-            SizeOne,
-            SizeThree
-        }
 
         public WaveletSearchExecutor(NumericGridMap numericGridMap)
         {
@@ -44,32 +44,15 @@ namespace Carry.CarrySystem.Map.Scripts
                 _routePresenters[i] = routePresentersArray[i];
             }
         }
-
-        public bool[] SearchAccessibleAreaSizeOne(Vector2Int startPos, Vector2Int endPos,
-            Func<int, int, bool> isWall)
-        {
-            var resultBoolArray = new bool[_map.GetLength()];
-            var waveletResult = WaveletSearch(startPos, endPos, isWall);
-            for (int i = 0; i < resultBoolArray.Length; i++)
-            {
-                resultBoolArray[i] = waveletResult.GetValue(i) != _wallValue &&
-                                     waveletResult.GetValue(i) != _initValue;
-            }
-            
-            UpdatePresenter(resultBoolArray);
-
-
-            return resultBoolArray;
-        }
-
-        public bool[] SearchAccessibleAreaSizeThree(Vector2Int startPos, Vector2Int endPos,
-            Func<int, int, bool> isWall)
+        
+        public bool[] SearchAccessibleArea(Vector2Int startPos, Vector2Int endPos,
+            Func<int, int, bool> isWall, SearcherSize searcherSize = SearcherSize.SizeOne)
         {
             var tmpBoolArray =
                 new bool[_map
                     .GetLength()]; // Declare an another array so that the resultBoolArray is not affected when it is rewritten.
             var resultBoolArray = new bool[_map.GetLength()];
-            var waveletResult = WaveletSearch(startPos, endPos, isWall, SearcherSize.SizeThree);
+            var waveletResult = WaveletSearch(startPos, endPos, isWall,searcherSize);
             // 数字がある部分をtrueにする
             for (int i = 0; i < tmpBoolArray.Length; i++)
             {
@@ -77,25 +60,36 @@ namespace Carry.CarrySystem.Map.Scripts
                                   waveletResult.GetValue(i) != _initValue;
             }
 
-            // tureの周囲のマスをtrueにする
-            for (int i = 0; i < tmpBoolArray.Length; i++)
+            if (searcherSize == SearcherSize.SizeThree)
             {
-                if (tmpBoolArray[i])
+                // tureの周囲のマスをtrueにする
+                for (int i = 0; i < tmpBoolArray.Length; i++)
                 {
-                    for (int y = -1; y <= 1; y++)
+                    if (tmpBoolArray[i])
                     {
-                        for (int x = -1; x <= 1; x++)
+                        for (int y = -1; y <= 1; y++)
                         {
-                            var pos = _map.ToVector(i);
-                            var newX = pos.x + x;
-                            var newY = pos.y + y;
-                            if (newX < 0 || newX >= _map.Width || newY < 0 || newY >= _map.Height)
-                                continue; // SetValueを使いたい
-                            resultBoolArray[_map.ToSubscript(pos.x + x, pos.y + y)] = true;
+                            for (int x = -1; x <= 1; x++)
+                            {
+                                var pos = _map.ToVector(i);
+                                var newX = pos.x + x;
+                                var newY = pos.y + y;
+                                if (newX < 0 || newX >= _map.Width || newY < 0 || newY >= _map.Height)
+                                    continue; // SetValueを使いたい
+                                resultBoolArray[_map.ToSubscript(pos.x + x, pos.y + y)] = true;
+                            }
                         }
                     }
                 }
+            }else if (searcherSize == SearcherSize.SizeOne)
+            {
+                resultBoolArray = tmpBoolArray;
             }
+            else
+            {
+                throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
+            }
+
             
             UpdatePresenter(resultBoolArray);
 
