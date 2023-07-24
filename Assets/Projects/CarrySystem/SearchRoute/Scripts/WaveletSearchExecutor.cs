@@ -19,6 +19,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
     public class WaveletSearchExecutor
     {
+        public int WallValue => _wallValue;
         NumericGridMap _map;
         readonly int _initValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
         readonly int _wallValue = -5; // wallのマス

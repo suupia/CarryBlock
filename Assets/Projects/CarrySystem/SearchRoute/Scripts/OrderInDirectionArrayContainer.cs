@@ -59,6 +59,17 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             Vector2Int.left + Vector2Int.up, Vector2Int.up, Vector2Int.left, Vector2Int.right + Vector2Int.up,
             Vector2Int.left + Vector2Int.down, Vector2Int.right, Vector2Int.down, Vector2Int.right + Vector2Int.down
         };
+        
+        
+        // 適当に追加
+        // 4 2 1
+        // 6 * 3
+        // 8 7 5 の優先順位で判定していく
+        public static readonly Vector2Int[] CounterClockwiseStartingRightUpDirections = new Vector2Int[]
+        {
+            Vector2Int.right + Vector2Int.up, Vector2Int.up, Vector2Int.right, Vector2Int.left + Vector2Int.up,
+            Vector2Int.right + Vector2Int.down, Vector2Int.left, Vector2Int.down, Vector2Int.left + Vector2Int.down
+        };
 
         /// <summary>
         /// 先頭と末尾の要素はそのままで、その他の要素を奇数と偶数で入れ替える
