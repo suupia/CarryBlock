@@ -22,7 +22,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _values = new int[width * height];
         }
 
-        public bool[] SearchAccessiblePath(Vector2Int startPos, Vector2Int endPos,
+        public bool[] SearchAccessibleAreaSizeOne(Vector2Int startPos, Vector2Int endPos,
             Func<int, int, bool> isWall)
         {
             var resultBoolArray = new bool[_width * _height];
@@ -32,7 +32,35 @@ namespace Carry.CarrySystem.Map.Scripts
                 resultBoolArray[i] = waveletResult[i] != _wallValue &&
                                      waveletResult[i] != _initValue;
             }
-
+            return resultBoolArray;
+        }
+        
+        public bool[] SearchAccessibleAreaSizeThree(Vector2Int startPos, Vector2Int endPos,
+            Func<int, int, bool> isWall)
+        {
+            var resultBoolArray = new bool[_width * _height];
+            var waveletResult = WaveletSearch(startPos, endPos, isWall);  // ToDo : この関数を変える
+            // 数字がある部分をtrueにする
+            for (int i = 0; i < resultBoolArray.Length; i++)
+            {
+                resultBoolArray[i] = waveletResult[i] != _wallValue &&
+                                     waveletResult[i] != _initValue;
+            }
+            // 周囲のマスをtrueにする
+            for (int i = 0; i < resultBoolArray.Length; i++)
+            {
+                if (resultBoolArray[i])
+                {
+                    for (int y = -1; y <= 1;y++)
+                    {
+                        for (int x = -1; x <= 1; x++)
+                        {
+                            var pos = ToVector(i);
+                            resultBoolArray[ToSubscript(pos.x + x, pos.y + y)] = true;
+                        }
+                    }
+                }
+            }
             return resultBoolArray;
         }
 
@@ -59,18 +87,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 return _values; // 空の配列
             }
 
-
-            //mapをコピーして、壁のマスを-1にする。
-            for (int y = 0; y < _height; y++)
-            {
-                for (int x = 0; x < _width; x++)
-                {
-                    if (isWall(x, y))
-                    {
-                        SetValue(x, y, _wallValue);
-                    }
-                }
-            }
+            BasicSetWall(isWall);
 
             //壁でないマスに数字を順番に振っていく
             // Debug.Log($"WaveletSearchを実行します startPos:{startPos}");
@@ -169,6 +186,46 @@ namespace Carry.CarrySystem.Map.Scripts
                 }
             }
         }
+        
+        // 探索者の大きさが1*1の場合
+        void BasicSetWall(Func<int, int, bool> isWall)
+        {
+            //mapをコピーして、壁のマスを-1にする。
+            for (int y = 0; y < _height; y++)
+            {
+                for (int x = 0; x < _width; x++)
+                {
+                    if (isWall(x, y))
+                    {
+                        SetValue(x, y, _wallValue);
+                    }
+                }
+            }
+        }
+
+        // 探索者の大きさが3*3の場合
+        void ThreeWidthSetWall(Func<int, int, bool> isWall)
+        {
+            //mapをコピーして、壁のマスを-1にする。
+            for (int y = 0; y < _height; y++)
+            {
+                for (int x = 0; x < _width; x++)
+                {
+                    if (isWall(x, y))
+                    {
+                        // 壁を中心として3*3の範囲を壁にする
+                        for (int j = -1; j <= 1; j++)
+                        {
+                            for (int i = -1; i <= 1; i++)
+                            {
+                                SetValue(x + i, y + j, _wallValue);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
         void FillAll(int value) //edgeValueまでは書き換えられないことに注意
         {
@@ -186,6 +243,14 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             return x + (y * _width);
         }
+
+        Vector2Int ToVector(int subscript)
+        {
+            int x = subscript % _width;
+            int y = subscript / _width;
+            return new Vector2Int(x, y);
+        }
+
 
         //Getter
         int GetValue(int x, int y)

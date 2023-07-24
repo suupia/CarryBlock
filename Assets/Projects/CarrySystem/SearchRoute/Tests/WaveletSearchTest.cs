@@ -42,15 +42,15 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             wallsIncludeEnd.Add((endPos.x, endPos.y));
             
             // walls
-            resultBoolArray = newSearchShortestRoute.SearchAccessiblePath(startPos, endPos , (x, y) => walls.Contains((x, y)));
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleAreaSizeOne(startPos, endPos , (x, y) => walls.Contains((x, y)));
             Assert.AreEqual(expectedBoolArray, resultBoolArray);
             
             // wallsIncludeStart
-            resultBoolArray = newSearchShortestRoute.SearchAccessiblePath(startPos, endPos , (x, y) => wallsIncludeStart.Contains((x, y)));
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleAreaSizeOne(startPos, endPos , (x, y) => wallsIncludeStart.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
             
             // wallsIncludeEnd
-            resultBoolArray = newSearchShortestRoute.SearchAccessiblePath(startPos, endPos , (x, y) => wallsIncludeEnd.Contains((x, y)));
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleAreaSizeOne(startPos, endPos , (x, y) => wallsIncludeEnd.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
         }
         
@@ -87,15 +87,15 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             wallsIncludeEnd.Add((endPos.x, endPos.y));
             
             // walls
-            resultBoolArray = newSearchShortestRoute.SearchAccessiblePath(startPos, endPos , (x, y) => walls.Contains((x, y)));
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleAreaSizeOne(startPos, endPos , (x, y) => walls.Contains((x, y)));
             Assert.AreEqual(expectedBoolArray, resultBoolArray);
             
             // wallsIncludeStart
-            resultBoolArray = newSearchShortestRoute.SearchAccessiblePath(startPos, endPos , (x, y) => wallsIncludeStart.Contains((x, y)));
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleAreaSizeOne(startPos, endPos , (x, y) => wallsIncludeStart.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
             
             // wallsIncludeEnd
-            resultBoolArray = newSearchShortestRoute.SearchAccessiblePath(startPos, endPos , (x, y) => wallsIncludeEnd.Contains((x, y)));
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleAreaSizeOne(startPos, endPos , (x, y) => wallsIncludeEnd.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
         }
         
@@ -135,7 +135,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             wallsIncludeEnd.Add((endPos.x, endPos.y));
             
             // walls
-            resultBoolArray = newSearchShortestRoute.SearchAccessiblePath(startPos, endPos , (x, y) => walls.Contains((x, y)));
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleAreaSizeOne(startPos, endPos , (x, y) => walls.Contains((x, y)));
             for(int i= 0; i< resultBoolArray.Length; i++)
             {
                 if (expectedBoolArray[i] != resultBoolArray[i])
@@ -146,11 +146,11 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             Assert.AreEqual(expectedBoolArray, resultBoolArray);
             
             // wallsIncludeStart
-            resultBoolArray = newSearchShortestRoute.SearchAccessiblePath(startPos, endPos , (x, y) => wallsIncludeStart.Contains((x, y)));
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleAreaSizeOne(startPos, endPos , (x, y) => wallsIncludeStart.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
             
             // wallsIncludeEnd
-            resultBoolArray = newSearchShortestRoute.SearchAccessiblePath(startPos, endPos , (x, y) => wallsIncludeEnd.Contains((x, y)));
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleAreaSizeOne(startPos, endPos , (x, y) => wallsIncludeEnd.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
         }
         
