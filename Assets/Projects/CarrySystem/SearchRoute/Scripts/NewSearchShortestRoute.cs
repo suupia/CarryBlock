@@ -8,12 +8,12 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class NewSearchShortestRoute
     {
-        int _width;
-        int _height;
-        int[] _values;
-        int _initValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
-        int _wallValue = -1; // wallのマス
-        int _errorValue = -88;
+        readonly int _width;
+        readonly int _height;
+        readonly int[] _values;
+        readonly int _initValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
+        readonly int _wallValue = -1; // wallのマス
+        readonly int _errorValue = -88;
         
         enum SearcherSize
         {

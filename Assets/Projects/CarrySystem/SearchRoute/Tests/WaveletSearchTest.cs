@@ -221,8 +221,8 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
                     (x, y) => wallsIncludeEnd.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
         }
-        
-                [Test]
+
+        [Test]
         public void SearchAccessibleArea3_7x7_B()
         {
             int width = 7;
@@ -256,15 +256,8 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
 
             // walls
             resultBoolArray =
-                newSearchShortestRoute.SearchAccessibleAreaSizeThree(startPos, endPos, (x, y) => walls.Contains((x, y)));
-            for (int i = 0; i < resultBoolArray.Length; i++)
-            {
-                if (expectedBoolArray[i] != resultBoolArray[i])
-                {
-                    Debug.Log(
-                        $"i:{i} expectedBoolArray[i]:{expectedBoolArray[i]} resultBoolArray[i]:{resultBoolArray[i]}");
-                }
-            }
+                newSearchShortestRoute.SearchAccessibleAreaSizeThree(startPos, endPos,
+                    (x, y) => walls.Contains((x, y)));
             Assert.AreEqual(expectedBoolArray, resultBoolArray);
 
             // wallsIncludeStart
@@ -279,8 +272,8 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
                     (x, y) => wallsIncludeEnd.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
         }
-        
-                [Test]
+
+        [Test]
         public void SearchAccessibleArea3_10x8_A()
         {
             int width = 10;
@@ -316,7 +309,8 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
 
             // walls
             resultBoolArray =
-                newSearchShortestRoute.SearchAccessibleAreaSizeThree(startPos, endPos, (x, y) => walls.Contains((x, y)));
+                newSearchShortestRoute.SearchAccessibleAreaSizeThree(startPos, endPos,
+                    (x, y) => walls.Contains((x, y)));
             for (int i = 0; i < resultBoolArray.Length; i++)
             {
                 if (expectedBoolArray[i] != resultBoolArray[i])
