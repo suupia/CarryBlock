@@ -15,14 +15,11 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     public class SearchRouteInitializer : MonoBehaviour
     {
-        SearchShortestRoute _searchShortestRoute = null!;
         IMapUpdater _entityGridMapSwitcher = null!;
         [Inject]
         public void Construct(
-            SearchShortestRoute searchShortestRoute,
             IMapUpdater entityGridMapSwitcher)
         {
-            _searchShortestRoute = searchShortestRoute;
             _entityGridMapSwitcher = entityGridMapSwitcher;
         }
 

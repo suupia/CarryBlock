@@ -45,7 +45,6 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<EntityGridMapSwitcher>(Lifetime.Singleton).As<IMapUpdater>();
             
             // SearchRoute
-            builder.Register<SearchShortestRoute>(Lifetime.Singleton);
             builder.Register<RoutePresenterBuilder>(Lifetime.Singleton);
             
             // UI

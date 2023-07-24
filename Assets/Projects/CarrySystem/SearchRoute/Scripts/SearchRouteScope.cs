@@ -24,7 +24,6 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
             
             // SearchRoute
-            builder.Register<SearchShortestRoute>(Lifetime.Scoped);
             builder.Register<RoutePresenterBuilder>(Lifetime.Scoped);
 
 

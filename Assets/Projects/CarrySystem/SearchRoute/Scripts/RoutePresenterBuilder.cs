@@ -18,14 +18,12 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     {
         [Inject] NetworkRunner _runner;
         public WaveletSearchExecutor? WaveletSearchExecutor => _waveletSearchExecutor;
-        readonly SearchShortestRoute _searchShortestRoute;
         WaveletSearchExecutor _waveletSearchExecutor;
         IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
 
         [Inject]
-        public RoutePresenterBuilder(SearchShortestRoute searchShortestRoute)
+        public RoutePresenterBuilder()
         {
-            _searchShortestRoute = searchShortestRoute;
         }
 
         public void Build(EntityGridMap map)
@@ -65,18 +63,12 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
          void AttachRoutePresenter(IEnumerable<RoutePresenter_Net> routePresenters , EntityGridMap map)
         {
-            _searchShortestRoute.Init(map.Width, map.Height);  // ToDo:　これはコンストラクタにしたい
-
             for (int i = 0; i < routePresenters.Count(); i++)
             {
                 var routePresenter = routePresenters.ElementAt(i);
-
                 // RoutePresenter用に書き直し
                 routePresenter.SetPresenterActive(false);  // ToDo: 初期化の処理
-                
-                
-            //    _searchShortestRoute.RegisterRoutePresenter(routePresenter, i);
-                
+
             }
 
             _waveletSearchExecutor = new WaveletSearchExecutor(map);
