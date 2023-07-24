@@ -6,26 +6,29 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class NumericGridMap
     {
-        //数字だけを格納することができる六角形のマップ
+        //数字だけを格納することができるマップ
         public int Width { get; private set; }
         public int Height { get; private set; }
         public int GetLength() => _values.Length;
-        int InitValue { get; } = -1;
-        int OutOfRangeValue { get; } = -88;
+        readonly int _edgeValue;
+        readonly int _outOfRangeValue;
+
 
         readonly long[] _values;
 
         // dataArea, edgeArea, outOfRangeArea の３つの領域に分けて考える
 
-        public NumericGridMap(int width, int height)
+        public NumericGridMap(int width, int height, int initValue, int edgeValue, int outOfRangeValue)
         {
-            Debug.Log($"width:{width}, height:{height}");
+            // Debug.Log($"width:{width}, height:{height}");
             Assert.IsTrue(width > 0 && height > 0, "Mapの幅または高さが0以下になっています");
             Width = width;
             Height = height;
             _values = new long[width * height];
-
-            FillAll(InitValue);
+            _edgeValue = edgeValue;
+            _outOfRangeValue = outOfRangeValue;
+            
+            FillAll(initValue);
         }
 
         //初期化で利用
@@ -43,7 +46,7 @@ namespace Carry.CarrySystem.Map.Scripts
             if (index < 0 || index > _values.Length)
             {
                 Debug.LogError("領域外の値を習得しようとしました");
-                return OutOfRangeValue;
+                return _outOfRangeValue;
             }
 
             return _values[index];
@@ -55,14 +58,14 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 //edgeの外側
                 Debug.LogError($"IsOutOfEdgeArea({x},{y})がtrueです");
-                return OutOfRangeValue;
+                return _outOfRangeValue;
             }
 
             if (IsOnTheEdgeArea(x, y))
             {
                 //edgeの上
                 //データは存在しないが、判定のために初期値を使いたい場合
-                return InitValue;
+                return _edgeValue;
             }
 
             //Debug.Log($"ToSubscript:{ToSubscript(x,y)}, x:{x}, y:{y}, IsOnTheEdge({x},{y}):{IsOnTheEdge(x,y)}, IsOutOfEdge({x},{y}):{IsOutOfEdge(x,y)}, Width:{Width}, Height:{Height}");
@@ -76,14 +79,14 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public Vector2Int GetVectorFromIndex(int index)
         {
-            return DivideSubscript(index);
+            return ToVector(index);
         }
 
         public int GetIndexFromVector(Vector2Int vector)
         {
             if (IsOutOfIncludeEdgeArea(vector.x, vector.y))
             {
-                Debug.LogError($"IsOutOfEdgeArea({vector.x}, {vector.y})がtrueです");
+                Debug.LogError($"IsOutOfIncludeEdgeArea({vector.x}, {vector.y})がtrueです");
                 return -1;
             }
 
@@ -105,12 +108,11 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void SetValue(int x, int y, long value)
         {
-            if (IsOutOfIncludeEdgeArea(x, y))
+            if (IsOutOfDataRangeArea(x, y))
             {
-                Debug.LogError($"IsOutOfEdgeArea({x},{y})がtrueです");
+                // Debug.Log($"IsOutOfDataRangeArea({x},{y})がtrueです");
                 return;
             }
-
             _values[ToSubscript(x, y)] = value;
         }
 
@@ -195,19 +197,19 @@ namespace Carry.CarrySystem.Map.Scripts
 
 
         //添え字を変換する
-        protected int ToSubscript(int x, int y)
+        public int ToSubscript(int x, int y)
         {
             return x + Width * y;
         }
 
-        protected Vector2Int DivideSubscript(int subscript)
+        public Vector2Int ToVector(int subscript)
         {
-            int preXSub, xSub, ySub;
-
             int x = subscript % Width;
             int y = subscript / Width;
             return new Vector2Int(x, y);
         }
+        
+
 
         // エラーを出すための判定用関数
         // クライアント側でIsInIncludeEdgeAreaやIsInDataRangeAreaの呼び出しを忘れないようにエラーを投げるときに使う

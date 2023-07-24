@@ -8,76 +8,77 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class WaveletSearchExecutor
     {
-        readonly int _width;
-        readonly int _height;
-        readonly int[] _values;
+        readonly NumericGridMap _map;
         readonly int _initValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
         readonly int _wallValue = -1; // wallのマス
         readonly int _errorValue = -88;
-        
+
         enum SearcherSize
         {
             SizeOne,
             SizeThree
         }
 
-        public WaveletSearchExecutor(int width, int height)
+        public WaveletSearchExecutor(NumericGridMap numericGridMap)
         {
-            _width = width;
-            _height = height;
-            _values = new int[width * height];
+            _map = numericGridMap;
         }
 
         public bool[] SearchAccessibleAreaSizeOne(Vector2Int startPos, Vector2Int endPos,
             Func<int, int, bool> isWall)
         {
-            var resultBoolArray = new bool[_width * _height];
+            var resultBoolArray = new bool[_map.GetLength()];
             var waveletResult = WaveletSearch(startPos, endPos, isWall);
             for (int i = 0; i < resultBoolArray.Length; i++)
             {
-                resultBoolArray[i] = waveletResult[i] != _wallValue &&
-                                     waveletResult[i] != _initValue;
+                resultBoolArray[i] = waveletResult.GetValue(i) != _wallValue &&
+                                     waveletResult.GetValue(i) != _initValue;
             }
+
             return resultBoolArray;
         }
-        
+
         public bool[] SearchAccessibleAreaSizeThree(Vector2Int startPos, Vector2Int endPos,
             Func<int, int, bool> isWall)
         {
-            var tmpBoolArray = new bool[_width * _height];  // Declare an another array so that the resultBoolArray is not affected when it is rewritten.
-            var resultBoolArray = new bool[_width * _height];
-            var waveletResult = WaveletSearch(startPos, endPos, isWall,SearcherSize.SizeThree);
+            var tmpBoolArray =
+                new bool[_map
+                    .GetLength()]; // Declare an another array so that the resultBoolArray is not affected when it is rewritten.
+            var resultBoolArray = new bool[_map.GetLength()];
+            var waveletResult = WaveletSearch(startPos, endPos, isWall, SearcherSize.SizeThree);
             // 数字がある部分をtrueにする
             for (int i = 0; i < tmpBoolArray.Length; i++)
             {
-                tmpBoolArray[i] = waveletResult[i] != _wallValue &&
-                                     waveletResult[i] != _initValue;
+                tmpBoolArray[i] = waveletResult.GetValue(i) != _wallValue &&
+                                  waveletResult.GetValue(i) != _initValue;
             }
+
             // tureの周囲のマスをtrueにする
             for (int i = 0; i < tmpBoolArray.Length; i++)
             {
                 if (tmpBoolArray[i])
                 {
-                    for (int y = -1; y <= 1;y++)
+                    for (int y = -1; y <= 1; y++)
                     {
                         for (int x = -1; x <= 1; x++)
                         {
-                            var pos = ToVector(i);
+                            var pos = _map.ToVector(i);
                             var newX = pos.x + x;
                             var newY = pos.y + y;
-                            if(newX < 0 || newX >= _width || newY < 0 || newY >= _height) continue; // SetValueを使いたい
-                            resultBoolArray[ToSubscript(pos.x + x, pos.y + y)] = true;
-                            if(ToSubscript(pos.x + x, pos.y + y) == 44) Debug.Log($"44 is true");
+                            if (newX < 0 || newX >= _map.Width || newY < 0 || newY >= _map.Height)
+                                continue; // SetValueを使いたい
+                            resultBoolArray[_map.ToSubscript(pos.x + x, pos.y + y)] = true;
+                            if (_map.ToSubscript(pos.x + x, pos.y + y) == 44) Debug.Log($"44 is true");
                         }
                     }
                 }
             }
+
             return resultBoolArray;
         }
 
 
-
-        int[] WaveletSearch(Vector2Int startPos, Vector2Int endPos,
+        NumericGridMap WaveletSearch(Vector2Int startPos, Vector2Int endPos,
             Func<int, int, bool> isWall, SearcherSize searcherSize = SearcherSize.SizeOne)
         {
             var searchQue = new Queue<Vector2Int>();
@@ -85,19 +86,19 @@ namespace Carry.CarrySystem.Map.Scripts
             bool isComplete = false;
 
             // 初期化
-            FillAll(_initValue); //mapの初期化は_initValueで行う
+            _map.FillAll(_initValue);
 
 
             if (isWall(startPos.x, startPos.y))
             {
                 // Debug.LogError($"startPos:{startPos}は壁です");
-                return _values; // 空の配列
+                return _map; // 空の配列
             }
 
             if (isWall(endPos.x, endPos.y))
             {
                 // Debug.LogError($"endPos:{endPos}は壁です");
-                return _values; // 空の配列
+                return _map; // 空の配列
             }
 
             switch (searcherSize)
@@ -120,23 +121,22 @@ namespace Carry.CarrySystem.Map.Scripts
 
 
             //デバッグ用
-            StringBuilder debugCell = new StringBuilder();
-            for (int y = 0; y < _height; y++)
-            {
-                for (int x = 0; x < _width; x++)
-                {
-                    int value = GetValue(x, _height - y - 1);
-                    debugCell.AppendFormat("{0,4},",
-                        (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
-                }
-            
-                debugCell.AppendLine();
-            }
-            
-            Debug.Log($"WaveletSearchの結果は\n{debugCell}");
+            // StringBuilder debugCell = new StringBuilder();
+            // for (int y = 0; y < _map.Height; y++)
+            // {
+            //     for (int x = 0; x < _map.Width; x++)
+            //     {
+            //         long value = _map.GetValue(x, _map.Height - y - 1);
+            //         debugCell.AppendFormat("{0,4},",
+            //             (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
+            //     }
+            //
+            //     debugCell.AppendLine();
+            // }
+            // Debug.Log($"WaveletSearchの結果は\n{debugCell}");
 
 
-            return _values;
+            return _map;
 
             ////////////////////////////////////////////////////////////////////
 
@@ -145,7 +145,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
             void WaveletSearch()
             {
-                SetValueByVector(startPos, 0); //startPosの部分だけ周囲の判定を行わないため、ここで個別に設定する
+                _map.SetValue(startPos, 0); //startPosの部分だけ周囲の判定を行わないため、ここで個別に設定する
                 searchQue.Enqueue(startPos);
 
                 while (!isComplete)
@@ -183,9 +183,9 @@ namespace Carry.CarrySystem.Map.Scripts
                         if (x != 0 && y != 0) continue; //斜めのマスも飛ばす
 
                         inspectPos = centerPos + new Vector2Int(x, y);
-                        if (GetValueFromVector(inspectPos) == _initValue) // _edgeValueが帰ってくることもある
+                        if (_map.GetValue(inspectPos) == _initValue) // _edgeValueが帰ってくることもある
                         {
-                            SetValueByVector(inspectPos, n);
+                            _map.SetValue(inspectPos, n);
                             searchQue.Enqueue(inspectPos);
                             //Debug.Log($"({inspectPos})を{n}にし、探索用キューに追加しました。");
                         }
@@ -211,18 +211,18 @@ namespace Carry.CarrySystem.Map.Scripts
                 }
             }
         }
-        
+
         // 探索者の大きさが1*1の場合
         void BasicSetWall(Func<int, int, bool> isWall)
         {
             //mapをコピーして、壁のマスを-1にする。
-            for (int y = 0; y < _height; y++)
+            for (int y = 0; y < _map.Height; y++)
             {
-                for (int x = 0; x < _width; x++)
+                for (int x = 0; x < _map.Width; x++)
                 {
                     if (isWall(x, y))
                     {
-                        SetValue(x, y, _wallValue);
+                        _map.SetValue(x, y, _wallValue);
                     }
                 }
             }
@@ -232,9 +232,9 @@ namespace Carry.CarrySystem.Map.Scripts
         void SetWallSizeThree(Func<int, int, bool> isWall)
         {
             //mapをコピーして、壁のマスを-1にする。
-            for (int y = 0; y < _height; y++)
+            for (int y = 0; y < _map.Height; y++)
             {
-                for (int x = 0; x < _width; x++)
+                for (int x = 0; x < _map.Width; x++)
                 {
                     if (isWall(x, y))
                     {
@@ -243,116 +243,12 @@ namespace Carry.CarrySystem.Map.Scripts
                         {
                             for (int i = -1; i <= 1; i++)
                             {
-                                SetValue(x + i, y + j, _wallValue);
+                                _map.SetValue(x + i, y + j, _wallValue);
                             }
                         }
                     }
                 }
             }
-        }
-
-
-        void FillAll(int value) //edgeValueまでは書き換えられないことに注意
-        {
-            for (int j = 0; j < _height; j++)
-            {
-                for (int i = 0; i < _width; i++)
-                {
-                    _values[ToSubscript(i, j)] = value;
-                }
-            }
-        }
-
-        //添え字を変換する
-        int ToSubscript(int x, int y)
-        {
-            return x + (y * _width);
-        }
-
-        Vector2Int ToVector(int subscript)
-        {
-            int x = subscript % _width;
-            int y = subscript / _width;
-            return new Vector2Int(x, y);
-        }
-
-
-        //Getter
-        int GetValue(int x, int y)
-        {
-            if (IsOutOfRange(x, y))
-            {
-                Debug.LogError($"領域外の値を取得しようとしました (x,y):({x},{y})");
-                return _errorValue;
-            }
-
-            if (IsOnTheEdge(x, y))
-            {
-                // Debug.Log($"IsOnTheEdge({x},{y})がtrueです");
-                return _wallValue;
-            }
-
-            return _values[ToSubscript(x, y)];
-        }
-
-        int GetValueFromVector(Vector2Int vector) //ローカル関数はオーバーライドができないことに注意
-        {
-            return GetValue(vector.x, vector.y);
-        }
-
-
-        //Setter
-        void SetValue(int x, int y, int value)
-        {
-            if (IsOutOfRange(x, y))
-            {
-                Debug.LogError($"領域外に値を設定しようとしました (x,y):({x},{y})");
-                return;
-            }
-            if (IsOnTheEdge(x, y))
-            {
-                // Debug.Log($"IsOnTheEdge({x},{y})がtrueです");
-                return ;
-            }
-
-            _values[ToSubscript(x, y)] = value;
-        }
-
-        void SetValueByVector(Vector2Int vector, int value)
-        {
-            SetValue(vector.x, vector.y, value);
-        }
-
-
-        bool IsOutOfRange(int x, int y)
-        {
-            if (x < -1 || x > _width)
-            {
-                return true;
-            }
-
-            if (y < -1 || y > _height)
-            {
-                return true;
-            }
-
-            //mapの中
-            return false;
-        }
-
-        bool IsOnTheEdge(int x, int y)
-        {
-            if (x == -1 || x == _width)
-            {
-                return true;
-            }
-
-            if (y == -1 || y == _height)
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }

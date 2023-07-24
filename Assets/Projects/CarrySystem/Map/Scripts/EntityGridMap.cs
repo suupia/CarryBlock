@@ -16,7 +16,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly List<IEntity>[] _entityMaps;
         ITilePresenter?[] _tilePresenter;
         
-        public EntityGridMap(int width, int height) : base(width, height)
+        public EntityGridMap(int width, int height) : base(width, height,-1,-8,-88)
         {
             _entityMaps = new List<IEntity>[GetLength()];
             _tilePresenter = new ITilePresenter?[GetLength()];

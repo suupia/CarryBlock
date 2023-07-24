@@ -17,7 +17,11 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var expectedBoolArray = new bool[width * height];
             var allFalseArray = new bool[width * height];
             var resultBoolArray = new bool[width * height];
-            var newSearchShortestRoute = new WaveletSearchExecutor(width, height);
+            var initValue = -1;
+            var edgeValue = -8;
+            var outOfRangeValue = -88;
+            var map = new NumericGridMap(width,height,initValue,edgeValue,outOfRangeValue);
+            var newSearchShortestRoute = new WaveletSearchExecutor(map);
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -67,7 +71,11 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var expectedBoolArray = new bool[width * height];
             var allFalseArray = new bool[width * height];
             var resultBoolArray = new bool[width * height];
-            var newSearchShortestRoute = new WaveletSearchExecutor(width, height);
+            var initValue = -1;
+            var edgeValue = -8;
+            var outOfRangeValue = -88;
+            var map = new NumericGridMap(width,height,initValue,edgeValue,outOfRangeValue);
+            var newSearchShortestRoute = new WaveletSearchExecutor(map);
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -117,7 +125,11 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var expectedBoolArray = new bool[width * height];
             var allFalseArray = new bool[width * height];
             var resultBoolArray = new bool[width * height];
-            var newSearchShortestRoute = new WaveletSearchExecutor(width, height);
+            var initValue = -1;
+            var edgeValue = -8;
+            var outOfRangeValue = -88;
+            var map = new NumericGridMap(width,height,initValue,edgeValue,outOfRangeValue);
+            var newSearchShortestRoute = new WaveletSearchExecutor(map);
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 5, expectedTrueIndexes);
@@ -180,7 +192,11 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var expectedBoolArray = new bool[width * height];
             var allFalseArray = new bool[width * height];
             var resultBoolArray = new bool[width * height];
-            var newSearchShortestRoute = new WaveletSearchExecutor(width, height);
+            var initValue = -1;
+            var edgeValue = -8;
+            var outOfRangeValue = -88;
+            var map = new NumericGridMap(width,height,initValue,edgeValue,outOfRangeValue);
+            var newSearchShortestRoute = new WaveletSearchExecutor(map);
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -230,7 +246,11 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var expectedBoolArray = new bool[width * height];
             var allFalseArray = new bool[width * height];
             var resultBoolArray = new bool[width * height];
-            var newSearchShortestRoute = new WaveletSearchExecutor(width, height);
+            var initValue = -1;
+            var edgeValue = -8;
+            var outOfRangeValue = -88;
+            var map = new NumericGridMap(width,height,initValue,edgeValue,outOfRangeValue);
+            var newSearchShortestRoute = new WaveletSearchExecutor(map);
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -281,7 +301,11 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var expectedBoolArray = new bool[width * height];
             var allFalseArray = new bool[width * height];
             var resultBoolArray = new bool[width * height];
-            var newSearchShortestRoute = new WaveletSearchExecutor(width, height);
+            var initValue = -1;
+            var edgeValue = -8;
+            var outOfRangeValue = -88;
+            var map = new NumericGridMap(width,height,initValue,edgeValue,outOfRangeValue);
+            var newSearchShortestRoute = new WaveletSearchExecutor(map);
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 5, expectedTrueIndexes);
