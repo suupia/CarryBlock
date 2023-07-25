@@ -30,7 +30,7 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
             maxDistance = searchedMap.GetValue(endPos);
 
             //数字をもとに、大きい数字から巻き戻すようにして最短ルートを配列に格納する
-            Debug.Log($"StoreRouteAround({endPos},{maxDistance})を実行します");
+            // Debug.Log($"StoreRouteAround({endPos},{maxDistance})を実行します");
             StoreShortestRoute(searchedMap, endPos, maxDistance);
 
             shortestRouteList.Reverse(); //リストを反転させる
@@ -38,7 +38,7 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
             var completeShortestRouteList = RemoveZigzagRoute(searchedMap, shortestRouteList);
             
             //デバッグ
-            Debug.Log($"shortestRouteList:{string.Join(",", completeShortestRouteList)}");
+            // Debug.Log($"shortestRouteList:{string.Join(",", completeShortestRouteList)}");
 
             return completeShortestRouteList;
 
@@ -55,7 +55,7 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
 
                 if (distance < 0) return; //0までQueに入れれば十分
 
-                Debug.Log($"GetValue({centerPos})は{map.GetValue(centerPos)}、distance:{distance}");
+                // Debug.Log($"GetValue({centerPos})は{map.GetValue(centerPos)}、distance:{distance}");
 
                 foreach (Vector2Int direction in orderInDirectionArray)
                 {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 using UnityEngine.Assertions;
 #nullable enable
 
@@ -208,7 +209,27 @@ namespace Carry.CarrySystem.Map.Scripts
             int y = subscript / Width;
             return new Vector2Int(x, y);
         }
-        
+        /// <summary>
+        /// デバッグ用
+        /// </summary>
+        /// <param name="map"></param>
+        public void DebugMapValues()
+        {
+            //デバッグ用
+            StringBuilder debugCell = new StringBuilder();
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    long value = GetValue(x, Height - y - 1);
+                    debugCell.AppendFormat("{0,4},",
+                        (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
+                }
+            
+                debugCell.AppendLine();
+            }
+            Debug.Log($"すべてのGetValue()の結果は\n{debugCell}");
+        }
 
 
         // エラーを出すための判定用関数

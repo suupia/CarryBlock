@@ -48,7 +48,6 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var searchShortestRouteExecutor = new SearchShortestRouteExecutor(waveletSearchExecutor);
             var expectedRouteList = new List<Vector2Int>();
             
-
             var resultRouteList = searchShortestRouteExecutor.DiagonalSearchShortestRoute(mapData.StartPos, mapData.EndPos,
                 OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, (x, y) => mapData.Walls.Contains((x, y)));
             Assert.AreEqual(expectedRouteList, resultRouteList);
@@ -89,7 +88,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var resultRouteList = searchShortestRouteExecutor.DiagonalSearchShortestRoute(mapData.StartPos, mapData.EndPos,
                 OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, (x, y) => mapData.Walls.Contains((x, y)));
             Assert.AreEqual(expectedRouteList, resultRouteList);
-            
+
             resultRouteList = searchShortestRouteExecutor.DiagonalSearchShortestRoute(mapData.StartPos, mapData.EndPos,
                 OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, (x, y) => mapData.WallsIncludeStart.Contains((x, y)));
             Assert.AreEqual(new List<Vector2Int>(), resultRouteList);
@@ -97,6 +96,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             resultRouteList = searchShortestRouteExecutor.DiagonalSearchShortestRoute(mapData.StartPos, mapData.EndPos,
                 OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, (x, y) => mapData.WallsIncludeEnd.Contains((x, y)));
             Assert.AreEqual(new List<Vector2Int>(), resultRouteList);
+            
         }
 
     }

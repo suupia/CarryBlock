@@ -102,21 +102,6 @@ namespace Carry.CarrySystem.Map.Scripts
             WaveletSearch();
 
 
-            //デバッグ用
-            StringBuilder debugCell = new StringBuilder();
-            for (int y = 0; y < _map.Height; y++)
-            {
-                for (int x = 0; x < _map.Width; x++)
-                {
-                    long value = _map.GetValue(x, _map.Height - y - 1);
-                    debugCell.AppendFormat("{0,4},",
-                        (value >= 0 ? " " : "") + value.ToString("D2")); // 桁数をそろえるために0を追加していると思う
-                }
-
-                debugCell.AppendLine();
-            }
-
-            Debug.Log($"WaveletSearchの結果は\n{debugCell}");
 
 
             return _map;
@@ -217,6 +202,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
             return true;
         }
+        
 
 
         // 探索者の大きさが1*1の場合
