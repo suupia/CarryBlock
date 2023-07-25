@@ -15,8 +15,8 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7A();
             var newSearchShortestRoute = new WaveletSearchExecutor( mapData.Map);
-            var expectedBoolArray = new bool[mapData.Map.GetLength()];
-            var allFalseArray = new bool[mapData.Map.GetLength()];
+            var expectedBoolArray = new bool[mapData.Map.Length];
+            var allFalseArray = new bool[mapData.Map.Length];
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -56,8 +56,8 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7B();
             var newSearchShortestRoute = new WaveletSearchExecutor( mapData.Map);
-            var expectedBoolArray = new bool[mapData.Map.GetLength()];
-            var allFalseArray = new bool[mapData.Map.GetLength()];
+            var expectedBoolArray = new bool[mapData.Map.Length];
+            var allFalseArray = new bool[mapData.Map.Length];
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -97,8 +97,8 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map10X8A();
             var newSearchShortestRoute = new WaveletSearchExecutor( mapData.Map);
-            var expectedBoolArray = new bool[mapData.Map.GetLength()];
-            var allFalseArray = new bool[mapData.Map.GetLength()];
+            var expectedBoolArray = new bool[mapData.Map.Length];
+            var allFalseArray = new bool[mapData.Map.Length];
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 5, expectedTrueIndexes);
@@ -149,8 +149,8 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var expectedBoolArray = new bool[mapData.Map.GetLength()];
-            var allFalseArray = new bool[mapData.Map.GetLength()];
+            var expectedBoolArray = new bool[mapData.Map.Length];
+            var allFalseArray = new bool[mapData.Map.Length];
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -189,8 +189,8 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7B();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var expectedBoolArray = new bool[mapData.Map.GetLength()];
-            var allFalseArray = new bool[mapData.Map.GetLength()];
+            var expectedBoolArray = new bool[mapData.Map.Length];
+            var allFalseArray = new bool[mapData.Map.Length];
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -229,8 +229,8 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map10X8A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var expectedBoolArray = new bool[mapData.Map.GetLength()];
-            var allFalseArray = new bool[mapData.Map.GetLength()];
+            var expectedBoolArray = new bool[mapData.Map.Length];
+            var allFalseArray = new bool[mapData.Map.Length];
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 5, expectedTrueIndexes);

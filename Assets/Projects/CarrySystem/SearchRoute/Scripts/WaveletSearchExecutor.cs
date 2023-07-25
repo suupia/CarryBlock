@@ -31,16 +31,16 @@ namespace Carry.CarrySystem.Map.Scripts
         public WaveletSearchExecutor(IGridMap girdMap)
         {
             _map = new NumericGridMap(girdMap.Width, girdMap.Height, _initValue, -8, -88);
-            _routePresenters = new IRoutePresenter[_map.GetLength()];
+            _routePresenters = new IRoutePresenter[_map.Length];
         }
 
         public void RegisterRoutePresenters(IReadOnlyList<RoutePresenter_Net> routePresenters)
         {
-            if (routePresenters.Count() != _map.GetLength())
+            if (routePresenters.Count() != _map.Length)
             {
                 Debug.LogError($"routePresentersの数がmapのマスの数と一致しません。" +
                                $"routePresentersの数: {routePresenters.Count()} " +
-                               $"mapのマスの数: {_map.GetLength()}");
+                               $"mapのマスの数: {_map.Length}");
             }
 
             for (int i = 0; i < routePresenters.Count(); i++)
@@ -247,8 +247,8 @@ namespace Carry.CarrySystem.Map.Scripts
 
         bool[] CalcAccessibleArea(NumericGridMap map, SearcherSize searcherSize)
         {
-            var tmpBoolArray = new bool[map.GetLength()];
-            var resultBoolArray = new bool[map.GetLength()];
+            var tmpBoolArray = new bool[map.Length];
+            var resultBoolArray = new bool[map.Length];
             var waveletResult = map;
             // 数字がある部分をtrueにする
             for (int i = 0; i < tmpBoolArray.Length; i++)

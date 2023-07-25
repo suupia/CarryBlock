@@ -8,7 +8,7 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         public int Width { get; }
         public int Height { get; }
-        public int GetLength() => Width * Height;
+        public int Length => Width * Height;
         protected SquareGridMap(int width, int height)
         {
             Width = width;

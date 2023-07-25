@@ -4,6 +4,6 @@
     {
         public int Width { get; }
         public int Height { get; }
-        public int GetLength();
+        public int Length { get; }
     }
 }
