@@ -60,25 +60,6 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             Vector2Int.left + Vector2Int.down, Vector2Int.right, Vector2Int.down, Vector2Int.right + Vector2Int.down
         };
         
-
-        /// <summary>
-        /// 先頭と末尾の要素はそのままで、その他の要素を奇数と偶数で入れ替える
-        /// </summary>
-        /// <param name="originalArray"></param>
-        /// <returns></returns>
-        public static Vector2Int[] SwapPairwise(Vector2Int[] originalArray)
-        {
-            Assert.IsTrue(originalArray.Length % 2 == 0, "配列の要素数が偶数でなければなりません");
-            Vector2Int[] swappedArray = new Vector2Int[originalArray.Length];
-            originalArray.CopyTo(swappedArray, 0);
-
-            for (int i = 1; i < swappedArray.Length - 1; i += 2)
-            {
-                (swappedArray[i], swappedArray[i + 1]) = (swappedArray[i + 1], swappedArray[i]); // 分解代入
-            }
-
-
-            return swappedArray;
-        }
+        
     }
 }
