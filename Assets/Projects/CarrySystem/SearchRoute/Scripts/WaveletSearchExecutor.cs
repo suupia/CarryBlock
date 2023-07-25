@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using JetBrains.Annotations;
 using Projects.CarrySystem.RoutingAlgorithm.Interfaces;
@@ -27,10 +28,10 @@ namespace Carry.CarrySystem.Map.Scripts
         IRoutePresenter?[] _routePresenters;
 
 
-        public WaveletSearchExecutor(NumericGridMap numericGridMap)
+        public WaveletSearchExecutor(IGridMap girdMap)
         {
-            _map = numericGridMap;
-            _routePresenters = new IRoutePresenter[numericGridMap.GetLength()];
+            _map = new NumericGridMap(girdMap.Width, girdMap.Height, _initValue, -8, -88);
+            _routePresenters = new IRoutePresenter[_map.GetLength()];
         }
 
         public void RegisterRoutePresenters(IReadOnlyList<RoutePresenter_Net> routePresenters)

@@ -1,16 +1,14 @@
 ﻿using System.Text;
+using Carry.CarrySystem.Map.Interfaces;
 using UnityEngine;
 using UnityEngine.Assertions;
 #nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class NumericGridMap
+    public class NumericGridMap : SquareGridMap
     {
         //数字だけを格納することができるマップ
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-        public int GetLength() => _values.Length;
         readonly int _edgeValue;
         readonly int _outOfRangeValue;
 
@@ -18,12 +16,10 @@ namespace Carry.CarrySystem.Map.Scripts
 
         // dataArea, edgeArea, outOfRangeArea の３つの領域に分けて考える
 
-        public NumericGridMap(int width, int height, int initValue, int edgeValue, int outOfRangeValue)
+        public NumericGridMap(int width, int height, int initValue, int edgeValue, int outOfRangeValue) : base(width, height)
         {
             // Debug.Log($"width:{width}, height:{height}");
             Assert.IsTrue(width > 0 && height > 0, "Mapの幅または高さが0以下になっています");
-            Width = width;
-            Height = height;
             _values = new long[width * height];
             _edgeValue = edgeValue;
             _outOfRangeValue = outOfRangeValue;
@@ -146,57 +142,11 @@ namespace Carry.CarrySystem.Map.Scripts
             _values[ToSubscript(x, y)] /= value;
         }
         
-        // クライアント側で使用することを想定する判定用関数
-        
-        /// <summary>
-        /// edgeArea(データは存在しないが、_initValueを返す領域)の内側であればtrueを返す
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public bool IsInIncludeEdgeArea(int x, int y)
-        {
-            return !IsOutOfIncludeEdgeArea(x, y);
-        }
-        public bool IsInIncludeEdgeArea(Vector2Int vector)
-        {
-            return IsInIncludeEdgeArea(vector.x, vector.y);
-        }
 
         
-        /// <summary>
-        /// dataArea(座標(0,0)～(mapWidth-1,mapHeight-1)のデータが存在する領域)の内側であればtrueを返す
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public bool IsInDataRangeArea(int x, int y)
-        {
-            return !IsOutOfDataRangeArea(x, y);
-        }
-        public bool IsInDataRangeArea(Vector2Int vector)
-        {
-            return IsInDataRangeArea(vector.x, vector.y);
-        }
 
+        
 
-        //添え字を変換する
-        public int ToSubscript(int x, int y)
-        {
-            if (IsOutOfIncludeEdgeArea(x,y))
-            {
-                Debug.LogError($"IsOutOfIncludeEdgeArea({x}, {y})がtrueです");
-                return -1;
-            }
-            return x + Width * y;
-        }
-
-        public Vector2Int ToVector(int subscript)
-        {
-            int x = subscript % Width;
-            int y = subscript / Width;
-            return new Vector2Int(x, y);
-        }
         /// <summary>
         /// デバッグ用
         /// </summary>

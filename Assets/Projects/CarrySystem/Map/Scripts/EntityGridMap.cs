@@ -11,13 +11,18 @@ using Fusion.Collections;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EntityGridMap : NumericGridMap
+    public class EntityGridMap : SquareGridMap
     {
+        public int Width { get; }
+        public int Height { get; }
+        public int GetLength() => Width * Height;
         readonly List<IEntity>[] _entityMaps;
         ITilePresenter?[] _tilePresenter;
         
-        public EntityGridMap(int width, int height) : base(width, height,-1,-8,-88)
+        public EntityGridMap(int width, int height) : base (width, height)
         {
+            Width = width;
+            Height = height;
             _entityMaps = new List<IEntity>[GetLength()];
             _tilePresenter = new ITilePresenter?[GetLength()];
             for (int i = 0; i < GetLength(); i++)
@@ -39,6 +44,11 @@ namespace Carry.CarrySystem.Map.Scripts
             }
 
             return this;
+        }
+
+        public  void DebugMapValues()
+        {
+            // ToDo :　後で実装する
         }
         
         public void RegisterTilePresenter(ITilePresenter tilePresenter, int index)

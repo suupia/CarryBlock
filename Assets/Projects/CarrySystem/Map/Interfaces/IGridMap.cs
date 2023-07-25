@@ -1,7 +1,9 @@
 ﻿namespace Carry.CarrySystem.Map.Interfaces
 {
-    public class IGridMap
+    public interface IGridMap
     {
-        
+        public int Width { get; }
+        public int Height { get; }
+        public int GetLength();
     }
 }
