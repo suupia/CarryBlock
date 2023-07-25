@@ -38,7 +38,7 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log($"RegisterHoldAction!!");
             _holdActions.Add(holdAction);
             
-            _subscription.Dispose();
+            _subscription?.Dispose();
             _subscription = _holdActions.ToObservable()
                 .SelectMany(holdAction => holdAction.ObserveEveryValueChanged(h => h.IsHoldingBlock))
                 .Subscribe(_ => ShowAccessibleArea());
@@ -52,7 +52,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
             var startPos = new Vector2Int(1, 4); // ToDo: Tmp
             var endPos = new Vector2Int(10, 4); // ToDo: Tmp
-            waveletSearchExecutor.SearchAccessibleArea(startPos, endPos, isWall);
+            waveletSearchExecutor.SearchAccessibleArea(startPos, endPos, isWall,SearcherSize.SizeThree);
         }
     }
 }
