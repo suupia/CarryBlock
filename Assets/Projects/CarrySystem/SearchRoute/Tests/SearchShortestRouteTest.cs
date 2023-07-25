@@ -41,7 +41,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
         }
         
         [Test]
-        public void SearchAccessibleArea1_7x7_B()
+        public void SearchShortestRoute1_7x7_B()
         {
             var mapData = new Map7X7B();
             var waveletSearchExecutor = new WaveletSearchExecutor(mapData.Map);
@@ -62,7 +62,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
         }
         
         [Test]
-        public void SearchAccessibleArea1_7x7_C()
+        public void SearchShortestRoute1_7x7_C()
         {
             var mapData = new Map7X7C();
             var waveletSearchExecutor = new WaveletSearchExecutor(mapData.Map);
@@ -96,7 +96,37 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             resultRouteList = searchShortestRouteExecutor.DiagonalSearchShortestRoute(mapData.StartPos, mapData.EndPos,
                 OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, (x, y) => mapData.WallsIncludeEnd.Contains((x, y)));
             Assert.AreEqual(new List<Vector2Int>(), resultRouteList);
+        }
+        
+        [Test]
+        public void SearchShortestRoute1_10X8_A()
+        {
+            var mapData = new Map10X8A();
+            var waveletSearchExecutor = new WaveletSearchExecutor(mapData.Map);
+            var searchShortestRouteExecutor = new SearchShortestRouteExecutor(waveletSearchExecutor);
+            var expectedRouteList = new List<Vector2Int>()
+            {
+                new Vector2Int(1, 3),
+                new Vector2Int(2, 3),
+                new Vector2Int(3,3),
+                new Vector2Int(4,3),
+                new Vector2Int(5, 4),
+                new Vector2Int(6, 5),
+                new Vector2Int(7, 6),
+
+            };
+
+            var resultRouteList = searchShortestRouteExecutor.DiagonalSearchShortestRoute(mapData.StartPos, mapData.EndPos,
+                OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, (x, y) => mapData.Walls.Contains((x, y)));
+            Assert.AreEqual(expectedRouteList, resultRouteList);
             
+            resultRouteList = searchShortestRouteExecutor.DiagonalSearchShortestRoute(mapData.StartPos, mapData.EndPos,
+                OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, (x, y) => mapData.WallsIncludeStart.Contains((x, y)));
+            Assert.AreEqual(new List<Vector2Int>(), resultRouteList);
+            
+            resultRouteList = searchShortestRouteExecutor.DiagonalSearchShortestRoute(mapData.StartPos, mapData.EndPos,
+                OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, (x, y) => mapData.WallsIncludeEnd.Contains((x, y)));
+            Assert.AreEqual(new List<Vector2Int>(), resultRouteList);
         }
 
     }
