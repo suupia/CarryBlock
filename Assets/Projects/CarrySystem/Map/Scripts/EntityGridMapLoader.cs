@@ -78,7 +78,7 @@ namespace Carry.CarrySystem.Map.Scripts
                     {
                         if (kind != Ground.Kind.None)
                         {
-                            map.AddEntity(i, new Ground(kind, map.GetVectorFromIndex(i)));
+                            map.AddEntity(i, new Ground(kind, map.ToVector(i)));
 
                         }
                     }
@@ -95,7 +95,7 @@ namespace Carry.CarrySystem.Map.Scripts
                     {
                         if (kind != Rock.Kind.None)
                         {
-                            map.AddEntity(i, new Rock(kind, map.GetVectorFromIndex(i)));
+                            map.AddEntity(i, new Rock(kind, map.ToVector(i)));
 
                         }
                     }
@@ -112,7 +112,7 @@ namespace Carry.CarrySystem.Map.Scripts
                     {
                         if (kind != BasicBlock.Kind.None)
                         {
-                            map.AddEntity(i, new BasicBlock(kind, map.GetVectorFromIndex(i)));
+                            map.AddEntity(i, new BasicBlock(kind, map.ToVector(i)));
 
                         }
                     }

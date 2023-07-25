@@ -224,7 +224,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             // すべてのマスにGroundを1つ設置する
             for (int i = 0; i < clearedMap.GetLength(); i++)
             {
-                var gridPosition = clearedMap.GetVectorFromIndex(i);
+                var gridPosition = clearedMap.ToVector(i);
 
                 clearedMap.AddEntity(gridPosition, new Ground(Ground.Kind.Kind1, gridPosition));
             }

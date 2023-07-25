@@ -14,7 +14,6 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly int _edgeValue;
         readonly int _outOfRangeValue;
 
-
         readonly long[] _values;
 
         // dataArea, edgeArea, outOfRangeArea の３つの領域に分けて考える
@@ -77,23 +76,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             return GetValue(vector.x, vector.y);
         }
-
-        public Vector2Int GetVectorFromIndex(int index)
-        {
-            return ToVector(index);
-        }
-
-        public int GetIndexFromVector(Vector2Int vector)
-        {
-            if (IsOutOfIncludeEdgeArea(vector.x, vector.y))
-            {
-                Debug.LogError($"IsOutOfIncludeEdgeArea({vector.x}, {vector.y})がtrueです");
-                return -1;
-            }
-
-            return ToSubscript(vector.x, vector.y);
-        }
-
+        
 
         //Setter
         public void SetValue(int index, long value)
@@ -200,6 +183,11 @@ namespace Carry.CarrySystem.Map.Scripts
         //添え字を変換する
         public int ToSubscript(int x, int y)
         {
+            if (IsOutOfIncludeEdgeArea(x,y))
+            {
+                Debug.LogError($"IsOutOfIncludeEdgeArea({x}, {y})がtrueです");
+                return -1;
+            }
             return x + Width * y;
         }
 

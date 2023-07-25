@@ -35,7 +35,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             // すべてのマスにGroundを1つ設置する
             for (int i = 0; i < cleanMap.GetLength(); i++)
             {
-                var gridPosition = cleanMap.GetVectorFromIndex(i);
+                var gridPosition = cleanMap.ToVector(i);
 
                 cleanMap.AddEntity(gridPosition, new Ground(Ground.Kind.Kind1, gridPosition));
             }

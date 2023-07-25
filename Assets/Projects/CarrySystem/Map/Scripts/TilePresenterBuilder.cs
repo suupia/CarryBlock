@@ -30,7 +30,7 @@ namespace Carry.CarrySystem.Map.Scripts
             // TilePresenterをスポーンさせる
             for (int i = 0; i < map.GetLength(); i++)
             {
-                var girdPos = map.GetVectorFromIndex(i);
+                var girdPos = map.ToVector(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
                 var tilePresenter = tilePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 tilePresenters.Add(tilePresenter);

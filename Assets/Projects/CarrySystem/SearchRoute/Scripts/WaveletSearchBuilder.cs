@@ -36,7 +36,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             // RoutePresenterをスポーンさせる
             for (int i = 0; i < map.GetLength(); i++)
             {
-                var girdPos = map.GetVectorFromIndex(i);
+                var girdPos = map.ToVector(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
                 var routePresenter = routePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 routePresenters.Add(routePresenter);
