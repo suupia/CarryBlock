@@ -73,14 +73,14 @@ namespace Carry.CarrySystem.Map.Scripts
 
             if (isWall(startPos.x, startPos.y))
             {
-                // Debug.LogError($"startPos:{startPos}は壁です");
-                return _map; // 空の配列
+                Debug.Log($"startPos:{startPos}は壁です");
+                return _map; // _initValueのみが入ったmap
             }
 
             if (isWall(endPos.x, endPos.y))
             {
-                // Debug.LogError($"endPos:{endPos}は壁です");
-                return _map; // 空の配列
+                Debug.Log($"endPos:{endPos}は壁です");
+                return _map; // _initValueのみが入ったmap
             }
 
             switch (searcherSize)

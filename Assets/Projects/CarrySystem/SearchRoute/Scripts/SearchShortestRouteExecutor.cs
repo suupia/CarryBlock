@@ -23,7 +23,6 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
             SearcherSize searcherSize = SearcherSize.SizeOne)
         {
             List<Vector2Int> shortestRouteList = new List<Vector2Int>();
-            bool orderInDirectionFlag = true;
             long maxDistance = 0;
 
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, endPos, isWall, searcherSize);
@@ -80,7 +79,6 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
             //nonDiagonalRoute.Count - 3まで判定をする
             for (int i = 0; i < diagonalRoute.Count - 2; i++)
             {
-
                 Vector2Int gridPos = diagonalRoute[i];
                 Vector2Int nextPos = diagonalRoute[i + 1];
                 Vector2Int nextNextPos = diagonalRoute[i + 2];
