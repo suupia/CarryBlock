@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Assert = UnityEngine.Assertions.Assert;
 
 namespace Projects.NetworkUtility.Inputs.Scripts
 {
@@ -20,26 +22,54 @@ namespace Projects.NetworkUtility.Inputs.Scripts
 
     public class LocalInputPoller : INetworkRunnerCallbacks
     {
-        // Local variable to store the input polled.
-        NetworkInputData localInput;
+        NetworkInputData _localInput;
+        readonly InputActionAsset _inputActionAsset;
+        readonly InputActionMap _inputActionMap;
+
+        readonly InputAction _move;
+        readonly InputAction _mainAction;
+
+        public LocalInputPoller()
+        {
+            //本来はDI的思想で設定したい
+            _inputActionAsset = Resources.Load<InputActionAsset>("InputActionAssets/PlayerInputAction");
+            Assert.IsNotNull(_inputActionAsset, "InputActionを設定してください。Pathが間違っている可能性があります");
+
+            _inputActionMap = _inputActionAsset.FindActionMap("Default");
+            _inputActionMap.Enable();
+            
+            //本来は以下を適切なタイミングで呼ぶべき
+            // _inputActionMap.Disable();
+
+            _move = _inputActionMap.FindAction("Move");
+            _mainAction = _inputActionMap.FindAction("MainAction");
+        }
+
 
         public void OnInput(NetworkRunner runner, NetworkInput input)
         {
-            localInput = new NetworkInputData();
-            localInput.Horizontal = Input.GetAxisRaw("Horizontal");
-            localInput.Vertical = Input.GetAxisRaw("Vertical");
-            localInput.Buttons.Set(PlayerOperation.MainAction, Input.GetKey(KeyCode.Space));
-            localInput.Buttons.Set(PlayerOperation.Ready, Input.GetKey(KeyCode.R));
-            localInput.Buttons.Set(PlayerOperation.ChangeUnit, Input.GetKey(KeyCode.C));
-            localInput.Buttons.Set(PlayerOperation.ReturnToMainBase, Input.GetKey(KeyCode.LeftShift));
-            localInput.Buttons.Set(PlayerOperation.Debug1, Input.GetKey(KeyCode.F1));
-            localInput.Buttons.Set(PlayerOperation.Debug2, Input.GetKey(KeyCode.F2));
-            localInput.Buttons.Set(PlayerOperation.Debug3, Input.GetKey(KeyCode.F3));
-            input.Set(localInput);
+            _localInput = default;
+
+            var moveVector = _move.ReadValue<Vector2>().normalized;
+            var mainActionValue = _mainAction.ReadValue<float>(); 
+            
+            // Debug.Log(moveVector);
+            // Debug.Log(isDownMainAction);
+            
+            _localInput.Horizontal = moveVector.x;
+            _localInput.Vertical = moveVector.y;
+            _localInput.Buttons.Set(PlayerOperation.MainAction, mainActionValue != 0);
+            // _localInput.Buttons.Set(PlayerOperation.Ready, Input.GetKey(KeyCode.R));
+            // _localInput.Buttons.Set(PlayerOperation.ChangeUnit, Input.GetKey(KeyCode.C));
+            // _localInput.Buttons.Set(PlayerOperation.ReturnToMainBase, Input.GetKey(KeyCode.LeftShift));
+            // _localInput.Buttons.Set(PlayerOperation.Debug1, Input.GetKey(KeyCode.F1));
+            // _localInput.Buttons.Set(PlayerOperation.Debug2, Input.GetKey(KeyCode.F2));
+            // _localInput.Buttons.Set(PlayerOperation.Debug3, Input.GetKey(KeyCode.F3));
+            input.Set(_localInput);
 
             // Reset the input struct to start with a clean slate
             // when polling for the next tick
-            localInput = default;
+            _localInput = default;
         }
 
 
