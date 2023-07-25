@@ -4,6 +4,7 @@ using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+#nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {

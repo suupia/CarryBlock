@@ -1,5 +1,6 @@
 ﻿using Carry.CarrySystem.Player.Interfaces;
 using VContainer;
+#nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {

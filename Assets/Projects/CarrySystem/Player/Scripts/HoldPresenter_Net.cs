@@ -10,6 +10,7 @@ using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine.Serialization;
 using VContainer;
+#nullable enable
 
 
 namespace Carry.CarrySystem.Player.Scripts

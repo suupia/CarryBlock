@@ -6,17 +6,18 @@ using Carry.CarrySystem.SearchRoute.Scripts;
 using Projects.CarrySystem.Block.Interfaces;
 using UniRx;
 using UnityEngine;
+#nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class IsHoldingBlockObserver
+    public class HoldingBlockObserver
     {
         readonly List<HoldAction> _holdActions = new List<HoldAction>();
         readonly IMapUpdater _mapUpdater;
         readonly WaveletSearchBuilder _waveletSearchBuilder;
-        IDisposable _subscription;  // to hold the subscription to dispose it later if needed
+        IDisposable _subscription = null!;  // to hold the subscription to dispose it later if needed
         
-        public IsHoldingBlockObserver(IMapUpdater entityGridMapSwitcher,
+        public HoldingBlockObserver(IMapUpdater entityGridMapSwitcher,
             WaveletSearchBuilder waveletSearchBuilder)
         {
             _mapUpdater = entityGridMapSwitcher;
@@ -25,9 +26,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void StartObserve()
         {
-            _subscription = _holdActions.ToObservable()
-                .SelectMany(holdAction => holdAction.ObserveEveryValueChanged(h => h.IsHoldingBlock))
-                .Subscribe(_ => ShowAccessibleArea());
+
         }
         public void StopObserve()
         {
@@ -36,7 +35,13 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void RegisterHoldAction(HoldAction holdAction)
         {
+            Debug.Log($"RegisterHoldAction!!");
             _holdActions.Add(holdAction);
+            
+            _subscription.Dispose();
+            _subscription = _holdActions.ToObservable()
+                .SelectMany(holdAction => holdAction.ObserveEveryValueChanged(h => h.IsHoldingBlock))
+                .Subscribe(_ => ShowAccessibleArea());
         }
 
         void ShowAccessibleArea()

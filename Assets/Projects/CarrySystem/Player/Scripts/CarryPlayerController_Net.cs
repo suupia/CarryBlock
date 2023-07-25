@@ -7,6 +7,7 @@ using Projects.NetworkUtility.Inputs.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Info;
 using VContainer;
+#nullable enable
 
 
 namespace Carry.CarrySystem.Player.Scripts

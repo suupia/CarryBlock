@@ -25,7 +25,7 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.RegisterComponent(runner);
             
             
-            builder.Register<PrefabLoaderFromResources<CarryPlayerController_Net>>(Lifetime.Singleton)
+            builder.Register<PrefabLoaderFromResources<CarryPlayerController_Net>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CarryPlayerController_Net>>()
                 .WithParameter("folderPath", "Prefabs/Players")
                 .WithParameter("prefabName", "CarryPlayerController");
@@ -40,16 +40,17 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
 
             // Serverのドメインスクリプト
             // Map
-            builder.Register<EntityGridMapLoader>(Lifetime.Singleton);
-            builder.Register<TilePresenterBuilder>(Lifetime.Singleton);
-            builder.Register<EntityGridMapSwitcher>(Lifetime.Singleton).As<IMapUpdater>();
+            builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
+            builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
+            builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
             
             // SearchRoute
-            builder.Register<WaveletSearchBuilder>(Lifetime.Singleton);
+            builder.Register<WaveletSearchBuilder>(Lifetime.Scoped);
+            builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
             
             // UI
-            builder.Register<GameContext>(Lifetime.Singleton);
-            builder.Register<FloorTimer>(Lifetime.Singleton);
+            builder.Register<GameContext>(Lifetime.Scoped);
+            builder.Register<FloorTimer>(Lifetime.Scoped);
             
             // Initializer
             builder.RegisterComponentInHierarchy<CarryInitializer>();
