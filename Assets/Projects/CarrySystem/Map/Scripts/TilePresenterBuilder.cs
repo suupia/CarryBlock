@@ -54,7 +54,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _tilePresenters = new List<TilePresenter_Net>();
         }
         
-         void AttachTilePresenter(IEnumerable<TilePresenter_Net> tilePresenters , EntityGridMap map)
+         void AttachTilePresenter(IReadOnlyList<TilePresenter_Net> tilePresenters , EntityGridMap map)
         {
             for (int i = 0; i < tilePresenters.Count(); i++)
             {

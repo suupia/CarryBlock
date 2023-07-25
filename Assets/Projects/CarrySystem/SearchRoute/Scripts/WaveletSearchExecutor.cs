@@ -33,19 +33,18 @@ namespace Carry.CarrySystem.Map.Scripts
             _routePresenters = new IRoutePresenter[numericGridMap.GetLength()];
         }
 
-        public void RegisterRoutePresenters(IEnumerable<RoutePresenter_Net> routePresenters)
+        public void RegisterRoutePresenters(IReadOnlyList<RoutePresenter_Net> routePresenters)
         {
-            var routePresentersArray = routePresenters.ToArray();
-            if (routePresentersArray.Count() != _map.GetLength())
+            if (routePresenters.Count() != _map.GetLength())
             {
                 Debug.LogError($"routePresentersの数がmapのマスの数と一致しません。" +
-                               $"routePresentersの数: {routePresentersArray.Count()} " +
+                               $"routePresentersの数: {routePresenters.Count()} " +
                                $"mapのマスの数: {_map.GetLength()}");
             }
 
-            for (int i = 0; i < routePresentersArray.Count(); i++)
+            for (int i = 0; i < routePresenters.Count(); i++)
             {
-                _routePresenters[i] = routePresentersArray[i];
+                _routePresenters[i] = routePresenters[i];
             }
         }
 

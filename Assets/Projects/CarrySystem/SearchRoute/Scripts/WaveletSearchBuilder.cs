@@ -60,7 +60,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             _routePresenters = new List<RoutePresenter_Net>();
         }
 
-        WaveletSearchExecutor AttachRoutePresenter(IEnumerable<RoutePresenter_Net> routePresenters , EntityGridMap map)
+        WaveletSearchExecutor AttachRoutePresenter(IReadOnlyList<RoutePresenter_Net> routePresenters , EntityGridMap map)
         {
             for (int i = 0; i < routePresenters.Count(); i++)
             {
@@ -71,7 +71,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             }
 
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
-            waveletSearchExecutor.RegisterRoutePresenters( routePresenters);
+            waveletSearchExecutor.RegisterRoutePresenters(routePresenters);
             return waveletSearchExecutor;
         }
     }
