@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners;
 using Fusion;
@@ -24,9 +25,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         {
         }
 
-        public WaveletSearchExecutor Build(EntityGridMap map)
+        public WaveletSearchExecutor Build(SquareGridMap map)
         {
-            // ToDo: mapを受け取っているのはやりすぎ。もっと緩い制約でよいはず
             var routePresenterSpawner = new RoutePresenterSpawner(_runner);
             var routePresenters = new List<RoutePresenter_Net>();
 
@@ -34,7 +34,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             DestroyRoutePresenter();
             
             // RoutePresenterをスポーンさせる
-            for (int i = 0; i < map.GetLength(); i++)
+            for (int i = 0; i < map.Length; i++)
             {
                 var girdPos = map.ToVector(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
@@ -60,7 +60,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             _routePresenters = new List<RoutePresenter_Net>();
         }
 
-        WaveletSearchExecutor AttachRoutePresenter(IReadOnlyList<RoutePresenter_Net> routePresenters , EntityGridMap map)
+        WaveletSearchExecutor AttachRoutePresenter(IReadOnlyList<RoutePresenter_Net> routePresenters , IGridMap map)
         {
             for (int i = 0; i < routePresenters.Count(); i++)
             {
