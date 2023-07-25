@@ -15,8 +15,8 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly List<HoldAction> _holdActions = new List<HoldAction>();
         readonly IMapUpdater _mapUpdater;
         readonly WaveletSearchBuilder _waveletSearchBuilder;
-        IDisposable _IsHoldSubscription = null!;  // to hold the subscription to dispose it later if needed
-        IDisposable _mapSubscription = null!;  // to hold the subscription to dispose it later if needed
+        IDisposable? _isHoldSubscription;  // to hold the subscription to dispose it later if needed
+        IDisposable? _mapSubscription;  // to hold the subscription to dispose it later if needed
 
         public HoldingBlockObserver(IMapUpdater entityGridMapSwitcher,
             WaveletSearchBuilder waveletSearchBuilder)
@@ -25,24 +25,23 @@ namespace Carry.CarrySystem.Player.Scripts
             _waveletSearchBuilder = waveletSearchBuilder;
         }
         
-        public void StartObserve()
+        public void StartObserveMap()
         {
             _mapSubscription = _mapUpdater.ObserveEveryValueChanged(x=> x.GetMap())
                 .Subscribe(_ => ShowAccessibleArea());
         }
         public void StopObserve()
         {
-            _IsHoldSubscription.Dispose();
-            _mapSubscription.Dispose();
+            _isHoldSubscription?.Dispose();
+            _mapSubscription?.Dispose();
         }
 
         public void RegisterHoldAction(HoldAction holdAction)
         {
-            Debug.Log($"RegisterHoldAction!!");
             _holdActions.Add(holdAction);
             
-            _IsHoldSubscription?.Dispose();
-            _IsHoldSubscription = _holdActions.ToObservable()
+            _isHoldSubscription?.Dispose();
+            _isHoldSubscription = _holdActions.ToObservable()
                 .SelectMany(holdAction => holdAction.ObserveEveryValueChanged(h => h.IsHoldingBlock))
                 .Subscribe(_ => ShowAccessibleArea());
         }
