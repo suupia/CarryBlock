@@ -7,41 +7,68 @@ using UnityEngine;
 
 namespace Projects.CarrySystem.RoutingAlgorithm.Tests
 {
-    public class TestMapData
+    public class Map7X7A
     {
-        public void Test()
+        public NumericGridMap Map { get; }
+        public Vector2Int Startpos => new Vector2Int(0, 2);
+        public Vector2Int EndPos => new Vector2Int(6, 6);
+        public IReadOnlyList<(int, int)> Walls { get; }
+        public IReadOnlyList<(int, int)> WallsIncludeStart { get; }
+        public IReadOnlyList<(int, int)> WallsIncludeEnd { get; }
+
+        public Map7X7A()
         {
             int width = 7;
             int height = 7;
             var initValue = -1;
             var edgeValue = -8;
             var outOfRangeValue = -88;
-            var map = new NumericGridMap(width, height, initValue, edgeValue, outOfRangeValue);
+            Map = new NumericGridMap(width, height, initValue, edgeValue, outOfRangeValue);
 
-            var startPos = new Vector2Int(0, 5);
-            var endPos = new Vector2Int(6, 0);
-            var walls = new List<(int, int)>()
-                { (1, 1), (2, 4), (2, 5), (2, 6), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4) };
-            var wallsIncludeStart = new List<(int, int)>(walls);
-            wallsIncludeStart.Add((startPos.x, startPos.y));
-            var wallsIncludeEnd = new List<(int, int)>(walls);
-            wallsIncludeEnd.Add((endPos.x, endPos.y));
+            Walls = new List<(int, int)>() { (3, 1), (4, 1), (5, 1), (6, 1), (3, 0) };
+            var tmpWallsIncludeStart = new List<(int, int)>(Walls);
+            tmpWallsIncludeStart.Add((Startpos.x, Startpos.y));
+            WallsIncludeStart = tmpWallsIncludeStart;
+            var tmpWallsIncludeEnd = new List<(int, int)>(Walls);
+            tmpWallsIncludeEnd.Add((EndPos.x, EndPos.y));
+            WallsIncludeEnd = tmpWallsIncludeEnd;
         }
     }
+    public class Map7X7B
+    {
+        public NumericGridMap Map { get; }
+        public Vector2Int Startpos => new Vector2Int(1, 1);
+        public Vector2Int EndPos => new Vector2Int(4, 5);
+        public IReadOnlyList<(int, int)> Walls { get; }
+        public IReadOnlyList<(int, int)> WallsIncludeStart { get; }
+        public IReadOnlyList<(int, int)> WallsIncludeEnd { get; }
 
+        public Map7X7B()
+        {
+            int width = 7;
+            int height = 7;
+            var initValue = -1;
+            var edgeValue = -8;
+            var outOfRangeValue = -88;
+            Map = new NumericGridMap(width, height, initValue, edgeValue, outOfRangeValue);
+
+            Walls = new List<(int, int)>() { (3, 0), (3, 1), (4, 1), (4, 2), (4, 3), (3, 4), (3, 5), (3, 6) };
+            var tmpWallsIncludeStart = new List<(int, int)>(Walls);
+            tmpWallsIncludeStart.Add((Startpos.x, Startpos.y));
+            WallsIncludeStart = tmpWallsIncludeStart;
+            var tmpWallsIncludeEnd = new List<(int, int)>(Walls);
+            tmpWallsIncludeEnd.Add((EndPos.x, EndPos.y));
+            WallsIncludeEnd = tmpWallsIncludeEnd;
+        }
+    }
     public class Map7X7C
     {
-        public NumericGridMap Map => _map;
+        public NumericGridMap Map { get; }
         public Vector2Int Startpos => new Vector2Int(0, 5);
         public Vector2Int EndPos => new Vector2Int(6, 0);
-        public IReadOnlyList<(int, int)> Walls => _walls;
-        public IReadOnlyList<(int, int)> WallsIncludeStart => _wallsIncludeStart;
-        public IReadOnlyList<(int, int)> WallsIncludeEnd => _wallsIncludeEnd;
-        
-        NumericGridMap _map;
-        IReadOnlyList<(int, int)> _walls;
-        IReadOnlyList<(int, int)> _wallsIncludeStart;
-        IReadOnlyList<(int, int)> _wallsIncludeEnd;
+        public IReadOnlyList<(int, int)> Walls { get; }
+        public IReadOnlyList<(int, int)> WallsIncludeStart { get; }
+        public IReadOnlyList<(int, int)> WallsIncludeEnd { get; }
 
         public Map7X7C()
         {
@@ -50,15 +77,15 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var initValue = -1;
             var edgeValue = -8;
             var outOfRangeValue = -88;
-            _map = new NumericGridMap(width, height, initValue, edgeValue, outOfRangeValue);
+            Map = new NumericGridMap(width, height, initValue, edgeValue, outOfRangeValue);
 
-            _walls = new List<(int, int)>() { (1, 1), (2, 4), (2, 5), (2, 6), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4) };
-            var tmpWallsIncludeStart = new List<(int, int)>(_walls);
+            Walls = new List<(int, int)>() { (1, 1), (2, 4), (2, 5), (2, 6), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4) };
+            var tmpWallsIncludeStart = new List<(int, int)>(Walls);
             tmpWallsIncludeStart.Add((Startpos.x, Startpos.y));
-            _wallsIncludeStart = tmpWallsIncludeStart;
-            var tmpWallsIncludeEnd = new List<(int, int)>(_walls);
+            WallsIncludeStart = tmpWallsIncludeStart;
+            var tmpWallsIncludeEnd = new List<(int, int)>(Walls);
             tmpWallsIncludeEnd.Add((EndPos.x, EndPos.y));
-            _wallsIncludeEnd = tmpWallsIncludeEnd;
+            WallsIncludeEnd = tmpWallsIncludeEnd;
         }
     }
 }
