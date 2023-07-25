@@ -22,10 +22,12 @@ namespace Projects.NetworkUtility.Inputs.Scripts
 
     public class LocalInputPoller : INetworkRunnerCallbacks
     {
-        // Local variable to store the input polled.
         NetworkInputData _localInput;
-        InputActionAsset _inputActionAsset;
-        InputActionMap _inputActionMap;
+        readonly InputActionAsset _inputActionAsset;
+        readonly InputActionMap _inputActionMap;
+
+        readonly InputAction _move;
+        readonly InputAction _mainAction;
 
         public LocalInputPoller()
         {
@@ -38,6 +40,9 @@ namespace Projects.NetworkUtility.Inputs.Scripts
             
             //本来は以下を適切なタイミングで呼ぶべき
             // _inputActionMap.Disable();
+
+            _move = _inputActionMap.FindAction("Move");
+            _mainAction = _inputActionMap.FindAction("MainAction");
         }
 
 
@@ -45,8 +50,8 @@ namespace Projects.NetworkUtility.Inputs.Scripts
         {
             _localInput = default;
 
-            var moveVector = _inputActionMap.FindAction("Move").ReadValue<Vector2>().normalized;
-            var mainActionValue = _inputActionAsset.FindAction("MainAction").ReadValue<float>(); 
+            var moveVector = _move.ReadValue<Vector2>().normalized;
+            var mainActionValue = _mainAction.ReadValue<float>(); 
             
             // Debug.Log(moveVector);
             // Debug.Log(isDownMainAction);
