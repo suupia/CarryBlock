@@ -23,14 +23,19 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         [SerializeField] FloorTimer_Net floorTimerNet;
         CarryPlayerSpawner _carryPlayerSpawner;
         IMapUpdater _entityGridMapSwitcher;
+        HoldingBlockObserver _holdingBlockObserver;
         public bool IsInitialized { get; private set; }
         
         [Inject]
-        public void Construct(CarryPlayerSpawner carryPlayerSpawner,
-            IMapUpdater entityGridMapSwitcher)
+        public void Construct(
+            CarryPlayerSpawner carryPlayerSpawner,
+            IMapUpdater entityGridMapSwitcher,
+            HoldingBlockObserver holdingBlockObserver
+            )
         {
             _carryPlayerSpawner = carryPlayerSpawner;
             _entityGridMapSwitcher = entityGridMapSwitcher;
+            _holdingBlockObserver = holdingBlockObserver;
         }
 
 
@@ -48,14 +53,16 @@ namespace Carry.CarrySystem.CarryScene.Scripts
                 Runner.AddSimulationBehaviour(floorTimerNet);
                 floorTimerNet.StartTimer();
             }
-
-
+            
             
             // Generate map
             if (Runner.IsServer)
             {
                 _entityGridMapSwitcher.InitUpdateMap(MapKey.Default, 1);  // ToDo : keyやindexの計算処理を追加する
+                _holdingBlockObserver.StartObserveMap();    // Mapの生成後に呼び出す
+
             }
+            
 
 
             if (Runner.IsServer) _carryPlayerSpawner.RespawnAllPlayer();

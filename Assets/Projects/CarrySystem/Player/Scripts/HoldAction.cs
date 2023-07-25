@@ -17,6 +17,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class HoldAction : ICharacterHoldAction
     {
+        public bool IsHoldingBlock => _isHoldingBlock;
         IObjectResolver _resolver;
         PlayerInfo _info;
         EntityGridMap _map;

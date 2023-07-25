@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+#nullable enable
+
 
 namespace Projects.CarrySystem.SearchRoute.Scripts
 {
