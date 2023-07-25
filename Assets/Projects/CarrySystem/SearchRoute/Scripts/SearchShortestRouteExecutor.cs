@@ -26,6 +26,7 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
             long maxDistance = 0;
 
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, endPos, isWall, searcherSize);
+            searchedMap.DebugMapValues();
 
             maxDistance = searchedMap.GetValue(endPos);
 

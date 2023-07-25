@@ -96,14 +96,9 @@ namespace Carry.CarrySystem.Map.Scripts
                     throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
             }
 
-            BasicSetWall(isWall);
-
             //壁でないマスに数字を順番に振っていく
             // Debug.Log($"WaveletSearchを実行します startPos:{startPos}");
             WaveletSearch();
-
-
-
 
             return _map;
 
@@ -240,11 +235,22 @@ namespace Carry.CarrySystem.Map.Scripts
                                 _map.SetValue(x + i, y + j, _wallValue);
                             }
                         }
+                    }else if(x == 0 || x == _map.Width -1 || y == 0 || y == _map.Height -1)
+                    {
+                        // 壁の周りのマスを壁にする
+                        _map.SetValue(x, y, _wallValue);
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// 仮置きでおいた壁を戻すために数字のマスに接しているマスをtrueにする
+        /// </summary>
+        /// <param name="map"></param>
+        /// <param name="searcherSize"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         bool[] CalcAccessibleArea(NumericGridMap map, SearcherSize searcherSize)
         {
             var tmpBoolArray = new bool[map.Length];
