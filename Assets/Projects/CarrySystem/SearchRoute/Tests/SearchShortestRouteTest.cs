@@ -17,15 +17,11 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var expectedRouteList = new List<Vector2Int>()
             {
                 new Vector2Int(0, 2),
-                new Vector2Int(1, 2),
-                new Vector2Int(2, 2),
-                new Vector2Int(3, 2),
-                new Vector2Int(3,3),
-                new Vector2Int(4, 3),
-                new Vector2Int(4,4),
-                new Vector2Int(5, 4),
+                new Vector2Int(1, 3),
+                new Vector2Int(2, 4),
+                new Vector2Int(3,5),
+                new Vector2Int(4,5),
                 new Vector2Int(5, 5),
-                new Vector2Int(6, 5),
                 new Vector2Int(6, 6),
             };
             var initValue = -1;
@@ -43,16 +39,16 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             var wallsIncludeEnd = new List<(int, int)>(walls);
             wallsIncludeEnd.Add((endPos.x, endPos.y));
             
-            var resultRouteList = searchShortestRouteExecutor.NonDiagonalSearchShortestRoute(startPos, endPos,
-                OrderInDirectionArrayContainer.CounterClockwiseStartingRightUpDirections, (x, y) => walls.Contains((x, y)));
+            var resultRouteList = searchShortestRouteExecutor.DiagonalSearchShortestRoute(startPos, endPos,
+                OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, (x, y) => walls.Contains((x, y)));
             Assert.AreEqual(expectedRouteList, resultRouteList);
             
-            resultRouteList = searchShortestRouteExecutor.NonDiagonalSearchShortestRoute(startPos, endPos,
-                OrderInDirectionArrayContainer.CounterClockwiseStartingRightUpDirections, (x, y) => wallsIncludeStart.Contains((x, y)));
+            resultRouteList = searchShortestRouteExecutor.DiagonalSearchShortestRoute(startPos, endPos,
+                OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, (x, y) => wallsIncludeStart.Contains((x, y)));
             // ToDo: Assert.AreEqual(expectedRouteList, resultRouteList);
             
-            resultRouteList = searchShortestRouteExecutor.NonDiagonalSearchShortestRoute(startPos, endPos,
-                OrderInDirectionArrayContainer.CounterClockwiseStartingRightUpDirections, (x, y) => wallsIncludeEnd.Contains((x, y)));
+            resultRouteList = searchShortestRouteExecutor.DiagonalSearchShortestRoute(startPos, endPos,
+                OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, (x, y) => wallsIncludeEnd.Contains((x, y)));
             // ToDo: Assert.AreEqual(expectedRouteList, resultRouteList);
         }
     }

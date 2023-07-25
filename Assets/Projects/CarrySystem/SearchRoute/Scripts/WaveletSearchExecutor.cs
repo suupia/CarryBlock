@@ -164,10 +164,10 @@ namespace Carry.CarrySystem.Map.Scripts
                     for (int x = -1; x <= 1; x++)
                     {
                         if (x == 0 && y == 0) continue; //真ん中のマスは飛ばす
-                        if (x != 0 && y != 0) continue; //斜めのマスも飛ばす
+                        // if (x != 0 && y != 0) continue; //斜めのマスも飛ばす
 
                         inspectPos = centerPos + new Vector2Int(x, y);
-                        if (_map.GetValue(inspectPos) == _initValue) // _edgeValueが帰ってくることもある
+                        if (_map.GetValue(inspectPos) == _initValue && CanMoveDiagonally(centerPos, inspectPos)) // _edgeValueが帰ってくることもある
                         {
                             _map.SetValue(inspectPos, n);
                             searchQue.Enqueue(inspectPos);
@@ -195,6 +195,30 @@ namespace Carry.CarrySystem.Map.Scripts
                 }
             }
         }
+        
+        public bool CanMoveDiagonally(Vector2Int prePos, Vector2Int afterPos)
+        {
+            Vector2Int directionVector = afterPos - prePos;
+
+            //斜め移動の時にブロックの角を移動することはできない
+            if (directionVector.x != 0 && directionVector.y != 0)
+            {
+                //水平方向の判定
+                if (_map.GetValue(prePos.x + directionVector.x, prePos.y) == _wallValue)
+                {
+                    return false;
+                }
+
+                //垂直方向の判定
+                if (_map.GetValue(prePos.x, prePos.y + directionVector.y) == _wallValue)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
 
         // 探索者の大きさが1*1の場合
         void BasicSetWall(Func<int, int, bool> isWall)
