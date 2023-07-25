@@ -28,7 +28,6 @@ namespace Carry.CarrySystem.Map.Scripts
         Suzuki,
         Kaburagi,
         Tsukamoto,
-        Kurauchi,
         Harano,
         Isikawa,
         Abe,

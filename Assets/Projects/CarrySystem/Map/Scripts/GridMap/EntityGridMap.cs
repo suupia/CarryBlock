@@ -13,16 +13,12 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EntityGridMap : SquareGridMap
     {
-        public int Width { get; }
-        public int Height { get; }
         public int GetLength() => Width * Height;
         readonly List<IEntity>[] _entityMaps;
         ITilePresenter?[] _tilePresenter;
         
         public EntityGridMap(int width, int height) : base (width, height)
         {
-            Width = width;
-            Height = height;
             _entityMaps = new List<IEntity>[GetLength()];
             _tilePresenter = new ITilePresenter?[GetLength()];
             for (int i = 0; i < GetLength(); i++)
