@@ -54,20 +54,18 @@ namespace Carry.CarrySystem.CarryScene.Scripts
                 floorTimerNet.StartTimer();
             }
             
-            // IsHoldingBlockObserver
-            if (Runner.IsServer)
-            {
-                _holdingBlockObserver.StartObserve();   
-            }
-
-
             
             // Generate map
             if (Runner.IsServer)
             {
                 _entityGridMapSwitcher.InitUpdateMap(MapKey.Default, 1);  // ToDo : keyやindexの計算処理を追加する
             }
-
+            
+            // IsHoldingBlockObserver
+            if (Runner.IsServer)
+            {
+                _holdingBlockObserver.StartObserve();   
+            }
 
             if (Runner.IsServer) _carryPlayerSpawner.RespawnAllPlayer();
 
