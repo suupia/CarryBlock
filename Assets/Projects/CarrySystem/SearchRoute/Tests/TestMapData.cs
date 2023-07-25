@@ -34,6 +34,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             WallsIncludeEnd = tmpWallsIncludeEnd;
         }
     }
+
     public class Map7X7B
     {
         public NumericGridMap Map { get; }
@@ -61,6 +62,7 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             WallsIncludeEnd = tmpWallsIncludeEnd;
         }
     }
+
     public class Map7X7C
     {
         public NumericGridMap Map { get; }
@@ -80,6 +82,34 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             Map = new NumericGridMap(width, height, initValue, edgeValue, outOfRangeValue);
 
             Walls = new List<(int, int)>() { (1, 1), (2, 4), (2, 5), (2, 6), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4) };
+            var tmpWallsIncludeStart = new List<(int, int)>(Walls);
+            tmpWallsIncludeStart.Add((StartPos.x, StartPos.y));
+            WallsIncludeStart = tmpWallsIncludeStart;
+            var tmpWallsIncludeEnd = new List<(int, int)>(Walls);
+            tmpWallsIncludeEnd.Add((EndPos.x, EndPos.y));
+            WallsIncludeEnd = tmpWallsIncludeEnd;
+        }
+    }
+
+    public class Map10X8A
+    {
+        public NumericGridMap Map { get; }
+        public Vector2Int StartPos => new Vector2Int(1, 3);
+        public Vector2Int EndPos => new Vector2Int(7, 6);
+        public IReadOnlyList<(int, int)> Walls { get; }
+        public IReadOnlyList<(int, int)> WallsIncludeStart { get; }
+        public IReadOnlyList<(int, int)> WallsIncludeEnd { get; }
+
+        public Map10X8A()
+        {
+            int width = 10;
+            int height = 8;
+            var initValue = -1;
+            var edgeValue = -8;
+            var outOfRangeValue = -88;
+            Map = new NumericGridMap(width, height, initValue, edgeValue, outOfRangeValue);
+
+            Walls = new List<(int, int)>() { (6, 0), (7, 0), (8, 3), (0, 5), (1, 5), (2, 5), (3, 5), (3, 6), (3, 7) };
             var tmpWallsIncludeStart = new List<(int, int)>(Walls);
             tmpWallsIncludeStart.Add((StartPos.x, StartPos.y));
             WallsIncludeStart = tmpWallsIncludeStart;

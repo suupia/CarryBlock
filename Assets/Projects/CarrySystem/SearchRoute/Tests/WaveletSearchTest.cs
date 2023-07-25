@@ -95,16 +95,10 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
         [Test]
         public void SearchAccessibleArea1_10x8_A()
         {
-            int width = 10;
-            int height = 8;
-            var expectedBoolArray = new bool[width * height];
-            var allFalseArray = new bool[width * height];
-            var resultBoolArray = new bool[width * height];
-            var initValue = -1;
-            var edgeValue = -8;
-            var outOfRangeValue = -88;
-            var map = new NumericGridMap(width,height,initValue,edgeValue,outOfRangeValue);
-            var newSearchShortestRoute = new WaveletSearchExecutor(map);
+            var mapData = new Map10X8A();
+            var newSearchShortestRoute = new WaveletSearchExecutor( mapData.Map);
+            var expectedBoolArray = new bool[mapData.Map.GetLength()];
+            var allFalseArray = new bool[mapData.Map.GetLength()];
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 5, expectedTrueIndexes);
@@ -123,18 +117,10 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
                 expectedBoolArray[i] = expectedTrueIndexes.Contains(i);
             }
 
-            var startPos = new Vector2Int(1, 3);
-            var endPos = new Vector2Int(7, 6);
-            var walls = new List<(int, int)>()
-                { (6, 0), (7, 0), (8, 3), (0, 5), (1, 5), (2, 5), (3, 5), (3, 6), (3, 7) };
-            var wallsIncludeStart = new List<(int, int)>(walls);
-            wallsIncludeStart.Add((startPos.x, startPos.y));
-            var wallsIncludeEnd = new List<(int, int)>(walls);
-            wallsIncludeEnd.Add((endPos.x, endPos.y));
-
             // walls
-            resultBoolArray =
-                newSearchShortestRoute.SearchAccessibleArea(startPos, endPos, (x, y) => walls.Contains((x, y)));
+            var resultBoolArray =
+                newSearchShortestRoute.SearchAccessibleArea(mapData.StartPos, mapData.EndPos, 
+                    (x, y) => mapData.Walls .Contains((x, y)));
             for (int i = 0; i < resultBoolArray.Length; i++)
             {
                 if (expectedBoolArray[i] != resultBoolArray[i])
@@ -143,35 +129,28 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
                         $"i:{i} expectedBoolArray[i]:{expectedBoolArray[i]} resultBoolArray[i]:{resultBoolArray[i]}");
                 }
             }
-
             Assert.AreEqual(expectedBoolArray, resultBoolArray);
 
             // wallsIncludeStart
             resultBoolArray =
-                newSearchShortestRoute.SearchAccessibleArea(startPos, endPos,
-                    (x, y) => wallsIncludeStart.Contains((x, y)));
+                newSearchShortestRoute.SearchAccessibleArea(mapData.StartPos, mapData.EndPos, 
+                    (x, y) => mapData.WallsIncludeStart.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
 
             // wallsIncludeEnd
             resultBoolArray =
-                newSearchShortestRoute.SearchAccessibleArea(startPos, endPos,
-                    (x, y) => wallsIncludeEnd.Contains((x, y)));
+                newSearchShortestRoute.SearchAccessibleArea(mapData.StartPos, mapData.EndPos, 
+                    (x, y) => mapData.WallsIncludeEnd.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
         }
 
         [Test]
         public void SearchAccessibleArea3_7x7_A()
         {
-            int width = 7;
-            int height = 7;
-            var expectedBoolArray = new bool[width * height];
-            var allFalseArray = new bool[width * height];
-            var resultBoolArray = new bool[width * height];
-            var initValue = -1;
-            var edgeValue = -8;
-            var outOfRangeValue = -88;
-            var map = new NumericGridMap(width,height,initValue,edgeValue,outOfRangeValue);
-            var newSearchShortestRoute = new WaveletSearchExecutor(map);
+            var mapData = new Map7X7A();
+            var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
+            var expectedBoolArray = new bool[mapData.Map.GetLength()];
+            var allFalseArray = new bool[mapData.Map.GetLength()];
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -186,46 +165,32 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
             {
                 expectedBoolArray[i] = expectedTrueIndexes.Contains(i);
             }
-
-            var startPos = new Vector2Int(0, 2);
-            var endPos = new Vector2Int(6, 6);
-            var walls = new List<(int, int)>() { (3, 1), (4, 1), (5, 1), (6, 1), (3, 0) };
-            var wallsIncludeStart = new List<(int, int)>(walls);
-            wallsIncludeStart.Add((startPos.x, startPos.y));
-            var wallsIncludeEnd = new List<(int, int)>(walls);
-            wallsIncludeEnd.Add((endPos.x, endPos.y));
-
+            
             // walls
-            resultBoolArray =
-                newSearchShortestRoute.SearchAccessibleArea(startPos, endPos,
-                    (x, y) => walls.Contains((x, y)),SearcherSize.SizeThree);
+            var resultBoolArray =
+                newSearchShortestRoute.SearchAccessibleArea(mapData.StartPos, mapData.EndPos,
+                    (x, y) => mapData.Walls.Contains((x, y)),SearcherSize.SizeThree);
             Assert.AreEqual(expectedBoolArray, resultBoolArray);
 
             // wallsIncludeStart
-            resultBoolArray = newSearchShortestRoute.SearchAccessibleArea(startPos, endPos,
-                (x, y) => wallsIncludeStart.Contains((x, y)),SearcherSize.SizeThree);
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleArea(mapData.StartPos, mapData.EndPos,
+                (x, y) => mapData.WallsIncludeStart.Contains((x, y)),SearcherSize.SizeThree);
             Assert.AreEqual(allFalseArray, resultBoolArray);
 
             // wallsIncludeEnd
             resultBoolArray =
-                newSearchShortestRoute.SearchAccessibleArea(startPos, endPos,
-                    (x, y) => wallsIncludeEnd.Contains((x, y)),SearcherSize.SizeThree);
+                newSearchShortestRoute.SearchAccessibleArea(mapData.StartPos, mapData.EndPos,
+                    (x, y) => mapData.WallsIncludeEnd.Contains((x, y)),SearcherSize.SizeThree);
             Assert.AreEqual(allFalseArray, resultBoolArray);
         }
 
         [Test]
         public void SearchAccessibleArea3_7x7_B()
         {
-            int width = 7;
-            int height = 7;
-            var expectedBoolArray = new bool[width * height];
-            var allFalseArray = new bool[width * height];
-            var resultBoolArray = new bool[width * height];
-            var initValue = -1;
-            var edgeValue = -8;
-            var outOfRangeValue = -88;
-            var map = new NumericGridMap(width,height,initValue,edgeValue,outOfRangeValue);
-            var newSearchShortestRoute = new WaveletSearchExecutor(map);
+            var mapData = new Map7X7B();
+            var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
+            var expectedBoolArray = new bool[mapData.Map.GetLength()];
+            var allFalseArray = new bool[mapData.Map.GetLength()];
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 2, expectedTrueIndexes);
@@ -241,46 +206,31 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
                 expectedBoolArray[i] = expectedTrueIndexes.Contains(i);
             }
 
-            var startPos = new Vector2Int(1, 1);
-            var endPos = new Vector2Int(4, 5);
-            var walls = new List<(int, int)>() { (3, 0), (3, 1), (4, 1), (4, 2), (4, 3), (3, 4), (3, 5), (3, 6) };
-            var wallsIncludeStart = new List<(int, int)>(walls);
-            wallsIncludeStart.Add((startPos.x, startPos.y));
-            var wallsIncludeEnd = new List<(int, int)>(walls);
-            wallsIncludeEnd.Add((endPos.x, endPos.y));
-
             // walls
-            resultBoolArray =
-                newSearchShortestRoute.SearchAccessibleArea(startPos, endPos,
-                    (x, y) => walls.Contains((x, y)),SearcherSize.SizeThree);
+            var resultBoolArray =
+                newSearchShortestRoute.SearchAccessibleArea(mapData.StartPos, mapData.EndPos,
+                    (x, y) => mapData.Walls.Contains((x, y)),SearcherSize.SizeThree);
             Assert.AreEqual(expectedBoolArray, resultBoolArray);
 
             // wallsIncludeStart
-            resultBoolArray =
-                newSearchShortestRoute.SearchAccessibleArea(startPos, endPos,
-                    (x, y) => wallsIncludeStart.Contains((x, y)),SearcherSize.SizeThree);
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleArea(mapData.StartPos, mapData.EndPos,
+                (x, y) => mapData.WallsIncludeStart.Contains((x, y)),SearcherSize.SizeThree);
             Assert.AreEqual(allFalseArray, resultBoolArray);
 
             // wallsIncludeEnd
             resultBoolArray =
-                newSearchShortestRoute.SearchAccessibleArea(startPos, endPos,
-                    (x, y) => wallsIncludeEnd.Contains((x, y)),SearcherSize.SizeThree);
+                newSearchShortestRoute.SearchAccessibleArea(mapData.StartPos, mapData.EndPos,
+                    (x, y) => mapData.WallsIncludeEnd.Contains((x, y)),SearcherSize.SizeThree);
             Assert.AreEqual(allFalseArray, resultBoolArray);
         }
 
         [Test]
         public void SearchAccessibleArea3_10x8_A()
         {
-            int width = 10;
-            int height = 8;
-            var expectedBoolArray = new bool[width * height];
-            var allFalseArray = new bool[width * height];
-            var resultBoolArray = new bool[width * height];
-            var initValue = -1;
-            var edgeValue = -8;
-            var outOfRangeValue = -88;
-            var map = new NumericGridMap(width,height,initValue,edgeValue,outOfRangeValue);
-            var newSearchShortestRoute = new WaveletSearchExecutor(map);
+            var mapData = new Map10X8A();
+            var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
+            var expectedBoolArray = new bool[mapData.Map.GetLength()];
+            var allFalseArray = new bool[mapData.Map.GetLength()];
 
             var expectedTrueIndexes = new List<int>();
             expectedTrueIndexes = ContinuousAdd(0, 5, expectedTrueIndexes);
@@ -297,19 +247,10 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
                 expectedBoolArray[i] = expectedTrueIndexes.Contains(i);
             }
 
-            var startPos = new Vector2Int(1, 3);
-            var endPos = new Vector2Int(7, 6);
-            var walls = new List<(int, int)>()
-                { (6, 0), (7, 0), (8, 3), (0, 5), (1, 5), (2, 5), (3, 5), (3, 6), (3, 7) };
-            var wallsIncludeStart = new List<(int, int)>(walls);
-            wallsIncludeStart.Add((startPos.x, startPos.y));
-            var wallsIncludeEnd = new List<(int, int)>(walls);
-            wallsIncludeEnd.Add((endPos.x, endPos.y));
-
             // walls
-            resultBoolArray =
-                newSearchShortestRoute.SearchAccessibleArea(startPos, endPos,
-                    (x, y) => walls.Contains((x, y)),SearcherSize.SizeThree);
+            var resultBoolArray =
+                newSearchShortestRoute.SearchAccessibleArea(mapData.StartPos, mapData.EndPos,
+                    (x, y) => mapData.Walls.Contains((x, y)),SearcherSize.SizeThree);
             for (int i = 0; i < resultBoolArray.Length; i++)
             {
                 if (expectedBoolArray[i] != resultBoolArray[i])
@@ -318,19 +259,17 @@ namespace Projects.CarrySystem.RoutingAlgorithm.Tests
                         $"i:{i} expectedBoolArray[i]:{expectedBoolArray[i]} resultBoolArray[i]:{resultBoolArray[i]}");
                 }
             }
-
             Assert.AreEqual(expectedBoolArray, resultBoolArray);
 
             // wallsIncludeStart
-            resultBoolArray =
-                newSearchShortestRoute.SearchAccessibleArea(startPos, endPos,
-                    (x, y) => wallsIncludeStart.Contains((x, y)),SearcherSize.SizeThree);
+            resultBoolArray = newSearchShortestRoute.SearchAccessibleArea(mapData.StartPos, mapData.EndPos,
+                (x, y) => mapData.WallsIncludeStart.Contains((x, y)),SearcherSize.SizeThree);
             Assert.AreEqual(allFalseArray, resultBoolArray);
 
             // wallsIncludeEnd
             resultBoolArray =
-                newSearchShortestRoute.SearchAccessibleArea(startPos, endPos,
-                    (x, y) => wallsIncludeEnd.Contains((x, y)),SearcherSize.SizeThree);
+                newSearchShortestRoute.SearchAccessibleArea(mapData.StartPos, mapData.EndPos,
+                    (x, y) => mapData.WallsIncludeEnd.Contains((x, y)),SearcherSize.SizeThree);
             Assert.AreEqual(allFalseArray, resultBoolArray);
         }
 
