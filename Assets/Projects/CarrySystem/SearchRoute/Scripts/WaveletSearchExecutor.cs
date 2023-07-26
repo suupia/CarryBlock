@@ -14,8 +14,8 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public enum SearcherSize
     {
-        SizeOne,
-        SizeThree
+        SizeOne = 1,
+        SizeThree = 3,
     }
 
     public class WaveletSearchExecutor
