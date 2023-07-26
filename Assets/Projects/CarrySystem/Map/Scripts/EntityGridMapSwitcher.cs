@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Map.Interfaces;
+﻿using Carry.CarrySystem.Cart.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
@@ -17,17 +18,20 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         readonly EntityGridMapLoader _gridMapLoader;
         readonly TilePresenterBuilder _tilePresenterBuilder;
+        readonly CartBuilder _cartBuilder;
         int _currentIndex;
-        EntityGridMap _currentMap;
+        EntityGridMap? _currentMap;
         
         [Inject]
         public EntityGridMapSwitcher(
             EntityGridMapLoader gridMapGridMapLoader,
-            TilePresenterBuilder tilePresenterBuilder
+            TilePresenterBuilder tilePresenterBuilder,
+            CartBuilder cartBuilder
            )
         {
             _gridMapLoader = gridMapGridMapLoader;
             _tilePresenterBuilder = tilePresenterBuilder;
+            _cartBuilder = cartBuilder;
         }
         
         public EntityGridMap GetMap()
@@ -40,6 +44,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _currentIndex = index;
             _currentMap = _gridMapLoader.LoadEntityGridMap(mapKey, _currentIndex);
             _tilePresenterBuilder.Build(_currentMap);
+            _cartBuilder.Build(_currentMap);
         }
         
         public void UpdateMap(MapKey mapKey, int index)
@@ -58,6 +63,8 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 player.Reset();
             }
+
+            _cartBuilder.Build(_currentMap);
 
         }
     }

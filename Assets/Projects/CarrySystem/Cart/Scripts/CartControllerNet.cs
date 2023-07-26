@@ -1,4 +1,5 @@
 ﻿using Fusion;
+#nullable enable
 
 namespace Carry.CarrySystem.Cart.Scripts
 {

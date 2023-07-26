@@ -1,7 +1,7 @@
 ﻿using Fusion;
 using TMPro;
 using UnityEngine;
-
+#nullable enable
 namespace Carry.CarrySystem.Cart.Scripts
 {
     public class CartMovementNotifier : NetworkBehaviour

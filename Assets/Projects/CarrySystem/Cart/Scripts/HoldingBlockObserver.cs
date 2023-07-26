@@ -58,8 +58,8 @@ namespace Carry.CarrySystem.Cart.Scripts
             Func<int, int, bool> isWall = (x, y) => map.GetSingleEntityList<IBlock>(new Vector2Int(x, y)).Count > 0;
             var waveletSearchExecutor = _waveletSearchBuilder.Build(_mapUpdater.GetMap());
 
-            var startPos = new Vector2Int(1, map.Height % 2 == 1 ? (map.Height + 1) / 2 : map.Height / 2);
-            var endPos = new Vector2Int(map.Width -2, map.Height % 2 == 1 ? (map.Height + 1) / 2 : map.Height / 2);
+            var startPos = new Vector2Int(1, map.Height % 2 == 1 ? (map.Height - 1) / 2 : map.Height / 2);
+            var endPos = new Vector2Int(map.Width -2, map.Height % 2 == 1 ? (map.Height - 1) / 2 : map.Height / 2);
             var searcherSize = SearcherSize.SizeThree;
             var accessibleArea = waveletSearchExecutor.SearchAccessibleArea(startPos, endPos, isWall,searcherSize);
             
