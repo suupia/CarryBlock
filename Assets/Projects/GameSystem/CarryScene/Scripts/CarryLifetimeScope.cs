@@ -54,6 +54,9 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             
             // Initializer
             builder.RegisterComponentInHierarchy<CarryInitializer>();
+            
+            // Notifier
+            builder.RegisterComponentInHierarchy<CartMovementNotifier>();
 
 
             // Clientのドメインスクリプト

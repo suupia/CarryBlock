@@ -15,14 +15,19 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly List<HoldAction> _holdActions = new List<HoldAction>();
         readonly IMapUpdater _mapUpdater;
         readonly WaveletSearchBuilder _waveletSearchBuilder;
+        readonly CartMovementNotifier _cartMovementNotifier = new CartMovementNotifier();
         IDisposable? _isHoldSubscription;  // to hold the subscription to dispose it later if needed
         IDisposable? _mapSubscription;  // to hold the subscription to dispose it later if needed
 
-        public HoldingBlockObserver(IMapUpdater entityGridMapSwitcher,
-            WaveletSearchBuilder waveletSearchBuilder)
+        public HoldingBlockObserver(
+            IMapUpdater entityGridMapSwitcher,
+            WaveletSearchBuilder waveletSearchBuilder,
+            CartMovementNotifier cartMovementNotifier
+            )
         {
             _mapUpdater = entityGridMapSwitcher;
             _waveletSearchBuilder = waveletSearchBuilder;
+            _cartMovementNotifier = cartMovementNotifier;
         }
         
         public void StartObserveMap()
@@ -57,7 +62,26 @@ namespace Carry.CarrySystem.Player.Scripts
             var searcherSize = SearcherSize.SizeThree;
             var accessibleArea = waveletSearchExecutor.SearchAccessibleArea(startPos, endPos, isWall,searcherSize);
             
-            CanCartReachRightEdge(accessibleArea, map, searcherSize);
+            // Show the result
+            if (CanCartReachRightEdge(accessibleArea, map, searcherSize))
+            {
+                if (AllPlayerIsNotHoldingBlock())
+                {
+                    _cartMovementNotifier.ShowReachableText();
+                    _cartMovementNotifier.ShowMoveToCartText();
+                }
+                else
+                {
+                    _cartMovementNotifier.ShowReachableText();
+                    _cartMovementNotifier.HideMoveToCartText();;
+                }  
+            }
+            else
+            {
+                _cartMovementNotifier.HideReachableText();
+                _cartMovementNotifier.HideMoveToCartText();
+            }
+            
         }
 
         bool CanCartReachRightEdge(bool[] accessibleArea, SquareGridMap map,SearcherSize searcherSize)
@@ -90,6 +114,18 @@ namespace Carry.CarrySystem.Player.Scripts
 
             // Debug.Log($"rightEdgeArray:{string.Join("," , rightEdgeArray)}");
             return false;
+        }
+        
+        bool AllPlayerIsNotHoldingBlock()
+        {
+            foreach (var holdAction in _holdActions)
+            {
+                if (holdAction.IsHoldingBlock)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
