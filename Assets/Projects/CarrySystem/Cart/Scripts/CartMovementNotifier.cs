@@ -6,6 +6,9 @@ namespace Carry.CarrySystem.Cart.Scripts
 {
     public class CartMovementNotifier : NetworkBehaviour
     {
+        // UIに特化させる
+        // このクラスにドメインに関係する処理を足してはいけない。
+        // つまり、このクラスを参照してよいのはUIのみである。
         [SerializeField] TextMeshProUGUI ReachableText = null!;
         [SerializeField] TextMeshProUGUI MoveToCartText = null!;
         

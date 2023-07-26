@@ -14,9 +14,11 @@ namespace Carry.CarrySystem.Cart.Scripts
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<CartControllerNet> _cartControllerLoader;
 
-
         [Inject]
-        public CartBuilder(NetworkRunner runner ,IPrefabLoader<CartControllerNet> cartControllerLoader)
+        public CartBuilder(
+            NetworkRunner runner ,
+            IPrefabLoader<CartControllerNet> cartControllerLoader
+            )
         {
             _runner = runner;
             _cartControllerLoader = cartControllerLoader;
@@ -29,17 +31,17 @@ namespace Carry.CarrySystem.Cart.Scripts
             var cartController = _cartControllerLoader.Load();
             
             // ドメインスクリプトをnew
-            //  var character = _carryPlayerFactory.Create(colorType);
-            var startPos = new Vector2Int(1, map.Height % 2 == 1 ? (map.Height - 1) / 2 : map.Height / 2);
-            Debug.Log($"startPos: {startPos}");
-            var position = GridConverter.GridPositionToWorldPosition(startPos);
+            var move = new CartShortestRouteMove();
             
             // プレハブをスポーン
+            var startPos = new Vector2Int(1, map.Height % 2 == 1 ? (map.Height - 1) / 2 : map.Height / 2);
+            // Debug.Log($"startPos: {startPos}");
+            var position = GridConverter.GridPositionToWorldPosition(startPos);
             var cartControllerObj = _runner.Spawn(cartController,position, Quaternion.identity, PlayerRef.None,
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, cartControllerObj");
-                    // networkObj.GetComponent<CarryPlayerController_Net>().Init(character,colorType);
+                    networkObj.GetComponent<CartControllerNet>().Init(move);
                     // networkObj.GetComponent<HoldPresenter_Net>().Init(character);
                 });
             

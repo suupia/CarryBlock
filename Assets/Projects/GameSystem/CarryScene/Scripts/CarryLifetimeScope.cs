@@ -62,6 +62,9 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             // Notifier
             builder.RegisterComponentInHierarchy<CartMovementNotifier>();
             
+            // Handler
+            builder.RegisterComponentInHierarchy<HandlePlayerNearCart>();
+
             // Initializer
             builder.RegisterComponentInHierarchy<CarryInitializer>();
             
