@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
+using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using Projects.CarrySystem.Block.Interfaces;
 using UniRx;
 using UnityEngine;
 #nullable enable
 
-namespace Carry.CarrySystem.Player.Scripts
+namespace Carry.CarrySystem.Cart.Scripts
 {
     public class HoldingBlockObserver
     {
@@ -91,11 +92,12 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 rightEdgeArray[y] = accessibleArea[map.ToSubscript(map.Width-1, y)];
             }
-            
+            // Debug.Log($"rightEdgeArray:{string.Join("," , rightEdgeArray)}");
+
             // check if the rightEdgeArray has 3 consecutive true
             var consecutiveCount = (int)searcherSize;
             var counter = 0;
-            for (int i = 0; i < rightEdgeArray.Length - consecutiveCount - 1; i++)
+            for (int i = 0; i < rightEdgeArray.Length - 1; i++)
             {
                 if (rightEdgeArray[i])
                 {
@@ -112,7 +114,6 @@ namespace Carry.CarrySystem.Player.Scripts
                 }
             }
 
-            // Debug.Log($"rightEdgeArray:{string.Join("," , rightEdgeArray)}");
             return false;
         }
         

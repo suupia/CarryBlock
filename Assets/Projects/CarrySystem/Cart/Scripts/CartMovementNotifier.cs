@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Carry.CarrySystem.Player.Scripts
+namespace Carry.CarrySystem.Cart.Scripts
 {
     public class CartMovementNotifier : NetworkBehaviour
     {

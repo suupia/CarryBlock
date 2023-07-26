@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
@@ -52,11 +53,13 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<GameContext>(Lifetime.Scoped);
             builder.Register<FloorTimer>(Lifetime.Scoped);
             
+            // Notifier
+            builder.RegisterComponentInHierarchy<CartMovementNotifier>();
+            
             // Initializer
             builder.RegisterComponentInHierarchy<CarryInitializer>();
             
-            // Notifier
-            builder.RegisterComponentInHierarchy<CartMovementNotifier>();
+
 
 
             // Clientのドメインスクリプト
