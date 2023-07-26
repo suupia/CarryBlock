@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
@@ -24,11 +25,16 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             Debug.Log($"NetworkRunner : {runner}");
             builder.RegisterComponent(runner);
             
-            
+            // PrefabLoader 
             builder.Register<PrefabLoaderFromResources<CarryPlayerController_Net>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CarryPlayerController_Net>>()
                 .WithParameter("folderPath", "Prefabs/Players")
                 .WithParameter("prefabName", "CarryPlayerController");
+            
+            builder.Register<PrefabLoaderFromResources<CartControllerNet>>(Lifetime.Scoped)
+                .As<IPrefabLoader<CartControllerNet>>()
+                .WithParameter("folderPath", "Prefabs/Carts")
+                .WithParameter("prefabName", "CartController");
             
             // NetworkRunnerに依存するスクリプト
 
@@ -44,7 +50,8 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
             
-            // SearchRoute
+            // Cart
+            builder.Register<CartBuilder>(Lifetime.Scoped);
             builder.Register<WaveletSearchBuilder>(Lifetime.Scoped);
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
             
@@ -52,8 +59,16 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<GameContext>(Lifetime.Scoped);
             builder.Register<FloorTimer>(Lifetime.Scoped);
             
+            // Notifier
+            builder.RegisterComponentInHierarchy<CartMovementNotifier>();
+            
+            // Handler
+            builder.RegisterComponentInHierarchy<HandlePlayerNearCart>();
+
             // Initializer
             builder.RegisterComponentInHierarchy<CarryInitializer>();
+            
+
 
 
             // Clientのドメインスクリプト
