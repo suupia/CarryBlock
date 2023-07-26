@@ -9,6 +9,9 @@ using UnityEngine;
 
 namespace Projects.CarrySystem.SearchRoute.Scripts
 {
+    /// <summary>
+    /// このクラスはDIせずにnewする
+    /// </summary>
     public class SearchShortestRouteExecutor
     {
         readonly WaveletSearchExecutor _waveletSearchExecutor;

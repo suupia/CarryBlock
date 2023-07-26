@@ -7,7 +7,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Cart.Scripts
 {
-    public class HandlePlayerNearCart : NetworkBehaviour
+    public class PlayerNearCartHandlerNet : NetworkBehaviour
     {
         HoldingBlockObserver _holdingBlockObserver =null!;
 

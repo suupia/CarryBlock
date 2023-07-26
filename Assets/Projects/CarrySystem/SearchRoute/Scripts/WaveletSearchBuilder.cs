@@ -15,6 +15,9 @@ using VContainer;
 
 namespace Carry.CarrySystem.SearchRoute.Scripts
 {
+    /// <summary>
+    /// ドメインスクリプトWaveletSearchExecutorにRoutePresenterを紐づけるクラス
+    /// </summary>
     public class WaveletSearchBuilder
     {
         [Inject] NetworkRunner _runner;

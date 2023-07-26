@@ -816,7 +816,7 @@ GameObject:
   - component: {fileID: 676175923}
   - component: {fileID: 676175925}
   m_Layer: 0
-  m_Name: HandlePlayerNearCart
+  m_Name: PlayerNearCartHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
