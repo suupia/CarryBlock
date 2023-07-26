@@ -4,7 +4,7 @@ using UnityEngine;
 #nullable enable
 namespace Carry.CarrySystem.Cart.Scripts
 {
-    public class CartMovementNotifier : NetworkBehaviour
+    public class CartMovementNotifierNet : NetworkBehaviour
     {
         // UIに特化させる
         // このクラスにドメインに関係する処理を足してはいけない。

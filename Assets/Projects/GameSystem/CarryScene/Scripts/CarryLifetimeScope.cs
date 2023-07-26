@@ -8,6 +8,7 @@ using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners;
 using Fusion;
+using Projects.CarrySystem.SearchRoute.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -52,18 +53,20 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             
             // Cart
             builder.Register<CartBuilder>(Lifetime.Scoped);
+            builder.Register<CartShortestRouteMove>(Lifetime.Scoped);
             builder.Register<WaveletSearchBuilder>(Lifetime.Scoped);
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
-            
+            builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
+
             // UI
             builder.Register<GameContext>(Lifetime.Scoped);
             builder.Register<FloorTimer>(Lifetime.Scoped);
             
             // Notifier
-            builder.RegisterComponentInHierarchy<CartMovementNotifier>();
+            builder.RegisterComponentInHierarchy<CartMovementNotifierNet>();
             
             // Handler
-            builder.RegisterComponentInHierarchy<HandlePlayerNearCart>();
+            builder.RegisterComponentInHierarchy<PlayerNearCartHandlerNet>();
 
             // Initializer
             builder.RegisterComponentInHierarchy<CarryInitializer>();

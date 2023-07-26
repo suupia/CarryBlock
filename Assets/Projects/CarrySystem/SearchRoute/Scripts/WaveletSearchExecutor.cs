@@ -18,6 +18,9 @@ namespace Carry.CarrySystem.Map.Scripts
         SizeThree = 3,
     }
 
+    /// <summary>
+    /// このクラスはDIせずにnewする
+    /// </summary>
     public class WaveletSearchExecutor
     {
         public int WallValue => _wallValue;

@@ -18,19 +18,22 @@ namespace Carry.CarrySystem.Cart.Scripts
         readonly List<HoldAction> _holdActions = new List<HoldAction>();
         readonly IMapUpdater _mapUpdater;
         readonly WaveletSearchBuilder _waveletSearchBuilder;
-        readonly CartMovementNotifier _cartMovementNotifier = new CartMovementNotifier();
+        readonly CartMovementNotifierNet _cartMovementNotifierNet;
+        readonly ReachRightEdgeChecker _reachRightEdgeChecker;
         IDisposable? _isHoldSubscription; // to hold the subscription to dispose it later if needed
         IDisposable? _mapSubscription; // to hold the subscription to dispose it later if needed
 
         public HoldingBlockObserver(
             IMapUpdater entityGridMapSwitcher,
             WaveletSearchBuilder waveletSearchBuilder,
-            CartMovementNotifier cartMovementNotifier
+            CartMovementNotifierNet cartMovementNotifierNet,
+            ReachRightEdgeChecker reachRightEdgeChecker
         )
         {
             _mapUpdater = entityGridMapSwitcher;
             _waveletSearchBuilder = waveletSearchBuilder;
-            _cartMovementNotifier = cartMovementNotifier;
+            _cartMovementNotifierNet = cartMovementNotifierNet;
+            _reachRightEdgeChecker = reachRightEdgeChecker;
         }
 
         public void StartObserveMap()
@@ -68,60 +71,29 @@ namespace Carry.CarrySystem.Cart.Scripts
             var accessibleArea = waveletSearchExecutor.SearchAccessibleArea(startPos, endPos, isWall, searcherSize);
 
             // Show the result
-            if (CanCartReachRightEdge(accessibleArea, map, searcherSize))
+            if (_reachRightEdgeChecker. CanCartReachRightEdge(accessibleArea, map, searcherSize))
             {
                 if (AllPlayerIsNotHoldingBlock())
                 {
-                    _cartMovementNotifier.ShowReachableText();
-                    _cartMovementNotifier.ShowMoveToCartText();
+                    _cartMovementNotifierNet.ShowReachableText();
+                    _cartMovementNotifierNet.ShowMoveToCartText();
                     IsMapClear = true;
                 }
                 else
                 {
-                    _cartMovementNotifier.ShowReachableText();
-                    _cartMovementNotifier.HideMoveToCartText();
+                    _cartMovementNotifierNet.ShowReachableText();
+                    _cartMovementNotifierNet.HideMoveToCartText();
                     IsMapClear = false;
                 }
             }
             else
             {
-                _cartMovementNotifier.HideReachableText();
-                _cartMovementNotifier.HideMoveToCartText();
+                _cartMovementNotifierNet.HideReachableText();
+                _cartMovementNotifierNet.HideMoveToCartText();
                 IsMapClear = false;
             }
         }
-
-        bool CanCartReachRightEdge(bool[] accessibleArea, SquareGridMap map, SearcherSize searcherSize)
-        {
-            bool[] rightEdgeArray = new bool[map.Height];
-            for (int y = 0; y < map.Height; y++)
-            {
-                rightEdgeArray[y] = accessibleArea[map.ToSubscript(map.Width - 1, y)];
-            }
-            // Debug.Log($"rightEdgeArray:{string.Join("," , rightEdgeArray)}");
-
-            // check if the rightEdgeArray has 3 consecutive true
-            var consecutiveCount = (int)searcherSize;
-            var counter = 0;
-            for (int i = 0; i < rightEdgeArray.Length - 1; i++)
-            {
-                if (rightEdgeArray[i])
-                {
-                    counter++;
-                    if (counter == consecutiveCount)
-                    {
-                        Debug.Log("Reachable");
-                        return true;
-                    }
-                }
-                else
-                {
-                    counter = 0;
-                }
-            }
-
-            return false;
-        }
+        
 
         bool AllPlayerIsNotHoldingBlock()
         {
