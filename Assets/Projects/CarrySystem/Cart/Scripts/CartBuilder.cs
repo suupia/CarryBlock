@@ -1,7 +1,9 @@
-﻿using Carry.CarrySystem.Map.Scripts;
+﻿using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Fusion;
+using Projects.CarrySystem.Cart.Info;
 using Projects.CarrySystem.SearchRoute.Scripts;
 using Projects.Utility.Scripts;
 using UnityEngine;
@@ -28,9 +30,16 @@ namespace Carry.CarrySystem.Cart.Scripts
             _cartShortestRouteMove = cartShortestRouteShortestRouteMove;
         }
 
-        public CartControllerNet Build(EntityGridMap map)
+        public CartControllerNet Build(EntityGridMap map, IMapUpdater mapUpdater)
         {
             Debug.Log($"CartBuilder.Build");
+            
+            // 前のカートを削除
+            // ToDo: 移動に切り替える
+            var prevCart = GameObject.FindObjectOfType<CartControllerNet>();
+            if(prevCart != null) _runner.Despawn(prevCart.Object);
+            
+            
             // プレハブをロード
             var cartController = _cartControllerLoader.Load();
             
@@ -40,6 +49,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             
             // CartShortestRouteMoveにRegiste
             _cartShortestRouteMove.RegisterMap(map);
+            _cartShortestRouteMove.RegisterIMapUpdater(mapUpdater); // ToDo: これはまずそう　何とかする
             
             // プレハブをスポーン
             var position = GridConverter.GridPositionToWorldPosition(startPos);
@@ -50,6 +60,10 @@ namespace Carry.CarrySystem.Cart.Scripts
                     networkObj.GetComponent<CartControllerNet>().Init(_cartShortestRouteMove);
                     // networkObj.GetComponent<HoldPresenter_Net>().Init(character);
                 });
+            
+            // Infoを設定
+            var cartInfo = new CartInfo(cartControllerObj.gameObject);
+            _cartShortestRouteMove.Setup(cartInfo);
             
             // 各MonoBehaviourにドメインを設定
             // playerControllerObj.Init(character);

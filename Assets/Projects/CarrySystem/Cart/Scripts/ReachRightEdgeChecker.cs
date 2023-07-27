@@ -24,16 +24,28 @@ namespace Carry.CarrySystem.Cart.Scripts
 
             // check if the rightEdgeArray has 3 consecutive true
             var consecutiveCount = (int)searcherSize;
+
+            return CalcContinuousCenter(rightEdgeArray, consecutiveCount);
+        }
+
+        /// <summary>
+        /// trueがcontinuousNumだけ連続しているところの中心のindexを返す
+        /// 偶数の場合は左側のindexを返す
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="continuousNum"></param>
+        /// <returns></returns>
+        public int CalcContinuousCenter(bool[] array, int continuousNum)
+        {
             var counter = 0;
-            for (int i = 0; i < rightEdgeArray.Length - 1; i++)
+            for (int i = 0; i < array.Length - 1; i++)
             {
-                if (rightEdgeArray[i])
+                if (array[i])
                 {
                     counter++;
-                    if (counter == consecutiveCount)
+                    if (counter == continuousNum)
                     {
-                        Debug.Log("Reachable");
-                        return i;
+                       return  continuousNum % 2 == 1 ? i - (continuousNum -1 ) / 2 : i - continuousNum / 2;
                     }
                 }
                 else

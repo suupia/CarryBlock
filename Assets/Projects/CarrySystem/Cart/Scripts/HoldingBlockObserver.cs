@@ -39,7 +39,11 @@ namespace Carry.CarrySystem.Cart.Scripts
         public void StartObserveMap()
         {
             _mapSubscription = _mapUpdater.ObserveEveryValueChanged(x => x.GetMap())
-                .Subscribe(_ => ShowAccessibleArea());
+                .Subscribe(_ =>
+                {
+                    // リセット処理
+                    ShowAccessibleArea();
+                });
         }
 
         public void StopObserve()
@@ -50,17 +54,20 @@ namespace Carry.CarrySystem.Cart.Scripts
 
         public void RegisterHoldAction(HoldAction holdAction)
         {
+            Debug.Log($"Register HoldAction {holdAction}");
             _holdActions.Add(holdAction);
 
             _isHoldSubscription?.Dispose();
             _isHoldSubscription = _holdActions.ToObservable()
                 .SelectMany(holdAction => holdAction.ObserveEveryValueChanged(h => h.IsHoldingBlock))
                 .Subscribe(_ => ShowAccessibleArea());
+            
         }
         
 
         void ShowAccessibleArea()
         {
+            Debug.Log("ShowAccessibleArea");
             var map = _mapUpdater.GetMap();
             Func<int, int, bool> isWall = (x, y) => map.GetSingleEntityList<IBlock>(new Vector2Int(x, y)).Count > 0;
             var waveletSearchExecutor = _waveletSearchBuilder.Build(_mapUpdater.GetMap());
