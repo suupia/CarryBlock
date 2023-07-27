@@ -80,6 +80,12 @@ namespace Carry.CarrySystem.Cart.Scripts
         {
             var searcherSize = SearcherSize.SizeThree;
 
+            if (_map == null)
+            {
+                Debug.LogError($"_map is null");
+                return new List<Vector2Int>();
+            }
+
             var waveletSearchExecutor = new WaveletSearchExecutor(_map); // RoutePresenterをかませる必要がないから直接new
             var searchShortestRouteExecutor = new SearchShortestRouteExecutor(waveletSearchExecutor);
             var startPos = new Vector2Int(1, _map.Height % 2 == 1 ? (_map.Height - 1) / 2 : _map.Height / 2);
@@ -89,6 +95,13 @@ namespace Carry.CarrySystem.Cart.Scripts
             var accessibleArea = waveletSearchExecutor.SearchAccessibleArea(startPos, endPos, isWall, searcherSize);
             var endPosY = _reachRightEdgeChecker.CalcCartReachRightEdge(accessibleArea, _map, searcherSize);
             var routeEndPos = new Vector2Int(endPos.x, endPosY);
+            
+            Debug.Log($"startPos : {startPos}");
+            Debug.Log($"startPos is Wall ? : {isWall(startPos.x, startPos.y)}");
+            Debug.Log($"endPos : {endPos}");
+            Debug.Log($"endPos is Wall ? : {isWall(endPos.x, endPos.y)}");
+            Debug.Log($"routeEndPos : {routeEndPos}");
+            Debug.Log($"_map : {_map}");
 
             var routes = searchShortestRouteExecutor.DiagonalSearchShortestRoute(startPos, routeEndPos,
                 OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, isWall, searcherSize);

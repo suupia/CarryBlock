@@ -29,11 +29,13 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
             long maxDistance = 0;
 
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, endPos, isWall, searcherSize);
+            
+            // searchedMap.DebugMapValues();
 
             maxDistance = searchedMap.GetValue(endPos);
 
             //数字をもとに、大きい数字から巻き戻すようにして最短ルートを配列に格納する
-            // Debug.Log($"StoreRouteAround({endPos},{maxDistance})を実行します");
+             Debug.Log($"StoreRouteAround({endPos},{maxDistance})を実行します");
             StoreShortestRoute(searchedMap, endPos, maxDistance);
 
             shortestRouteList.Reverse(); //リストを反転させる
