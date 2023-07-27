@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Map.Scripts;
+﻿using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Fusion;
@@ -29,7 +30,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             _cartShortestRouteMove = cartShortestRouteShortestRouteMove;
         }
 
-        public CartControllerNet Build(EntityGridMap map)
+        public CartControllerNet Build(EntityGridMap map, IMapUpdater mapUpdater)
         {
             Debug.Log($"CartBuilder.Build");
             
@@ -48,6 +49,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             
             // CartShortestRouteMoveにRegiste
             _cartShortestRouteMove.RegisterMap(map);
+            _cartShortestRouteMove.RegisterIMapUpdater(mapUpdater); // ToDo: これはまずそう　何とかする
             
             // プレハブをスポーン
             var position = GridConverter.GridPositionToWorldPosition(startPos);

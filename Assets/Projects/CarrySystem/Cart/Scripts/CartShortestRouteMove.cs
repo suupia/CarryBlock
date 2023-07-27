@@ -21,7 +21,7 @@ namespace Carry.CarrySystem.Cart.Scripts
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
         readonly WaveletSearchBuilder _waveletSearchBuilder;
         EntityGridMap? _map; // このクラスはMapを登録して使用する (コンストラクタでIMapUpdaterを受け取らない)
-
+        IMapUpdater? _mapUpdater;
         CartInfo? _info ;
         Direction _direction;
 
@@ -53,6 +53,11 @@ namespace Carry.CarrySystem.Cart.Scripts
         public void RegisterMap(EntityGridMap map)
         {
             _map = map;
+        }
+        
+        public void RegisterIMapUpdater(IMapUpdater mapUpdater)
+        {
+            _mapUpdater = mapUpdater;
         }
 
         public void MoveAlongWithShortestRoute()
@@ -100,58 +105,66 @@ namespace Carry.CarrySystem.Cart.Scripts
                 SetDirection(diff);  // ToDo: 向きを変更
                 await MoveTo(beforeGridPos, route);
             }
-
-            async UniTask MoveTo(Vector2Int startGridPos, Vector2Int endGridPos)
+            // 次のマップへ移動
+            if (_mapUpdater != null)
             {
-                var startPos = GridConverter.GridPositionToWorldPosition(startGridPos);
-                var endPos = GridConverter.GridPositionToWorldPosition(endGridPos);
-                await _info.cartObj.transform.DOMove(endPos, 0.15f).SetEase(Ease.Linear).AsyncWaitForCompletion();
+                _mapUpdater.UpdateMap(MapKey.Default, 0);  // ToDo : 現時点では引数は使われていないので適当でよい
             }
-
-            void SetDirection(Vector2 directionVector)
+            else
             {
-                if (directionVector == Vector2.zero) //引数の方向ベクトルがゼロベクトルの時は何もしない
-                {
-                    return;
-                }
-                float angle = Vector2.SignedAngle(Vector2.right, directionVector);
-                //Debug.Log($"SetDirectionのangleは{angle}です");
-
-                //directionとanimationを決定する
-                if (-22.5f <= angle && angle < 22.5f)
-                {
-                    _direction = Direction.Right;
-                }
-                else if (22.5f <= angle && angle < 67.5f)
-                {
-                    _direction = Direction.DiagRightBack;
-                }
-                else if (67.5f <= angle && angle < 112.5f)
-                {
-                    _direction = Direction.Back;
-                }
-                else if (112.5f <= angle && angle < 157.5f)
-                {
-                    _direction = Direction.DiagLeftBack;
-
-                }
-                else if (-157.5f <= angle && angle < -112.5f)
-                {
-                    _direction = Direction.DiagLeftFront;
-                }
-                else if (-112.5f <= angle && angle < -67.5f)
-                {
-                    _direction = Direction.Front;
-                }
-                else if (-67.5f <= angle && angle < -22.5f)
-                {
-                    _direction = Direction.DiagRightFront;
-                }
-                else //角度は-180から180までで端点は含まないらしい。そのため、Direction.Leftはelseで処理することにした。
-                {
-                    _direction = Direction.Left;
-                }
+                Debug.LogError($"mapUpdater is null");
             }
         }
+        async UniTask MoveTo(Vector2Int startGridPos, Vector2Int endGridPos)
+        {
+            var startPos = GridConverter.GridPositionToWorldPosition(startGridPos);
+            var endPos = GridConverter.GridPositionToWorldPosition(endGridPos);
+            await _info.cartObj.transform.DOMove(endPos, 0.15f).SetEase(Ease.Linear).AsyncWaitForCompletion();
+        }
+        void SetDirection(Vector2 directionVector)
+        {
+            if (directionVector == Vector2.zero) //引数の方向ベクトルがゼロベクトルの時は何もしない
+            {
+                return;
+            }
+            float angle = Vector2.SignedAngle(Vector2.right, directionVector);
+            //Debug.Log($"SetDirectionのangleは{angle}です");
+
+            //directionとanimationを決定する
+            if (-22.5f <= angle && angle < 22.5f)
+            {
+                _direction = Direction.Right;
+            }
+            else if (22.5f <= angle && angle < 67.5f)
+            {
+                _direction = Direction.DiagRightBack;
+            }
+            else if (67.5f <= angle && angle < 112.5f)
+            {
+                _direction = Direction.Back;
+            }
+            else if (112.5f <= angle && angle < 157.5f)
+            {
+                _direction = Direction.DiagLeftBack;
+
+            }
+            else if (-157.5f <= angle && angle < -112.5f)
+            {
+                _direction = Direction.DiagLeftFront;
+            }
+            else if (-112.5f <= angle && angle < -67.5f)
+            {
+                _direction = Direction.Front;
+            }
+            else if (-67.5f <= angle && angle < -22.5f)
+            {
+                _direction = Direction.DiagRightFront;
+            }
+            else //角度は-180から180までで端点は含まないらしい。そのため、Direction.Leftはelseで処理することにした。
+            {
+                _direction = Direction.Left;
+            }
+        }
+
     }
 }
