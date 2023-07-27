@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
+using Projects.Utility.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Assert = UnityEngine.Assertions.Assert;
@@ -32,7 +33,8 @@ namespace Projects.NetworkUtility.Inputs.Scripts
         public LocalInputPoller()
         {
             //本来はDI的思想で設定したい
-            _inputActionAsset = Resources.Load<InputActionAsset>("InputActionAssets/PlayerInputAction");
+            var loader = new PrefabLoaderFromResources<InputActionAsset>("InputActionAssets", "PlayerInputAction");
+            _inputActionAsset = loader.Load();
             Assert.IsNotNull(_inputActionAsset, "InputActionを設定してください。Pathが間違っている可能性があります");
 
             _inputActionMap = _inputActionAsset.FindActionMap("Default");
