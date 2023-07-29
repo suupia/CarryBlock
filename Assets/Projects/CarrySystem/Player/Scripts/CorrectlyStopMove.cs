@@ -12,7 +12,6 @@ namespace Carry.CarrySystem.Player.Scripts
         float _maxVelocity = 16f;
         float _rotateTime  = 0.4f;
         float _stoppingForce = 5f;
-        
 
         public void Setup(PlayerInfo info)
         {
@@ -48,7 +47,10 @@ namespace Carry.CarrySystem.Player.Scripts
             else
             {
                 // Stop if there is no key input
-                rb.velocity *= Mathf.Pow(1f - _stoppingForce * Time.deltaTime, rb.velocity.magnitude);
+                // Define 0 < _stoppingForce < 1
+                float reductionFactor = Mathf.Max(0f, 1f - _stoppingForce * Time.deltaTime);
+                rb.velocity *= Mathf.Pow(reductionFactor, rb.velocity.magnitude);
+               
             }
         }
     }
