@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using Object = UnityEngine.Object;
 
 namespace Projects.Utility.Scripts
 {
@@ -47,6 +51,34 @@ namespace Projects.Utility.Scripts
             {
                 return result;
             }
+        }
+    }
+
+    public class PrefabLoaderFromAddressable<T> : IPrefabLoader<T> where T : Object
+    {
+        readonly string _path;
+        AsyncOperationHandle<T>? _handler;
+
+        public PrefabLoaderFromAddressable(string path)
+        {
+            _path = path;
+        }
+
+        ~PrefabLoaderFromAddressable()
+        {
+            Addressables.Release(_handler);
+        }
+
+        public T Load()
+        {
+            if (_handler != null) Addressables.Release(_handler);
+            _handler = Addressables.LoadAssetAsync<T>(_path);
+            return _handler.Value.WaitForCompletion();
+        }
+
+        public T[] LoadAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }
