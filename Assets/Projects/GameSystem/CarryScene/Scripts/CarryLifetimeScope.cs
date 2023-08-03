@@ -23,21 +23,21 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.RegisterComponent(runner);
             
             // PrefabLoader 
-            builder.Register<PrefabLoaderFromResources<CarryPlayerController_Net>>(Lifetime.Scoped)
-                .As<IPrefabLoader<CarryPlayerController_Net>>()
-                .WithParameter("folderPath", "Prefabs/Players")
-                .WithParameter("prefabName", "CarryPlayerController"); 
-            // builder.Register<PrefabLoaderFromAddressable<CarryPlayerController_Net>>(Lifetime.Scoped)
+            // builder.Register<PrefabLoaderFromResources<CarryPlayerController_Net>>(Lifetime.Scoped)
             //     .As<IPrefabLoader<CarryPlayerController_Net>>()
-            //     .WithParameter("path", "Prefabs/Players/CarryPlayerController");
+            //     .WithParameter("folderPath", "Prefabs/Players")
+            //     .WithParameter("prefabName", "CarryPlayerController"); 
+            builder.Register<PrefabLoaderFromAddressable<CarryPlayerController_Net>>(Lifetime.Scoped)
+                .As<IPrefabLoader<CarryPlayerController_Net>>()
+                .WithParameter("path", "Prefabs/Players/CarryPlayerController");
 
-            builder.Register<PrefabLoaderFromResources<CartControllerNet>>(Lifetime.Scoped)
-                .As<IPrefabLoader<CartControllerNet>>()
-                .WithParameter("folderPath", "Prefabs/Carts")
-                .WithParameter("prefabName", "CartController");
-            // builder.Register<PrefabLoaderFromAddressable<CartControllerNet>>(Lifetime.Scoped)
+            // builder.Register<PrefabLoaderFromResources<CartControllerNet>>(Lifetime.Scoped)
             //     .As<IPrefabLoader<CartControllerNet>>()
-            //     .WithParameter("path", "Prefabs/Carts/CartController");
+            //     .WithParameter("folderPath", "Prefabs/Carts")
+            //     .WithParameter("prefabName", "CartController");
+            builder.Register<PrefabLoaderFromAddressable<CartControllerNet>>(Lifetime.Scoped)
+                .As<IPrefabLoader<CartControllerNet>>()
+                .WithParameter("path", "Prefabs/Carts/CartController");
             
             // NetworkRunnerに依存するスクリプト
 

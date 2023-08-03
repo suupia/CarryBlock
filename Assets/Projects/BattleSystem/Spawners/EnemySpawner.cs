@@ -138,7 +138,7 @@ namespace Projects.BattleSystem.Spawners.Scripts
         public LobbyNetworkPlayerPrefabSpawner(NetworkRunner runner)
         {
             _playerPrefabPrefabSpawner = new NetworkBehaviourPrefabSpawner<LobbyNetworkPlayerController>(runner,
-                new PrefabLoaderFromResources<LobbyNetworkPlayerController>("Prefabs/Players","LobbyPlayerController")
+                new PrefabLoaderFromAddressable<LobbyNetworkPlayerController>("Prefabs/Players/LobbyPlayerController")
                 );
         }
 

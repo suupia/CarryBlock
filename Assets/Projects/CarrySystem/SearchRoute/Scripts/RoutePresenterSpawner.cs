@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         {
             _runner = runner;
             _routePresenterPrefabSpawner =
-                new PrefabLoaderFromResources<RoutePresenter_Net>("Prefabs/Map", "RoutePresenter");
+                new PrefabLoaderFromAddressable<RoutePresenter_Net>("Prefabs/Map/RoutePresenter");
         }
 
         public RoutePresenter_Net SpawnPrefab(Vector3 position, Quaternion rotation)

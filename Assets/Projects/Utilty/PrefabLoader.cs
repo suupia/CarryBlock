@@ -57,18 +57,31 @@ namespace Projects.Utility.Scripts
     public class PrefabLoaderFromAddressable<T> : IPrefabLoader<T> where T : Object
     {
         readonly string _path;
-        AsyncOperationHandle<T> _handler;
 
         public PrefabLoaderFromAddressable(string path)
         {
             _path = path;
         }
 
-        public T Load()
+        public T Load() => 
+            //Addressableでは直接コンポーネントをとってこれない。GameObjectから取得する
+            typeof(T).IsSubclassOf(typeof(Component)) ? LoadComponent() : LoadDirectory();
+        
+
+        T LoadComponent()
         {
-            _handler = Addressables.LoadAssetAsync<T>(_path);
-            var value = _handler.WaitForCompletion();
-            Addressables.Release(_handler);
+            var handler = Addressables.LoadAssetAsync<GameObject>(_path);
+            var gameObject = handler.WaitForCompletion();
+            var component = gameObject.GetComponent<T>();
+            Addressables.Release(handler);
+            return component;
+        }
+
+        T LoadDirectory()
+        {
+            var handler = Addressables.LoadAssetAsync<T>(_path);
+            var value = handler.WaitForCompletion();
+            Addressables.Release(handler);
             return value;
         }
 
