@@ -17,7 +17,7 @@ namespace Carry.CarrySystem.Spawners
         {
             _runner = runner;
             _tilePresenterPrefabSpawner =
-                new PrefabLoaderFromResources<TilePresenter_Net>("Prefabs/Map", "TilePresenter");
+                new PrefabLoaderFromAddressable<TilePresenter_Net>("Prefabs/Map/TilePresenter");
         }
 
         public TilePresenter_Net SpawnPrefab(Vector3 position, Quaternion rotation)
@@ -36,7 +36,7 @@ namespace Carry.CarrySystem.Spawners
         {
             _runner = runner;
             _groundPrefabSpawner =
-                new PrefabLoaderFromResources<NetworkObject>("Prefabs/Map", "Ground");
+                new PrefabLoaderFromAddressable<NetworkObject>("Prefabs/Map/Ground");
         }
 
         public void SpawnPrefab(Vector3 position, Quaternion rotation)
@@ -55,7 +55,7 @@ namespace Carry.CarrySystem.Spawners
         {
             _runner = runner;
             _rockPrefabSpawner =
-                new PrefabLoaderFromResources<NetworkObject>("Prefabs/Map", "Rock");
+                new PrefabLoaderFromAddressable<NetworkObject>("Prefabs/Map/Rock");
         }
 
         public void SpawnPrefab(Vector3 position, Quaternion rotation)

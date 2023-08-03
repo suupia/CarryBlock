@@ -22,10 +22,9 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             builder.RegisterComponent(runner);
             
             // PrefabLoader 
-            builder.Register<PrefabLoaderFromResources<LobbyPlayerControllerNet>>(Lifetime.Scoped)
+            builder.Register<PrefabLoaderFromAddressable<LobbyPlayerControllerNet>>(Lifetime.Scoped)
                 .As<IPrefabLoader<LobbyPlayerControllerNet>>()
-                .WithParameter("folderPath", "Prefabs/Players")
-                .WithParameter("prefabName", "LobbyPlayerControllerNet");
+                .WithParameter("path", "Prefabs/Players/LobbyPlayerControllerNet");
             
             
             // NetworkRunnerに依存するスクリプト

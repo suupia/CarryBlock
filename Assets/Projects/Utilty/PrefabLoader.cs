@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using Object = UnityEngine.Object;
 
 namespace Projects.Utility.Scripts
 {
@@ -47,6 +51,43 @@ namespace Projects.Utility.Scripts
             {
                 return result;
             }
+        }
+    }
+
+    public class PrefabLoaderFromAddressable<T> : IPrefabLoader<T> where T : Object
+    {
+        readonly string _path;
+
+        public PrefabLoaderFromAddressable(string path)
+        {
+            _path = path;
+        }
+
+        public T Load() => 
+            //Addressableでは直接コンポーネントをとってこれない。GameObjectから取得する
+            typeof(T).IsSubclassOf(typeof(Component)) ? LoadComponent() : LoadDirectory();
+        
+
+        T LoadComponent()
+        {
+            var handler = Addressables.LoadAssetAsync<GameObject>(_path);
+            var gameObject = handler.WaitForCompletion();
+            var component = gameObject.GetComponent<T>();
+            Addressables.Release(handler);
+            return component;
+        }
+
+        T LoadDirectory()
+        {
+            var handler = Addressables.LoadAssetAsync<T>(_path);
+            var value = handler.WaitForCompletion();
+            Addressables.Release(handler);
+            return value;
+        }
+
+        public T[] LoadAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }

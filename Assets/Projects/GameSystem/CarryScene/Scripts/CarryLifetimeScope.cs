@@ -27,15 +27,13 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.RegisterComponent(runner);
             
             // PrefabLoader 
-            builder.Register<PrefabLoaderFromResources<CarryPlayerControllerNet>>(Lifetime.Scoped)
+            builder.Register<PrefabLoaderFromAddressable<CarryPlayerControllerNet>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CarryPlayerControllerNet>>()
-                .WithParameter("folderPath", "Prefabs/Players")
-                .WithParameter("prefabName", "CarryPlayerControllerNet");
+                .WithParameter("path", "Prefabs/Players/CarryPlayerControllerNet");
             
-            builder.Register<PrefabLoaderFromResources<CartControllerNet>>(Lifetime.Scoped)
+            builder.Register<PrefabLoaderFromAddressable<CartControllerNet>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CartControllerNet>>()
-                .WithParameter("folderPath", "Prefabs/Carts")
-                .WithParameter("prefabName", "CartControllerNet"); 
+                .WithParameter("path", "Prefabs/Carts/CartControllerNet"); 
             
             // NetworkRunnerに依存するスクリプト
 

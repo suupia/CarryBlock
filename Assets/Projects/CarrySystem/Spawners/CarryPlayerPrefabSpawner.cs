@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Spawners
         public CarryPlayerPrefabSpawner(NetworkRunner runner)
         {
             _playerPrefabPrefabSpawner = new NetworkBehaviourPrefabSpawner<CarryPlayerControllerNet>(runner,
-                new PrefabLoaderFromResources<CarryPlayerControllerNet>("Prefabs/Players","CarryPlayerController"));
+                new PrefabLoaderFromAddressable<CarryPlayerControllerNet>("Prefabs/Players/CarryPlayerControllerNet"));
         }
 
         public CarryPlayerControllerNet SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef)
