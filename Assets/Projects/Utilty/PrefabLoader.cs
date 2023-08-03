@@ -57,23 +57,19 @@ namespace Projects.Utility.Scripts
     public class PrefabLoaderFromAddressable<T> : IPrefabLoader<T> where T : Object
     {
         readonly string _path;
-        AsyncOperationHandle<T>? _handler;
+        AsyncOperationHandle<T> _handler;
 
         public PrefabLoaderFromAddressable(string path)
         {
             _path = path;
         }
 
-        ~PrefabLoaderFromAddressable()
-        {
-            Addressables.Release(_handler);
-        }
-
         public T Load()
         {
-            if (_handler != null) Addressables.Release(_handler);
             _handler = Addressables.LoadAssetAsync<T>(_path);
-            return _handler.Value.WaitForCompletion();
+            var value = _handler.WaitForCompletion();
+            Addressables.Release(_handler);
+            return value;
         }
 
         public T[] LoadAll()

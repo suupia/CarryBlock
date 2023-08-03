@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -8,12 +6,10 @@ using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners;
 using Fusion;
-using Projects.CarrySystem.SearchRoute.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
-using Projects.Utility.Scripts;
 
 namespace  Carry.CarrySystem.CarryScene.Scripts
 {
@@ -30,12 +26,18 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<PrefabLoaderFromResources<CarryPlayerController_Net>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CarryPlayerController_Net>>()
                 .WithParameter("folderPath", "Prefabs/Players")
-                .WithParameter("prefabName", "CarryPlayerController");
-            
+                .WithParameter("prefabName", "CarryPlayerController"); 
+            // builder.Register<PrefabLoaderFromAddressable<CarryPlayerController_Net>>(Lifetime.Scoped)
+            //     .As<IPrefabLoader<CarryPlayerController_Net>>()
+            //     .WithParameter("path", "Prefabs/Players/CarryPlayerController");
+
             builder.Register<PrefabLoaderFromResources<CartControllerNet>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CartControllerNet>>()
                 .WithParameter("folderPath", "Prefabs/Carts")
                 .WithParameter("prefabName", "CartController");
+            // builder.Register<PrefabLoaderFromAddressable<CartControllerNet>>(Lifetime.Scoped)
+            //     .As<IPrefabLoader<CartControllerNet>>()
+            //     .WithParameter("path", "Prefabs/Carts/CartController");
             
             // NetworkRunnerに依存するスクリプト
 
