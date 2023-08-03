@@ -1,7 +1,7 @@
+using Carry.CarrySystem.CarryScene.Interfaces;
 using Fusion;
-using Projects.BattleSystem.GameScene.Interfaces;
 
-namespace Projects.BattleSystem.GameScene.Scripts
+namespace Projects.CarrySystem.GameScene.Scripts
 {
     public class GameContext : ITimerObserver
     {
@@ -15,7 +15,7 @@ namespace Projects.BattleSystem.GameScene.Scripts
 
         public void Update(NetworkRunner runner, ITimer timer)
         {
-            if (timer.isExpired(runner)) gameState = GameState.Result;
+            if (timer.IsExpired(runner)) gameState = GameState.Result;
         }
     }
 }

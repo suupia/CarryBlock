@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Cart.Scripts;
+using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners;
+using Carry.UISystem.UI.CarryScene;
 using Fusion;
-using Projects.CarrySystem.SearchRoute.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
 using Projects.Utility.Scripts;
 
 namespace  Carry.CarrySystem.CarryScene.Scripts
@@ -35,7 +35,7 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<PrefabLoaderFromResources<CartControllerNet>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CartControllerNet>>()
                 .WithParameter("folderPath", "Prefabs/Carts")
-                .WithParameter("prefabName", "CartController");
+                .WithParameter("prefabName", "CartController"); 
             
             // NetworkRunnerに依存するスクリプト
 
@@ -60,7 +60,8 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
 
             // UI
             builder.Register<GameContext>(Lifetime.Scoped);
-            builder.Register<FloorTimer>(Lifetime.Scoped);
+            builder.Register<FloorTimer.Scripts.FloorTimer>(Lifetime.Scoped);
+            builder.RegisterComponentInHierarchy<FloorTimerNet>();
             
             // Notifier
             builder.RegisterComponentInHierarchy<CartMovementNotifierNet>();
@@ -71,6 +72,8 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             // Initializer
             builder.RegisterComponentInHierarchy<CarryInitializer>();
             
+            // View
+            builder.RegisterComponentInHierarchy<CarrySceneView>();
 
 
 

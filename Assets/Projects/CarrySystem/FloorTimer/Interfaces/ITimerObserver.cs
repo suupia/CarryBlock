@@ -1,6 +1,6 @@
 ﻿using Fusion;
 
-namespace Projects.BattleSystem.GameScene.Interfaces
+namespace Projects.CarrySystem.FloorTimer.Interfaces
 {
     public interface ITimerObserver
     {
@@ -10,7 +10,7 @@ namespace Projects.BattleSystem.GameScene.Interfaces
     public interface ITimer
     {
         void NotifyObservers(NetworkRunner runner);
-        float getRemainingTime(NetworkRunner runner);
-        bool isExpired(NetworkRunner runner);
+        float GetRemainingTime(NetworkRunner runner);
+        bool IsExpired(NetworkRunner runner);
     }
 }

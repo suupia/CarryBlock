@@ -1,9 +1,9 @@
 ﻿using Fusion;
-using Carry.CarrySystem.CarryScene.Interfaces;
+using Projects.CarrySystem.FloorTimer.Interfaces;
 using UnityEngine;
 using VContainer;
 
-namespace Carry.CarrySystem.CarryScene.Scripts
+namespace Carry.CarrySystem.FloorTimer.Scripts
 {
     public class FloorTimerNet : NetworkBehaviour
     {

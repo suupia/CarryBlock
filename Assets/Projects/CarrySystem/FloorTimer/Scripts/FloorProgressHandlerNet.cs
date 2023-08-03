@@ -8,7 +8,7 @@ using VContainer;
 using VContainer.Unity;
 
 
-namespace Carry.CarrySystem.CarryScene.Scripts
+namespace Carry.CarrySystem.FloorTimer.Scripts
 {
     public class FloorProgressHandlerNet : NetworkBehaviour
     {
