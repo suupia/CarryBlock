@@ -9,6 +9,6 @@ namespace Carry.CarrySystem.Map.Interfaces
     {
         EntityGridMap GetMap();
         void InitUpdateMap(MapKey mapKey, int index); // ToDo: Initの方は引数なしかデフォルト引数があったほうがいいかも
-        void UpdateMap(MapKey mapKey, int index);
+        void UpdateMap(MapKey mapKey, int index = 0);
     }
 }

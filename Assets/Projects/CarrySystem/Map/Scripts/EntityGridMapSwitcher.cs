@@ -47,7 +47,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _cartBuilder.Build(_currentMap, this);
         }
         
-        public void UpdateMap(MapKey mapKey, int index)
+        public void UpdateMap(MapKey mapKey, int  index = 0)
         {
             Debug.Log($"次のフロアに変更します nextIndex: {_currentIndex + 1}");
             _currentIndex++;
