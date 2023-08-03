@@ -27,28 +27,20 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.RegisterComponent(runner);
             
             // PrefabLoader 
-            // builder.Register<PrefabLoaderFromResources<CarryPlayerController_Net>>(Lifetime.Scoped)
-            //     .As<IPrefabLoader<CarryPlayerController_Net>>()
-            //     .WithParameter("folderPath", "Prefabs/Players")
-            //     .WithParameter("prefabName", "CarryPlayerController"); 
-            builder.Register<PrefabLoaderFromAddressable<CarryPlayerController_Net>>(Lifetime.Scoped)
-                .As<IPrefabLoader<CarryPlayerController_Net>>()
-                .WithParameter("path", "Prefabs/Players/CarryPlayerController");
-
-            // builder.Register<PrefabLoaderFromResources<CartControllerNet>>(Lifetime.Scoped)
-            //     .As<IPrefabLoader<CartControllerNet>>()
-            //     .WithParameter("folderPath", "Prefabs/Carts")
-            //     .WithParameter("prefabName", "CartController");
+            builder.Register<PrefabLoaderFromAddressable<CarryPlayerControllerNet>>(Lifetime.Scoped)
+                .As<IPrefabLoader<CarryPlayerControllerNet>>()
+                .WithParameter("path", "Prefabs/Players/CarryPlayerControllerNet");
+            
             builder.Register<PrefabLoaderFromAddressable<CartControllerNet>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CartControllerNet>>()
-                .WithParameter("path", "Prefabs/Carts/CartController");
+                .WithParameter("path", "Prefabs/Carts/CartControllerNet"); 
             
             // NetworkRunnerに依存するスクリプト
 
             // Player
-            builder.Register<DefaultCarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
-            builder.Register<CarryPlayerBuilder>(Lifetime.Scoped);
-            builder.Register<CarryPlayerSpawner>(Lifetime.Scoped);
+            builder.Register<MainCarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
+            builder.Register<CarryPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
+            builder.Register<PlayerSpawner>(Lifetime.Scoped);
 
 
             // Serverのドメインスクリプト

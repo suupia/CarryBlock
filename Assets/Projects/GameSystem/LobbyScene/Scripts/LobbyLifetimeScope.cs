@@ -1,9 +1,9 @@
 using Carry.CarrySystem.CarryScene.Scripts;
+using Carry.CarrySystem.Cart.Scripts;
+using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
 using Fusion;
-using Projects.BattleSystem.Enemy.Scripts;
-using Projects.BattleSystem.Player.Scripts;
 using Projects.BattleSystem.Spawners.Scripts;
 using Projects.Utility.Scripts;
 using UnityEngine;
@@ -16,21 +16,28 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
     {
         protected override void Configure(IContainerBuilder builder)
         {
+            // このシーンに遷移した時点でNetworkRunnerは存在していると仮定している
             var runner = FindObjectOfType<NetworkRunner>();
+            Debug.Log($"NetworkRunner : {runner}");
             builder.RegisterComponent(runner);
             
-            // NetworkRunnerに依存するスクリプト
-            builder.Register<LobbyNetworkPlayerPrefabSpawner>(Lifetime.Scoped).As< IPrefabSpawner<LobbyNetworkPlayerController>>();
-            builder.Register<LobbyNetworkPlayerSpawner>(Lifetime.Scoped);
-            builder.Register<LobbyNetworkPlayerContainer>(Lifetime.Scoped);
-
-            builder.Register<EnemySpawner>(Lifetime.Scoped);
-            builder.Register<NetworkEnemyContainer>(Lifetime.Scoped);
+            // PrefabLoader 
+            builder.Register<PrefabLoaderFromAddressable<LobbyPlayerControllerNet>>(Lifetime.Scoped)
+                .As<IPrefabLoader<LobbyPlayerControllerNet>>()
+                .WithParameter("path", "Prefabs/Players/LobbyPlayerControllerNet");
             
+            
+            // NetworkRunnerに依存するスクリプト
 
+            // Player
+            builder.Register<MainLobbyPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
+            builder.Register<LobbyPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
+            builder.Register<PlayerSpawner>(Lifetime.Scoped);
+
+            
+            
             builder.RegisterComponentInHierarchy<LobbyInitializer>();
             
-            builder.Register<ResourceAggregator>(Lifetime.Singleton);
         }
     }
 }

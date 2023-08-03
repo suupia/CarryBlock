@@ -15,7 +15,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    [RequireComponent(typeof(CarryPlayerController_Net))]
+    [RequireComponent(typeof(CarryPlayerControllerNet))]
     public class HoldPresenter_Net : NetworkBehaviour, IHoldActionPresenter
     {
         // Presenter系のクラスはホストとクライアントで状態を一致させるためにNetworkedプロパティを持つので、

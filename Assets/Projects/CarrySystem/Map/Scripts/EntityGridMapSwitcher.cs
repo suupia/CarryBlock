@@ -58,7 +58,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
             
             // 以下リセット処理
-            var players = GameObject.FindObjectsByType<CarryPlayerController_Net>(FindObjectsSortMode.None);
+            var players = GameObject.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
             foreach (var player in players)
             {
                 player.Reset();
