@@ -88,6 +88,12 @@ namespace Carry.CarrySystem.Player.Scripts
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
 
+                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))
+                {
+                    var pass = new PassAction(info, 10, LayerMask.GetMask("Player"));
+                    pass.AttemptPass();
+                }
+
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
                 // Debug.Log($"_character = {_character}");

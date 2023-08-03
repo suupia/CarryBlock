@@ -15,6 +15,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
         Ready,
         ChangeUnit,
         ReturnToMainBase,
+        Pass,
         Debug1,
         Debug2,
         Debug3
@@ -29,6 +30,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
 
         readonly InputAction _move;
         readonly InputAction _mainAction;
+        readonly InputAction _pass;
 
         public LocalInputPoller()
         {
@@ -46,6 +48,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
 
             _move = _inputActionMap.FindAction("Move");
             _mainAction = _inputActionMap.FindAction("MainAction");
+            _pass = _inputActionMap.FindAction("Pass");
         }
 
 
@@ -55,6 +58,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
 
             var moveVector = _move.ReadValue<Vector2>().normalized;
             var mainActionValue = _mainAction.ReadValue<float>(); 
+            var passValue = _pass.ReadValue<float>();
             
             // Debug.Log(moveVector);
             // Debug.Log(isDownMainAction);
@@ -62,6 +66,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
             _localInput.Horizontal = moveVector.x;
             _localInput.Vertical = moveVector.y;
             _localInput.Buttons.Set(PlayerOperation.MainAction, mainActionValue != 0);
+            _localInput.Buttons.Set(PlayerOperation.Pass, _pass.triggered);
             // _localInput.Buttons.Set(PlayerOperation.Ready, Input.GetKey(KeyCode.R));
             // _localInput.Buttons.Set(PlayerOperation.ChangeUnit, Input.GetKey(KeyCode.C));
             // _localInput.Buttons.Set(PlayerOperation.ReturnToMainBase, Input.GetKey(KeyCode.LeftShift));
