@@ -23,19 +23,19 @@ namespace Carry.CarrySystem.CarryScene.Scripts
     public class CarryInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {    
         [SerializeField] FloorTimerNet floorTimerNet;
-        CarryPlayerSpawner _carryPlayerSpawner;
+        PlayerSpawner _playerSpawner;
         IMapUpdater _entityGridMapSwitcher;
         HoldingBlockObserver _holdingBlockObserver;
         public bool IsInitialized { get; private set; }
         
         [Inject]
         public void Construct(
-            CarryPlayerSpawner carryPlayerSpawner,
+            PlayerSpawner playerSpawner,
             IMapUpdater entityGridMapSwitcher,
             HoldingBlockObserver holdingBlockObserver
             )
         {
-            _carryPlayerSpawner = carryPlayerSpawner;
+            _playerSpawner = playerSpawner;
             _entityGridMapSwitcher = entityGridMapSwitcher;
             _holdingBlockObserver = holdingBlockObserver;
         }
@@ -67,7 +67,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             
 
 
-            if (Runner.IsServer) _carryPlayerSpawner.RespawnAllPlayer();
+            if (Runner.IsServer) _playerSpawner.RespawnAllPlayer();
 
             IsInitialized = true;
 
@@ -75,14 +75,14 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 
         void IPlayerJoined.PlayerJoined(PlayerRef player)
         {
-            if (Runner.IsServer) _carryPlayerSpawner.SpawnPlayer(player );
+            if (Runner.IsServer) _playerSpawner.SpawnPlayer(player );
             // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
         }
 
 
         void IPlayerLeft.PlayerLeft(PlayerRef player)
         {
-            if (Runner.IsServer) _carryPlayerSpawner.DespawnPlayer(player);
+            if (Runner.IsServer) _playerSpawner.DespawnPlayer(player);
         }
 
         // Return to LobbyScene

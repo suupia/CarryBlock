@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Fusion;
 using UnityEngine;
@@ -6,17 +7,17 @@ using VContainer;
 
 namespace Carry.CarrySystem.Spawners
 {
-    public class CarryPlayerSpawner
+    public class PlayerSpawner
     {
         readonly NetworkRunner _runner;
-        readonly CarryPlayerBuilder _carryPlayerBuilder;
-        readonly List<CarryPlayerController_Net> _playerControllers = new();
+        readonly IPlayerBuilder _playerBuilder;
+        readonly List<AbstractNetworkPlayerController> _playerControllers = new();
 
         [Inject]
-        public CarryPlayerSpawner(NetworkRunner runner, CarryPlayerBuilder carryPlayerBuilder)
+        public PlayerSpawner(NetworkRunner runner, IPlayerBuilder playerBuilder)
         {
             _runner = runner;
-            _carryPlayerBuilder = carryPlayerBuilder;
+            _playerBuilder = playerBuilder;
         }
         public void RespawnAllPlayer()
         {
@@ -31,7 +32,7 @@ namespace Carry.CarrySystem.Spawners
         {
             Debug.Log("Spawning Player");
             var spawnPosition = new Vector3(0, 5, 0);
-            var playerController = _carryPlayerBuilder.Build(PlayerColorType.Red, spawnPosition, Quaternion.identity, player);
+            var playerController = _playerBuilder.Build(PlayerColorType.Red, spawnPosition, Quaternion.identity, player);
             _runner.SetPlayerObject(player, playerController.Object);
             _playerControllers.Add(playerController);
         }
@@ -40,7 +41,7 @@ namespace Carry.CarrySystem.Spawners
         {
             if (_runner.TryGetPlayerObject(player, out var networkObject))
             {
-                var playerController = networkObject.GetComponent<CarryPlayerController_Net>();
+                var playerController = networkObject.GetComponent<AbstractNetworkPlayerController>();
 
                 _playerControllers.Remove(playerController);
                 _runner.Despawn(networkObject);

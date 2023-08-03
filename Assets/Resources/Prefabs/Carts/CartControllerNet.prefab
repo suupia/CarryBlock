@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1421670191766901226}
   - component: {fileID: 760486671192579340}
   m_Layer: 0
-  m_Name: CartController
+  m_Name: CartControllerNet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

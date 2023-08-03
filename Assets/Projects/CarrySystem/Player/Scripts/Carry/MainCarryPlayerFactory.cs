@@ -5,12 +5,12 @@ using VContainer;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class DefaultCarryPlayerFactory : ICarryPlayerFactory
+    public class MainCarryPlayerFactory : ICarryPlayerFactory
     {
         readonly IObjectResolver _resolver;
         readonly  HoldingBlockObserver  _holdingBlockObserver;
         [Inject]
-        public DefaultCarryPlayerFactory(IObjectResolver resolver , HoldingBlockObserver holdingBlockObserver)
+        public MainCarryPlayerFactory(IObjectResolver resolver , HoldingBlockObserver holdingBlockObserver)
         {
             _resolver = resolver;
             _holdingBlockObserver = holdingBlockObserver;
