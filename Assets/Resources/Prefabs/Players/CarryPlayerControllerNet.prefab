@@ -82,7 +82,7 @@ GameObject:
   - component: {fileID: 549920036781230307}
   - component: {fileID: 5677767128214668315}
   m_Layer: 6
-  m_Name: CarryPlayerController
+  m_Name: CarryPlayerControllerNet
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

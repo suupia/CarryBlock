@@ -20,12 +20,12 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         readonly NetworkRunner _runner;
         readonly IObjectResolver _resolver;
-        readonly IPrefabLoader<CarryPlayerController_Net> _carryPlayerControllerLoader;
+        readonly IPrefabLoader<CarryPlayerControllerNet> _carryPlayerControllerLoader;
         readonly ICarryPlayerFactory _carryPlayerFactory;
         // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などが想定される
 
         [Inject]
-        public CarryPlayerBuilder(NetworkRunner runner, IObjectResolver resolver ,IPrefabLoader<CarryPlayerController_Net> carryPlayerControllerLoader, ICarryPlayerFactory carryPlayerFactory)
+        public CarryPlayerBuilder(NetworkRunner runner, IObjectResolver resolver ,IPrefabLoader<CarryPlayerControllerNet> carryPlayerControllerLoader, ICarryPlayerFactory carryPlayerFactory)
         {
             _runner = runner;
             _resolver = resolver;
@@ -46,7 +46,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
-                    networkObj.GetComponent<CarryPlayerController_Net>().Init(character,colorType);
+                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType);
                     networkObj.GetComponent<HoldPresenter_Net>().Init(character);
                 });
             

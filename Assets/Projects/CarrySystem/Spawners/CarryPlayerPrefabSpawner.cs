@@ -6,18 +6,18 @@ using VContainer;
 
 namespace Carry.CarrySystem.Spawners
 {
-    public class CarryPlayerPrefabSpawner : IPrefabSpawner<CarryPlayerController_Net>
+    public class CarryPlayerPrefabSpawner : IPrefabSpawner<CarryPlayerControllerNet>
     {
-        readonly NetworkBehaviourPrefabSpawner<CarryPlayerController_Net> _playerPrefabPrefabSpawner;
+        readonly NetworkBehaviourPrefabSpawner<CarryPlayerControllerNet> _playerPrefabPrefabSpawner;
 
         [Inject]
         public CarryPlayerPrefabSpawner(NetworkRunner runner)
         {
-            _playerPrefabPrefabSpawner = new NetworkBehaviourPrefabSpawner<CarryPlayerController_Net>(runner,
-                new PrefabLoaderFromResources<CarryPlayerController_Net>("Prefabs/Players","CarryPlayerController"));
+            _playerPrefabPrefabSpawner = new NetworkBehaviourPrefabSpawner<CarryPlayerControllerNet>(runner,
+                new PrefabLoaderFromResources<CarryPlayerControllerNet>("Prefabs/Players","CarryPlayerController"));
         }
 
-        public CarryPlayerController_Net SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef)
+        public CarryPlayerControllerNet SpawnPrefab(Vector3 position, Quaternion rotation, PlayerRef playerRef)
         {
             return _playerPrefabPrefabSpawner.SpawnPrefab(position, rotation, playerRef);
         }

@@ -12,7 +12,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class CarryPlayerController_Net : AbstractNetworkPlayerController
+    public class CarryPlayerControllerNet : AbstractNetworkPlayerController
     {
         [SerializeField]  Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
         public Transform InterpolationTransform => unitObjectParent;
