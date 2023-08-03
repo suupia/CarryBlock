@@ -921,9 +921,7 @@ MonoBehaviour:
   parentReference:
     TypeName: 
   autoRun: 1
-  autoInjectGameObjects:
-  - {fileID: 1239956152}
-  - {fileID: 1874665878}
+  autoInjectGameObjects: []
 --- !u!1 &756939404
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,6 +953,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  _IsReachable:
+    _value: 0
+  _IsMoveToCart:
+    _value: 0
   ReachableText: {fileID: 1298328029}
   MoveToCartText: {fileID: 205711033}
 --- !u!4 &756939406

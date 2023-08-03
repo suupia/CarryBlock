@@ -1,15 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
 using Carry.CarrySystem.Cart.Scripts;
+using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners;
+using Carry.UISystem.UI.CarryScene;
 using Fusion;
-using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using Projects.Utility.Scripts;
 
 namespace  Carry.CarrySystem.CarryScene.Scripts
 {
@@ -62,7 +66,8 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
 
             // UI
             builder.Register<GameContext>(Lifetime.Scoped);
-            builder.Register<FloorTimer>(Lifetime.Scoped);
+            builder.Register<FloorTimer.Scripts.FloorTimer>(Lifetime.Scoped);
+            builder.RegisterComponentInHierarchy<FloorTimerNet>();
             
             // Notifier
             builder.RegisterComponentInHierarchy<CartMovementNotifierNet>();
@@ -73,6 +78,8 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             // Initializer
             builder.RegisterComponentInHierarchy<CarryInitializer>();
             
+            // View
+            builder.RegisterComponentInHierarchy<CarrySceneView>();
 
 
 

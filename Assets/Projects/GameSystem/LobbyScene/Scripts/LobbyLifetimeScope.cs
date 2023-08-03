@@ -3,14 +3,12 @@ using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
 using Fusion;
 using Projects.BattleSystem.Enemy.Scripts;
-using Projects.BattleSystem.GameScene.Scripts;
 using Projects.BattleSystem.Player.Scripts;
 using Projects.BattleSystem.Spawners.Scripts;
 using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using GameContext = Projects.BattleSystem.GameScene.Scripts.GameContext;
 
 namespace Projects.BattleSystem.LobbyScene.Scripts
 {
@@ -33,8 +31,6 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             builder.RegisterComponentInHierarchy<LobbyInitializer>();
             
             builder.Register<ResourceAggregator>(Lifetime.Singleton);
-            builder.Register<GameScene.Scripts.GameContext>(Lifetime.Singleton);
-            builder.Register<WaveTimer>(Lifetime.Singleton);
         }
     }
 }

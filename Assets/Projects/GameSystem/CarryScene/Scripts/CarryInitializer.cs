@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
@@ -21,7 +22,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 {
     public class CarryInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {    
-        [SerializeField] FloorTimer_Net floorTimerNet;
+        [SerializeField] FloorTimerNet floorTimerNet;
         CarryPlayerSpawner _carryPlayerSpawner;
         IMapUpdater _entityGridMapSwitcher;
         HoldingBlockObserver _holdingBlockObserver;
