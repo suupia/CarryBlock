@@ -21,6 +21,46 @@ MonoBehaviour:
     m_Address: InputActionAssets/PlayerInputAction
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 514ad1c0ca845b1498e5b539bb9ecb54
+    m_Address: Prefabs/Players/LobbyPlayerControllerNet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6b1bb56f655131043b851c53489b42eb
+    m_Address: Prefabs/Carts/CartControllerNet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5cd987591420747f4a42a564d5daafbe
+    m_Address: Prefabs/Players/CarryPlayerControllerNet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b492ede40f0570743856162625e709e5
+    m_Address: Prefabs/Map/DoubleRock
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8a269dfac5fd73c41b252add41921923
+    m_Address: Prefabs/Map/Rock
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6bd0745e0d02f4475a925ffda8c9f8c6
+    m_Address: Prefabs/Map/TilePresenter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4386fb9410f4bdf4b9d34bb00b99c72a
+    m_Address: Prefabs/Map/BasicBlock
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fea61a30c2cb6b54089e64595ad57330
+    m_Address: Prefabs/Map/RoutePresenter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 019d130d8399e1b4099bb743f283390d
+    m_Address: Prefabs/Map/Ground
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 075f71c22e3432849adb99be6082692a
+    m_Address: Prefabs/Map/DoubleBasicBlock
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 405937dcad4604950956d0fac118dce9, type: 2}
   m_SchemaSet:
