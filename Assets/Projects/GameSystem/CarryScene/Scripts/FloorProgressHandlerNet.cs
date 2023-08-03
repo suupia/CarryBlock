@@ -10,7 +10,7 @@ using VContainer.Unity;
 
 namespace Carry.CarrySystem.CarryScene.Scripts
 {
-    public class FloorProgressHandler_Net : NetworkBehaviour
+    public class FloorProgressHandlerNet : NetworkBehaviour
     {
         // ToDo: 仮置きクラス　ドメインの設計やコンテナの関係をしっかり考えれば、NetworkBehaviourである必要がないかも
         float _updateTime = 7;

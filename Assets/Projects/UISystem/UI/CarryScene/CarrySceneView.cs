@@ -70,7 +70,7 @@ namespace Carry.UISystem.UI.CarryScene
         {
             // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
             // Score = _resourceAggregator.GetAmount;
-            FloorTimerValue = Mathf.Floor(_floorTimer.getRemainingTime(Runner));
+            FloorTimerValue = Mathf.Floor(_floorTimer.GetRemainingTime(Runner));
         }
 
         void FixedUpdateNetwork_Result()

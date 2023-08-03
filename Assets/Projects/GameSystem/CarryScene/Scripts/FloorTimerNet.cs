@@ -5,12 +5,12 @@ using VContainer;
 
 namespace Carry.CarrySystem.CarryScene.Scripts
 {
-    public class FloorTimer_Net : NetworkBehaviour
+    public class FloorTimerNet : NetworkBehaviour
     {
         readonly float _floorTime = 60f;
         bool _isCounting;
         FloorTimer _floorTimer;
-        [Networked] TickTimer tickTimer { get; set; }
+        [Networked] TickTimer TickTimer { get; set; }
     
         [Inject]
         public void Construct(FloorTimer floorTimer)
@@ -22,7 +22,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         
         public void StartTimer()
         {
-            tickTimer = TickTimer.CreateFromSeconds(Runner, _floorTime);
+            TickTimer = TickTimer.CreateFromSeconds(Runner, _floorTime);
             _isCounting = true;
         }
     
@@ -31,8 +31,8 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             if (_isCounting == false) return;
             // if(Object?.IsValid == false) return;
             // if(tickTimer.ExpiredOrNotRunning(Runner)) tickTimer = TickTimer.CreateFromSeconds(Runner, _floorTime);
-            if(tickTimer.ExpiredOrNotRunning(Runner) ) _isCounting = false;
-            _floorTimer.tickTimer = tickTimer;
+            if(TickTimer.ExpiredOrNotRunning(Runner) ) _isCounting = false;
+            _floorTimer.tickTimer = TickTimer;
             _floorTimer.NotifyObservers(Runner);
 
         }
@@ -56,12 +56,12 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             _gameContext.Update(runner, this);
         }
     
-        public float getRemainingTime(NetworkRunner Runner)
+        public float GetRemainingTime(NetworkRunner Runner)
         {
             return tickTimer.RemainingTime(Runner).HasValue ? tickTimer.RemainingTime(Runner).Value : 0f;
         }
     
-        public bool isExpired(NetworkRunner Runner)
+        public bool IsExpired(NetworkRunner Runner)
         {
             return tickTimer.ExpiredOrNotRunning(Runner);
         }

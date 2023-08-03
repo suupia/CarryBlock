@@ -21,7 +21,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 {
     public class CarryInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {    
-        [SerializeField] FloorTimer_Net floorTimerNet;
+        [SerializeField] FloorTimerNet floorTimerNet;
         CarryPlayerSpawner _carryPlayerSpawner;
         IMapUpdater _entityGridMapSwitcher;
         HoldingBlockObserver _holdingBlockObserver;

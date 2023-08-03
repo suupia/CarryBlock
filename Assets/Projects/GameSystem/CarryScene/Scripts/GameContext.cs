@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 
         public void Update(NetworkRunner runner, ITimer timer)
         {
-            if (timer.isExpired(runner)) CurrentState = GameState.Result;
+            if (timer.IsExpired(runner)) CurrentState = GameState.Result;
         }
     }
 }
