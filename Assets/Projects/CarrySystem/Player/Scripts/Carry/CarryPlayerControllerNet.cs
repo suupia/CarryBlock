@@ -88,8 +88,6 @@ namespace Carry.CarrySystem.Player.Scripts
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
 
-
-
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
                 // Debug.Log($"_character = {_character}");
@@ -97,6 +95,9 @@ namespace Carry.CarrySystem.Player.Scripts
 
                 PreButtons = input.Buttons;
             }
+            
+            
+            
         }
 
         public override void Render()

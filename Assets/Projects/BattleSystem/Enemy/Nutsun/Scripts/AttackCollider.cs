@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Projects.BattleSystem.Enemy.Scripts
 {
     [RequireComponent(typeof(Collider))]
-    public abstract class AttackCollider : MonoBehaviour
+    public abstract class  AttackCollider : MonoBehaviour
     {
         // 攻撃の処理（ダメージ計算、ダメージ間隔）などのロジックを持つ
         // ホスト上でインスタンス化されるプレハブにアタッチする
