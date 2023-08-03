@@ -4,6 +4,8 @@ using VContainer;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
+    // ToDo: このクラス使っていないならいらない？
+    // 何かPlayerのドメインを差し替えたいときに使っていたのかも
     public class CarryPlayerFactory : ICarryPlayerFactory
     {
         IObjectResolver _resolver;

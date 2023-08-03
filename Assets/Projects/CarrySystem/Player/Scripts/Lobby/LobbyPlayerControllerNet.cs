@@ -1,23 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
-using Fusion;
-using Projects.NetworkUtility.Inputs.Scripts;
+﻿using System;
 using Carry.CarrySystem.Player.Interfaces;
-using Carry.CarrySystem.Player.Info;
-using VContainer;
-#nullable enable
+using Fusion;
+using Projects.BattleSystem.Player.Scripts;
+using Projects.NetworkUtility.Inputs.Scripts;
+using UnityEngine;
+using AbstractNetworkPlayerController = Carry.CarrySystem.Player.Interfaces.AbstractNetworkPlayerController;
+using PlayerInfo = Carry.CarrySystem.Player.Info.PlayerInfo;
 
+#nullable  enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    [RequireComponent(typeof(HoldPresenter_Net))]
-    public class CarryPlayerController_Net : AbstractNetworkPlayerController
+    public class LobbyPlayerControllerNet : AbstractNetworkPlayerController
     {
-        [SerializeField]  Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
+               [SerializeField]  Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
         public Transform InterpolationTransform => unitObjectParent;
 
+        [SerializeField] GameObject cameraPrefab= null!;
         [SerializeField] GameObject[] playerUnitPrefabs= null!;
 
         [SerializeField] PlayerInfo info= null!;
@@ -40,17 +39,27 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void Init(ICharacter character, PlayerColorType colorType)
         {
-            Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
+            Debug.Log($"LobbyPlayerControllerNet.Init(), character = {character}");
             _character = character;
             ColorType = colorType;
         }
 
         public override void Spawned()
         {
-            Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {_character}");
+            Debug.Log($"LobbyPlayerControllerNet.Spawned(), _character = {_character}");
 
             // init info
             info.Init(Runner, gameObject);
+            
+            // Set camera
+            if (Object.HasInputAuthority)
+            {
+                var cameraObj = Instantiate(cameraPrefab);
+                var followTarget = cameraObj.GetComponent<CameraFollowTarget>();
+                var playerCamera = cameraObj.GetComponent<Camera>();
+                followTarget.SetTarget(unitObjectParent.transform);
+            }
+
 
             // Instantiate the character.
             InstantiateCharacter();
@@ -151,7 +160,6 @@ namespace Carry.CarrySystem.Player.Scripts
             info.playerRb.velocity = Vector3.zero;
         }
 
-        
+      
     }
 }
-

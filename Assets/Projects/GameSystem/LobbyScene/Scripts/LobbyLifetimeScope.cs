@@ -22,18 +22,19 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             builder.RegisterComponent(runner);
             
             // PrefabLoader 
-            builder.Register<PrefabLoaderFromResources<CarryPlayerController_Net>>(Lifetime.Scoped)
-                .As<IPrefabLoader<CarryPlayerController_Net>>()
+            builder.Register<PrefabLoaderFromResources<LobbyPlayerControllerNet>>(Lifetime.Scoped)
+                .As<IPrefabLoader<LobbyPlayerControllerNet>>()
                 .WithParameter("folderPath", "Prefabs/Players")
-                .WithParameter("prefabName", "CarryPlayerController");
+                .WithParameter("prefabName", "LobbyPlayerControllerNet");
             
             
             // NetworkRunnerに依存するスクリプト
 
             // Player
-            builder.Register<EmptyHoldActionPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();  // よくないHoldingBlockObserverが依存している
-            builder.Register<CarryPlayerBuilder>(Lifetime.Scoped);
-            builder.Register<CarryPlayerSpawner>(Lifetime.Scoped);
+            builder.Register<MainLobbyPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
+            builder.Register<LobbyPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
+            builder.Register<PlayerSpawner>(Lifetime.Scoped);
+
             
             
             builder.RegisterComponentInHierarchy<LobbyInitializer>();

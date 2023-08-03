@@ -16,7 +16,7 @@ namespace Carry.CarrySystem.Player.Scripts
         Yellow
     }
 
-    public class CarryPlayerBuilder
+    public class CarryPlayerBuilder : IPlayerBuilder
     {
         readonly NetworkRunner _runner;
         readonly IObjectResolver _resolver;
@@ -33,7 +33,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _carryPlayerFactory = carryPlayerFactory;
         }
 
-        public CarryPlayerController_Net Build(PlayerColorType colorType, Vector3 position, Quaternion rotation, PlayerRef playerRef)
+        public AbstractNetworkPlayerController Build(PlayerColorType colorType, Vector3 position, Quaternion rotation, PlayerRef playerRef)
         {
             // プレハブをロード
             var playerController = _carryPlayerControllerLoader.Load();

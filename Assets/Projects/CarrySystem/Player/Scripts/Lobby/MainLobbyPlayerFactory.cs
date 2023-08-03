@@ -4,11 +4,11 @@ using VContainer;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class EmptyHoldActionPlayerFactory : ICarryPlayerFactory
+    public class MainLobbyPlayerFactory : ICarryPlayerFactory
     {
         readonly IObjectResolver _resolver;
         [Inject]
-        public EmptyHoldActionPlayerFactory(IObjectResolver resolver)
+        public MainLobbyPlayerFactory(IObjectResolver resolver)
         {
             _resolver = resolver;
         }
