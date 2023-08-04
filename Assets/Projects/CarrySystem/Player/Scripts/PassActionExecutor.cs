@@ -38,6 +38,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void PassAction()
         {
             var targets = Search();
+            Debug.Log($"targets {string.Join(",", targets.ToList())}");
             if (DetermineTarget(targets) is {} target)
             {
                 var targetPlayerController  = target.GetComponent<CarryPlayerControllerNet>();
@@ -83,9 +84,9 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             var center = _info.playerObj. transform.position;
             var numFound = Physics.OverlapSphereNonAlloc(center, _radius,_targetBuffer, _layerMask);
-            Debug.Log($"_targetBuffer: {_targetBuffer}");
             return  _targetBuffer
                 .Where(c => c != null) // Filter out any null colliders
+                .Where(c => c.transform != _info.playerObj.transform) // 自分以外を選択する
                 .Select(c => c.transform)
                 .ToArray();
         }
