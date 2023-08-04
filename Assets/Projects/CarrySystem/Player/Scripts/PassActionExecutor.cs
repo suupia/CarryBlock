@@ -53,7 +53,27 @@ namespace Carry.CarrySystem.Player.Scripts
                 // Passを受ける側がPassを受け取れる状況にある
                 // this.playerController.Pass(targetPlayerController); 
                 // 的な処理を書く
+                
+                if(! _holdActionExecutorExecutor.IsHoldingBlock)return;
+                if(!targetPlayerController.Character.CanReceivePass())return;
+                PassBlock();
+                targetPlayerController.Character.ReceivePass();
             }
+        }
+
+        public bool CanReceivePass()
+        {
+            return !_holdActionExecutorExecutor.IsHoldingBlock;
+        }
+
+        public void PassBlock()
+        {
+            Debug.Log($"Pass Block");
+        }
+        
+        public void ReceivePass()
+        {
+            Debug.Log("Receive Pass");
         }
         
         Transform[] Search()

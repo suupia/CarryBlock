@@ -8,5 +8,10 @@ namespace Carry.CarrySystem.Player.Interfaces
         void Setup(PlayerInfo info);
         void Reset();
         void PassAction();
+
+        bool CanReceivePass();
+
+        void PassBlock();
+        void ReceivePass();
     }
 }

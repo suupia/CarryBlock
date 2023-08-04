@@ -52,9 +52,10 @@ namespace Carry.CarrySystem.Player.Scripts
             _holdActionExecutor.HoldAction();
         }
         
-        public void PassAction()
-        {
-            _passActionExecutor.PassAction();
-        }
+        // PassAction
+        public void PassAction() => _passActionExecutor.PassAction();
+        public bool CanReceivePass() => _passActionExecutor.CanReceivePass();
+        public void PassBlock() => _passActionExecutor.PassBlock();
+        public void ReceivePass() => _passActionExecutor.ReceivePass();
     }
 }

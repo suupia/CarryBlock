@@ -24,5 +24,20 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"EmptyPassAction: Action");
         }
+        
+        public bool CanReceivePass()
+        {
+            return false;
+        }
+
+        public void PassBlock()
+        {
+            
+        }
+        
+        public void ReceivePass()
+        {
+            
+        }
     }
 }
