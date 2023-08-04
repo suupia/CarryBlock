@@ -1,5 +1,6 @@
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
+using UnityEngine;
 using VContainer;
 #nullable enable
 
@@ -18,10 +19,11 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public ICharacter Create(PlayerColorType colorType)
         {
-            var move = new CorrectlyStopMove();
-            var action = new HoldAction(_resolver);
-            _holdingBlockObserver.RegisterHoldAction(action);
-            var character = new Character(move, action);
+            var moveExe = new CorrectlyStopMoveExecutor();
+            var holdExe = new HoldActionExecutorExecutor(_resolver);
+            _holdingBlockObserver.RegisterHoldAction(holdExe);
+            var passExe = new PassActionExecutor(holdExe,10, LayerMask.GetMask("Player"));
+            var character = new Character(moveExe, holdExe, passExe);
             return character;
         }
     }

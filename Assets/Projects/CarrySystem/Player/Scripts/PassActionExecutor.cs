@@ -1,33 +1,41 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Player.Info;
+using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using UnityEngine;
 #nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class PassAction
+    public class PassActionExecutor : IPassActionExecutor
     {
+        PlayerInfo _info = null!;
+        HoldActionExecutorExecutor _holdActionExecutorExecutor;
         readonly float _radius;
         readonly int _layerMask;
-        PlayerInfo _info = null!;
         
        readonly  Collider[] _targetBuffer = new Collider[10];
         
-        public PassAction(PlayerInfo info, float radius, int layerMask)
+        public PassActionExecutor(HoldActionExecutorExecutor holdActionExecutorExecutor, float radius, int layerMask)
         {
-            _info = info;
+            _holdActionExecutorExecutor = holdActionExecutorExecutor;
             _radius = radius;
             _layerMask = layerMask; /* LayerMask.GetMask("Player");*/
         }
-        public void SetUp(PlayerInfo info)
+        public void Setup(PlayerInfo info)
         {
             _info = info;
         }
 
-        public void AttemptPass()
+        public void Reset()
+        {
+            
+        }
+
+        public void PassAction()
         {
             var targets = Search();
             if (DetermineTarget(targets) is {} target)
@@ -53,7 +61,10 @@ namespace Carry.CarrySystem.Player.Scripts
             var center = _info.playerObj. transform.position;
             var numFound = Physics.OverlapSphereNonAlloc(center, _radius,_targetBuffer, _layerMask);
             Debug.Log($"_targetBuffer: {_targetBuffer}");
-            return _targetBuffer.Map(c => c.transform);
+            return  _targetBuffer
+                .Where(c => c != null) // Filter out any null colliders
+                .Select(c => c.transform)
+                .ToArray();
         }
 
         public Transform? DetermineTarget(IEnumerable<Transform> targetUnits)

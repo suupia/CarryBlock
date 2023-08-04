@@ -15,7 +15,7 @@ using Projects.CarrySystem.Block.Interfaces;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class HoldAction : ICharacterHoldAction
+    public class HoldActionExecutorExecutor : IHoldActionExecutor
     {
         public bool IsHoldingBlock => _isHoldingBlock;
         IObjectResolver _resolver;
@@ -26,7 +26,7 @@ namespace Carry.CarrySystem.Player.Scripts
         bool _isHoldingBlock = false;
         IBlock? _holdingBlock = null;
 
-        public HoldAction(IObjectResolver resolver)
+        public HoldActionExecutorExecutor(IObjectResolver resolver)
         {
             _resolver = resolver;
         }
@@ -50,7 +50,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _map = _mapSwitcher.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
 
-        public void Action()
+        public void HoldAction()
         {
             var transform = _info.playerObj.transform;
 

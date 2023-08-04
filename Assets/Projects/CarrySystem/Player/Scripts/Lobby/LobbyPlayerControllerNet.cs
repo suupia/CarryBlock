@@ -94,7 +94,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
-                    _character.Action();
+                    _character.HoldAction();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
 

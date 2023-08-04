@@ -15,9 +15,10 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public ICharacter Create(PlayerColorType colorType)
         {
-            var move = new CorrectlyStopMove();
-            var action = new EmptyHoldAction();
-            var character = new Character(move, action);
+            var moveExe = new CorrectlyStopMoveExecutor();
+            var holdExe = new EmptyHoldActionExecutor();
+            var passExe = new EmptyPassActionExecutor();
+            var character = new Character(moveExe, holdExe, passExe);
             return character;
         }
     }

@@ -9,40 +9,52 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class Character : ICharacter
     {
-        readonly ICharacterHoldAction _holdAction;
-        readonly ICharacterMove _move;
+        readonly IMoveExecutor _moveExecutor;
+        readonly IHoldActionExecutor _holdActionExecutor;
+        readonly IPassActionExecutor _passActionExecutor;
         
-        public Character(ICharacterMove move, ICharacterHoldAction holdAction)
+        public Character(
+            IMoveExecutor moveExecutor, 
+            IHoldActionExecutor holdActionExecutor,
+            IPassActionExecutor passActionExecutor)
         {
-            _move = move;
-            _holdAction = holdAction;
+            _moveExecutor = moveExecutor;
+            _holdActionExecutor = holdActionExecutor;
+            _passActionExecutor = passActionExecutor;
         }
 
         public void Reset()
         {
-            _holdAction.Reset();
+            _holdActionExecutor.Reset();
+            _passActionExecutor.Reset();
         }
 
         public void Setup(PlayerInfo info)
         {
-            _move.Setup(info);
-            _holdAction.Setup(info);
+            _moveExecutor.Setup(info);
+            _holdActionExecutor.Setup(info);
+            _passActionExecutor.Setup(info);
             info.playerRb.useGravity = true;
         }
 
         public void Move(Vector3 direction)
         {
-            _move.Move(direction);
+            _moveExecutor.Move(direction);
         }
         
         public void SetHoldPresenter(IHoldActionPresenter presenter)
         {
-            _holdAction.SetHoldPresenter(presenter);
+            _holdActionExecutor.SetHoldPresenter(presenter);
         }
 
-        public void Action()
+        public void HoldAction()
         {
-            _holdAction.Action();
+            _holdActionExecutor.HoldAction();
+        }
+        
+        public void PassAction()
+        {
+            _passActionExecutor.PassAction();
         }
     }
 }

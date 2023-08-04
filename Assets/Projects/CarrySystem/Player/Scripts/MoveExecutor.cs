@@ -5,7 +5,7 @@ using Carry.CarrySystem.Player.Info;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class QuickTurnMove : ICharacterMove
+    public class QuickTurnMoveExecutor : IMoveExecutor
     {
         PlayerInfo _info;
          float _acceleration = 30f;
@@ -52,7 +52,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
     }
 
-    public class CharacterMove : ICharacterMove
+    public class MoveExecutor : IMoveExecutor
     {
         PlayerInfo _info= null!;
          float _acceleration  = 30f;

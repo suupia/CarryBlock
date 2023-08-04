@@ -84,14 +84,13 @@ namespace Carry.CarrySystem.Player.Scripts
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
-                    _character.Action();
+                    _character.HoldAction();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))
                 {
-                    var pass = new PassAction(info, 10, LayerMask.GetMask("Player"));
-                    pass.AttemptPass();
+                    _character.PassAction();
                 }
 
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;

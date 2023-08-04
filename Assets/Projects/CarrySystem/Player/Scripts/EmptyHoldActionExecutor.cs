@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class EmptyHoldAction : ICharacterHoldAction
+    public class EmptyHoldActionExecutor : IHoldActionExecutor
     {
         public void SetHoldPresenter(IHoldActionPresenter presenter)
         {
@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
             
         }
 
-        public void Action()
+        public void HoldAction()
         {
             Debug.Log($"EmptyHoldAction: Action");
         }
