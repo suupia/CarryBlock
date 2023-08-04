@@ -47,12 +47,15 @@ namespace Carry.CarrySystem.Player.Scripts
                     return;
                 }
                 
-                Debug.Log($"targetPlayerController: {targetPlayerController.name}に対してPassを試みます");
+                Debug.Log($"targetPlayerController: {targetPlayerController.name}, {targetPlayerController.Runner.LocalPlayer}に対してPassを試みます");
                 
                 // Passする側がPassできる状況にある
                 // Passを受ける側がPassを受け取れる状況にある
                 // this.playerController.Pass(targetPlayerController); 
                 // 的な処理を書く
+                
+                Debug.Log($"!_holdActionExecutorExecutor.IsHoldingBlock: {_holdActionExecutorExecutor.IsHoldingBlock}");
+                Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.Character.CanReceivePass()}");
                 
                 if(! _holdActionExecutorExecutor.IsHoldingBlock)return;
                 if(!targetPlayerController.Character.CanReceivePass())return;
