@@ -15,23 +15,22 @@ using Projects.CarrySystem.Block.Interfaces;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class HoldActionExecutorExecutor : IHoldActionExecutor
+    public class HoldActionExecutor : IHoldActionExecutor
     {
         public bool IsHoldingBlock => _isHoldingBlock;
-        IObjectResolver _resolver;
-        PlayerInfo _info;
-        EntityGridMap _map;
-        IMapUpdater _mapSwitcher;
-        IHoldActionPresenter? _presenter;
+        readonly IMapUpdater _mapUpdater;
+        PlayerInfo _info = null!;
+        EntityGridMap _map = null!;
+        IPlayerBlockPresenter? _presenter;
         bool _isHoldingBlock = false;
         IBlock? _holdingBlock = null;
 
-        public HoldActionExecutorExecutor(IObjectResolver resolver)
+        public HoldActionExecutor(IMapUpdater mapUpdater)
         {
-            _resolver = resolver;
+            _mapUpdater = mapUpdater;
         }
 
-        public void SetHoldPresenter(IHoldActionPresenter presenter)
+        public void SetHoldPresenter(IPlayerBlockPresenter presenter)
         {
             _presenter = presenter;
         }
@@ -39,15 +38,14 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Setup(PlayerInfo info)
         {
             _info = info;
-            _mapSwitcher = _resolver.Resolve<IMapUpdater>();
-            _map = _mapSwitcher.GetMap();
+            _map = _mapUpdater.GetMap();
         }
 
         public void Reset()
         {
             _isHoldingBlock = false;
-            _presenter?.PutDownRock();
-            _map = _mapSwitcher.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
+            _presenter?.PutDownBlock();
+            _map = _mapUpdater.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
 
         public void HoldAction()
@@ -73,7 +71,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     _holdingBlock.PutDown();
                     _map.AddEntity(forwardGridPos, _holdingBlock);
-                    _presenter?.PutDownRock();
+                    _presenter?.PutDownBlock();
                     _isHoldingBlock = false;
                 }
             }
@@ -87,11 +85,16 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     block.PickUp();
                     _map.RemoveEntity(forwardGridPos, block);
-                    _presenter?.PickUpRock();
+                    _presenter?.PickUpBlock();
                     _holdingBlock = block;
                     _isHoldingBlock = true;
                 }
             }
+        }
+        
+        public void SetIsHoldingBlock(bool isHoldingBlock)
+        {
+            _isHoldingBlock = isHoldingBlock;
         }
 
         Vector2Int GetForwardGridPos(Transform transform)

@@ -5,6 +5,7 @@ using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
+using Projects.CarrySystem.Block.Interfaces;
 using UnityEngine;
 #nullable enable
 
@@ -13,17 +14,22 @@ namespace Carry.CarrySystem.Player.Scripts
     public class PassActionExecutor : IPassActionExecutor
     {
         PlayerInfo _info = null!;
-        HoldActionExecutorExecutor _holdActionExecutorExecutor;
+        readonly HoldActionExecutor _holdActionExecutor;
         readonly float _radius;
         readonly int _layerMask;
+        readonly  Collider[] _targetBuffer = new Collider[10];
+        IPlayerBlockPresenter? _presenter;
         
-       readonly  Collider[] _targetBuffer = new Collider[10];
         
-        public PassActionExecutor(HoldActionExecutorExecutor holdActionExecutorExecutor, float radius, int layerMask)
+        public PassActionExecutor(HoldActionExecutor holdActionExecutor, float radius, int layerMask)
         {
-            _holdActionExecutorExecutor = holdActionExecutorExecutor;
+            _holdActionExecutor = holdActionExecutor;
             _radius = radius;
-            _layerMask = layerMask; /* LayerMask.GetMask("Player");*/
+            _layerMask = layerMask; /*LayerMask.GetMask("Player");*/
+        }
+        public void SetHoldPresenter(IPlayerBlockPresenter presenter)
+        {
+            _presenter = presenter;
         }
         public void Setup(PlayerInfo info)
         {
@@ -50,15 +56,13 @@ namespace Carry.CarrySystem.Player.Scripts
                 
                 Debug.Log($"targetPlayerController: {targetPlayerController.name}, {targetPlayerController.Runner.LocalPlayer}に対してPassを試みます");
                 
-                // Passする側がPassできる状況にある
-                // Passを受ける側がPassを受け取れる状況にある
-                // this.playerController.Pass(targetPlayerController); 
-                // 的な処理を書く
                 
-                Debug.Log($"!_holdActionExecutorExecutor.IsHoldingBlock: {_holdActionExecutorExecutor.IsHoldingBlock}");
+                Debug.Log($"!_holdActionExecutorExecutor.IsHoldingBlock: {_holdActionExecutor.IsHoldingBlock}");
                 Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.Character.CanReceivePass()}");
                 
-                if(! _holdActionExecutorExecutor.IsHoldingBlock)return;
+                // Passする側がPassできる状況にある
+                if(! _holdActionExecutor.IsHoldingBlock)return;
+                // Passを受ける側がPassを受け取れる状況にある
                 if(!targetPlayerController.Character.CanReceivePass())return;
                 PassBlock();
                 targetPlayerController.Character.ReceivePass();
@@ -67,18 +71,23 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public bool CanReceivePass()
         {
-            return !_holdActionExecutorExecutor.IsHoldingBlock;
+            return !_holdActionExecutor.IsHoldingBlock;
         }
 
         public void PassBlock()
         {
             Debug.Log($"Pass Block");
+            _holdActionExecutor.SetIsHoldingBlock(false); // ここでHoldActionのIsHoldingBlockにアクセスるするのはよくない？　IsHoldを管理するクラスがあってもいいかも
+            _presenter?.PassBlock();
         }
         
         public void ReceivePass()
         {
             Debug.Log("Receive Pass");
+            _holdActionExecutor.SetIsHoldingBlock(true); 
+            _presenter?.ReceiveBlock();
         }
+        
         
         Transform[] Search()
         {

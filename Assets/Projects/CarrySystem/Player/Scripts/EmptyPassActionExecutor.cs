@@ -6,10 +6,10 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class EmptyPassActionExecutor : IPassActionExecutor
     {
-        // public void SetHoldPresenter(IHoldActionPresenter presenter)
-        // {
-        //     
-        // }
+        public void SetHoldPresenter(IPlayerBlockPresenter presenter)
+        {
+            
+        }
 
         public void Setup(PlayerInfo info)
         {

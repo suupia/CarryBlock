@@ -42,9 +42,10 @@ namespace Carry.CarrySystem.Player.Scripts
             _moveExecutor.Move(direction);
         }
         
-        public void SetHoldPresenter(IHoldActionPresenter presenter)
+        public void SetHoldPresenter(IPlayerBlockPresenter presenter)
         {
             _holdActionExecutor.SetHoldPresenter(presenter);
+            _passActionExecutor.SetHoldPresenter(presenter);
         }
 
         public void HoldAction()

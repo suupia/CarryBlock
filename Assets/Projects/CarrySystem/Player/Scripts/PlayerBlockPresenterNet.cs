@@ -16,7 +16,7 @@ using VContainer;
 namespace Carry.CarrySystem.Player.Scripts
 {
     [RequireComponent(typeof(CarryPlayerControllerNet))]
-    public class HoldPresenter_Net : NetworkBehaviour, IHoldActionPresenter
+    public class PlayerBlockPresenterNet : NetworkBehaviour, IPlayerBlockPresenter
     {
         // Presenter系のクラスはホストとクライアントで状態を一致させるためにNetworkedプロパティを持つので、
         // ドメインの情報を持ってはいけない
@@ -55,12 +55,22 @@ namespace Carry.CarrySystem.Player.Scripts
 
         // ホストのみで呼ばれることに注意
         // 以下の処理はアニメーション、音、エフェクトの再生を行いたくなったら、それぞれのクラスの対応するメソッドを呼ぶようにするかも
-        public void PickUpRock()
+        public void PickUpBlock()
         {
             PresentDataRef.IsHoldingBlock = true;
         }
 
-        public void PutDownRock()
+        public void PutDownBlock()
+        {
+            PresentDataRef.IsHoldingBlock = false;
+        }
+        
+        public void ReceiveBlock()
+        {
+            PresentDataRef.IsHoldingBlock = true;
+        }
+        
+        public void PassBlock()
         {
             PresentDataRef.IsHoldingBlock = false;
         }

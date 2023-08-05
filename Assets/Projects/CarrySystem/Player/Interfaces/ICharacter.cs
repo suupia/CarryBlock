@@ -6,5 +6,7 @@ namespace Carry.CarrySystem.Player.Interfaces
        new void Setup(PlayerInfo info);
        
        new void Reset();
+       new void SetHoldPresenter(IPlayerBlockPresenter presenter);
+
     }
 }

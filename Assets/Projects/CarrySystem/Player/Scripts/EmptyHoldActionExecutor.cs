@@ -6,7 +6,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class EmptyHoldActionExecutor : IHoldActionExecutor
     {
-        public void SetHoldPresenter(IHoldActionPresenter presenter)
+        public void SetHoldPresenter(IPlayerBlockPresenter presenter)
         {
             
         }
