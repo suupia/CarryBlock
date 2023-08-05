@@ -21,7 +21,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IMapUpdater _mapUpdater;
         PlayerInfo _info = null!;
         EntityGridMap _map = null!;
-        IHoldActionPresenter? _presenter;
+        IPlayerBlockPresenter? _presenter;
         bool _isHoldingBlock = false;
         IBlock? _holdingBlock = null;
 
@@ -30,7 +30,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _mapUpdater = mapUpdater;
         }
 
-        public void SetHoldPresenter(IHoldActionPresenter presenter)
+        public void SetHoldPresenter(IPlayerBlockPresenter presenter)
         {
             _presenter = presenter;
         }
@@ -44,7 +44,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Reset()
         {
             _isHoldingBlock = false;
-            _presenter?.PutDownRock();
+            _presenter?.PutDownBlock();
             _map = _mapUpdater.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
 
@@ -71,7 +71,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     _holdingBlock.PutDown();
                     _map.AddEntity(forwardGridPos, _holdingBlock);
-                    _presenter?.PutDownRock();
+                    _presenter?.PutDownBlock();
                     _isHoldingBlock = false;
                 }
             }
@@ -85,11 +85,16 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     block.PickUp();
                     _map.RemoveEntity(forwardGridPos, block);
-                    _presenter?.PickUpRock();
+                    _presenter?.PickUpBlock();
                     _holdingBlock = block;
                     _isHoldingBlock = true;
                 }
             }
+        }
+        
+        public void SetIsHoldingBlock(bool isHoldingBlock)
+        {
+            _isHoldingBlock = isHoldingBlock;
         }
 
         Vector2Int GetForwardGridPos(Transform transform)

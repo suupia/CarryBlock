@@ -5,6 +5,7 @@ using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
+using Projects.CarrySystem.Block.Interfaces;
 using UnityEngine;
 #nullable enable
 
@@ -16,14 +17,19 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly HoldActionExecutor _holdActionExecutor;
         readonly float _radius;
         readonly int _layerMask;
+        readonly  Collider[] _targetBuffer = new Collider[10];
+        IPlayerBlockPresenter? _presenter;
         
-       readonly  Collider[] _targetBuffer = new Collider[10];
         
         public PassActionExecutor(HoldActionExecutor holdActionExecutor, float radius, int layerMask)
         {
             _holdActionExecutor = holdActionExecutor;
             _radius = radius;
             _layerMask = layerMask; /*LayerMask.GetMask("Player");*/
+        }
+        public void SetHoldPresenter(IPlayerBlockPresenter presenter)
+        {
+            _presenter = presenter;
         }
         public void Setup(PlayerInfo info)
         {
@@ -71,12 +77,17 @@ namespace Carry.CarrySystem.Player.Scripts
         public void PassBlock()
         {
             Debug.Log($"Pass Block");
+            _holdActionExecutor.SetIsHoldingBlock(false); // ここでHoldActionのIsHoldingBlockにアクセスるするのはよくない？　IsHoldを管理するクラスがあってもいいかも
+            _presenter?.PassBlock();
         }
         
         public void ReceivePass()
         {
             Debug.Log("Receive Pass");
+            _holdActionExecutor.SetIsHoldingBlock(true); 
+            _presenter?.ReceiveBlock();
         }
+        
         
         Transform[] Search()
         {

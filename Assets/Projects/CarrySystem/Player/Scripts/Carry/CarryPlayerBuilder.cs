@@ -47,7 +47,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
                     networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType);
-                    networkObj.GetComponent<HoldPresenter_Net>().Init(character);
+                    networkObj.GetComponent<PlayerBlockPresenterNet>().Init(character);
                 });
             
             // 各MonoBehaviourにドメインを設定
