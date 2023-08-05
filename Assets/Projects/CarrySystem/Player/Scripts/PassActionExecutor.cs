@@ -13,7 +13,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class PassActionExecutor : IPassActionExecutor
     {
         PlayerInfo _info = null!;
-        HoldActionExecutorExecutor _holdActionExecutorExecutor;
+        readonly HoldActionExecutorExecutor _holdActionExecutorExecutor;
         readonly float _radius;
         readonly int _layerMask;
         
@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _holdActionExecutorExecutor = holdActionExecutorExecutor;
             _radius = radius;
-            _layerMask = layerMask; /* LayerMask.GetMask("Player");*/
+            _layerMask = layerMask; /*LayerMask.GetMask("Player");*/
         }
         public void Setup(PlayerInfo info)
         {
@@ -50,15 +50,13 @@ namespace Carry.CarrySystem.Player.Scripts
                 
                 Debug.Log($"targetPlayerController: {targetPlayerController.name}, {targetPlayerController.Runner.LocalPlayer}に対してPassを試みます");
                 
-                // Passする側がPassできる状況にある
-                // Passを受ける側がPassを受け取れる状況にある
-                // this.playerController.Pass(targetPlayerController); 
-                // 的な処理を書く
                 
                 Debug.Log($"!_holdActionExecutorExecutor.IsHoldingBlock: {_holdActionExecutorExecutor.IsHoldingBlock}");
                 Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.Character.CanReceivePass()}");
                 
+                // Passする側がPassできる状況にある
                 if(! _holdActionExecutorExecutor.IsHoldingBlock)return;
+                // Passを受ける側がPassを受け取れる状況にある
                 if(!targetPlayerController.Character.CanReceivePass())return;
                 PassBlock();
                 targetPlayerController.Character.ReceivePass();

@@ -1,4 +1,5 @@
 using Carry.CarrySystem.Cart.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 using VContainer;
@@ -8,19 +9,19 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class MainCarryPlayerFactory : ICarryPlayerFactory
     {
-        readonly IObjectResolver _resolver;
+        readonly IMapUpdater _mapUpdater;
         readonly  HoldingBlockObserver  _holdingBlockObserver;
         [Inject]
-        public MainCarryPlayerFactory(IObjectResolver resolver , HoldingBlockObserver holdingBlockObserver)
+        public MainCarryPlayerFactory(IMapUpdater mapUpdater , HoldingBlockObserver holdingBlockObserver)
         {
-            _resolver = resolver;
+            _mapUpdater = mapUpdater;
             _holdingBlockObserver = holdingBlockObserver;
         }
         
         public ICharacter Create(PlayerColorType colorType)
         {
             var moveExe = new CorrectlyStopMoveExecutor();
-            var holdExe = new HoldActionExecutorExecutor(_resolver);
+            var holdExe = new HoldActionExecutorExecutor(_mapUpdater);
             _holdingBlockObserver.RegisterHoldAction(holdExe);
             var passExe = new PassActionExecutor(holdExe,10, LayerMask.GetMask("Player"));
             var character = new Character(moveExe, holdExe, passExe);

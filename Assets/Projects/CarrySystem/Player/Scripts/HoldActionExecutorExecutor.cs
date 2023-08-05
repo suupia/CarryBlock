@@ -18,17 +18,16 @@ namespace Carry.CarrySystem.Player.Scripts
     public class HoldActionExecutorExecutor : IHoldActionExecutor
     {
         public bool IsHoldingBlock => _isHoldingBlock;
-        IObjectResolver _resolver;
-        PlayerInfo _info;
-        EntityGridMap _map;
-        IMapUpdater _mapSwitcher;
+        readonly IMapUpdater _mapUpdater;
+        PlayerInfo _info = null!;
+        EntityGridMap _map = null!;
         IHoldActionPresenter? _presenter;
         bool _isHoldingBlock = false;
         IBlock? _holdingBlock = null;
 
-        public HoldActionExecutorExecutor(IObjectResolver resolver)
+        public HoldActionExecutorExecutor(IMapUpdater mapUpdater)
         {
-            _resolver = resolver;
+            _mapUpdater = mapUpdater;
         }
 
         public void SetHoldPresenter(IHoldActionPresenter presenter)
@@ -39,15 +38,14 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Setup(PlayerInfo info)
         {
             _info = info;
-            _mapSwitcher = _resolver.Resolve<IMapUpdater>();
-            _map = _mapSwitcher.GetMap();
+            _map = _mapUpdater.GetMap();
         }
 
         public void Reset()
         {
             _isHoldingBlock = false;
             _presenter?.PutDownRock();
-            _map = _mapSwitcher.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
+            _map = _mapUpdater.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
 
         public void HoldAction()
