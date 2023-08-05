@@ -1,6 +1,8 @@
-﻿using Carry.CarrySystem.Map.Scripts;
+﻿using System.Collections.Generic;
+using Carry.CarrySystem.Map.Scripts;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using BitStream = Fusion.Protocol.BitStream;
 
 namespace Carry.CarrySystem.Cart.Scripts
 {
@@ -37,7 +39,27 @@ namespace Carry.CarrySystem.Cart.Scripts
         /// <returns></returns>
         public int CalcContinuousCenter(bool[] array, int continuousNum)
         {
+            // var counter = 0;
+            // for (int i = 0; i < array.Length - 1; i++)
+            // {
+            //     if (array[i])
+            //     {
+            //         counter++;
+            //         if (counter == continuousNum)
+            //         {
+            //            return  continuousNum % 2 == 1 ? i - (continuousNum -1 ) / 2 : i - continuousNum / 2;
+            //         }
+            //     }
+            //     else
+            //     {
+            //         counter = 0;
+            //     }
+            // }
+            //
+            // return -1;
+
             var counter = 0;
+            List<int> centerList = new List<int>();
             for (int i = 0; i < array.Length - 1; i++)
             {
                 if (array[i])
@@ -45,7 +67,9 @@ namespace Carry.CarrySystem.Cart.Scripts
                     counter++;
                     if (counter == continuousNum)
                     {
-                       return  continuousNum % 2 == 1 ? i - (continuousNum -1 ) / 2 : i - continuousNum / 2;
+                        int continuousCenter = continuousNum % 2 == 1 ? i - (continuousNum -1 ) / 2 : i - continuousNum / 2;
+                        centerList.Add(continuousCenter);
+                        counter--;
                     }
                 }
                 else
@@ -53,8 +77,12 @@ namespace Carry.CarrySystem.Cart.Scripts
                     counter = 0;
                 }
             }
-
-            return -1;
+            if (centerList.Count == 0)
+            {
+                return -1;
+            }
+            int centerListMiddle = centerList.Count % 2 == 1 ? ((centerList.Count)-1) / 2 : centerList.Count / 2 -1;
+            return centerList[centerListMiddle];
         }
         
         public bool CanCartReachRightEdge(bool[] accessibleArea, SquareGridMap map, SearcherSize searcherSize)
