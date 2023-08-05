@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             // ToDo: switch文で分ける
             var moveExe = new QuickTurnMoveExecutor();
-            var holdExe = new HoldActionExecutorExecutor(_mapUpdater);
+            var holdExe = new HoldActionExecutor(_mapUpdater);
             var passExe = new PassActionExecutor(holdExe,10, LayerMask.GetMask("Player"));
             var character = new Character(moveExe, holdExe, passExe);
             return character;

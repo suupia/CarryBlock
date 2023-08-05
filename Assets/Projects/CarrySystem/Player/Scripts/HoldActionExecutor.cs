@@ -15,7 +15,7 @@ using Projects.CarrySystem.Block.Interfaces;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class HoldActionExecutorExecutor : IHoldActionExecutor
+    public class HoldActionExecutor : IHoldActionExecutor
     {
         public bool IsHoldingBlock => _isHoldingBlock;
         readonly IMapUpdater _mapUpdater;
@@ -25,7 +25,7 @@ namespace Carry.CarrySystem.Player.Scripts
         bool _isHoldingBlock = false;
         IBlock? _holdingBlock = null;
 
-        public HoldActionExecutorExecutor(IMapUpdater mapUpdater)
+        public HoldActionExecutor(IMapUpdater mapUpdater)
         {
             _mapUpdater = mapUpdater;
         }

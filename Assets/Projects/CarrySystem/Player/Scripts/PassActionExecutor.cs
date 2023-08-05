@@ -13,15 +13,15 @@ namespace Carry.CarrySystem.Player.Scripts
     public class PassActionExecutor : IPassActionExecutor
     {
         PlayerInfo _info = null!;
-        readonly HoldActionExecutorExecutor _holdActionExecutorExecutor;
+        readonly HoldActionExecutor _holdActionExecutor;
         readonly float _radius;
         readonly int _layerMask;
         
        readonly  Collider[] _targetBuffer = new Collider[10];
         
-        public PassActionExecutor(HoldActionExecutorExecutor holdActionExecutorExecutor, float radius, int layerMask)
+        public PassActionExecutor(HoldActionExecutor holdActionExecutor, float radius, int layerMask)
         {
-            _holdActionExecutorExecutor = holdActionExecutorExecutor;
+            _holdActionExecutor = holdActionExecutor;
             _radius = radius;
             _layerMask = layerMask; /*LayerMask.GetMask("Player");*/
         }
@@ -51,11 +51,11 @@ namespace Carry.CarrySystem.Player.Scripts
                 Debug.Log($"targetPlayerController: {targetPlayerController.name}, {targetPlayerController.Runner.LocalPlayer}に対してPassを試みます");
                 
                 
-                Debug.Log($"!_holdActionExecutorExecutor.IsHoldingBlock: {_holdActionExecutorExecutor.IsHoldingBlock}");
+                Debug.Log($"!_holdActionExecutorExecutor.IsHoldingBlock: {_holdActionExecutor.IsHoldingBlock}");
                 Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.Character.CanReceivePass()}");
                 
                 // Passする側がPassできる状況にある
-                if(! _holdActionExecutorExecutor.IsHoldingBlock)return;
+                if(! _holdActionExecutor.IsHoldingBlock)return;
                 // Passを受ける側がPassを受け取れる状況にある
                 if(!targetPlayerController.Character.CanReceivePass())return;
                 PassBlock();
@@ -65,7 +65,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public bool CanReceivePass()
         {
-            return !_holdActionExecutorExecutor.IsHoldingBlock;
+            return !_holdActionExecutor.IsHoldingBlock;
         }
 
         public void PassBlock()

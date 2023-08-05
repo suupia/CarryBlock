@@ -21,7 +21,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public ICharacter Create(PlayerColorType colorType)
         {
             var moveExe = new CorrectlyStopMoveExecutor();
-            var holdExe = new HoldActionExecutorExecutor(_mapUpdater);
+            var holdExe = new HoldActionExecutor(_mapUpdater);
             _holdingBlockObserver.RegisterHoldAction(holdExe);
             var passExe = new PassActionExecutor(holdExe,10, LayerMask.GetMask("Player"));
             var character = new Character(moveExe, holdExe, passExe);
