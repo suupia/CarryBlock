@@ -79,7 +79,4 @@ public class ReachRightEdgeCheckerTest
         var result = reachRightEdgeChecker.CalcContinuousCenter(testArray, 3);
         Assert.That(result, Is.EqualTo(3));
     }
-    
-    // 配列が偶数、配列が空、countinuousNumが偶数、countinuousNumが0、countinuousNumが配列の長さ以上、などのテストを追加
-    // エラーが出ないようにいい感じに実装する
 }

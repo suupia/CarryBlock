@@ -39,25 +39,6 @@ namespace Carry.CarrySystem.Cart.Scripts
         /// <returns></returns>
         public int CalcContinuousCenter(bool[] array, int continuousNum)
         {
-            // var counter = 0;
-            // for (int i = 0; i < array.Length - 1; i++)
-            // {
-            //     if (array[i])
-            //     {
-            //         counter++;
-            //         if (counter == continuousNum)
-            //         {
-            //            return  continuousNum % 2 == 1 ? i - (continuousNum -1 ) / 2 : i - continuousNum / 2;
-            //         }
-            //     }
-            //     else
-            //     {
-            //         counter = 0;
-            //     }
-            // }
-            //
-            // return -1;
-
             var counter = 0;
             List<int> centerList = new List<int>();
             for (int i = 0; i < array.Length - 1; i++)
