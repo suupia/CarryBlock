@@ -24,7 +24,7 @@ namespace Carry.CarrySystem.Player.Scripts
         // ドメインの情報を持ってはいけない
         public struct PresentData : INetworkStruct
         {
-            public BlockType HoldingBlockType;
+            [Networked] public Int16 HoldingBlockType { get; set; } // enumは共有できないので、int16で送る
         }
         Dictionary<BlockType, GameObject> blockTypeToGameObjectMap = new Dictionary<BlockType, GameObject>();
 
@@ -44,7 +44,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         public override void Render()
         {
-            BlockType currentBlockType = PresentDataRef.HoldingBlockType;
+            BlockType currentBlockType = (BlockType)PresentDataRef.HoldingBlockType;
 
             foreach (var blockType in blockTypeToGameObjectMap.Keys)
             {
@@ -62,28 +62,29 @@ namespace Carry.CarrySystem.Player.Scripts
         // 以下の処理はアニメーション、音、エフェクトの再生を行いたくなったら、それぞれのクラスの対応するメソッドを呼ぶようにするかも
         public void PickUpBlock(IBlock block)
         {
-            PresentDataRef.HoldingBlockType = block switch
+            var blockType  = block switch
             {
                 BasicBlock _ => BlockType.BasicBlock,
                 UnmovableBlock _ => BlockType.UnmovableBlock,
                 HeavyBlock _ => BlockType.HeavyBlock,
                 _ => throw new ArgumentOutOfRangeException(nameof(block), block, null)
             };
+            PresentDataRef.HoldingBlockType = (Int16)blockType;
         }
 
         public void PutDownBlock()
         {
-            PresentDataRef.HoldingBlockType = BlockType.None;
+            PresentDataRef.HoldingBlockType = (Int16)BlockType.None;
         }
         
         public void ReceiveBlock()
         {
-            PresentDataRef.HoldingBlockType = BlockType.BasicBlock;
+            PresentDataRef.HoldingBlockType = (Int16)BlockType.BasicBlock;
         }
         
         public void PassBlock()
         {
-            PresentDataRef.HoldingBlockType = BlockType.None;
+            PresentDataRef.HoldingBlockType = (Int16)BlockType.None;
         }
     }
 }
