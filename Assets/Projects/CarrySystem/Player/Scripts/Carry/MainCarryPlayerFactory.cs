@@ -11,12 +11,12 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         readonly IMapUpdater _mapUpdater;
         readonly  HoldingBlockObserver  _holdingBlockObserver;
-        readonly MoveExecutorContainer _moveExecutorContainer;
+        readonly IMoveExecutorContainer _moveExecutorContainer;
         [Inject]
         public MainCarryPlayerFactory(
             IMapUpdater mapUpdater ,
             HoldingBlockObserver holdingBlockObserver,
-            MoveExecutorContainer moveExecutorContainer
+            IMoveExecutorContainer moveExecutorContainer
             )
         {
             _mapUpdater = mapUpdater;
@@ -26,7 +26,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public ICharacter Create(PlayerColorType colorType)
         {
-            var moveExe = _moveExecutorContainer.RegularMoveExecutor;
+            var moveExe = _moveExecutorContainer;
             var blockContainer = new PlayerBlockContainer();
             var holdExe = new HoldActionExecutor(blockContainer,_mapUpdater);
             _holdingBlockObserver.RegisterHoldAction(blockContainer);

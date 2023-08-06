@@ -30,7 +30,7 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             // NetworkRunnerに依存するスクリプト
 
             // Player
-            builder.Register<MoveExecutorContainer>(Lifetime.Scoped);
+            builder.Register<MoveExecutorContainer>(Lifetime.Scoped).As<IMoveExecutorContainer>();
             builder.Register<MainLobbyPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
             builder.Register<LobbyPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);

@@ -11,15 +11,17 @@ namespace Carry.CarrySystem.Player.Scripts
     public class MockPlayerFactory : ICarryPlayerFactory
     {
         readonly IMapUpdater _mapUpdater;
+        readonly IMoveExecutorContainer _moveExecutorContainer;
         [Inject]
-        public MockPlayerFactory(IMapUpdater mapUpdater)
+        public MockPlayerFactory(IMapUpdater mapUpdater,  MoveExecutorContainer moveExecutorContainer)
         {
             _mapUpdater = mapUpdater;
+            _moveExecutorContainer = moveExecutorContainer;
         }
         public ICharacter Create(PlayerColorType colorType)
         {
             // ToDo: switch文で分ける
-            var moveExe = new QuickTurnMoveExecutor();
+            var moveExe = _moveExecutorContainer;
             var blockContainer = new PlayerBlockContainer();
             var holdExe = new HoldActionExecutor(blockContainer,_mapUpdater);
             var passExe = new PassActionExecutor(blockContainer, holdExe,10, LayerMask.GetMask("Player"));

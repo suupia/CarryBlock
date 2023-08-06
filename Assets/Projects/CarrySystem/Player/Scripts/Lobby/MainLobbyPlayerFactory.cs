@@ -6,16 +6,16 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class MainLobbyPlayerFactory : ICarryPlayerFactory
     {
-        readonly MoveExecutorContainer _moveExecutorContainer;
+        readonly IMoveExecutorContainer _moveExecutorContainer;
         [Inject]
-        public MainLobbyPlayerFactory(MoveExecutorContainer moveExecutorContainer)
+        public MainLobbyPlayerFactory(IMoveExecutorContainer moveExecutorContainer)
         {
             _moveExecutorContainer = moveExecutorContainer;
         }
 
         public ICharacter Create(PlayerColorType colorType)
         {
-            var moveExe = _moveExecutorContainer.RegularMoveExecutor;
+            var moveExe = _moveExecutorContainer;
             var blockContainer = new PlayerBlockContainer();
             var holdExe = new EmptyHoldActionExecutor();
             var passExe = new EmptyPassActionExecutor();

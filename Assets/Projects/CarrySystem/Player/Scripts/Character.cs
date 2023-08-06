@@ -10,18 +10,18 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class Character : ICharacter
     {
-        readonly IMoveExecutor _moveExecutor;
+        readonly IMoveExecutorContainer _moveExecutorContainer;
         readonly IHoldActionExecutor _holdActionExecutor;
         readonly IPassActionExecutor _passActionExecutor;
         readonly PlayerBlockContainer _blockContainer;
         
         public Character(
-            IMoveExecutor moveExecutor, 
+            IMoveExecutorContainer moveExecutorContainer, 
             IHoldActionExecutor holdActionExecutor,
             IPassActionExecutor passActionExecutor,
             PlayerBlockContainer blockContainer)
         {
-            _moveExecutor = moveExecutor;
+            _moveExecutorContainer = moveExecutorContainer;
             _holdActionExecutor = holdActionExecutor;
             _passActionExecutor = passActionExecutor;
             _blockContainer = blockContainer;
@@ -35,7 +35,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Setup(PlayerInfo info)
         {
-            _moveExecutor.Setup(info);
+            _moveExecutorContainer.Setup(info);
             _holdActionExecutor.Setup(info);
             _passActionExecutor.Setup(info);
             info.playerRb.useGravity = true;
@@ -43,7 +43,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Move(Vector3 direction)
         {
-            _moveExecutor.Move(direction);
+            _moveExecutorContainer.Move(direction);
         }
         
         public void SetHoldPresenter(IPlayerBlockPresenter presenter)
