@@ -50,7 +50,6 @@ namespace Carry.CarrySystem.Player.Scripts
         public override void Render()
         {
             BlockType currentBlockType = (BlockType)PresentDataRef.HoldingBlockType;
-            Debug.Log($"Render: {currentBlockType}, Int16: {PresentDataRef.HoldingBlockType}");
 
             foreach (var blockType in blockTypeToGameObjectMap.Keys)
             {
@@ -76,8 +75,6 @@ namespace Carry.CarrySystem.Player.Scripts
                 _ => throw new ArgumentOutOfRangeException(nameof(block), block, null)
             };
             PresentDataRef.HoldingBlockType = (Int16)blockType;
-            Debug.Log($"PickUpBlock: {blockType}, Int16: {PresentDataRef.HoldingBlockType}");
-
         }
 
         public void PutDownBlock()
