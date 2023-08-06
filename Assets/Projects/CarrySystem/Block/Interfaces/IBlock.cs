@@ -3,7 +3,7 @@ using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using UnityEngine;
 
-namespace Projects.CarrySystem.Block.Interfaces
+namespace Carry.CarrySystem.Block.Interfaces
 {
     public interface IBlock : IEntity
     {

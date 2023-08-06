@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
-using Projects.CarrySystem.Block.Interfaces;
 using UnityEngine;
 
-namespace Projects.CarrySystem.Block.Scripts
+namespace Carry.CarrySystem.Block.Scripts
 {
     // JSONファイルに書き出すためにSerializableをつける
     [Serializable]

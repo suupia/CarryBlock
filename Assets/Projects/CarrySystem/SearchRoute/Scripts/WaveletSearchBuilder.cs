@@ -7,8 +7,6 @@ using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners;
 using Fusion;
 using JetBrains.Annotations;
-using Projects.CarrySystem.Block.Interfaces;
-using Projects.CarrySystem.Block.Scripts;
 using UnityEngine;
 using VContainer;
 #nullable  enable
