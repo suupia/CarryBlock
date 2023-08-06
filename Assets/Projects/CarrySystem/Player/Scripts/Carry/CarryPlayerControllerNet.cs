@@ -14,7 +14,6 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class CarryPlayerControllerNet : AbstractNetworkPlayerController
     {
-        public ICharacter Character => _character;
         
         [SerializeField]  Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
         public Transform InterpolationTransform => unitObjectParent;
@@ -34,7 +33,6 @@ namespace Carry.CarrySystem.Player.Scripts
         // PlayerDecorationDetector _decorationDetector;
         
         
-        ICharacter _character = null!;
         GameObject _characterObj= null!;
         
         bool _isSpawned; // FixedUpdateNetwork()が呼ばれる前にSpawned()が呼ばれるため必要ないと言えば必要ない
@@ -42,16 +40,16 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Init(ICharacter character, PlayerColorType colorType)
         {
             Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
-            _character = character;
+            this.character = character;
             ColorType = colorType;
         }
 
         public override void Spawned()
         {
-            Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {_character}");
+            Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {character}");
 
             // init info
-            info.Init(Runner, gameObject);
+            info.Init(Runner, gameObject, this);
 
             // Instantiate the character.
             InstantiateCharacter();
@@ -86,19 +84,19 @@ namespace Carry.CarrySystem.Player.Scripts
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
-                    _character.HoldAction();
+                    character.HoldAction();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))
                 {
-                    _character.PassAction();
+                    character.PassAction();
                 }
 
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
                 // Debug.Log($"_character = {_character}");
-                _character.Move( direction);
+                character.Move( direction);
 
                 PreButtons = input.Buttons;
             }
@@ -136,7 +134,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var prefab = playerUnitPrefabs[(int)ColorType];
             _characterObj = Instantiate(prefab, unitObjectParent);
 
-            _character?.Setup(info);
+            character?.Setup(info);
             
             // Play spawn animation
             // _decorationDetector.OnSpawned();
@@ -145,7 +143,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Reset()
         {
             // フロア移動の際に呼ばれる
-            _character?.Reset();
+            character?.Reset();
             SetToOrigin();
         }
 

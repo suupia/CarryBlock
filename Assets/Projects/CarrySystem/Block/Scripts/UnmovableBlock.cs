@@ -5,6 +5,7 @@ using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
+using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 #nullable  enable
 
@@ -40,7 +41,7 @@ namespace Carry.CarrySystem.Block.Scripts
             return false;  // 常に持ち上げられない
         }
 
-        public void  PickUp()
+        public void  PickUp(ICharacter character)
         {
             // 特になし
         }
@@ -50,7 +51,7 @@ namespace Carry.CarrySystem.Block.Scripts
             return false; // 常に置けない
         }
         
-        public void PutDown()
+        public void PutDown(ICharacter character)
         {
             // 特になし
         }

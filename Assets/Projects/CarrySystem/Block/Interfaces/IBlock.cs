@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
+using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 
 namespace Carry.CarrySystem.Block.Interfaces
@@ -9,9 +10,9 @@ namespace Carry.CarrySystem.Block.Interfaces
     {
         int MaxPlacedBlockCount { get; }
         bool CanPickUp();
-        void PickUp();
+        void PickUp(ICharacter character);
         bool CanPutDown(IList<IBlock> blocks);
-        void PutDown();
+        void PutDown(ICharacter character);
     }
 
     public enum BlockType

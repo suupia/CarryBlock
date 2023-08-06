@@ -41,9 +41,10 @@ namespace Carry.CarrySystem.Block.Scripts
             return true;  // basicが持ち上げられない状況はない
         }
 
-        public void  PickUp()
+        public void  PickUp(ICharacter character)
         {
-            // 特になし
+            // 移動速度を遅くする
+            character.SetSlowMoveExecutor();
         }
 
         public bool CanPutDown(IList<IBlock> blocks)
@@ -61,9 +62,10 @@ namespace Carry.CarrySystem.Block.Scripts
             return true;
         }
         
-        public void PutDown() 
+        public void PutDown(ICharacter character) 
         {
-            // 特になし
+            // 移動速度を元に戻す
+            character.SetRegularMoveExecutor();
         }
     }
 }

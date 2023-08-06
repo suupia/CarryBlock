@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
+using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 
 namespace Carry.CarrySystem.Block.Scripts
@@ -38,7 +39,7 @@ namespace Carry.CarrySystem.Block.Scripts
             return true;  // basicが持ち上げられない状況はない
         }
 
-        public void  PickUp()
+        public void  PickUp(ICharacter character)
         {
             // 特になし
         }
@@ -58,7 +59,7 @@ namespace Carry.CarrySystem.Block.Scripts
             return true;
         }
         
-        public void PutDown()
+        public void PutDown(ICharacter character)
         {
            // 特になし
         }

@@ -41,11 +41,15 @@ namespace Carry.CarrySystem.Player.Scripts
             info.playerRb.useGravity = true;
         }
 
+        // MoveExecutorContainer
         public void Move(Vector3 direction)
         {
             _moveExecutorContainer.Move(direction);
         }
+        public void SetRegularMoveExecutor() => _moveExecutorContainer.SetRegularMoveExecutor();
+        public void SetSlowMoveExecutor() => _moveExecutorContainer.SetSlowMoveExecutor();
         
+        // HoldActionExecutor
         public void SetHoldPresenter(IPlayerBlockPresenter presenter)
         {
             _blockContainer.SetHoldPresenter(presenter);
@@ -56,7 +60,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _holdActionExecutor.HoldAction();
         }
         
-        // PassAction
+        // PassActionExecutor
         public void PassAction() => _passActionExecutor.PassAction();
         public bool CanReceivePass() => _passActionExecutor.CanReceivePass();
         public void ReceivePass(IBlock block) => _passActionExecutor.ReceivePass(block);

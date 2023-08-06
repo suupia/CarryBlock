@@ -12,8 +12,8 @@ using PlayerInfo = Carry.CarrySystem.Player.Info.PlayerInfo;
 namespace Carry.CarrySystem.Player.Scripts
 {
     public class LobbyPlayerControllerNet : AbstractNetworkPlayerController
-    {
-               [SerializeField]  Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
+    { 
+        [SerializeField]  Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
         public Transform InterpolationTransform => unitObjectParent;
 
         [SerializeField] GameObject cameraPrefab= null!;
@@ -49,7 +49,7 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log($"LobbyPlayerControllerNet.Spawned(), _character = {_character}");
 
             // init info
-            info.Init(Runner, gameObject);
+            info.Init(Runner, gameObject,this);
             
             // Set camera
             if (Object.HasInputAuthority)
