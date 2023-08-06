@@ -36,7 +36,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Reset()
         {
-            _blockContainer.IsHoldingBlock = false;
+            var _ =  _blockContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
             _blockContainer.Presenter.PutDownBlock();
             _map = _mapUpdater.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
@@ -54,18 +54,18 @@ namespace Carry.CarrySystem.Player.Scripts
 
             if (_blockContainer.IsHoldingBlock)
             {
-                if (_blockContainer.HoldingBlock == null)
+                var block = _blockContainer.PopBlock();
+                if (block == null)
                 {
-                    Debug.LogError($"_holdingBlockがnullです");
+                    Debug.LogError($" _blockContainer.PopBlock() : null");
                     return;
                 }
 
-                if (_blockContainer.HoldingBlock.CanPutDown(blocks))
+                if (block.CanPutDown(blocks))
                 {
-                    _blockContainer.HoldingBlock.PutDown();
-                    _map.AddEntity(forwardGridPos, _blockContainer.HoldingBlock);
+                    block.PutDown();
+                    _map.AddEntity(forwardGridPos, block);
                     _blockContainer.Presenter.PutDownBlock();
-                    _blockContainer.IsHoldingBlock = false;
                 }
             }
             else
@@ -79,8 +79,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     block.PickUp();
                     _map.RemoveEntity(forwardGridPos, block);
                     _blockContainer.Presenter.PickUpBlock();
-                    _blockContainer.HoldingBlock = block;
-                    _blockContainer.IsHoldingBlock = true;
+                    _blockContainer.SetBlock(block);
                 }
             }
         }

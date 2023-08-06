@@ -2,6 +2,7 @@
 using Fusion;
 using UnityEngine;
 using Carry.CarrySystem.Player.Info;
+using Projects.CarrySystem.Block.Interfaces;
 
 #nullable enable
 
@@ -58,7 +59,6 @@ namespace Carry.CarrySystem.Player.Scripts
         // PassAction
         public void PassAction() => _passActionExecutor.PassAction();
         public bool CanReceivePass() => _passActionExecutor.CanReceivePass();
-        public void PassBlock() => _passActionExecutor.PassBlock();
-        public void ReceivePass() => _passActionExecutor.ReceivePass();
+        public void ReceivePass(IBlock block) => _passActionExecutor.ReceivePass(block);
     }
 }

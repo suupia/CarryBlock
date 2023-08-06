@@ -19,10 +19,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly int _layerMask;
         readonly  Collider[] _targetBuffer = new Collider[10];
         readonly PlayerBlockContainer _blockContainer;
-        
-        // HoldActionと結合度が上がるのは見逃す
-        // 持っているブロックを管理するクラスを作成するとうまくいくかもしれない
-        
+
         public PassActionExecutor(
             PlayerBlockContainer blockContainer,
             HoldActionExecutor holdActionExecutor,
@@ -63,12 +60,28 @@ namespace Carry.CarrySystem.Player.Scripts
                 Debug.Log($"!_blockContainer.IsHoldingBlock: {_blockContainer.IsHoldingBlock}");
                 Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.Character.CanReceivePass()}");
                 
-                // Passする側がPassできる状況にある
-                if(! _blockContainer.IsHoldingBlock)return;
-                // Passを受ける側がPassを受け取れる状況にある
-                if(!targetPlayerController.Character.CanReceivePass())return;
-                PassBlock();
-                targetPlayerController.Character.ReceivePass();
+                // // Passする側がPassできる状況にある
+                // if(! _blockContainer.IsHoldingBlock)return;
+                // // Passを受ける側がPassを受け取れる状況にある
+                // if(!targetPlayerController.Character.CanReceivePass())return;
+                //   PassBlock();
+                // targetPlayerController.Character.ReceivePass();
+                
+                var block = _blockContainer.PopBlock();
+                if (block == null) 
+                {
+                    Debug.Log($"block is null. So, can't pass block");
+                    return;
+                }
+                Debug.Log($"Pass Block");
+                _blockContainer.Presenter.PassBlock();
+                if (!targetPlayerController.Character.CanReceivePass())
+                {
+                    Debug.Log($"receive pass is not possible. So, return block");
+                    return;
+                }
+                Debug.Log($"Receive Pass");
+                targetPlayerController.Character.ReceivePass(block);
             }
         }
 
@@ -76,20 +89,12 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             return !_blockContainer.IsHoldingBlock;
         }
-
-        public void PassBlock()
-        {
-            Debug.Log($"Pass Block");
-            _blockContainer.IsHoldingBlock = false;
-            _blockContainer.Presenter.PassBlock();
-        }
         
-        public void ReceivePass()
+        public void ReceivePass(IBlock block)
         {
             Debug.Log("Receive Pass");
-            _blockContainer.IsHoldingBlock = true;
+            _blockContainer.SetBlock(block);
             _blockContainer.Presenter.ReceiveBlock();
-
         }
         
         

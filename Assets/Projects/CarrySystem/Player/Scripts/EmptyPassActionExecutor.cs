@@ -1,5 +1,6 @@
 ﻿using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
+using Projects.CarrySystem.Block.Interfaces;
 using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
@@ -35,7 +36,7 @@ namespace Carry.CarrySystem.Player.Scripts
             
         }
         
-        public void ReceivePass()
+        public void ReceivePass(IBlock block)
         {
             
         }

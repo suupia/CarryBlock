@@ -1,4 +1,5 @@
 ﻿using Carry.CarrySystem.Player.Info;
+using Projects.CarrySystem.Block.Interfaces;
 
 namespace Carry.CarrySystem.Player.Interfaces
 {
@@ -10,7 +11,6 @@ namespace Carry.CarrySystem.Player.Interfaces
 
         bool CanReceivePass();
 
-        void PassBlock();
-        void ReceivePass();
+        void ReceivePass(IBlock block);
     }
 }
