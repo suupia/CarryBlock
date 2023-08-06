@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Map.Interfaces;
+﻿using System.Collections.Generic;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
@@ -10,6 +11,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class PlayerBlockContainer
     {
         public bool IsHoldingBlock => _isHoldingBlock;
+        public bool CanPutDown(IList<IBlock> blocks) => _holdingBlock?.CanPutDown(blocks) ?? false;
         public IPlayerBlockPresenter Presenter => _presenter;
         
         readonly IMapUpdater _mapUpdater;

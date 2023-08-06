@@ -60,12 +60,6 @@ namespace Carry.CarrySystem.Player.Scripts
                 Debug.Log($"!_blockContainer.IsHoldingBlock: {_blockContainer.IsHoldingBlock}");
                 Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.Character.CanReceivePass()}");
                 
-                // // Passする側がPassできる状況にある
-                // if(! _blockContainer.IsHoldingBlock)return;
-                // // Passを受ける側がPassを受け取れる状況にある
-                // if(!targetPlayerController.Character.CanReceivePass())return;
-                //   PassBlock();
-                // targetPlayerController.Character.ReceivePass();
                 
                 var block = _blockContainer.PopBlock();
                 if (block == null) 

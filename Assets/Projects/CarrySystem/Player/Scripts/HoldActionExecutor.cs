@@ -47,22 +47,25 @@ namespace Carry.CarrySystem.Player.Scripts
 
             // 前方のGridPosを取得
             var forwardGridPos = GetForwardGridPos(transform);
+            
+            // 前方にGroundがあるかどうかを確認
+            var grounds = _map.GetSingleEntityList<Ground>(forwardGridPos);
+            if(!grounds.Any()) return;
 
-            // そのGridPosにBlockがあるかどうかを確認
+            // 前方にBlockがあるかどうかを確認
             var blocks = _map.GetSingleEntityList<IBlock>(forwardGridPos);
             Debug.Log($"forwardGridPos: {forwardGridPos}, blocks: {string.Join(",", blocks)}");
 
             if (_blockContainer.IsHoldingBlock)
             {
-                var block = _blockContainer.PopBlock();
-                if (block == null)
+                if (_blockContainer.CanPutDown(blocks))
                 {
-                    Debug.LogError($" _blockContainer.PopBlock() : null");
-                    return;
-                }
-
-                if (block.CanPutDown(blocks))
-                {
+                    var block = _blockContainer.PopBlock();
+                    if (block == null)
+                    {
+                        Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれない
+                        return;
+                    }
                     block.PutDown();
                     _map.AddEntity(forwardGridPos, block);
                     _blockContainer.Presenter.PutDownBlock();
