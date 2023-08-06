@@ -85,7 +85,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 }
                 else
                 {
-                    Debug.LogError("groundRecords is not initialized properly!");
+                    Debug.LogWarning("groundRecords is not initialized properly!");
                 }
                 
                 // BasicBlock
@@ -102,7 +102,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 }
                 else
                 {
-                    Debug.LogError("basicBlockRecords is not initialized properly!");
+                    Debug.LogWarning("basicBlockRecords is not initialized properly!");
                 }
 
                 // UnmovableBlock
@@ -119,7 +119,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 }
                 else
                 {
-                    Debug.LogError("rockRecords is not initialized properly!");
+                    Debug.LogWarning("rockRecords is not initialized properly!");
                 }
                 
                 // HeavyBlock
@@ -143,7 +143,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 }
                 else
                 {
-                    Debug.LogError("heavyBlockRecords is not initialized properly!");
+                    Debug.LogWarning("heavyBlockRecords is not initialized properly!");
                 }
             }
 
