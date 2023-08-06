@@ -81,7 +81,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     block.PickUp();
                     _map.RemoveEntity(forwardGridPos, block);
-                    _blockContainer.Presenter.PickUpBlock();
+                    _blockContainer.Presenter.PickUpBlock(block);
                     _blockContainer.SetBlock(block);
                 }
             }

@@ -13,4 +13,12 @@ namespace Carry.CarrySystem.Block.Interfaces
         bool CanPutDown(IList<IBlock> blocks);
         void PutDown();
     }
+
+    public enum BlockType
+    {
+        None,
+        BasicBlock,
+        UnmovableBlock,
+        HeavyBlock,
+    }
 }
