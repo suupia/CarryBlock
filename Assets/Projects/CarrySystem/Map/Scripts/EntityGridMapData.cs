@@ -13,10 +13,11 @@ namespace Carry.CarrySystem.Map.Scripts
         public int width;
         public int height;
         public GroundRecord[] groundRecords;
-        public RockRecord[] rockRecords;
         
         // Block
         public BasicBlockRecord[] basicBlockRecords;
+        public RockRecord[] rockRecords;
+        public HeavyBlockRecord[] heavyBlockRecords;
     }
 
     public enum MapKey

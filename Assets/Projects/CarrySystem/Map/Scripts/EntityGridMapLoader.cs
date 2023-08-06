@@ -87,24 +87,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 {
                     Debug.LogError("groundRecords is not initialized properly!");
                 }
-
-                // Rock
-                if (gridMapData.rockRecords != null)
-                {
-                    foreach (var kind in gridMapData.rockRecords[i].kinds)
-                    {
-                        if (kind != UnmovableBlock.Kind.None)
-                        {
-                            map.AddEntity(i, new UnmovableBlock(kind, map.ToVector(i)));
-
-                        }
-                    }
-                }
-                else
-                {
-                    Debug.LogError("rockRecords is not initialized properly!");
-                }
-
+                
                 // BasicBlock
                 if (gridMapData.basicBlockRecords != null)
                 {
@@ -120,6 +103,47 @@ namespace Carry.CarrySystem.Map.Scripts
                 else
                 {
                     Debug.LogError("basicBlockRecords is not initialized properly!");
+                }
+
+                // UnmovableBlock
+                if (gridMapData.rockRecords != null)
+                {
+                    foreach (var kind in gridMapData.rockRecords[i].kinds)
+                    {
+                        if (kind != UnmovableBlock.Kind.None)
+                        {
+                            map.AddEntity(i, new UnmovableBlock(kind, map.ToVector(i)));
+
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.LogError("rockRecords is not initialized properly!");
+                }
+                
+                // HeavyBlock
+                if (gridMapData.heavyBlockRecords != null)
+                {
+                    if (gridMapData.heavyBlockRecords.Length == map.GetLength())
+                    {
+                        foreach (var kind in gridMapData.heavyBlockRecords[i].kinds)
+                        {
+                            if (kind != HeavyBlock.Kind.None)
+                            {
+                                map.AddEntity(i, new HeavyBlock(kind, map.ToVector(i)));
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("heavyBlockRecords.Length is not equal to map.GetLength()!");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("heavyBlockRecords is not initialized properly!");
                 }
             }
 

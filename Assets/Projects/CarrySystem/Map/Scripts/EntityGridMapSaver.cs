@@ -24,12 +24,14 @@ namespace Carry.CarrySystem.Map.Scripts
             var groundRecords = new GroundRecord[mapLength];
             var rockRecords = new RockRecord[mapLength];
             var basicBlockRecords = new BasicBlockRecord[mapLength];
+            var heavyBlockRecords = new HeavyBlockRecord[mapLength];
             
             for (int i = 0; i < mapLength; i++)
             {
                 groundRecords[i] = new GroundRecord();
                 rockRecords[i] = new RockRecord();
                 basicBlockRecords[i] = new BasicBlockRecord();
+                heavyBlockRecords[i] = new HeavyBlockRecord();
             }
 
             for (int i = 0; i < mapLength; i++)
@@ -42,6 +44,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 
                 var basicBlocks = map.GetSingleEntityList<BasicBlock>(i);
                 basicBlockRecords[i].kinds = basicBlocks.Select(x => x.KindValue).ToArray();
+                
+                var heavyBlocks = map.GetSingleEntityList<HeavyBlock>(i);
+                heavyBlockRecords[i].kinds = heavyBlocks.Select(x => x.KindValue).ToArray();
             }
 
             // 保存するデータの作成
@@ -51,6 +56,7 @@ namespace Carry.CarrySystem.Map.Scripts
             entityGridMapData.rockRecords = rockRecords;
             entityGridMapData.groundRecords = groundRecords;
             entityGridMapData.basicBlockRecords = basicBlockRecords;
+            entityGridMapData.heavyBlockRecords = heavyBlockRecords;
 
             Save(entityGridMapData,key, mapDataIndex);
         }
