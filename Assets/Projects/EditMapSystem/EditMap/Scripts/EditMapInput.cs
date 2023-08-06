@@ -88,7 +88,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                          _blockPlacer.AddBlock(map,mouseGridPosOnGround,basicBlock );
                          break;
                      case EntityType.Rock:
-                         var rock = new Rock(Rock.Kind.Kind1,  mouseGridPosOnGround);
+                         var rock = new UnmovableBlock(UnmovableBlock.Kind.Kind1,  mouseGridPosOnGround);
                          _blockPlacer.AddBlock(map, mouseGridPosOnGround, rock);
                          break;
                  }
@@ -106,7 +106,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                         _blockPlacer.RemoveBlock<BasicBlock>(map,mouseGridPosOnGround );
                         break;
                     case EntityType.Rock:
-                        _blockPlacer.RemoveBlock<Rock>(map,mouseGridPosOnGround);
+                        _blockPlacer.RemoveBlock<UnmovableBlock>(map,mouseGridPosOnGround);
                         break;
                 }
             }

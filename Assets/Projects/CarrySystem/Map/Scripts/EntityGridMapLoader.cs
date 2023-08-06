@@ -93,9 +93,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 {
                     foreach (var kind in gridMapData.rockRecords[i].kinds)
                     {
-                        if (kind != Rock.Kind.None)
+                        if (kind != UnmovableBlock.Kind.None)
                         {
-                            map.AddEntity(i, new Rock(kind, map.ToVector(i)));
+                            map.AddEntity(i, new UnmovableBlock(kind, map.ToVector(i)));
 
                         }
                     }

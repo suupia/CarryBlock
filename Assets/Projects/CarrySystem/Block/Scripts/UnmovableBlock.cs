@@ -13,15 +13,15 @@ namespace Carry.CarrySystem.Entity.Scripts
     [Serializable]
     public record RockRecord
     {
-        public Rock.Kind[] kinds =new Rock.Kind[5];
+        public UnmovableBlock.Kind[] kinds =new UnmovableBlock.Kind[5];
     }
     
-    public class Rock : IBlock
+    public class UnmovableBlock : IBlock
     {
         public Vector2Int GridPosition { get; set; }
         public　int MaxPlacedBlockCount { get; } = 1;
         public bool BeingCarried { get; set; } = false;
-        public Rock.Kind KindValue { get; }
+        public UnmovableBlock.Kind KindValue { get; }
 
         public enum Kind
         {
@@ -29,7 +29,7 @@ namespace Carry.CarrySystem.Entity.Scripts
             Kind1,
         }
 
-        public Rock(Rock.Kind kind,Vector2Int gridPosition)
+        public UnmovableBlock(UnmovableBlock.Kind kind,Vector2Int gridPosition)
         {
             KindValue = kind;
             GridPosition = gridPosition;

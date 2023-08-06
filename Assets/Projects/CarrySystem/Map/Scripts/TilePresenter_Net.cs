@@ -75,7 +75,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             var allEntityList = allEntities.ToList();
             PresentDataRef.GroundCount = allEntityList.OfType<Ground>().Count();
-            PresentDataRef.RockCount = allEntityList.OfType<Rock>().Count();
+            PresentDataRef.RockCount = allEntityList.OfType<UnmovableBlock>().Count();
             PresentDataRef.BasicBlockCount = allEntityList.OfType<BasicBlock>().Count();
         }
 
@@ -86,7 +86,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 case Ground _:
                     PresentDataRef.GroundCount = count;
                     break;
-                case Rock _:
+                case UnmovableBlock _:
                     PresentDataRef.RockCount = count;
                     break;
                 case BasicBlock _:

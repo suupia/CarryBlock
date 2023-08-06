@@ -37,7 +37,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 var grounds = map.GetSingleEntityList<Ground>(i);
                 groundRecords[i].kinds = grounds.Select(x => x.KindValue).ToArray();
                 
-                var rocks = map.GetSingleEntityList<Rock>(i);
+                var rocks = map.GetSingleEntityList<UnmovableBlock>(i);
                 rockRecords[i].kinds = rocks.Select(x => x.KindValue).ToArray();
                 
                 var basicBlocks = map.GetSingleEntityList<BasicBlock>(i);
