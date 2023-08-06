@@ -8,16 +8,12 @@ namespace Carry.CarrySystem.Player.Scripts
     public class QuickTurnMoveExecutor : IMoveExecutor
     {
         PlayerInfo _info;
-         float _acceleration = 30f;
-         float _maxVelocity = 8f;
-         float _rotateTime  = 0.2f;
+         readonly float _acceleration = 30f;
+         readonly float _maxVelocity = 9f;
 
-        public void Setup(PlayerInfo info)
+         public void Setup(PlayerInfo info)
         {
             _info = info;
-            _acceleration = info.acceleration;
-            _maxVelocity = info.maxVelocity;
-            _rotateTime = info.targetRotationTime;
         }
         public void Move(Vector3 input)
         {
@@ -55,18 +51,14 @@ namespace Carry.CarrySystem.Player.Scripts
     public class MoveExecutor : IMoveExecutor
     {
         PlayerInfo _info= null!;
-         float _acceleration  = 30f;
-         float _maxVelocity = 8f;
-         float _targetRotationTime= 0.2f;
-         float _maxAngularVelocity = 100f;
-        
-        public void Setup(PlayerInfo info)
+        readonly float _acceleration  = 30f;
+        readonly float _maxVelocity = 9f;
+        readonly float _targetRotationTime= 0.2f;
+        readonly float _maxAngularVelocity = 100f;
+
+         public void Setup(PlayerInfo info)
         {
             _info = info;
-            _acceleration = info.acceleration;
-            _maxVelocity = info.maxVelocity;
-            _targetRotationTime = info.targetRotationTime;
-            _maxAngularVelocity = info.maxAngularVelocity;
         }
 
         public void Move(Vector3 input)

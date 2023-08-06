@@ -8,18 +8,13 @@ namespace Carry.CarrySystem.Player.Scripts
     public class CorrectlyStopMoveExecutor : IMoveExecutor
     {
         PlayerInfo _info;
-        float _acceleration = 60f;
-        float _maxVelocity = 16f;
-        float _rotateTime  = 0.4f;
-        float _stoppingForce = 5f;
+        readonly float _acceleration =  30f;
+        readonly float _maxVelocity = 9f;
+        readonly float _stoppingForce = 5f;
 
         public void Setup(PlayerInfo info)
         {
             _info = info;
-            _acceleration = info.acceleration;
-            _maxVelocity = info.maxVelocity;
-            _rotateTime = info.targetRotationTime;
-           
         }
         public void Move(Vector3 input)
         {
