@@ -47,45 +47,4 @@ namespace Carry.CarrySystem.Player.Scripts
             }
         }
     }
-
-    public class MoveExecutor : IMoveExecutor
-    {
-        PlayerInfo _info= null!;
-        readonly float _acceleration  = 30f;
-        readonly float _maxVelocity = 9f;
-        readonly float _targetRotationTime= 0.2f;
-        readonly float _maxAngularVelocity = 100f;
-
-         public void Setup(PlayerInfo info)
-        {
-            _info = info;
-        }
-
-        public void Move(Vector3 input)
-        {
-            var transform = _info.playerObj.transform;
-            var rb = _info.playerRb;
-            
-            var deltaAngle = Vector3.SignedAngle(transform.forward, input, Vector3.up);
-            // Debug.Log($"deltaAngle = {deltaAngle}");
-
-            if (input != Vector3.zero)
-            {
-                // Rotate if there is a difference of more than Epsilon degrees
-                if (Mathf.Abs(deltaAngle) >= float.Epsilon)
-                {
-                    var torque = (2 * deltaAngle) / Mathf.Sqrt(_targetRotationTime);
-                    rb.AddTorque(torque * Vector3.up, ForceMode.Acceleration);
-                }
-
-                if (rb.angularVelocity.magnitude >= rb.maxAngularVelocity)
-                    rb.angularVelocity = _maxAngularVelocity * rb.angularVelocity.normalized;
-
-                rb.AddForce(_acceleration * input, ForceMode.Acceleration);
-
-                if (rb.velocity.magnitude >= _maxVelocity)
-                    rb.velocity = _maxVelocity * rb.velocity.normalized;
-            }
-        }
-    }
 }
