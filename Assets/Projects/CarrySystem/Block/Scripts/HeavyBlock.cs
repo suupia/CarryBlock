@@ -21,7 +21,7 @@ namespace Carry.CarrySystem.Block.Scripts
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 2;
-        public BasicBlock.Kind KindValue { get; }
+        public Kind KindValue { get; }
 
         public enum Kind
         {
@@ -29,7 +29,7 @@ namespace Carry.CarrySystem.Block.Scripts
             Kind1,
         }
 
-        public HeavyBlock(BasicBlock.Kind kind, Vector2Int gridPosition)
+        public HeavyBlock(Kind kind, Vector2Int gridPosition)
         {
             KindValue = kind;
             GridPosition = gridPosition;

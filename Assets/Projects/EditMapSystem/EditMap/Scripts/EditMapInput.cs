@@ -33,7 +33,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         enum EntityType
         {
             BasicBlock,
-            Rock,
+            UnmovableBlock,
+            HeavyBlock,
         }
         
         [Inject]
@@ -87,9 +88,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                          var basicBlock = new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround);
                          _blockPlacer.AddBlock(map,mouseGridPosOnGround,basicBlock );
                          break;
-                     case EntityType.Rock:
+                     case EntityType.UnmovableBlock:
                          var rock = new UnmovableBlock(UnmovableBlock.Kind.Kind1,  mouseGridPosOnGround);
                          _blockPlacer.AddBlock(map, mouseGridPosOnGround, rock);
+                         break;
+                     case EntityType.HeavyBlock:
+                         var heavyBlock = new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround);
+                         _blockPlacer.AddBlock(map, mouseGridPosOnGround, heavyBlock);
                          break;
                  }
             }
@@ -105,19 +110,27 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                     case EntityType.BasicBlock:
                         _blockPlacer.RemoveBlock<BasicBlock>(map,mouseGridPosOnGround );
                         break;
-                    case EntityType.Rock:
+                    case EntityType.UnmovableBlock:
                         _blockPlacer.RemoveBlock<UnmovableBlock>(map,mouseGridPosOnGround);
+                        break;
+                    case EntityType.HeavyBlock:
+                        _blockPlacer.RemoveBlock<HeavyBlock>(map,mouseGridPosOnGround);
                         break;
                 }
             }
             
+            // 置くブロックを切り替える
             if(Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
             {
                 _entityType = EntityType.BasicBlock;
             }
             if(Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
             {
-                _entityType = EntityType.Rock;
+                _entityType = EntityType.UnmovableBlock;
+            }
+            if(Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+            {
+                _entityType = EntityType.HeavyBlock;
             }
 
             if (Input.GetKeyDown(KeyCode.S))

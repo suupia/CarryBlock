@@ -20,7 +20,8 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             public int GroundCount;
             public int BasicBlockCount;
-            public int RockCount;
+            public int UnmovableBlockCount;
+            public int HeavyBlockCount;
         }
 
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
@@ -31,6 +32,8 @@ namespace Carry.CarrySystem.Map.Scripts
         [SerializeField] GameObject doubleRockObject= null!;
         [SerializeField] GameObject basicBlockObject= null!;
         [SerializeField] GameObject doubleBasicBlockObject= null!;
+        [SerializeField] GameObject heavyBlockObject = null!;
+        [SerializeField] GameObject doubleHeavyBlockObject = null!;
         
         public override void Render()
         {
@@ -41,20 +44,21 @@ namespace Carry.CarrySystem.Map.Scripts
                 _ => throw new InvalidOperationException($"GroundCount : {PresentDataRef.GroundCount}")
             });
             
-            rockObject.SetActive(PresentDataRef.RockCount switch
+            // UnmovableBlock
+            rockObject.SetActive(PresentDataRef.UnmovableBlockCount switch
             {
                 0 or 2 => false,
                 1 => true,
-                _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.RockCount}")
+                _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.UnmovableBlockCount}")
             });
-
-            doubleRockObject.SetActive(PresentDataRef.RockCount switch
+            doubleRockObject.SetActive(PresentDataRef.UnmovableBlockCount switch
             {
                 0 or 1 => false,
                 2 => true,
-                _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.RockCount}")
+                _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.UnmovableBlockCount}")
             });
             
+            // BasicBlock
             basicBlockObject.SetActive(PresentDataRef.BasicBlockCount switch
             {
                 0 or 2 => false,
@@ -67,7 +71,20 @@ namespace Carry.CarrySystem.Map.Scripts
                 2 => true,
                 _ => throw new InvalidOperationException($"BasicBlockCount : {PresentDataRef.BasicBlockCount}")
             });
-
+            
+            // HeavyBlock
+            heavyBlockObject.SetActive(PresentDataRef.HeavyBlockCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"HeavyBlockCount : {PresentDataRef.HeavyBlockCount}")
+            });
+            doubleHeavyBlockObject.SetActive(PresentDataRef.HeavyBlockCount switch
+            {
+                0 or 1 => false,
+                2 => true,
+                _ => throw new InvalidOperationException($"HeavyBlockCount : {PresentDataRef.HeavyBlockCount}")
+            });
         }
         
 
@@ -75,8 +92,9 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             var allEntityList = allEntities.ToList();
             PresentDataRef.GroundCount = allEntityList.OfType<Ground>().Count();
-            PresentDataRef.RockCount = allEntityList.OfType<UnmovableBlock>().Count();
             PresentDataRef.BasicBlockCount = allEntityList.OfType<BasicBlock>().Count();
+            PresentDataRef.UnmovableBlockCount = allEntityList.OfType<UnmovableBlock>().Count();
+            PresentDataRef.HeavyBlockCount = allEntityList.OfType<HeavyBlock>().Count();
         }
 
         public void SetEntityActiveData(IEntity entity, int count) 
@@ -86,11 +104,14 @@ namespace Carry.CarrySystem.Map.Scripts
                 case Ground _:
                     PresentDataRef.GroundCount = count;
                     break;
-                case UnmovableBlock _:
-                    PresentDataRef.RockCount = count;
-                    break;
                 case BasicBlock _:
                     PresentDataRef.BasicBlockCount = count;
+                    break;
+                case UnmovableBlock _:
+                    PresentDataRef.UnmovableBlockCount = count;
+                    break;
+                case HeavyBlock _:
+                    PresentDataRef.HeavyBlockCount = count;
                     break;
                 default:
                     throw new System.Exception("想定外のEntityが渡されました");
