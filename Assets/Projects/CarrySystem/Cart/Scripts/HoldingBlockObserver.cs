@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.Cart.Scripts
     public class HoldingBlockObserver
     {
         public bool IsMapClear { get; private set; }
-        readonly List<HoldActionExecutor> _holdActions = new List<HoldActionExecutor>();
+        readonly List<PlayerBlockContainer> _playerBlockContainers = new List<PlayerBlockContainer>();
         readonly IMapUpdater _mapUpdater;
         readonly WaveletSearchBuilder _waveletSearchBuilder;
         readonly CartMovementNotifierNet _cartMovementNotifierNet;
@@ -52,13 +52,13 @@ namespace Carry.CarrySystem.Cart.Scripts
             _mapSubscription?.Dispose();
         }
 
-        public void RegisterHoldAction(HoldActionExecutor holdActionExecutor)
+        public void RegisterHoldAction(PlayerBlockContainer holdActionExecutor)
         {
             Debug.Log($"Register HoldAction {holdActionExecutor}");
-            _holdActions.Add(holdActionExecutor);
+            _playerBlockContainers.Add(holdActionExecutor);
 
             _isHoldSubscription?.Dispose();
-            _isHoldSubscription = _holdActions.ToObservable()
+            _isHoldSubscription = _playerBlockContainers.ToObservable()
                 .SelectMany(holdAction => holdAction.ObserveEveryValueChanged(h => h.IsHoldingBlock))
                 .Subscribe(_ => ShowAccessibleArea());
             
@@ -104,7 +104,7 @@ namespace Carry.CarrySystem.Cart.Scripts
 
         bool AllPlayerIsNotHoldingBlock()
         {
-            foreach (var holdAction in _holdActions)
+            foreach (var holdAction in _playerBlockContainers)
             {
                 if (holdAction.IsHoldingBlock)
                 {

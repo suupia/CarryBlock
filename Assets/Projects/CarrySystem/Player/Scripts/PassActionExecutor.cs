@@ -19,10 +19,18 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly int _layerMask;
         readonly  Collider[] _targetBuffer = new Collider[10];
         IPlayerBlockPresenter? _presenter;
+        PlayerBlockContainer _blockContainer;
         
+        // HoldActionと結合度が上がるのは見逃す
+        // 持っているブロックを管理するクラスを作成するとうまくいくかもしれない
         
-        public PassActionExecutor(HoldActionExecutor holdActionExecutor, float radius, int layerMask)
+        public PassActionExecutor(
+            PlayerBlockContainer blockContainer,
+            HoldActionExecutor holdActionExecutor,
+            float radius,
+            int layerMask)
         {
+            _blockContainer = blockContainer;
             _holdActionExecutor = holdActionExecutor;
             _radius = radius;
             _layerMask = layerMask; /*LayerMask.GetMask("Player");*/
@@ -57,11 +65,11 @@ namespace Carry.CarrySystem.Player.Scripts
                 Debug.Log($"targetPlayerController: {targetPlayerController.name}, {targetPlayerController.Runner.LocalPlayer}に対してPassを試みます");
                 
                 
-                Debug.Log($"!_holdActionExecutorExecutor.IsHoldingBlock: {_holdActionExecutor.IsHoldingBlock}");
+                Debug.Log($"!_blockContainer.IsHoldingBlock: {_blockContainer.IsHoldingBlock}");
                 Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.Character.CanReceivePass()}");
                 
                 // Passする側がPassできる状況にある
-                if(! _holdActionExecutor.IsHoldingBlock)return;
+                if(! _blockContainer.IsHoldingBlock)return;
                 // Passを受ける側がPassを受け取れる状況にある
                 if(!targetPlayerController.Character.CanReceivePass())return;
                 PassBlock();
@@ -71,7 +79,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public bool CanReceivePass()
         {
-            return !_holdActionExecutor.IsHoldingBlock;
+            return !_blockContainer.IsHoldingBlock;
         }
 
         public void PassBlock()

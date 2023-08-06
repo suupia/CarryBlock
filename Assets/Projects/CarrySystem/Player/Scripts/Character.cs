@@ -12,15 +12,18 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IMoveExecutor _moveExecutor;
         readonly IHoldActionExecutor _holdActionExecutor;
         readonly IPassActionExecutor _passActionExecutor;
+        readonly PlayerBlockContainer _blockContainer;
         
         public Character(
             IMoveExecutor moveExecutor, 
             IHoldActionExecutor holdActionExecutor,
-            IPassActionExecutor passActionExecutor)
+            IPassActionExecutor passActionExecutor,
+            PlayerBlockContainer blockContainer)
         {
             _moveExecutor = moveExecutor;
             _holdActionExecutor = holdActionExecutor;
             _passActionExecutor = passActionExecutor;
+            _blockContainer = blockContainer;
         }
 
         public void Reset()
@@ -44,8 +47,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void SetHoldPresenter(IPlayerBlockPresenter presenter)
         {
-            _holdActionExecutor.SetHoldPresenter(presenter);
-            _passActionExecutor.SetHoldPresenter(presenter);
+            _blockContainer.SetHoldPresenter(presenter);
         }
 
         public void HoldAction()

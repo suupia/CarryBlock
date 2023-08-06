@@ -4,8 +4,6 @@ namespace Carry.CarrySystem.Player.Interfaces
 {
     public interface IPassActionExecutor
     {
-        void SetHoldPresenter(IPlayerBlockPresenter presenter);
-
         void Setup(PlayerInfo info);
         void Reset();
         void PassAction();
