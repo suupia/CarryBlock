@@ -24,7 +24,7 @@ namespace Carry.CarrySystem.Player.Scripts
         // ドメインの情報を持ってはいけない
         public struct PresentData : INetworkStruct
         {
-            [Networked] public Int16 HoldingBlockType { get; set; } // enumは共有できないので、int16で送る
+            [Networked] public Int16 HoldingBlockType { get; set; } // enumは共有できない(?)ので、int16で送る
         }
         Dictionary<BlockType, GameObject> blockTypeToGameObjectMap = new Dictionary<BlockType, GameObject>();
 
@@ -34,13 +34,18 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField] GameObject BasicBlockView= null!;
         [SerializeField] GameObject UnmovableBlockView= null!;
         [SerializeField] GameObject HeavyBlockView= null!;
-        
-        public void Init(ICharacter character)
+
+        public void Awake()
         {
-            character.SetHoldPresenter(this);
+            // これらの処理はクライアントでも必要なことに注意
             blockTypeToGameObjectMap[BlockType.None] = null; // No game object for 'None'
             blockTypeToGameObjectMap[BlockType.BasicBlock] = BasicBlockView;
             blockTypeToGameObjectMap[BlockType.HeavyBlock] = HeavyBlockView;
+        }
+
+        public void Init(ICharacter character)
+        {
+            character.SetHoldPresenter(this);
         }
         public override void Render()
         {
