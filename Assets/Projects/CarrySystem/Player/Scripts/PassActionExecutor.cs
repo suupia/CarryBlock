@@ -18,8 +18,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly float _radius;
         readonly int _layerMask;
         readonly  Collider[] _targetBuffer = new Collider[10];
-        IPlayerBlockPresenter? _presenter;
-        PlayerBlockContainer _blockContainer;
+        readonly PlayerBlockContainer _blockContainer;
         
         // HoldActionと結合度が上がるのは見逃す
         // 持っているブロックを管理するクラスを作成するとうまくいくかもしれない
@@ -34,10 +33,6 @@ namespace Carry.CarrySystem.Player.Scripts
             _holdActionExecutor = holdActionExecutor;
             _radius = radius;
             _layerMask = layerMask; /*LayerMask.GetMask("Player");*/
-        }
-        public void SetHoldPresenter(IPlayerBlockPresenter presenter)
-        {
-            _presenter = presenter;
         }
         public void Setup(PlayerInfo info)
         {
@@ -85,15 +80,16 @@ namespace Carry.CarrySystem.Player.Scripts
         public void PassBlock()
         {
             Debug.Log($"Pass Block");
-            _holdActionExecutor.SetIsHoldingBlock(false); // ここでHoldActionのIsHoldingBlockにアクセスるするのはよくない？　IsHoldを管理するクラスがあってもいいかも
-            _presenter?.PassBlock();
+            _blockContainer.IsHoldingBlock = false;
+            _blockContainer.Presenter.PassBlock();
         }
         
         public void ReceivePass()
         {
             Debug.Log("Receive Pass");
-            _holdActionExecutor.SetIsHoldingBlock(true); 
-            _presenter?.ReceiveBlock();
+            _blockContainer.IsHoldingBlock = true;
+            _blockContainer.Presenter.ReceiveBlock();
+
         }
         
         

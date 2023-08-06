@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IMapUpdater _mapUpdater;
         PlayerInfo _info = null!;
         EntityGridMap _map = null!;
-        PlayerBlockContainer _blockContainer;
+        readonly PlayerBlockContainer _blockContainer;
 
         public HoldActionExecutor(PlayerBlockContainer blockContainer,  IMapUpdater mapUpdater)
         {
@@ -84,13 +84,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 }
             }
         }
-        
-        public void SetIsHoldingBlock(bool isHoldingBlock)
-        {
-            _blockContainer.IsHoldingBlock = isHoldingBlock;
-        }
-        
-        
+
         Vector2Int GetForwardGridPos(Transform transform)
         {
             var gridPos = GridConverter.WorldPositionToGridPosition(transform.position);
