@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 6335748571286557211}
   - component: {fileID: 7973578373173793207}
   m_Layer: 0
-  m_Name: DoubleRockView
+  m_Name: DoubleUnmovableView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

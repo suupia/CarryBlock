@@ -9,6 +9,7 @@ using UnityEngine;
 using Fusion;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
+using UnityEngine.Serialization;
 
 #nullable enable
 
@@ -22,71 +23,81 @@ namespace Carry.CarrySystem.Map.Scripts
             public int BasicBlockCount;
             public int UnmovableBlockCount;
             public int HeavyBlockCount;
+            public int FragileBlockCount;
         }
 
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
-        
+
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
-        [SerializeField] GameObject groundObject = null!;
-        [SerializeField] GameObject rockObject= null!;
-        [SerializeField] GameObject doubleRockObject= null!;
-        [SerializeField] GameObject basicBlockObject= null!;
-        [SerializeField] GameObject doubleBasicBlockObject= null!;
-        [SerializeField] GameObject heavyBlockObject = null!;
-        [SerializeField] GameObject doubleHeavyBlockObject = null!;
-        
+        [SerializeField] GameObject groundView = null!;
+        [SerializeField] GameObject basicBlockView = null!;
+        [SerializeField] GameObject doubleBasicBlockView = null!;
+        [SerializeField] GameObject unmovableBlockView = null!;
+        [SerializeField] GameObject doubleUnmovableBlockView = null!;
+        [SerializeField] GameObject heavyBlockView = null!;
+        [SerializeField] GameObject doubleHeavyBlockView = null!;
+        [SerializeField] GameObject fragileBlockView = null!;
+
         public override void Render()
         {
-            groundObject.SetActive(PresentDataRef.GroundCount switch
+            groundView.SetActive(PresentDataRef.GroundCount switch
             {
                 0 => false,
                 1 => true,
                 _ => throw new InvalidOperationException($"GroundCount : {PresentDataRef.GroundCount}")
             });
-            
+
             // UnmovableBlock
-            rockObject.SetActive(PresentDataRef.UnmovableBlockCount switch
+            unmovableBlockView.SetActive(PresentDataRef.UnmovableBlockCount switch
             {
                 0 or 2 => false,
                 1 => true,
                 _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.UnmovableBlockCount}")
             });
-            doubleRockObject.SetActive(PresentDataRef.UnmovableBlockCount switch
+            doubleUnmovableBlockView.SetActive(PresentDataRef.UnmovableBlockCount switch
             {
                 0 or 1 => false,
                 2 => true,
                 _ => throw new InvalidOperationException($"RockCount : {PresentDataRef.UnmovableBlockCount}")
             });
-            
+
             // BasicBlock
-            basicBlockObject.SetActive(PresentDataRef.BasicBlockCount switch
+            basicBlockView.SetActive(PresentDataRef.BasicBlockCount switch
             {
                 0 or 2 => false,
                 1 => true,
                 _ => throw new InvalidOperationException($"BasicBlockCount : {PresentDataRef.BasicBlockCount}")
             });
-            doubleBasicBlockObject.SetActive(PresentDataRef.BasicBlockCount switch
+            doubleBasicBlockView.SetActive(PresentDataRef.BasicBlockCount switch
             {
                 0 or 1 => false,
                 2 => true,
                 _ => throw new InvalidOperationException($"BasicBlockCount : {PresentDataRef.BasicBlockCount}")
             });
-            
+
             // HeavyBlock
-            heavyBlockObject.SetActive(PresentDataRef.HeavyBlockCount switch
+            heavyBlockView.SetActive(PresentDataRef.HeavyBlockCount switch
             {
                 0 or 2 => false,
                 1 => true,
                 _ => throw new InvalidOperationException($"HeavyBlockCount : {PresentDataRef.HeavyBlockCount}")
             });
-            doubleHeavyBlockObject.SetActive(PresentDataRef.HeavyBlockCount switch
+            doubleHeavyBlockView.SetActive(PresentDataRef.HeavyBlockCount switch
             {
                 0 or 1 => false,
                 2 => true,
                 _ => throw new InvalidOperationException($"HeavyBlockCount : {PresentDataRef.HeavyBlockCount}")
+            });
+
+            // FragileBlock
+            fragileBlockView.SetActive(PresentDataRef.FragileBlockCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"FragileBlockCount : {PresentDataRef.FragileBlockCount}")
             });
         }
-        
+
 
         public void SetInitAllEntityActiveData(IEnumerable<IEntity> allEntities)
         {
@@ -95,9 +106,10 @@ namespace Carry.CarrySystem.Map.Scripts
             PresentDataRef.BasicBlockCount = allEntityList.OfType<BasicBlock>().Count();
             PresentDataRef.UnmovableBlockCount = allEntityList.OfType<UnmovableBlock>().Count();
             PresentDataRef.HeavyBlockCount = allEntityList.OfType<HeavyBlock>().Count();
+            PresentDataRef.FragileBlockCount = allEntityList.OfType<FragileBlock>().Count();
         }
 
-        public void SetEntityActiveData(IEntity entity, int count) 
+        public void SetEntityActiveData(IEntity entity, int count)
         {
             switch (entity)
             {
@@ -113,11 +125,12 @@ namespace Carry.CarrySystem.Map.Scripts
                 case HeavyBlock _:
                     PresentDataRef.HeavyBlockCount = count;
                     break;
+                case FragileBlock _:
+                    PresentDataRef.FragileBlockCount = count;
+                    break;
                 default:
                     throw new System.Exception("想定外のEntityが渡されました");
             }
         }
-
     }
-
 }
