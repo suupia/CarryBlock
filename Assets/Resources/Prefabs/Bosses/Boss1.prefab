@@ -182,7 +182,6 @@ GameObject:
   - component: {fileID: 8277820901954431365}
   - component: {fileID: 3906126858618847453}
   - component: {fileID: 6400562665337734987}
-  - component: {fileID: 4068770461367130489}
   m_Layer: 5
   m_Name: HPText
   m_TagString: Untagged
@@ -307,20 +306,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &4068770461367130489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5047123744495117584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e42686bd4e33ea2478158933dfee18ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyController: {fileID: 3106542789823019383}
-  hpText: {fileID: 6400562665337734987}
 --- !u!1 &8076517999918023375
 GameObject:
   m_ObjectHideFlags: 0
