@@ -1,4 +1,5 @@
 ﻿using System;
+using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,17 +14,13 @@ namespace Carry.CarrySystem.Player.Info
         // Property
         [NonSerialized] public GameObject playerObj;
         [NonSerialized] public Rigidbody playerRb;
+        [NonSerialized] public AbstractNetworkPlayerController playerController;
 
-        // constant fields 
-        public readonly float acceleration = 30f;
-        public readonly float maxVelocity = 9f;
-        public readonly float maxAngularVelocity = 100f;
-        public readonly float targetRotationTime = 0.2f;
-
-        public void Init(NetworkRunner runner, GameObject playerObj)
+        public void Init(NetworkRunner runner, GameObject playerObj, AbstractNetworkPlayerController playerController)
         {
             this.runner = runner;
             this.playerObj = playerObj;
+            this.playerController = playerController;
             playerRb = playerObj.GetComponent<Rigidbody>();
         }
     }

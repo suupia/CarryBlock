@@ -1,8 +1,9 @@
 ﻿using System;
+using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
-using Projects.CarrySystem.Block.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -21,7 +22,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         EntityGridMapSaver _entityGridMapSaver;
         
         CUIState _cuiState = CUIState.Idle;
-        EntityType _entityType;
+        BlockType _blockType;
 
         enum CUIState
         {
@@ -30,12 +31,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             OpenLoadCUI,
         }
         
-        enum EntityType
-        {
-            BasicBlock,
-            Rock,
-        }
-        
+
         [Inject]
         public void Construct(BlockPlacer blockPlacer, IMapUpdater editMapUpdater)
         {
@@ -81,15 +77,19 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
 
                 var map = _editMapUpdater.GetMap();
-                 switch (_entityType)
+                 switch (_blockType)
                  {
-                     case EntityType.BasicBlock:
+                     case BlockType.BasicBlock:
                          var basicBlock = new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround);
                          _blockPlacer.AddBlock(map,mouseGridPosOnGround,basicBlock );
                          break;
-                     case EntityType.Rock:
-                         var rock = new Rock(Rock.Kind.Kind1,  mouseGridPosOnGround);
+                     case BlockType.UnmovableBlock:
+                         var rock = new UnmovableBlock(UnmovableBlock.Kind.Kind1,  mouseGridPosOnGround);
                          _blockPlacer.AddBlock(map, mouseGridPosOnGround, rock);
+                         break;
+                     case BlockType.HeavyBlock:
+                         var heavyBlock = new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround);
+                         _blockPlacer.AddBlock(map, mouseGridPosOnGround, heavyBlock);
                          break;
                  }
             }
@@ -100,24 +100,32 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
                 
                 var map = _editMapUpdater.GetMap();
-                switch (_entityType)
+                switch (_blockType)
                 {
-                    case EntityType.BasicBlock:
+                    case BlockType.BasicBlock:
                         _blockPlacer.RemoveBlock<BasicBlock>(map,mouseGridPosOnGround );
                         break;
-                    case EntityType.Rock:
-                        _blockPlacer.RemoveBlock<Rock>(map,mouseGridPosOnGround);
+                    case BlockType.UnmovableBlock:
+                        _blockPlacer.RemoveBlock<UnmovableBlock>(map,mouseGridPosOnGround);
+                        break;
+                    case BlockType.HeavyBlock:
+                        _blockPlacer.RemoveBlock<HeavyBlock>(map,mouseGridPosOnGround);
                         break;
                 }
             }
             
+            // 置くブロックを切り替える
             if(Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
             {
-                _entityType = EntityType.BasicBlock;
+                _blockType = BlockType.BasicBlock;
             }
             if(Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
             {
-                _entityType = EntityType.Rock;
+                _blockType = BlockType.UnmovableBlock;
+            }
+            if(Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+            {
+                _blockType = BlockType.HeavyBlock;
             }
 
             if (Input.GetKeyDown(KeyCode.S))

@@ -3,7 +3,6 @@ using System.Numerics;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
-using Projects.CarrySystem.Block.Scripts;
 using TMPro;
 using UnityEngine;
 using VContainer;

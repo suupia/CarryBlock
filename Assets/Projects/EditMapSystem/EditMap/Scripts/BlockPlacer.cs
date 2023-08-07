@@ -1,8 +1,7 @@
 ﻿using System.Linq;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Scripts;
-using Projects.CarrySystem.Block.Interfaces;
-using Projects.CarrySystem.Block.Scripts;
 using UnityEngine;
 
 namespace Carry.EditMapSystem.EditMap.Scripts

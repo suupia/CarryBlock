@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using UnityEngine;
@@ -22,57 +24,72 @@ namespace Carry.CarrySystem.Player.Scripts
         // ドメインの情報を持ってはいけない
         public struct PresentData : INetworkStruct
         {
-            public NetworkBool IsHoldingBlock;
+            [Networked] public Int16 HoldingBlockType { get; set; } // enumは共有できない(?)ので、int16で送る
         }
+        Dictionary<BlockType, GameObject> blockTypeToGameObjectMap = new Dictionary<BlockType, GameObject>();
+
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
-        [SerializeField] GameObject holdingRock= null!;
-        [SerializeField] GameObject holdingDoubleRock= null!;
-        [SerializeField] GameObject holdingBasicBlock= null!;
-        
+        [SerializeField] GameObject BasicBlockView= null!;
+        [SerializeField] GameObject UnmovableBlockView= null!;
+        [SerializeField] GameObject HeavyBlockView= null!;
+
+        public void Awake()
+        {
+            // これらの処理はクライアントでも必要なことに注意
+            blockTypeToGameObjectMap[BlockType.None] = null; // No game object for 'None'
+            blockTypeToGameObjectMap[BlockType.BasicBlock] = BasicBlockView;
+            blockTypeToGameObjectMap[BlockType.HeavyBlock] = HeavyBlockView;
+        }
+
         public void Init(ICharacter character)
         {
             character.SetHoldPresenter(this);
         }
-
         public override void Render()
         {
-            // Debug.Log($"PresentDataRef.IsHoldingRock = {PresentDataRef.IsHoldingRock}");
-            
-            // Rock
-            // if (holdingRock.activeSelf != PresentDataRef.IsHoldingBlock)
-            // {
-            //     holdingRock.SetActive(PresentDataRef.IsHoldingBlock);
-            // }
-            
-            // BasicBlock
-            if (holdingBasicBlock.activeSelf != PresentDataRef.IsHoldingBlock)
+            BlockType currentBlockType = (BlockType)PresentDataRef.HoldingBlockType;
+
+            foreach (var blockType in blockTypeToGameObjectMap.Keys)
             {
-                holdingBasicBlock.SetActive(PresentDataRef.IsHoldingBlock);
+                GameObject blockGameObject = blockTypeToGameObjectMap[blockType];
+        
+                // If the game object exists (i.e., not 'None'), set its active state.
+                if (blockGameObject)
+                {
+                    blockGameObject.SetActive(blockType == currentBlockType);
+                }
             }
         }
 
         // ホストのみで呼ばれることに注意
         // 以下の処理はアニメーション、音、エフェクトの再生を行いたくなったら、それぞれのクラスの対応するメソッドを呼ぶようにするかも
-        public void PickUpBlock()
+        public void PickUpBlock(IBlock block)
         {
-            PresentDataRef.IsHoldingBlock = true;
+            var blockType  = block switch
+            {
+                BasicBlock _ => BlockType.BasicBlock,
+                UnmovableBlock _ => BlockType.UnmovableBlock,
+                HeavyBlock _ => BlockType.HeavyBlock,
+                _ => throw new ArgumentOutOfRangeException(nameof(block), block, null)
+            };
+            PresentDataRef.HoldingBlockType = (Int16)blockType;
         }
 
         public void PutDownBlock()
         {
-            PresentDataRef.IsHoldingBlock = false;
+            PresentDataRef.HoldingBlockType = (Int16)BlockType.None;
         }
         
         public void ReceiveBlock()
         {
-            PresentDataRef.IsHoldingBlock = true;
+            PresentDataRef.HoldingBlockType = (Int16)BlockType.BasicBlock;
         }
         
         public void PassBlock()
         {
-            PresentDataRef.IsHoldingBlock = false;
+            PresentDataRef.HoldingBlockType = (Int16)BlockType.None;
         }
     }
 }

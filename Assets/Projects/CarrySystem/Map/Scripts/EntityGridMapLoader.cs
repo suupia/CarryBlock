@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Spawners;
 using UnityEngine;
-using Projects.CarrySystem.Block.Scripts;
 
 #nullable enable
 
@@ -85,26 +85,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 }
                 else
                 {
-                    Debug.LogError("groundRecords is not initialized properly!");
+                    Debug.LogWarning("groundRecords is not initialized properly!");
                 }
-
-                // Rock
-                if (gridMapData.rockRecords != null)
-                {
-                    foreach (var kind in gridMapData.rockRecords[i].kinds)
-                    {
-                        if (kind != Rock.Kind.None)
-                        {
-                            map.AddEntity(i, new Rock(kind, map.ToVector(i)));
-
-                        }
-                    }
-                }
-                else
-                {
-                    Debug.LogError("rockRecords is not initialized properly!");
-                }
-
+                
                 // BasicBlock
                 if (gridMapData.basicBlockRecords != null)
                 {
@@ -119,7 +102,48 @@ namespace Carry.CarrySystem.Map.Scripts
                 }
                 else
                 {
-                    Debug.LogError("basicBlockRecords is not initialized properly!");
+                    Debug.LogWarning("basicBlockRecords is not initialized properly!");
+                }
+
+                // UnmovableBlock
+                if (gridMapData.rockRecords != null)
+                {
+                    foreach (var kind in gridMapData.rockRecords[i].kinds)
+                    {
+                        if (kind != UnmovableBlock.Kind.None)
+                        {
+                            map.AddEntity(i, new UnmovableBlock(kind, map.ToVector(i)));
+
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("rockRecords is not initialized properly!");
+                }
+                
+                // HeavyBlock
+                if (gridMapData.heavyBlockRecords != null)
+                {
+                    if (gridMapData.heavyBlockRecords.Length == map.GetLength())
+                    {
+                        foreach (var kind in gridMapData.heavyBlockRecords[i].kinds)
+                        {
+                            if (kind != HeavyBlock.Kind.None)
+                            {
+                                map.AddEntity(i, new HeavyBlock(kind, map.ToVector(i)));
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("heavyBlockRecords.Length is not equal to map.GetLength()!");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("heavyBlockRecords is not initialized properly!");
                 }
             }
 

@@ -1,22 +1,24 @@
-﻿#nullable enable
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
+#nullable  enable
 
 namespace Carry.CarrySystem.Block.Scripts
 {
     // JSONファイルに書き出すためにSerializableをつける
     [Serializable]
-    public record BasicBlockRecord
+    public record HeavyBlockRecord
     {
-        public BasicBlock.Kind[] kinds = new BasicBlock.Kind[10];
+        public HeavyBlock.Kind[] kinds = new HeavyBlock.Kind[10];
     }
 
-    public class BasicBlock : IBlock
+    public class HeavyBlock : IBlock
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 2;
@@ -28,7 +30,7 @@ namespace Carry.CarrySystem.Block.Scripts
             Kind1,
         }
 
-        public BasicBlock(Kind kind, Vector2Int gridPosition)
+        public HeavyBlock(Kind kind, Vector2Int gridPosition)
         {
             KindValue = kind;
             GridPosition = gridPosition;
@@ -41,7 +43,8 @@ namespace Carry.CarrySystem.Block.Scripts
 
         public void  PickUp(ICharacter character)
         {
-            // 特になし
+            // 移動速度を遅くする
+            character.SetSlowMoveExecutor();
         }
 
         public bool CanPutDown(IList<IBlock> blocks)
@@ -59,9 +62,10 @@ namespace Carry.CarrySystem.Block.Scripts
             return true;
         }
         
-        public void PutDown(ICharacter character)
+        public void PutDown(ICharacter character) 
         {
-           // 特になし
+            // 移動速度を元に戻す
+            character.SetRegularMoveExecutor();
         }
     }
 }

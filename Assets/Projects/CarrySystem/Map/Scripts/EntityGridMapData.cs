@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using UnityEngine;
-using Projects.CarrySystem.Block.Scripts;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
@@ -13,10 +13,11 @@ namespace Carry.CarrySystem.Map.Scripts
         public int width;
         public int height;
         public GroundRecord[] groundRecords;
-        public RockRecord[] rockRecords;
         
         // Block
         public BasicBlockRecord[] basicBlockRecords;
+        public RockRecord[] rockRecords;
+        public HeavyBlockRecord[] heavyBlockRecords;
     }
 
     public enum MapKey

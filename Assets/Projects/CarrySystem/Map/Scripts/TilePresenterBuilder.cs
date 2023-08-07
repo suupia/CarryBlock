@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Spawners;
 using Fusion;
-using Projects.CarrySystem.Block.Scripts;
 using UnityEngine;
 using VContainer;
 
@@ -63,7 +63,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 // RegisterTilePresenter()の前なのでSetEntityActiveData()を実行する必要がある
                 // Presenterの初期化処理みたいなもの
                 var existGround = map.GetSingleEntity<Ground>(i) != null;
-                var existRock = map.GetSingleEntity<Rock>(i) != null;
+                var existRock = map.GetSingleEntity<UnmovableBlock>(i) != null;
                 var existBasicBlock = map.GetSingleEntity<BasicBlock>(i) != null;
                 
                 if(existRock) Debug.Log($"existGround: {existGround}, existRock: {existRock}, existBasicBlock: {existBasicBlock}");

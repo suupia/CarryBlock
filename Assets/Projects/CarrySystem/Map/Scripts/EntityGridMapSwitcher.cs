@@ -51,7 +51,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             Debug.Log($"次のフロアに変更します nextIndex: {_currentIndex + 1}");
             _currentIndex++;
-            var key = MapKey.Hasegawa; // Todo: キーを決める関数を作る
+            var key = MapKey.Default; // Todo: キーを決める関数を作る
             var nextMap = _gridMapLoader.LoadEntityGridMap(key,_currentIndex);
             _currentMap = nextMap;
             _tilePresenterBuilder.Build(_currentMap);

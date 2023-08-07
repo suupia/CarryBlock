@@ -8,18 +8,18 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     // ToDo: このクラス使っていないならいらない？
     // 何かPlayerのドメインを差し替えたいときに使っていたのかも
-    public class CarryPlayerFactory : ICarryPlayerFactory
+    public class MockPlayerFactory : ICarryPlayerFactory
     {
         readonly IMapUpdater _mapUpdater;
         [Inject]
-        public CarryPlayerFactory(IMapUpdater mapUpdater)
+        public MockPlayerFactory(IMapUpdater mapUpdater)
         {
             _mapUpdater = mapUpdater;
         }
         public ICharacter Create(PlayerColorType colorType)
         {
             // ToDo: switch文で分ける
-            var moveExe = new QuickTurnMoveExecutor();
+            var moveExe = new MoveExecutorContainer();
             var blockContainer = new PlayerBlockContainer();
             var holdExe = new HoldActionExecutor(blockContainer,_mapUpdater);
             var passExe = new PassActionExecutor(blockContainer, holdExe,10, LayerMask.GetMask("Player"));

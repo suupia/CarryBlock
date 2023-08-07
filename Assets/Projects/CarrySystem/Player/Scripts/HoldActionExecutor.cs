@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -9,7 +10,6 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Carry.CarrySystem.Player.Info;
-using Projects.CarrySystem.Block.Interfaces;
 
 #nullable enable
 
@@ -66,7 +66,7 @@ namespace Carry.CarrySystem.Player.Scripts
                         Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれない
                         return;
                     }
-                    block.PutDown();
+                    block.PutDown(_info.playerController.Character);
                     _map.AddEntity(forwardGridPos, block);
                     _blockContainer.Presenter.PutDownBlock();
                 }
@@ -79,9 +79,9 @@ namespace Carry.CarrySystem.Player.Scripts
                 
                 if (block.CanPickUp())
                 {
-                    block.PickUp();
+                    block.PickUp(_info.playerController.Character);
                     _map.RemoveEntity(forwardGridPos, block);
-                    _blockContainer.Presenter.PickUpBlock();
+                    _blockContainer.Presenter.PickUpBlock(block);
                     _blockContainer.SetBlock(block);
                 }
             }
