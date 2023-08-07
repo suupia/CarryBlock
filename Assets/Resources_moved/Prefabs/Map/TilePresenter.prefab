@@ -540,7 +540,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7756840550022308548, guid: 8a269dfac5fd73c41b252add41921923, type: 3}
       propertyPath: m_Name
-      value: Rock
+      value: UnmovableBlock
       objectReference: {fileID: 0}
     - target: {fileID: 7756840550022308548, guid: 8a269dfac5fd73c41b252add41921923, type: 3}
       propertyPath: m_IsActive
@@ -622,7 +622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2740271205244670574, guid: b492ede40f0570743856162625e709e5, type: 3}
       propertyPath: m_Name
-      value: DoubleRock
+      value: DoubleUnmovableBlock
       objectReference: {fileID: 0}
     - target: {fileID: 2901051109668647212, guid: b492ede40f0570743856162625e709e5, type: 3}
       propertyPath: Flags
