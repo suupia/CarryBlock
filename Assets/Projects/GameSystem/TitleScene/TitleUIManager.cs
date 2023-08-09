@@ -45,6 +45,9 @@ public class TitleUIManager : MonoBehaviour
         joinAsHostButton.onClick.AddListener(() => titleInitializer.StartGame(RoomName, GameMode.AutoHostOrClient));
 
 
+        joinPanel.SetActive(false);
+
+
         soloPlayButton.interactable = false;
 
         multiPlayButton.onClick.AddListener(() => joinPanel.SetActive(true));
