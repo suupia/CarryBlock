@@ -31,9 +31,9 @@ namespace Carry.CarrySystem.Player.Scripts
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
-        [FormerlySerializedAs("BasicBlockView")] [SerializeField] GameObject basicBlockView= null!;
-        [FormerlySerializedAs("UnmovableBlockView")] [SerializeField] GameObject unmovableBlockView= null!;
-        [FormerlySerializedAs("HeavyBlockView")] [SerializeField] GameObject heavyBlockView= null!;
+        [SerializeField] GameObject basicBlockView= null!;
+        [SerializeField] GameObject unmovableBlockView= null!;
+        [SerializeField] GameObject heavyBlockView= null!;
         [SerializeField] GameObject fragileBlockView = null!;
 
         public void Awake()

@@ -17,7 +17,7 @@ namespace Carry.CarrySystem.Block.Scripts
     public class FragileBlock : IBlock
     {
         public Vector2Int GridPosition { get; set; }
-        public int MaxPlacedBlockCount { get; } = 2;
+        public int MaxPlacedBlockCount { get; } = 1;
         public Kind KindValue { get; }
 
         public enum Kind
