@@ -1,9 +1,6 @@
-﻿using Fusion;
-using Projects.CarrySystem.FloorTimer.Interfaces;
-
-namespace Carry.CarrySystem.FloorTimer.Scripts
+﻿namespace Carry.CarrySystem.FloorTimer.Scripts
 {
-    public class GameContext : ITimerObserver
+    public class GameContext
     {
         public enum GameState
         {
@@ -13,9 +10,12 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
 
         public GameState CurrentState { get; private set; } = GameState.Playing;
 
-        public void Update(NetworkRunner runner, ITimer timer)
-        {
-            if (timer.IsExpired(runner)) CurrentState = GameState.Result;
-        }
+        //ランダム性がないと仮定し、フロア数から制限時間を返す関数
+        //SliderのMaxValueの設定時に使用する
+        public float CurrentFloorLimitTime => 60;
+
+        public int CurrentFloor { get; set; }
+
+        public float CurrentFloorTime { get; set; }
     }
 }

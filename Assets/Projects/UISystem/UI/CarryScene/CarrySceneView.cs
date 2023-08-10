@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using VContainer;
-using Fusion;
 using Carry.CarrySystem.FloorTimer.Scripts;
-using UnityEngine.Serialization;
-
+using Fusion;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using VContainer;
 
 namespace Carry.UISystem.UI.CarryScene
 {
@@ -18,22 +15,16 @@ namespace Carry.UISystem.UI.CarryScene
         [SerializeField] TextMeshProUGUI resultText;
         [SerializeField] TextMeshProUGUI remainingTimeToReturnText;
 
+        [SerializeField] Slider floorTimerSlider;
 
         GameContext _gameContext;
 
-        FloorTimer _floorTimer;
-
-        [Networked] float FloorTimerValue { get; set; }
         [Networked] NetworkString<_16> Result { get; set; }
 
-
         [Inject]
-        public void Construct(
-            GameContext gameContext,
-            FloorTimer floorTimer)
+        public void Construct(GameContext gameContext)
         {
             _gameContext = gameContext;
-            _floorTimer = floorTimer;
         }
 
         public override void FixedUpdateNetwork()
@@ -70,7 +61,7 @@ namespace Carry.UISystem.UI.CarryScene
         {
             // クライアントに反映させるためにNetworkedで宣言した変数に値を代入する
             // Score = _resourceAggregator.GetAmount;
-            FloorTimerValue = Mathf.Floor(_floorTimer.GetRemainingTime(Runner));
+            // FloorTimerValue = Mathf.Floor(_floorTimer.GetRemainingTime(Runner));
         }
 
         void FixedUpdateNetwork_Result()
@@ -83,7 +74,13 @@ namespace Carry.UISystem.UI.CarryScene
         {
             // サーバー用のドメインの反映
             // scoreText.text = $"Score : {Score} / {_resourceAggregator.QuotaAmount}";
-            floorTimerText.text = $"Time : {FloorTimerValue}";
+            floorTimerText.text = $"Time : {Mathf.Floor(_gameContext.CurrentFloorTime)}";
+
+            // Debug.Log(FloorTimerValue);
+            floorTimerSlider.maxValue = _gameContext.CurrentFloorLimitTime;
+            floorTimerSlider.direction = Slider.Direction.RightToLeft;
+
+            floorTimerSlider.value = _gameContext.CurrentFloorTime;
 
             // ローカル用のドメインの反映
             // remainingTimeToReturnText.text = _returnToMainBaseGauge.IsReturnToMainBase
