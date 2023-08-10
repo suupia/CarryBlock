@@ -31,16 +31,18 @@ namespace Carry.CarrySystem.Player.Scripts
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
-        [SerializeField] GameObject BasicBlockView= null!;
-        [SerializeField] GameObject UnmovableBlockView= null!;
-        [SerializeField] GameObject HeavyBlockView= null!;
+        [FormerlySerializedAs("BasicBlockView")] [SerializeField] GameObject basicBlockView= null!;
+        [FormerlySerializedAs("UnmovableBlockView")] [SerializeField] GameObject unmovableBlockView= null!;
+        [FormerlySerializedAs("HeavyBlockView")] [SerializeField] GameObject heavyBlockView= null!;
+        [SerializeField] GameObject fragileBlockView = null!;
 
         public void Awake()
         {
             // これらの処理はクライアントでも必要なことに注意
             blockTypeToGameObjectMap[BlockType.None] = null; // No game object for 'None'
-            blockTypeToGameObjectMap[BlockType.BasicBlock] = BasicBlockView;
-            blockTypeToGameObjectMap[BlockType.HeavyBlock] = HeavyBlockView;
+            blockTypeToGameObjectMap[BlockType.BasicBlock] = basicBlockView;
+            blockTypeToGameObjectMap[BlockType.HeavyBlock] = heavyBlockView;
+            blockTypeToGameObjectMap[BlockType.FragileBlock] = fragileBlockView;
         }
 
         public void Init(ICharacter character)
@@ -72,6 +74,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 BasicBlock _ => BlockType.BasicBlock,
                 UnmovableBlock _ => BlockType.UnmovableBlock,
                 HeavyBlock _ => BlockType.HeavyBlock,
+                FragileBlock _ => BlockType.FragileBlock,
                 _ => throw new ArgumentOutOfRangeException(nameof(block), block, null)
             };
             PresentDataRef.HoldingBlockType = (Int16)blockType;
