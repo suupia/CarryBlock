@@ -1,9 +1,6 @@
-﻿using Fusion;
-using Projects.CarrySystem.FloorTimer.Interfaces;
-
-namespace Carry.CarrySystem.FloorTimer.Scripts
+﻿namespace Carry.CarrySystem.FloorTimer.Scripts
 {
-    public class GameContext : ITimerObserver
+    public class GameContext
     {
         public enum GameState
         {
@@ -12,10 +9,5 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
         }
 
         public GameState CurrentState { get; private set; } = GameState.Playing;
-
-        public void Update(NetworkRunner runner, ITimer timer)
-        {
-            if (timer.IsExpired(runner)) CurrentState = GameState.Result;
-        }
     }
 }
