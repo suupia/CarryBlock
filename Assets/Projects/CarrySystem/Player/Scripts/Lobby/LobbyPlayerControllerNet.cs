@@ -1,4 +1,5 @@
 ﻿using System;
+using Carry.CarrySystem.CG.Tsukinowa;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Projects.BattleSystem.Player.Scripts;
@@ -137,6 +138,8 @@ namespace Carry.CarrySystem.Player.Scripts
             // Instantiate the unit.
             var prefab = playerUnitPrefabs[(int)ColorType];
             _characterObj = Instantiate(prefab, unitObjectParent);
+            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
+
 
             _character?.Setup(info);
             

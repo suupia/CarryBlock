@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3546432070225258422}
+  - component: {fileID: 3507273168946878139}
   m_Layer: 0
   m_Name: Tsukinowa
   m_TagString: Untagged
@@ -32,6 +33,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3507273168946878139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3546432070225258417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1be640e1eb0f97543840c9c83f199fa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clothMaterials:
+  - {fileID: 2100000, guid: 88ec2aad6c5b8ba42a012b24fd01a355, type: 2}
+  - {fileID: 2100000, guid: 1f59547cdd15f8b4584ba1977063478e, type: 2}
+  - {fileID: 2100000, guid: 7450c1e694f2b5c48a4aeccf7b3033d6, type: 2}
+  - {fileID: 2100000, guid: fc66400f8eea94d44b76ecc19f12b3de, type: 2}
+  skinnedMeshRenderer: {fileID: 6233397407692273783}
 --- !u!1001 &3546432071034378499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -92,5 +111,10 @@ PrefabInstance:
 --- !u!4 &3944533495714676456 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4e6257bfc6b9ae44ea7368150a5b07f1, type: 3}
+  m_PrefabInstance: {fileID: 3546432071034378499}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &6233397407692273783 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1750197354950549132, guid: 4e6257bfc6b9ae44ea7368150a5b07f1, type: 3}
   m_PrefabInstance: {fileID: 3546432071034378499}
   m_PrefabAsset: {fileID: 0}
