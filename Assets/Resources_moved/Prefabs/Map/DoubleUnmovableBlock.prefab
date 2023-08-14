@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2901051109668647212}
   - component: {fileID: 8242232597610314080}
   m_Layer: 0
-  m_Name: DoubleRock
+  m_Name: DoubleUnmovableBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 6335748571286557211}
   - component: {fileID: 7973578373173793207}
   m_Layer: 0
-  m_Name: DoubleRockView
+  m_Name: DoubleUnmovableView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

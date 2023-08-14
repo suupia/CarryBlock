@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
@@ -10,12 +8,12 @@ using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners;
 using Carry.UISystem.UI.CarryScene;
 using Fusion;
+using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using Projects.Utility.Scripts;
 
-namespace  Carry.CarrySystem.CarryScene.Scripts
+namespace Carry.CarrySystem.CarryScene.Scripts
 {
     public sealed class CarryLifetimeScope : LifetimeScope
     {
@@ -25,16 +23,16 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             var runner = FindObjectOfType<NetworkRunner>();
             Debug.Log($"NetworkRunner : {runner}");
             builder.RegisterComponent(runner);
-            
+
             // PrefabLoader 
             builder.Register<PrefabLoaderFromAddressable<CarryPlayerControllerNet>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CarryPlayerControllerNet>>()
                 .WithParameter("path", "Prefabs/Players/CarryPlayerControllerNet");
-            
+
             builder.Register<PrefabLoaderFromAddressable<CartControllerNet>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CartControllerNet>>()
-                .WithParameter("path", "Prefabs/Carts/CartControllerNet"); 
-            
+                .WithParameter("path", "Prefabs/Carts/CartControllerNet");
+
             // NetworkRunnerに依存するスクリプト
 
             // Player
@@ -48,7 +46,7 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
-            
+
             // Cart
             builder.Register<CartBuilder>(Lifetime.Scoped);
             builder.Register<CartShortestRouteMove>(Lifetime.Scoped);
@@ -58,26 +56,23 @@ namespace  Carry.CarrySystem.CarryScene.Scripts
 
             // UI
             builder.Register<GameContext>(Lifetime.Scoped);
-            builder.Register<FloorTimer.Scripts.FloorTimer>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<FloorTimerNet>();
-            
+
             // Notifier
             builder.RegisterComponentInHierarchy<CartMovementNotifierNet>();
-            
+
             // Handler
             builder.RegisterComponentInHierarchy<PlayerNearCartHandlerNet>();
 
             // Initializer
             builder.RegisterComponentInHierarchy<CarryInitializer>();
-            
+
             // View
             builder.RegisterComponentInHierarchy<CarrySceneView>();
-
 
 
             // Clientのドメインスクリプト
             // builder.Register<ReturnToMainBaseGauge>(Lifetime.Singleton);
         }
     }
-
 }

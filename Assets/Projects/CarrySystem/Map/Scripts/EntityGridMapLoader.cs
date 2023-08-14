@@ -145,6 +145,30 @@ namespace Carry.CarrySystem.Map.Scripts
                 {
                     Debug.LogWarning("heavyBlockRecords is not initialized properly!");
                 }
+                
+                // FragileBlock
+                if (gridMapData.fragileBlockRecords != null)
+                {
+                    if (gridMapData.fragileBlockRecords.Length == map.GetLength())
+                    {
+                        foreach (var kind in gridMapData.fragileBlockRecords[i].kinds)
+                        {
+                            if (kind != FragileBlock.Kind.None)
+                            {
+                                map.AddEntity(i, new FragileBlock(kind, map.ToVector(i)));
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("fragileBlockRecords.Length is not equal to map.GetLength()!");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("fragileBlockRecords is not initialized properly!");
+                }
             }
 
             return map;

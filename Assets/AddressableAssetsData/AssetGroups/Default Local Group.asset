@@ -34,11 +34,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: b492ede40f0570743856162625e709e5
-    m_Address: Prefabs/Map/DoubleRock
+    m_Address: Prefabs/Map/DoubleUnmovableBlock
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 8a269dfac5fd73c41b252add41921923
-    m_Address: Prefabs/Map/Rock
+    m_Address: Prefabs/Map/UnmovableBlock
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 6bd0745e0d02f4475a925ffda8c9f8c6
