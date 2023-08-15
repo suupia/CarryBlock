@@ -23,22 +23,31 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IPrefabLoader<CarryPlayerControllerNet> _carryPlayerControllerLoader;
         readonly ICarryPlayerFactory _carryPlayerFactory;
         // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などが想定される
+        readonly PlayerCharacterHolder _playerCharacterHolder;
 
         [Inject]
-        public CarryPlayerBuilder(NetworkRunner runner, IObjectResolver resolver ,IPrefabLoader<CarryPlayerControllerNet> carryPlayerControllerLoader, ICarryPlayerFactory carryPlayerFactory)
+        public CarryPlayerBuilder(
+            NetworkRunner runner,
+            IObjectResolver resolver ,
+            IPrefabLoader<CarryPlayerControllerNet> carryPlayerControllerLoader,
+            ICarryPlayerFactory carryPlayerFactory,
+            PlayerCharacterHolder playerCharacterHolder
+            )
         {
             _runner = runner;
             _resolver = resolver;
             _carryPlayerControllerLoader = carryPlayerControllerLoader;
             _carryPlayerFactory = carryPlayerFactory;
+            _playerCharacterHolder  = playerCharacterHolder;
         }
 
-        public AbstractNetworkPlayerController Build(PlayerColorType colorType, Vector3 position, Quaternion rotation, PlayerRef playerRef)
+        public AbstractNetworkPlayerController Build(Vector3 position, Quaternion rotation, PlayerRef playerRef)
         {
             // プレハブをロード
             var playerController = _carryPlayerControllerLoader.Load();
             
             // ドメインスクリプトをnew
+            var colorType = _playerCharacterHolder.GetPlayerColorType(playerRef);
             var character = _carryPlayerFactory.Create(colorType);
             
             // プレハブをスポーン

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Carry.CarrySystem.CG.Tsukinowa;
 using Fusion;
 using Projects.NetworkUtility.Inputs.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
@@ -135,6 +136,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _characterObj = Instantiate(prefab, unitObjectParent);
 
             character?.Setup(info);
+            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
             
             // Play spawn animation
             // _decorationDetector.OnSpawned();

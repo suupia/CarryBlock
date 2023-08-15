@@ -4,6 +4,7 @@ using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace Carry.CarrySystem.Block.Scripts
 {
@@ -39,7 +40,7 @@ namespace Carry.CarrySystem.Block.Scripts
 
         public void  PickUp(ICharacter character)
         {
-            
+            var _ = BreakBlock(character);
         }
 
         public bool CanPutDown(IList<IBlock> blocks)
@@ -61,5 +62,14 @@ namespace Carry.CarrySystem.Block.Scripts
         {
             
         }
+
+        async UniTaskVoid BreakBlock(ICharacter character)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(2));
+            Debug.Log("BreakBlockを実行");
+            
+            var _ = character.PlayerBlockContainer.PopBlock();
+            character.PlayerBlockContainer.Presenter.PutDownBlock();
+        }  
     }
 }

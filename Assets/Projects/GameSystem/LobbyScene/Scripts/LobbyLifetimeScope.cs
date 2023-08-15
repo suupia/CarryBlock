@@ -33,7 +33,6 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             builder.Register<MainLobbyPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
             builder.Register<LobbyPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
-
             
             
             builder.RegisterComponentInHierarchy<LobbyInitializer>();
