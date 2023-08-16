@@ -65,7 +65,7 @@ namespace Carry.CarrySystem.Block.Scripts
 
         async UniTaskVoid BreakBlock(ICharacter character)
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(2));
+            await UniTask.Delay(TimeSpan.FromSeconds(0.25f));
             Debug.Log("BreakBlockを実行");
             
             var _ = character.PlayerBlockContainer.PopBlock();
