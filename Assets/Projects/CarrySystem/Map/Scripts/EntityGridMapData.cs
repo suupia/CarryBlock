@@ -33,6 +33,7 @@ namespace Carry.CarrySystem.Map.Scripts
         Harano,
         Isikawa,
         Abe,
+        Sakai,
         // EditMapシーン開始時にこのenumの中から識別子を選ぶ
     }
 
