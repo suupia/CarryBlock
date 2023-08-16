@@ -1,4 +1,5 @@
 ﻿using System;
+using Carry.CarrySystem.CG.Tsukinowa;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Projects.BattleSystem.Player.Scripts;
@@ -25,6 +26,8 @@ namespace Carry.CarrySystem.Player.Scripts
         [Networked] public NetworkBool IsReady { get; set; }
 
         [Networked] PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
+        
+        PlayerCharacterHolder _playerCharacterHolder = null!;
 
         // Detector
         // [Networked]
@@ -37,11 +40,12 @@ namespace Carry.CarrySystem.Player.Scripts
         
         bool _isSpawned; // FixedUpdateNetwork()が呼ばれる前にSpawned()が呼ばれるため必要ないと言えば必要ない
         
-        public void Init(ICharacter character, PlayerColorType colorType)
+        public void Init(ICharacter character, PlayerColorType colorType, PlayerCharacterHolder playerCharacterHolder)
         {
             Debug.Log($"LobbyPlayerControllerNet.Init(), character = {character}");
             _character = character;
             ColorType = colorType;
+            _playerCharacterHolder = playerCharacterHolder;
         }
 
         public override void Spawned()
@@ -120,6 +124,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void RPC_ChangeNextUnit()
         {
             ColorType = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
+            _playerCharacterHolder.SetColor(Runner.LocalPlayer, ColorType);
             Destroy(_characterObj);
             InstantiateCharacter();
 
@@ -137,6 +142,8 @@ namespace Carry.CarrySystem.Player.Scripts
             // Instantiate the unit.
             var prefab = playerUnitPrefabs[(int)ColorType];
             _characterObj = Instantiate(prefab, unitObjectParent);
+            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
+
 
             _character?.Setup(info);
             

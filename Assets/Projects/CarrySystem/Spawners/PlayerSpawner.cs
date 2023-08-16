@@ -32,7 +32,7 @@ namespace Carry.CarrySystem.Spawners
         {
             Debug.Log("Spawning Player");
             var spawnPosition = new Vector3(0, 5, 0);
-            var playerController = _playerBuilder.Build(PlayerColorType.Red, spawnPosition, Quaternion.identity, player);
+            var playerController = _playerBuilder.Build(spawnPosition, Quaternion.identity, player);
             _runner.SetPlayerObject(player, playerController.Object);
             _playerControllers.Add(playerController);
         }

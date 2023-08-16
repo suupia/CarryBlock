@@ -1,4 +1,4 @@
-﻿using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using UnityEngine;
@@ -14,7 +14,9 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IHoldActionExecutor _holdActionExecutor;
         readonly IPassActionExecutor _passActionExecutor;
         readonly PlayerBlockContainer _blockContainer;
-        
+
+        public PlayerBlockContainer PlayerBlockContainer => _blockContainer;
+
         public Character(
             IMoveExecutorContainer moveExecutorContainer, 
             IHoldActionExecutor holdActionExecutor,
