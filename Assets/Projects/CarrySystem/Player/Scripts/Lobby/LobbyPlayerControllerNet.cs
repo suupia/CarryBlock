@@ -120,11 +120,11 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         
         //Deal as RPC for changing unit
-        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        [Rpc(RpcSources.InputAuthority, RpcTargets.InputAuthority)]
         public void RPC_ChangeNextUnit()
         {
             ColorType = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
-            if (Runner.IsServer)
+            if (HasStateAuthority)
             {
                 _playerCharacterHolder.SetColor(Runner.LocalPlayer, ColorType);  // プレイヤーの色を設定して覚えておく
             }
