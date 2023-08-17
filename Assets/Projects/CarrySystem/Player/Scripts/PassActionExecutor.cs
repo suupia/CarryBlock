@@ -88,7 +88,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log("Receive Pass");
             _blockContainer.SetBlock(block);
-            _blockContainer.Presenter.ReceiveBlock();
+            _blockContainer.Presenter.ReceiveBlock(block);
         }
         
         

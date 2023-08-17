@@ -22,7 +22,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         EntityGridMapSaver _entityGridMapSaver;
 
         CUIState _cuiState = CUIState.Idle;
-        BlockType _blockType;
+        IBlock _blockType;
 
         enum CUIState
         {
@@ -78,25 +78,16 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
 
                 var map = _editMapUpdater.GetMap();
-                switch (_blockType)
+                
+                IBlock block = _blockType switch
                 {
-                    case BlockType.BasicBlock:
-                        var basicBlock = new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround);
-                        _blockPlacer.AddBlock(map, mouseGridPosOnGround, basicBlock);
-                        break;
-                    case BlockType.UnmovableBlock:
-                        var rock = new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround);
-                        _blockPlacer.AddBlock(map, mouseGridPosOnGround, rock);
-                        break;
-                    case BlockType.HeavyBlock:
-                        var heavyBlock = new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround);
-                        _blockPlacer.AddBlock(map, mouseGridPosOnGround, heavyBlock);
-                        break;
-                    case BlockType.FragileBlock:
-                        var fragileBlock = new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround);
-                        _blockPlacer.AddBlock(map, mouseGridPosOnGround, fragileBlock);
-                        break;
-                }
+                    BasicBlock _ => new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround),
+                    UnmovableBlock _ => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
+                    HeavyBlock _ => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
+                    FragileBlock _ => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
+                    _ =>  throw new ArgumentOutOfRangeException(nameof(_blockType), _blockType, null),
+                };
+                _blockPlacer.AddBlock(map, mouseGridPosOnGround, block);
             }
 
             if (Input.GetMouseButtonDown(1))
@@ -105,42 +96,37 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
 
                 var map = _editMapUpdater.GetMap();
-                switch (_blockType)
+                
+                Action action = _blockType switch
                 {
-                    case BlockType.BasicBlock:
-                        _blockPlacer.RemoveBlock<BasicBlock>(map, mouseGridPosOnGround);
-                        break;
-                    case BlockType.UnmovableBlock:
-                        _blockPlacer.RemoveBlock<UnmovableBlock>(map, mouseGridPosOnGround);
-                        break;
-                    case BlockType.HeavyBlock:
-                        _blockPlacer.RemoveBlock<HeavyBlock>(map, mouseGridPosOnGround);
-                        break;
-                    case BlockType.FragileBlock:
-                        _blockPlacer.RemoveBlock<FragileBlock>(map, mouseGridPosOnGround);
-                        break;
-                }
+                    BasicBlock _ => () => _blockPlacer.RemoveBlock<BasicBlock>(map, mouseGridPosOnGround),
+                    UnmovableBlock _ => () => _blockPlacer.RemoveBlock<UnmovableBlock>(map, mouseGridPosOnGround),
+                    HeavyBlock _ => () => _blockPlacer.RemoveBlock<HeavyBlock>(map, mouseGridPosOnGround),
+                    FragileBlock _ => () => _blockPlacer.RemoveBlock<FragileBlock>(map, mouseGridPosOnGround),
+                    _ =>  throw new ArgumentOutOfRangeException(nameof(_blockType), _blockType, null),
+                };
+                action();
             }
 
             // 置くブロックを切り替える
             if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
             {
-                _blockType = BlockType.BasicBlock;
+                _blockType = new BasicBlock(BasicBlock.Kind.Kind1, Vector2Int.zero);
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
             {
-                _blockType = BlockType.UnmovableBlock;
+                _blockType = new UnmovableBlock(UnmovableBlock.Kind.Kind1, Vector2Int.zero);
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
             {
-                _blockType = BlockType.HeavyBlock;
+                _blockType = new HeavyBlock(HeavyBlock.Kind.Kind1, Vector2Int.zero);
             }
             
             if(Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
             {
-                _blockType = BlockType.FragileBlock;
+                _blockType = new FragileBlock(FragileBlock.Kind.Kind1, Vector2Int.zero);
             }
 
             if (Input.GetKeyDown(KeyCode.S))
