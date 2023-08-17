@@ -115,16 +115,11 @@ namespace Carry.CarrySystem.Player.Scripts
                     Debug.Log($"before color = {ColorType}");
                     var afterColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
                     Debug.Log($"after color = {afterColor}");
-                    if (HasStateAuthority)
-                    {
-                        ColorType = afterColor;
-                        _playerCharacterHolder.SetColor(Runner.LocalPlayer, afterColor);  // プレイヤーの色を設定して覚えておく
-                    }
 
-                    if (HasInputAuthority)
-                    {
-                        RPC_ChangeNextUnit();
-                    }
+                    ColorType = afterColor;
+                    _playerCharacterHolder.SetColor(Runner.LocalPlayer, afterColor); // プレイヤーの色を設定して覚えておく
+
+                    RPC_ChangeNextUnit();
                 }
 
 
