@@ -120,7 +120,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         
         //Deal as RPC for changing unit
-        [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
         public void RPC_ChangeNextUnit()
         {
             ColorType = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
