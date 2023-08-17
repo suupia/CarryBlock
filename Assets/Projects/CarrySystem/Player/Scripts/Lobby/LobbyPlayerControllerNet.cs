@@ -112,9 +112,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
                 {
-                    Debug.Log($"before color = {ColorType}");
                     var afterColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
-                    Debug.Log($"after color = {afterColor}");
 
                     ColorType = afterColor;
                     _playerCharacterHolder.SetColor(Object.InputAuthority, afterColor); // プレイヤーの色を設定して覚えておく
