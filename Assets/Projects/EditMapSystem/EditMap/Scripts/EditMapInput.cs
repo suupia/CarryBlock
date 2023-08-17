@@ -97,15 +97,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
                 var map = _editMapUpdater.GetMap();
                 
-                Action action = _blockType switch
+                (_blockType switch
                 {
                     BasicBlock _ => () => _blockPlacer.RemoveBlock<BasicBlock>(map, mouseGridPosOnGround),
                     UnmovableBlock _ => () => _blockPlacer.RemoveBlock<UnmovableBlock>(map, mouseGridPosOnGround),
                     HeavyBlock _ => () => _blockPlacer.RemoveBlock<HeavyBlock>(map, mouseGridPosOnGround),
                     FragileBlock _ => () => _blockPlacer.RemoveBlock<FragileBlock>(map, mouseGridPosOnGround),
-                    _ =>  throw new ArgumentOutOfRangeException(nameof(_blockType), _blockType, null),
-                };
-                action();
+                    _ => (Action)(() => throw new ArgumentOutOfRangeException(nameof(_blockType), _blockType, null) ),
+                })();
             }
 
             // 置くブロックを切り替える
