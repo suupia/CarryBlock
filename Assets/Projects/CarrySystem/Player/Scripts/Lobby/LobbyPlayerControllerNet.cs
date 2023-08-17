@@ -124,7 +124,10 @@ namespace Carry.CarrySystem.Player.Scripts
         public void RPC_ChangeNextUnit()
         {
             ColorType = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
-            _playerCharacterHolder.SetColor(Runner.LocalPlayer, ColorType);
+            if (Runner.IsServer)
+            {
+                _playerCharacterHolder.SetColor(Runner.LocalPlayer, ColorType);  // プレイヤーの色を設定して覚えておく
+            }
             Destroy(_characterObj);
             InstantiateCharacter();
 
