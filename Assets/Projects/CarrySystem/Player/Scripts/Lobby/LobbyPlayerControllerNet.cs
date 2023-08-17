@@ -66,7 +66,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
 
             // Instantiate the character.
-            InstantiateCharacter();
+            InstantiateCharacter(PlayerColorType.Red);  // Redからスタート
             
             _isSpawned = true;
         }
@@ -123,13 +123,14 @@ namespace Carry.CarrySystem.Player.Scripts
         [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
         public void RPC_ChangeNextUnit()
         {
+            var nextColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
             if (HasStateAuthority)
             {
-                 ColorType = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
-                _playerCharacterHolder.SetColor(Runner.LocalPlayer, ColorType);  // プレイヤーの色を設定して覚えておく
+                 ColorType = nextColor;
+                _playerCharacterHolder.SetColor(Runner.LocalPlayer, nextColor);  // プレイヤーの色を設定して覚えておく
             }
             Destroy(_characterObj);
-            InstantiateCharacter();
+            InstantiateCharacter(nextColor);
 
             SetToOrigin();
         }
@@ -140,10 +141,11 @@ namespace Carry.CarrySystem.Player.Scripts
             SetToOrigin();
         }
 
-        void InstantiateCharacter()
+        // StateAuthorityがない場合でも呼ぶため、Networkedプロパティを参照すると同期が遅れて思った通りの挙動をしないことがあるので注意
+        void InstantiateCharacter(PlayerColorType colorType)
         {
             // Instantiate the unit.
-            var prefab = playerUnitPrefabs[(int)ColorType];
+            var prefab = playerUnitPrefabs[(int)colorType];
             _characterObj = Instantiate(prefab, unitObjectParent);
             _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
 
