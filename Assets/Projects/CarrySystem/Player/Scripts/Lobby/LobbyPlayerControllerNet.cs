@@ -120,12 +120,12 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         
         //Deal as RPC for changing unit
-        [Rpc(RpcSources.InputAuthority, RpcTargets.InputAuthority)]
+        [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
         public void RPC_ChangeNextUnit()
         {
-            ColorType = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
             if (HasStateAuthority)
             {
+                 ColorType = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
                 _playerCharacterHolder.SetColor(Runner.LocalPlayer, ColorType);  // プレイヤーの色を設定して覚えておく
             }
             Destroy(_characterObj);
