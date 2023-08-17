@@ -66,7 +66,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
 
             // Instantiate the character.
-            InstantiateCharacter(PlayerColorType.Red);  // Redからスタート
+            InstantiateCharacter();
             
             _isSpawned = true;
         }
@@ -75,10 +75,18 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             if (Object.HasInputAuthority)
             {
-                if (Input.GetKeyDown(KeyCode.C))
-                {
-                    RPC_ChangeNextUnit();
-                }
+                // if (Input.GetKeyDown(KeyCode.C))
+                // {
+                //     Debug.Log($"before color = {ColorType}");
+                //     var afterColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
+                //     Debug.Log($"after color = {afterColor}");
+                //     if (HasStateAuthority)
+                //     {
+                //         ColorType = afterColor;
+                //         _playerCharacterHolder.SetColor(Runner.LocalPlayer, afterColor);  // プレイヤーの色を設定して覚えておく
+                //     }
+                //     RPC_ChangeNextUnit();
+                // }
             }
         }
 
@@ -102,6 +110,23 @@ namespace Carry.CarrySystem.Player.Scripts
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
 
+                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
+                {
+                    Debug.Log($"before color = {ColorType}");
+                    var afterColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
+                    Debug.Log($"after color = {afterColor}");
+                    if (HasStateAuthority)
+                    {
+                        ColorType = afterColor;
+                        _playerCharacterHolder.SetColor(Runner.LocalPlayer, afterColor);  // プレイヤーの色を設定して覚えておく
+                    }
+
+                    if (HasInputAuthority)
+                    {
+                        RPC_ChangeNextUnit();
+                    }
+                }
+
 
 
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
@@ -123,16 +148,8 @@ namespace Carry.CarrySystem.Player.Scripts
         [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
         public void RPC_ChangeNextUnit()
         {
-            Debug.Log($"before color = {ColorType}");
-            var nextColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
-            Debug.Log($"after color = {nextColor}");
-            if (HasStateAuthority)
-            {
-                 ColorType = nextColor;
-                _playerCharacterHolder.SetColor(Runner.LocalPlayer, nextColor);  // プレイヤーの色を設定して覚えておく
-            }
             Destroy(_characterObj);
-            InstantiateCharacter(nextColor);
+            InstantiateCharacter();
 
             SetToOrigin();
         }
@@ -144,12 +161,12 @@ namespace Carry.CarrySystem.Player.Scripts
         }
 
         // StateAuthorityがない場合でも呼ぶため、Networkedプロパティを参照すると同期が遅れて思った通りの挙動をしないことがあるので注意
-        void InstantiateCharacter(PlayerColorType colorType)
+        void InstantiateCharacter()
         {
             // Instantiate the unit.
-            var prefab = playerUnitPrefabs[(int)colorType];
+            var prefab = playerUnitPrefabs[(int)ColorType];
             _characterObj = Instantiate(prefab, unitObjectParent);
-            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(colorType);
+            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
 
 
             _character?.Setup(info);
