@@ -79,4 +79,14 @@ public class ReachRightEdgeCheckerTest
         var result = reachRightEdgeChecker.CalcContinuousCenter(testArray, 3);
         Assert.That(result, Is.EqualTo(3));
     }
+    
+    [Test]
+    public void CalcContinuousCenter3True()
+    {
+        var reachRightEdgeChecker = new ReachRightEdgeChecker();
+        var testArray = new bool[]{false,false,false,false,false,false,false,false,true,true,true};
+
+        var result = reachRightEdgeChecker.CalcContinuousCenter(testArray, 3);
+        Assert.That(result, Is.EqualTo(9));
+    }
 }

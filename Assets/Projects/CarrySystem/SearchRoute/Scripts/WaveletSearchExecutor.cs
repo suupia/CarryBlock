@@ -296,7 +296,20 @@ namespace Carry.CarrySystem.Map.Scripts
                     throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
             }
 
-
+            // //デバッグ用
+            // StringBuilder debugCell = new StringBuilder();
+            // for (int y = 0; y < map.Height; y++)
+            // {
+            //     for (int x = 0; x < map.Width; x++)
+            //     {
+            //         bool value = resultBoolArray[x + (map.Height - y - 1) * map.Width];
+            //         debugCell.AppendFormat("{0,4},", value.ToString()); // 桁数をそろえるために0を追加していると思う
+            //     }
+            //
+            //     debugCell.AppendLine();
+            // }
+            // Debug.Log($"すべてのresultBoolArrayの結果は\n{debugCell}");
+            
             return resultBoolArray;
         }
         
