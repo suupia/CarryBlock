@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Carry.CarrySystem.Player.Scripts;
 using Fusion;
+using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
@@ -12,12 +13,14 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             if (_colorDictionary.TryGetValue(playerRef, out PlayerColorType colorType))
             {
+                Debug.Log($"GetPlayerColorType playerRef:{playerRef} is {colorType}");
                 return colorType;
             }
             return (PlayerColorType)0;
         }
         public void SetColor(PlayerRef playerRef, PlayerColorType colorType)
         {
+            Debug.Log($"Registering playerRef:{playerRef} as {colorType}");
             _colorDictionary[playerRef] = colorType;
         }
     }

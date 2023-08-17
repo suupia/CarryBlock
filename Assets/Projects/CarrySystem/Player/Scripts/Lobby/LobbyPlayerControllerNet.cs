@@ -117,7 +117,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     Debug.Log($"after color = {afterColor}");
 
                     ColorType = afterColor;
-                    _playerCharacterHolder.SetColor(Runner.LocalPlayer, afterColor); // プレイヤーの色を設定して覚えておく
+                    _playerCharacterHolder.SetColor(Object.InputAuthority, afterColor); // プレイヤーの色を設定して覚えておく
 
                     RPC_ChangeNextUnit();
                 }
