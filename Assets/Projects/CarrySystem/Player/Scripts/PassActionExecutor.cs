@@ -68,6 +68,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     return;
                 }
                 Debug.Log($"Pass Block");
+                block.PutDown(_info.playerController.Character);
                 _blockContainer.Presenter.PassBlock();
                 if (!targetPlayerController.Character.CanReceivePass())
                 {
@@ -87,6 +88,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void ReceivePass(IBlock block)
         {
             Debug.Log("Receive Pass");
+            block.PickUp(_info.playerController.Character);
             _blockContainer.SetBlock(block);
             _blockContainer.Presenter.ReceiveBlock(block);
         }
