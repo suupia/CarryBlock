@@ -123,7 +123,9 @@ namespace Carry.CarrySystem.Player.Scripts
         [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
         public void RPC_ChangeNextUnit()
         {
+            Debug.Log($"before color = {ColorType}");
             var nextColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
+            Debug.Log($"after color = {nextColor}");
             if (HasStateAuthority)
             {
                  ColorType = nextColor;
@@ -147,7 +149,7 @@ namespace Carry.CarrySystem.Player.Scripts
             // Instantiate the unit.
             var prefab = playerUnitPrefabs[(int)colorType];
             _characterObj = Instantiate(prefab, unitObjectParent);
-            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
+            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(colorType);
 
 
             _character?.Setup(info);
