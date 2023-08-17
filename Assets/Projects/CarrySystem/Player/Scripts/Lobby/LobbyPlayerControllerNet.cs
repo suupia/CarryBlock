@@ -140,7 +140,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         
         //Deal as RPC for changing unit
-        [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void RPC_ChangeNextUnit()
         {
             Destroy(_characterObj);
