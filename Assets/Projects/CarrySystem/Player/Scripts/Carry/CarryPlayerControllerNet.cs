@@ -143,7 +143,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
             character?.Setup(info);
             _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
-            var animatorPresenter = GetComponent<IPlayerAnimatorPresenter>();
+            var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
             animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
 
             

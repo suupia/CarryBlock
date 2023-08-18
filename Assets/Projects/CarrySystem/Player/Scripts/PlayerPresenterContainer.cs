@@ -28,12 +28,6 @@ namespace Carry.CarrySystem.Player.Scripts
 
         }
 
-        public void SetAnimator(Animator animator)
-        {
-              _animatorPresenters.ForEach(presenter => presenter.SetAnimator(animator));   
-        }
-
-
         // IPlayerBlockPresenterで追加されるメソッド
         public void PickUpBlock(IBlock block)
         {
