@@ -49,7 +49,7 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField] GameObject fragileBlockView = null!;
         public void Init(ICharacter character)
         {
-            character.SetHoldPresenter(this);
+            character.SetHoldPresenter((IPlayerBlockPresenter)this);
         }
 
         public void Awake()

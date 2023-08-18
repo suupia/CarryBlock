@@ -15,10 +15,12 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             // [Networked] public PlayerBlockPresenterNet.BlockType HoldingBlockType { get; set; } // enumは共有できない(?)ので、int16で送る
         }
+
         public void Init(ICharacter character)
         {
-         //   character.SetHoldPresenter(this);
+            character.SetHoldPresenter(this);
         }
+
         public void Awake()
         {
             _animator = GetComponent<Animator>();
@@ -37,6 +39,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _animator.SetTrigger("PutDown");
         }
+
         public void PassBlock()
         {
             _animator.SetTrigger("Pass");

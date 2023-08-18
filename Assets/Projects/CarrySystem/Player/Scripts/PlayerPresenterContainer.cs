@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
@@ -8,7 +9,8 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class PlayerPresenterContainer : IPlayerBlockPresenter
     {
-        readonly List<IPlayerBlockPresenter> _presenters = new ();
+        readonly List<IPlayerBlockPresenter> _blockPresenters = new ();
+        readonly List<IPlayerAnimatorPresenter> _animatorPresenters = new ();
 
         public PlayerPresenterContainer()
         {
@@ -16,26 +18,32 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void SetHoldPresenter(IPlayerBlockPresenter presenter)
         {
-            _presenters.Add(presenter);
+            _blockPresenters.Add(presenter);
+
+            if (presenter is IPlayerAnimatorPresenter animatorPresenter)
+            {
+                _animatorPresenters.Add(animatorPresenter);
+            }
+
         }
 
         public void PickUpBlock(IBlock block)
         {
-            _presenters.ForEach(presenter => presenter.PickUpBlock(block));
+            _blockPresenters.ForEach(presenter => presenter.PickUpBlock(block));
         }
 
         public void PutDownBlock()
         {
-            _presenters.ForEach(presenter => presenter.PutDownBlock());
+            _blockPresenters.ForEach(presenter => presenter.PutDownBlock());
         }
         public void PassBlock()
         {
-            _presenters.ForEach(presenter => presenter.PassBlock());
+            _blockPresenters.ForEach(presenter => presenter.PassBlock());
         }
 
         public void ReceiveBlock(IBlock block)
         {
-            _presenters.ForEach(presenter => presenter.ReceiveBlock(block));
+            _blockPresenters.ForEach(presenter => presenter.ReceiveBlock(block));
         }
 
     }
