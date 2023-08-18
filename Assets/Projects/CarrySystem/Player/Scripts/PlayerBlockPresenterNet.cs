@@ -88,16 +88,16 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             PresentDataRef.HoldingBlockType = BlockType.None;
         }
+        public void ReceiveBlock(IBlock block)
+        {
+            PresentDataRef.HoldingBlockType =  DecideBlockType(block);
+        }
+        
         
         public void PassBlock()
         {
             PresentDataRef.HoldingBlockType = BlockType.None;
         } 
-        
-        public void ReceiveBlock(IBlock block)
-        {
-            PresentDataRef.HoldingBlockType =  DecideBlockType(block);
-        }
         
 
         BlockType DecideBlockType(IBlock block)

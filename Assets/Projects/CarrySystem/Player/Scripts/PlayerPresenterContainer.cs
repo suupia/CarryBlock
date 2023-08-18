@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
+using UnityEngine;
 
 #nullable enable
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class PlayerPresenterContainer : IPlayerBlockPresenter
+    public class PlayerPresenterContainer : IPlayerAnimatorPresenter
     {
         readonly List<IPlayerBlockPresenter> _blockPresenters = new ();
         readonly List<IPlayerAnimatorPresenter> _animatorPresenters = new ();
@@ -27,6 +28,13 @@ namespace Carry.CarrySystem.Player.Scripts
 
         }
 
+        public void SetAnimator(Animator animator)
+        {
+              _animatorPresenters.ForEach(presenter => presenter.SetAnimator(animator));   
+        }
+
+
+        // IPlayerBlockPresenterで追加されるメソッド
         public void PickUpBlock(IBlock block)
         {
             _blockPresenters.ForEach(presenter => presenter.PickUpBlock(block));
@@ -36,14 +44,25 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _blockPresenters.ForEach(presenter => presenter.PutDownBlock());
         }
+        public void ReceiveBlock(IBlock block)
+        {
+            _blockPresenters.ForEach(presenter => presenter.ReceiveBlock(block));
+        }
+        
         public void PassBlock()
         {
             _blockPresenters.ForEach(presenter => presenter.PassBlock());
         }
 
-        public void ReceiveBlock(IBlock block)
-        {
-            _blockPresenters.ForEach(presenter => presenter.ReceiveBlock(block));
+        // IPlayerAnimatorPresenterで追加されるメソッド
+        public void Idle(){
+            _animatorPresenters.ForEach(presenter => presenter.Idle());
+        }
+        public void Walk(){
+            _animatorPresenters.ForEach(presenter => presenter.Walk());
+        }
+        public void Dash(){
+            _animatorPresenters.ForEach(presenter => presenter.Dash());
         }
 
     }

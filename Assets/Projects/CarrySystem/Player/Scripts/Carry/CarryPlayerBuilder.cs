@@ -58,6 +58,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType);
                     networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
+
                 });
             
             // 各MonoBehaviourにドメインを設定

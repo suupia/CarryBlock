@@ -160,6 +160,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var prefab = playerUnitPrefabs[(int)ColorType];
             _characterObj = Instantiate(prefab, unitObjectParent);
             _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
+            _characterObj.GetComponentInChildren<PlayerAnimatorPresenterNet>()?.Init(character);
 
 
             _character?.Setup(info);
