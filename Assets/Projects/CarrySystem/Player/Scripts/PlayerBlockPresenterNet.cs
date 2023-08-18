@@ -47,6 +47,10 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField] GameObject unmovableBlockView= null!;
         [SerializeField] GameObject heavyBlockView= null!;
         [SerializeField] GameObject fragileBlockView = null!;
+        public void Init(ICharacter character)
+        {
+            character.SetHoldPresenter(this);
+        }
 
         public void Awake()
         {
@@ -57,10 +61,6 @@ namespace Carry.CarrySystem.Player.Scripts
             blockTypeToGameObjectMap[BlockType.FragileBlock] = fragileBlockView;
         }
 
-        public void Init(ICharacter character)
-        {
-            character.SetHoldPresenter(this);
-        }
         public override void Render()
         {
             BlockType currentBlockType = PresentDataRef.HoldingBlockType;

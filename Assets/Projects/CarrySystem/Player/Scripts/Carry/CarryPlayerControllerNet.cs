@@ -28,12 +28,6 @@ namespace Carry.CarrySystem.Player.Scripts
 
         [Networked] PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
 
-        // Detector
-        // [Networked]
-        // protected ref PlayerDecorationDetector.Data DecorationDataRef => ref MakeRef<PlayerDecorationDetector.Data>();
-        // PlayerDecorationDetector _decorationDetector;
-        
-        
         GameObject _characterObj= null!;
         
         bool _isSpawned; // FixedUpdateNetwork()が呼ばれる前にSpawned()が呼ばれるため必要ないと言えば必要ない
