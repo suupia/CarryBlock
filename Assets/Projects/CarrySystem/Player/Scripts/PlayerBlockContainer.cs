@@ -12,23 +12,10 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         public bool IsHoldingBlock => _isHoldingBlock;
         public bool CanPutDown(IList<IBlock> blocks) => _holdingBlock?.CanPutDown(blocks) ?? false;
-        public IPlayerBlockPresenter Presenter => _presenter;
-        
-        readonly IMapUpdater _mapUpdater;
-        IPlayerBlockPresenter? _presenter;
+
         bool _isHoldingBlock = false; // 外部から取得するときは、PopBlock()を使う。
                                       // 持っているかどうかの判定はIsHoldingBlockを使って外部にブロックをちょくせつ公開はしない
         IBlock? _holdingBlock = null;
-
-        public PlayerBlockContainer()
-        {
-            
-        }
-
-        public void SetHoldPresenter(IPlayerBlockPresenter presenter)
-        {
-            _presenter = presenter;
-        }
         
         /// <summary>
         /// Blockを取り出すと同時に、持っているブロックをnullにする

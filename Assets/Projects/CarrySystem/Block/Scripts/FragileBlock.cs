@@ -69,7 +69,7 @@ namespace Carry.CarrySystem.Block.Scripts
             Debug.Log("BreakBlockを実行");
             
             var _ = character.PlayerBlockContainer.PopBlock();
-            character.PlayerBlockContainer.Presenter.PutDownBlock();
+            character.PresenterContainer.PutDownBlock();
         }  
     }
 }

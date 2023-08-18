@@ -19,14 +19,17 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly int _layerMask;
         readonly  Collider[] _targetBuffer = new Collider[10];
         readonly PlayerBlockContainer _blockContainer;
+        readonly IPlayerBlockPresenter _playerPresenterContainer;
 
         public PassActionExecutor(
             PlayerBlockContainer blockContainer,
+            IPlayerBlockPresenter playerPresenterContainer,
             HoldActionExecutor holdActionExecutor,
             float radius,
             int layerMask)
         {
             _blockContainer = blockContainer;
+            _playerPresenterContainer = playerPresenterContainer;
             _holdActionExecutor = holdActionExecutor;
             _radius = radius;
             _layerMask = layerMask; /*LayerMask.GetMask("Player");*/
@@ -69,7 +72,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 }
                 Debug.Log($"Pass Block");
                 block.PutDown(_info.playerController.Character);
-                _blockContainer.Presenter.PassBlock();
+                _playerPresenterContainer.PassBlock();
                 if (!targetPlayerController.Character.CanReceivePass())
                 {
                     Debug.Log($"receive pass is not possible. So, return block");
@@ -90,7 +93,7 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log("Receive Pass");
             block.PickUp(_info.playerController.Character);
             _blockContainer.SetBlock(block);
-            _blockContainer.Presenter.ReceiveBlock(block);
+            _playerPresenterContainer.ReceiveBlock(block);
         }
         
         
