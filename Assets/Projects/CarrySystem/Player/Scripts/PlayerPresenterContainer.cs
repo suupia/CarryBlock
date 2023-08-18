@@ -8,7 +8,6 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class PlayerPresenterContainer : IPlayerBlockPresenter
     {
-        readonly IMapUpdater _mapUpdater;
         readonly List<IPlayerBlockPresenter> _presenters = new ();
 
         public PlayerPresenterContainer()
@@ -29,15 +28,15 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _presenters.ForEach(presenter => presenter.PutDownBlock());
         }
+        public void PassBlock()
+        {
+            _presenters.ForEach(presenter => presenter.PassBlock());
+        }
 
         public void ReceiveBlock(IBlock block)
         {
             _presenters.ForEach(presenter => presenter.ReceiveBlock(block));
         }
 
-        public void PassBlock()
-        {
-            _presenters.ForEach(presenter => presenter.PassBlock());
-        }
     }
 }

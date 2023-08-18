@@ -1,4 +1,5 @@
 ﻿using System;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using UnityEngine;
@@ -27,7 +28,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
         }
 
-        public void PickUpBlock()
+        public void PickUpBlock(IBlock block)
         {
             _animator.SetTrigger("PickUp");
         }
@@ -36,16 +37,16 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _animator.SetTrigger("PutDown");
         }
-
-        public void ReceiveBlock()
-        {
-            _animator.SetTrigger("Receive");
-        }
-
         public void PassBlock()
         {
             _animator.SetTrigger("Pass");
         }
+
+        public void ReceiveBlock(IBlock block)
+        {
+            _animator.SetTrigger("Receive");
+        }
+
 
         public void Idle()
         {
