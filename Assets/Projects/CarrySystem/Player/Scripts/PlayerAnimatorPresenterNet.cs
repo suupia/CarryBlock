@@ -35,13 +35,13 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"SetTrigger PickUp");
             _animator.SetTrigger("PickUp");
-            _animator.SetBool("isHoldingBlock", true);
+            _animator.SetBool("IsHoldingBlock", true);
         }
 
         public void PutDownBlock()
         {
             _animator.SetTrigger("PutDown");
-            _animator.SetBool("isHoldingBlock", false);
+            _animator.SetBool("IsHoldingBlock", false);
         }
         
         public void ReceiveBlock(IBlock block)
