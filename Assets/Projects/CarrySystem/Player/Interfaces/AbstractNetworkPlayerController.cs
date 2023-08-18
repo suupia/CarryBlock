@@ -7,7 +7,7 @@ namespace Carry.CarrySystem.Player.Interfaces
     {
         public ICharacter Character => character;
 
-        protected ICharacter character = null!;
+        protected ICharacter? character;
 
     }
 }

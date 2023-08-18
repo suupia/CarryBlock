@@ -163,7 +163,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var animatorPresenter = GetComponent<IPlayerAnimatorPresenter>();
             animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
 
-            character.Setup(info);
+            character?.Setup(info);
             
             // Play spawn animation
             // _decorationDetector.OnSpawned();
@@ -172,7 +172,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Reset()
         {
             // フロア移動の際に呼ばれる
-            character.Reset();
+            character?.Reset();
             SetToOrigin();
         }
 
