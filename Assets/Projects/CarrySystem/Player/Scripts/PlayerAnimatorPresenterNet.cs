@@ -3,13 +3,14 @@ using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using UnityEngine;
+#nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    [RequireComponent(typeof(CarryPlayerControllerNet))]
+    [RequireComponent(typeof(AbstractNetworkPlayerController))]
     public class PlayerAnimatorPresenterNet : NetworkBehaviour, IPlayerAnimatorPresenter
     {
-        Animator _animator;
+        Animator? _animator;
 
         public struct PresentData : INetworkStruct
         {
@@ -33,25 +34,44 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void PickUpBlock(IBlock block)
         {
-            Debug.Log($"SetTrigger PickUp");
+            if (_animator == null)
+            {
+                Debug.LogError($"_animator is null");
+                return;
+            }
             _animator.SetTrigger("PickUp");
             _animator.SetBool("IsHoldingBlock", true);
         }
 
         public void PutDownBlock()
         {
+            if (_animator == null)
+            {
+                Debug.LogError($"_animator is null");
+                return;
+            }
             _animator.SetTrigger("PutDown");
             _animator.SetBool("IsHoldingBlock", false);
         }
         
         public void ReceiveBlock(IBlock block)
         {
+            if (_animator == null)
+            {
+                Debug.LogError($"_animator is null");
+                return;
+            }
             _animator.SetTrigger("Receive");
             _animator.SetBool("isHoldingBlock", false);
         }
 
         public void PassBlock()
         {
+            if (_animator == null)
+            {
+                Debug.LogError($"_animator is null");
+                return;
+            }
             _animator.SetTrigger("Pass");
             _animator.SetBool("isHoldingBlock", false);
         }
@@ -59,18 +79,34 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Idle()
         {
+            if (_animator == null)
+            {
+                Debug.LogError($"_animator is null");
+                return;
+            }
             _animator.SetBool("InWalk", false);
             _animator.SetBool("InDash", false);
         }
 
         public void Walk()
         {
+            Debug.Log($"Walk Animation");
+            if (_animator == null)
+            {
+                Debug.LogError($"_animator is null");
+                return;
+            }
             _animator.SetBool("InWalk", true);
             _animator.SetBool("InDash", false);
         }
 
         public void Dash()
         {
+            if (_animator == null)
+            {
+                Debug.LogError($"_animator is null");
+                return;
+            }
             _animator.SetBool("InWalk", false);
             _animator.SetBool("InDash", true);
         }

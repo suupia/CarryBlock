@@ -28,14 +28,7 @@ namespace Carry.CarrySystem.Player.Scripts
         [Networked] PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
         
         PlayerCharacterHolder _playerCharacterHolder = null!;
-
-        // Detector
-        // [Networked]
-        // protected ref PlayerDecorationDetector.Data DecorationDataRef => ref MakeRef<PlayerDecorationDetector.Data>();
-        // PlayerDecorationDetector _decorationDetector;
         
-        
-        ICharacter _character = null!;
         GameObject _characterObj= null!;
         
         bool _isSpawned; // FixedUpdateNetwork()が呼ばれる前にSpawned()が呼ばれるため必要ないと言えば必要ない
@@ -43,15 +36,13 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Init(ICharacter character, PlayerColorType colorType, PlayerCharacterHolder playerCharacterHolder)
         {
             Debug.Log($"LobbyPlayerControllerNet.Init(), character = {character}");
-            _character = character;
+            this.character = character;
             ColorType = colorType;
             _playerCharacterHolder = playerCharacterHolder;
         }
 
         public override void Spawned()
         {
-            Debug.Log($"LobbyPlayerControllerNet.Spawned(), _character = {_character}");
-
             // init info
             info.Init(Runner, gameObject,this);
             
@@ -106,7 +97,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
-                    _character.HoldAction();
+                    character.HoldAction();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
 
@@ -125,7 +116,16 @@ namespace Carry.CarrySystem.Player.Scripts
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
                 // Debug.Log($"_character = {_character}");
-                _character.Move( direction);
+                character.Move(direction);
+                
+                if (direction == Vector3.zero)
+                {
+                    character.PresenterContainer.Idle();
+                }
+                else
+                {
+                    character.PresenterContainer.Walk();
+                }
 
                 PreButtons = input.Buttons;
             }
@@ -160,10 +160,10 @@ namespace Carry.CarrySystem.Player.Scripts
             var prefab = playerUnitPrefabs[(int)ColorType];
             _characterObj = Instantiate(prefab, unitObjectParent);
             _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
-            _characterObj.GetComponentInChildren<PlayerAnimatorPresenterNet>()?.Init(character);
+            character.PresenterContainer.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
 
 
-            _character?.Setup(info);
+            character.Setup(info);
             
             // Play spawn animation
             // _decorationDetector.OnSpawned();
@@ -172,7 +172,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Reset()
         {
             // フロア移動の際に呼ばれる
-            _character?.Reset();
+            character.Reset();
             SetToOrigin();
         }
 

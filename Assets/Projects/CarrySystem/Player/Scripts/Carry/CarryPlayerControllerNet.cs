@@ -93,6 +93,15 @@ namespace Carry.CarrySystem.Player.Scripts
                 // Debug.Log($"_character = {_character}");
                 character.Move( direction);
 
+                if (direction == Vector3.zero)
+                {
+                    character.PresenterContainer.Idle();
+                }
+                else
+                {
+                    character.PresenterContainer.Walk();
+                }
+
                 PreButtons = input.Buttons;
             }
             
