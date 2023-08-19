@@ -13,25 +13,14 @@ using PlayerInfo = Carry.CarrySystem.Player.Info.PlayerInfo;
 namespace Carry.CarrySystem.Player.Scripts
 {
     public class LobbyPlayerControllerNet : AbstractNetworkPlayerController
-    { 
-        [SerializeField]  Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
-        public Transform InterpolationTransform => unitObjectParent;
+    {
 
         [SerializeField] GameObject cameraPrefab= null!;
-        [SerializeField] GameObject[] playerUnitPrefabs= null!;
 
-        [SerializeField] PlayerInfo info= null!;
-
-        [Networked] NetworkButtons PreButtons { get; set; }
-        [Networked] public NetworkBool IsReady { get; set; }
-
-        [Networked] PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
         
         PlayerCharacterHolder _playerCharacterHolder = null!;
         
-        GameObject _characterObj= null!;
         
-        bool _isSpawned; // FixedUpdateNetwork()が呼ばれる前にSpawned()が呼ばれるため必要ないと言えば必要ない
         
         public void Init(ICharacter character, PlayerColorType colorType, PlayerCharacterHolder playerCharacterHolder)
         {
@@ -59,7 +48,6 @@ namespace Carry.CarrySystem.Player.Scripts
             // Instantiate the character.
             InstantiateCharacter();
             
-            _isSpawned = true;
         }
 
         protected virtual void Update()
@@ -84,7 +72,6 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public override void FixedUpdateNetwork()
         {
-            if(!_isSpawned)return;
             if (!HasStateAuthority) return;
 
             if (GetInput(out NetworkInputData input))
