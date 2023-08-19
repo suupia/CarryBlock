@@ -22,9 +22,21 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         // Presenter系のクラスはホストとクライアントで状態を一致させるためにNetworkedプロパティを持つので、
         // ドメインの情報を持ってはいけない
+        
+        /// <summary>
+        /// switch文ではなるべく使用しないようにする。代わりにパターンマッチングを使う
+        /// </summary>
+        public enum BlockType
+        {
+            None,
+            BasicBlock,
+            UnmovableBlock,
+            HeavyBlock,
+            FragileBlock,
+        }
         public struct PresentData : INetworkStruct
         {
-            [Networked] public Int16 HoldingBlockType { get; set; } // enumは共有できない(?)ので、int16で送る
+            [Networked] public BlockType HoldingBlockType { get; set; } // enumは共有できない(?)ので、int16で送る
         }
         Dictionary<BlockType, GameObject> blockTypeToGameObjectMap = new Dictionary<BlockType, GameObject>();
 
@@ -35,6 +47,10 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField] GameObject unmovableBlockView= null!;
         [SerializeField] GameObject heavyBlockView= null!;
         [SerializeField] GameObject fragileBlockView = null!;
+        public void Init(ICharacter character)
+        {
+            character.SetHoldPresenter((IPlayerBlockPresenter)this);
+        }
 
         public void Awake()
         {
@@ -45,13 +61,9 @@ namespace Carry.CarrySystem.Player.Scripts
             blockTypeToGameObjectMap[BlockType.FragileBlock] = fragileBlockView;
         }
 
-        public void Init(ICharacter character)
-        {
-            character.SetHoldPresenter(this);
-        }
         public override void Render()
         {
-            BlockType currentBlockType = (BlockType)PresentDataRef.HoldingBlockType;
+            BlockType currentBlockType = PresentDataRef.HoldingBlockType;
 
             foreach (var blockType in blockTypeToGameObjectMap.Keys)
             {
@@ -69,6 +81,27 @@ namespace Carry.CarrySystem.Player.Scripts
         // 以下の処理はアニメーション、音、エフェクトの再生を行いたくなったら、それぞれのクラスの対応するメソッドを呼ぶようにするかも
         public void PickUpBlock(IBlock block)
         {
+            PresentDataRef.HoldingBlockType = DecideBlockType(block);
+        }
+
+        public void PutDownBlock()
+        {
+            PresentDataRef.HoldingBlockType = BlockType.None;
+        }
+        public void ReceiveBlock(IBlock block)
+        {
+            PresentDataRef.HoldingBlockType =  DecideBlockType(block);
+        }
+        
+        
+        public void PassBlock()
+        {
+            PresentDataRef.HoldingBlockType = BlockType.None;
+        } 
+        
+
+        BlockType DecideBlockType(IBlock block)
+        {
             var blockType  = block switch
             {
                 BasicBlock _ => BlockType.BasicBlock,
@@ -77,22 +110,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 FragileBlock _ => BlockType.FragileBlock,
                 _ => throw new ArgumentOutOfRangeException(nameof(block), block, null)
             };
-            PresentDataRef.HoldingBlockType = (Int16)blockType;
-        }
-
-        public void PutDownBlock()
-        {
-            PresentDataRef.HoldingBlockType = (Int16)BlockType.None;
-        }
-        
-        public void ReceiveBlock()
-        {
-            PresentDataRef.HoldingBlockType = (Int16)BlockType.BasicBlock;
-        }
-        
-        public void PassBlock()
-        {
-            PresentDataRef.HoldingBlockType = (Int16)BlockType.None;
+            return blockType;
         }
     }
 }

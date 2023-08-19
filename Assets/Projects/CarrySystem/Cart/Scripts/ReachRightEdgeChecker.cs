@@ -41,7 +41,7 @@ namespace Carry.CarrySystem.Cart.Scripts
         {
             var counter = 0;
             List<int> centerList = new List<int>();
-            for (int i = 0; i < array.Length - 1; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 if (array[i])
                 {

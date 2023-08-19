@@ -1,10 +1,13 @@
 ﻿#nullable enable
+using System;
+using System.Collections.Generic;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using UnityEngine;
 using VContainer;
+using Object = UnityEngine.Object;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
@@ -16,6 +19,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly CartBuilder _cartBuilder;
         readonly FloorTimerNet _floorTimerNet;
         readonly EntityGridMapLoader _gridMapLoader;
+        readonly MapKeyDataNet _mapKeyDataNet;
         readonly TilePresenterBuilder _tilePresenterBuilder;
         int _currentIndex;
         EntityGridMap? _currentMap;
@@ -25,13 +29,14 @@ namespace Carry.CarrySystem.Map.Scripts
             EntityGridMapLoader gridMapGridMapLoader,
             TilePresenterBuilder tilePresenterBuilder,
             CartBuilder cartBuilder,
-            FloorTimerNet floorTimerNet
-        )
+            FloorTimerNet floorTimerNet,
+            MapKeyDataNet mapKeyDataNet)
         {
             _gridMapLoader = gridMapGridMapLoader;
             _tilePresenterBuilder = tilePresenterBuilder;
             _cartBuilder = cartBuilder;
             _floorTimerNet = floorTimerNet;
+            _mapKeyDataNet = mapKeyDataNet;
         }
 
         public EntityGridMap GetMap()
@@ -41,8 +46,9 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void InitUpdateMap(MapKey mapKey, int index)
         {
-            _currentIndex = index;
-            _currentMap = _gridMapLoader.LoadEntityGridMap(mapKey, _currentIndex);
+            var key = _mapKeyDataNet.MapKeyDataList[_currentIndex].mapKey;
+            var mapIndex =  _mapKeyDataNet.MapKeyDataList[_currentIndex].index;
+            _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _tilePresenterBuilder.Build(_currentMap);
             _cartBuilder.Build(_currentMap, this);
         }
@@ -51,8 +57,9 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             Debug.Log($"次のフロアに変更します nextIndex: {_currentIndex + 1}");
             _currentIndex++;
-            var key = MapKey.Default; // Todo: キーを決める関数を作る
-            var nextMap = _gridMapLoader.LoadEntityGridMap(key, _currentIndex);
+            var key = _mapKeyDataNet.MapKeyDataList[_currentIndex].mapKey;
+            var mapIndex = _mapKeyDataNet.MapKeyDataList[_currentIndex].index;
+            var nextMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _currentMap = nextMap;
             _tilePresenterBuilder.Build(_currentMap);
 
@@ -66,4 +73,5 @@ namespace Carry.CarrySystem.Map.Scripts
             _floorTimerNet.StartTimer();
         }
     }
+
 }

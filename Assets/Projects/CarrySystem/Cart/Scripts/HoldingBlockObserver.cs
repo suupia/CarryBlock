@@ -75,7 +75,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             var startPos = new Vector2Int(1, map.Height % 2 == 1 ? (map.Height - 1) / 2 : map.Height / 2);
             var endPos = new Vector2Int(map.Width - 2, map.Height % 2 == 1 ? (map.Height - 1) / 2 : map.Height / 2);
             var searcherSize = SearcherSize.SizeThree;
-            var accessibleArea = waveletSearchExecutor.SearchAccessibleArea(startPos, endPos, isWall, searcherSize);
+            var accessibleArea = waveletSearchExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
 
             // Show the result
             if (_reachRightEdgeChecker. CanCartReachRightEdge(accessibleArea, map, searcherSize))

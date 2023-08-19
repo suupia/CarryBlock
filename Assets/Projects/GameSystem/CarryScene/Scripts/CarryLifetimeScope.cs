@@ -47,6 +47,8 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
 
+            builder.RegisterComponentInHierarchy<MapKeyDataNet>();
+
             // Cart
             builder.Register<CartBuilder>(Lifetime.Scoped);
             builder.Register<CartShortestRouteMove>(Lifetime.Scoped);

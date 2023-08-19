@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 7061470108438375560}
   - component: {fileID: 5120211856711664290}
   - component: {fileID: 5329258764260316730}
+  - component: {fileID: 1269994081479333746}
   m_Layer: 6
   m_Name: LobbyPlayerControllerNet
   m_TagString: Player
@@ -131,6 +132,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 5120211856711664290}
   - {fileID: 5329258764260316730}
+  - {fileID: 1269994081479333746}
   SimulationBehaviours: []
 --- !u!65 &7929560215822842881
 BoxCollider:
@@ -211,6 +213,19 @@ MonoBehaviour:
   - {fileID: 3546432070225258417, guid: 260f793b46807d741bf8925d10fd2ce6, type: 3}
   _IsReady:
     _value: 0
+--- !u!114 &1269994081479333746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4021678394862295774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be6ae2ff66f4bc1a018df7a8045db05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
 --- !u!1 &6649487960265976339
 GameObject:
   m_ObjectHideFlags: 0

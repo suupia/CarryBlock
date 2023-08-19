@@ -10,6 +10,7 @@ namespace Carry.CarrySystem.Player.Interfaces
        void SetHoldPresenter(IPlayerBlockPresenter presenter);
        
        PlayerBlockContainer PlayerBlockContainer{get;}
+       PlayerPresenterContainer PresenterContainer{get;}
 
     }
 }

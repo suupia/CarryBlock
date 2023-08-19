@@ -28,14 +28,7 @@ namespace Carry.CarrySystem.Player.Scripts
         [Networked] PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
         
         PlayerCharacterHolder _playerCharacterHolder = null!;
-
-        // Detector
-        // [Networked]
-        // protected ref PlayerDecorationDetector.Data DecorationDataRef => ref MakeRef<PlayerDecorationDetector.Data>();
-        // PlayerDecorationDetector _decorationDetector;
         
-        
-        ICharacter _character = null!;
         GameObject _characterObj= null!;
         
         bool _isSpawned; // FixedUpdateNetwork()が呼ばれる前にSpawned()が呼ばれるため必要ないと言えば必要ない
@@ -43,15 +36,13 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Init(ICharacter character, PlayerColorType colorType, PlayerCharacterHolder playerCharacterHolder)
         {
             Debug.Log($"LobbyPlayerControllerNet.Init(), character = {character}");
-            _character = character;
+            this.character = character;
             ColorType = colorType;
             _playerCharacterHolder = playerCharacterHolder;
         }
 
         public override void Spawned()
         {
-            Debug.Log($"LobbyPlayerControllerNet.Spawned(), _character = {_character}");
-
             // init info
             info.Init(Runner, gameObject,this);
             
@@ -75,10 +66,18 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             if (Object.HasInputAuthority)
             {
-                if (Input.GetKeyDown(KeyCode.C))
-                {
-                    RPC_ChangeNextUnit();
-                }
+                // if (Input.GetKeyDown(KeyCode.C))
+                // {
+                //     Debug.Log($"before color = {ColorType}");
+                //     var afterColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
+                //     Debug.Log($"after color = {afterColor}");
+                //     if (HasStateAuthority)
+                //     {
+                //         ColorType = afterColor;
+                //         _playerCharacterHolder.SetColor(Runner.LocalPlayer, afterColor);  // プレイヤーの色を設定して覚えておく
+                //     }
+                //     RPC_ChangeNextUnit();
+                // }
             }
         }
 
@@ -98,8 +97,18 @@ namespace Carry.CarrySystem.Player.Scripts
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
-                    _character.HoldAction();
+                    character.HoldAction();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
+                }
+
+                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
+                {
+                    var afterColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
+
+                    ColorType = afterColor;
+                    _playerCharacterHolder.SetColor(Object.InputAuthority, afterColor); // プレイヤーの色を設定して覚えておく
+
+                    RPC_ChangeNextUnit();
                 }
 
 
@@ -107,7 +116,16 @@ namespace Carry.CarrySystem.Player.Scripts
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
                 // Debug.Log($"_character = {_character}");
-                _character.Move( direction);
+                character.Move(direction);
+                
+                if (direction == Vector3.zero)
+                {
+                    character.PresenterContainer.Idle();
+                }
+                else
+                {
+                    character.PresenterContainer.Walk();
+                }
 
                 PreButtons = input.Buttons;
             }
@@ -120,11 +138,9 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         
         //Deal as RPC for changing unit
-        [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void RPC_ChangeNextUnit()
         {
-            ColorType = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
-            _playerCharacterHolder.SetColor(Runner.LocalPlayer, ColorType);
             Destroy(_characterObj);
             InstantiateCharacter();
 
@@ -137,15 +153,17 @@ namespace Carry.CarrySystem.Player.Scripts
             SetToOrigin();
         }
 
+        // StateAuthorityがない場合でも呼ぶため、Networkedプロパティを参照すると同期が遅れて思った通りの挙動をしないことがあるので注意
         void InstantiateCharacter()
         {
             // Instantiate the unit.
             var prefab = playerUnitPrefabs[(int)ColorType];
             _characterObj = Instantiate(prefab, unitObjectParent);
             _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
+            var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
+            animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
 
-
-            _character?.Setup(info);
+            character?.Setup(info);
             
             // Play spawn animation
             // _decorationDetector.OnSpawned();
@@ -154,7 +172,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Reset()
         {
             // フロア移動の際に呼ばれる
-            _character?.Reset();
+            character?.Reset();
             SetToOrigin();
         }
 

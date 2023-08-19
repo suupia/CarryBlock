@@ -28,12 +28,6 @@ namespace Carry.CarrySystem.Player.Scripts
 
         [Networked] PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
 
-        // Detector
-        // [Networked]
-        // protected ref PlayerDecorationDetector.Data DecorationDataRef => ref MakeRef<PlayerDecorationDetector.Data>();
-        // PlayerDecorationDetector _decorationDetector;
-        
-        
         GameObject _characterObj= null!;
         
         bool _isSpawned; // FixedUpdateNetwork()が呼ばれる前にSpawned()が呼ばれるため必要ないと言えば必要ない
@@ -99,6 +93,15 @@ namespace Carry.CarrySystem.Player.Scripts
                 // Debug.Log($"_character = {_character}");
                 character.Move( direction);
 
+                if (direction == Vector3.zero)
+                {
+                    character.PresenterContainer.Idle();
+                }
+                else
+                {
+                    character.PresenterContainer.Walk();
+                }
+
                 PreButtons = input.Buttons;
             }
             
@@ -116,7 +119,10 @@ namespace Carry.CarrySystem.Player.Scripts
         [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
         public void RPC_ChangeNextUnit()
         {
-            ColorType = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
+            if (HasStateAuthority)
+            {
+                ColorType = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
+            }
             Destroy(_characterObj);
             InstantiateCharacter();
 
@@ -137,6 +143,9 @@ namespace Carry.CarrySystem.Player.Scripts
 
             character?.Setup(info);
             _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
+            var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
+            animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
+
             
             // Play spawn animation
             // _decorationDetector.OnSpawned();
