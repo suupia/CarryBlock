@@ -46,55 +46,28 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public override void FixedUpdateNetwork()
         {
+            base.FixedUpdateNetwork();
             if (!HasStateAuthority) return;
 
-            if (GetInput(out NetworkInputData input))
+        }
+
+        protected override void GetInputProcess(NetworkInputData input)
+        {
+            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
             {
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Ready))
-                {
-                    IsReady = !IsReady;
-                    Debug.Log($"Toggled Ready -> {IsReady}");
-                }
+                Debug.Log($"ChangeUnit");
+                var afterColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
 
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
-                {
-                    character.HoldAction();
-                    // _decorationDetector.OnMainAction(ref DecorationDataRef);
-                }
+                ColorType = afterColor;
+                _playerCharacterHolder.SetColor(Object.InputAuthority, afterColor); // プレイヤーの色を設定して覚えておく
 
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
-                {
-                    var afterColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
-
-                    ColorType = afterColor;
-                    _playerCharacterHolder.SetColor(Object.InputAuthority, afterColor); // プレイヤーの色を設定して覚えておく
-
-                    RPC_ChangeNextUnit();
-                }
-
-
-
-                var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
-
-                // Debug.Log($"_character = {_character}");
-                character.Move(direction);
-                
-                if (direction == Vector3.zero)
-                {
-                    character.PresenterContainer.Idle();
-                }
-                else
-                {
-                    character.PresenterContainer.Walk();
-                }
-
-                PreButtons = input.Buttons;
+                RPC_ChangeNextUnit();
             }
+
         }
 
         public override void Render()
         {
-            // _decorationDetector.OnRendered(DecorationDataRef, PlayerStruct.Hp);
             
         }
         

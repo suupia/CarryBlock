@@ -2,6 +2,7 @@
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Scripts;
 using Fusion;
+using Projects.NetworkUtility.Inputs.Scripts;
 using UnityEngine;
 
 #nullable enable
@@ -39,6 +40,48 @@ namespace Carry.CarrySystem.Player.Interfaces
             
         }
         
+        public override void FixedUpdateNetwork()
+        {
+            base.FixedUpdateNetwork();
+            if (!HasStateAuthority) return;
+
+            if (GetInput(out NetworkInputData input))
+            {
+                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Ready))
+                {
+                    IsReady = !IsReady;
+                    Debug.Log($"Toggled Ready -> {IsReady}");
+                }
+
+                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
+                {
+                    character.HoldAction();
+                    // _decorationDetector.OnMainAction(ref DecorationDataRef);
+                }
+
+                var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
+
+                // Debug.Log($"_character = {_character}");
+                character.Move( direction);
+
+                if (direction == Vector3.zero)
+                {
+                    character.PresenterContainer.Idle();
+                }
+                else
+                {
+                    character.PresenterContainer.Walk();
+                }
+                
+                GetInputProcess(input); // 子クラスで処理を追加するためのメソッド
+
+                PreButtons = input.Buttons;
+            }
+            
+        }
+
+        protected abstract void GetInputProcess(NetworkInputData input);
+
         // StateAuthorityがない場合でも呼ぶため、Networkedプロパティを参照すると同期が遅れて思った通りの挙動をしないことがあるので注意
         protected void InstantiateCharacter()
         {

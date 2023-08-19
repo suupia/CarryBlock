@@ -32,46 +32,16 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public override void FixedUpdateNetwork()
         {
+            base.FixedUpdateNetwork();
             if (!HasStateAuthority) return;
-
-            if (GetInput(out NetworkInputData input))
+        }
+        
+        protected override void GetInputProcess(NetworkInputData input)
+        {
+            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))
             {
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Ready))
-                {
-                    IsReady = !IsReady;
-                    Debug.Log($"Toggled Ready -> {IsReady}");
-                }
-
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
-                {
-                    character.HoldAction();
-                    // _decorationDetector.OnMainAction(ref DecorationDataRef);
-                }
-
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))
-                {
-                    character.PassAction();
-                }
-
-                var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
-
-                // Debug.Log($"_character = {_character}");
-                character.Move( direction);
-
-                if (direction == Vector3.zero)
-                {
-                    character.PresenterContainer.Idle();
-                }
-                else
-                {
-                    character.PresenterContainer.Walk();
-                }
-
-                PreButtons = input.Buttons;
+                character.PassAction();
             }
-            
-            
-            
         }
 
         public override void Render() 
