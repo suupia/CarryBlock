@@ -80,22 +80,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
             SetToOrigin();
         }
-
-        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-        public void RPC_SetToOrigin()
-        {
-            SetToOrigin();
-        }
         
-
-        public void Reset()
-        {
-            // フロア移動の際に呼ばれる
-            character?.Reset();
-            SetToOrigin();
-        }
-
-
 
         void SetToOrigin()
         {
