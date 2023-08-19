@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Player.Info;
+﻿using Carry.CarrySystem.CG.Tsukinowa;
+using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Scripts;
 using Fusion;
 using UnityEngine;
@@ -25,5 +26,33 @@ namespace Carry.CarrySystem.Player.Interfaces
 
         protected ICharacter? character;
 
+
+        public override void Spawned()
+        {
+            Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {character}");
+
+            // init info
+            info.Init(Runner, gameObject, this);
+
+            // Instantiate the character.
+            InstantiateCharacter();
+            
+        }
+        
+        // StateAuthorityがない場合でも呼ぶため、Networkedプロパティを参照すると同期が遅れて思った通りの挙動をしないことがあるので注意
+        protected void InstantiateCharacter()
+        {
+            // Instantiate the unit.
+            var prefab = playerUnitPrefabs[(int)ColorType];
+            _characterObj = Instantiate(prefab, unitObjectParent);
+            
+            character?.Setup(info);
+            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
+            var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
+            animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
+            
+            // Play spawn animation
+            // _decorationDetector.OnSpawned();
+        }
     }
 }

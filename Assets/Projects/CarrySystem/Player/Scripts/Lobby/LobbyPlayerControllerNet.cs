@@ -7,19 +7,15 @@ using Projects.NetworkUtility.Inputs.Scripts;
 using UnityEngine;
 using AbstractNetworkPlayerController = Carry.CarrySystem.Player.Interfaces.AbstractNetworkPlayerController;
 using PlayerInfo = Carry.CarrySystem.Player.Info.PlayerInfo;
-
 #nullable  enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {
     public class LobbyPlayerControllerNet : AbstractNetworkPlayerController
     {
-
         [SerializeField] GameObject cameraPrefab= null!;
-
         
-        PlayerCharacterHolder _playerCharacterHolder = null!;
-        
+        PlayerCharacterHolder _playerCharacterHolder = null!;  // PlayerColorTypeを次のシーンに保持するために必要
         
         
         public void Init(ICharacter character, PlayerColorType colorType, PlayerCharacterHolder playerCharacterHolder)
@@ -32,9 +28,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public override void Spawned()
         {
-            // init info
-            info.Init(Runner, gameObject,this);
-            
+            Debug.Log($"LobbyPlayerController_Net.Spawned(), _character = {character}");    
+
             // Set camera
             if (Object.HasInputAuthority)
             {
@@ -43,32 +38,11 @@ namespace Carry.CarrySystem.Player.Scripts
                 var playerCamera = cameraObj.GetComponent<Camera>();
                 followTarget.SetTarget(unitObjectParent.transform);
             }
-
-
-            // Instantiate the character.
-            InstantiateCharacter();
+            
+            base.Spawned();
             
         }
-
-        protected virtual void Update()
-        {
-            if (Object.HasInputAuthority)
-            {
-                // if (Input.GetKeyDown(KeyCode.C))
-                // {
-                //     Debug.Log($"before color = {ColorType}");
-                //     var afterColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
-                //     Debug.Log($"after color = {afterColor}");
-                //     if (HasStateAuthority)
-                //     {
-                //         ColorType = afterColor;
-                //         _playerCharacterHolder.SetColor(Runner.LocalPlayer, afterColor);  // プレイヤーの色を設定して覚えておく
-                //     }
-                //     RPC_ChangeNextUnit();
-                // }
-            }
-        }
-
+        
 
         public override void FixedUpdateNetwork()
         {
@@ -139,22 +113,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             SetToOrigin();
         }
-
-        // StateAuthorityがない場合でも呼ぶため、Networkedプロパティを参照すると同期が遅れて思った通りの挙動をしないことがあるので注意
-        void InstantiateCharacter()
-        {
-            // Instantiate the unit.
-            var prefab = playerUnitPrefabs[(int)ColorType];
-            _characterObj = Instantiate(prefab, unitObjectParent);
-            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
-            var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
-            animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
-
-            character?.Setup(info);
-            
-            // Play spawn animation
-            // _decorationDetector.OnSpawned();
-        }
+        
 
         public void Reset()
         {

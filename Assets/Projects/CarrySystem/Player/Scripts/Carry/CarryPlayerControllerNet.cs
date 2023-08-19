@@ -25,26 +25,10 @@ namespace Carry.CarrySystem.Player.Scripts
         public override void Spawned()
         {
             Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {character}");
+            base.Spawned();
 
-            // init info
-            info.Init(Runner, gameObject, this);
-
-            // Instantiate the character.
-            InstantiateCharacter();
-            
         }
-
-        protected virtual void Update()
-        {
-            if (Object.HasInputAuthority)
-            {
-                if (Input.GetKeyDown(KeyCode.C))
-                {
-                    RPC_ChangeNextUnit();
-                }
-            }
-        }
-
+        
 
         public override void FixedUpdateNetwork()
         {
@@ -92,44 +76,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public override void Render() 
         {
-            // _decorationDetector.OnRendered(DecorationDataRef, PlayerStruct.Hp);
             
-        }
-        
-        //Deal as RPC for changing unit
-        [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
-        public void RPC_ChangeNextUnit()
-        {
-            if (HasStateAuthority)
-            {
-                ColorType = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
-            }
-            Destroy(_characterObj);
-            InstantiateCharacter();
-
-            SetToOrigin();
-        }
-
-        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-        public void RPC_SetToOrigin()
-        {
-            SetToOrigin();
-        }
-
-        void InstantiateCharacter()
-        {
-            // Instantiate the unit.
-            var prefab = playerUnitPrefabs[(int)ColorType];
-            _characterObj = Instantiate(prefab, unitObjectParent);
-
-            character?.Setup(info);
-            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
-            var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
-            animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
-
-            
-            // Play spawn animation
-            // _decorationDetector.OnSpawned();
         }
 
         public void Reset()
