@@ -7,31 +7,16 @@ using Projects.NetworkUtility.Inputs.Scripts;
 using UnityEngine;
 using AbstractNetworkPlayerController = Carry.CarrySystem.Player.Interfaces.AbstractNetworkPlayerController;
 using PlayerInfo = Carry.CarrySystem.Player.Info.PlayerInfo;
-
 #nullable  enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {
     public class LobbyPlayerControllerNet : AbstractNetworkPlayerController
-    { 
-        [SerializeField]  Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
-        public Transform InterpolationTransform => unitObjectParent;
-
+    {
         [SerializeField] GameObject cameraPrefab= null!;
-        [SerializeField] GameObject[] playerUnitPrefabs= null!;
-
-        [SerializeField] PlayerInfo info= null!;
-
-        [Networked] NetworkButtons PreButtons { get; set; }
-        [Networked] public NetworkBool IsReady { get; set; }
-
-        [Networked] PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
         
-        PlayerCharacterHolder _playerCharacterHolder = null!;
+        PlayerCharacterHolder _playerCharacterHolder = null!;  // PlayerColorTypeを次のシーンに保持するために必要
         
-        GameObject _characterObj= null!;
-        
-        bool _isSpawned; // FixedUpdateNetwork()が呼ばれる前にSpawned()が呼ばれるため必要ないと言えば必要ない
         
         public void Init(ICharacter character, PlayerColorType colorType, PlayerCharacterHolder playerCharacterHolder)
         {
@@ -43,9 +28,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public override void Spawned()
         {
-            // init info
-            info.Init(Runner, gameObject,this);
-            
+            Debug.Log($"LobbyPlayerController_Net.Spawned(), _character = {character}");    
+
             // Set camera
             if (Object.HasInputAuthority)
             {
@@ -54,86 +38,36 @@ namespace Carry.CarrySystem.Player.Scripts
                 var playerCamera = cameraObj.GetComponent<Camera>();
                 followTarget.SetTarget(unitObjectParent.transform);
             }
-
-
-            // Instantiate the character.
-            InstantiateCharacter();
             
-            _isSpawned = true;
+            base.Spawned();
+            
         }
-
-        protected virtual void Update()
-        {
-            if (Object.HasInputAuthority)
-            {
-                // if (Input.GetKeyDown(KeyCode.C))
-                // {
-                //     Debug.Log($"before color = {ColorType}");
-                //     var afterColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
-                //     Debug.Log($"after color = {afterColor}");
-                //     if (HasStateAuthority)
-                //     {
-                //         ColorType = afterColor;
-                //         _playerCharacterHolder.SetColor(Runner.LocalPlayer, afterColor);  // プレイヤーの色を設定して覚えておく
-                //     }
-                //     RPC_ChangeNextUnit();
-                // }
-            }
-        }
-
+        
 
         public override void FixedUpdateNetwork()
         {
-            if(!_isSpawned)return;
+            base.FixedUpdateNetwork();
             if (!HasStateAuthority) return;
 
-            if (GetInput(out NetworkInputData input))
+        }
+
+        protected override void GetInputProcess(NetworkInputData input)
+        {
+            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
             {
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Ready))
-                {
-                    IsReady = !IsReady;
-                    Debug.Log($"Toggled Ready -> {IsReady}");
-                }
+                Debug.Log($"ChangeUnit");
+                var afterColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
 
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
-                {
-                    character.HoldAction();
-                    // _decorationDetector.OnMainAction(ref DecorationDataRef);
-                }
+                ColorType = afterColor;
+                _playerCharacterHolder.SetColor(Object.InputAuthority, afterColor); // プレイヤーの色を設定して覚えておく
 
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ChangeUnit))
-                {
-                    var afterColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
-
-                    ColorType = afterColor;
-                    _playerCharacterHolder.SetColor(Object.InputAuthority, afterColor); // プレイヤーの色を設定して覚えておく
-
-                    RPC_ChangeNextUnit();
-                }
-
-
-
-                var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
-
-                // Debug.Log($"_character = {_character}");
-                character.Move(direction);
-                
-                if (direction == Vector3.zero)
-                {
-                    character.PresenterContainer.Idle();
-                }
-                else
-                {
-                    character.PresenterContainer.Walk();
-                }
-
-                PreButtons = input.Buttons;
+                RPC_ChangeNextUnit();
             }
+
         }
 
         public override void Render()
         {
-            // _decorationDetector.OnRendered(DecorationDataRef, PlayerStruct.Hp);
             
         }
         
@@ -146,37 +80,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
             SetToOrigin();
         }
-
-        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-        public void RPC_SetToOrigin()
-        {
-            SetToOrigin();
-        }
-
-        // StateAuthorityがない場合でも呼ぶため、Networkedプロパティを参照すると同期が遅れて思った通りの挙動をしないことがあるので注意
-        void InstantiateCharacter()
-        {
-            // Instantiate the unit.
-            var prefab = playerUnitPrefabs[(int)ColorType];
-            _characterObj = Instantiate(prefab, unitObjectParent);
-            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
-            var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
-            animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
-
-            character?.Setup(info);
-            
-            // Play spawn animation
-            // _decorationDetector.OnSpawned();
-        }
-
-        public void Reset()
-        {
-            // フロア移動の際に呼ばれる
-            character?.Reset();
-            SetToOrigin();
-        }
-
-
+        
 
         void SetToOrigin()
         {
