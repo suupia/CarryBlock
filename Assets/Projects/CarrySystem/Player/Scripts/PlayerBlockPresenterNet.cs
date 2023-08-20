@@ -50,6 +50,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Init(ICharacter character)
         {
             character.SetHoldPresenter((IPlayerBlockPresenter)this);
+            PresentDataRef.HoldingBlockType = BlockType.None;
         }
 
         public void Awake()
@@ -57,8 +58,15 @@ namespace Carry.CarrySystem.Player.Scripts
             // これらの処理はクライアントでも必要なことに注意
             blockTypeToGameObjectMap[BlockType.None] = null; // No game object for 'None'
             blockTypeToGameObjectMap[BlockType.BasicBlock] = basicBlockView;
+            blockTypeToGameObjectMap[BlockType.UnmovableBlock] = unmovableBlockView;
             blockTypeToGameObjectMap[BlockType.HeavyBlock] = heavyBlockView;
             blockTypeToGameObjectMap[BlockType.FragileBlock] = fragileBlockView;
+
+            basicBlockView.GetComponent<Collider>().enabled = false;
+            unmovableBlockView.GetComponent<Collider>().enabled = false;
+            heavyBlockView.GetComponent<Collider>().enabled = false;
+            fragileBlockView.GetComponent<Collider>().enabled = false;
+            
         }
 
         public override void Render()
