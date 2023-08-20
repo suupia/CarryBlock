@@ -16,6 +16,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IMoveExecutorContainer _moveExecutorContainer;
         readonly IHoldActionExecutor _holdActionExecutor;
         readonly IPassActionExecutor _passActionExecutor;
+        readonly IDashExecutor _dashExecutor;
         
 
         public Character(
@@ -23,13 +24,15 @@ namespace Carry.CarrySystem.Player.Scripts
             IHoldActionExecutor holdActionExecutor,
             IPassActionExecutor passActionExecutor,
             PlayerBlockContainer blockContainer,
-            PlayerPresenterContainer playerPresenterContainer)
+            PlayerPresenterContainer playerPresenterContainer,
+            IDashExecutor dashExecutor)
         {
             _moveExecutorContainer = moveExecutorContainer;
             _holdActionExecutor = holdActionExecutor;
             _passActionExecutor = passActionExecutor;
             PlayerBlockContainer = blockContainer;
             PresenterContainer = playerPresenterContainer;
+            _dashExecutor = dashExecutor;
         }
 
         public void Reset()
@@ -69,5 +72,8 @@ namespace Carry.CarrySystem.Player.Scripts
         public void PassAction() => _passActionExecutor.PassAction();
         public bool CanReceivePass() => _passActionExecutor.CanReceivePass();
         public void ReceivePass(IBlock block) => _passActionExecutor.ReceivePass(block);
+        
+        // DashExecutor
+        public void Dash(Vector3 input) => _dashExecutor.Dash(input);
     }
 }

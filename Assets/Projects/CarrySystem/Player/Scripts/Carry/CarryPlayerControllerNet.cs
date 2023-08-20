@@ -71,6 +71,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
             if (GetInput(out NetworkInputData input))
             {
+                var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Ready))
                 {
                     IsReady = !IsReady;
@@ -88,8 +89,11 @@ namespace Carry.CarrySystem.Player.Scripts
                     character.PassAction();
                 }
 
-                var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
-
+                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
+                {
+                    Debug.Log($"Dash");
+                    character.Dash(direction);
+                }
                 // Debug.Log($"_character = {_character}");
                 character.Move( direction);
 
