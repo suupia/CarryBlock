@@ -42,6 +42,11 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 character.PassAction();
             }
+            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
+            {
+                Debug.Log($"Dash");
+                character.Dash();
+            }
         }
 
         public override void Render() 

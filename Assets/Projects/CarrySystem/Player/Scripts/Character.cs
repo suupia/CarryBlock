@@ -12,20 +12,20 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         public PlayerBlockContainer PlayerBlockContainer { get; }
         public PlayerPresenterContainer PresenterContainer { get; }
-        
+
         readonly IMoveExecutorContainer _moveExecutorContainer;
         readonly IHoldActionExecutor _holdActionExecutor;
-        readonly IPassActionExecutor _passActionExecutor;
         readonly IDashExecutor _dashExecutor;
-        
+        readonly IPassActionExecutor _passActionExecutor;
+
 
         public Character(
-            IMoveExecutorContainer moveExecutorContainer, 
+            IMoveExecutorContainer moveExecutorContainer,
             IHoldActionExecutor holdActionExecutor,
+            IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,
             PlayerBlockContainer blockContainer,
-            PlayerPresenterContainer playerPresenterContainer,
-            IDashExecutor dashExecutor)
+            PlayerPresenterContainer playerPresenterContainer)
         {
             _moveExecutorContainer = moveExecutorContainer;
             _holdActionExecutor = holdActionExecutor;
@@ -54,9 +54,10 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _moveExecutorContainer.Move(direction);
         }
+
         public void SetRegularMoveExecutor() => _moveExecutorContainer.SetRegularMoveExecutor();
         public void SetSlowMoveExecutor() => _moveExecutorContainer.SetSlowMoveExecutor();
-        
+
         // HoldActionExecutor
         public void SetHoldPresenter(IPlayerBlockPresenter presenter)
         {
@@ -67,13 +68,13 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _holdActionExecutor.HoldAction();
         }
-        
+
+        // DashExecutor
+        public void Dash() => _dashExecutor.Dash();
+
         // PassActionExecutor
         public void PassAction() => _passActionExecutor.PassAction();
         public bool CanReceivePass() => _passActionExecutor.CanReceivePass();
         public void ReceivePass(IBlock block) => _passActionExecutor.ReceivePass(block);
-        
-        // DashExecutor
-        public void Dash(Vector3 input) => _dashExecutor.Dash(input);
     }
 }

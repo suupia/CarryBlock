@@ -23,8 +23,9 @@ namespace Carry.CarrySystem.Player.Scripts
             var blockContainer = new PlayerBlockContainer();
             var playerPresenterContainer = new PlayerPresenterContainer();
             var holdExe = new HoldActionExecutor(blockContainer,playerPresenterContainer,_mapUpdater);
+            var dashExe = new DashExecutor();
             var passExe = new PassActionExecutor(blockContainer,playerPresenterContainer, holdExe,10, LayerMask.GetMask("Player"));
-            var character = new Character( moveExe, holdExe, passExe,blockContainer,playerPresenterContainer);
+            var character = new Character( moveExe, holdExe,dashExe, passExe,blockContainer,playerPresenterContainer);
             return character;
         }
     }
