@@ -10,7 +10,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class WallPresenterBuilder
+    public class WallPresenterBuilder  : IPresenterBuilder
     {
         [Inject] NetworkRunner _runner;
         IEnumerable<WallPresenterNet> _tilePresenters = new List<WallPresenterNet>();
