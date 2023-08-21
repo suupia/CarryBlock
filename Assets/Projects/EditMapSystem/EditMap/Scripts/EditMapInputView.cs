@@ -12,7 +12,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         void Update()
         {
-            blockTypeText.text = $"BlockType : {editMapInput.BlockType.ToString()}"; 
+            blockTypeText.text = $"BlockType : {editMapInput.BlockType.GetType().Name}"; 
         }
 
     }
