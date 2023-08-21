@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Carry.CarrySystem.Block.Scripts;
-using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners;
 using Fusion;
@@ -10,40 +7,39 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class WallPresenterBuilder
+    public class GroundPresenterBuilder
     {
         [Inject] NetworkRunner _runner;
-        IEnumerable<WallPresenterNet> _tilePresenters = new List<WallPresenterNet>();
+        IEnumerable<GroundPresenterNet> _tilePresenters = new List<GroundPresenterNet>();
 
-        readonly int _wallHorizontalNum = 3;
-        readonly int _wallVerticalNum = 2;
+        readonly int _groundHorizontalNum = 3;
+        readonly int _groundVerticalNum = 2;
 
         [Inject]
-        public WallPresenterBuilder()
+        public GroundPresenterBuilder()
         {
         }
 
         public void Build(EntityGridMap map)
         {
-            var wallPresenterSpawner = new WallPresenterSpawner(_runner);
-            var wallPresenters = new List<WallPresenterNet>();
+            var wallPresenterSpawner = new GroundPresenterSpawner(_runner);
+            var wallPresenters = new List<GroundPresenterNet>();
 
-            // 以前のWallPresenterを削除
+            // 以前のTilePresenterを削除
             DestroyWallPresenter();
 
-            // WallPresenterをスポーンさせる
-            var expandedMap = new SquareGridMap(map.Width + 2 * _wallHorizontalNum, map.Height + 2 * _wallVerticalNum);
+            // GroundPresenterをスポーンさせる
+            var expandedMap = new SquareGridMap(map.Width + 2 * _groundHorizontalNum, map.Height + 2 * _groundVerticalNum);
             for (int i = 0; i < expandedMap.Length; i++)
             {
                 var gridPos = expandedMap.ToVector(i);
-                var convertedGridPos = new Vector2Int(gridPos.x - _wallHorizontalNum, gridPos.y - _wallVerticalNum);
+                var convertedGridPos = new Vector2Int(gridPos.x - _groundHorizontalNum, gridPos.y - _groundVerticalNum);
                 if (map.IsInDataRangeArea(convertedGridPos)) continue;
-                if (IsCartPath(map, convertedGridPos)) continue;
                 var worldPos = GridConverter.GridPositionToWorldPosition(convertedGridPos);
                 var wallPresenter = wallPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 wallPresenters.Add(wallPresenter);
             }
-            
+
             _tilePresenters = wallPresenters;
         }
 
@@ -57,13 +53,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 _runner.Despawn(tilePresenter.Object);
             }
 
-            _tilePresenters = new List<WallPresenterNet>();
-        }
-
-        bool IsCartPath(IGridMap map, Vector2 pos)
-        {
-            var middle = new Vector2Int(1, map.Height / 2);
-            return pos.y == middle.y - 1 || pos.y == middle.y || pos.y == middle.y + 1;
+            _tilePresenters = new List<GroundPresenterNet>();
         }
     }
 }

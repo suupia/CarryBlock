@@ -69,6 +69,10 @@ MonoBehaviour:
     m_Address: Prefabs/Map/WallPresenter
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 5226544fc348fdb498dce39550218a5b
+    m_Address: Prefabs/Map/GroundPresenter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 405937dcad4604950956d0fac118dce9, type: 2}
   m_SchemaSet:
