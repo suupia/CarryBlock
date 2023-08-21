@@ -51,6 +51,19 @@ namespace Carry.CarrySystem.Player.Scripts
         
         protected override void GetInputProcess(NetworkInputData input)
         {
+            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
+            {
+                // AidKit
+                Collider[] overlapResults = new Collider[2];
+                var aidKitRadius = 1f;
+                var layerMask = LayerMask.GetMask("Cart"); // 他のブロックにぶつかるのを防ぐ
+                var numFound = Physics.OverlapSphereNonAlloc( info.playerObj.transform.position, aidKitRadius,overlapResults, layerMask);
+                if (numFound != 0)
+                {
+                    Debug.Log($"Cart is near");
+                }
+            }
+
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))
             {
                 Character.PassAction();
