@@ -21,6 +21,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly EntityGridMapLoader _gridMapLoader;
         readonly MapKeyDataNet _mapKeyDataNet;
         readonly TilePresenterBuilder _tilePresenterBuilder;
+        readonly WallPresenterBuilder _wallPresenterBuilder;
         int _currentIndex;
         EntityGridMap? _currentMap;
 
@@ -28,12 +29,14 @@ namespace Carry.CarrySystem.Map.Scripts
         public EntityGridMapSwitcher(
             EntityGridMapLoader gridMapGridMapLoader,
             TilePresenterBuilder tilePresenterBuilder,
+            WallPresenterBuilder wallPresenterBuilder,
             CartBuilder cartBuilder,
             FloorTimerNet floorTimerNet,
             MapKeyDataNet mapKeyDataNet)
         {
             _gridMapLoader = gridMapGridMapLoader;
             _tilePresenterBuilder = tilePresenterBuilder;
+            _wallPresenterBuilder = wallPresenterBuilder;
             _cartBuilder = cartBuilder;
             _floorTimerNet = floorTimerNet;
             _mapKeyDataNet = mapKeyDataNet;
@@ -50,6 +53,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var mapIndex =  _mapKeyDataNet.MapKeyDataList[_currentIndex].index;
             _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _tilePresenterBuilder.Build(_currentMap);
+            _wallPresenterBuilder.Build(_currentMap);
             _cartBuilder.Build(_currentMap, this);
             
             var players = Object.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
@@ -66,6 +70,8 @@ namespace Carry.CarrySystem.Map.Scripts
             var nextMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _currentMap = nextMap;
             _tilePresenterBuilder.Build(_currentMap);
+            _wallPresenterBuilder.Build(_currentMap);
+
 
 
             // 以下リセット処理

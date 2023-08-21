@@ -45,6 +45,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             // Map
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
+            builder.Register<WallPresenterBuilder>(Lifetime.Scoped);
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
 
             builder.RegisterComponentInHierarchy<MapKeyDataNet>();

@@ -2,6 +2,7 @@
 using System.Linq;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners;
 using Fusion;
 using UnityEngine;
@@ -14,6 +15,9 @@ namespace Carry.CarrySystem.Map.Scripts
         [Inject] NetworkRunner _runner;
         IEnumerable<WallPresenterNet> _tilePresenters = new List<WallPresenterNet>();
 
+        readonly int _wallHorizontalNum = 3;
+        readonly int _wallVerticalNum = 2;
+
         [Inject]
         public WallPresenterBuilder()
         {
@@ -21,28 +25,43 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void Build(EntityGridMap map)
         {
-            var tilePresenterSpawner = new WallPresenterSpawner(_runner);
-            var tilePresenters = new List<WallPresenterNet>();
+            var wallPresenterSpawner = new WallPresenterSpawner(_runner);
+            var wallPresenters = new List<WallPresenterNet>();
+
+            Debug.Log($"Build WallPresenter");
 
             // 以前のTilePresenterを削除
-            DestroyTilePresenter();
+            DestroyWallPresenter();
 
-            // TilePresenterをスポーンさせる
-            for (int i = 0; i < map.GetLength(); i++)
+            // WallPresenterをスポーンさせる
+            var expandedMap = new SquareGridMap(map.Width + 2 * _wallHorizontalNum, map.Height + 2 * _wallVerticalNum);
+            for (int i = 0; i < expandedMap.Length; i++)
             {
-                var girdPos = map.ToVector(i);
-                var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
-                var tilePresenter = tilePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
-                tilePresenters.Add(tilePresenter);
+                var gridPos = expandedMap.ToVector(i);
+                var convertedGridPos = new Vector2Int(gridPos.x - _wallHorizontalNum, gridPos.y - _wallVerticalNum);
+                if (map.IsInDataRangeArea(convertedGridPos)) continue;
+                if (IsCartPath(map, convertedGridPos)) continue;
+                var worldPos = GridConverter.GridPositionToWorldPosition(convertedGridPos);
+                var wallPresenter = wallPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                wallPresenters.Add(wallPresenter);
             }
 
-            // TilePresenterをドメインのEntityGridMapに紐づける
-            AttachTilePresenter(tilePresenters, map);
+            // // TilePresenterをスポーンさせる
+            // for (int i = 0; i < map.GetLength(); i++)
+            // {
+            //     var gridPos = map.ToVector(i);
+            //     var worldPos = GridConverter.GridPositionToWorldPosition(gridPos);
+            //     var tilePresenter = wallPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+            //     wallPresenters.Add(tilePresenter);
+            // }
 
-            _tilePresenters = tilePresenters;
+            // TilePresenterをドメインのEntityGridMapに紐づける
+            // AttachTilePresenter(wallPresenters, map);
+
+            _tilePresenters = wallPresenters;
         }
 
-        void DestroyTilePresenter()
+        void DestroyWallPresenter()
         {
             // マップの大きさが変わっても対応できるようにDestroyが必要
             // ToDo: マップの大きさを変えてテストをする 
@@ -55,27 +74,10 @@ namespace Carry.CarrySystem.Map.Scripts
             _tilePresenters = new List<WallPresenterNet>();
         }
 
-        void AttachTilePresenter(IReadOnlyList<WallPresenterNet> tilePresenters, EntityGridMap map)
+        bool IsCartPath(IGridMap map, Vector2 pos)
         {
-            for (int i = 0; i < tilePresenters.Count(); i++)
-            {
-                var tilePresenter = tilePresenters.ElementAt(i);
-
-                // RegisterTilePresenter()の前なのでSetEntityActiveData()を実行する必要がある
-                // Presenterの初期化処理みたいなもの
-                var existGround = map.GetSingleEntity<Ground>(i) != null;
-                var existRock = map.GetSingleEntity<UnmovableBlock>(i) != null;
-                var existBasicBlock = map.GetSingleEntity<BasicBlock>(i) != null;
-
-                if (existRock)
-                    Debug.Log(
-                        $"existGround: {existGround}, existRock: {existRock}, existBasicBlock: {existBasicBlock}");
-
-                tilePresenter.SetInitAllEntityActiveData(map.GetAllEntityList(i));
-
-                // mapにTilePresenterを登録
-                // map.RegisterTilePresenter(tilePresenter, i);
-            }
+            var middle = new Vector2Int(1, map.Height % 2 == 1 ? (map.Height - 1) / 2 : map.Height / 2);
+            return pos.y == middle.y - 1 || pos.y == middle.y || pos.y == middle.y + 1;
         }
     }
 }
