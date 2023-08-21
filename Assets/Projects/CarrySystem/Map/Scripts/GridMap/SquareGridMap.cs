@@ -36,7 +36,6 @@ namespace Carry.CarrySystem.Map.Scripts
             int y = subscript / Width;
             return new Vector2Int(x, y);
         }
-        
         // クライアント側で使用することを想定する判定用メソッド
         
         /// <summary>

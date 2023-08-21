@@ -44,8 +44,8 @@ namespace Carry.CarrySystem.Cart.Scripts
             var cartController = _cartControllerLoader.Load();
             
             // ドメインスクリプトをnew
-            var startPos = new Vector2Int(1, map.Height % 2 == 1 ? (map.Height - 1) / 2 : map.Height / 2);
-            var endPos = new Vector2Int(map.Width -1 , map.Height % 2 == 1 ? (map.Height - 1) / 2 : map.Height / 2);
+            var startPos = new Vector2Int(1, map.Height / 2);
+            var endPos = new Vector2Int(map.Width -1 ,  map.Height / 2);
             
             // CartShortestRouteMoveにRegiste
             _cartShortestRouteMove.RegisterMap(map);

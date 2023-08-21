@@ -76,7 +76,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         bool IsCartPath(IGridMap map, Vector2 pos)
         {
-            var middle = new Vector2Int(1, map.Height % 2 == 1 ? (map.Height - 1) / 2 : map.Height / 2);
+            var middle = new Vector2Int(1, map.Height / 2);
             return pos.y == middle.y - 1 || pos.y == middle.y || pos.y == middle.y + 1;
         }
     }

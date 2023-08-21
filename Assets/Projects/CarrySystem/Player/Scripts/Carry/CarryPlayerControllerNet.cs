@@ -79,7 +79,7 @@ namespace Carry.CarrySystem.Player.Scripts
         void ToSpawnPosition(EntityGridMap map)
         {
             // ToDo: みんな同じ場所にスポーンする。　プレイヤーごとに分けられたらいいのかも
-            var spawnGridPos = new Vector2Int(1, map.Height % 2 == 1 ? (map.Height - 1) / 2 : map.Height / 2);
+            var spawnGridPos = new Vector2Int(1, map.Height / 2);
             var spawnWorldPos = GridConverter.GridPositionToWorldPosition(spawnGridPos);
             var height = 0.5f;  // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
             info.playerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
