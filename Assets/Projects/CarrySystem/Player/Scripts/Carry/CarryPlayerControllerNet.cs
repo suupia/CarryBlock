@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Carry.CarrySystem.CG.Tsukinowa;
+using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Fusion;
 using Projects.NetworkUtility.Inputs.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
@@ -15,17 +17,23 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class CarryPlayerControllerNet : AbstractNetworkPlayerController
     {
-        public void Init(ICharacter character, PlayerColorType colorType)
+        IMapUpdater? _mapUpdater;
+        public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater)
         {
             Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
             this.character = character;
             ColorType = colorType;
+            _mapUpdater = mapUpdater;
         }
 
         public override void Spawned()
         {
             Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {character}");
             base.Spawned();
+            if (_mapUpdater != null)
+                SetToOrigin(_mapUpdater.GetMap());  // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
+            else
+                Debug.LogError($"_mapUpdater is null");
 
         }
         
@@ -54,23 +62,28 @@ namespace Carry.CarrySystem.Player.Scripts
             
         }
 
-        public void Reset()
+        public void Reset(EntityGridMap map)
         {
             // フロア移動の際に呼ばれる
             character?.Reset();
-            SetToOrigin();
+            SetToOrigin(map);
         }
 
 
 
-        void SetToOrigin()
+        void SetToOrigin(EntityGridMap map)
         {
-            // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
-            info.playerObj.transform.position = new Vector3(0, 5, 0);
+            var spawnGridPos = new Vector2Int(1, map.Height % 2 == 1 ? (map.Height - 1) / 2 : map.Height / 2);
+            var spawnWorldPos = GridConverter.GridPositionToWorldPosition(spawnGridPos);
+            var height = 0.5f;  // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
+            info.playerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
             info.playerRb.velocity = Vector3.zero;
+            
         }
 
-        
+
+
+
     }
 }
 

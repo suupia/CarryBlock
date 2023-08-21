@@ -51,6 +51,10 @@ namespace Carry.CarrySystem.Map.Scripts
             _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _tilePresenterBuilder.Build(_currentMap);
             _cartBuilder.Build(_currentMap, this);
+            
+            var players = Object.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
+            foreach (var player in players) player.Reset(_currentMap);
+            
         }
 
         public void UpdateMap(MapKey mapKey, int index = 0)
@@ -66,7 +70,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
             // 以下リセット処理
             var players = Object.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
-            foreach (var player in players) player.Reset();
+            foreach (var player in players) player.Reset(_currentMap);
 
             _cartBuilder.Build(_currentMap, this);
 
