@@ -9,24 +9,24 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class TilePresenterBuilder
+    public class WallPresenterBuilder
     {
         [Inject] NetworkRunner _runner;
-        IEnumerable<TilePresenterNet> _tilePresenters =  new List<TilePresenterNet>();
-        
+        IEnumerable<WallPresenterNet> _tilePresenters = new List<WallPresenterNet>();
+
         [Inject]
-        public TilePresenterBuilder()
+        public WallPresenterBuilder()
         {
         }
-        
+
         public void Build(EntityGridMap map)
         {
-            var tilePresenterSpawner = new TilePresenterSpawner(_runner);
-            var tilePresenters = new List<TilePresenterNet>();
+            var tilePresenterSpawner = new WallPresenterSpawner(_runner);
+            var tilePresenters = new List<WallPresenterNet>();
 
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
-            
+
             // TilePresenterをスポーンさせる
             for (int i = 0; i < map.GetLength(); i++)
             {
@@ -35,26 +35,27 @@ namespace Carry.CarrySystem.Map.Scripts
                 var tilePresenter = tilePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 tilePresenters.Add(tilePresenter);
             }
-            
+
             // TilePresenterをドメインのEntityGridMapに紐づける
             AttachTilePresenter(tilePresenters, map);
 
             _tilePresenters = tilePresenters;
         }
-        
+
         void DestroyTilePresenter()
         {
             // マップの大きさが変わっても対応できるようにDestroyが必要
             // ToDo: マップの大きさを変えてテストをする 
-            
+
             foreach (var tilePresenter in _tilePresenters)
             {
                 _runner.Despawn(tilePresenter.Object);
             }
-            _tilePresenters = new List<TilePresenterNet>();
+
+            _tilePresenters = new List<WallPresenterNet>();
         }
-        
-         void AttachTilePresenter(IReadOnlyList<TilePresenterNet> tilePresenters , EntityGridMap map)
+
+        void AttachTilePresenter(IReadOnlyList<WallPresenterNet> tilePresenters, EntityGridMap map)
         {
             for (int i = 0; i < tilePresenters.Count(); i++)
             {
@@ -65,17 +66,16 @@ namespace Carry.CarrySystem.Map.Scripts
                 var existGround = map.GetSingleEntity<Ground>(i) != null;
                 var existRock = map.GetSingleEntity<UnmovableBlock>(i) != null;
                 var existBasicBlock = map.GetSingleEntity<BasicBlock>(i) != null;
-                
-                if(existRock) Debug.Log($"existGround: {existGround}, existRock: {existRock}, existBasicBlock: {existBasicBlock}");
 
-                tilePresenter.SetInitAllEntityActiveData(map.GetAllEntityList(i)  );
+                if (existRock)
+                    Debug.Log(
+                        $"existGround: {existGround}, existRock: {existRock}, existBasicBlock: {existBasicBlock}");
+
+                tilePresenter.SetInitAllEntityActiveData(map.GetAllEntityList(i));
 
                 // mapにTilePresenterを登録
-                map.RegisterTilePresenter(tilePresenter, i);
-                
-                
+                // map.RegisterTilePresenter(tilePresenter, i);
             }
         }
-        
     }
 }

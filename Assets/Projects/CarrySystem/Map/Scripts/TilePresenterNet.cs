@@ -15,7 +15,7 @@ using UnityEngine.Serialization;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class TilePresenter_Net : NetworkBehaviour, ITilePresenter
+    public class TilePresenterNet : NetworkBehaviour, ITilePresenter
     {
         public struct PresentData : INetworkStruct
         {

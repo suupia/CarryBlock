@@ -1,30 +1,26 @@
 ﻿using Carry.CarrySystem.Map.Scripts;
-using Carry.CarrySystem.Player.Scripts;
 using Fusion;
 using Projects.Utility.Scripts;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
-#nullable enable
 namespace Carry.CarrySystem.Spawners
 {
-    public class TilePresenterSpawner
+    public class WallPresenterSpawner
     {
         readonly NetworkRunner _runner;
-        readonly IPrefabLoader<TilePresenterNet> _tilePresenterPrefabSpawner;
+        readonly IPrefabLoader<WallPresenterNet> _tilePresenterPrefabSpawner;
 
-        public TilePresenterSpawner(NetworkRunner runner)
+        public WallPresenterSpawner(NetworkRunner runner)
         {
             _runner = runner;
             _tilePresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<TilePresenterNet>("Prefabs/Map/TilePresenter");
+                new PrefabLoaderFromAddressable<WallPresenterNet>("Prefabs/Map/WallPresenter");
         }
 
-        public TilePresenterNet SpawnPrefab(Vector3 position, Quaternion rotation)
+        public WallPresenterNet SpawnPrefab(Vector3 position, Quaternion rotation)
         {
             var tilePresenter = _tilePresenterPrefabSpawner.Load();
             return _runner.Spawn(tilePresenter, position, rotation, PlayerRef.None);
         }
     }
-
 }
