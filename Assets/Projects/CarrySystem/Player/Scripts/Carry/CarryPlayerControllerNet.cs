@@ -30,10 +30,15 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {character}");
             base.Spawned();
-            if (_mapUpdater != null)
-                SetToOrigin(_mapUpdater.GetMap());  // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
-            else
-                Debug.LogError($"_mapUpdater is null");
+
+            if (HasStateAuthority)
+            {
+                if (_mapUpdater != null)
+                    ToSpawnPosition(_mapUpdater.GetMap());  // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
+                else
+                    Debug.LogError($"_mapUpdater is null");
+            }
+
 
         }
         
@@ -66,13 +71,14 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             // フロア移動の際に呼ばれる
             character?.Reset();
-            SetToOrigin(map);
+            ToSpawnPosition(map);
         }
 
 
 
-        void SetToOrigin(EntityGridMap map)
+        void ToSpawnPosition(EntityGridMap map)
         {
+            // ToDo: みんな同じ場所にスポーンする。　プレイヤーごとに分けられたらいいのかも
             var spawnGridPos = new Vector2Int(1, map.Height % 2 == 1 ? (map.Height - 1) / 2 : map.Height / 2);
             var spawnWorldPos = GridConverter.GridPositionToWorldPosition(spawnGridPos);
             var height = 0.5f;  // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
