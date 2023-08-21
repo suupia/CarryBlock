@@ -22,15 +22,15 @@ namespace Carry.CarrySystem.Player.Interfaces
 
         [Networked] protected PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
 
-        protected GameObject _characterObj= null!;
-        public ICharacter Character => character;
+        protected GameObject CharacterObj= null!;
+        public ICharacter GetCharacter => Character;
 
-        protected ICharacter? character;
+        protected ICharacter Character = null!; // サブクラスのInitでcharacterを受け取るようになっているのでnullになることはない
 
 
         public override void Spawned()
         {
-            Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {character}");
+            Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
 
             // init info
             info.Init(Runner, gameObject, this);
@@ -55,22 +55,22 @@ namespace Carry.CarrySystem.Player.Interfaces
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
-                    character.HoldAction();
+                    Character.HoldAction();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
 
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
                 // Debug.Log($"_character = {_character}");
-                character.Move( direction);
+                Character.Move( direction);
 
                 if (direction == Vector3.zero)
                 {
-                    character.PresenterContainer.Idle();
+                    Character.PresenterContainer.Idle();
                 }
                 else
                 {
-                    character.PresenterContainer.Walk();
+                    Character.PresenterContainer.Walk();
                 }
                 
                 GetInputProcess(input); // 子クラスで処理を追加するためのメソッド
@@ -87,12 +87,12 @@ namespace Carry.CarrySystem.Player.Interfaces
         {
             // Instantiate the unit.
             var prefab = playerUnitPrefabs[(int)ColorType];
-            _characterObj = Instantiate(prefab, unitObjectParent);
+            CharacterObj = Instantiate(prefab, unitObjectParent);
             
-            character?.Setup(info);
-            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
+            Character?.Setup(info);
+            CharacterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
             var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
-            animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
+            animatorPresenter.SetAnimator(CharacterObj.GetComponentInChildren<Animator>());
             
             // Play spawn animation
             // _decorationDetector.OnSpawned();

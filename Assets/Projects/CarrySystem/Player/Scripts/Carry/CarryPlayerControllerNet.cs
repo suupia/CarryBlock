@@ -21,14 +21,14 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater)
         {
             Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
-            this.character = character;
+            this.Character = character;
             ColorType = colorType;
             _mapUpdater = mapUpdater;
         }
 
         public override void Spawned()
         {
-            Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {character}");
+            Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {Character}");
             base.Spawned();
 
             if (HasStateAuthority)
@@ -53,12 +53,12 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))
             {
-                character.PassAction();
+                Character.PassAction();
             }
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
             {
                 Debug.Log($"Dash");
-                character.Dash();
+                Character.Dash();
             }
         }
 
@@ -70,7 +70,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Reset(EntityGridMap map)
         {
             // フロア移動の際に呼ばれる
-            character?.Reset();
+            Character?.Reset();
             ToSpawnPosition(map);
         }
 

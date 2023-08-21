@@ -21,14 +21,14 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Init(ICharacter character, PlayerColorType colorType, PlayerCharacterHolder playerCharacterHolder)
         {
             Debug.Log($"LobbyPlayerControllerNet.Init(), character = {character}");
-            this.character = character;
+            this.Character = character;
             ColorType = colorType;
             _playerCharacterHolder = playerCharacterHolder;
         }
 
         public override void Spawned()
         {
-            Debug.Log($"LobbyPlayerController_Net.Spawned(), _character = {character}");    
+            Debug.Log($"LobbyPlayerController_Net.Spawned(), _character = {Character}");    
 
             // Set camera
             if (Object.HasInputAuthority)
@@ -75,7 +75,7 @@ namespace Carry.CarrySystem.Player.Scripts
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void RPC_ChangeNextUnit()
         {
-            Destroy(_characterObj);
+            Destroy(CharacterObj);
             InstantiateCharacter();
 
             SetToOrigin();

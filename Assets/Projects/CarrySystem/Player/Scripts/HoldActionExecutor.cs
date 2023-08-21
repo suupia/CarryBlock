@@ -71,7 +71,7 @@ namespace Carry.CarrySystem.Player.Scripts
                         Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれない
                         return;
                     }
-                    block.PutDown(_info.playerController.Character);
+                    block.PutDown(_info.playerController.GetCharacter);
                     _map.AddEntity(forwardGridPos, block);
                     _playerPresenterContainer.PutDownBlock();
                 }
@@ -84,7 +84,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 
                 if (block.CanPickUp())
                 {
-                    block.PickUp(_info.playerController.Character);
+                    block.PickUp(_info.playerController.GetCharacter);
                     _map.RemoveEntity(forwardGridPos, block);
                     _playerPresenterContainer.PickUpBlock(block);
                     _blockContainer.SetBlock(block);

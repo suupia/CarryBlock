@@ -61,7 +61,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 
                 
                 Debug.Log($"!_blockContainer.IsHoldingBlock: {_blockContainer.IsHoldingBlock}");
-                Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.Character.CanReceivePass()}");
+                Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.GetCharacter.CanReceivePass()}");
                 
                 
                 var block = _blockContainer.PopBlock();
@@ -71,15 +71,15 @@ namespace Carry.CarrySystem.Player.Scripts
                     return;
                 }
                 Debug.Log($"Pass Block");
-                block.PutDown(_info.playerController.Character);
+                block.PutDown(_info.playerController.GetCharacter);
                 _playerPresenterContainer.PassBlock();
-                if (!targetPlayerController.Character.CanReceivePass())
+                if (!targetPlayerController.GetCharacter.CanReceivePass())
                 {
                     Debug.Log($"receive pass is not possible. So, return block");
                     return;
                 }
                 Debug.Log($"Receive Pass");
-                targetPlayerController.Character.ReceivePass(block);
+                targetPlayerController.GetCharacter.ReceivePass(block);
             }
         }
 
@@ -91,7 +91,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void ReceivePass(IBlock block)
         {
             Debug.Log("Receive Pass");
-            block.PickUp(_info.playerController.Character);
+            block.PickUp(_info.playerController.GetCharacter);
             _blockContainer.SetBlock(block);
             _playerPresenterContainer.ReceiveBlock(block);
         }
