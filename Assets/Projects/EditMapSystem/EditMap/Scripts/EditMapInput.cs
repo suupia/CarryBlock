@@ -17,6 +17,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         [SerializeField] EditMapCUISave editMapCuiSave;
         [SerializeField] EditMapCUILoad editMapCUILoad;
 
+        public  BlockType BlockType => _blockType;
+
         BlockPlacer _blockPlacer;
         IMapUpdater _editMapUpdater;
         EntityGridMapSaver _entityGridMapSaver;
