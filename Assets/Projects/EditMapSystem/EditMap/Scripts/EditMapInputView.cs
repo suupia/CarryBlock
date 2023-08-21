@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EditMapInputView : MonoBehaviour
+namespace Carry.EditMapSystem.EditMap.Scripts
 {
-    // Start is called before the first frame update
-    void Start()
+    public class EditMapInputView : MonoBehaviour
     {
-        
+        [SerializeField]
+        EditMapInput editMapInput;
+        [SerializeField] TMPro.TextMeshProUGUI blockTypeText;
+
+        void Update()
+        {
+            blockTypeText.text = $"BlockType : {editMapInput.BlockType.ToString()}"; 
+        }
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
+
