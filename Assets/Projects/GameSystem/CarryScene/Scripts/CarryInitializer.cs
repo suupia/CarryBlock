@@ -66,7 +66,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             }
             
 
-
+            // PlayerのSpawn位置がマップに依存しているため、マップ生成後にPlayerを生成する
             if (Runner.IsServer) _playerSpawner.RespawnAllPlayer();
 
             IsInitialized = true;

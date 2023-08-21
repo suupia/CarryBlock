@@ -4,12 +4,16 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public abstract class SquareGridMap : IGridMap
+    /// <summary>
+    /// データを持っていない長方形のマップを表すクラス
+    /// マップの座標を計算するために使うことが予想される
+    /// </summary>
+    public  class SquareGridMap : IGridMap
     {
         public int Width { get; }
         public int Height { get; }
         public int Length => Width * Height;
-        protected SquareGridMap(int width, int height)
+        public SquareGridMap(int width, int height)
         {
             Width = width;
             Height = height;
@@ -32,7 +36,6 @@ namespace Carry.CarrySystem.Map.Scripts
             int y = subscript / Width;
             return new Vector2Int(x, y);
         }
-        
         // クライアント側で使用することを想定する判定用メソッド
         
         /// <summary>

@@ -28,7 +28,7 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
             List<Vector2Int> shortestRouteList = new List<Vector2Int>();
             long maxDistance = 0;
 
-            var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, endPos, isWall, searcherSize);
+            var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
             
             // searchedMap.DebugMapValues();
 

@@ -19,14 +19,17 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly int _layerMask;
         readonly  Collider[] _targetBuffer = new Collider[10];
         readonly PlayerBlockContainer _blockContainer;
+        readonly IPlayerBlockPresenter _playerPresenterContainer;
 
         public PassActionExecutor(
             PlayerBlockContainer blockContainer,
+            IPlayerBlockPresenter playerPresenterContainer,
             HoldActionExecutor holdActionExecutor,
             float radius,
             int layerMask)
         {
             _blockContainer = blockContainer;
+            _playerPresenterContainer = playerPresenterContainer;
             _holdActionExecutor = holdActionExecutor;
             _radius = radius;
             _layerMask = layerMask; /*LayerMask.GetMask("Player");*/
@@ -58,7 +61,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 
                 
                 Debug.Log($"!_blockContainer.IsHoldingBlock: {_blockContainer.IsHoldingBlock}");
-                Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.Character.CanReceivePass()}");
+                Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.GetCharacter.CanReceivePass()}");
                 
                 
                 var block = _blockContainer.PopBlock();
@@ -68,14 +71,15 @@ namespace Carry.CarrySystem.Player.Scripts
                     return;
                 }
                 Debug.Log($"Pass Block");
-                _blockContainer.Presenter.PassBlock();
-                if (!targetPlayerController.Character.CanReceivePass())
+                block.PutDown(_info.playerController.GetCharacter);
+                _playerPresenterContainer.PassBlock();
+                if (!targetPlayerController.GetCharacter.CanReceivePass())
                 {
                     Debug.Log($"receive pass is not possible. So, return block");
                     return;
                 }
                 Debug.Log($"Receive Pass");
-                targetPlayerController.Character.ReceivePass(block);
+                targetPlayerController.GetCharacter.ReceivePass(block);
             }
         }
 
@@ -87,8 +91,9 @@ namespace Carry.CarrySystem.Player.Scripts
         public void ReceivePass(IBlock block)
         {
             Debug.Log("Receive Pass");
+            block.PickUp(_info.playerController.GetCharacter);
             _blockContainer.SetBlock(block);
-            _blockContainer.Presenter.ReceiveBlock();
+            _playerPresenterContainer.ReceiveBlock(block);
         }
         
         

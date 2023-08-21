@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Player.Interfaces;
+﻿using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Projects.Utility.Scripts;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class CarryPlayerBuilder : IPlayerBuilder
     {
         readonly NetworkRunner _runner;
-        readonly IObjectResolver _resolver;
+        readonly IMapUpdater _mapUpdater;
         readonly IPrefabLoader<CarryPlayerControllerNet> _carryPlayerControllerLoader;
         readonly ICarryPlayerFactory _carryPlayerFactory;
         // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などが想定される
@@ -28,14 +29,14 @@ namespace Carry.CarrySystem.Player.Scripts
         [Inject]
         public CarryPlayerBuilder(
             NetworkRunner runner,
-            IObjectResolver resolver ,
+            IMapUpdater  mapUpdater ,
             IPrefabLoader<CarryPlayerControllerNet> carryPlayerControllerLoader,
             ICarryPlayerFactory carryPlayerFactory,
             PlayerCharacterHolder playerCharacterHolder
             )
         {
             _runner = runner;
-            _resolver = resolver;
+            _mapUpdater = mapUpdater;
             _carryPlayerControllerLoader = carryPlayerControllerLoader;
             _carryPlayerFactory = carryPlayerFactory;
             _playerCharacterHolder  = playerCharacterHolder;
@@ -55,8 +56,10 @@ namespace Carry.CarrySystem.Player.Scripts
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
-                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType);
-                    networkObj.GetComponent<PlayerBlockPresenterNet>(). Init(character);
+                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType,_mapUpdater);
+                    networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character);
+                    networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
+
                 });
             
             // 各MonoBehaviourにドメインを設定

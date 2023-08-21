@@ -6,8 +6,8 @@ namespace Carry.CarrySystem.Player.Interfaces
     {
         void PickUpBlock(IBlock block);
         void PutDownBlock();
-        void ReceiveBlock();
-
+        void ReceiveBlock(IBlock block);
         void PassBlock();
+
     }
 }

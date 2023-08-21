@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Carry.CarrySystem.CG.Tsukinowa;
+using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Fusion;
 using Projects.NetworkUtility.Inputs.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
@@ -15,150 +17,92 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class CarryPlayerControllerNet : AbstractNetworkPlayerController
     {
-        
-        [SerializeField]  Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
-        public Transform InterpolationTransform => unitObjectParent;
-
-        [SerializeField] GameObject[] playerUnitPrefabs= null!;
-
-        [SerializeField] PlayerInfo info= null!;
-
-        [Networked] NetworkButtons PreButtons { get; set; }
-        [Networked] public NetworkBool IsReady { get; set; }
-
-        [Networked] PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
-
-        // Detector
-        // [Networked]
-        // protected ref PlayerDecorationDetector.Data DecorationDataRef => ref MakeRef<PlayerDecorationDetector.Data>();
-        // PlayerDecorationDetector _decorationDetector;
-        
-        
-        GameObject _characterObj= null!;
-        
-        bool _isSpawned; // FixedUpdateNetwork()が呼ばれる前にSpawned()が呼ばれるため必要ないと言えば必要ない
-        
-        public void Init(ICharacter character, PlayerColorType colorType)
+        IMapUpdater? _mapUpdater;
+        public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater)
         {
             Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
-            this.character = character;
+            this.Character = character;
             ColorType = colorType;
+            _mapUpdater = mapUpdater;
         }
 
         public override void Spawned()
         {
-            Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {character}");
+            Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {Character}");
+            base.Spawned();
 
-            // init info
-            info.Init(Runner, gameObject, this);
-
-            // Instantiate the character.
-            InstantiateCharacter();
-            
-            _isSpawned = true;
-        }
-
-        protected virtual void Update()
-        {
-            if (Object.HasInputAuthority)
+            if (HasStateAuthority)
             {
-                if (Input.GetKeyDown(KeyCode.C))
-                {
-                    RPC_ChangeNextUnit();
-                }
+                if (_mapUpdater != null)
+                    ToSpawnPosition(_mapUpdater.GetMap());  // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
+                else
+                    Debug.LogError($"_mapUpdater is null");
             }
-        }
 
+
+        }
+        
 
         public override void FixedUpdateNetwork()
         {
-            if(!_isSpawned)return;
+            base.FixedUpdateNetwork();
             if (!HasStateAuthority) return;
-
-            if (GetInput(out NetworkInputData input))
-            {
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Ready))
-                {
-                    IsReady = !IsReady;
-                    Debug.Log($"Toggled Ready -> {IsReady}");
-                }
-
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
-                {
-                    character.HoldAction();
-                    // _decorationDetector.OnMainAction(ref DecorationDataRef);
-                }
-
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))
-                {
-                    character.PassAction();
-                }
-
-                var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
-
-                // Debug.Log($"_character = {_character}");
-                character.Move( direction);
-
-                PreButtons = input.Buttons;
-            }
-            
-            
-            
-        }
-
-        public override void Render()
-        {
-            // _decorationDetector.OnRendered(DecorationDataRef, PlayerStruct.Hp);
-            
         }
         
-        //Deal as RPC for changing unit
-        [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
-        public void RPC_ChangeNextUnit()
+        protected override void GetInputProcess(NetworkInputData input)
         {
-            ColorType = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
-            Destroy(_characterObj);
-            InstantiateCharacter();
+            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
+            {
+                // AidKit
+                Collider[] overlapResults = new Collider[2];
+                var aidKitRadius = 1f;
+                var layerMask = LayerMask.GetMask("Cart"); // 他のブロックにぶつかるのを防ぐ
+                var numFound = Physics.OverlapSphereNonAlloc( info.playerObj.transform.position, aidKitRadius,overlapResults, layerMask);
+                if (numFound != 0)
+                {
+                    Debug.Log($"Cart is near");
+                }
+            }
 
-            SetToOrigin();
+            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))
+            {
+                Character.PassAction();
+            }
+            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
+            {
+                Debug.Log($"Dash");
+                Character.Dash();
+            }
         }
 
-        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-        public void RPC_SetToOrigin()
+        public override void Render() 
         {
-            SetToOrigin();
-        }
-
-        void InstantiateCharacter()
-        {
-            // Instantiate the unit.
-            var prefab = playerUnitPrefabs[(int)ColorType];
-            _characterObj = Instantiate(prefab, unitObjectParent);
-
-            character?.Setup(info);
-            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
             
-            // Play spawn animation
-            // _decorationDetector.OnSpawned();
         }
 
-        public void Reset()
+        public void Reset(EntityGridMap map)
         {
             // フロア移動の際に呼ばれる
-            character?.Reset();
-            SetToOrigin();
+            Character?.Reset();
+            ToSpawnPosition(map);
         }
 
 
 
-        void SetToOrigin()
+        void ToSpawnPosition(EntityGridMap map)
         {
-            // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
-            info.playerObj.transform.position = new Vector3(0, 5, 0);
+            // ToDo: みんな同じ場所にスポーンする。　プレイヤーごとに分けられたらいいのかも
+            var spawnGridPos = new Vector2Int(1, map.Height / 2);
+            var spawnWorldPos = GridConverter.GridPositionToWorldPosition(spawnGridPos);
+            var height = 0.5f;  // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
+            info.playerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
             info.playerRb.velocity = Vector3.zero;
+            
         }
 
-        
+
+
+
     }
 }
 

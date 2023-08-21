@@ -15,15 +15,4 @@ namespace Carry.CarrySystem.Block.Interfaces
         void PutDown(ICharacter character);
     }
 
-    /// <summary>
-    /// switch文ではなるべく使用しないようにする。代わりにパターンマッチングを使う
-    /// </summary>
-    public enum BlockType
-    {
-        None,
-        BasicBlock,
-        UnmovableBlock,
-        HeavyBlock,
-        FragileBlock,
-    }
 }

@@ -52,10 +52,10 @@ namespace Carry.CarrySystem.Map.Scripts
             }
         }
 
-        public bool[] SearchAccessibleArea(Vector2Int startPos, Vector2Int endPos,
-            Func<int, int, bool> isWall, SearcherSize searcherSize = SearcherSize.SizeOne)
+        public bool[] SearchAccessibleArea(Vector2Int startPos, Func<int, int, bool> isWall,
+            SearcherSize searcherSize = SearcherSize.SizeOne)
         {
-            var searchedMap = WaveletSearch(startPos, endPos, isWall, searcherSize);
+            var searchedMap = WaveletSearch(startPos, isWall, searcherSize);
             var resultBoolArray = CalcAccessibleArea(searchedMap, searcherSize);
 
             UpdatePresenter(resultBoolArray);
@@ -64,8 +64,8 @@ namespace Carry.CarrySystem.Map.Scripts
         }
 
 
-        public NumericGridMap WaveletSearch(Vector2Int startPos, Vector2Int endPos,
-            Func<int, int, bool> isWall, SearcherSize searcherSize = SearcherSize.SizeOne)
+        public NumericGridMap WaveletSearch(Vector2Int startPos, Func<int, int, bool> isWall,
+            SearcherSize searcherSize = SearcherSize.SizeOne)
         {
             var searchQue = new Queue<Vector2Int>();
             int n = 1; //1から始まることに注意!!
@@ -81,11 +81,6 @@ namespace Carry.CarrySystem.Map.Scripts
                 return _map; // _initValueのみが入ったmap
             }
 
-            if (isWall(endPos.x, endPos.y))
-            {
-                Debug.Log($"endPos:{endPos}は壁です");
-                return _map; // _initValueのみが入ったmap
-            }
 
             switch (searcherSize)
             {
@@ -150,7 +145,8 @@ namespace Carry.CarrySystem.Map.Scripts
                         // if (x != 0 && y != 0) continue; //斜めのマスも飛ばす
 
                         inspectPos = centerPos + new Vector2Int(x, y);
-                        if (_map.GetValue(inspectPos) == _initValue && CanMoveDiagonally(centerPos, inspectPos)) // _edgeValueが帰ってくることもある
+                        if (_map.GetValue(inspectPos) == _initValue &&
+                            CanMoveDiagonally(centerPos, inspectPos)) // _edgeValueが帰ってくることもある
                         {
                             _map.SetValue(inspectPos, n);
                             searchQue.Enqueue(inspectPos);
@@ -178,7 +174,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 }
             }
         }
-        
+
         public bool CanMoveDiagonally(Vector2Int prePos, Vector2Int afterPos)
         {
             Vector2Int directionVector = afterPos - prePos;
@@ -201,7 +197,6 @@ namespace Carry.CarrySystem.Map.Scripts
 
             return true;
         }
-        
 
 
         // 探索者の大きさが1*1の場合
@@ -238,7 +233,8 @@ namespace Carry.CarrySystem.Map.Scripts
                                 _map.SetValue(x + i, y + j, _wallValue);
                             }
                         }
-                    }else if(x == 0 || x == _map.Width -1 || y == 0 || y == _map.Height -1)
+                    }
+                    else if (x == 0 || x == _map.Width - 1 || y == 0 || y == _map.Height - 1)
                     {
                         // 壁の周りのマスを壁にする
                         _map.SetValue(x, y, _wallValue);
@@ -296,10 +292,23 @@ namespace Carry.CarrySystem.Map.Scripts
                     throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
             }
 
+            // //デバッグ用
+            // StringBuilder debugCell = new StringBuilder();
+            // for (int y = 0; y < map.Height; y++)
+            // {
+            //     for (int x = 0; x < map.Width; x++)
+            //     {
+            //         bool value = resultBoolArray[x + (map.Height - y - 1) * map.Width];
+            //         debugCell.AppendFormat("{0,4},", value.ToString()); // 桁数をそろえるために0を追加していると思う
+            //     }
+            //
+            //     debugCell.AppendLine();
+            // }
+            // Debug.Log($"すべてのresultBoolArrayの結果は\n{debugCell}");
 
             return resultBoolArray;
         }
-        
+
         void UpdatePresenter(bool[] resultBoolArray)
         {
             for (int i = 0; i < resultBoolArray.Length; i++)

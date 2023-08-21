@@ -1,10 +1,13 @@
 ﻿#nullable enable
+using System;
+using System.Collections.Generic;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using UnityEngine;
 using VContainer;
+using Object = UnityEngine.Object;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
@@ -16,7 +19,10 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly CartBuilder _cartBuilder;
         readonly FloorTimerNet _floorTimerNet;
         readonly EntityGridMapLoader _gridMapLoader;
+        readonly MapKeyDataNet _mapKeyDataNet;
         readonly TilePresenterBuilder _tilePresenterBuilder;
+        readonly WallPresenterBuilder _wallPresenterBuilder;
+        readonly GroundPresenterBuilder _groundPresenterBuilder;
         int _currentIndex;
         EntityGridMap? _currentMap;
 
@@ -24,14 +30,19 @@ namespace Carry.CarrySystem.Map.Scripts
         public EntityGridMapSwitcher(
             EntityGridMapLoader gridMapGridMapLoader,
             TilePresenterBuilder tilePresenterBuilder,
+            WallPresenterBuilder wallPresenterBuilder,
+            GroundPresenterBuilder groundPresenterBuilder,
             CartBuilder cartBuilder,
-            FloorTimerNet floorTimerNet
-        )
+            FloorTimerNet floorTimerNet,
+            MapKeyDataNet mapKeyDataNet)
         {
             _gridMapLoader = gridMapGridMapLoader;
             _tilePresenterBuilder = tilePresenterBuilder;
+            _wallPresenterBuilder = wallPresenterBuilder;
+            _groundPresenterBuilder = groundPresenterBuilder;
             _cartBuilder = cartBuilder;
             _floorTimerNet = floorTimerNet;
+            _mapKeyDataNet = mapKeyDataNet;
         }
 
         public EntityGridMap GetMap()
@@ -41,29 +52,40 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void InitUpdateMap(MapKey mapKey, int index)
         {
-            _currentIndex = index;
-            _currentMap = _gridMapLoader.LoadEntityGridMap(mapKey, _currentIndex);
+            var key = _mapKeyDataNet.MapKeyDataList[_currentIndex].mapKey;
+            var mapIndex =  _mapKeyDataNet.MapKeyDataList[_currentIndex].index;
+            _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _tilePresenterBuilder.Build(_currentMap);
+            _wallPresenterBuilder.Build(_currentMap);
+            _groundPresenterBuilder.Build(_currentMap);
             _cartBuilder.Build(_currentMap, this);
+            
+            var players = Object.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
+            foreach (var player in players) player.Reset(_currentMap);
+            
         }
 
         public void UpdateMap(MapKey mapKey, int index = 0)
         {
             Debug.Log($"次のフロアに変更します nextIndex: {_currentIndex + 1}");
             _currentIndex++;
-            var key = MapKey.Default; // Todo: キーを決める関数を作る
-            var nextMap = _gridMapLoader.LoadEntityGridMap(key, _currentIndex);
+            var key = _mapKeyDataNet.MapKeyDataList[_currentIndex].mapKey;
+            var mapIndex = _mapKeyDataNet.MapKeyDataList[_currentIndex].index;
+            var nextMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _currentMap = nextMap;
             _tilePresenterBuilder.Build(_currentMap);
+            _wallPresenterBuilder.Build(_currentMap);
+            _groundPresenterBuilder.Build(_currentMap);
 
 
             // 以下リセット処理
             var players = Object.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
-            foreach (var player in players) player.Reset();
+            foreach (var player in players) player.Reset(_currentMap);
 
             _cartBuilder.Build(_currentMap, this);
 
             _floorTimerNet.StartTimer();
         }
     }
+
 }

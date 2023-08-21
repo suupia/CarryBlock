@@ -15,11 +15,10 @@ using UnityEngine.Serialization;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class TilePresenter_Net : NetworkBehaviour, ITilePresenter
+    public class TilePresenterNet : NetworkBehaviour, ITilePresenter
     {
         public struct PresentData : INetworkStruct
         {
-            public int GroundCount;
             public int BasicBlockCount;
             public int UnmovableBlockCount;
             public int HeavyBlockCount;
@@ -29,7 +28,6 @@ namespace Carry.CarrySystem.Map.Scripts
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
-        [SerializeField] GameObject groundView = null!;
         [SerializeField] GameObject basicBlockView = null!;
         [SerializeField] GameObject doubleBasicBlockView = null!;
         [SerializeField] GameObject unmovableBlockView = null!;
@@ -40,13 +38,6 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public override void Render()
         {
-            groundView.SetActive(PresentDataRef.GroundCount switch
-            {
-                0 => false,
-                1 => true,
-                _ => throw new InvalidOperationException($"GroundCount : {PresentDataRef.GroundCount}")
-            });
-
             // UnmovableBlock
             unmovableBlockView.SetActive(PresentDataRef.UnmovableBlockCount switch
             {
@@ -102,7 +93,6 @@ namespace Carry.CarrySystem.Map.Scripts
         public void SetInitAllEntityActiveData(IEnumerable<IEntity> allEntities)
         {
             var allEntityList = allEntities.ToList();
-            PresentDataRef.GroundCount = allEntityList.OfType<Ground>().Count();
             PresentDataRef.BasicBlockCount = allEntityList.OfType<BasicBlock>().Count();
             PresentDataRef.UnmovableBlockCount = allEntityList.OfType<UnmovableBlock>().Count();
             PresentDataRef.HeavyBlockCount = allEntityList.OfType<HeavyBlock>().Count();
@@ -113,9 +103,6 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             switch (entity)
             {
-                case Ground _:
-                    PresentDataRef.GroundCount = count;
-                    break;
                 case BasicBlock _:
                     PresentDataRef.BasicBlockCount = count;
                     break;
