@@ -2,6 +2,7 @@
 using System.Linq;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners;
 using Fusion;
 using UnityEngine;
@@ -9,10 +10,10 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class TilePresenterBuilder
+    public class TilePresenterBuilder : IPresenterBuilder
     {
         [Inject] NetworkRunner _runner;
-        IEnumerable<TilePresenter_Net> _tilePresenters =  new List<TilePresenter_Net>();
+        IEnumerable<TilePresenterNet> _tilePresenters =  new List<TilePresenterNet>();
         
         [Inject]
         public TilePresenterBuilder()
@@ -22,7 +23,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public void Build(EntityGridMap map)
         {
             var tilePresenterSpawner = new TilePresenterSpawner(_runner);
-            var tilePresenters = new List<TilePresenter_Net>();
+            var tilePresenters = new List<TilePresenterNet>();
 
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
@@ -51,10 +52,10 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 _runner.Despawn(tilePresenter.Object);
             }
-            _tilePresenters = new List<TilePresenter_Net>();
+            _tilePresenters = new List<TilePresenterNet>();
         }
         
-         void AttachTilePresenter(IReadOnlyList<TilePresenter_Net> tilePresenters , EntityGridMap map)
+         void AttachTilePresenter(IReadOnlyList<TilePresenterNet> tilePresenters , EntityGridMap map)
         {
             for (int i = 0; i < tilePresenters.Count(); i++)
             {

@@ -15,9 +15,11 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             var moveExe = new MoveExecutorContainer();
             var blockContainer = new PlayerBlockContainer();
+            var playerPresenterContainer = new PlayerPresenterContainer();
             var holdExe = new EmptyHoldActionExecutor();
+            var dashExe = new DashExecutor();
             var passExe = new EmptyPassActionExecutor();
-            var character = new Character(moveExe, holdExe, passExe, blockContainer);
+            var character = new Character(moveExe, holdExe,dashExe, passExe, blockContainer,playerPresenterContainer);
             return character;
         }
     }

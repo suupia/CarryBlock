@@ -21,10 +21,15 @@ namespace Carry.CarrySystem.Player.Scripts
         PlayerInfo _info = null!;
         EntityGridMap _map = null!;
         readonly PlayerBlockContainer _blockContainer;
+        readonly IPlayerBlockPresenter _playerPresenterContainer;
 
-        public HoldActionExecutor(PlayerBlockContainer blockContainer,  IMapUpdater mapUpdater)
+        public HoldActionExecutor(
+            PlayerBlockContainer blockContainer, 
+            IPlayerBlockPresenter playerPresenterContainer,
+            IMapUpdater mapUpdater)
         {
             _blockContainer = blockContainer;
+            _playerPresenterContainer = playerPresenterContainer;    
             _mapUpdater = mapUpdater;
         }
 
@@ -37,7 +42,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Reset()
         {
             var _ =  _blockContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
-            _blockContainer.Presenter.PutDownBlock();
+            _playerPresenterContainer.PutDownBlock();
             _map = _mapUpdater.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
 
@@ -66,9 +71,9 @@ namespace Carry.CarrySystem.Player.Scripts
                         Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれない
                         return;
                     }
-                    block.PutDown(_info.playerController.Character);
+                    block.PutDown(_info.playerController.GetCharacter);
                     _map.AddEntity(forwardGridPos, block);
-                    _blockContainer.Presenter.PutDownBlock();
+                    _playerPresenterContainer.PutDownBlock();
                 }
             }
             else
@@ -79,9 +84,9 @@ namespace Carry.CarrySystem.Player.Scripts
                 
                 if (block.CanPickUp())
                 {
-                    block.PickUp(_info.playerController.Character);
+                    block.PickUp(_info.playerController.GetCharacter);
                     _map.RemoveEntity(forwardGridPos, block);
-                    _blockContainer.Presenter.PickUpBlock(block);
+                    _playerPresenterContainer.PickUpBlock(block);
                     _blockContainer.SetBlock(block);
                 }
             }

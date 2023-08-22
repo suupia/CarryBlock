@@ -10,23 +10,29 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class Character : ICharacter
     {
+        public PlayerBlockContainer PlayerBlockContainer { get; }
+        public PlayerPresenterContainer PresenterContainer { get; }
+
         readonly IMoveExecutorContainer _moveExecutorContainer;
         readonly IHoldActionExecutor _holdActionExecutor;
+        readonly IDashExecutor _dashExecutor;
         readonly IPassActionExecutor _passActionExecutor;
-        readonly PlayerBlockContainer _blockContainer;
 
-        public PlayerBlockContainer PlayerBlockContainer => _blockContainer;
 
         public Character(
-            IMoveExecutorContainer moveExecutorContainer, 
+            IMoveExecutorContainer moveExecutorContainer,
             IHoldActionExecutor holdActionExecutor,
+            IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,
-            PlayerBlockContainer blockContainer)
+            PlayerBlockContainer blockContainer,
+            PlayerPresenterContainer playerPresenterContainer)
         {
             _moveExecutorContainer = moveExecutorContainer;
             _holdActionExecutor = holdActionExecutor;
             _passActionExecutor = passActionExecutor;
-            _blockContainer = blockContainer;
+            PlayerBlockContainer = blockContainer;
+            PresenterContainer = playerPresenterContainer;
+            _dashExecutor = dashExecutor;
         }
 
         public void Reset()
@@ -48,20 +54,24 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _moveExecutorContainer.Move(direction);
         }
+
         public void SetRegularMoveExecutor() => _moveExecutorContainer.SetRegularMoveExecutor();
         public void SetSlowMoveExecutor() => _moveExecutorContainer.SetSlowMoveExecutor();
-        
+
         // HoldActionExecutor
         public void SetHoldPresenter(IPlayerBlockPresenter presenter)
         {
-            _blockContainer.SetHoldPresenter(presenter);
+            PresenterContainer.SetHoldPresenter(presenter);
         }
 
         public void HoldAction()
         {
             _holdActionExecutor.HoldAction();
         }
-        
+
+        // DashExecutor
+        public void Dash() => _dashExecutor.Dash();
+
         // PassActionExecutor
         public void PassAction() => _passActionExecutor.PassAction();
         public bool CanReceivePass() => _passActionExecutor.CanReceivePass();
