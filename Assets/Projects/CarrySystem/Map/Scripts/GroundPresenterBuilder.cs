@@ -7,7 +7,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class GroundPresenterBuilder
+    public class GroundPresenterBuilder : IPresenterBuilder
     {
         [Inject] NetworkRunner _runner;
         IEnumerable<GroundPresenterNet> _tilePresenters = new List<GroundPresenterNet>();

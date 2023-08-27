@@ -2,6 +2,7 @@
 using System.Linq;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners;
 using Fusion;
 using UnityEngine;
@@ -9,7 +10,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class TilePresenterBuilder
+    public class TilePresenterBuilder : IPresenterBuilder
     {
         [Inject] NetworkRunner _runner;
         IEnumerable<TilePresenterNet> _tilePresenters =  new List<TilePresenterNet>();
