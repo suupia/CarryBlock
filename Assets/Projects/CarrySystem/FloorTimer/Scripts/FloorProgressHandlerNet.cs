@@ -16,12 +16,10 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
         float _updateTime = 7;
 
         IMapUpdater _mapSwitcher;
-        public void Start()
-        {
-            var resolver = FindObjectOfType<LifetimeScope>().Container;
-            _mapSwitcher = resolver.Resolve<IMapUpdater>();
-        }
+        
+        
 
+# if UNITY_EDITOR
         void Update()
         {
             if(Runner == null) return;
@@ -31,6 +29,6 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
             }
             
         }
-
+# endif
     }
 }

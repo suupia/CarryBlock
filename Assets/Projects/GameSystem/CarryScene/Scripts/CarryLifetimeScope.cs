@@ -68,6 +68,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 
             // Handler
             builder.RegisterComponentInHierarchy<PlayerNearCartHandlerNet>();
+            builder.RegisterComponentInHierarchy<FloorProgressHandlerNet>();
 
             // Initializer
             builder.RegisterComponentInHierarchy<CarryInitializer>();
