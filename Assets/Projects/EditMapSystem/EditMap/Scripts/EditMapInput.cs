@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using VContainer;
 using UniRx;
+#nullable enable
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
@@ -17,12 +18,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         [SerializeField] EditMapCUISave editMapCuiSave;
         [SerializeField] EditMapCUILoad editMapCUILoad;
 
+        public  IBlock BlockType => _blockType;
+
         BlockPlacer _blockPlacer;
         IMapUpdater _editMapUpdater;
         EntityGridMapSaver _entityGridMapSaver;
 
         CUIState _cuiState = CUIState.Idle;
-        IBlock _blockType;
+        IBlock _blockType = null!;
 
         enum CUIState
         {
@@ -63,6 +66,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                     _cuiState = CUIState.Idle;
                 }
             });
+            
+            _blockType = new BasicBlock(BasicBlock.Kind.Kind1, Vector2Int.zero);
+
         }
 
         void Update()
