@@ -95,15 +95,15 @@ namespace Carry.CarrySystem.Player.Scripts
                 Debug.Log($"{_info.playerController.Object.InputAuthority} isn't holding a block. So, can't pass block");
                 return (false, null!);
             }
-            var block = _blockContainer.PopBlock();
-            if (block == null)
-            {
-                Debug.LogError($"block is null");  // IsHoldingBlockがtrueなのに、blockがnullなのはおかしい
-                return (false, null!);
-            }
             if (!targetPlayerController.GetCharacter.CanReceivePass())
             {
                 Debug.Log($"{targetPlayerController.Object.InputAuthority} is holding a block.So, can't receive pass");
+                return (false, null!);
+            }
+            var block = _blockContainer.PopBlock();  // 判定の一番最後にPopする
+            if (block == null)
+            {
+                Debug.LogError($"block is null");  // IsHoldingBlockがtrueなのに、blockがnullなのはおかしい
                 return (false, null!);
             }
             return (true, block);
