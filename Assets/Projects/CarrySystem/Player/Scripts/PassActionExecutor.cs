@@ -21,6 +21,8 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PlayerBlockContainer _blockContainer;
         readonly IPlayerBlockPresenter _playerPresenterContainer;
 
+        PassRangeNet? _passRangeNet;
+
         public PassActionExecutor(
             PlayerBlockContainer blockContainer,
             IPlayerBlockPresenter playerPresenterContainer,
@@ -46,9 +48,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void PassAction()
         {
-            var targets = Search();
-            Debug.Log($"targets {string.Join(",", targets.ToList())}");
-            if (DetermineTarget(targets) is {} target)
+            if (_passRangeNet == null) _passRangeNet = _info.playerController.GetComponentInChildren<PassRangeNet>();
+            if (_passRangeNet.DetectedTarget() is {} target)
             {
                 var targetPlayerController  = target.GetComponent<CarryPlayerControllerNet>();
                 if (targetPlayerController == null)
@@ -111,31 +112,5 @@ namespace Carry.CarrySystem.Player.Scripts
         
         
         
-        Transform[] Search()
-        {
-            var center = _info.playerObj. transform.position;
-            var numFound = Physics.OverlapSphereNonAlloc(center, _radius,_targetBuffer, _layerMask);
-            return  _targetBuffer
-                .Where(c => c != null) // Filter out any null colliders
-                .Where(c => c.transform != _info.playerObj.transform) // 自分以外を選択する
-                .Select(c => c.transform)
-                .ToArray();
-        }
-
-        public Transform? DetermineTarget(IEnumerable<Transform> targetUnits)
-        {
-            Transform? minTransform = null;
-            float minDistance = float.PositiveInfinity;
-            foreach (var targetTransform in targetUnits)
-            {
-                var distance = Vector3.Distance(_info.playerObj.transform.position, targetTransform.position);
-                if (distance < minDistance)
-                {
-                    minTransform = targetTransform;
-                    minDistance = distance;
-                }
-            }
-            return minTransform;
-        }
     }
 }

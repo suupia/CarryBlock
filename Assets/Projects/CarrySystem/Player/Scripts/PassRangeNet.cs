@@ -4,6 +4,7 @@ using Carry.CarrySystem.Player.Info;
 using Fusion;
 using UnityEngine;
 using UnityEngine.Serialization;
+#nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {
@@ -24,35 +25,18 @@ namespace Carry.CarrySystem.Player.Scripts
         }
 
 
-        public (bool, GameObject) IsPassable()
+        public Transform? DetectedTarget()
         {
             var targetUnits = Search();
-            var targetTransform = DetermineTarget(targetUnits);
-            if (targetTransform == null)
-            {
-                return (false, null!);
-            }
-            var targetObj = targetTransform.gameObject;
-            return (true, targetObj);
+            var target = DetermineTarget(targetUnits);
+            return target;
         }
-        public Transform[] Search()
-        {
-            var center = _info.playerObj. transform.position;
-            var radius = detectCollider.radius;
-            var targetBuffer = new Collider[10];
-            var numFound = Physics.OverlapSphereNonAlloc(center, radius,targetBuffer, _layerMask);
-            return  targetBuffer
-                .Where(c => c != null) // Filter out any null colliders
-                .Where(c => c.transform != _info.playerObj.transform) // 自分以外を選択する
-                .Select(c => c.transform)
-                .ToArray();
-        }
-        
-        public Transform? DetermineTarget(IEnumerable<Transform> targetUnits)
+
+        Transform? DetermineTarget(IEnumerable<Transform> targets)
         {
             Transform? minTransform = null;
             float minDistance = float.PositiveInfinity;
-            foreach (var targetTransform in targetUnits)
+            foreach (var targetTransform in targets)
             {
                 var distance = Vector3.Distance(_info.playerObj.transform.position, targetTransform.position);
                 if (distance < minDistance)
@@ -62,6 +46,21 @@ namespace Carry.CarrySystem.Player.Scripts
                 }
             }
             return minTransform;
+        }
+        
+        Transform[] Search()
+        {
+            var center = _info.playerObj. transform.position;
+            var radius = detectCollider.radius;
+            var targetBuffer = new Collider[10];
+            var numFound = Physics.OverlapSphereNonAlloc(center, radius,targetBuffer, _layerMask);
+            var targets =  targetBuffer
+                .Where(c => c != null) // Filter out any null colliders
+                .Where(c => c.transform != _info.playerObj.transform) // 自分以外を選択する
+                .Select(c => c.transform)
+                .ToArray();
+            Debug.Log($"targets {string.Join(",", targets.ToList())}");
+            return targets;
         }
     }
 }

@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  detectCollider: {fileID: 0}
+  detectCollider: {fileID: 5827396782772590717}
 --- !u!114 &2093058511266964221
 MonoBehaviour:
   m_ObjectHideFlags: 0
