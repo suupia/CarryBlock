@@ -18,6 +18,8 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class CarryPlayerControllerNet : AbstractNetworkPlayerController
     {
+        public PlayerInfo Info => info;
+        
         IMapUpdater? _mapUpdater;
         PlayerNearCartHandlerNet _playerNearCartHandler = null!;
         
