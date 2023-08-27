@@ -28,10 +28,9 @@ namespace Carry.CarrySystem.Cart.Scripts
 
         public bool IsNearCart(GameObject player)
         {
-            Collider[] overlapResults = new Collider[2];
-            var layerMask = LayerMask.GetMask("Cart"); // 他のブロックにぶつかるのを防ぐ
-            var numFound = Physics.OverlapSphereNonAlloc( player.transform.position, _detectRadius,overlapResults, layerMask);
-            return numFound != 0;
+            var cart = GameObject.FindObjectOfType<CartControllerNet>();
+            var detectCollider = cart.DetectCollider;
+            return detectCollider.ClosestPoint(player.transform.position) == player.transform.position;
         }
         
         public bool IsAllPlayerNearCart()
