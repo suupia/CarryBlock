@@ -57,7 +57,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     return;
                 }
                 
-                Debug.Log($"targetPlayerController: {targetPlayerController.name}, {targetPlayerController.Runner.LocalPlayer}に対してPassを試みます");
+                Debug.Log($"{_info.playerController.Object.InputAuthority}から{targetPlayerController.Object.InputAuthority}に対してPassを試みます");
                 
                 var canPass = CanPass(targetPlayerController);
                 if(!canPass.Item1) return;
@@ -92,7 +92,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             if (!_blockContainer.IsHoldingBlock) 
             {
-                Debug.Log($"{_info.playerController.Runner.LocalPlayer} isn't holding a block. So, can't pass block");
+                Debug.Log($"{_info.playerController.Object.InputAuthority} isn't holding a block. So, can't pass block");
                 return (false, null!);
             }
             var block = _blockContainer.PopBlock();
@@ -103,7 +103,7 @@ namespace Carry.CarrySystem.Player.Scripts
             }
             if (!targetPlayerController.GetCharacter.CanReceivePass())
             {
-                Debug.Log($"{targetPlayerController.Runner.LocalPlayer} is holding a block.So, can't receive pass");
+                Debug.Log($"{targetPlayerController.Object.InputAuthority} is holding a block.So, can't receive pass");
                 return (false, null!);
             }
             return (true, block);
