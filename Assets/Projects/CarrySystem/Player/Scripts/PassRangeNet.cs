@@ -51,7 +51,7 @@ namespace Carry.CarrySystem.Player.Scripts
         Transform[] Search()
         {
             var center = _info.playerObj. transform.position;
-            var radius = detectCollider.radius;
+            var radius = detectCollider.transform.localScale.x * detectCollider.radius; // radiusを倍率とするとうまく計算できる（0.5倍）
             var targetBuffer = new Collider[10];
             var numFound = Physics.OverlapSphereNonAlloc(center, radius,targetBuffer, _layerMask);
             var targets =  targetBuffer
