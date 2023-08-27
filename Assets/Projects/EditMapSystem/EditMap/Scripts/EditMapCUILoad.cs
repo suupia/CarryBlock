@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Cysharp.Threading.Tasks;
@@ -19,7 +19,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         IMapUpdater _editMapUpdater;
         CUIHandleNumber _handleNumber;
         CUIInputState _inputState;
-
+        AutoSaveManager _autoSaveManager;
 
         readonly float _displayTime = 1.5f; // メッセージを表示する時間
         bool _isOpened = false;
@@ -41,10 +41,12 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         [Inject]
         public void Construct(
             IMapUpdater editMapUpdater,
-            CUIHandleNumber handleNumber)
+            CUIHandleNumber handleNumber,
+            AutoSaveManager autoSaveManager)
         {
             _editMapUpdater = editMapUpdater;
             _handleNumber = handleNumber;
+            _autoSaveManager = autoSaveManager;
         }
         public void OpenLoadUI()
         {
@@ -119,6 +121,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             messageText.text = "Loaded.";
             _editMapUpdater.UpdateMap(_key,_index); // 何回も呼ばれていたUniRxを使った方が間違えがなかったかも
             _isLoading = true;
+            _autoSaveManager.CanAutoSave = false;
             await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
             _inputState = CUIInputState.End;
             _isLoading = false;

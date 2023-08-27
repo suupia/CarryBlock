@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -37,6 +37,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             // Input
             builder.Register<CUIHandleNumber>(Lifetime.Scoped);
+            builder.Register<AutoSaveManager>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<EditMapInput>();
             builder.RegisterComponentInHierarchy<EditMapCUISave>();
             builder.RegisterComponentInHierarchy<EditMapCUILoad>();
