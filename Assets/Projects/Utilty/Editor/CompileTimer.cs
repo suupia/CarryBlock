@@ -7,7 +7,7 @@ namespace Projects.Utilty.Editor
 {
     public class CompileTimer : EditorWindow
     {
-        [MenuItem("Kayac/CompileTimer")]
+        [MenuItem("CompileTimer/CompileTimer")]
         static void Init()
         {
             EditorWindow window = GetWindowWithRect(typeof(CompileTimer), new Rect(0, 0, 200f, 100f));
