@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Fusion;
-using UnityEditor.SceneManagement;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
