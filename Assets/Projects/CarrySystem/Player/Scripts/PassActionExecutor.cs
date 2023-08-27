@@ -59,40 +59,19 @@ namespace Carry.CarrySystem.Player.Scripts
                 
                 Debug.Log($"targetPlayerController: {targetPlayerController.name}, {targetPlayerController.Runner.LocalPlayer}に対してPassを試みます");
                 
-                
-                Debug.Log($"!_blockContainer.IsHoldingBlock: {_blockContainer.IsHoldingBlock}");
-                Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.GetCharacter.CanReceivePass()}");
-                
-                
-                if (!_blockContainer.IsHoldingBlock) 
-                {
-                    Debug.Log($"isn't holding a block. So, can't pass block");
-                    return;
-                }
-                var block = _blockContainer.PopBlock();
-                if (block == null)
-                {
-                    Debug.LogError($"block is null");  // IsHoldingBlockがtrueなのに、blockがnullなのはおかしい
-                    return;
-                }
-                Debug.Log($"Pass Block");
-                block.PutDown(_info.playerController.GetCharacter);
-                _playerPresenterContainer.PassBlock();
-                if (!targetPlayerController.GetCharacter.CanReceivePass())
-                {
-                    Debug.Log($"receive pass is not possible. So, return block");
-                    return;
-                }
-                Debug.Log($"Receive Pass");
+                var canPass = CanPass(targetPlayerController);
+                if(!canPass.Item1) return;
+                var block = canPass.Item2;
+                PassBlock(block);
                 targetPlayerController.GetCharacter.ReceivePass(block);
             }
         }
 
+        // public
         public bool CanReceivePass()
         {
             return !_blockContainer.IsHoldingBlock;
         }
-        
         public void ReceivePass(IBlock block)
         {
             Debug.Log("Receive Pass");
@@ -100,6 +79,36 @@ namespace Carry.CarrySystem.Player.Scripts
             _blockContainer.SetBlock(block);
             _playerPresenterContainer.ReceiveBlock(block);
         }
+        
+        // private
+        void PassBlock(IBlock block)
+        {
+            Debug.Log($"Pass Block");
+            block.PutDown(_info.playerController.GetCharacter);
+            _playerPresenterContainer.PassBlock();
+        }
+        
+        (bool, IBlock) CanPass(CarryPlayerControllerNet targetPlayerController)
+        {
+            if (!_blockContainer.IsHoldingBlock) 
+            {
+                Debug.Log($"Player isn't holding a block. So, can't pass block");
+                return (false, null!);
+            }
+            var block = _blockContainer.PopBlock();
+            if (block == null)
+            {
+                Debug.LogError($"block is null");  // IsHoldingBlockがtrueなのに、blockがnullなのはおかしい
+                return (false, null!);
+            }
+            if (!targetPlayerController.GetCharacter.CanReceivePass())
+            {
+                Debug.Log($"Player is holding a block.So, can't receive pass");
+                return (false, null!);
+            }
+            return (true, block);
+        }
+        
         
         
         Transform[] Search()
