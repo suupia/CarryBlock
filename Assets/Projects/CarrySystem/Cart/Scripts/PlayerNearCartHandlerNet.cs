@@ -1,7 +1,11 @@
 ﻿using System;
 using Carry.CarrySystem.FloorTimer.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
+using Carry.CarrySystem.Player.Scripts;
 using Fusion;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using VContainer;
 #nullable enable
@@ -14,40 +18,70 @@ namespace Carry.CarrySystem.Cart.Scripts
     public class PlayerNearCartHandlerNet : NetworkBehaviour
     {
         HoldingBlockObserver _holdingBlockObserver =null!;
+        CarryPlayerContainer _carryPlayerContainer = null!;
+        IMapUpdater _mapUpdater = null!;
         
-        // public bool AllPlayerNearCart => 
+        bool _isCartStarted = false;
         
-        float _detectRadius = 1f; 
         [Inject]
-        public void Construct(HoldingBlockObserver holdingBlockObserver)
+        public void Construct(
+            HoldingBlockObserver holdingBlockObserver,
+            CarryPlayerContainer carryPlayerContainer,
+            IMapUpdater mapUpdater
+            )
         {
             _holdingBlockObserver = holdingBlockObserver;
+            _carryPlayerContainer = carryPlayerContainer;
+            _mapUpdater = mapUpdater;
             
-            // ToDo: プレイヤーコンテナを受け取る
+            
+            this.UpdateAsObservable()
+                .Where(_ => _holdingBlockObserver.IsMapClear)
+                .Where(_ => !_isCartStarted)
+                .Subscribe(_ =>
+                {
+                    // すべてのプレイヤーがカートの近くにいれば、カートを動かす
+                    if (IsAllPlayerNearCart())
+                    {
+                        var cart = FindObjectOfType<CartControllerNet>();
+                        cart.StartMove();
+                        _isCartStarted = true;
+                    }
+                });
+            
+            _mapUpdater.RegisterResetAction(() =>
+            {
+                _isCartStarted = false;
+            });
         }
 
         public bool IsNearCart(GameObject player)
         {
-            var cart = GameObject.FindObjectOfType<CartControllerNet>();
+            var cart = FindObjectOfType<CartControllerNet>();
             var detectCollider = cart.DetectCollider;
             return detectCollider.ClosestPoint(player.transform.position) == player.transform.position;
+
         }
         
         public bool IsAllPlayerNearCart()
         {
-            // var players = GameObject.FindObjectsOfType<CarryPlayerControllerNet>();
-            // foreach (var player in players)
-            // {
-            //     if (!IsNearCart(player.gameObject))
-            //     {
-            //         return false;
-            //     }
-            // }
-            //
-            // return true;
-            return false;
+            foreach (var player in _carryPlayerContainer.PlayerControllers)
+            {
+                if (!IsNearCart(player.gameObject))
+                {
+                    return false;
+                }
+            }
+            
+            return true;
         }
-        
+
+        void FixedUpdate()
+        {
+            if(! HasStateAuthority) return;
+            
+        }
+
         void Update()
         {
             if(Runner == null) return;
@@ -63,6 +97,7 @@ namespace Carry.CarrySystem.Cart.Scripts
                 }
 
             }
+            
             
         }
         

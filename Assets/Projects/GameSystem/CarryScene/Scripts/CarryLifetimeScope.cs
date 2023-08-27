@@ -39,6 +39,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             builder.Register<MainCarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
             builder.Register<CarryPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
+            builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
 
 
             // Serverのドメインスクリプト
@@ -68,7 +69,6 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 
             // Handler
             builder.RegisterComponentInHierarchy<PlayerNearCartHandlerNet>();
-            builder.RegisterComponentInHierarchy<FloorProgressHandlerNet>();
 
             // Initializer
             builder.RegisterComponentInHierarchy<CarryInitializer>();

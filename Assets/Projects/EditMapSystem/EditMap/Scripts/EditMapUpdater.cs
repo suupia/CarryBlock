@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Numerics;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
@@ -22,6 +23,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         EntityGridMap _map;
         MapKey _mapKey;
         int _index;
+        
+        Action _resetAction = () => { };
 
         [Inject]
         public EditMapUpdater(
@@ -57,7 +60,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             _mapKey = mapKey;
             _index = index;
             _loadedFilePresenter.FormatLoadedFileText(_mapKey,_index);
+            
+            _resetAction();
         }
 
+        public void RegisterResetAction(System.Action action)
+        {
+            _resetAction += action;
+        }
+        
     }
 }

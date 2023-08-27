@@ -61,7 +61,6 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             if (Runner.IsServer)
             {
                 _entityGridMapSwitcher.InitUpdateMap(MapKey.Default, 1);  // ToDo : keyやindexの計算処理を追加する
-                _holdingBlockObserver.StartObserveMap();    // Mapの生成後に呼び出す
 
             }
             

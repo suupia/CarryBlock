@@ -23,6 +23,8 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly AllPresenterBuilder _allPresenterBuilder;
         int _currentIndex;
         EntityGridMap? _currentMap;
+        
+        Action _resetAction = () => { };
 
         [Inject]
         public EntityGridMapSwitcher(
@@ -75,6 +77,15 @@ namespace Carry.CarrySystem.Map.Scripts
             _cartBuilder.Build(_currentMap, this);
 
             _floorTimerNet.StartTimer();
+            
+            // 上にある処理はResetに登録するようにする
+            
+            _resetAction();
+        }
+        
+        public void RegisterResetAction(Action action)
+        {
+            _resetAction += action;
         }
     }
 

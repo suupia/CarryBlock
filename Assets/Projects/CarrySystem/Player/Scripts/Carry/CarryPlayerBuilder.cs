@@ -27,6 +27,7 @@ namespace Carry.CarrySystem.Player.Scripts
         // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などが想定される
         readonly PlayerCharacterHolder _playerCharacterHolder;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
+        readonly CarryPlayerContainer _carryPlayerContainer;
 
         [Inject]
         public CarryPlayerBuilder(
@@ -35,7 +36,8 @@ namespace Carry.CarrySystem.Player.Scripts
             IPrefabLoader<CarryPlayerControllerNet> carryPlayerControllerLoader,
             ICarryPlayerFactory carryPlayerFactory,
             PlayerCharacterHolder playerCharacterHolder,
-            PlayerNearCartHandlerNet playerNearCartHandler
+            PlayerNearCartHandlerNet playerNearCartHandler,
+            CarryPlayerContainer carryPlayerContainer
             )
         {
             _runner = runner;
@@ -44,6 +46,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _carryPlayerFactory = carryPlayerFactory;
             _playerCharacterHolder  = playerCharacterHolder;
             _playerNearCartHandler = playerNearCartHandler;
+            _carryPlayerContainer = carryPlayerContainer;
         }
 
         public AbstractNetworkPlayerController Build(Vector3 position, Quaternion rotation, PlayerRef playerRef)
@@ -66,11 +69,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
                 });
             
-            // 各MonoBehaviourにドメインを設定
-            // playerControllerObj.Init(character);
-            // var holdPresenter = playerControllerObj.GetComponent<HoldPresenter_Net>();
-            // holdPresenter.Init(character);
-            
+            _carryPlayerContainer.AddPlayer(playerRef, playerControllerObj);
+
             // Factoryの差し替えが簡単にできるので、_resolver.InjectGameObjectを使う必要はない
             // BuilderとPlayerControllerが蜜結合なのは問題ないはず
 

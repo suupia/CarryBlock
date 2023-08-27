@@ -16,10 +16,14 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
         float _updateTime = 7;
 
         IMapUpdater _mapSwitcher;
+        public void Start()
+        {
+            // 仮クラスのため、コンテナには登録していない
+            var resolver = FindObjectOfType<LifetimeScope>().Container;
+            _mapSwitcher = resolver.Resolve<IMapUpdater>();
+        }
         
-        
-
-# if UNITY_EDITOR
+ # if UNITY_EDITOR
         void Update()
         {
             if(Runner == null) return;
