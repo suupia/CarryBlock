@@ -64,10 +64,15 @@ namespace Carry.CarrySystem.Player.Scripts
                 Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.GetCharacter.CanReceivePass()}");
                 
                 
-                var block = _blockContainer.PopBlock();
-                if (block == null) 
+                if (!_blockContainer.IsHoldingBlock) 
                 {
-                    Debug.Log($"block is null. So, can't pass block");
+                    Debug.Log($"isn't holding a block. So, can't pass block");
+                    return;
+                }
+                var block = _blockContainer.PopBlock();
+                if (block == null)
+                {
+                    Debug.LogError($"block is null");  // IsHoldingBlockがtrueなのに、blockがnullなのはおかしい
                     return;
                 }
                 Debug.Log($"Pass Block");
