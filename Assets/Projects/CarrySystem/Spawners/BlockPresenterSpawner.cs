@@ -8,16 +8,16 @@ using UnityEngine.Tilemaps;
 #nullable enable
 namespace Carry.CarrySystem.Spawners
 {
-    public class TilePresenterSpawner
+    public class BlockPresenterSpawner
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<BlockPresenterNet> _tilePresenterPrefabSpawner;
 
-        public TilePresenterSpawner(NetworkRunner runner)
+        public BlockPresenterSpawner(NetworkRunner runner)
         {
             _runner = runner;
             _tilePresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<BlockPresenterNet>("Prefabs/Map/TilePresenter");
+                new PrefabLoaderFromAddressable<BlockPresenterNet>("Prefabs/Map/BlockPresenter");
         }
 
         public BlockPresenterNet SpawnPrefab(Vector3 position, Quaternion rotation)

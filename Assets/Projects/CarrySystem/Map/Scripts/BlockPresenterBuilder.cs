@@ -10,19 +10,19 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class TilePresenterBuilder : IPresenterBuilder
+    public class BlockPresenterBuilder : IPresenterBuilder
     {
         [Inject] NetworkRunner _runner;
         IEnumerable<BlockPresenterNet> _tilePresenters =  new List<BlockPresenterNet>();
         
         [Inject]
-        public TilePresenterBuilder()
+        public BlockPresenterBuilder()
         {
         }
         
         public void Build(EntityGridMap map)
         {
-            var tilePresenterSpawner = new TilePresenterSpawner(_runner);
+            var tilePresenterSpawner = new BlockPresenterSpawner(_runner);
             var tilePresenters = new List<BlockPresenterNet>();
 
             // 以前のTilePresenterを削除

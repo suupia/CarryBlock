@@ -8,12 +8,12 @@ namespace Carry.CarrySystem.Map.Scripts
         List< IPresenterBuilder>presenterBuilders = new List<IPresenterBuilder>();
 
         public  AllPresenterBuilder(         
-            TilePresenterBuilder tilePresenterBuilder,
+            BlockPresenterBuilder blockPresenterBuilder,
             WallPresenterBuilder wallPresenterBuilder,
             GroundPresenterBuilder groundPresenterBuilder
             )
         {
-            presenterBuilders.Add(tilePresenterBuilder);
+            presenterBuilders.Add(blockPresenterBuilder);
             presenterBuilders.Add(wallPresenterBuilder);
             presenterBuilders.Add(groundPresenterBuilder);
         }

@@ -46,7 +46,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             // Map
             builder.Register<MapBuilderMonoDelegate>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
-            builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
+            builder.Register<BlockPresenterBuilder>(Lifetime.Scoped);
             builder.Register<WallPresenterBuilder>(Lifetime.Scoped);
             builder.Register<GroundPresenterBuilder>(Lifetime.Scoped);
             builder.Register<AllPresenterBuilder>(Lifetime.Scoped);
