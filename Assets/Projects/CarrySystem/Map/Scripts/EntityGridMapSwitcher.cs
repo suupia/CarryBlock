@@ -53,9 +53,6 @@ namespace Carry.CarrySystem.Map.Scripts
             _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _allPresenterBuilder.Build(_currentMap);
             _cartBuilder.Build(_currentMap, this);
-            
-            // var players = Object.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
-            // foreach (var player in players) player.Reset(_currentMap);
 
             _resetAction();
 
@@ -70,17 +67,10 @@ namespace Carry.CarrySystem.Map.Scripts
             var nextMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _currentMap = nextMap;
             _allPresenterBuilder.Build(_currentMap);
-
-
-            // 以下リセット処理
-            // var players = Object.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
-            // foreach (var player in players) player.Reset(_currentMap);
-
             _cartBuilder.Build(_currentMap, this);
 
             _floorTimerNet.StartTimer();
             
-            // 上にある処理はResetに登録するようにする
             
             _resetAction();
         }
