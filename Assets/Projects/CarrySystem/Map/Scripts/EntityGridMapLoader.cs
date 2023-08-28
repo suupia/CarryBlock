@@ -6,6 +6,7 @@ using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Spawners;
+using Projects.Utilty;
 using UnityEngine;
 
 #nullable enable
@@ -176,33 +177,33 @@ namespace Carry.CarrySystem.Map.Scripts
             return map;
         }
         
-        // void ProcessRecord<TEntity,TKind>(TKind[] records, EntityGridMap map, int index, TKind noneValue) 
-        //     where TEntity : IBlock , new() 
-        //     where TKind : Enum
-        // {
-        //     if (records != null)
-        //     {
-        //         if (records.Length == map.GetLength())
-        //         {
-        //             foreach (var kind in records[index].Cast<TKind>())
-        //             {
-        //                 if (!kind.Equals(noneValue))
-        //                 {
-        //                     // This will create a new entity
-        //                     var entity = new TEntity(kind, map.ToVector(index));
-        //                     map.AddEntity(index, entity);
-        //                 }
-        //             }
-        //         }
-        //         else
-        //         {
-        //             Debug.LogError($"{typeof(TKind).Name}Records.Length is not equal to map.GetLength()!");
-        //         }
-        //     }
-        //     else
-        //     {
-        //         Debug.LogWarning($"{typeof(TKind).Name}Records is not initialized properly!");
-        //     }
-        // }
+        void ProcessRecord<TEntity,TKind>(TKind[]? records, EntityGridMap map, int index, TKind noneValue) 
+            where TEntity : IBlock , new() 
+            where TKind : Enum
+        {
+            if (records != null)
+            {
+                if (records.Length == map.GetLength())
+                {
+                    foreach (var kind in records[index].kinds)
+                    {
+                        if (!kind.Equals(noneValue))
+                        {
+                            // This will create a new entity
+                            var entity = Generic.Construct<IBlock, TKind, Vector2Int>(kind, map.ToVector(index));
+                            map.AddEntity(index, entity);
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"{typeof(TKind).Name} Records.Length is not equal to map.GetLength()!");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"{typeof(TKind).Name} Records is not initialized properly!");
+            }
+        }
     }
 }
