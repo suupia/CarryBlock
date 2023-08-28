@@ -1,18 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class WhiteLightTest : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] GameObject block;
+    [SerializeField] Slider whiteRatioSlider;
+    Material _material;
+    
     void Start()
     {
-        
+        _material = block.GetComponent<Renderer>().material;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
-        
+        // ShaderのNameとReferenceが異なることに注意
+        _material.SetFloat("_WhiteRatio", whiteRatioSlider.value);
     }
 }
