@@ -5,7 +5,6 @@ using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
-using Projects.CarrySystem.Block.Scripts;
 using UnityEngine;
 
 namespace Carry.CarrySystem.Block.Scripts
@@ -17,9 +16,10 @@ namespace Carry.CarrySystem.Block.Scripts
         public BasicBlock.Kind[] kinds = new BasicBlock.Kind[10];
     }
 
-    public class BasicBlock : AbstractBlock
+    public class BasicBlock : IBlock
     {
-        public override int MaxPlacedBlockCount { get; } = 2;
+        public Vector2Int GridPosition { get; set; }
+        public int MaxPlacedBlockCount { get; } = 2;
         public Kind KindValue { get; }
 
         public enum Kind
@@ -34,17 +34,17 @@ namespace Carry.CarrySystem.Block.Scripts
             GridPosition = gridPosition;
         }
 
-        public override bool CanPickUp()
+        public bool CanPickUp()
         {
             return true;  // basicが持ち上げられない状況はない
         }
 
-        public override void  PickUp(ICharacter character)
+        public void  PickUp(ICharacter character)
         {
             // 特になし
         }
 
-        public override bool CanPutDown(IList<IBlock> blocks)
+        public bool CanPutDown(IList<IBlock> blocks)
         {
             var diffList = blocks.Select(x => x.GetType() != this.GetType());
             Debug.Log($"forward different block count: {diffList.Count()}, list : {string.Join(",", diffList)}");
@@ -59,7 +59,7 @@ namespace Carry.CarrySystem.Block.Scripts
             return true;
         }
         
-        public override void PutDown(ICharacter character)
+        public void PutDown(ICharacter character)
         {
            // 特になし
         }

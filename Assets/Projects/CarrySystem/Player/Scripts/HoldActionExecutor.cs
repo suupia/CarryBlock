@@ -110,7 +110,7 @@ namespace Carry.CarrySystem.Player.Scripts
             // ここにブロックの見た目を変える処理を入れる
             blocks.ForEach(block =>
             {
-                block.Highlight();
+                // block.Highlight();
             });
         }
 

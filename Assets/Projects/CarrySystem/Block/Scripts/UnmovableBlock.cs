@@ -6,7 +6,6 @@ using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
-using Projects.CarrySystem.Block.Scripts;
 using UnityEngine;
 #nullable  enable
 
@@ -18,9 +17,10 @@ namespace Carry.CarrySystem.Block.Scripts
         public UnmovableBlock.Kind[] kinds =new UnmovableBlock.Kind[5];
     }
     
-    public class UnmovableBlock : AbstractBlock
+    public class UnmovableBlock : IBlock
     {
-        public override　int MaxPlacedBlockCount { get; } = 1;
+        public Vector2Int GridPosition { get; set; }
+        public　int MaxPlacedBlockCount { get; } = 1;
         public bool BeingCarried { get; set; } = false;
         public Kind KindValue { get; }
 
@@ -36,22 +36,22 @@ namespace Carry.CarrySystem.Block.Scripts
             GridPosition = gridPosition;
         }
         
-        public override bool CanPickUp()
+        public bool CanPickUp()
         {
             return false;  // 常に持ち上げられない
         }
 
-        public override void  PickUp(ICharacter character)
+        public void  PickUp(ICharacter character)
         {
             // 特になし
         }
 
-        public override bool CanPutDown(IList<IBlock> blocks)
+        public bool CanPutDown(IList<IBlock> blocks)
         {
             return false; // 常に置けない
         }
         
-        public override void PutDown(ICharacter character)
+        public void PutDown(ICharacter character)
         {
             // 特になし
         }
