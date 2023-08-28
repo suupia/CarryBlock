@@ -10,7 +10,7 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class MapBuilderMonoDelegate : IEntityGridMapBuilder
     {
-                public EntityGridMap BuildEntityGridMap(EntityGridMapData gridMapData)
+        public EntityGridMap BuildEntityGridMap(EntityGridMapData gridMapData)
         {
             var map = new EntityGridMap(gridMapData.width, gridMapData.height);
             for (int i = 0; i < map.GetLength(); i++)

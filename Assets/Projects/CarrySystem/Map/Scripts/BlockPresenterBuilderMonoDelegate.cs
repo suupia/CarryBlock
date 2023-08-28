@@ -12,7 +12,7 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class BlockPresenterBuilderMonoDelegate : IBlockPresenterBuilder
     {
-                [Inject] NetworkRunner _runner;
+        [Inject] NetworkRunner _runner;
         IEnumerable<BlockPresenterNet> _tilePresenters =  new List<BlockPresenterNet>();
         
         [Inject]
