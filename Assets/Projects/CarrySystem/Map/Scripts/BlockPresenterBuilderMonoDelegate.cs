@@ -13,7 +13,7 @@ namespace Carry.CarrySystem.Map.Scripts
     public class BlockPresenterBuilderMonoDelegate : IBlockPresenterBuilder
     {
         [Inject] NetworkRunner _runner;
-        IEnumerable<BlockPresenterNet> _tilePresenters =  new List<BlockPresenterNet>();
+        IEnumerable<BlockPresenterNet> _blockPresenters =  new List<BlockPresenterNet>();
         
         [Inject]
         public BlockPresenterBuilderMonoDelegate()
@@ -22,8 +22,8 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public void Build(EntityGridMap map)
         {
-            var tilePresenterSpawner = new BlockPresenterSpawner(_runner);
-            var tilePresenters = new List<BlockPresenterNet>();
+            var blockPresenterSpawner = new BlockPresenterSpawner(_runner);
+            var blockPresenterNets = new List<BlockPresenterNet>();
 
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
@@ -33,14 +33,15 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 var girdPos = map.ToVector(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
-                var tilePresenter = tilePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
-                tilePresenters.Add(tilePresenter);
+                var blockPresenterNet = blockPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                // var blockControllers = tilePresenter
+                blockPresenterNets.Add(blockPresenterNet);
             }
             
             // TilePresenterをドメインのEntityGridMapに紐づける
-            AttachTilePresenter(tilePresenters, map);
+            AttachTilePresenter(blockPresenterNets, map);
 
-            _tilePresenters = tilePresenters;
+            _blockPresenters = blockPresenterNets;
         }
         
         void DestroyTilePresenter()
@@ -48,31 +49,31 @@ namespace Carry.CarrySystem.Map.Scripts
             // マップの大きさが変わっても対応できるようにDestroyが必要
             // ToDo: マップの大きさを変えてテストをする 
             
-            foreach (var tilePresenter in _tilePresenters)
+            foreach (var blockPresenterNet in _blockPresenters)
             {
-                _runner.Despawn(tilePresenter.Object);
+                _runner.Despawn(blockPresenterNet.Object);
             }
-            _tilePresenters = new List<BlockPresenterNet>();
+            _blockPresenters = new List<BlockPresenterNet>();
         }
         
-         void AttachTilePresenter(IReadOnlyList<BlockPresenterNet> tilePresenters , EntityGridMap map)
+         void AttachTilePresenter(IReadOnlyList<BlockPresenterNet> blockPresenterNets , EntityGridMap map)
         {
-            for (int i = 0; i < tilePresenters.Count(); i++)
+            for (int i = 0; i < blockPresenterNets.Count(); i++)
             {
-                var tilePresenter = tilePresenters.ElementAt(i);
+                var blockPresenterNet = blockPresenterNets.ElementAt(i);
 
                 // RegisterTilePresenter()の前なのでSetEntityActiveData()を実行する必要がある
                 // Presenterの初期化処理みたいなもの
                 var existGround = map.GetSingleEntity<Ground>(i) != null;
-                var existRock = map.GetSingleEntity<UnmovableBlock>(i) != null;
+                var existUnmovableBlock = map.GetSingleEntity<UnmovableBlock>(i) != null;
                 var existBasicBlock = map.GetSingleEntity<BasicBlock>(i) != null;
                 
-                if(existRock) Debug.Log($"existGround: {existGround}, existRock: {existRock}, existBasicBlock: {existBasicBlock}");
+                // Debug.Log($"existGround: {existGround}, existUnmovableBlock: {existUnmovableBlock}, existBasicBlock: {existBasicBlock}");
 
-                tilePresenter.SetInitAllEntityActiveData(map.GetAllEntityList(i)  );
+                blockPresenterNet.SetInitAllEntityActiveData(map.GetAllEntityList(i)  );
 
                 // mapにTilePresenterを登録
-                map.RegisterTilePresenter(tilePresenter, i);
+                map.RegisterTilePresenter(blockPresenterNet, i);
                 
                 
             }
