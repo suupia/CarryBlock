@@ -1,6 +1,8 @@
-﻿namespace Projects.CarrySystem.Block
+﻿using Fusion;
+
+namespace Projects.CarrySystem.Block
 {
-    public class BlockMaterialSetter
+    public class BlockMaterialSetter : NetworkBehaviour
     {
         
     }
