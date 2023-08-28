@@ -26,7 +26,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             // Map
             builder.Register<MapBuilderDomain>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
-            builder.Register<BlockPresenterBuilder>(Lifetime.Scoped);
+            builder.Register<BlockPresenterBuilderDomain>(Lifetime.Scoped).As<IBlockPresenterBuilder>();
             builder.Register<WallPresenterBuilder>(Lifetime.Scoped);
             builder.Register<GroundPresenterBuilder>(Lifetime.Scoped);
             builder.Register<AllPresenterBuilder>(Lifetime.Scoped).As<IPresenterBuilder>();

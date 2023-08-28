@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Carry.CarrySystem.Map.Interfaces;
+using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
@@ -7,8 +8,9 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         List< IPresenterBuilder>presenterBuilders = new List<IPresenterBuilder>();
 
+        [Inject]
         public  AllPresenterBuilder(         
-            BlockPresenterBuilder blockPresenterBuilder,
+            IBlockPresenterBuilder blockPresenterBuilder,
             WallPresenterBuilder wallPresenterBuilder,
             GroundPresenterBuilder groundPresenterBuilder
             )

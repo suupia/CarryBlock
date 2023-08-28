@@ -10,13 +10,13 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class BlockPresenterBuilder : IPresenterBuilder
+    public class BlockPresenterBuilderDomain : IBlockPresenterBuilder
     {
         [Inject] NetworkRunner _runner;
         IEnumerable<BlockPresenterNet> _tilePresenters =  new List<BlockPresenterNet>();
         
         [Inject]
-        public BlockPresenterBuilder()
+        public BlockPresenterBuilderDomain()
         {
         }
         
