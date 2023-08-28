@@ -2,19 +2,20 @@
 using Fusion;
 using Projects.CarrySystem.Block.Info;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Projects.CarrySystem.Block.Scripts
 {
     public class BlockControllerNet : NetworkBehaviour
     {
-        [SerializeField] GameObject blockObj;  // ランタイムで生成しないので、SerializeFieldで受け取れる
+        [FormerlySerializedAs("blockObj")] [SerializeField] GameObject blockViewObj;  // ランタイムで生成しないので、SerializeFieldで受け取れる
 
         [SerializeField] BlockInfo _info;
         IBlock _block;
         
         public override void Spawned()
         {
-            _info.Init(blockObj, this);
+            _info.Init(blockViewObj, this);
         }
     }
 }

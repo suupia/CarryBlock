@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 5965080741896850020}
   - component: {fileID: -1882458635062836858}
   - component: {fileID: 4593946109718481354}
+  - component: {fileID: 419800208144842612}
   - component: {fileID: 2406705082275544916}
   m_Layer: 0
   m_Name: BasicBlock
@@ -105,6 +106,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4593946109718481354}
+  - {fileID: 419800208144842612}
   - {fileID: 2406705082275544916}
   SimulationBehaviours: []
 --- !u!114 &4593946109718481354
@@ -135,6 +137,20 @@ MonoBehaviour:
     RotTeleportRadians: 1.5
   UseLegacySharedModeInterpolation: 0
   TargetInterpolationDelay: 0.03
+--- !u!114 &419800208144842612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756840550022308548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c2f93b52154d9e91d9de562d158c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  blockViewObj: {fileID: 2478132344785946946}
 --- !u!114 &2406705082275544916
 MonoBehaviour:
   m_ObjectHideFlags: 0
