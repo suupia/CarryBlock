@@ -2,7 +2,7 @@
 
 namespace Carry.CarrySystem.Block.Interfaces
 {
-    public interface IBlockMonoDelegate
+    public interface IBlockMonoDelegate : IBlock
     {
         BlockInfo Info { get; }
         void SetInfo(BlockInfo info);

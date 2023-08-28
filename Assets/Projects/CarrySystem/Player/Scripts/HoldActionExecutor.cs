@@ -11,6 +11,8 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Carry.CarrySystem.Player.Info;
+using Projects.CarrySystem.Block;
+using Projects.CarrySystem.Block.Scripts;
 using UniRx;
 
 #nullable enable
@@ -110,7 +112,10 @@ namespace Carry.CarrySystem.Player.Scripts
             // ここにブロックの見た目を変える処理を入れる
             blocks.ForEach(block =>
             {
-                // block.Highlight();
+                // ToDo: IBlockMonoDelegateを取ってきてハイライトの処理をする
+                // var blockObj = blockMonoDelegate.info.blockObj;
+                // var materialSetter = blockObj.GetComponetInChildren<BlockMaterialSetter>();
+                // materialSetter.Highlight();
             });
         }
 
