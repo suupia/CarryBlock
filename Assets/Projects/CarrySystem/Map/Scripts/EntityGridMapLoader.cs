@@ -74,12 +74,6 @@ namespace Carry.CarrySystem.Map.Scripts
             var map = new EntityGridMap(gridMapData.width, gridMapData.height);
             for (int i = 0; i < map.GetLength(); i++)
             {
-                // ProcessRecord(gridMapData.groundRecords, map, i, Ground.Kind.None, (kind, vector) => new Ground(kind, vector));
-                // ProcessRecord(gridMapData.basicBlockRecords, map, i, BasicBlock.Kind.None, (kind, vector) => new BasicBlock(kind, vector));
-                // ProcessRecord(gridMapData.rockRecords, map, i, UnmovableBlock.Kind.None, (kind, vector) => new UnmovableBlock(kind, vector));
-                // ProcessRecord(gridMapData.heavyBlockRecords, map, i, HeavyBlock.Kind.None, (kind, vector) => new HeavyBlock(kind, vector));
-                // ProcessRecord(gridMapData.fragileBlockRecords, map, i, FragileBlock.Kind.None, (kind, vector) => new FragileBlock(kind, vector));
-                //
                 AddEntityFromRecord<Ground, GroundRecord, Ground.Kind>(gridMapData.groundRecords[i], () => gridMapData.groundRecords.Length ,(record) => record.kinds, Ground.Kind.None, map, i );
                 AddEntityFromRecord<BasicBlock, BasicBlockRecord, BasicBlock.Kind>(gridMapData.basicBlockRecords[i], () =>gridMapData.basicBlockRecords.Length, (record) => record.kinds, BasicBlock.Kind.None, map, i );
                 AddEntityFromRecord<UnmovableBlock, RockRecord, UnmovableBlock.Kind>(gridMapData.rockRecords[i], () => gridMapData.rockRecords.Length,(record) => record.kinds, UnmovableBlock.Kind.None, map, i );
@@ -89,110 +83,6 @@ namespace Carry.CarrySystem.Map.Scripts
             }
 
             return map;
-
-            // for (int i = 0; i < map.GetLength(); i++)
-            // {
-            //     // Ground
-            //     if (gridMapData.groundRecords != null)
-            //     {
-            //         foreach (var kind in gridMapData.groundRecords[i].kinds)
-            //         {
-            //             if (kind != Ground.Kind.None)
-            //             {
-            //                 map.AddEntity(i, new Ground(kind, map.ToVector(i)));
-            //
-            //             }
-            //         }
-            //     }
-            //     else
-            //     {
-            //         Debug.LogWarning("groundRecords is not initialized properly!");
-            //     }
-            //     
-            //     // BasicBlock
-            //     if (gridMapData.basicBlockRecords != null)
-            //     {
-            //         foreach (var kind in gridMapData.basicBlockRecords[i].kinds)
-            //         {
-            //             if (kind != BasicBlock.Kind.None)
-            //             {
-            //                 map.AddEntity(i, new BasicBlock(kind, map.ToVector(i)));
-            //
-            //             }
-            //         }
-            //     }
-            //     else
-            //     {
-            //         Debug.LogWarning("basicBlockRecords is not initialized properly!");
-            //     }
-            //
-            //     // UnmovableBlock
-            //     if (gridMapData.rockRecords != null)
-            //     {
-            //         foreach (var kind in gridMapData.rockRecords[i].kinds)
-            //         {
-            //             if (kind != UnmovableBlock.Kind.None)
-            //             {
-            //                 map.AddEntity(i, new UnmovableBlock(kind, map.ToVector(i)));
-            //
-            //             }
-            //         }
-            //     }
-            //     else
-            //     {
-            //         Debug.LogWarning("rockRecords is not initialized properly!");
-            //     }
-            //     
-            //     // HeavyBlock
-            //     if (gridMapData.heavyBlockRecords != null)
-            //     {
-            //         if (gridMapData.heavyBlockRecords.Length == map.GetLength())
-            //         {
-            //             foreach (var kind in gridMapData.heavyBlockRecords[i].kinds)
-            //             {
-            //                 if (kind != HeavyBlock.Kind.None)
-            //                 {
-            //                     map.AddEntity(i, new HeavyBlock(kind, map.ToVector(i)));
-            //
-            //                 }
-            //             }
-            //         }
-            //         else
-            //         {
-            //             Debug.LogError("heavyBlockRecords.Length is not equal to map.GetLength()!");
-            //         }
-            //     }
-            //     else
-            //     {
-            //         Debug.LogWarning("heavyBlockRecords is not initialized properly!");
-            //     }
-            //     
-            //     // FragileBlock
-            //     if (gridMapData.fragileBlockRecords != null)
-            //     {
-            //         if (gridMapData.fragileBlockRecords.Length == map.GetLength())
-            //         {
-            //             foreach (var kind in gridMapData.fragileBlockRecords[i].kinds)
-            //             {
-            //                 if (kind != FragileBlock.Kind.None)
-            //                 {
-            //                     map.AddEntity(i, new FragileBlock(kind, map.ToVector(i)));
-            //
-            //                 }
-            //             }
-            //         }
-            //         else
-            //         {
-            //             Debug.LogError("fragileBlockRecords.Length is not equal to map.GetLength()!");
-            //         }
-            //     }
-            //     else
-            //     {
-            //         Debug.LogWarning("fragileBlockRecords is not initialized properly!");
-            //     }
-            // }
-
-            // return map;
         }
         
         void AddEntityFromRecord<TEntity,TRecord,TKind>(TRecord record,Func<int> getRecordLength, Func<TRecord,TKind[]> funcKins,TKind noneValue, EntityGridMap map, int index) 
