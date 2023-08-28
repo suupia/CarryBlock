@@ -1,83 +1,16 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
-using Carry.CarrySystem.Spawners;
 using Projects.Utilty;
 using UnityEngine;
 
-#nullable enable
-
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EntityGridMapLoader
+    public class MapBuilderDomain : IEntityGridMapBuilder
     {
-        readonly IEntityGridMapBuilder _entityGridMapBuilder;
-        
-        public EntityGridMapLoader(IEntityGridMapBuilder entityGridMapBuilder)
-        {
-            _entityGridMapBuilder = entityGridMapBuilder;
-        }
-        
-        public EntityGridMap LoadEntityGridMap(MapKey key, int mapDataIndex)
-        {
-            var gridMapData = Load(key, mapDataIndex);
-            return _entityGridMapBuilder.BuildEntityGridMap(gridMapData);
-        }
-
-        public EntityGridMap LoadDefaultEntityGridMap()
-        {
-            var defaultGridMapData = LoadDefault();
-            return _entityGridMapBuilder.BuildEntityGridMap(defaultGridMapData);
-        }
-
-        EntityGridMapData LoadDefault()
-        {
-            EntityGridMapData entityGridMapData;
-
-            string filePath = EntityGridMapFileUtility.GetDefaultFilePath(); // このパスには白紙のマップデータを必ず置いておく
-
-            using (StreamReader streamReader = new StreamReader(filePath))
-            {
-                string data = streamReader.ReadToEnd();
-                streamReader.Close();
-                entityGridMapData = JsonUtility.FromJson<EntityGridMapData>(data);
-            }
-            
-            Debug.Log($"Complete Load DefaultMapData\nfilePath:{filePath}");
-
-            return entityGridMapData;
-        }
-
-        EntityGridMapData Load(MapKey key, int mapDataIndex)
-        {
-            EntityGridMapData entityGridMapData;
-            string filePath = EntityGridMapFileUtility.GetFilePath(key, mapDataIndex);
-
-            if (!EntityGridMapFileUtility.IsExitFile(key, mapDataIndex))
-            {
-                Debug.LogWarning($"パス:{filePath}にjsonファイルが存在しないためデフォルトのデータを読み込みます");
-                filePath = EntityGridMapFileUtility.GetDefaultFilePath(); // このパスには白紙のマップデータを必ず置いておく
-            }
-
-            using (StreamReader streamReader = new StreamReader(filePath))
-            {
-                string data = streamReader.ReadToEnd();
-                streamReader.Close();
-                entityGridMapData = JsonUtility.FromJson<EntityGridMapData>(data);
-            }
-
-            Debug.Log($"Complete Load MapData:{key}_{mapDataIndex}\nfilePath:{filePath}");
-
-            return entityGridMapData;
-        }
-
-        EntityGridMap BuildEntityGridMap(EntityGridMapData gridMapData)
+        public EntityGridMap BuildEntityGridMap(EntityGridMapData gridMapData)
         {
             var map = new EntityGridMap(gridMapData.width, gridMapData.height);
             for (int i = 0; i < map.GetLength(); i++)
