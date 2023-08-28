@@ -19,7 +19,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         readonly LoadedFilePresenter _loadedFilePresenter;
         readonly EntityGridMapLoader _gridMapLoader;
-        readonly AllPresenterBuilder _allPresenterBuilder;
+        readonly IPresenterBuilder _allPresenterBuilder;
         EntityGridMap _map;
         MapKey _mapKey;
         int _index;
@@ -30,7 +30,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public EditMapUpdater(
             LoadedFilePresenter loadedFilePresenter,
             EntityGridMapLoader entityGridMapLoader,
-            AllPresenterBuilder allPresenterBuilder
+            IPresenterBuilder allPresenterBuilder
             )
         {
             _loadedFilePresenter = loadedFilePresenter;

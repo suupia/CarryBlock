@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly FloorTimerNet _floorTimerNet;
         readonly EntityGridMapLoader _gridMapLoader;
         readonly MapKeyDataNet _mapKeyDataNet;
-        readonly AllPresenterBuilder _allPresenterBuilder;
+        readonly IPresenterBuilder _allPresenterBuilder;
         int _currentIndex;
         EntityGridMap? _currentMap;
         
@@ -32,7 +32,7 @@ namespace Carry.CarrySystem.Map.Scripts
             CartBuilder cartBuilder,
             FloorTimerNet floorTimerNet,
             MapKeyDataNet mapKeyDataNet,
-            AllPresenterBuilder allPresenterBuilder)
+            IPresenterBuilder allPresenterBuilder)
         {
             _gridMapLoader = gridMapGridMapLoader;
             _cartBuilder = cartBuilder;

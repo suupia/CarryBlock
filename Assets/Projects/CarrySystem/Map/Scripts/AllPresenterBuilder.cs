@@ -3,7 +3,7 @@ using Carry.CarrySystem.Map.Interfaces;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class AllPresenterBuilder
+    public class AllPresenterBuilder : IPresenterBuilder
     {
         List< IPresenterBuilder>presenterBuilders = new List<IPresenterBuilder>();
 

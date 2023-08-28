@@ -49,7 +49,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             builder.Register<BlockPresenterBuilder>(Lifetime.Scoped);
             builder.Register<WallPresenterBuilder>(Lifetime.Scoped);
             builder.Register<GroundPresenterBuilder>(Lifetime.Scoped);
-            builder.Register<AllPresenterBuilder>(Lifetime.Scoped);
+            builder.Register<AllPresenterBuilder>(Lifetime.Scoped).As<IPresenterBuilder>();
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
 
             builder.RegisterComponentInHierarchy<MapKeyDataNet>();
