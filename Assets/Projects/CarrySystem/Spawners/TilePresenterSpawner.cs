@@ -11,16 +11,16 @@ namespace Carry.CarrySystem.Spawners
     public class TilePresenterSpawner
     {
         readonly NetworkRunner _runner;
-        readonly IPrefabLoader<TilePresenterNet> _tilePresenterPrefabSpawner;
+        readonly IPrefabLoader<BlockPresenterNet> _tilePresenterPrefabSpawner;
 
         public TilePresenterSpawner(NetworkRunner runner)
         {
             _runner = runner;
             _tilePresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<TilePresenterNet>("Prefabs/Map/TilePresenter");
+                new PrefabLoaderFromAddressable<BlockPresenterNet>("Prefabs/Map/TilePresenter");
         }
 
-        public TilePresenterNet SpawnPrefab(Vector3 position, Quaternion rotation)
+        public BlockPresenterNet SpawnPrefab(Vector3 position, Quaternion rotation)
         {
             var tilePresenter = _tilePresenterPrefabSpawner.Load();
             return _runner.Spawn(tilePresenter, position, rotation, PlayerRef.None);

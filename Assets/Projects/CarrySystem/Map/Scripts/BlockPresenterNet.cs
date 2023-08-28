@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -15,7 +16,7 @@ using UnityEngine.Serialization;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class TilePresenterNet : NetworkBehaviour, ITilePresenter
+    public class BlockPresenterNet : NetworkBehaviour, IBlockPresenter
     {
         public struct PresentData : INetworkStruct
         {
@@ -99,9 +100,9 @@ namespace Carry.CarrySystem.Map.Scripts
             PresentDataRef.FragileBlockCount = allEntityList.OfType<FragileBlock>().Count();
         }
 
-        public void SetEntityActiveData(IEntity entity, int count)
+        public void SetBlockActiveData(IBlock block, int count)
         {
-            switch (entity)
+            switch (block)
             {
                 case BasicBlock _:
                     PresentDataRef.BasicBlockCount = count;

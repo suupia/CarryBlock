@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Entity.Interfaces;
 using System.Linq;
+using Carry.CarrySystem.Block.Interfaces;
 using UnityEngine;
 using  Carry.CarrySystem.Map.Interfaces;
 using Fusion.Collections;
@@ -15,12 +16,12 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         public int GetLength() => Width * Height;
         readonly List<IEntity>[] _entityMaps;
-        ITilePresenter?[] _tilePresenter;
+        IBlockPresenter?[] _blockPresenter;
         
         public EntityGridMap(int width, int height) : base (width, height)
         {
             _entityMaps = new List<IEntity>[GetLength()];
-            _tilePresenter = new ITilePresenter?[GetLength()];
+            _blockPresenter = new IBlockPresenter?[GetLength()];
             for (int i = 0; i < GetLength(); i++)
             {
                 _entityMaps[i] = new List<IEntity>();
@@ -47,9 +48,9 @@ namespace Carry.CarrySystem.Map.Scripts
             // ToDo :　後で実装する
         }
         
-        public void RegisterTilePresenter(ITilePresenter tilePresenter, int index)
+        public void RegisterTilePresenter(IBlockPresenter blockPresenter, int index)
         {
-            _tilePresenter[index] = tilePresenter;
+            _blockPresenter[index] = blockPresenter;
         }
 
         //Getter
@@ -176,7 +177,7 @@ namespace Carry.CarrySystem.Map.Scripts
             // presenter
             var count =_entityMaps[index].OfType<TEntity>().Count();
             // Debug.Log($"AddEntity({index}) count:{count}");
-            _tilePresenter[index]?.SetEntityActiveData(entity, count);
+            if(entity is IBlock block) _blockPresenter[index]?.SetBlockActiveData(block, count);
         }
 
         
@@ -197,7 +198,7 @@ namespace Carry.CarrySystem.Map.Scripts
             // presenter
             var count = _entityMaps[index].OfType<TEntity>().Count();
             // Debug.Log($"RemoveEntity({x},{y}) count:{count}");
-            _tilePresenter[index]?.SetEntityActiveData(entity, count);
+            if(entity is IBlock block) _blockPresenter[index]?.SetBlockActiveData(block, count);
         }
 
         public void RemoveEntity<TEntity>(Vector2Int vector, TEntity entity) where TEntity : IEntity

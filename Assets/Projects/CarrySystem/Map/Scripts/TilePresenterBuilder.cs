@@ -13,7 +13,7 @@ namespace Carry.CarrySystem.Map.Scripts
     public class TilePresenterBuilder : IPresenterBuilder
     {
         [Inject] NetworkRunner _runner;
-        IEnumerable<TilePresenterNet> _tilePresenters =  new List<TilePresenterNet>();
+        IEnumerable<BlockPresenterNet> _tilePresenters =  new List<BlockPresenterNet>();
         
         [Inject]
         public TilePresenterBuilder()
@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public void Build(EntityGridMap map)
         {
             var tilePresenterSpawner = new TilePresenterSpawner(_runner);
-            var tilePresenters = new List<TilePresenterNet>();
+            var tilePresenters = new List<BlockPresenterNet>();
 
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
@@ -52,10 +52,10 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 _runner.Despawn(tilePresenter.Object);
             }
-            _tilePresenters = new List<TilePresenterNet>();
+            _tilePresenters = new List<BlockPresenterNet>();
         }
         
-         void AttachTilePresenter(IReadOnlyList<TilePresenterNet> tilePresenters , EntityGridMap map)
+         void AttachTilePresenter(IReadOnlyList<BlockPresenterNet> tilePresenters , EntityGridMap map)
         {
             for (int i = 0; i < tilePresenters.Count(); i++)
             {
