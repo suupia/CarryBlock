@@ -39,6 +39,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             builder.Register<MainCarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
             builder.Register<CarryPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
+            builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
 
 
             // Serverのドメインスクリプト
@@ -47,6 +48,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
             builder.Register<WallPresenterBuilder>(Lifetime.Scoped);
             builder.Register<GroundPresenterBuilder>(Lifetime.Scoped);
+            builder.Register<AllPresenterBuilder>(Lifetime.Scoped);
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
 
             builder.RegisterComponentInHierarchy<MapKeyDataNet>();

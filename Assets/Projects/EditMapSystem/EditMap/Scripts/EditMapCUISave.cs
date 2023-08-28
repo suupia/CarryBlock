@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
@@ -23,6 +23,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         IMapUpdater _editMapUpdater;
         EntityGridMapSaver _entityGridMapSaver;
         CUIHandleNumber _handleNumber;
+        AutoSaveManager _autoSaveManager;
         CUIInputState _inputState;
 
         readonly int _maxDigit = 10; // インデックスの最大の桁数
@@ -50,11 +51,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public void Construct(
             IMapUpdater editMapUpdater,
             EntityGridMapSaver entityGridMapSaver,
-            CUIHandleNumber handleNumber)
+            CUIHandleNumber handleNumber,
+            AutoSaveManager autoSaveManager)
         {
             _editMapUpdater = editMapUpdater;
             _entityGridMapSaver = entityGridMapSaver;
             _handleNumber = handleNumber;
+            _autoSaveManager = autoSaveManager;
             _key = FindObjectOfType<MapKeyContainer>().MapKey; //　ここで取得しておく
         }
         
@@ -77,6 +80,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             CloseSaveUI();
             Observable.Interval(TimeSpan.FromSeconds(_autoSaveInterval))
+                .Where(_ => _autoSaveManager.CanAutoSave)
                 .Subscribe(_ => AutoSave())
                 .AddTo(this);
         }
@@ -153,6 +157,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             messageText.text = "Saved in.";
             _entityGridMapSaver.SaveMap(_editMapUpdater.GetMap(), _key, _index);
+            _autoSaveManager.CanAutoSave = true;
             await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
             _inputState = CUIInputState.End;
         }
@@ -181,6 +186,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             messageText.text = "Overwrite saved.";
             _entityGridMapSaver.SaveMap(_editMapUpdater.GetMap(), _key, _index);
+            _autoSaveManager.CanAutoSave = true;
             await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));
             _inputState = CUIInputState.End;
         }

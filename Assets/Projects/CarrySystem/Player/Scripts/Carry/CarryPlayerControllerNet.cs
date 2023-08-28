@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.CG.Tsukinowa;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -17,13 +18,20 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class CarryPlayerControllerNet : AbstractNetworkPlayerController
     {
+        public PlayerInfo Info => info;
+        
         IMapUpdater? _mapUpdater;
-        public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater)
+        PlayerNearCartHandlerNet _playerNearCartHandler = null!;
+        
+        public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater , PlayerNearCartHandlerNet playerNearCartHandler)
         {
             Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
             this.Character = character;
             ColorType = colorType;
             _mapUpdater = mapUpdater;
+            _playerNearCartHandler = playerNearCartHandler;
+            
+            _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
         }
 
         public override void Spawned()
@@ -54,14 +62,8 @@ namespace Carry.CarrySystem.Player.Scripts
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
             {
                 // AidKit
-                Collider[] overlapResults = new Collider[2];
-                var aidKitRadius = 1f;
-                var layerMask = LayerMask.GetMask("Cart"); // 他のブロックにぶつかるのを防ぐ
-                var numFound = Physics.OverlapSphereNonAlloc( info.playerObj.transform.position, aidKitRadius,overlapResults, layerMask);
-                if (numFound != 0)
-                {
-                    Debug.Log($"Cart is near");
-                }
+                var isNear =  _playerNearCartHandler.IsNearCart(info.playerObj);
+                Debug.Log($"isNear = {isNear}");
             }
 
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))

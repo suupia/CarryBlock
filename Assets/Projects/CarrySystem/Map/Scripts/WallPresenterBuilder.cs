@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
@@ -10,7 +11,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class WallPresenterBuilder
+    public class WallPresenterBuilder  : IPresenterBuilder
     {
         [Inject] NetworkRunner _runner;
         IEnumerable<WallPresenterNet> _tilePresenters = new List<WallPresenterNet>();
@@ -38,10 +39,12 @@ namespace Carry.CarrySystem.Map.Scripts
                 var gridPos = expandedMap.ToVector(i);
                 var convertedGridPos = new Vector2Int(gridPos.x - _wallHorizontalNum, gridPos.y - _wallVerticalNum);
                 if (map.IsInDataRangeArea(convertedGridPos)) continue;
-                if (IsCartPath(map, convertedGridPos)) continue;
+                if (IsBlockNotPlacedOnRightEdge(map, convertedGridPos)) continue;
                 var worldPos = GridConverter.GridPositionToWorldPosition(convertedGridPos);
                 var wallPresenter = wallPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 wallPresenters.Add(wallPresenter);
+                
+
             }
             
             _tilePresenters = wallPresenters;
@@ -60,10 +63,15 @@ namespace Carry.CarrySystem.Map.Scripts
             _tilePresenters = new List<WallPresenterNet>();
         }
 
-        bool IsCartPath(IGridMap map, Vector2 pos)
+        bool IsBlockNotPlacedOnRightEdge(EntityGridMap map, Vector2Int gridPos)
         {
-            var middle = new Vector2Int(1, map.Height / 2);
-            return pos.y == middle.y - 1 || pos.y == middle.y || pos.y == middle.y + 1;
+            if(gridPos.y < 0 || gridPos.y > map.Height - 1) return false;
+            if (gridPos.x >= map.Width)
+            {
+                if (map.GetSingleEntityList<IBlock>(new Vector2Int(gridPos.x, map.Width - 1)).Count == 0) return true;
+            }
+
+            return false;
         }
     }
 }

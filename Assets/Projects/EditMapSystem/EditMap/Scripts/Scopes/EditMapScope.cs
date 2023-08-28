@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -26,6 +26,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             // Map
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
+            builder.Register<WallPresenterBuilder>(Lifetime.Scoped);
+            builder.Register<GroundPresenterBuilder>(Lifetime.Scoped);
+            builder.Register<AllPresenterBuilder>(Lifetime.Scoped);
+
 
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
             builder.Register<BlockPlacer>(Lifetime.Scoped);
@@ -33,6 +37,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             // Input
             builder.Register<CUIHandleNumber>(Lifetime.Scoped);
+            builder.Register<AutoSaveManager>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<EditMapInput>();
             builder.RegisterComponentInHierarchy<EditMapCUISave>();
             builder.RegisterComponentInHierarchy<EditMapCUILoad>();
