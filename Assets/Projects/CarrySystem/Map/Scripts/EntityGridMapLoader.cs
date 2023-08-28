@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Spawners;
@@ -173,5 +175,34 @@ namespace Carry.CarrySystem.Map.Scripts
 
             return map;
         }
+        
+        // void ProcessRecord<TEntity,TKind>(TKind[] records, EntityGridMap map, int index, TKind noneValue) 
+        //     where TEntity : IBlock , new() 
+        //     where TKind : Enum
+        // {
+        //     if (records != null)
+        //     {
+        //         if (records.Length == map.GetLength())
+        //         {
+        //             foreach (var kind in records[index].Cast<TKind>())
+        //             {
+        //                 if (!kind.Equals(noneValue))
+        //                 {
+        //                     // This will create a new entity
+        //                     var entity = new TEntity(kind, map.ToVector(index));
+        //                     map.AddEntity(index, entity);
+        //                 }
+        //             }
+        //         }
+        //         else
+        //         {
+        //             Debug.LogError($"{typeof(TKind).Name}Records.Length is not equal to map.GetLength()!");
+        //         }
+        //     }
+        //     else
+        //     {
+        //         Debug.LogWarning($"{typeof(TKind).Name}Records is not initialized properly!");
+        //     }
+        // }
     }
 }
