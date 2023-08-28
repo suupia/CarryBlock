@@ -15,7 +15,7 @@ using VContainer.Unity;
 
 namespace Carry.CarrySystem.CarryScene.Scripts
 {
-    public sealed class CarryLifetimeScope : LifetimeScope
+    public sealed class CarryScope : LifetimeScope
     {
         protected override void Configure(IContainerBuilder builder)
         {
