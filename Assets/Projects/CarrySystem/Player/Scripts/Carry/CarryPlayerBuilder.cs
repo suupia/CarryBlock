@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Map.Interfaces;
+﻿using Carry.CarrySystem.Cart.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Projects.Utility.Scripts;
@@ -25,6 +26,8 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly ICarryPlayerFactory _carryPlayerFactory;
         // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などが想定される
         readonly PlayerCharacterHolder _playerCharacterHolder;
+        readonly PlayerNearCartHandlerNet _playerNearCartHandler;
+        readonly CarryPlayerContainer _carryPlayerContainer;
 
         [Inject]
         public CarryPlayerBuilder(
@@ -32,7 +35,9 @@ namespace Carry.CarrySystem.Player.Scripts
             IMapUpdater  mapUpdater ,
             IPrefabLoader<CarryPlayerControllerNet> carryPlayerControllerLoader,
             ICarryPlayerFactory carryPlayerFactory,
-            PlayerCharacterHolder playerCharacterHolder
+            PlayerCharacterHolder playerCharacterHolder,
+            PlayerNearCartHandlerNet playerNearCartHandler,
+            CarryPlayerContainer carryPlayerContainer
             )
         {
             _runner = runner;
@@ -40,6 +45,8 @@ namespace Carry.CarrySystem.Player.Scripts
             _carryPlayerControllerLoader = carryPlayerControllerLoader;
             _carryPlayerFactory = carryPlayerFactory;
             _playerCharacterHolder  = playerCharacterHolder;
+            _playerNearCartHandler = playerNearCartHandler;
+            _carryPlayerContainer = carryPlayerContainer;
         }
 
         public AbstractNetworkPlayerController Build(Vector3 position, Quaternion rotation, PlayerRef playerRef)
@@ -56,17 +63,16 @@ namespace Carry.CarrySystem.Player.Scripts
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
-                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType,_mapUpdater);
+                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType,_mapUpdater, _playerNearCartHandler);
                     networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
-
                 });
+            var info = playerControllerObj.Info;
+            playerControllerObj.GetComponentInChildren<PassRangeNet>().Init(info,LayerMask.GetMask("Player"));
+
             
-            // 各MonoBehaviourにドメインを設定
-            // playerControllerObj.Init(character);
-            // var holdPresenter = playerControllerObj.GetComponent<HoldPresenter_Net>();
-            // holdPresenter.Init(character);
-            
+            _carryPlayerContainer.AddPlayer(playerRef, playerControllerObj);
+
             // Factoryの差し替えが簡単にできるので、_resolver.InjectGameObjectを使う必要はない
             // BuilderとPlayerControllerが蜜結合なのは問題ないはず
 

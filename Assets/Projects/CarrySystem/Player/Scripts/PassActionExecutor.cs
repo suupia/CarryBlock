@@ -21,6 +21,8 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PlayerBlockContainer _blockContainer;
         readonly IPlayerBlockPresenter _playerPresenterContainer;
 
+        PassRangeNet? _passRangeNet;
+
         public PassActionExecutor(
             PlayerBlockContainer blockContainer,
             IPlayerBlockPresenter playerPresenterContainer,
@@ -46,9 +48,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void PassAction()
         {
-            var targets = Search();
-            Debug.Log($"targets {string.Join(",", targets.ToList())}");
-            if (DetermineTarget(targets) is {} target)
+            if (_passRangeNet == null) _passRangeNet = _info.playerController.GetComponentInChildren<PassRangeNet>();
+            if (_passRangeNet.DetectedTarget() is {} target)
             {
                 var targetPlayerController  = target.GetComponent<CarryPlayerControllerNet>();
                 if (targetPlayerController == null)
@@ -57,37 +58,21 @@ namespace Carry.CarrySystem.Player.Scripts
                     return;
                 }
                 
-                Debug.Log($"targetPlayerController: {targetPlayerController.name}, {targetPlayerController.Runner.LocalPlayer}に対してPassを試みます");
+                Debug.Log($"{_info.playerController.Object.InputAuthority}から{targetPlayerController.Object.InputAuthority}に対してPassを試みます");
                 
-                
-                Debug.Log($"!_blockContainer.IsHoldingBlock: {_blockContainer.IsHoldingBlock}");
-                Debug.Log($"!targetPlayerController.Character.CanReceivePass(): {targetPlayerController.GetCharacter.CanReceivePass()}");
-                
-                
-                var block = _blockContainer.PopBlock();
-                if (block == null) 
-                {
-                    Debug.Log($"block is null. So, can't pass block");
-                    return;
-                }
-                Debug.Log($"Pass Block");
-                block.PutDown(_info.playerController.GetCharacter);
-                _playerPresenterContainer.PassBlock();
-                if (!targetPlayerController.GetCharacter.CanReceivePass())
-                {
-                    Debug.Log($"receive pass is not possible. So, return block");
-                    return;
-                }
-                Debug.Log($"Receive Pass");
+                var canPass = CanPass(targetPlayerController);
+                if(!canPass.Item1) return;
+                var block = canPass.Item2;
+                PassBlock(block);
                 targetPlayerController.GetCharacter.ReceivePass(block);
             }
         }
 
+        // public
         public bool CanReceivePass()
         {
             return !_blockContainer.IsHoldingBlock;
         }
-        
         public void ReceivePass(IBlock block)
         {
             Debug.Log("Receive Pass");
@@ -96,32 +81,36 @@ namespace Carry.CarrySystem.Player.Scripts
             _playerPresenterContainer.ReceiveBlock(block);
         }
         
+        // private
+        void PassBlock(IBlock block)
+        {
+            Debug.Log($"Pass Block");
+            block.PutDown(_info.playerController.GetCharacter);
+            _playerPresenterContainer.PassBlock();
+        }
         
-        Transform[] Search()
+        (bool, IBlock) CanPass(CarryPlayerControllerNet targetPlayerController)
         {
-            var center = _info.playerObj. transform.position;
-            var numFound = Physics.OverlapSphereNonAlloc(center, _radius,_targetBuffer, _layerMask);
-            return  _targetBuffer
-                .Where(c => c != null) // Filter out any null colliders
-                .Where(c => c.transform != _info.playerObj.transform) // 自分以外を選択する
-                .Select(c => c.transform)
-                .ToArray();
-        }
-
-        public Transform? DetermineTarget(IEnumerable<Transform> targetUnits)
-        {
-            Transform? minTransform = null;
-            float minDistance = float.PositiveInfinity;
-            foreach (var targetTransform in targetUnits)
+            if (!_blockContainer.IsHoldingBlock) 
             {
-                var distance = Vector3.Distance(_info.playerObj.transform.position, targetTransform.position);
-                if (distance < minDistance)
-                {
-                    minTransform = targetTransform;
-                    minDistance = distance;
-                }
+                Debug.Log($"{_info.playerController.Object.InputAuthority} isn't holding a block. So, can't pass block");
+                return (false, null!);
             }
-            return minTransform;
+            if (!targetPlayerController.GetCharacter.CanReceivePass())
+            {
+                Debug.Log($"{targetPlayerController.Object.InputAuthority} is holding a block.So, can't receive pass");
+                return (false, null!);
+            }
+            var block = _blockContainer.PopBlock();  // 判定の一番最後にPopする
+            if (block == null)
+            {
+                Debug.LogError($"block is null");  // IsHoldingBlockがtrueなのに、blockがnullなのはおかしい
+                return (false, null!);
+            }
+            return (true, block);
         }
+        
+        
+        
     }
 }

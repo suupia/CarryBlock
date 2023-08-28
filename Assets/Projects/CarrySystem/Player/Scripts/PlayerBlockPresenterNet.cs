@@ -25,6 +25,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         /// <summary>
         /// switch文ではなるべく使用しないようにする。代わりにパターンマッチングを使う
+        /// HoldingBlockTypeのためにpublicにしているがほかのクラスでは使用しないようにする
         /// </summary>
         public enum BlockType
         {

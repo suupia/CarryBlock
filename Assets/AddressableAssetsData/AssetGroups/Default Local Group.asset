@@ -73,6 +73,10 @@ MonoBehaviour:
     m_Address: Prefabs/Map/GroundPresenter
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: b23734d4732420b4180733b599b4a55c
+    m_Address: Prefabs/Players/PassRange
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 405937dcad4604950956d0fac118dce9, type: 2}
   m_SchemaSet:

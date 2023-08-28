@@ -34,18 +34,14 @@ namespace Carry.CarrySystem.Cart.Scripts
             _waveletSearchBuilder = waveletSearchBuilder;
             _cartMovementNotifierNet = cartMovementNotifierNet;
             _reachRightEdgeChecker = reachRightEdgeChecker;
+            
+            entityGridMapSwitcher.RegisterResetAction(() =>
+            {
+                IsMapClear = false;
+                ShowAccessibleArea();
+            });
         }
-
-        public void StartObserveMap()
-        {
-            _mapSubscription = _mapUpdater.ObserveEveryValueChanged(x => x.GetMap())
-                .Subscribe(_ =>
-                {
-                    // リセット処理
-                    ShowAccessibleArea();
-                });
-        }
-
+        
         public void StopObserve()
         {
             _isHoldSubscription?.Dispose();
