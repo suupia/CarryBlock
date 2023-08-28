@@ -30,6 +30,8 @@ namespace Carry.CarrySystem.Player.Scripts
             ColorType = colorType;
             _mapUpdater = mapUpdater;
             _playerNearCartHandler = playerNearCartHandler;
+            
+            _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
         }
 
         public override void Spawned()

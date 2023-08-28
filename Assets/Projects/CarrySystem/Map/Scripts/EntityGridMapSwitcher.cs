@@ -54,9 +54,11 @@ namespace Carry.CarrySystem.Map.Scripts
             _allPresenterBuilder.Build(_currentMap);
             _cartBuilder.Build(_currentMap, this);
             
-            var players = Object.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
-            foreach (var player in players) player.Reset(_currentMap);
-            
+            // var players = Object.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
+            // foreach (var player in players) player.Reset(_currentMap);
+
+            _resetAction();
+
         }
 
         public void UpdateMap(MapKey mapKey, int index = 0)
@@ -71,8 +73,8 @@ namespace Carry.CarrySystem.Map.Scripts
 
 
             // 以下リセット処理
-            var players = Object.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
-            foreach (var player in players) player.Reset(_currentMap);
+            // var players = Object.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
+            // foreach (var player in players) player.Reset(_currentMap);
 
             _cartBuilder.Build(_currentMap, this);
 
