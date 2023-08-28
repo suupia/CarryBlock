@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
@@ -10,6 +11,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Carry.CarrySystem.Player.Info;
+using UniRx;
 
 #nullable enable
 
@@ -22,6 +24,9 @@ namespace Carry.CarrySystem.Player.Scripts
         EntityGridMap _map = null!;
         readonly PlayerBlockContainer _blockContainer;
         readonly IPlayerBlockPresenter _playerPresenterContainer;
+
+        IDisposable? _searchBlockDisposable;
+        IList<IBlock> _searchedBlocks = new List<IBlock>();
 
         public HoldActionExecutor(
             PlayerBlockContainer blockContainer, 
@@ -37,6 +42,12 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _info = info;
             _map = _mapUpdater.GetMap();
+
+            _searchBlockDisposable?.Dispose();
+            _searchBlockDisposable = Observable.EveryUpdate().Subscribe(_ =>
+            {
+                SearchBlocks();
+            });
         }
 
         public void Reset()
@@ -45,25 +56,18 @@ namespace Carry.CarrySystem.Player.Scripts
             _playerPresenterContainer.PutDownBlock();
             _map = _mapUpdater.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
-
         public void HoldAction()
         {
             var transform = _info.playerObj.transform;
-
-            // 前方のGridPosを取得
             var forwardGridPos = GetForwardGridPos(transform);
-            
-            // 前方にGroundがあるかどうかを確認
-            var grounds = _map.GetSingleEntityList<Ground>(forwardGridPos);
-            if(!grounds.Any()) return;
-
-            // 前方にBlockがあるかどうかを確認
-            var blocks = _map.GetSingleEntityList<IBlock>(forwardGridPos);
-            Debug.Log($"forwardGridPos: {forwardGridPos}, blocks: {string.Join(",", blocks)}");
 
             if (_blockContainer.IsHoldingBlock)
             {
-                if (_blockContainer.CanPutDown(blocks))
+                // 前方にGroundがあるかどうかを確認
+                var grounds = _map.GetSingleEntityList<Ground>(forwardGridPos);
+                if(!grounds.Any()) return;
+                
+                if (_blockContainer.CanPutDown(_searchedBlocks))
                 {
                     var block = _blockContainer.PopBlock();
                     if (block == null)
@@ -79,7 +83,7 @@ namespace Carry.CarrySystem.Player.Scripts
             else
             {
                 IBlock block = null!;
-                if (blocks.Any()) block = blocks.First(); // 一つのマスにはIBlockは一種類しかないという前提
+                if (_searchedBlocks.Any()) block = _searchedBlocks.First(); // 一つのマスにはIBlockは一種類しかないという前提
                 else return;
                 
                 if (block.CanPickUp())
@@ -91,6 +95,22 @@ namespace Carry.CarrySystem.Player.Scripts
                 }
             }
         }
+        
+        void SearchBlocks()
+        {
+            var transform = _info.playerObj.transform;
+            var forwardGridPos = GetForwardGridPos(transform);
+
+            // 前方にBlockがあるかどうかを確認
+            var blocks = _map.GetSingleEntityList<IBlock>(forwardGridPos);
+            // Debug.Log($"forwardGridPos: {forwardGridPos}, blocks: {string.Join(",", blocks)}");
+            
+            _searchedBlocks = blocks;
+
+            // ここにブロックの見た目を変える処理を入れる
+            
+        }
+
 
         Vector2Int GetForwardGridPos(Transform transform)
         {
