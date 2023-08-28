@@ -44,7 +44,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Setup(PlayerInfo info)
         {
             _moveExecutorContainer.Setup(info);
-            _holdActionExecutor.Setup(info);
+            _holdActionExecutor. Setup(info);
             _passActionExecutor.Setup(info);
             info.playerRb.useGravity = true;
         }

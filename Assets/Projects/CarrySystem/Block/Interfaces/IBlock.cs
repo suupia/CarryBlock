@@ -13,6 +13,8 @@ namespace Carry.CarrySystem.Block.Interfaces
         void PickUp(ICharacter character);
         bool CanPutDown(IList<IBlock> blocks);
         void PutDown(ICharacter character);
+        
+        void Highlight();
     }
 
 }
