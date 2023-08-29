@@ -37,7 +37,6 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 
             // Player
             builder.Register<MainCarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
-            builder.Register<BlockMonoDelegateDictionary>(Lifetime.Scoped);
             builder.Register<BlockBuilder>(Lifetime.Scoped);
             builder.Register<CarryPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);

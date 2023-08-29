@@ -19,14 +19,12 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<BlockPresenterNet> _blockPresenterPrefabSpawner;
-        readonly BlockMonoDelegateDictionary _blockMonoDelegateDictionary;
 
-        public BlockBuilder(NetworkRunner runner , BlockMonoDelegateDictionary blockMonoDelegateDictionary)
+        public BlockBuilder(NetworkRunner runner)
         {
             _runner = runner;
             _blockPresenterPrefabSpawner =
                 new PrefabLoaderFromAddressable<BlockPresenterNet>("Prefabs/Map/BlockPresenter");
-            _blockMonoDelegateDictionary = blockMonoDelegateDictionary;
         }
 
 
@@ -53,7 +51,7 @@ namespace Carry.CarrySystem.Map.Scripts
                     {
                         var blockMonoDelegate = new BlockMonoDelegate(block);
                         blockController.Init(blockMonoDelegate);
-                        _blockMonoDelegateDictionary.Add(block, blockMonoDelegate);
+                        // map.AddEntity(i,blockMonoDelegate);
                     }
 
                 }
