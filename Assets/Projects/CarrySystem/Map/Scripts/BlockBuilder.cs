@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Interfaces;
@@ -46,10 +47,15 @@ namespace Carry.CarrySystem.Map.Scripts
                 var blockControllerComponents = blockPresenter.GetComponentsInChildren<BlockControllerNet>();
                 foreach (var blockController in blockControllerComponents)
                 {
-                    // ToDo:  重複がないことを判定する
                     var blocks = map.GetSingleEntityList<IBlock>(i);
-                    var blockMonoDelegate = default(BlockMonoDelegate);  // ToDo: BlockMonoDelegateを作成する
-                    blockController.Init(blockMonoDelegate);
+                    var block = DecideOneBlock(blocks);
+                    if (block != null)
+                    {
+                        var blockMonoDelegate = new BlockMonoDelegate(block);
+                        blockController.Init(blockMonoDelegate);
+                        _blockMonoDelegateDictionary.Add(block, blockMonoDelegate);
+                    }
+
                 }
                 blockPresenters.Add(blockPresenter);
             }
@@ -57,6 +63,25 @@ namespace Carry.CarrySystem.Map.Scripts
             return (blockControllers, blockPresenters);
 
         }
-
+        
+        IBlock? DecideOneBlock(List<IBlock> blocks)
+        {
+            if (!blocks.Any())
+            {
+                Debug.Log($"IBlockが存在しません。{string.Join(",", blocks)}");
+                return null!;
+            }
+            var firstBlock = blocks.First();
+            
+            if (blocks.All(block => block.GetType() == firstBlock.GetType()))
+            {
+                return firstBlock;
+            }
+            else
+            {
+                Debug.LogError($"異なる種類のブロックが含まれています。　firstBlock.GetType() : {firstBlock.GetType()} {string.Join(",", blocks)}");
+                return null!;
+            }
+        }
     }
 }

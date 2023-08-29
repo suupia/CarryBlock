@@ -27,6 +27,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public void Add(IBlock block, IBlockMonoDelegate blockMonoDelegate)
         {
             _dictionary.Add(block, blockMonoDelegate);
+            Debug.Log($"Addに成功しました block:{block} blockMonoDelegate:{blockMonoDelegate}");
         }
     }
 }

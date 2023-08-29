@@ -3,6 +3,7 @@ using Fusion;
 using Projects.CarrySystem.Block.Info;
 using UnityEngine;
 using UnityEngine.Serialization;
+#nullable enable
 
 namespace Projects.CarrySystem.Block.Scripts
 {
@@ -10,8 +11,8 @@ namespace Projects.CarrySystem.Block.Scripts
     {
         [FormerlySerializedAs("blockObj")] [SerializeField] GameObject blockViewObj;  // ランタイムで生成しないので、SerializeFieldで受け取れる
 
-        [SerializeField] BlockInfo _info;
-        IBlockMonoDelegate _blockMonoDelegate;
+        [SerializeField] BlockInfo _info = null!;
+        IBlockMonoDelegate _blockMonoDelegate = null!;
 
         public void Init(IBlockMonoDelegate blockMonoDelegate)
         {
