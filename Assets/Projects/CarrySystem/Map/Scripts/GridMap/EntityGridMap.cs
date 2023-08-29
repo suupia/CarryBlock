@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.Map.Scripts
     public class EntityGridMap : SquareGridMap
     {
         public int GetLength() => Width * Height;
-        readonly List<IEntity>[] _entityMaps;
+        List<IEntity>[] _entityMaps;
         IBlockPresenter?[] _blockPresenter;
         
         public EntityGridMap(int width, int height) : base (width, height)
@@ -30,7 +30,10 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public EntityGridMap CloneMap()
         {
-            return (EntityGridMap)MemberwiseClone();
+            var clone = (EntityGridMap)MemberwiseClone();
+            clone._entityMaps = (List<IEntity>[])this._entityMaps.Clone();
+            clone._blockPresenter = (IBlockPresenter[])this._blockPresenter.Clone();
+            return clone;
         }
 
         public EntityGridMap ClearMap()
@@ -177,7 +180,11 @@ namespace Carry.CarrySystem.Map.Scripts
             // presenter
             var count =_entityMaps[index].OfType<TEntity>().Count();
             // Debug.Log($"AddEntity({index}) count:{count}");
-            if(entity is IBlock block) _blockPresenter[index]?.SetBlockActiveData(block, count);
+            if (entity is IBlock block)
+            {
+                Debug.Log($"AddEntity({index}) count:{count}");
+                _blockPresenter[index]?.SetBlockActiveData(block, count);
+            }
         }
 
         

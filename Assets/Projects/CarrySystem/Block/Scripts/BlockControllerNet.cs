@@ -16,6 +16,7 @@ namespace Projects.CarrySystem.Block.Scripts
 
         public void Init(IBlockMonoDelegate blockMonoDelegate)
         {
+            Debug.Log($"Init BlockControllerNet");
             _blockMonoDelegate = blockMonoDelegate;
         }
         

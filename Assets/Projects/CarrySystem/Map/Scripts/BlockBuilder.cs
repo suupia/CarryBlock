@@ -33,30 +33,52 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             var blockControllers = new List<BlockControllerNet>();
             var blockPresenters = new List<BlockPresenterNet>();
+
+            // IBlockをIBlockMonoDelegateに置き換えたマップにする
+            var tmpMap = map.CloneMap();  // tmpMapを見て、mapを変更する
+            map.ClearMap();
+            
+            //Debug
+            for(int i = 0; i < tmpMap.GetLength(); i++)
+            {
+                var blocks = tmpMap.GetSingleEntityList<IBlock>(i);
+                Debug.Log($"tmpMap blocks : {string.Join(",", blocks)}");
+            }
             
             // BlockPresenterをスポーンさせる
-            for (int i = 0; i < map.GetLength(); i++)
+            for (int i = 0; i < tmpMap.GetLength(); i++)
             {
-                var girdPos = map.ToVector(i);
+                var girdPos = tmpMap.ToVector(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
                 var blockPresenterPrefab = _blockPresenterPrefabSpawner.Load();
                 var blockPresenter =  _runner.Spawn(blockPresenterPrefab, worldPos, Quaternion.identity, PlayerRef.None);
 
                 var blockControllerComponents = blockPresenter.GetComponentsInChildren<BlockControllerNet>();
+                string debug = "blockControllerComponents :";
+                for (int k = 0; k < blockControllerComponents.Length; k++)
+                {
+                    debug += " " + blockControllerComponents[k].GetType().Name + " ";
+                }
+
+                Debug.Log(debug);
                 foreach (var blockController in blockControllerComponents)
                 {
-                    var blocks = map.GetSingleEntityList<IBlock>(i);
+                    var blocks = tmpMap.GetSingleEntityList<IBlock>(i);
+                    Debug.Log($"blocks : {string.Join(",", blocks)}");
                     var block = DecideOneBlock(blocks);
+                    Debug.Log($"block != null : {block != null}");
                     if (block != null)
                     {
                         var blockMonoDelegate = new BlockMonoDelegate(block);
                         blockController.Init(blockMonoDelegate);
-                        // map.AddEntity(i,blockMonoDelegate);
+                        map.AddEntity(i,blockMonoDelegate);
                     }
 
                 }
                 blockPresenters.Add(blockPresenter);
             }
+
+            map = tmpMap;
 
             return (blockControllers, blockPresenters);
 
