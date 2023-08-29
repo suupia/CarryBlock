@@ -4,7 +4,7 @@ using Projects.CarrySystem.Block.Info;
 
 namespace Carry.CarrySystem.Block.Interfaces
 {
-    public interface IBlockMonoDelegate : IEntity
+    public interface IBlockMonoDelegate : IEntity , IHighlightExecutor
     {
         BlockInfo Info { get; }
         IBlock Block { get; }

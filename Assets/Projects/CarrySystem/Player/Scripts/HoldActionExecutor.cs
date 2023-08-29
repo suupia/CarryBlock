@@ -133,11 +133,10 @@ namespace Carry.CarrySystem.Player.Scripts
             if (blockMonoDelegate != null)
             {
                 _searchedBlocks = blockMonoDelegate.Blocks;
+                blockMonoDelegate.Highlight();  // ハイライトの処理
+
             }
             
-            // ここにブロックの見た目を変える処理を入れる
-            // ToDo: IBlockMonoDelegateを取ってきてハイライトの処理をする
-            // blockMonoDelegate.HIghlight();
 
         }
 

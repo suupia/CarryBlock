@@ -18,16 +18,29 @@ namespace Projects.CarrySystem.Block.Scripts
          readonly IList<IBlock> _blocks;
          readonly IBlock _block;
 
+         IHighlightExecutor _highLightExecutor;
+
          public BlockMonoDelegate(IList<IBlock> blocks)
          {
              if(!blocks.Any()) Debug.LogError($"blocks is empty");
              _blocks = blocks;
              _block = blocks.First();
+
          }
 
          public void SetInfo(BlockInfo info)
          {
              Info = info;
+             var materialSetter = Info.blockController.GetComponent<BlockMaterialSetter>();
+             if (materialSetter == null) Debug.LogError($"materialSetter is null");
+             materialSetter.Init(Info);
+             _highLightExecutor = new HighlightExecutor(Info.blockController.gameObject.GetComponent<BlockMaterialSetter>());
+
+         }
+         
+         public void Highlight()
+         {
+             _highLightExecutor.Highlight();
          }
          
          // IBlock implementation

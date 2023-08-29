@@ -19,6 +19,7 @@ namespace Projects.CarrySystem.Block.Scripts
         {
             Debug.Log($"Init BlockControllerNet");
             _blockMonoDelegate = blockMonoDelegate;
+            blockMonoDelegate.SetInfo(_info);
         }
         
         public override void Spawned()
