@@ -23,25 +23,12 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public void Place(EntityGridMap map)
         {
-            var blockPresenterSpawner = new BlockPresenterSpawner(_runner);
-            var blockPresenterNets = new List<BlockPresenterNet>();
+            var blockMonoDelegateBuilder = new BlockMonoDelegateBuilder(_runner);
 
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
             
-            // BlockPresenterをスポーンさせる
-            for (int i = 0; i < map.GetLength(); i++)
-            {
-                var girdPos = map.ToVector(i);
-                var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
-                var blockPresenterNet = blockPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
-                // var blockControllers = blockPresenterNet.GetComponentsInChildren<BlockControllerNet>();
-                // foreach (var blockController in blockControllers)
-                // {
-                //     blockController.Set
-                // }
-                blockPresenterNets.Add(blockPresenterNet);
-            }
+            var (blockControllers, blockPresenterNets) = blockMonoDelegateBuilder.Build(map);
             
             // BlockPresenterをドメインのEntityGridMapに紐づける
             AttachTilePresenter(blockPresenterNets, map);
