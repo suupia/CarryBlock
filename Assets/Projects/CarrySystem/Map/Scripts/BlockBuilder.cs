@@ -38,13 +38,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var tmpMap = map.CloneMap();  // tmpMapを見て、mapを変更する
             map.ClearMap();
             
-            //Debug
-            for(int i = 0; i < tmpMap.GetLength(); i++)
-            {
-                var blocks = tmpMap.GetSingleEntityList<IBlock>(i);
-                Debug.Log($"tmpMap blocks : {string.Join(",", blocks)}");
-            }
-            
+
             // BlockPresenterをスポーンさせる
             for (int i = 0; i < tmpMap.GetLength(); i++)
             {
@@ -54,21 +48,12 @@ namespace Carry.CarrySystem.Map.Scripts
                 var blockPresenter =  _runner.Spawn(blockPresenterPrefab, worldPos, Quaternion.identity, PlayerRef.None);
 
                 var blockControllerComponents = blockPresenter.GetComponentsInChildren<BlockControllerNet>();
-                string debug = "blockControllerComponents :";
-                for (int k = 0; k < blockControllerComponents.Length; k++)
-                {
-                    debug += " " + blockControllerComponents[k].GetType().Name + " ";
-                }
-
-                Debug.Log(debug);
                 foreach (var blockController in blockControllerComponents)
                 {
                     var getBlocks = tmpMap.GetSingleEntityList<IBlock>(i);
-                    Debug.Log($"getBlocks : {string.Join(",", getBlocks)}");
                     var checkedBlocks = CheckBlocks(getBlocks);
                     if (checkedBlocks.Any())
                     {
-                        Debug.Log($"BlockMonoDelegate Add");
                         var blockType =  checkedBlocks.First().GetType();
                         if (blockController.Info.BlockType == blockType)  // インスペクターから設定
                         {
@@ -80,10 +65,6 @@ namespace Carry.CarrySystem.Map.Scripts
                             }
                         }
 
-                    }
-                    else
-                    {
-                        Debug.Log($"BlockMonoDelegate Not Add");
                     }
 
                 }
@@ -100,7 +81,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             if (!blocks.Any())
             {
-                    Debug.Log($"IBlockが存在しません。{string.Join(",", blocks)}");
+                // Debug.Log($"IBlockが存在しません。{string.Join(",", blocks)}");
                 return new List<IBlock>();
             }
             var firstBlock = blocks.First();
