@@ -43,7 +43,6 @@ namespace Carry.CarrySystem.Map.Scripts
                             // This will create a new entity
                             var entity = Generic.Construct<TEntity, TKind, Vector2Int>(kind, map.ToVector(index));
                             map.AddEntity(index, entity);
-                            // ToDo: ここでMonoDelegateにIBlockを渡す
                         }
                     }
                 }

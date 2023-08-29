@@ -67,10 +67,6 @@ namespace Carry.CarrySystem.Player.Scripts
 
             if (_blockContainer.IsHoldingBlock)
             {
-                // // 前方にGroundがあるかどうかを確認
-                // var grounds = _map.GetSingleEntityList<Ground>(forwardGridPos);
-                // if(!grounds.Any()) return;
-                
                 // マップの内部かどうかを判定
                 if(!_map.IsInDataRangeArea(forwardGridPos))return;
                 
@@ -84,7 +80,7 @@ namespace Carry.CarrySystem.Player.Scripts
                         return;
                     }
                     block.Block.PutDown(_info.playerController.GetCharacter);
-                    _map.AddEntity(forwardGridPos, block);
+                    _map.AddEntity(forwardGridPos, block.Block);
                     _playerPresenterContainer.PutDownBlock();
                 }
             }

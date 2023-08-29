@@ -102,6 +102,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void SetBlockActiveData(IBlock block, int count)
         {
+            Debug.Log($"BlockPresenterNet.SetBlockActiveData block : {block} count : {count}");
             switch (block)
             {
                 case BasicBlock _:
