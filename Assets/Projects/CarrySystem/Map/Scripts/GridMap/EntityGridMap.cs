@@ -42,7 +42,7 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 _entityMaps[i] = new List<IEntity>();
             }
-
+            // _blockPresenterは初期化していなことに注意
             return this;
         }
 

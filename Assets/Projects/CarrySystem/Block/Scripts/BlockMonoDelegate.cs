@@ -9,6 +9,7 @@ namespace Projects.CarrySystem.Block.Scripts
     public class BlockMonoDelegate : IBlockMonoDelegate
     {
          public BlockInfo Info { get; private set; }
+         public IBlock Block => _block;
 
          readonly IBlock _block;
 

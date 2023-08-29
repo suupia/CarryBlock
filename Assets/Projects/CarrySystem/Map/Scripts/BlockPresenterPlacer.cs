@@ -29,7 +29,7 @@ namespace Carry.CarrySystem.Map.Scripts
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
             
-            var (blockControllers, blockPresenterNets) = _blockBuilder.Build(map);
+            var (blockControllers, blockPresenterNets) = _blockBuilder.Build(ref map);
             
             // BlockPresenterをドメインのEntityGridMapに紐づける
             AttachTilePresenter(blockPresenterNets, map);
