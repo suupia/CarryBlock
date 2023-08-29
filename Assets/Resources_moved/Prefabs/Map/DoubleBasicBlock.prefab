@@ -59,6 +59,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5965080741896850020}
   - component: {fileID: -1882458635062836858}
+  - component: {fileID: 4007673104106119936}
   - component: {fileID: 4593946109718481354}
   m_Layer: 0
   m_Name: DoubleBasicBlock
@@ -105,8 +106,25 @@ MonoBehaviour:
     RawGuidValue: 075f71c22e3432849adb99be6082692a
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 4007673104106119936}
   - {fileID: 4593946109718481354}
   SimulationBehaviours: []
+--- !u!114 &4007673104106119936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756840550022308548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c2f93b52154d9e91d9de562d158c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  blockViewObj: {fileID: 2478132344785946946}
+  _info:
+    _blockType: 1
 --- !u!114 &4593946109718481354
 MonoBehaviour:
   m_ObjectHideFlags: 0

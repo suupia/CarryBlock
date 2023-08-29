@@ -34,18 +34,14 @@ namespace Carry.CarrySystem.Cart.Scripts
             _waveletSearchBuilder = waveletSearchBuilder;
             _cartMovementNotifierNet = cartMovementNotifierNet;
             _reachRightEdgeChecker = reachRightEdgeChecker;
+            
+            entityGridMapSwitcher.RegisterResetAction(() =>
+            {
+                IsMapClear = false;
+                ShowAccessibleArea();
+            });
         }
-
-        public void StartObserveMap()
-        {
-            _mapSubscription = _mapUpdater.ObserveEveryValueChanged(x => x.GetMap())
-                .Subscribe(_ =>
-                {
-                    // リセット処理
-                    ShowAccessibleArea();
-                });
-        }
-
+        
         public void StopObserve()
         {
             _isHoldSubscription?.Dispose();
@@ -69,7 +65,7 @@ namespace Carry.CarrySystem.Cart.Scripts
         {
             Debug.Log("ShowAccessibleArea");
             var map = _mapUpdater.GetMap();
-            Func<int, int, bool> isWall = (x, y) => map.GetSingleEntityList<IBlock>(new Vector2Int(x, y)).Count > 0;
+            Func<int, int, bool> isWall = (x, y) => map.GetSingleEntityList<IBlockMonoDelegate>(new Vector2Int(x, y)).Count > 0;
             var waveletSearchExecutor = _waveletSearchBuilder.Build(_mapUpdater.GetMap());
 
             var startPos = new Vector2Int(1, map.Height / 2);

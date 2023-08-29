@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
+    /// <summary>
+    /// ロビーシーンからゲームシーンに遷移する際に、PlayerRefとPlayerColorTypeの組を保持するクラス
+    /// 他にも保持したい状態があったらこのクラスに追加する
+    /// </summary>
     public class PlayerCharacterHolder
     {
         readonly Dictionary<PlayerRef, PlayerColorType> _colorDictionary = new Dictionary<PlayerRef, PlayerColorType>();
@@ -21,7 +25,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SetColor(PlayerRef playerRef, PlayerColorType colorType)
         {
             // Debug.Log($"Registering playerRef:{playerRef} as {colorType}");
-            _colorDictionary[playerRef] = colorType;
+            _colorDictionary.Add(playerRef, colorType);
         }
     }
 }

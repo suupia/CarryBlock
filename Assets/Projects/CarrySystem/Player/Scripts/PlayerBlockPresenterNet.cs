@@ -25,6 +25,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         /// <summary>
         /// switch文ではなるべく使用しないようにする。代わりにパターンマッチングを使う
+        /// HoldingBlockTypeのためにpublicにしているがほかのクラスでは使用しないようにする
         /// </summary>
         public enum BlockType
         {
@@ -87,18 +88,18 @@ namespace Carry.CarrySystem.Player.Scripts
 
         // ホストのみで呼ばれることに注意
         // 以下の処理はアニメーション、音、エフェクトの再生を行いたくなったら、それぞれのクラスの対応するメソッドを呼ぶようにするかも
-        public void PickUpBlock(IBlock block)
+        public void PickUpBlock(IBlockMonoDelegate block)
         {
-            PresentDataRef.HoldingBlockType = DecideBlockType(block);
+            PresentDataRef.HoldingBlockType = DecideBlockType(block.Block);
         }
 
         public void PutDownBlock()
         {
             PresentDataRef.HoldingBlockType = BlockType.None;
         }
-        public void ReceiveBlock(IBlock block)
+        public void ReceiveBlock(IBlockMonoDelegate block)
         {
-            PresentDataRef.HoldingBlockType =  DecideBlockType(block);
+            PresentDataRef.HoldingBlockType =  DecideBlockType(block.Block);
         }
         
         

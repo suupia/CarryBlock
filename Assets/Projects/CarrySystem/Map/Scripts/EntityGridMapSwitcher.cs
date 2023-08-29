@@ -20,9 +20,11 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly FloorTimerNet _floorTimerNet;
         readonly EntityGridMapLoader _gridMapLoader;
         readonly MapKeyDataNet _mapKeyDataNet;
-        readonly AllPresenterBuilder _allPresenterBuilder;
+        readonly IPresenterPlacer _allPresenterPlacer;
         int _currentIndex;
         EntityGridMap? _currentMap;
+        
+        Action _resetAction = () => { };
 
         [Inject]
         public EntityGridMapSwitcher(
@@ -30,13 +32,13 @@ namespace Carry.CarrySystem.Map.Scripts
             CartBuilder cartBuilder,
             FloorTimerNet floorTimerNet,
             MapKeyDataNet mapKeyDataNet,
-            AllPresenterBuilder allPresenterBuilder)
+            IPresenterPlacer allPresenterPlacer)
         {
             _gridMapLoader = gridMapGridMapLoader;
             _cartBuilder = cartBuilder;
             _floorTimerNet = floorTimerNet;
             _mapKeyDataNet = mapKeyDataNet;
-            _allPresenterBuilder　= allPresenterBuilder;
+            _allPresenterPlacer　= allPresenterPlacer;
         }
 
         public EntityGridMap GetMap()
@@ -49,12 +51,11 @@ namespace Carry.CarrySystem.Map.Scripts
             var key = _mapKeyDataNet.MapKeyDataList[_currentIndex].mapKey;
             var mapIndex =  _mapKeyDataNet.MapKeyDataList[_currentIndex].index;
             _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
-            _allPresenterBuilder.Build(_currentMap);
+            _allPresenterPlacer.Place(_currentMap);
             _cartBuilder.Build(_currentMap, this);
-            
-            var players = Object.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
-            foreach (var player in players) player.Reset(_currentMap);
-            
+
+            _resetAction();
+
         }
 
         public void UpdateMap(MapKey mapKey, int index = 0)
@@ -65,16 +66,18 @@ namespace Carry.CarrySystem.Map.Scripts
             var mapIndex = _mapKeyDataNet.MapKeyDataList[_currentIndex].index;
             var nextMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _currentMap = nextMap;
-            _allPresenterBuilder.Build(_currentMap);
-
-
-            // 以下リセット処理
-            var players = Object.FindObjectsByType<CarryPlayerControllerNet>(FindObjectsSortMode.None);
-            foreach (var player in players) player.Reset(_currentMap);
-
+            _allPresenterPlacer.Place(_currentMap);
             _cartBuilder.Build(_currentMap, this);
 
             _floorTimerNet.StartTimer();
+            
+            
+            _resetAction();
+        }
+        
+        public void RegisterResetAction(Action action)
+        {
+            _resetAction += action;
         }
     }
 
