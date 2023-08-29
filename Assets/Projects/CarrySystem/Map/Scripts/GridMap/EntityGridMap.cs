@@ -16,7 +16,7 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         public int GetLength() => Width * Height;
         List<IEntity>[] _entityMaps;
-        IBlockPresenter?[] _blockPresenter;
+        readonly IBlockPresenter?[] _blockPresenter;
         
         public EntityGridMap(int width, int height) : base (width, height)
         {
@@ -32,7 +32,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             var clone = (EntityGridMap)MemberwiseClone();
             clone._entityMaps = (List<IEntity>[])this._entityMaps.Clone();
-            clone._blockPresenter = (IBlockPresenter[])this._blockPresenter.Clone();
+            // _blockPresenterは同じものを参照し続けるようにするために、コピーしないことに注意
             return clone;
         }
 
