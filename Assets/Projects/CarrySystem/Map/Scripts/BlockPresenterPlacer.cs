@@ -5,18 +5,19 @@ using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners;
 using Fusion;
+using Projects.CarrySystem.Block.Scripts;
 using UnityEngine;
 using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class BlockPresenterBuilderMonoDelegate : IBlockPresenterBuilder
+    public class BlockPresenterPlacer : IBlockPresenterBuilder
     {
         [Inject] NetworkRunner _runner;
         IEnumerable<BlockPresenterNet> _blockPresenters =  new List<BlockPresenterNet>();
         
         [Inject]
-        public BlockPresenterBuilderMonoDelegate()
+        public BlockPresenterPlacer()
         {
         }
         
@@ -28,17 +29,21 @@ namespace Carry.CarrySystem.Map.Scripts
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
             
-            // TilePresenterをスポーンさせる
+            // BlockPresenterをスポーンさせる
             for (int i = 0; i < map.GetLength(); i++)
             {
                 var girdPos = map.ToVector(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
                 var blockPresenterNet = blockPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
-                // var blockControllers = tilePresenter
+                // var blockControllers = blockPresenterNet.GetComponentsInChildren<BlockControllerNet>();
+                // foreach (var blockController in blockControllers)
+                // {
+                //     blockController.Set
+                // }
                 blockPresenterNets.Add(blockPresenterNet);
             }
             
-            // TilePresenterをドメインのEntityGridMapに紐づける
+            // BlockPresenterをドメインのEntityGridMapに紐づける
             AttachTilePresenter(blockPresenterNets, map);
 
             _blockPresenters = blockPresenterNets;

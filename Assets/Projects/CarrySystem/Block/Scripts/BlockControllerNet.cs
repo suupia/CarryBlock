@@ -11,7 +11,12 @@ namespace Projects.CarrySystem.Block.Scripts
         [FormerlySerializedAs("blockObj")] [SerializeField] GameObject blockViewObj;  // ランタイムで生成しないので、SerializeFieldで受け取れる
 
         [SerializeField] BlockInfo _info;
-        IBlock _block;
+        IBlockMonoDelegate _blockMonoDelegate;
+
+        public void Init(IBlockMonoDelegate blockMonoDelegate)
+        {
+            _blockMonoDelegate = blockMonoDelegate;
+        }
         
         public override void Spawned()
         {
