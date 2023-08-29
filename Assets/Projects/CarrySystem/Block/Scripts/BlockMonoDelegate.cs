@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Projects.CarrySystem.Block.Info;
 using UnityEngine;
@@ -9,13 +11,17 @@ namespace Projects.CarrySystem.Block.Scripts
     public class BlockMonoDelegate : IBlockMonoDelegate
     {
          public BlockInfo Info { get; private set; }
-         public IBlock Block => _block;
+         public IBlock Block => _block; 
+         public IList<IBlock> Blocks => _blocks;
 
+         readonly IList<IBlock> _blocks;
          readonly IBlock _block;
 
-         public BlockMonoDelegate(IBlock block)
+         public BlockMonoDelegate(IList<IBlock> blocks)
          {
-             _block = block;
+             if(!blocks.Any()) Debug.LogError($"blocks is empty");
+             _blocks = blocks;
+             _block = blocks.First();
          }
 
          public void SetInfo(BlockInfo info)

@@ -12,7 +12,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class PlayerBlockContainer
     {
         public bool IsHoldingBlock => _isHoldingBlock;
-        public bool CanPutDown(IList<IBlockMonoDelegate> blocks) => _holdingBlock?.Block.CanPutDown(blocks.Select(b => b.Block).ToArray()) ?? false;
+        public bool CanPutDown(IList<IBlock> blocks) => _holdingBlock?.Block.CanPutDown(blocks) ?? false;
 
         bool _isHoldingBlock = false;  // 持っているかどうかの判定はIsHoldingBlockを使って外部にブロックを直接公開はしない
         IBlockMonoDelegate? _holdingBlock = null;  // 外部から取得するときは、PopBlock()を使う。

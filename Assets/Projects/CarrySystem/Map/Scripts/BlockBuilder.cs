@@ -63,15 +63,24 @@ namespace Carry.CarrySystem.Map.Scripts
                 Debug.Log(debug);
                 foreach (var blockController in blockControllerComponents)
                 {
-                    var blocks = tmpMap.GetSingleEntityList<IBlock>(i);
-                    Debug.Log($"blocks : {string.Join(",", blocks)}");
-                    var block = DecideOneBlock(blocks);
-                    Debug.Log($"block != null : {block != null}");
-                    if (block != null)
+                    var getBlocks = tmpMap.GetSingleEntityList<IBlock>(i);
+                    Debug.Log($"getBlocks : {string.Join(",", getBlocks)}");
+                    var checkedBlocks = CheckBlocks(getBlocks);
+                    if (checkedBlocks.Any())
                     {
-                        var blockMonoDelegate = new BlockMonoDelegate(block);
-                        blockController.Init(blockMonoDelegate);
-                        map.AddEntity(i,blockMonoDelegate);
+                        Debug.Log($"BlockMonoDelegate Add");
+                        var blockType =  checkedBlocks.First().GetType();
+                        if (blockController.Info.BlockType == blockType)
+                        {
+                            var blockMonoDelegate = new BlockMonoDelegate(checkedBlocks);
+                            blockController.Init(blockMonoDelegate);
+                            map.AddEntity(i,blockMonoDelegate);
+                        }
+
+                    }
+                    else
+                    {
+                        Debug.Log($"BlockMonoDelegate Not Add");
                     }
 
                 }
@@ -84,24 +93,23 @@ namespace Carry.CarrySystem.Map.Scripts
 
         }
         
-        IBlock? DecideOneBlock(List<IBlock> blocks)
+        List<IBlock> CheckBlocks(List<IBlock> blocks)
         {
             if (!blocks.Any())
             {
-                Debug.Log($"IBlockが存在しません。{string.Join(",", blocks)}");
-                return null!;
+                    Debug.Log($"IBlockが存在しません。{string.Join(",", blocks)}");
+                return new List<IBlock>();
             }
             var firstBlock = blocks.First();
-            
-            if (blocks.All(block => block.GetType() == firstBlock.GetType()))
-            {
-                return firstBlock;
-            }
-            else
+
+            if (blocks.Any(block => block.GetType() != firstBlock.GetType()))
             {
                 Debug.LogError($"異なる種類のブロックが含まれています。　firstBlock.GetType() : {firstBlock.GetType()} {string.Join(",", blocks)}");
-                return null!;
+                return new List<IBlock>();
             }
+            
+            return blocks;
+
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Projects.CarrySystem.Block.Scripts
         [FormerlySerializedAs("blockObj")] [SerializeField] GameObject blockViewObj;  // ランタイムで生成しないので、SerializeFieldで受け取れる
 
         [SerializeField] BlockInfo _info = null!;
+        public BlockInfo Info => _info;
         IBlockMonoDelegate _blockMonoDelegate = null!;
 
         public void Init(IBlockMonoDelegate blockMonoDelegate)
@@ -25,4 +26,6 @@ namespace Projects.CarrySystem.Block.Scripts
             _info.Init(blockViewObj, this);
         }
     }
+    
+
 }
