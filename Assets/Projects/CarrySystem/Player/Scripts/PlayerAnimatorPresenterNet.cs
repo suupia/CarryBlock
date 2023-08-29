@@ -92,7 +92,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _animator.SetBool("IsHoldingBlock", PresentDataRef.IsHoldingBlock);
         }
 
-        public void PickUpBlock(IBlock block)
+        public void PickUpBlock(IBlockMonoDelegate block)
         {
             PresentDataRef.PickUpCount++;
             PresentDataRef.IsHoldingBlock = true;
@@ -104,7 +104,7 @@ namespace Carry.CarrySystem.Player.Scripts
             PresentDataRef.IsHoldingBlock = false;
         }
         
-        public void ReceiveBlock(IBlock block)
+        public void ReceiveBlock(IBlockMonoDelegate block)
         {
             PresentDataRef.ReceiveCount++;
             PresentDataRef.IsHoldingBlock = false;

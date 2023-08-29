@@ -44,7 +44,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Setup(PlayerInfo info)
         {
             _moveExecutorContainer.Setup(info);
-            _holdActionExecutor.Setup(info);
+            _holdActionExecutor. Setup(info);
             _passActionExecutor.Setup(info);
             info.playerRb.useGravity = true;
         }
@@ -75,6 +75,6 @@ namespace Carry.CarrySystem.Player.Scripts
         // PassActionExecutor
         public void PassAction() => _passActionExecutor.PassAction();
         public bool CanReceivePass() => _passActionExecutor.CanReceivePass();
-        public void ReceivePass(IBlock block) => _passActionExecutor.ReceivePass(block);
+        public void ReceivePass(IBlockMonoDelegate block) => _passActionExecutor.ReceivePass(block);
     }
 }
