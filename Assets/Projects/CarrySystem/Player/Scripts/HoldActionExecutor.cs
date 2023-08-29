@@ -62,13 +62,19 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             var transform = _info.playerObj.transform;
             var forwardGridPos = GetForwardGridPos(transform);
+            
+            Debug.Log($"IsHoldingBlock : {_blockContainer.IsHoldingBlock}");
 
             if (_blockContainer.IsHoldingBlock)
             {
-                // 前方にGroundがあるかどうかを確認
-                var grounds = _map.GetSingleEntityList<Ground>(forwardGridPos);
-                if(!grounds.Any()) return;
+                // // 前方にGroundがあるかどうかを確認
+                // var grounds = _map.GetSingleEntityList<Ground>(forwardGridPos);
+                // if(!grounds.Any()) return;
                 
+                // マップの内部かどうかを判定
+                if(!_map.IsInDataRangeArea(forwardGridPos))return;
+                
+                Debug.Log($"CanPutDown : {_blockContainer.CanPutDown(_searchedBlocks)}");
                 if (_blockContainer.CanPutDown(_searchedBlocks))
                 {
                     var block = _blockContainer.PopBlock();
@@ -77,7 +83,7 @@ namespace Carry.CarrySystem.Player.Scripts
                         Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれない
                         return;
                     }
-                    block.PutDown(_info.playerController.GetCharacter);
+                    block.Block.PutDown(_info.playerController.GetCharacter);
                     _map.AddEntity(forwardGridPos, block);
                     _playerPresenterContainer.PutDownBlock();
                 }
@@ -93,8 +99,8 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     block.PickUp(_info.playerController.GetCharacter);
                     _map.RemoveEntity(forwardGridPos,block);
-                    _playerPresenterContainer.PickUpBlock(block);
-                    _blockContainer.SetBlock(block);
+                    _playerPresenterContainer.PickUpBlock(blockMonoDelegate);
+                    _blockContainer.SetBlock(blockMonoDelegate);
                 }
             }
         }

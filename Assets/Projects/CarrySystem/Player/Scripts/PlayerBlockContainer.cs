@@ -12,16 +12,16 @@ namespace Carry.CarrySystem.Player.Scripts
     public class PlayerBlockContainer
     {
         public bool IsHoldingBlock => _isHoldingBlock;
-        public bool CanPutDown(IList<IBlockMonoDelegate> blocks) => _holdingBlock?.CanPutDown(blocks.Select(b => b.Block).ToArray()) ?? false;
+        public bool CanPutDown(IList<IBlockMonoDelegate> blocks) => _holdingBlock?.Block.CanPutDown(blocks.Select(b => b.Block).ToArray()) ?? false;
 
         bool _isHoldingBlock = false;  // 持っているかどうかの判定はIsHoldingBlockを使って外部にブロックを直接公開はしない
-        IBlock? _holdingBlock = null;  // 外部から取得するときは、PopBlock()を使う。
+        IBlockMonoDelegate? _holdingBlock = null;  // 外部から取得するときは、PopBlock()を使う。
         
         /// <summary>
         /// Blockを取り出すと同時に、持っているブロックをnullにする
         /// </summary>
         /// <returns></returns>
-        public IBlock? PopBlock()
+        public IBlockMonoDelegate? PopBlock()
         {
             if (_holdingBlock == null) return null;
             var block = _holdingBlock;
@@ -30,7 +30,7 @@ namespace Carry.CarrySystem.Player.Scripts
             return block;
         }
 
-        public void SetBlock(IBlock block)
+        public void SetBlock(IBlockMonoDelegate block)
         {
             //  _presenter?.HoldBlock(block);
             _isHoldingBlock = true;
