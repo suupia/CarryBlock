@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public void Place(EntityGridMap map)
         {
-            var blockMonoDelegateBuilder = new BlockMonoDelegateBuilder(_runner);
+            var blockMonoDelegateBuilder = new BlockBuilder(_runner);
 
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
