@@ -2,19 +2,30 @@
 using Fusion;
 using Projects.CarrySystem.Block.Info;
 using UnityEngine;
+using UnityEngine.Serialization;
+#nullable enable
 
 namespace Projects.CarrySystem.Block.Scripts
 {
     public class BlockControllerNet : NetworkBehaviour
     {
-        [SerializeField] GameObject blockObj;  // ランタイムで生成しないので、SerializeFieldで受け取れる
+        [FormerlySerializedAs("blockObj")] [SerializeField] GameObject blockViewObj;  // ランタイムで生成しないので、SerializeFieldで受け取れる
 
-        [SerializeField] BlockInfo _info;
-        IBlock _block;
+        [SerializeField] BlockInfo _info = null!;
+        public BlockInfo Info => _info;
+        IBlockMonoDelegate _blockMonoDelegate = null!;
+
+        public void Init(IBlockMonoDelegate blockMonoDelegate)
+        {
+            Debug.Log($"Init BlockControllerNet");
+            _blockMonoDelegate = blockMonoDelegate;
+        }
         
         public override void Spawned()
         {
-            _info.Init(blockObj, this);
+            _info.Init(blockViewObj, this);
         }
     }
+    
+
 }

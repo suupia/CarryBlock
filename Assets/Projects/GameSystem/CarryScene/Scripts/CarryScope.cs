@@ -15,7 +15,7 @@ using VContainer.Unity;
 
 namespace Carry.CarrySystem.CarryScene.Scripts
 {
-    public sealed class CarryLifetimeScope : LifetimeScope
+    public sealed class CarryScope : LifetimeScope
     {
         protected override void Configure(IContainerBuilder builder)
         {
@@ -37,6 +37,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 
             // Player
             builder.Register<MainCarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
+            builder.Register<BlockBuilder>(Lifetime.Scoped);
             builder.Register<CarryPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
             builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
@@ -44,11 +45,12 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 
             // Serverのドメインスクリプト
             // Map
+            builder.Register<MapBuilderMonoDelegate>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
-            builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
-            builder.Register<WallPresenterBuilder>(Lifetime.Scoped);
-            builder.Register<GroundPresenterBuilder>(Lifetime.Scoped);
-            builder.Register<AllPresenterBuilder>(Lifetime.Scoped);
+            builder.Register<BlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>();;
+            builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<AllPresenterPlacer>(Lifetime.Scoped).As<IPresenterPlacer>();
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
 
             builder.RegisterComponentInHierarchy<MapKeyDataNet>();

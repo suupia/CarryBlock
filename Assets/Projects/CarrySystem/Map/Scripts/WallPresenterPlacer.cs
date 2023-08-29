@@ -11,7 +11,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class WallPresenterBuilder  : IPresenterBuilder
+    public class WallPresenterPlacer  : IPresenterPlacer
     {
         [Inject] NetworkRunner _runner;
         IEnumerable<WallPresenterNet> _tilePresenters = new List<WallPresenterNet>();
@@ -20,11 +20,11 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly int _wallVerticalNum = 2;
 
         [Inject]
-        public WallPresenterBuilder()
+        public WallPresenterPlacer()
         {
         }
 
-        public void Build(EntityGridMap map)
+        public void Place(EntityGridMap map)
         {
             var wallPresenterSpawner = new WallPresenterSpawner(_runner);
             var wallPresenters = new List<WallPresenterNet>();

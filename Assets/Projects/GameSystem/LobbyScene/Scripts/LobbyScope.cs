@@ -12,7 +12,7 @@ using VContainer.Unity;
 
 namespace Projects.BattleSystem.LobbyScene.Scripts
 {
-    public sealed class LobbyLifetimeScope : LifetimeScope
+    public sealed class LobbyScope : LifetimeScope
     {
         protected override void Configure(IContainerBuilder builder)
         {

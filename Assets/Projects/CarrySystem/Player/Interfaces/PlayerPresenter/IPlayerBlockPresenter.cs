@@ -4,9 +4,9 @@ namespace Carry.CarrySystem.Player.Interfaces
 {
     public interface IPlayerBlockPresenter
     {
-        void PickUpBlock(IBlock block);
+        void PickUpBlock(IBlockMonoDelegate block);
         void PutDownBlock();
-        void ReceiveBlock(IBlock block);
+        void ReceiveBlock(IBlockMonoDelegate block);
         void PassBlock();
 
     }

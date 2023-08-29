@@ -63,7 +63,7 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 // AidKit
                 var isNear =  _playerNearCartHandler.IsNearCart(info.playerObj);
-                Debug.Log($"isNear = {isNear}");
+                // Debug.Log($"isNear = {isNear}");
             }
 
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))

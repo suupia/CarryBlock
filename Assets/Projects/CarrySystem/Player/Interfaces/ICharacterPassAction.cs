@@ -11,6 +11,6 @@ namespace Carry.CarrySystem.Player.Interfaces
 
         bool CanReceivePass();
 
-        void ReceivePass(IBlock block);
+        void ReceivePass(IBlockMonoDelegate block);
     }
 }
