@@ -101,18 +101,18 @@ namespace Carry.CarrySystem.Player.Scripts
                 }
                 
                 // Debug
-                var currentBlockMonos = _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos);
-                Debug.Log($"before currentBlockMonos : {string.Join(",", currentBlockMonos.Select(x => x.Block))}");
+                Debug.Log($"before currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
 
                 var block = blockMonoDelegate.Block;
                 if (block.CanPickUp())
                 {
+                    Debug.Log($"remove currentBlockMonos");
                     block.PickUp(_info.playerController.GetCharacter);
                     _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
                     _playerPresenterContainer.PickUpBlock(blockMonoDelegate);
                     _blockContainer.SetBlock(blockMonoDelegate);
                 }
-                Debug.Log($"after currentBlockMonos : {string.Join(",", currentBlockMonos.Select(x => x.Block))}");
+                Debug.Log($"after currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
 
             }
         }

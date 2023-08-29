@@ -70,11 +70,14 @@ namespace Carry.CarrySystem.Map.Scripts
                     {
                         Debug.Log($"BlockMonoDelegate Add");
                         var blockType =  checkedBlocks.First().GetType();
-                        if (blockController.Info.BlockType == blockType)
+                        if (blockController.Info.BlockType == blockType)  // インスペクターから設定
                         {
-                            var blockMonoDelegate = new BlockMonoDelegate(checkedBlocks);
-                            blockController.Init(blockMonoDelegate);
-                            map.AddEntity(i,blockMonoDelegate);
+                            if (map.GetSingleEntity<IBlockMonoDelegate>(i) == null) // 複数同じコンポーネントがあるので、一度だけ追加すればよい
+                            {
+                                var blockMonoDelegate = new BlockMonoDelegate(checkedBlocks);
+                                blockController.Init(blockMonoDelegate);
+                                map.AddEntity(i, blockMonoDelegate);
+                            }
                         }
 
                     }

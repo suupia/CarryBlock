@@ -180,11 +180,9 @@ namespace Carry.CarrySystem.Map.Scripts
             // presenter
             var count =_entityMaps[index].OfType<TEntity>().Count();
             // Debug.Log($"AddEntity({index}) count:{count}");
-            if (entity is IBlock block)
-            {
-                Debug.Log($"AddEntity({index}) count:{count}");
-                _blockPresenter[index]?.SetBlockActiveData(block, count);
-            }
+            if (entity is IBlock block) _blockPresenter[index]?.SetBlockActiveData(block, count);
+            else if (entity is IBlockMonoDelegate blockMonoDelegate) _blockPresenter[index]?.SetBlockActiveData(blockMonoDelegate.Block, count);
+
         }
 
         
@@ -200,12 +198,12 @@ namespace Carry.CarrySystem.Map.Scripts
             
             // domain
             _entityMaps[index].Remove(entity);
-            
 
             // presenter
             var count = _entityMaps[index].OfType<TEntity>().Count();
             // Debug.Log($"RemoveEntity({x},{y}) count:{count}");
-            if(entity is IBlock block) _blockPresenter[index]?.SetBlockActiveData(block, count);
+            if(entity is IBlock block ) _blockPresenter[index]?.SetBlockActiveData(block, count);
+            else if (entity is IBlockMonoDelegate blockMonoDelegate) _blockPresenter[index]?.SetBlockActiveData(blockMonoDelegate.Block, count);
         }
 
         public void RemoveEntity<TEntity>(Vector2Int vector, TEntity entity) where TEntity : IEntity

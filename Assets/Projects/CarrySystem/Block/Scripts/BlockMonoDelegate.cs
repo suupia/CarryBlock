@@ -5,6 +5,7 @@ using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Projects.CarrySystem.Block.Info;
 using UnityEngine;
+#nullable enable
 
 namespace Projects.CarrySystem.Block.Scripts
 {
