@@ -28,7 +28,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IPlayerBlockPresenter _playerPresenterContainer;
 
         IDisposable? _searchBlockDisposable;
-        IList<IBlock> _searchedBlocks = new List<IBlock>();
+        IList<IBlockMonoDelegate> _searchedBlocks = new List<IBlockMonoDelegate>();
 
         public HoldActionExecutor(
             PlayerBlockContainer blockContainer, 
@@ -84,14 +84,15 @@ namespace Carry.CarrySystem.Player.Scripts
             }
             else
             {
-                IBlock block = null!;
-                if (_searchedBlocks.Any()) block = _searchedBlocks.First(); // 一つのマスにはIBlockは一種類しかないという前提
+                IBlockMonoDelegate blockMonoDelegate = null!;
+                if (_searchedBlocks.Any()) blockMonoDelegate = _searchedBlocks.First(); // 一つのマスにはIBlockは一種類しかないという前提
                 else return;
-                
+
+                var block = blockMonoDelegate.Block;
                 if (block.CanPickUp())
                 {
                     block.PickUp(_info.playerController.GetCharacter);
-                    _map.RemoveEntity(forwardGridPos, block);
+                    _map.RemoveEntity(forwardGridPos,block);
                     _playerPresenterContainer.PickUpBlock(block);
                     _blockContainer.SetBlock(block);
                 }
@@ -104,7 +105,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var forwardGridPos = GetForwardGridPos(transform);
 
             // 前方にBlockがあるかどうかを確認
-            var blocks = _map.GetSingleEntityList<IBlock>(forwardGridPos);
+            var blocks = _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos);
             // Debug.Log($"forwardGridPos: {forwardGridPos}, blocks: {string.Join(",", blocks)}");
             
             _searchedBlocks = blocks;

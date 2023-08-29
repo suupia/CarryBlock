@@ -117,7 +117,7 @@ namespace Carry.CarrySystem.Map.Scripts
                     PresentDataRef.FragileBlockCount = count;
                     break;
                 default:
-                    throw new System.Exception("想定外のEntityが渡されました");
+                    throw new System.Exception($"想定外のEntityが渡されました block : {block}");
             }
         }
     }
