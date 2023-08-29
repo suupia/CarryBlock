@@ -10,6 +10,7 @@ using Projects.CarrySystem.Block.Scripts;
 using Projects.Utility.Scripts;
 using Projects.Utilty;
 using UnityEngine;
+#nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
@@ -17,15 +18,17 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<BlockPresenterNet> _blockPresenterPrefabSpawner;
+        readonly BlockMonoDelegateDictionary _blockMonoDelegateDictionary;
 
-        public BlockBuilder(NetworkRunner runner)
+        public BlockBuilder(NetworkRunner runner , BlockMonoDelegateDictionary blockMonoDelegateDictionary)
         {
             _runner = runner;
             _blockPresenterPrefabSpawner =
                 new PrefabLoaderFromAddressable<BlockPresenterNet>("Prefabs/Map/BlockPresenter");
+            _blockMonoDelegateDictionary = blockMonoDelegateDictionary;
         }
-        
-        
+
+
         // CarryBuilderと対応させてある。
         public (IReadOnlyList< BlockControllerNet>,IReadOnlyList< BlockPresenterNet>) Build(EntityGridMap map)
         {
