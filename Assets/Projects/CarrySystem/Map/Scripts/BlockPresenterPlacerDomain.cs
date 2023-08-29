@@ -10,17 +10,17 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class BlockPresenterBuilderDomain : IBlockPresenterBuilder
+    public class BlockPresenterPlacerDomain : IBlockPresenterPlacer
     {
         [Inject] NetworkRunner _runner;
         IEnumerable<BlockPresenterNet> _blockPresenters =  new List<BlockPresenterNet>();
         
         [Inject]
-        public BlockPresenterBuilderDomain()
+        public BlockPresenterPlacerDomain()
         {
         }
         
-        public void Build(EntityGridMap map)
+        public void Place(EntityGridMap map)
         {
             var blockPresenterSpawner = new BlockPresenterSpawner(_runner);
             var blockPresenterNets = new List<BlockPresenterNet>();

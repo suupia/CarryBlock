@@ -11,7 +11,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class BlockPresenterPlacer : IBlockPresenterBuilder
+    public class BlockPresenterPlacer : IBlockPresenterPlacer
     {
         [Inject] NetworkRunner _runner;
         IEnumerable<BlockPresenterNet> _blockPresenters =  new List<BlockPresenterNet>();
@@ -21,7 +21,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
         }
         
-        public void Build(EntityGridMap map)
+        public void Place(EntityGridMap map)
         {
             var blockPresenterSpawner = new BlockPresenterSpawner(_runner);
             var blockPresenterNets = new List<BlockPresenterNet>();

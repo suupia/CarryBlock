@@ -2,8 +2,8 @@
 
 namespace Carry.CarrySystem.Map.Interfaces
 {
-    public interface IPresenterBuilder
+    public interface IPresenterPlacer
     {
-        void Build(EntityGridMap map);
+        void Place(EntityGridMap map);
     }
 }

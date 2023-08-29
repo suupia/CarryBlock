@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             
             // Map
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
-            builder.Register<BlockPresenterBuilderDomain>(Lifetime.Scoped);
+            builder.Register<BlockPresenterPlacerDomain>(Lifetime.Scoped);
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
             
             // SearchRoute

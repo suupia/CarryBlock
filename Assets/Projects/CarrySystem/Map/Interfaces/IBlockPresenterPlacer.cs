@@ -1,6 +1,6 @@
 ﻿namespace Carry.CarrySystem.Map.Interfaces
 {
-    public interface IBlockPresenterBuilder : IPresenterBuilder
+    public interface IBlockPresenterPlacer : IPresenterPlacer
     {
         
     }

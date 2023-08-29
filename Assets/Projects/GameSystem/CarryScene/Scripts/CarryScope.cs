@@ -46,10 +46,10 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             // Map
             builder.Register<MapBuilderMonoDelegate>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
-            builder.Register<BlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterBuilder>();;
-            builder.Register<WallPresenterBuilder>(Lifetime.Scoped);
-            builder.Register<GroundPresenterBuilder>(Lifetime.Scoped);
-            builder.Register<AllPresenterBuilder>(Lifetime.Scoped).As<IPresenterBuilder>();
+            builder.Register<BlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>();;
+            builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<AllPresenterPlacer>(Lifetime.Scoped).As<IPresenterPlacer>();
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
 
             builder.RegisterComponentInHierarchy<MapKeyDataNet>();
