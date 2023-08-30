@@ -122,10 +122,8 @@ namespace Carry.CarrySystem.Player.Scripts
             var transform = _info.playerObj.transform;
             var forwardGridPos = GetForwardGridPos(transform);
 
-            // 前方にBlockがあるかどうかを確認
+            // 前方のMonoBlockDelegateを取得
             var blockMonoDelegate = _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos);
-
-           //  Debug.Log($"blockMonoDelegate : {blockMonoDelegate}, forwardGridPos: {forwardGridPos}");
 
 
             _searchedBlockMonoDelegate = blockMonoDelegate;

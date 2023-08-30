@@ -25,6 +25,10 @@ namespace Projects.CarrySystem.Block.Scripts
         BlockMaterialSetter DecideMaterialSetter(IBlock block)
         {
             var type = block.GetType();
+            foreach (var info in _blockInfos)
+            {
+                Debug.Log($"info.BlockType: {info.BlockType}");
+            }
             var materialSetter =  _blockInfos.Where(info=> info.BlockType == type).Select(info => info.BlockMaterialSetter).First();
             if (materialSetter != null)
             {

@@ -11,14 +11,14 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class BlockPresenterPlacer : IBlockPresenterPlacer
+    public class EditMapBlockPresenterPlacer : IBlockPresenterPlacer
     {
         [Inject] readonly NetworkRunner _runner;
         readonly BlockBuilder _blockBuilder;
         IEnumerable<BlockPresenterNet> _blockPresenters =  new List<BlockPresenterNet>();
         
         [Inject]
-        public BlockPresenterPlacer(BlockBuilder blockBuilder)
+        public EditMapBlockPresenterPlacer(BlockBuilder blockBuilder)
         {
             _blockBuilder = blockBuilder;
         }
@@ -54,14 +54,6 @@ namespace Carry.CarrySystem.Map.Scripts
             for (int i = 0; i < blockPresenterNets.Count(); i++)
             {
                 var blockPresenterNet = blockPresenterNets.ElementAt(i);
-
-                // RegisterTilePresenter()の前なのでSetEntityActiveData()を実行する必要がある
-                // Presenterの初期化処理みたいなもの
-                var existGround = map.GetSingleEntity<Ground>(i) != null;
-                var existUnmovableBlock = map.GetSingleEntity<UnmovableBlock>(i) != null;
-                var existBasicBlock = map.GetSingleEntity<BasicBlock>(i) != null;
-                
-                // Debug.Log($"existGround: {existGround}, existUnmovableBlock: {existUnmovableBlock}, existBasicBlock: {existBasicBlock}");
 
                 blockPresenterNet.SetInitAllEntityActiveData(map.GetAllEntityList(i)  );
 

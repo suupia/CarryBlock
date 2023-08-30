@@ -10,15 +10,17 @@ namespace Projects.CarrySystem.Block.Info
     public class BlockInfo
     {
         [SerializeField] BlockTypeEnum _blockType;
-        [SerializeField] public BlockMaterialSetter BlockMaterialSetter = null!;
+        [NonSerialized] public BlockMaterialSetter BlockMaterialSetter = null!;
         [NonSerialized] public GameObject blockViewObj;
         [NonSerialized] public BlockControllerNet blockController;
         public Type BlockType => DecideBlockType();
 
-        public void Init(GameObject blockObj, BlockControllerNet blockController)
+        public void Init(GameObject blockViewObj, BlockControllerNet blockController)
         {
-            this.blockViewObj = blockObj;
+            this.blockViewObj = blockViewObj;
             this.blockController = blockController;
+            BlockMaterialSetter = blockController.GetComponent<BlockMaterialSetter>();  // BlockControllerNetと同じオブジェクトにアタッチしている
+            BlockMaterialSetter.Init(this);
         }
 
         Type DecideBlockType()

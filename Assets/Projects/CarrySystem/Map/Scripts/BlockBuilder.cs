@@ -35,7 +35,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var blockPresenters = new List<BlockPresenterNet>();
 
             // IBlockをIBlockMonoDelegateに置き換えたマップにする
-            var tmpMap = map.ClearMap();  // tmpMapを見て、mapを変更する
+            var tmpMap = map.CloneMap();  // tmpMapを見て、mapを変更する
             map.ClearMap();
 
             // BlockPresenterをスポーンさせる
@@ -56,20 +56,10 @@ namespace Carry.CarrySystem.Map.Scripts
                 var blockMonoDelegate = new BlockMonoDelegate(checkedBlocks,blockInfos);  // すべてのマスにBlockMonoDelegateを配置させる
                 map.AddEntity(i, blockMonoDelegate);
 
-                // foreach (var blockController in blockControllerComponents)
-                // {
-                //     var blockType =  checkedBlocks.First().GetType();
-                //     if (blockController.Info.BlockType == blockType)  // インスペクターから設定 blockControllerが複数あるので、一つに絞っている
-                //     {
-                //     
-                //         // blockController.Init(blockMonoDelegate);
-                //         
-                //     }
-                // }
-                
                 blockPresenters.Add(blockPresenter);
             }
             
+            Debug.Log($"blockPresenters.Count : {blockPresenters.Count}");
 
             return (blockControllers, blockPresenters);
 

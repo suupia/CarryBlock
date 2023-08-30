@@ -18,13 +18,12 @@ namespace Projects.CarrySystem.Block.Scripts
          public IBlock? Block => _block; 
          public IList<IBlock> Blocks => _blocks;
          
-         public bool IsActive { get; set; }
 
          readonly IList<IBlock> _blocks;
          readonly IList<BlockInfo> _blockInfos;
          readonly IBlock? _block;
 
-         IHighlightExecutor _highLightExecutor;
+         readonly IHighlightExecutor _highLightExecutor;
 
          public BlockMonoDelegate(IList<IBlock> blocks, IList<BlockInfo> blockInfos)
          {

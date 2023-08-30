@@ -93,6 +93,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void SetInitAllEntityActiveData(IEnumerable<IEntity> allEntities)
         {
+            Debug.Log($"allEntities : {string.Join(", ", allEntities)}");
             var allEntityList = allEntities.ToList();
             PresentDataRef.BasicBlockCount = allEntityList.OfType<BasicBlock>().Count();
             PresentDataRef.UnmovableBlockCount = allEntityList.OfType<UnmovableBlock>().Count();

@@ -3,11 +3,13 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Projects.CarrySystem.Block.Info;
+using Projects.CarrySystem.Block.Scripts;
 using UnityEngine;
 #nullable enable
 
 namespace Projects.CarrySystem.Block
 {
+    [RequireComponent(typeof(BlockControllerNet))]
     public class BlockMaterialSetter : NetworkBehaviour
     {
         public struct BlockMaterialSetterData : INetworkStruct
