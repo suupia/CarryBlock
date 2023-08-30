@@ -127,11 +127,12 @@ namespace Carry.CarrySystem.Player.Scripts
 
            //  Debug.Log($"blockMonoDelegate : {blockMonoDelegate}, forwardGridPos: {forwardGridPos}");
 
-            // Debug.Log($"forwardGridPos: {forwardGridPos}, blocks: {string.Join(",", blocks)}");
 
             _searchedBlockMonoDelegate = blockMonoDelegate;
             if (blockMonoDelegate != null)
             {
+                Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate?.Blocks)}");
+
                 _searchedBlocks = blockMonoDelegate.Blocks;
                 blockMonoDelegate.Highlight();  // ハイライトの処理
 
