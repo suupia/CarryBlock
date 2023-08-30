@@ -91,15 +91,6 @@ namespace Carry.CarrySystem.Player.Scripts
             else
             {
                 var blockMonoDelegate = _searchedBlockMonoDelegate;  // フレームごとに判定しているためここでキャッシュする
-                // if (blockMonoDelegate == null)
-                // {
-                //     Debug.Log($"_searchedBlockMonoDelegate : null");
-                //     return;
-                // }
-                // else
-                // {
-                //     Debug.Log($"_searchedBlockMonoDelegate : {blockMonoDelegate.Block}");
-                // }
                 if(blockMonoDelegate.Block == null)
                 {
                     Debug.Log($"blockMonoDelegate.Block : null");
@@ -136,7 +127,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _searchedBlockMonoDelegate = blockMonoDelegate;
             if (blockMonoDelegate != null)
             {
-                Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
+                // Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
 
                 _searchedBlocks = blockMonoDelegate.Blocks;
                 blockMonoDelegate.Highlight(blockMonoDelegate.Block);  // ハイライトの処理

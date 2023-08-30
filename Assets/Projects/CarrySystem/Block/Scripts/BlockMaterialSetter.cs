@@ -30,10 +30,14 @@ namespace Projects.CarrySystem.Block
         {
             if(_materials == null) return;
             // Debug.Log($"Data.WhiteRatio: {Data.WhiteRatio}  ");
-            foreach (var material in _materials)
+            if (Runner.LocalPlayer)
             {
-                material?.SetFloat("_WhiteRatio", Data.WhiteRatio);
+                foreach (var material in _materials)
+                {
+                    material?.SetFloat("_WhiteRatio", Data.WhiteRatio);
+                }
             }
+
         }
 
         public void ChangeWhite()
