@@ -9,38 +9,46 @@ using UnityEngine;
 
 namespace Projects.CarrySystem.Block.Scripts
 {
+    /// <summary>
+    /// IBlock(ドメインの情報)とBlockInfo(NetworkBehaviourの情報)を持つクラス
+    /// ドメインの処理はこのクラスにアクセスして行う
+    /// </summary>
     public class BlockMonoDelegate : IBlockMonoDelegate
     {
-         public BlockInfo Info { get; private set; }
-         public IBlock Block => _block; 
+         public IBlock? Block => _block; 
          public IList<IBlock> Blocks => _blocks;
+         
+         public bool IsActive { get; set; }
 
          readonly IList<IBlock> _blocks;
-         readonly IBlock _block;
+         readonly IList<BlockInfo> _blockInfos;
+         readonly IBlock? _block;
 
          IHighlightExecutor _highLightExecutor;
 
-         public BlockMonoDelegate(IList<IBlock> blocks)
+         public BlockMonoDelegate(IList<IBlock> blocks, IList<BlockInfo> blockInfos)
          {
-             if(!blocks.Any()) Debug.LogError($"blocks is empty");
              _blocks = blocks;
-             _block = blocks.First();
+             _blockInfos = blockInfos;
+             _block = blocks.FirstOrDefault();
+             
+             _highLightExecutor = new HighlightExecutor(_blockInfos);
 
          }
-
-         public void SetInfo(BlockInfo info)
-         {
-             Info = info;
-             var materialSetter = Info.blockController.GetComponent<BlockMaterialSetter>();
-             if (materialSetter == null) Debug.LogError($"materialSetter is null");
-             materialSetter.Init(Info);
-             _highLightExecutor = new HighlightExecutor(Info.blockController.gameObject.GetComponent<BlockMaterialSetter>());
-
-         }
+         //
+         // public void SetInfo(BlockInfo info)
+         // {
+         //     Info = info;
+         //     var materialSetter = Info.blockController.GetComponent<BlockMaterialSetter>();
+         //     if (materialSetter == null) Debug.LogError($"materialSetter is null");
+         //     materialSetter.Init(Info);
+         //     _highLightExecutor = new HighlightExecutor(Info.blockController.gameObject.GetComponent<BlockMaterialSetter>());
+         //
+         // }
          
-         public void Highlight()
+         public void Highlight(IBlock block)
          {
-             _highLightExecutor.Highlight();
+             _highLightExecutor.Highlight(block);
          }
          
          // IBlock implementation

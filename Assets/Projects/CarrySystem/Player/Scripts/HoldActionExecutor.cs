@@ -131,10 +131,10 @@ namespace Carry.CarrySystem.Player.Scripts
             _searchedBlockMonoDelegate = blockMonoDelegate;
             if (blockMonoDelegate != null)
             {
-                Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate?.Blocks)}");
+                Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
 
                 _searchedBlocks = blockMonoDelegate.Blocks;
-                blockMonoDelegate.Highlight();  // ハイライトの処理
+                blockMonoDelegate.Highlight(blockMonoDelegate.Block);  // ハイライトの処理
 
             }
             

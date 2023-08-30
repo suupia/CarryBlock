@@ -10,6 +10,7 @@ namespace Projects.CarrySystem.Block.Info
     public class BlockInfo
     {
         [SerializeField] BlockTypeEnum _blockType;
+        [SerializeField] public BlockMaterialSetter BlockMaterialSetter = null!;
         [NonSerialized] public GameObject blockViewObj;
         [NonSerialized] public BlockControllerNet blockController;
         public Type BlockType => DecideBlockType();

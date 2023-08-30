@@ -13,16 +13,6 @@ namespace Projects.CarrySystem.Block.Scripts
 
         [SerializeField] BlockInfo _info = null!;
         public BlockInfo Info => _info;
-        IBlockMonoDelegate _blockMonoDelegate = null!;
-        
-        // ToDo: IBlockMonoDelegateを配置してboolでRemoveではなく、boolでオンオフを管理するようにする
-
-        public void Init(IBlockMonoDelegate blockMonoDelegate)
-        {
-            Debug.Log($"Init BlockControllerNet");
-            _blockMonoDelegate = blockMonoDelegate;
-            blockMonoDelegate.SetInfo(_info);
-        }
         
         public override void Spawned()
         {

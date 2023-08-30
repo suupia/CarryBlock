@@ -1,4 +1,8 @@
-﻿using Carry.CarrySystem.Block.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Carry.CarrySystem.Block.Interfaces;
+using Cysharp.Threading.Tasks;
+using Projects.CarrySystem.Block.Info;
 using UnityEngine;
 #nullable enable
 
@@ -6,19 +10,31 @@ namespace Projects.CarrySystem.Block.Scripts
 {
     public class HighlightExecutor :IHighlightExecutor
     {
-        readonly BlockMaterialSetter _blockMaterialSetter;
-        public HighlightExecutor(BlockMaterialSetter blockMaterialSetter )
+        readonly IList<BlockInfo> _blockInfos;
+        public HighlightExecutor(IList<BlockInfo> blockInfos)
         {
-            _blockMaterialSetter =blockMaterialSetter;
+            _blockInfos = blockInfos;
         }
-        public void Highlight()
+        public void Highlight(IBlock? block)
         {
+            if(block == null) return;
             Debug.Log($"HighLight!!!");
-            if (_blockMaterialSetter == null)
+            DecideMaterialSetter(block).ChangeWhite();
+        }
+
+        BlockMaterialSetter DecideMaterialSetter(IBlock block)
+        {
+            var type = block.GetType();
+            var materialSetter =  _blockInfos.Where(info=> info.BlockType == type).Select(info => info.BlockMaterialSetter).First();
+            if (materialSetter != null)
             {
-                Debug.Log($"_blockMaterialSetter is null!!!!!!!!!!!!!!!");
+                return materialSetter;
             }
-            _blockMaterialSetter.ChangeWhite();
+            else
+            {
+                Debug.LogError($"materialSetter is null");
+                return null!;
+            }
         }
     }
 }

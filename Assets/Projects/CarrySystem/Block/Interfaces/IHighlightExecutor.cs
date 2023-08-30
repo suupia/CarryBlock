@@ -1,7 +1,8 @@
-﻿namespace Carry.CarrySystem.Block.Interfaces
+﻿#nullable enable
+namespace Carry.CarrySystem.Block.Interfaces
 {
     public interface IHighlightExecutor
     {
-        void Highlight();
+        void Highlight(IBlock? block );
     }
 }
