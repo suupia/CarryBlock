@@ -79,25 +79,31 @@ namespace Carry.CarrySystem.Player.Scripts
                     var block = _blockContainer.PopBlock();
                     if (block == null)
                     {
-                        Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれない
+                        Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれないはず
                         return;
                     }
-                    block.Block.PutDown(_info.playerController.GetCharacter);
-                    _map.AddEntity(forwardGridPos, block);
+                    block.PutDown(_info.playerController.GetCharacter);
+                    // _map.AddEntity(forwardGridPos, block);
+                    _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos).AddBlock(block);
                     _playerPresenterContainer.PutDownBlock();
                 }
             }
             else
             {
                 var blockMonoDelegate = _searchedBlockMonoDelegate;  // フレームごとに判定しているためここでキャッシュする
-                if (blockMonoDelegate == null)
+                // if (blockMonoDelegate == null)
+                // {
+                //     Debug.Log($"_searchedBlockMonoDelegate : null");
+                //     return;
+                // }
+                // else
+                // {
+                //     Debug.Log($"_searchedBlockMonoDelegate : {blockMonoDelegate.Block}");
+                // }
+                if(blockMonoDelegate.Block == null)
                 {
-                    Debug.Log($"_searchedBlockMonoDelegate : null");
+                    Debug.Log($"blockMonoDelegate.Block : null");
                     return;
-                }
-                else
-                {
-                    Debug.Log($"_searchedBlockMonoDelegate : {blockMonoDelegate.Block}");
                 }
                 
                 // Debug
@@ -108,9 +114,10 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     Debug.Log($"remove currentBlockMonos");
                     block.PickUp(_info.playerController.GetCharacter);
-                    _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
-                    _playerPresenterContainer.PickUpBlock(blockMonoDelegate);
-                    _blockContainer.SetBlock(blockMonoDelegate);
+                    // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
+                    _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos).RemoveBlock(block);
+                    _playerPresenterContainer.PickUpBlock(block);
+                    _blockContainer.SetBlock(block);
                 }
                 Debug.Log($"after currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
 

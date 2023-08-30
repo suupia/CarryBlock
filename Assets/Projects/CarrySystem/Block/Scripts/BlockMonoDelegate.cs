@@ -2,6 +2,7 @@
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Projects.CarrySystem.Block.Info;
 using UnityEngine;
@@ -15,21 +16,22 @@ namespace Projects.CarrySystem.Block.Scripts
     /// </summary>
     public class BlockMonoDelegate : IBlockMonoDelegate
     {
-         public IBlock? Block => _block; 
+         public IBlock? Block => _blocks.FirstOrDefault(); 
          public IList<IBlock> Blocks => _blocks;
          
 
          readonly IList<IBlock> _blocks;
          readonly IList<BlockInfo> _blockInfos;
          readonly IBlock? _block;
+         readonly IBlockPresenter _blockPresenter;
 
          readonly IHighlightExecutor _highLightExecutor;
 
-         public BlockMonoDelegate(IList<IBlock> blocks, IList<BlockInfo> blockInfos)
+         public BlockMonoDelegate(IList<IBlock> blocks, IList<BlockInfo> blockInfos, IBlockPresenter blockPresenter)
          {
              _blocks = blocks;
              _blockInfos = blockInfos;
-             _block = blocks.FirstOrDefault();
+             _blockPresenter = blockPresenter;
              
              _highLightExecutor = new HighlightExecutor(_blockInfos);
 
@@ -44,6 +46,19 @@ namespace Projects.CarrySystem.Block.Scripts
          //     _highLightExecutor = new HighlightExecutor(Info.blockController.gameObject.GetComponent<BlockMaterialSetter>());
          //
          // }
+         
+         public void AddBlock(IBlock block)
+         {
+             _blocks.Add(block);
+            _blockPresenter.SetBlockActiveData(block, _blocks.Count);
+
+         }
+         public void RemoveBlock(IBlock block)
+         {
+             _blocks.Remove(block);
+             _blockPresenter.SetBlockActiveData(block, _blocks.Count);
+
+         }
          
          public void Highlight(IBlock block)
          {
