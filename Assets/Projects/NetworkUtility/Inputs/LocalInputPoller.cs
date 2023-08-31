@@ -39,8 +39,10 @@ namespace Projects.NetworkUtility.Inputs.Scripts
         public LocalInputPoller()
         {
             //本来はDI的思想で設定したい
-            var handler = Addressables.LoadAssetAsync<InputActionAsset>("InputActionAssets/PlayerInputAction");
-            _inputActionAsset = handler.WaitForCompletion();
+            var loader =
+                new ScriptableObjectLoaderFromAddressable<InputActionAsset>("InputActionAssets/PlayerInputAction");
+            AsyncOperationHandle<InputActionAsset> handler ;
+            (_inputActionAsset , handler) = loader.Load();
             Debug.Log($"_inputActionAsset : {_inputActionAsset}");
             Assert.IsNotNull(_inputActionAsset, "InputActionを設定してください。Pathが間違っている可能性があります");
 
@@ -56,7 +58,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
             _pass = _inputActionMap.FindAction("Pass");
             _changeUnit = _inputActionMap.FindAction("ChangeUnit");
             
-            Addressables.Release(handler);
+            loader.Release(handler);
         }
 
 
