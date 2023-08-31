@@ -5,6 +5,7 @@ using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners;
 using Fusion;
 using Projects.CarrySystem.Block.Scripts;
@@ -15,12 +16,12 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class BlockBuilder
+    public class CarryBlockBuilder :  IBlockBuilder
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<BlockPresenterNet> _blockPresenterPrefabSpawner;
 
-        public BlockBuilder(NetworkRunner runner)
+        public CarryBlockBuilder(NetworkRunner runner)
         {
             _runner = runner;
             _blockPresenterPrefabSpawner =

@@ -37,7 +37,6 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 
             // Player
             builder.Register<MainCarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
-            builder.Register<BlockBuilder>(Lifetime.Scoped);
             builder.Register<CarryPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
             builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
@@ -47,6 +46,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             // Map
             builder.Register<EntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
+            builder.Register<CarryBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();
             builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>();;
             builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);

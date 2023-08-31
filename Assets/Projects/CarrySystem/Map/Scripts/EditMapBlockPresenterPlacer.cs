@@ -14,13 +14,13 @@ namespace Carry.CarrySystem.Map.Scripts
     public class EditMapBlockPresenterPlacer : IBlockPresenterPlacer
     {
         [Inject] readonly NetworkRunner _runner;
-        readonly BlockBuilder _blockBuilder;
+        readonly IBlockBuilder _carryBlockBuilder;
         IEnumerable<BlockPresenterNet> _blockPresenters =  new List<BlockPresenterNet>();
         
         [Inject]
-        public EditMapBlockPresenterPlacer(BlockBuilder blockBuilder)
+        public EditMapBlockPresenterPlacer(IBlockBuilder carryBlockBuilder)
         {
-            _blockBuilder = blockBuilder;
+            _carryBlockBuilder = carryBlockBuilder;
         }
 
         
@@ -29,7 +29,7 @@ namespace Carry.CarrySystem.Map.Scripts
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
             
-            var (blockControllers, blockPresenterNets) = _blockBuilder.Build(ref map);
+            var (blockControllers, blockPresenterNets) = _carryBlockBuilder.Build(ref map);
             
             // BlockPresenterをドメインのEntityGridMapに紐づける
             AttachTilePresenter(blockPresenterNets, map);
