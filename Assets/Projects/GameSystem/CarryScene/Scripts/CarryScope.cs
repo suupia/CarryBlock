@@ -45,7 +45,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
 
             // Serverのドメインスクリプト
             // Map
-            builder.Register<MapBuilderMonoDelegate>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
+            builder.Register<EntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>();;
             builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
