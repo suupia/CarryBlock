@@ -81,13 +81,20 @@ namespace Projects.Utility.Scripts
         {
             var handler = Addressables.LoadAssetAsync<T>(_path);
             var value = handler.WaitForCompletion();
-            Addressables.Release(handler);
+            // Addressable s .Release(handler);
             return value;
         }
 
         public T[] LoadAll()
         {
             throw new NotImplementedException();
+        }
+
+        public void PrefabLoaderRelease()
+        {
+            var handler = Addressables.LoadAssetAsync<T>(_path);
+            Addressables.Release(handler);
+            
         }
     }
 }

@@ -53,6 +53,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
             _dash = _inputActionMap.FindAction("Dash");
             _pass = _inputActionMap.FindAction("Pass");
             _changeUnit = _inputActionMap.FindAction("ChangeUnit");
+            loader.PrefabLoaderRelease();
         }
 
 
