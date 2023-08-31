@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
-using Carry.CarrySystem.Block.Scripts;
-using Carry.CarrySystem.Entity.Interfaces;
-using Carry.CarrySystem.Entity.Scripts;
-using Carry.CarrySystem.Spawners;
+using Carry.CarrySystem.Map.Interfaces;
 using Fusion;
 using Projects.CarrySystem.Block.Scripts;
 using Projects.Utility.Scripts;
-using Projects.Utilty;
 using UnityEngine;
-#nullable enable
+using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class BlockBuilder
+    public class EditMapBlockBuilder : IBlockBuilder
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<BlockPresenterNet> _blockPresenterPrefabSpawner;
 
-        public BlockBuilder(NetworkRunner runner)
+        public EditMapBlockBuilder(NetworkRunner runner)
         {
             _runner = runner;
             _blockPresenterPrefabSpawner =
