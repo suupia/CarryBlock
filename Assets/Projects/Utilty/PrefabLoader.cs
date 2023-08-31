@@ -84,10 +84,7 @@ namespace Projects.Utility.Scripts
             var handler = Addressables.LoadAssetAsync<GameObject>(_path);
             var gameObject = handler.WaitForCompletion();
             var component = gameObject.GetComponent<T>();
-            Debug.Log($"component = {component}");
-            // Addressables.Release(handler);
-            handler.BindTo(gameObject);
-            Debug.Log($"component after release = {component}");
+             handler.BindTo(gameObject);
             return component;
         }
 
@@ -106,49 +103,4 @@ namespace Projects.Utility.Scripts
         }
     }
     
-    public class ScriptableObjectLoaderFromAddressable<T>   where T : ScriptableObject
-    {
-        readonly string _path;
-
-        public ScriptableObjectLoaderFromAddressable(string path)
-        {
-            _path = path;
-        }
-
-        public (T, AsyncOperationHandle<T> )Load()
-        {
-            //Addressableでは直接コンポーネントをとってこれない。GameObjectから取得する
-            // return typeof(T).IsSubclassOf(typeof(Component)) ? LoadComponent() : LoadDirectory();
-            if (typeof(T).IsSubclassOf(typeof(Component)))
-            {
-                return LoadScriptableObject();
-            }
-            else
-            {
-                return LoadDirectory();
-            }
-        }
- 
-
-        (T, AsyncOperationHandle<T> ) LoadScriptableObject()
-        {
-            var handler = Addressables.LoadAssetAsync<T>(_path);
-            var value = handler.WaitForCompletion();
-            return (value, handler);
-        }
-
-        (T, AsyncOperationHandle<T> ) LoadDirectory()
-        {
-            Debug.LogWarning($"LoadDirectory key = {_path}");
-            var handler = Addressables.LoadAssetAsync<T>(_path);
-            var value = handler.WaitForCompletion();
-            Addressables.Release(handler);
-            return (value, handler);
-        }
-
-        public T[] LoadAll()
-        {
-            throw new NotImplementedException();
-        }
-    }
 }

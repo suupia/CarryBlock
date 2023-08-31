@@ -39,10 +39,6 @@ namespace Projects.NetworkUtility.Inputs.Scripts
         public LocalInputPoller()
         {
             //本来はDI的思想で設定したい
-            // var loader = new PrefabLoaderFromResources<InputActionAsset>("InputActionAssets", "PlayerInputAction");
-            // var loader = new ScriptableObjectLoaderFromAddressable<InputActionAsset>("InputActionAssets/PlayerInputAction");
-            // AsyncOperationHandle<InputActionAsset> handler;
-            // (_inputActionAsset , handler )= loader.Load();
             var handler = Addressables.LoadAssetAsync<InputActionAsset>("InputActionAssets/PlayerInputAction");
             _inputActionAsset = handler.WaitForCompletion();
             Debug.Log($"_inputActionAsset : {_inputActionAsset}");
