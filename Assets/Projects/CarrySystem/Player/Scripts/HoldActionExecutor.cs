@@ -79,25 +79,22 @@ namespace Carry.CarrySystem.Player.Scripts
                     var block = _blockContainer.PopBlock();
                     if (block == null)
                     {
-                        Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれない
+                        Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれないはず
                         return;
                     }
-                    block.Block.PutDown(_info.playerController.GetCharacter);
-                    _map.AddEntity(forwardGridPos, block);
+                    block.PutDown(_info.playerController.GetCharacter);
+                    // _map.AddEntity(forwardGridPos, block);
+                    _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos).AddBlock(block);
                     _playerPresenterContainer.PutDownBlock();
                 }
             }
             else
             {
                 var blockMonoDelegate = _searchedBlockMonoDelegate;  // フレームごとに判定しているためここでキャッシュする
-                if (blockMonoDelegate == null)
+                if(blockMonoDelegate.Block == null)
                 {
-                    Debug.Log($"_searchedBlockMonoDelegate : null");
+                    Debug.Log($"blockMonoDelegate.Block : null");
                     return;
-                }
-                else
-                {
-                    Debug.Log($"_searchedBlockMonoDelegate : {blockMonoDelegate.Block}");
                 }
                 
                 // Debug
@@ -108,9 +105,10 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     Debug.Log($"remove currentBlockMonos");
                     block.PickUp(_info.playerController.GetCharacter);
-                    _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
-                    _playerPresenterContainer.PickUpBlock(blockMonoDelegate);
-                    _blockContainer.SetBlock(blockMonoDelegate);
+                    // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
+                    _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos).RemoveBlock(block);
+                    _playerPresenterContainer.PickUpBlock(block);
+                    _blockContainer.SetBlock(block);
                 }
                 Debug.Log($"after currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
 
@@ -119,26 +117,28 @@ namespace Carry.CarrySystem.Player.Scripts
 
         void SearchBlocks()
         {
+            if (_info.playerObj == null) return; // EveryUpdateで呼ぶため、playerObjが破棄された後にも呼ばれる可能性がある
             var transform = _info.playerObj.transform;
             var forwardGridPos = GetForwardGridPos(transform);
 
-            // 前方にBlockがあるかどうかを確認
+            // 前方のMonoBlockDelegateを取得
             var blockMonoDelegate = _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos);
 
-           //  Debug.Log($"blockMonoDelegate : {blockMonoDelegate}, forwardGridPos: {forwardGridPos}");
-
-            // Debug.Log($"forwardGridPos: {forwardGridPos}, blocks: {string.Join(",", blocks)}");
-
             _searchedBlockMonoDelegate = blockMonoDelegate;
-            if (blockMonoDelegate != null)
-            {
-                _searchedBlocks = blockMonoDelegate.Blocks;
-            }
             
-            // ここにブロックの見た目を変える処理を入れる
-            // ToDo: IBlockMonoDelegateを取ってきてハイライトの処理をする
-            // blockMonoDelegate.HIghlight();
+            if (blockMonoDelegate == null) return;
 
+            // Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
+
+            // _searchedBlockを更新
+            _searchedBlocks = blockMonoDelegate.Blocks;
+
+            // ハイライトの処理
+            if (blockMonoDelegate.Block ==null) return;
+            if (blockMonoDelegate.Block.CanPickUp())
+            {
+                blockMonoDelegate.Highlight(blockMonoDelegate.Block, _info.playerRef); // ハイライトの処理
+            }
         }
 
 

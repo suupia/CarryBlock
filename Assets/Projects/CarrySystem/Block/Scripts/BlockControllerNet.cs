@@ -13,13 +13,6 @@ namespace Projects.CarrySystem.Block.Scripts
 
         [SerializeField] BlockInfo _info = null!;
         public BlockInfo Info => _info;
-        IBlockMonoDelegate _blockMonoDelegate = null!;
-
-        public void Init(IBlockMonoDelegate blockMonoDelegate)
-        {
-            Debug.Log($"Init BlockControllerNet");
-            _blockMonoDelegate = blockMonoDelegate;
-        }
         
         public override void Spawned()
         {

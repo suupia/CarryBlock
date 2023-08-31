@@ -36,7 +36,7 @@ namespace Carry.CarrySystem.Player.Scripts
             
         }
         
-        public void ReceivePass(IBlockMonoDelegate block)
+        public void ReceivePass(IBlock block)
         {
             
         }

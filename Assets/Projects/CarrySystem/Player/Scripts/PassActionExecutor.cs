@@ -73,23 +73,23 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             return !_blockContainer.IsHoldingBlock;
         }
-        public void ReceivePass(IBlockMonoDelegate block)
+        public void ReceivePass(IBlock block)
         {
             Debug.Log("Receive Pass");
-            block.Block.PickUp(_info.playerController.GetCharacter);
+            block.PickUp(_info.playerController.GetCharacter);
             _blockContainer.SetBlock(block);
             _playerPresenterContainer.ReceiveBlock(block);
         }
         
         // private
-        void PassBlock(IBlockMonoDelegate block)
+        void PassBlock(IBlock block)
         {
             Debug.Log($"Pass Block");
-            block.Block.PutDown(_info.playerController.GetCharacter);
+            block.PutDown(_info.playerController.GetCharacter);
             _playerPresenterContainer.PassBlock();
         }
         
-        (bool, IBlockMonoDelegate) CanPass(CarryPlayerControllerNet targetPlayerController)
+        (bool, IBlock) CanPass(CarryPlayerControllerNet targetPlayerController)
         {
             if (!_blockContainer.IsHoldingBlock) 
             {
