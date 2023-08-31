@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Object = UnityEngine.Object;
+using Addler.Runtime.Core.LifetimeBinding;
 
 namespace Projects.Utility.Scripts
 {
@@ -67,11 +68,58 @@ namespace Projects.Utility.Scripts
         {
             //Addressableでは直接コンポーネントをとってこれない。GameObjectから取得する
             // return typeof(T).IsSubclassOf(typeof(Component)) ? LoadComponent() : LoadDirectory();
+                if (typeof(T).IsSubclassOf(typeof(Component)))
+                {
+                    return LoadComponent();
+                }
+                else
+                {
+                    return LoadDirectory();
+                }
+        }
+ 
+
+        T LoadComponent()
+        {
+            var handler = Addressables.LoadAssetAsync<GameObject>(_path);
+            var gameObject = handler.WaitForCompletion();
+            var component = gameObject.GetComponent<T>();
+            Debug.Log($"component = {component}");
+            // Addressables.Release(handler);
+            handler.BindTo(gameObject);
+            Debug.Log($"component after release = {component}");
+            return component;
+        }
+
+        T LoadDirectory()
+        {
+            Debug.LogWarning($"LoadDirectory key = {_path}");
+            var handler = Addressables.LoadAssetAsync<T>(_path);
+            var value = handler.WaitForCompletion();
+            Addressables.Release(handler);
+            return value;
+        }
+
+        public T[] LoadAll()
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
+    public class ScriptableObjectLoaderFromAddressable<T>   where T : ScriptableObject
+    {
+        readonly string _path;
+
+        public ScriptableObjectLoaderFromAddressable(string path)
+        {
+            _path = path;
+        }
+
+        public (T, AsyncOperationHandle<T> )Load()
+        {
+            //Addressableでは直接コンポーネントをとってこれない。GameObjectから取得する
+            // return typeof(T).IsSubclassOf(typeof(Component)) ? LoadComponent() : LoadDirectory();
             if (typeof(T).IsSubclassOf(typeof(Component)))
-            {
-                return LoadComponent();
-            }
-            else if (typeof(T).IsSubclassOf(typeof(ScriptableObject)))
             {
                 return LoadScriptableObject();
             }
@@ -82,37 +130,20 @@ namespace Projects.Utility.Scripts
         }
  
 
-        T LoadComponent()
-        {
-            var handler = Addressables.LoadAssetAsync<GameObject>(_path);
-            var gameObject = handler.WaitForCompletion();
-            var component = gameObject.GetComponent<T>();
-            Debug.Log($"\n component : {component}");
-            Addressables.Release(handler);
-            Debug.Log($"\n component after release : {component}");
-            return component;
-        }
-        
-        T LoadScriptableObject()
+        (T, AsyncOperationHandle<T> ) LoadScriptableObject()
         {
             var handler = Addressables.LoadAssetAsync<T>(_path);
             var value = handler.WaitForCompletion();
-            Debug.Log($"\n scriptable value : {value}");
-            Addressables.Release(handler);
-            Debug.Log($"\n scriptable value after release : {value}");
-            return value;
+            return (value, handler);
         }
 
-        T LoadDirectory()
+        (T, AsyncOperationHandle<T> ) LoadDirectory()
         {
-            Debug.Log($"\n LoadDirectory _path : {_path}");
+            Debug.LogWarning($"LoadDirectory key = {_path}");
             var handler = Addressables.LoadAssetAsync<T>(_path);
-            Debug.Log($"\n handler : {handler}");
             var value = handler.WaitForCompletion();
-            Debug.Log($"\n value : {value}");
             Addressables.Release(handler);
-            Debug.Log($"\n value after release : {value}");
-            return value;
+            return (value, handler);
         }
 
         public T[] LoadAll()
