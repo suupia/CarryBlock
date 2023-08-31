@@ -4,9 +4,7 @@ using Fusion;
 using Fusion.Sockets;
 using Projects.Utility.Scripts;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using Assert = UnityEngine.Assertions.Assert;
 
 namespace Projects.NetworkUtility.Inputs.Scripts
@@ -27,7 +25,6 @@ namespace Projects.NetworkUtility.Inputs.Scripts
     public class LocalInputPoller : INetworkRunnerCallbacks
     {
         NetworkInputData _localInput;
-        readonly InputActionAsset _inputActionAsset;
         readonly InputActionMap _inputActionMap;
 
         readonly InputAction _move;
@@ -41,12 +38,11 @@ namespace Projects.NetworkUtility.Inputs.Scripts
             //本来はDI的思想で設定したい
             var loader =
                 new ScriptableObjectLoaderFromAddressable<InputActionAsset>("InputActionAssets/PlayerInputAction");
-            AsyncOperationHandle<InputActionAsset> handler ;
-            (_inputActionAsset , handler) = loader.Load();
-            Debug.Log($"_inputActionAsset : {_inputActionAsset}");
-            Assert.IsNotNull(_inputActionAsset, "InputActionを設定してください。Pathが間違っている可能性があります");
+            
+            (var inputActionAsset ,var handler) = loader.Load();
+            Assert.IsNotNull(inputActionAsset, "InputActionを設定してください。Pathが間違っている可能性があります");
 
-            _inputActionMap = _inputActionAsset.FindActionMap("Default");
+            _inputActionMap = inputActionAsset.FindActionMap("Default");
             _inputActionMap.Enable();
             
             //本来は以下を適切なタイミングで呼ぶべき
