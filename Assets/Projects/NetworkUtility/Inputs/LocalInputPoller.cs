@@ -4,7 +4,9 @@ using Fusion;
 using Fusion.Sockets;
 using Projects.Utility.Scripts;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Assert = UnityEngine.Assertions.Assert;
 
 namespace Projects.NetworkUtility.Inputs.Scripts
@@ -37,9 +39,9 @@ namespace Projects.NetworkUtility.Inputs.Scripts
         public LocalInputPoller()
         {
             //本来はDI的思想で設定したい
-            // var loader = new PrefabLoaderFromResources<InputActionAsset>("InputActionAssets", "PlayerInputAction");
-            var loader = new PrefabLoaderFromAddressable<InputActionAsset>("InputActionAssets/PlayerInputAction");
-            _inputActionAsset = loader.Load();
+            var handler = Addressables.LoadAssetAsync<InputActionAsset>("InputActionAssets/PlayerInputAction");
+            _inputActionAsset = handler.WaitForCompletion();
+            Debug.Log($"_inputActionAsset : {_inputActionAsset}");
             Assert.IsNotNull(_inputActionAsset, "InputActionを設定してください。Pathが間違っている可能性があります");
 
             _inputActionMap = _inputActionAsset.FindActionMap("Default");
@@ -53,6 +55,8 @@ namespace Projects.NetworkUtility.Inputs.Scripts
             _dash = _inputActionMap.FindAction("Dash");
             _pass = _inputActionMap.FindAction("Pass");
             _changeUnit = _inputActionMap.FindAction("ChangeUnit");
+            
+            Addressables.Release(handler);
         }
 
 
