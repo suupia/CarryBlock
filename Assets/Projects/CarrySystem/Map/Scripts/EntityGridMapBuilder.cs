@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class MapBuilderMonoDelegate : IEntityGridMapBuilder
+    public class EntityGridMapBuilder : IEntityGridMapBuilder
     {
         public EntityGridMap BuildEntityGridMap(EntityGridMapData gridMapData)
         {

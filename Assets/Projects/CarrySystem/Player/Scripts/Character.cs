@@ -75,6 +75,6 @@ namespace Carry.CarrySystem.Player.Scripts
         // PassActionExecutor
         public void PassAction() => _passActionExecutor.PassAction();
         public bool CanReceivePass() => _passActionExecutor.CanReceivePass();
-        public void ReceivePass(IBlockMonoDelegate block) => _passActionExecutor.ReceivePass(block);
+        public void ReceivePass(IBlock block) => _passActionExecutor.ReceivePass(block);
     }
 }
