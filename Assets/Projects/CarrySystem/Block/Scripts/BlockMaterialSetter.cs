@@ -33,7 +33,7 @@ namespace Projects.CarrySystem.Block
         public override void Render()
         {
             if(_materials == null) return; 
-            Debug.Log($"PlayerRef: {Data.PlayerRef}, Data.WhiteRatio: {Data.WhiteRatio}");
+            // Debug.Log($"PlayerRef: {Data.PlayerRef}, Data.WhiteRatio: {Data.WhiteRatio}");
             if (Runner.LocalPlayer)
             {
                 if (Runner.LocalPlayer == Data.PlayerRef)
@@ -58,7 +58,7 @@ namespace Projects.CarrySystem.Block
         
         async UniTaskVoid ChangeWhiteAsync(CancellationToken token, PlayerRef playerRef)
         {
-            Debug.Log($"ChangeWhiteAsync"); 
+            // Debug.Log($"ChangeWhiteAsync"); 
             Data.WhiteRatio = 0.5f;
             if(playerRef != PlayerRef.None) Data.PlayerRef = playerRef;
             await UniTask.Delay(TimeSpan.FromSeconds(0.1f),cancellationToken: token);
