@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Projects.CarrySystem.Block.Info;
 using Projects.CarrySystem.Block.Scripts;
 using UnityEngine;
+using UniRx;
 #nullable enable
 
 namespace Projects.CarrySystem.Block
@@ -21,6 +23,7 @@ namespace Projects.CarrySystem.Block
         [Networked] public ref BlockMaterialSetterData Data => ref MakeRef<BlockMaterialSetterData>();
 
         Material[]? _materials;
+        CancellationTokenSource _cts = new CancellationTokenSource();
 
         public void Init(BlockInfo info)
         {
@@ -47,15 +50,18 @@ namespace Projects.CarrySystem.Block
 
         public void ChangeWhite(PlayerRef playerRef)
         {
-            var _ = ChangeWhiteAsync(playerRef);
+            _cts.Cancel();
+            _cts = new CancellationTokenSource();
+            var _ = ChangeWhiteAsync( _cts.Token,playerRef);
+            
         }
         
-        async UniTaskVoid ChangeWhiteAsync(PlayerRef playerRef)
+        async UniTaskVoid ChangeWhiteAsync(CancellationToken token, PlayerRef playerRef)
         {
             Debug.Log($"ChangeWhiteAsync"); 
             Data.WhiteRatio = 0.5f;
-            Data.PlayerRef = playerRef;
-            await UniTask.Delay(500);
+            if(playerRef != PlayerRef.None) Data.PlayerRef = playerRef;
+            await UniTask.Delay(TimeSpan.FromSeconds(0.1f),cancellationToken: token);
             Data.WhiteRatio = 0;
         } 
     }

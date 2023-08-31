@@ -3,6 +3,7 @@ using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using UnityEngine;
 using UnityEngine.Serialization;
+#nullable enable
 
 namespace Carry.CarrySystem.Player.Info
 {
