@@ -117,6 +117,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         void SearchBlocks()
         {
+            if(_info.playerObj == null) return;  // EveryUpdateで呼ぶため、playerObjが破棄された後にも呼ばれる可能性がある
             var transform = _info.playerObj.transform;
             var forwardGridPos = GetForwardGridPos(transform);
 

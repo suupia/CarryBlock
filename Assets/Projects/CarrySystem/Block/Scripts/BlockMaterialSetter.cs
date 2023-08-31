@@ -48,6 +48,11 @@ namespace Projects.CarrySystem.Block
 
         }
 
+        public void OnDestroy()
+        {
+            _cts.Cancel();
+        }
+
         public void ChangeWhite(PlayerRef playerRef)
         {
             _cts.Cancel();
@@ -62,7 +67,7 @@ namespace Projects.CarrySystem.Block
             Data.WhiteRatio = 0.5f;
             if(playerRef != PlayerRef.None) Data.PlayerRef = playerRef;
             await UniTask.Delay(TimeSpan.FromSeconds(0.1f),cancellationToken: token);
-            Data.WhiteRatio = 0;
+            Data.WhiteRatio = 0;  //InvalidOperationException: Error when accessing BlockMaterialSetter.Data. Networked properties can only be accessed when Spawned() has been called.が出る可能性がある
         } 
     }
 }
