@@ -130,7 +130,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 // Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
 
                 _searchedBlocks = blockMonoDelegate.Blocks;
-                blockMonoDelegate.Highlight(blockMonoDelegate.Block);  // ハイライトの処理
+                blockMonoDelegate.Highlight(blockMonoDelegate.Block, _info.playerRef);  // ハイライトの処理
 
             }
             

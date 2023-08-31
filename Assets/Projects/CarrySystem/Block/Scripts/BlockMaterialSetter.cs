@@ -15,6 +15,7 @@ namespace Projects.CarrySystem.Block
         public struct BlockMaterialSetterData : INetworkStruct
         {
             [Networked] public float WhiteRatio { get; set; }
+            [Networked] public PlayerRef PlayerRef { get; set; }
         }
 
         [Networked] public ref BlockMaterialSetterData Data => ref MakeRef<BlockMaterialSetterData>();
@@ -28,27 +29,32 @@ namespace Projects.CarrySystem.Block
 
         public override void Render()
         {
-            if(_materials == null) return;
-            // Debug.Log($"Data.WhiteRatio: {Data.WhiteRatio}  ");
+            if(_materials == null) return; 
+            Debug.Log($"PlayerRef: {Data.PlayerRef}, Data.WhiteRatio: {Data.WhiteRatio}");
             if (Runner.LocalPlayer)
             {
-                foreach (var material in _materials)
+                if (Runner.LocalPlayer == Data.PlayerRef)
                 {
-                    material?.SetFloat("_WhiteRatio", Data.WhiteRatio);
+                    foreach (var material in _materials)
+                    {
+                        material?.SetFloat("_WhiteRatio", Data.WhiteRatio);
+                    }
                 }
+
             }
 
         }
 
-        public void ChangeWhite()
+        public void ChangeWhite(PlayerRef playerRef)
         {
-            var _ = ChangeWhiteAsync();
+            var _ = ChangeWhiteAsync(playerRef);
         }
         
-        async UniTaskVoid ChangeWhiteAsync()
+        async UniTaskVoid ChangeWhiteAsync(PlayerRef playerRef)
         {
             Debug.Log($"ChangeWhiteAsync"); 
             Data.WhiteRatio = 0.5f;
+            Data.PlayerRef = playerRef;
             await UniTask.Delay(500);
             Data.WhiteRatio = 0;
         } 

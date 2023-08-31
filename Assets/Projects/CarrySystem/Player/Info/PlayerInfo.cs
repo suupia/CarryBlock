@@ -15,12 +15,14 @@ namespace Carry.CarrySystem.Player.Info
         [NonSerialized] public GameObject playerObj;
         [NonSerialized] public Rigidbody playerRb;
         [NonSerialized] public AbstractNetworkPlayerController playerController;
+        [NonSerialized] public PlayerRef playerRef;
 
-        public void Init(NetworkRunner runner, GameObject playerObj, AbstractNetworkPlayerController playerController)
+        public void Init(NetworkRunner runner, GameObject playerObj, AbstractNetworkPlayerController playerController,PlayerRef playerRef   )
         {
             this.runner = runner;
             this.playerObj = playerObj;
             this.playerController = playerController;
+            this.playerRef = playerRef;
             playerRb = playerObj.GetComponent<Rigidbody>();
         }
     }

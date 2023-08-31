@@ -2,6 +2,7 @@
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Cysharp.Threading.Tasks;
+using Fusion;
 using Projects.CarrySystem.Block.Info;
 using UnityEngine;
 #nullable enable
@@ -15,11 +16,11 @@ namespace Projects.CarrySystem.Block.Scripts
         {
             _blockInfos = blockInfos;
         }
-        public void Highlight(IBlock? block)
+        public void Highlight(IBlock? block, PlayerRef playerRef)
         {
             if(block == null) return;
             Debug.Log($"HighLight!!!");
-            DecideMaterialSetter(block).ChangeWhite();
+            DecideMaterialSetter(block).ChangeWhite(playerRef);
         }
 
         BlockMaterialSetter DecideMaterialSetter(IBlock block)

@@ -4,6 +4,7 @@ using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
+using Fusion;
 using Projects.CarrySystem.Block.Info;
 using UnityEngine;
 #nullable enable
@@ -60,9 +61,9 @@ namespace Projects.CarrySystem.Block.Scripts
 
          }
          
-         public void Highlight(IBlock block)
+         public void Highlight(IBlock block , PlayerRef playerRef)
          {
-             _highLightExecutor.Highlight(block);
+             _highLightExecutor.Highlight(block, playerRef);
          }
          
          // IBlock implementation
