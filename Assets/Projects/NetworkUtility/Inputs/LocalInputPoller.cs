@@ -40,6 +40,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
             // var loader = new PrefabLoaderFromResources<InputActionAsset>("InputActionAssets", "PlayerInputAction");
             var loader = new PrefabLoaderFromAddressable<InputActionAsset>("InputActionAssets/PlayerInputAction");
             _inputActionAsset = loader.Load();
+            Debug.Log($"_inputActionAsset : {_inputActionAsset}");
             Assert.IsNotNull(_inputActionAsset, "InputActionを設定してください。Pathが間違っている可能性があります");
 
             _inputActionMap = _inputActionAsset.FindActionMap("Default");

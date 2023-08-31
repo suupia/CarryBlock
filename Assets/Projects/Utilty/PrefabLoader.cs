@@ -63,25 +63,55 @@ namespace Projects.Utility.Scripts
             _path = path;
         }
 
-        public T Load() => 
+        public T Load()
+        {
             //Addressableでは直接コンポーネントをとってこれない。GameObjectから取得する
-            typeof(T).IsSubclassOf(typeof(Component)) ? LoadComponent() : LoadDirectory();
-        
+            // return typeof(T).IsSubclassOf(typeof(Component)) ? LoadComponent() : LoadDirectory();
+            if (typeof(T).IsSubclassOf(typeof(Component)))
+            {
+                return LoadComponent();
+            }
+            else if (typeof(T).IsSubclassOf(typeof(ScriptableObject)))
+            {
+                return LoadScriptableObject();
+            }
+            else
+            {
+                return LoadDirectory();
+            }
+        }
+ 
 
         T LoadComponent()
         {
             var handler = Addressables.LoadAssetAsync<GameObject>(_path);
             var gameObject = handler.WaitForCompletion();
             var component = gameObject.GetComponent<T>();
+            Debug.Log($"\n component : {component}");
             Addressables.Release(handler);
+            Debug.Log($"\n component after release : {component}");
             return component;
+        }
+        
+        T LoadScriptableObject()
+        {
+            var handler = Addressables.LoadAssetAsync<T>(_path);
+            var value = handler.WaitForCompletion();
+            Debug.Log($"\n scriptable value : {value}");
+            Addressables.Release(handler);
+            Debug.Log($"\n scriptable value after release : {value}");
+            return value;
         }
 
         T LoadDirectory()
         {
+            Debug.Log($"\n LoadDirectory _path : {_path}");
             var handler = Addressables.LoadAssetAsync<T>(_path);
+            Debug.Log($"\n handler : {handler}");
             var value = handler.WaitForCompletion();
+            Debug.Log($"\n value : {value}");
             Addressables.Release(handler);
+            Debug.Log($"\n value after release : {value}");
             return value;
         }
 
