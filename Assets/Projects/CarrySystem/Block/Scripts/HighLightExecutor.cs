@@ -19,17 +19,13 @@ namespace Projects.CarrySystem.Block.Scripts
         public void Highlight(IBlock? block, PlayerRef playerRef)
         {
             if(block == null) return;
-            Debug.Log($"HighLight!!!");
+            // Debug.Log($"HighLight");
             DecideMaterialSetter(block).ChangeWhite(playerRef);
         }
 
         BlockMaterialSetter DecideMaterialSetter(IBlock block)
         {
             var type = block.GetType();
-            foreach (var info in _blockInfos)
-            {
-                Debug.Log($"info.BlockType: {info.BlockType}");
-            }
             var materialSetter =  _blockInfos.Where(info=> info.BlockType == type).Select(info => info.BlockMaterialSetter).First();
             if (materialSetter != null)
             {

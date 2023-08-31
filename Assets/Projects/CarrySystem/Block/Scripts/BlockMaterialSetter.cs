@@ -52,7 +52,7 @@ namespace Projects.CarrySystem.Block
         
         async UniTaskVoid ChangeWhiteAsync(PlayerRef playerRef)
         {
-            Debug.Log($"ChangeWhiteAsync"); 
+            // Debug.Log($"ChangeWhiteAsync"); 
             Data.WhiteRatio = 0.5f;
             Data.PlayerRef = playerRef;
             await UniTask.Delay(500);
