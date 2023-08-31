@@ -117,25 +117,28 @@ namespace Carry.CarrySystem.Player.Scripts
 
         void SearchBlocks()
         {
-            if(_info.playerObj == null) return;  // EveryUpdateで呼ぶため、playerObjが破棄された後にも呼ばれる可能性がある
+            if (_info.playerObj == null) return; // EveryUpdateで呼ぶため、playerObjが破棄された後にも呼ばれる可能性がある
             var transform = _info.playerObj.transform;
             var forwardGridPos = GetForwardGridPos(transform);
 
             // 前方のMonoBlockDelegateを取得
             var blockMonoDelegate = _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos);
 
-
             _searchedBlockMonoDelegate = blockMonoDelegate;
-            if (blockMonoDelegate != null)
-            {
-                // Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
-
-                _searchedBlocks = blockMonoDelegate.Blocks;
-                blockMonoDelegate.Highlight(blockMonoDelegate.Block, _info.playerRef);  // ハイライトの処理
-
-            }
             
+            if (blockMonoDelegate == null) return;
 
+            // Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
+
+            // _searchedBlockを更新
+            _searchedBlocks = blockMonoDelegate.Blocks;
+
+            // ハイライトの処理
+            if (blockMonoDelegate.Block ==null) return;
+            if (blockMonoDelegate.Block.CanPickUp())
+            {
+                blockMonoDelegate.Highlight(blockMonoDelegate.Block, _info.playerRef); // ハイライトの処理
+            }
         }
 
 
