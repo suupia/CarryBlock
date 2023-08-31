@@ -1,5 +1,6 @@
 ﻿using Carry.CarrySystem.Map.Scripts;
 using Fusion;
+using Projects.Utility.Interfaces;
 using Projects.Utility.Scripts;
 using UnityEngine;
 

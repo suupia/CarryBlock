@@ -2,7 +2,7 @@
 
 // 参考サイト: https://kou-yeung.hatenablog.com/entry/2013/12/11/230000
 
-namespace Projects.Utilty
+namespace Projects.Utility
 {
     public static class Generic
     {

@@ -8,6 +8,7 @@ using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners;
 using Carry.UISystem.UI.CarryScene;
 using Fusion;
+using Projects.Utility.Interfaces;
 using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;

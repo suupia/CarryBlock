@@ -1,6 +1,7 @@
 ﻿using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
 using Fusion;
+using Projects.Utility.Interfaces;
 using Projects.Utility.Scripts;
 using UnityEngine;
 using UnityEngine.Tilemaps;

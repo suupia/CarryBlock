@@ -10,7 +10,8 @@ using Carry.CarrySystem.Spawners;
 using Fusion;
 using Projects.CarrySystem.Block.Scripts;
 using Projects.Utility.Scripts;
-using Projects.Utilty;
+using Projects.Utility;
+using Projects.Utility.Interfaces;
 using UnityEngine;
 #nullable enable
 
