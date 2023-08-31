@@ -30,7 +30,7 @@ namespace Projects.CarrySystem.Block
         public override void Render()
         {
             if(_materials == null) return; 
-            Debug.Log($"PlayerRef: {Data.PlayerRef}, Data.WhiteRatio: {Data.WhiteRatio}");
+            // Debug.Log($"PlayerRef: {Data.PlayerRef}, Data.WhiteRatio: {Data.WhiteRatio}");
             if (Runner.LocalPlayer)
             {
                 if (Runner.LocalPlayer == Data.PlayerRef)
