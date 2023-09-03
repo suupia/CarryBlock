@@ -38,7 +38,7 @@ namespace Carry.CarrySystem.Player.Scripts
             float minDistance = float.PositiveInfinity;
             foreach (var targetTransform in targets)
             {
-                var distance = Vector3.Distance(_info.playerObj.transform.position, targetTransform.position);
+                var distance = Vector3.Distance(_info.PlayerObj.transform.position, targetTransform.position);
                 if (distance < minDistance)
                 {
                     minTransform = targetTransform;
@@ -50,13 +50,13 @@ namespace Carry.CarrySystem.Player.Scripts
         
         Transform[] Search()
         {
-            var center = _info.playerObj. transform.position;
+            var center = _info.PlayerObj. transform.position;
             var radius = detectCollider.transform.localScale.x * detectCollider.radius; // radiusを倍率とするとうまく計算できる（0.5倍）
             var targetBuffer = new Collider[10];
             var numFound = Physics.OverlapSphereNonAlloc(center, radius,targetBuffer, _layerMask);
             var targets =  targetBuffer
                 .Where(c => c != null) // Filter out any null colliders
-                .Where(c => c.transform != _info.playerObj.transform) // 自分以外を選択する
+                .Where(c => c.transform != _info.PlayerObj.transform) // 自分以外を選択する
                 .Select(c => c.transform)
                 .ToArray();
             Debug.Log($"targets {string.Join(",", targets.ToList())}");

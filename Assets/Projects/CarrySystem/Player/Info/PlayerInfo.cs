@@ -11,17 +11,17 @@ namespace Carry.CarrySystem.Player.Info
     public record PlayerInfo
     {
         // Property
-        [NonSerialized] public GameObject playerObj;
-        [NonSerialized] public Rigidbody playerRb;
-        [NonSerialized] public AbstractNetworkPlayerController playerController;
-        [NonSerialized] public PlayerRef playerRef;
+        [NonSerialized] public GameObject PlayerObj = null!;
+        [NonSerialized] public Rigidbody PlayerRb = null!;
+        [NonSerialized] public AbstractNetworkPlayerController PlayerController = null!;
+        [NonSerialized] public PlayerRef PlayerRef;
 
-        public void Init(GameObject playerObj, AbstractNetworkPlayerController playerController,PlayerRef playerRef   )
+        public void Init(GameObject playerObj, AbstractNetworkPlayerController playerController,PlayerRef playerRef)
         {
-            this.playerObj = playerObj;
-            this.playerController = playerController;
-            this.playerRef = playerRef;
-            playerRb = playerObj.GetComponent<Rigidbody>();
+            this.PlayerObj = playerObj;
+            this.PlayerController = playerController;
+            this.PlayerRef = playerRef;
+            PlayerRb = playerObj.GetComponent<Rigidbody>();
         }
     }
 }

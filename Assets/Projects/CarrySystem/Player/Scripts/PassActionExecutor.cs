@@ -48,7 +48,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void PassAction()
         {
-            if (_passRangeNet == null) _passRangeNet = _info.playerController.GetComponentInChildren<PassRangeNet>();
+            if (_passRangeNet == null) _passRangeNet = _info.PlayerController.GetComponentInChildren<PassRangeNet>();
             if (_passRangeNet.DetectedTarget() is {} target)
             {
                 var targetPlayerController  = target.GetComponent<CarryPlayerControllerNet>();
@@ -58,7 +58,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     return;
                 }
                 
-                Debug.Log($"{_info.playerController.Object.InputAuthority}から{targetPlayerController.Object.InputAuthority}に対してPassを試みます");
+                Debug.Log($"{_info.PlayerController.Object.InputAuthority}から{targetPlayerController.Object.InputAuthority}に対してPassを試みます");
                 
                 var canPass = CanPass(targetPlayerController);
                 if(!canPass.Item1) return;
@@ -76,7 +76,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void ReceivePass(IBlock block)
         {
             Debug.Log("Receive Pass");
-            block.PickUp(_info.playerController.GetCharacter);
+            block.PickUp(_info.PlayerController.GetCharacter);
             _blockContainer.SetBlock(block);
             _playerPresenterContainer.ReceiveBlock(block);
         }
@@ -85,7 +85,7 @@ namespace Carry.CarrySystem.Player.Scripts
         void PassBlock(IBlock block)
         {
             Debug.Log($"Pass Block");
-            block.PutDown(_info.playerController.GetCharacter);
+            block.PutDown(_info.PlayerController.GetCharacter);
             _playerPresenterContainer.PassBlock();
         }
         
@@ -93,7 +93,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             if (!_blockContainer.IsHoldingBlock) 
             {
-                Debug.Log($"{_info.playerController.Object.InputAuthority} isn't holding a block. So, can't pass block");
+                Debug.Log($"{_info.PlayerController.Object.InputAuthority} isn't holding a block. So, can't pass block");
                 return (false, null!);
             }
             if (!targetPlayerController.GetCharacter.CanReceivePass())

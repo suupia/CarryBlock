@@ -63,7 +63,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         public void HoldAction()
         {
-            var transform = _info.playerObj.transform;
+            var transform = _info.PlayerObj.transform;
             var forwardGridPos = GetForwardGridPos(transform);
             
             Debug.Log($"IsHoldingBlock : {_blockContainer.IsHoldingBlock}");
@@ -82,7 +82,7 @@ namespace Carry.CarrySystem.Player.Scripts
                         Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれないはず
                         return;
                     }
-                    block.PutDown(_info.playerController.GetCharacter);
+                    block.PutDown(_info.PlayerController.GetCharacter);
                     // _map.AddEntity(forwardGridPos, block);
                     _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos).AddBlock(block);
                     _playerPresenterContainer.PutDownBlock();
@@ -104,7 +104,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 if (block.CanPickUp())
                 {
                     Debug.Log($"remove currentBlockMonos");
-                    block.PickUp(_info.playerController.GetCharacter);
+                    block.PickUp(_info.PlayerController.GetCharacter);
                     // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
                     _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos).RemoveBlock(block);
                     _playerPresenterContainer.PickUpBlock(block);
@@ -117,8 +117,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
         void SearchBlocks()
         {
-            if (_info.playerObj == null) return; // EveryUpdateで呼ぶため、playerObjが破棄された後にも呼ばれる可能性がある
-            var transform = _info.playerObj.transform;
+            if (_info.PlayerObj == null) return; // EveryUpdateで呼ぶため、playerObjが破棄された後にも呼ばれる可能性がある
+            var transform = _info.PlayerObj.transform;
             var forwardGridPos = GetForwardGridPos(transform);
 
             // 前方のMonoBlockDelegateを取得
@@ -137,7 +137,7 @@ namespace Carry.CarrySystem.Player.Scripts
             if (blockMonoDelegate.Block ==null) return;
             if (blockMonoDelegate.Block.CanPickUp())
             {
-                blockMonoDelegate.Highlight(blockMonoDelegate.Block, _info.playerRef); // ハイライトの処理
+                blockMonoDelegate.Highlight(blockMonoDelegate.Block, _info.PlayerRef); // ハイライトの処理
             }
         }
 
