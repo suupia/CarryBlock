@@ -27,7 +27,7 @@ namespace Projects.CarrySystem.Block
 
         public void Init(BlockInfo info)
         {
-            _materials = info.blockViewObj.GetComponentsInChildren<Renderer>().Select(render => render.material).ToArray();
+            _materials = info.BlockViewObj.GetComponentsInChildren<Renderer>().Select(render => render.material).ToArray();
         }
 
         public override void Render()

@@ -2,6 +2,8 @@
 using Carry.CarrySystem.Block.Scripts;
 using Projects.CarrySystem.Block.Scripts;
 using UnityEngine;
+using UnityEngine.Serialization;
+
 #nullable enable
 
 namespace Projects.CarrySystem.Block.Info
@@ -9,23 +11,23 @@ namespace Projects.CarrySystem.Block.Info
     [Serializable]
     public class BlockInfo
     {
-        [SerializeField] BlockTypeEnum _blockType;
+        [FormerlySerializedAs("_blockType")] [SerializeField] BlockTypeEnum blockType;
         [NonSerialized] public BlockMaterialSetter BlockMaterialSetter = null!;
-        [NonSerialized] public GameObject blockViewObj;
-        [NonSerialized] public BlockControllerNet blockController;
+        [NonSerialized] public GameObject BlockViewObj = null!;
+        [NonSerialized] public BlockControllerNet BlockController = null!;
         public Type BlockType => DecideBlockType();
 
         public void Init(GameObject blockViewObj, BlockControllerNet blockController)
         {
-            this.blockViewObj = blockViewObj;
-            this.blockController = blockController;
+            this.BlockViewObj = blockViewObj;
+            this.BlockController = blockController;
             BlockMaterialSetter = blockController.GetComponent<BlockMaterialSetter>();  // BlockControllerNetと同じオブジェクトにアタッチしている
             BlockMaterialSetter.Init(this);
         }
 
         Type DecideBlockType()
         {
-            Type? result = _blockType switch
+            Type? result = blockType switch
             {
                 BlockTypeEnum.None => null,
                 BlockTypeEnum.BasicBlock => typeof(BasicBlock),
