@@ -19,11 +19,10 @@ namespace Carry.CarrySystem.Cart.Scripts
     public class CartShortestRouteMove
     {
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
-        readonly WaveletSearchBuilder _waveletSearchBuilder;
         EntityGridMap? _map; // このクラスはMapを登録して使用する (コンストラクタでIMapUpdaterを受け取らない)
         IMapUpdater? _mapUpdater;
         CartInfo? _info ;
-        Direction _direction;
+        Direction _direction = Direction.Right;
 
         enum Direction
         {
