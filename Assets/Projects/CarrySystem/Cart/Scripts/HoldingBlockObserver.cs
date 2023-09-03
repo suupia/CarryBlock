@@ -61,11 +61,11 @@ namespace Carry.CarrySystem.Cart.Scripts
         }
         
 
-        void ShowAccessibleArea()
+        void  ShowAccessibleArea()
         {
             Debug.Log("ShowAccessibleArea");
             var map = _mapUpdater.GetMap();
-            Func<int, int, bool> isWall = (x, y) => map.GetSingleEntityList<IBlockMonoDelegate>(new Vector2Int(x, y)).Count > 0;
+            Func<int, int, bool> isWall = (x, y) => map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y)).Blocks.Count > 0;
             var waveletSearchExecutor = _waveletSearchBuilder.Build(_mapUpdater.GetMap());
 
             var startPos = new Vector2Int(1, map.Height / 2);
