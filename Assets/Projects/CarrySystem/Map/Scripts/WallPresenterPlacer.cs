@@ -39,7 +39,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 var gridPos = expandedMap.ToVector(i);
                 var convertedGridPos = new Vector2Int(gridPos.x - _wallHorizontalNum, gridPos.y - _wallVerticalNum);
                 if (map.IsInDataRangeArea(convertedGridPos)) continue;
-                if (IsBlockNotPlacedOnRightEdge(map, convertedGridPos)) continue;
+                if (IsNotPlacingBlock(map, convertedGridPos)) continue;
                 var worldPos = GridConverter.GridPositionToWorldPosition(convertedGridPos);
                 var wallPresenter = wallPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 wallPresenters.Add(wallPresenter);
@@ -62,13 +62,19 @@ namespace Carry.CarrySystem.Map.Scripts
 
             _tilePresenters = new List<WallPresenterNet>();
         }
-
-        bool IsBlockNotPlacedOnRightEdge(EntityGridMap map, Vector2Int gridPos)
+        
+        bool IsNotPlacingBlock(EntityGridMap map, Vector2Int gridPos)
         {
-            if(gridPos.y < 0 || gridPos.y > map.Height - 1) return false;
+            // 右端においては、ブロックがない場所には置かない
             if (gridPos.x >= map.Width)
             {
                 if (map.GetSingleEntityList<IBlock>(new Vector2Int(gridPos.x, map.Width - 1)).Count == 0) return true;
+            }
+            
+            // 左端においては、真ん中から3マス分の範囲には置かない
+            if (gridPos.x < 0)
+            {
+                if (map.Height / 2 - 1 <= gridPos.y && gridPos.y <= map.Height / 2 + 1) return true;
             }
 
             return false;
