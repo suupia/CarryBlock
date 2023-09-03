@@ -61,7 +61,7 @@ namespace Projects.CarrySystem.Block.Scripts
 
          }
          
-         public void Highlight(IBlock block , PlayerRef playerRef)
+         public void Highlight(IBlock? block , PlayerRef playerRef)
          {
              _highLightExecutor.Highlight(block, playerRef);
          }

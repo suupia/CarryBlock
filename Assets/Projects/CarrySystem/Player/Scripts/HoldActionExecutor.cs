@@ -134,7 +134,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _searchedBlocks = blockMonoDelegate.Blocks;
 
             // ハイライトの処理
-            if (blockMonoDelegate.Block ==null) return;
+            if (blockMonoDelegate.Block == null) return;
             if (blockMonoDelegate.Block.CanPickUp())
             {
                 blockMonoDelegate.Highlight(blockMonoDelegate.Block, _info.PlayerRef); // ハイライトの処理
