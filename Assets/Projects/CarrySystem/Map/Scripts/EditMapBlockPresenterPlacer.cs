@@ -55,7 +55,7 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 var blockPresenterNet = blockPresenterNets.ElementAt(i);
 
-                blockPresenterNet.SetInitAllEntityActiveData(map.GetAllEntityList(i)  );
+                blockPresenterNet.SetInitAllEntityActiveData(map.GetAllEntityList(i));  // ここだけ、CarryBlockPresenterPlacerと違う
 
                 // mapにTilePresenterを登録
                 map.RegisterTilePresenter(blockPresenterNet, i);
