@@ -34,13 +34,13 @@ namespace Projects.CarrySystem.Block
         {
             if(_materials == null) return; 
             // Debug.Log($"PlayerRef: {Data.PlayerRef}, Data.WhiteRatio: {Data.WhiteRatio}");
-            if (Runner.LocalPlayer)
+            if (Runner.LocalPlayer.IsValid)
             {
                 if (Runner.LocalPlayer == Data.PlayerRef)
                 {
                     foreach (var material in _materials)
                     {
-                        material?.SetFloat("_WhiteRatio", Data.WhiteRatio);
+                        material.SetFloat("_WhiteRatio", Data.WhiteRatio);
                     }
                 }
 

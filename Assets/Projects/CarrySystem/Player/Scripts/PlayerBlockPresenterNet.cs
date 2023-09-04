@@ -57,7 +57,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Awake()
         {
             // これらの処理はクライアントでも必要なことに注意
-            blockTypeToGameObjectMap[BlockType.None] = null; // No game object for 'None'
+            blockTypeToGameObjectMap[BlockType.None] = null!; // No game object for 'None'
             blockTypeToGameObjectMap[BlockType.BasicBlock] = basicBlockView;
             blockTypeToGameObjectMap[BlockType.UnmovableBlock] = unmovableBlockView;
             blockTypeToGameObjectMap[BlockType.HeavyBlock] = heavyBlockView;

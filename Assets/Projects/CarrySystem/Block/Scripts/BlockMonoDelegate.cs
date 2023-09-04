@@ -66,5 +66,6 @@ namespace Projects.CarrySystem.Block.Scripts
          public void PickUp(ICharacter character) => _block?.PickUp(character);
          public bool CanPutDown(IList<IBlock> blocks) => _block?.CanPutDown(blocks) ?? false;
          public void PutDown(ICharacter character) => _block?.PutDown(character);
+         
     }
 }
