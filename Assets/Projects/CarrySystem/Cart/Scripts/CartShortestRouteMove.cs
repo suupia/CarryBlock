@@ -125,6 +125,11 @@ namespace Carry.CarrySystem.Cart.Scripts
         }
         async UniTask MoveTo(Vector2Int startGridPos, Vector2Int endGridPos)
         {
+            if (_info == null)
+            {
+                Debug.LogError($"_info is null");
+                return;
+            }
             var startPos = GridConverter.GridPositionToWorldPosition(startGridPos);
             var endPos = GridConverter.GridPositionToWorldPosition(endGridPos);
             await _info.cartObj.transform.DOMove(endPos, 0.15f).SetEase(Ease.Linear).AsyncWaitForCompletion();

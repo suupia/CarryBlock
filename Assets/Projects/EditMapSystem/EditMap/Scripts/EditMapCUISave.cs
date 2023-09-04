@@ -26,7 +26,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         AutoSaveManager _autoSaveManager;
         CUIInputState _inputState;
 
-        readonly int _maxDigit = 10; // インデックスの最大の桁数
+        // readonly int _maxDigit = 10; // インデックスの最大の桁数
         readonly float _displayTime = 1.5f; // メッセージを表示する時間
         readonly float _autoSaveInterval = 3f; // オートセーブの間隔
         bool _isOpened = false;

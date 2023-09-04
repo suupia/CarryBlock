@@ -84,14 +84,14 @@ namespace Carry.CarrySystem.Player.Scripts
                     }
                     block.PutDown(_info.PlayerController.GetCharacter);
                     // _map.AddEntity(forwardGridPos, block);
-                    _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos).AddBlock(block);
+                    _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.AddBlock(block);
                     _playerPresenterContainer.PutDownBlock();
                 }
             }
             else
             {
                 var blockMonoDelegate = _searchedBlockMonoDelegate;  // フレームごとに判定しているためここでキャッシュする
-                if(blockMonoDelegate.Block == null)
+                if(blockMonoDelegate?.Block == null)
                 {
                     Debug.Log($"blockMonoDelegate.Block : null");
                     return;
@@ -106,7 +106,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     Debug.Log($"remove currentBlockMonos");
                     block.PickUp(_info.PlayerController.GetCharacter);
                     // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
-                    _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos).RemoveBlock(block);
+                    _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
                     _playerPresenterContainer.PickUpBlock(block);
                     _blockContainer.SetBlock(block);
                 }
