@@ -8,7 +8,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class CorrectlyStopMoveExecutor : IMoveExecutor
     {
-        PlayerInfo _info;
+        PlayerInfo _info = null!;
         readonly float _acceleration = 30f;
         readonly float _maxVelocity = 9f;
         readonly float _stoppingForce = 5f;
