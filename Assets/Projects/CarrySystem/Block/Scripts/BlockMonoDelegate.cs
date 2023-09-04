@@ -20,7 +20,7 @@ namespace Projects.CarrySystem.Block.Scripts
          public IBlock? Block => _blocks.FirstOrDefault(); 
          public IList<IBlock> Blocks => _blocks;
          
-
+         readonly Vector2Int _gridPosition;
          readonly IList<IBlock> _blocks;
          readonly IList<BlockInfo> _blockInfos;
          readonly IBlock? _block;
@@ -28,8 +28,9 @@ namespace Projects.CarrySystem.Block.Scripts
 
          readonly IHighlightExecutor _highLightExecutor;
 
-         public BlockMonoDelegate(IList<IBlock> blocks, IList<BlockInfo> blockInfos, IBlockPresenter blockPresenter)
+         public BlockMonoDelegate(Vector2Int gridPos, IList<IBlock> blocks, IList<BlockInfo> blockInfos, IBlockPresenter blockPresenter)
          {
+             _gridPosition = gridPos;
              _blocks = blocks;
              _blockInfos = blockInfos;
              _blockPresenter = blockPresenter;
@@ -37,17 +38,8 @@ namespace Projects.CarrySystem.Block.Scripts
              _highLightExecutor = new HighlightExecutor(_blockInfos);
 
          }
-         //
-         // public void SetInfo(BlockInfo info)
-         // {
-         //     Info = info;
-         //     var materialSetter = Info.blockController.GetComponent<BlockMaterialSetter>();
-         //     if (materialSetter == null) Debug.LogError($"materialSetter is null");
-         //     materialSetter.Init(Info);
-         //     _highLightExecutor = new HighlightExecutor(Info.blockController.gameObject.GetComponent<BlockMaterialSetter>());
-         //
-         // }
          
+
          public void AddBlock(IBlock block)
          {
              _blocks.Add(block);
