@@ -33,7 +33,7 @@ namespace Carry.CarrySystem.Player.Interfaces
             Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
 
             // init info
-            info.Init(Runner, gameObject, this, Object.InputAuthority);
+            info.Init(gameObject, this, Object.InputAuthority);
 
             // Instantiate the character.
             InstantiateCharacter();

@@ -85,8 +85,8 @@ namespace Carry.CarrySystem.Player.Scripts
         void SetToOrigin()
         {
             // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
-            info.playerObj.transform.position = new Vector3(0, 5, 0);
-            info.playerRb.velocity = Vector3.zero;
+            info.PlayerObj.transform.position = new Vector3(0, 5, 0);
+            info.PlayerRb.velocity = Vector3.zero;
         }
 
       

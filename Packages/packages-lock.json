@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "73d86259ce31ce7f4dfe1d028ea1c3edf96c23e4"
     },
+    "com.harumak.addler": {
+      "version": "https://github.com/Haruma-K/Addler.git?path=/Assets/Addler",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "278d4bfe95e412b93fc8b88f92ac9ac5be3f116c"
+    },
     "com.neuecc.unirx": {
       "version": "https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts",
       "depth": 0,

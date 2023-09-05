@@ -5,6 +5,7 @@ using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
 using Fusion;
 using Projects.BattleSystem.Spawners.Scripts;
+using Projects.Utility.Interfaces;
 using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;

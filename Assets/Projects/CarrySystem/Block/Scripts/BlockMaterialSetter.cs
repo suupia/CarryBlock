@@ -17,7 +17,7 @@ namespace Projects.CarrySystem.Block
         public struct BlockMaterialSetterData : INetworkStruct
         {
             [Networked] public float WhiteRatio { get; set; }
-            [Networked] public PlayerRef PlayerRef { get; set; }
+            public PlayerRef PlayerRef { get; set; }
         }
 
         [Networked] public ref BlockMaterialSetterData Data => ref MakeRef<BlockMaterialSetterData>();
@@ -27,23 +27,24 @@ namespace Projects.CarrySystem.Block
 
         public void Init(BlockInfo info)
         {
-            _materials = info.blockViewObj.GetComponentsInChildren<Renderer>().Select(render => render.material).ToArray();
+            _materials = info.BlockViewObj.GetComponentsInChildren<Renderer>().Select(render => render.material).ToArray();
         }
 
         public override void Render()
         {
             if(_materials == null) return; 
             // Debug.Log($"PlayerRef: {Data.PlayerRef}, Data.WhiteRatio: {Data.WhiteRatio}");
-            if (Runner.LocalPlayer)
+            if (Runner.LocalPlayer.IsValid)
             {
                 if (Runner.LocalPlayer == Data.PlayerRef)
                 {
                     foreach (var material in _materials)
                     {
-                        material?.SetFloat("_WhiteRatio", Data.WhiteRatio);
+                        material.SetFloat("_WhiteRatio", Data.WhiteRatio);
                     }
                 }
 
+                
             }
 
         }

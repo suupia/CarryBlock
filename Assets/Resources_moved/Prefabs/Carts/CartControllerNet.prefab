@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1421670191766901226}
   - component: {fileID: 760486671192579340}
   - component: {fileID: 6363875547779366346}
+  - component: {fileID: 2951069658074368810}
   m_Layer: 9
   m_Name: CartControllerNet
   m_TagString: Untagged
@@ -147,6 +148,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2951069658074368810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79634748722400649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a442da429622dff4bb850c99f595a222, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7929319470374056465
 GameObject:
   m_ObjectHideFlags: 0

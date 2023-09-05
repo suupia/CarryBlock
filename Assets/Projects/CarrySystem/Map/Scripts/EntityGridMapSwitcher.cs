@@ -43,6 +43,11 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public EntityGridMap GetMap()
         {
+            if (_currentMap == null)
+            {
+                Debug.LogError($"_currentMap is null");
+                return null!;
+            }
             return _currentMap;
         }
 
