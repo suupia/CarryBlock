@@ -62,7 +62,7 @@ MonoBehaviour:
   heavyBlockView: {fileID: 2354373818041993819}
   doubleHeavyBlockView: {fileID: 5332267745441014464}
   fragileBlockView: {fileID: 5306802894158938450}
-  cannonBlockView: {fileID: 8789009867988688644}
+  cannonBlockView: {fileID: 3474835756297352322}
 --- !u!114 &4922042967918774524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,6 +375,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab26ec40c6e3c2f42a39e41dae9ccc5c, type: 3}
+--- !u!1 &3474835756297352322 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2478132344785946946, guid: ab26ec40c6e3c2f42a39e41dae9ccc5c, type: 3}
+  m_PrefabInstance: {fileID: 1323214455532862912}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4653689414713325476 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5965080741896850020, guid: ab26ec40c6e3c2f42a39e41dae9ccc5c, type: 3}
@@ -385,17 +390,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -1882458635062836858, guid: ab26ec40c6e3c2f42a39e41dae9ccc5c, type: 3}
   m_PrefabInstance: {fileID: 1323214455532862912}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8789009867988688644}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &8789009867988688644 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7756840550022308548, guid: ab26ec40c6e3c2f42a39e41dae9ccc5c, type: 3}
-  m_PrefabInstance: {fileID: 1323214455532862912}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2945111467585321691
 PrefabInstance:
   m_ObjectHideFlags: 0

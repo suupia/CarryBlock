@@ -131,6 +131,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 case FragileBlock _:
                     PresentDataRef.FragileBlockCount = count;
                     break;
+                case CannonBlock _:
+                    PresentDataRef.CannonBlockCount = count;
+                    break;
                 default:
                     throw new System.Exception($"想定外のEntityが渡されました block : {block}");
             }
