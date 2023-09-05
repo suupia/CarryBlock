@@ -29,7 +29,7 @@ namespace Carry.CarrySystem.Player.Scripts
         IDisposable? _searchBlockDisposable;
 
         IBlockMonoDelegate? _searchedBlockMonoDelegate;
-        IList<IBlock> _searchedBlocks = new List<IBlock>();
+        IList<ICarriableBlock> _searchedBlocks = new List<ICarriableBlock>();
 
         public HoldActionExecutor(
             PlayerBlockContainer blockContainer, 

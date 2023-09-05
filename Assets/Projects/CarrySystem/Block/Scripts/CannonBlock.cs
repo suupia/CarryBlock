@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Block.Scripts
     {
         public CannonBlock.Kind[] kinds = new CannonBlock.Kind[10];
     }
-    public class CannonBlock : IBlock
+    public class CannonBlock : ICarriableBlock
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 2;
@@ -42,7 +42,7 @@ namespace Carry.CarrySystem.Block.Scripts
             // 特になし
         }
 
-        public bool CanPutDown(IList<IBlock> blocks)
+        public bool CanPutDown(IList<ICarriableBlock> blocks)
         {
             return false;
         }

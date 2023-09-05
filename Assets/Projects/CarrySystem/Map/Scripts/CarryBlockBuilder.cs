@@ -50,7 +50,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 var blockPresenter =  _runner.Spawn(blockPresenterPrefab, worldPos, Quaternion.identity, PlayerRef.None);
                 
                 // BlockMonoDelegateの生成
-                var getBlocks = tmpMap.GetSingleEntityList<IBlock>(i);
+                var getBlocks = tmpMap.GetSingleEntityList<ICarriableBlock>(i);
                 var checkedBlocks = CheckBlocks(getBlocks);
                 var blockControllerComponents = blockPresenter.GetComponentsInChildren<BlockControllerNet>();
                 var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
@@ -66,19 +66,19 @@ namespace Carry.CarrySystem.Map.Scripts
 
         }
         
-        List<IBlock> CheckBlocks(List<IBlock> blocks)
+        List<ICarriableBlock> CheckBlocks(List<ICarriableBlock> blocks)
         {
             if (!blocks.Any())
             {
                 // Debug.Log($"IBlockが存在しません。{string.Join(",", blocks)}");
-                return new List<IBlock>();
+                return new List<ICarriableBlock>();
             }
             var firstBlock = blocks.First();
 
             if (blocks.Any(block => block.GetType() != firstBlock.GetType()))
             {
                 Debug.LogError($"異なる種類のブロックが含まれています。　firstBlock.GetType() : {firstBlock.GetType()} {string.Join(",", blocks)}");
-                return new List<IBlock>();
+                return new List<ICarriableBlock>();
             }
             
             return blocks;

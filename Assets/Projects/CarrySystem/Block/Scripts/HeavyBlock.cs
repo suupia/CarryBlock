@@ -18,7 +18,7 @@ namespace Carry.CarrySystem.Block.Scripts
         public HeavyBlock.Kind[] kinds = new HeavyBlock.Kind[10];
     }
 
-    public class HeavyBlock : IBlock
+    public class HeavyBlock : ICarriableBlock
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 2;
@@ -47,7 +47,7 @@ namespace Carry.CarrySystem.Block.Scripts
             character.SetSlowMoveExecutor();
         }
 
-        public bool CanPutDown(IList<IBlock> blocks)
+        public bool CanPutDown(IList<ICarriableBlock> blocks)
         {
             var diffList = blocks.Select(x => x.GetType() != this.GetType());
             Debug.Log($"forward different block count: {diffList.Count()}, list : {string.Join(",", diffList)}");

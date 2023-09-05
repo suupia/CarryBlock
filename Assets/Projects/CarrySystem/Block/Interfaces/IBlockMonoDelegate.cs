@@ -6,11 +6,11 @@ namespace Carry.CarrySystem.Block.Interfaces
 {
     public interface IBlockMonoDelegate : IEntity , IHighlightExecutor
     {
-        IBlock? Block { get; }
-        IList<IBlock> Blocks { get; }
-        public void AddBlock(IBlock block);
+        ICarriableBlock? Block { get; }
+        IList<ICarriableBlock> Blocks { get; }
+        public void AddBlock(ICarriableBlock block);
 
-        public void RemoveBlock(IBlock block);
+        public void RemoveBlock(ICarriableBlock block);
 
     }
 }

@@ -17,7 +17,7 @@ namespace Carry.CarrySystem.Block.Scripts
         public UnmovableBlock.Kind[] kinds =new UnmovableBlock.Kind[5];
     }
     
-    public class UnmovableBlock : IBlock
+    public class UnmovableBlock : ICarriableBlock
     {
         public Vector2Int GridPosition { get; set; }
         public　int MaxPlacedBlockCount { get; } = 1;
@@ -46,7 +46,7 @@ namespace Carry.CarrySystem.Block.Scripts
             // 特になし
         }
 
-        public bool CanPutDown(IList<IBlock> blocks)
+        public bool CanPutDown(IList<ICarriableBlock> blocks)
         {
             return false; // 常に置けない
         }

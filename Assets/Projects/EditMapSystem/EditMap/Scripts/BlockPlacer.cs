@@ -15,7 +15,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         /// <param name="gridPos"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public void AddBlock<T>(EntityGridMap map , Vector2Int gridPos, T addBlock) where T : IBlock
+        public void AddBlock<T>(EntityGridMap map , Vector2Int gridPos, T addBlock) where T : ICarriableBlock
         {
             if (!map.IsInDataRangeArea(gridPos)) return ;
 
