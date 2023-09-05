@@ -18,11 +18,11 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         public struct PresentData : INetworkStruct
         {
-            [Networked] public int PickUpCount { get; set; }
-            [Networked] public int PutDownCount { get; set; }
-            [Networked] public int ReceiveCount { get; set; }
-            [Networked] public int PassCount { get; set; }
-            [Networked] public  MovementState MovementState { get; set; }
+            public int PickUpCount { get; set; }
+            public int PutDownCount { get; set; }
+            public int ReceiveCount { get; set; }
+            public int PassCount { get; set; }
+            public  MovementState MovementState { get; set; }
             [Networked] public bool IsHoldingBlock { get; set; }
         }
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();

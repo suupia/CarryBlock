@@ -37,7 +37,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         public struct PresentData : INetworkStruct
         {
-            [Networked] public BlockType HoldingBlockType { get; set; } // enumは共有できない(?)ので、int16で送る
+            public BlockType HoldingBlockType { get; set; } // enumは共有できない(?)ので、int16で送る
         }
         Dictionary<BlockType, GameObject> blockTypeToGameObjectMap = new Dictionary<BlockType, GameObject>();
 

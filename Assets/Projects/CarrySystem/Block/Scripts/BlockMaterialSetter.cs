@@ -17,7 +17,7 @@ namespace Projects.CarrySystem.Block
         public struct BlockMaterialSetterData : INetworkStruct
         {
             [Networked] public float WhiteRatio { get; set; }
-            [Networked] public PlayerRef PlayerRef { get; set; }
+            public PlayerRef PlayerRef { get; set; }
         }
 
         [Networked] public ref BlockMaterialSetterData Data => ref MakeRef<BlockMaterialSetterData>();
