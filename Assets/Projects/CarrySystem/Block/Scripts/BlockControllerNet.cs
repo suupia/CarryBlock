@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 #nullable enable
 
-namespace Projects.CarrySystem.Block.Scripts
+namespace Carry.CarrySystem.Block.Scripts
 {
     public class BlockControllerNet : NetworkBehaviour
     {

@@ -12,8 +12,6 @@ using VContainer;
 using VContainer.Unity;
 using Carry.CarrySystem.Player.Info;
 using Cysharp.Threading.Tasks;
-using Projects.CarrySystem.Block;
-using Projects.CarrySystem.Block.Scripts;
 using UniRx;
 
 #nullable enable

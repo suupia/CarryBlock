@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7034619722233555081}
   - component: {fileID: 940907814858131658}
   m_Layer: 0
-  m_Name: BasicBlockView
+  m_Name: CannonBlockView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

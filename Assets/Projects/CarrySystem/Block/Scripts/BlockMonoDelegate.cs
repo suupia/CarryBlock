@@ -9,7 +9,7 @@ using Projects.CarrySystem.Block.Info;
 using UnityEngine;
 #nullable enable
 
-namespace Projects.CarrySystem.Block.Scripts
+namespace Carry.CarrySystem.Block.Scripts
 {
     /// <summary>
     /// IBlock(ドメインの情報)とBlockInfo(NetworkBehaviourの情報)を持つクラス

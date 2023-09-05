@@ -24,6 +24,7 @@ namespace Carry.CarrySystem.Map.Scripts
             public int UnmovableBlockCount;
             public int HeavyBlockCount;
             public int FragileBlockCount;
+            public int CannonBlockCount;
         }
 
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
@@ -36,9 +37,12 @@ namespace Carry.CarrySystem.Map.Scripts
         [SerializeField] GameObject heavyBlockView = null!;
         [SerializeField] GameObject doubleHeavyBlockView = null!;
         [SerializeField] GameObject fragileBlockView = null!;
+        [SerializeField] GameObject cannonBlockView = null!;
 
         public override void Render()
         {
+            // ToDo: 個数で例外を投げる設計でよいのか？　プレゼンターは何個置けるかを知っている必要ないのでは？
+            
             // UnmovableBlock
             unmovableBlockView.SetActive(PresentDataRef.UnmovableBlockCount switch
             {
@@ -88,6 +92,14 @@ namespace Carry.CarrySystem.Map.Scripts
                 1 => true,
                 _ => throw new InvalidOperationException($"FragileBlockCount : {PresentDataRef.FragileBlockCount}")
             });
+            
+            // CannonBlock
+            cannonBlockView.SetActive(PresentDataRef.CannonBlockCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"CannonBlockCount : {PresentDataRef.CannonBlockCount}")
+            });
         }
 
 
@@ -99,6 +111,7 @@ namespace Carry.CarrySystem.Map.Scripts
             PresentDataRef.UnmovableBlockCount = allEntityList.OfType<UnmovableBlock>().Count();
             PresentDataRef.HeavyBlockCount = allEntityList.OfType<HeavyBlock>().Count();
             PresentDataRef.FragileBlockCount = allEntityList.OfType<FragileBlock>().Count();
+            PresentDataRef.CannonBlockCount = allEntityList.OfType<CannonBlock>().Count();
         }
 
         public void SetBlockActiveData(IBlock block, int count)
