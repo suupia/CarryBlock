@@ -112,6 +112,7 @@ namespace Carry.CarrySystem.Cart.Scripts
                 var diff = route - beforeGridPos;
                 SetDirection(diff);  // ToDo: 向きを変更
                 await MoveTo(beforeGridPos, route);
+                beforeGridPos = route;
             }
             // 次のマップへ移動
             if (_mapUpdater != null)
@@ -177,6 +178,21 @@ namespace Carry.CarrySystem.Cart.Scripts
             {
                 _direction = Direction.Left;
             }
+        }
+        Vector2Int GetUnitVectorFromDirection(Direction direction)
+        {
+            return direction switch
+            {
+                Direction.Right => new Vector2Int(0, 2),
+                Direction.DiagRightBack => new Vector2Int(1, 1),
+                Direction.Back => new Vector2Int(1, -1),
+                Direction.DiagLeftBack => new Vector2Int(0, -2),
+                Direction.Left => new Vector2Int(-1, -1),
+                Direction.DiagLeftFront => new Vector2Int(-1, 1),
+                Direction.Front => new Vector2Int(-1, 1),
+                Direction.DiagRightFront => new Vector2Int(-1, 1),
+                _ => throw new InvalidOperationException()
+            };
         }
 
     }
