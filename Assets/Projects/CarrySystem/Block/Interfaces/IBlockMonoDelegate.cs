@@ -8,6 +8,9 @@ namespace Carry.CarrySystem.Block.Interfaces
     {
         IBlock? Block { get; }
         IList<IBlock> Blocks { get; }
+        
+        public void OnStart();
+        public void OnEnd();
         public void AddBlock(IBlock block);
 
         public void RemoveBlock(IBlock block);

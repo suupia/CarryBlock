@@ -32,25 +32,15 @@ namespace Carry.CarrySystem.Block.Scripts
             KindValue = kind;
             GridPosition = gridPosition;
         }
-
-        public bool CanPickUp()
+        
+        public void StartGimmick()
         {
-            return false;
-        }
-
-        public void  PickUp(ICharacter character)
-        {
-            // 特になし
-        }
-
-        public bool CanPutDown(IList<ICarriableBlock> blocks)
-        {
-            return false;
+            Debug.Log("StartGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
         }
         
-        public void PutDown(ICharacter character)
+        public void EndGimmick()
         {
-            // 特になし
+            Debug.Log("EndGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
         }
     }
 }

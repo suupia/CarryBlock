@@ -137,7 +137,7 @@ namespace Carry.CarrySystem.Player.Scripts
             if( block is not ICarriableBlock carriableBlock) return;
             if (carriableBlock.CanPickUp())
             {
-                blockMonoDelegate.Highlight(blockMonoDelegate.Block, _info.PlayerRef); // ハイライトの処理
+                blockMonoDelegate?.Highlight(blockMonoDelegate.Block, _info.PlayerRef); // ハイライトの処理
             }
         }
 
