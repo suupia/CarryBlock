@@ -22,11 +22,12 @@ namespace Carry.UISystem.UI.CarryScene
 
         void Update()
         {
-            edgeTransform.position = new Vector3(
-                _width * fillImage.fillAmount + _width / 2,
-                edgeTransform.position.y,
-                edgeTransform.position.z
+            edgeTransform.localPosition = new Vector3(
+                _width * fillImage.fillAmount - _width / 2,
+                edgeTransform.localPosition.y,
+                edgeTransform.localPosition.z
             );
+            Debug.Log($"_width * fillImage.fillAmount : {_width * fillImage.fillAmount}, _width / 2: {_width / 2} x : {edgeTransform.position.x}");
         }
     }
 }
