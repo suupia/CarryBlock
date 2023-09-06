@@ -1,4 +1,5 @@
 ﻿using Projects.Utility.Scripts;
+using Projects.Utility.Interfaces;
 using UnityEngine;
 
 namespace Projects.BattleSystem.Spawners.Scripts

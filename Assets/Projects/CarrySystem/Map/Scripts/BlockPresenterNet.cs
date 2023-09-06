@@ -93,6 +93,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void SetInitAllEntityActiveData(IEnumerable<IEntity> allEntities)
         {
+            // Debug.Log($"allEntities : {string.Join(", ", allEntities)}");
             var allEntityList = allEntities.ToList();
             PresentDataRef.BasicBlockCount = allEntityList.OfType<BasicBlock>().Count();
             PresentDataRef.UnmovableBlockCount = allEntityList.OfType<UnmovableBlock>().Count();
@@ -102,7 +103,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void SetBlockActiveData(IBlock block, int count)
         {
-            Debug.Log($"BlockPresenterNet.SetBlockActiveData block : {block} count : {count}");
+            // Debug.Log($"BlockPresenterNet.SetBlockActiveData block : {block} count : {count}");
             switch (block)
             {
                 case BasicBlock _:

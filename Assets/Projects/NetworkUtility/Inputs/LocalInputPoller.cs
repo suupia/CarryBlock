@@ -25,7 +25,6 @@ namespace Projects.NetworkUtility.Inputs.Scripts
     public class LocalInputPoller : INetworkRunnerCallbacks
     {
         NetworkInputData _localInput;
-        readonly InputActionAsset _inputActionAsset;
         readonly InputActionMap _inputActionMap;
 
         readonly InputAction _move;
@@ -37,12 +36,13 @@ namespace Projects.NetworkUtility.Inputs.Scripts
         public LocalInputPoller()
         {
             //本来はDI的思想で設定したい
-            // var loader = new PrefabLoaderFromResources<InputActionAsset>("InputActionAssets", "PlayerInputAction");
-            var loader = new PrefabLoaderFromAddressable<InputActionAsset>("InputActionAssets/PlayerInputAction");
-            _inputActionAsset = loader.Load();
-            Assert.IsNotNull(_inputActionAsset, "InputActionを設定してください。Pathが間違っている可能性があります");
+            var loader =
+                new ScriptableObjectLoaderFromAddressable<InputActionAsset>("InputActionAssets/PlayerInputAction");
+            
+            (var inputActionAsset ,var handler) = loader.Load();
+            Assert.IsNotNull(inputActionAsset, "InputActionを設定してください。Pathが間違っている可能性があります");
 
-            _inputActionMap = _inputActionAsset.FindActionMap("Default");
+            _inputActionMap = inputActionAsset.FindActionMap("Default");
             _inputActionMap.Enable();
             
             //本来は以下を適切なタイミングで呼ぶべき
@@ -53,6 +53,8 @@ namespace Projects.NetworkUtility.Inputs.Scripts
             _dash = _inputActionMap.FindAction("Dash");
             _pass = _inputActionMap.FindAction("Pass");
             _changeUnit = _inputActionMap.FindAction("ChangeUnit");
+            
+            loader.Release(handler);
         }
 
 

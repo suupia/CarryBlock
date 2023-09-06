@@ -18,12 +18,13 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     /// </summary>
     public class WaveletSearchBuilder
     {
-        [Inject] NetworkRunner _runner;
+        [Inject] readonly NetworkRunner _runner = null!;
         IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
 
         [Inject]
         public WaveletSearchBuilder()
         {
+            
         }
 
         public WaveletSearchExecutor Build(SquareGridMap map)

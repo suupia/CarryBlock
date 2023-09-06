@@ -13,7 +13,7 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
     public class FloorProgressHandlerNet : NetworkBehaviour
     {
         // ToDo: 仮置きクラス　ドメインの設計やコンテナの関係をしっかり考えれば、NetworkBehaviourである必要がないかも
-        float _updateTime = 7;
+        // float _updateTime = 7;
 
         IMapUpdater _mapSwitcher;
         public void Start()

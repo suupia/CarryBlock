@@ -11,16 +11,16 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class BlockPresenterPlacer : IBlockPresenterPlacer
+    public class EditMapBlockPresenterPlacer : IBlockPresenterPlacer
     {
         [Inject] readonly NetworkRunner _runner;
-        readonly BlockBuilder _blockBuilder;
+        readonly IBlockBuilder _carryBlockBuilder;
         IEnumerable<BlockPresenterNet> _blockPresenters =  new List<BlockPresenterNet>();
         
         [Inject]
-        public BlockPresenterPlacer(BlockBuilder blockBuilder)
+        public EditMapBlockPresenterPlacer(IBlockBuilder carryBlockBuilder)
         {
-            _blockBuilder = blockBuilder;
+            _carryBlockBuilder = carryBlockBuilder;
         }
 
         
@@ -29,7 +29,7 @@ namespace Carry.CarrySystem.Map.Scripts
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
             
-            var (blockControllers, blockPresenterNets) = _blockBuilder.Build(ref map);
+            var (blockControllers, blockPresenterNets) = _carryBlockBuilder.Build(ref map);
             
             // BlockPresenterをドメインのEntityGridMapに紐づける
             AttachTilePresenter(blockPresenterNets, map);
@@ -55,15 +55,7 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 var blockPresenterNet = blockPresenterNets.ElementAt(i);
 
-                // RegisterTilePresenter()の前なのでSetEntityActiveData()を実行する必要がある
-                // Presenterの初期化処理みたいなもの
-                var existGround = map.GetSingleEntity<Ground>(i) != null;
-                var existUnmovableBlock = map.GetSingleEntity<UnmovableBlock>(i) != null;
-                var existBasicBlock = map.GetSingleEntity<BasicBlock>(i) != null;
-                
-                // Debug.Log($"existGround: {existGround}, existUnmovableBlock: {existUnmovableBlock}, existBasicBlock: {existBasicBlock}");
-
-                blockPresenterNet.SetInitAllEntityActiveData(map.GetAllEntityList(i)  );
+                blockPresenterNet.SetInitAllEntityActiveData(map.GetAllEntityList(i));  // ここだけ、CarryBlockPresenterPlacerと違う
 
                 // mapにTilePresenterを登録
                 map.RegisterTilePresenter(blockPresenterNet, i);

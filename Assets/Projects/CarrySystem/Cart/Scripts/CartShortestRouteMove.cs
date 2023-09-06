@@ -19,11 +19,10 @@ namespace Carry.CarrySystem.Cart.Scripts
     public class CartShortestRouteMove
     {
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
-        readonly WaveletSearchBuilder _waveletSearchBuilder;
         EntityGridMap? _map; // このクラスはMapを登録して使用する (コンストラクタでIMapUpdaterを受け取らない)
         IMapUpdater? _mapUpdater;
         CartInfo? _info ;
-        Direction _direction;
+        Direction _direction = Direction.Right;
 
         enum Direction
         {
@@ -71,7 +70,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             var routes = SearchShortestRoute();
             
             Debug.Log($"routes : {string.Join(",", routes)}");
-            Move(routes);
+            var _ = Move(routes);
 
 
         }
@@ -89,7 +88,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             var waveletSearchExecutor = new WaveletSearchExecutor(_map); // RoutePresenterをかませる必要がないから直接new
             var searchShortestRouteExecutor = new SearchShortestRouteExecutor(waveletSearchExecutor);
             var startPos = new Vector2Int(1, _map.Height % 2 == 1 ? (_map.Height - 1) / 2 : _map.Height / 2);
-            Func<int, int, bool> isWall = (x, y) => _map.GetSingleEntityList<IBlock>(new Vector2Int(x, y)).Count > 0;
+            Func<int, int, bool> isWall = (x, y) => _map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
             var accessibleArea = waveletSearchExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
             var endPosY = _reachRightEdgeChecker.CalcCartReachRightEdge(accessibleArea, _map, searcherSize);
             var routeEndPos = new Vector2Int(_map.Width - 2, endPosY);
@@ -126,6 +125,11 @@ namespace Carry.CarrySystem.Cart.Scripts
         }
         async UniTask MoveTo(Vector2Int startGridPos, Vector2Int endGridPos)
         {
+            if (_info == null)
+            {
+                Debug.LogError($"_info is null");
+                return;
+            }
             var startPos = GridConverter.GridPositionToWorldPosition(startGridPos);
             var endPos = GridConverter.GridPositionToWorldPosition(endGridPos);
             await _info.cartObj.transform.DOMove(endPos, 0.15f).SetEase(Ease.Linear).AsyncWaitForCompletion();

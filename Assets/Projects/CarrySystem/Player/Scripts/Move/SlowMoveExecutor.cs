@@ -1,12 +1,13 @@
 ﻿using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
+#nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {
     public class SlowMoveExecutor : IMoveExecutor
     {
-        PlayerInfo _info;
+        PlayerInfo _info = null!;
         readonly float _acceleration = 30f;
         readonly float _maxVelocity = 3f; // CorrectlyStopの半分以下
         readonly float _stoppingForce = 5f;
@@ -18,8 +19,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Move(Vector3 input)
         {
-            var transform = _info.playerObj.transform;
-            var rb = _info.playerRb;
+            var transform = _info.PlayerObj.transform;
+            var rb = _info.PlayerRb;
 
             var deltaAngle = Vector3.SignedAngle(transform.forward, input, Vector3.up);
             // Debug.Log($"deltaAngle = {deltaAngle}");
