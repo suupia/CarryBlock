@@ -84,7 +84,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
                 var map = _editMapUpdater.GetMap();
                 
-                ICarriableBlock block = _blockType switch
+                IBlock block = _blockType switch
                 {
                     BasicBlock _ => new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround),
                     UnmovableBlock _ => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),

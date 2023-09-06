@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
+using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace Carry.CarrySystem.Block.Scripts
     {
         public CannonBlock.Kind[] kinds = new CannonBlock.Kind[10];
     }
-    public class CannonBlock : ICarriableBlock
+    public class CannonBlock : IGimmickBlock
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 2;

@@ -15,7 +15,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         /// <param name="gridPos"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public void AddBlock<T>(EntityGridMap map , Vector2Int gridPos, T addBlock) where T : ICarriableBlock
+        public void AddBlock<T>(EntityGridMap map , Vector2Int gridPos, T addBlock) where T : IBlock
         {
             if (!map.IsInDataRangeArea(gridPos)) return ;
 
@@ -26,7 +26,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
             // Debug.Log($"addBlockCount:{addBlockCount} groundCount:{groundCount} othersCount:{othersCount}");
             
-            if (addBlockCount >= addBlock.MaxPlacedBlockCount) return ;
+            if(addBlock is ICarriableBlock carriableBlock && addBlockCount >= carriableBlock.MaxPlacedBlockCount) return ;
             if (othersCount > 0) return ;
 
             map.AddEntity(gridPos, addBlock);

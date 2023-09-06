@@ -1,4 +1,5 @@
-﻿namespace Carry.CarrySystem.FloorTimer.Scripts
+﻿#nullable enable
+namespace Carry.CarrySystem.FloorTimer.Scripts
 {
     public class GameContext
     {

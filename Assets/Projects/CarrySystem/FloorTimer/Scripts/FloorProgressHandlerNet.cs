@@ -6,7 +6,7 @@ using Fusion;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-
+#nullable enable
 
 namespace Carry.CarrySystem.FloorTimer.Scripts
 {
@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
         // ToDo: 仮置きクラス　ドメインの設計やコンテナの関係をしっかり考えれば、NetworkBehaviourである必要がないかも
         // float _updateTime = 7;
 
-        IMapUpdater _mapSwitcher;
+        IMapUpdater _mapSwitcher = null!;
         public void Start()
         {
             // 仮クラスのため、コンテナには登録していない
