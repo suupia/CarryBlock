@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Player.Info;
+﻿using System.Security.Cryptography.X509Certificates;
+using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class CorrectlyStopMoveExecutor : IMoveExecutor
     {
         PlayerInfo _info = null!;
-        readonly float _acceleration = 30f;
+        readonly float _acceleration = 40f;
         readonly float _maxVelocity = 9f;
         readonly float _stoppingForce = 5f;
 
@@ -45,7 +46,16 @@ namespace Carry.CarrySystem.Player.Scripts
                 // Stop if there is no key input
                 // Define 0 < _stoppingForce < 1
                 float reductionFactor = Mathf.Max(0f, 1f - _stoppingForce * Time.deltaTime);
+                float _stoppingSpeed = 1.5f;
+
                 rb.velocity *= Mathf.Pow(reductionFactor, rb.velocity.magnitude);
+                
+                if (rb.velocity.magnitude <= _stoppingSpeed)
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
+
             }
         }
     }
