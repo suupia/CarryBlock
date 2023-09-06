@@ -99,14 +99,15 @@ namespace Carry.CarrySystem.Player.Scripts
                 Debug.Log($"before currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
 
                 var block = blockMonoDelegate.Block;
-                if (block.CanPickUp())
+                if(!( block is ICarriableBlock carriableBlock)) return;
+                if (carriableBlock.CanPickUp())
                 {
                     Debug.Log($"remove currentBlockMonos");
-                    block.PickUp(_info.PlayerController.GetCharacter);
+                    carriableBlock.PickUp(_info.PlayerController.GetCharacter);
                     // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
                     _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
                     _playerPresenterContainer.PickUpBlock(block);
-                    _blockContainer.SetBlock(block);
+                    _blockContainer.SetBlock(carriableBlock);
                 }
                 Debug.Log($"after currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
 
@@ -129,11 +130,12 @@ namespace Carry.CarrySystem.Player.Scripts
             // Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
 
             // _searchedBlockを更新
-            _searchedBlocks = blockMonoDelegate.Blocks;
+            _searchedBlocks = (IList<ICarriableBlock>) blockMonoDelegate.Blocks.Where(b => b is ICarriableBlock).ToList();
 
             // ハイライトの処理
-            if (blockMonoDelegate.Block == null) return;
-            if (blockMonoDelegate.Block.CanPickUp())
+            var block = blockMonoDelegate?.Block;
+            if( block is not ICarriableBlock carriableBlock) return;
+            if (carriableBlock.CanPickUp())
             {
                 blockMonoDelegate.Highlight(blockMonoDelegate.Block, _info.PlayerRef); // ハイライトの処理
             }
