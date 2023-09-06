@@ -29,7 +29,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
 
         // IPlayerBlockPresenterで追加されるメソッド
-        public void PickUpBlock(IBlockMonoDelegate block)
+        public void PickUpBlock(IBlock block)
         {
             _blockPresenters.ForEach(presenter => presenter.PickUpBlock(block));
         }
@@ -38,7 +38,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _blockPresenters.ForEach(presenter => presenter.PutDownBlock());
         }
-        public void ReceiveBlock(IBlockMonoDelegate block)
+        public void ReceiveBlock(IBlock block)
         {
             _blockPresenters.ForEach(presenter => presenter.ReceiveBlock(block));
         }

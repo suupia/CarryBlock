@@ -2,6 +2,7 @@
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
+#nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {

@@ -5,22 +5,24 @@ using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners;
 using Fusion;
 using Projects.CarrySystem.Block.Scripts;
 using Projects.Utility.Scripts;
-using Projects.Utilty;
+using Projects.Utility;
+using Projects.Utility.Interfaces;
 using UnityEngine;
 #nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class BlockBuilder
+    public class CarryBlockBuilder :  IBlockBuilder
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<BlockPresenterNet> _blockPresenterPrefabSpawner;
 
-        public BlockBuilder(NetworkRunner runner)
+        public CarryBlockBuilder(NetworkRunner runner)
         {
             _runner = runner;
             _blockPresenterPrefabSpawner =
@@ -37,41 +39,29 @@ namespace Carry.CarrySystem.Map.Scripts
             // IBlockをIBlockMonoDelegateに置き換えたマップにする
             var tmpMap = map.CloneMap();  // tmpMapを見て、mapを変更する
             map.ClearMap();
-            
 
             // BlockPresenterをスポーンさせる
             for (int i = 0; i < tmpMap.GetLength(); i++)
             {
-                var girdPos = tmpMap.ToVector(i);
-                var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
+                var gridPos = tmpMap.ToVector(i);
+                var worldPos = GridConverter.GridPositionToWorldPosition(gridPos);
+                
+                // Presenterの生成
                 var blockPresenterPrefab = _blockPresenterPrefabSpawner.Load();
                 var blockPresenter =  _runner.Spawn(blockPresenterPrefab, worldPos, Quaternion.identity, PlayerRef.None);
-
+                
+                // BlockMonoDelegateの生成
+                var getBlocks = tmpMap.GetSingleEntityList<IBlock>(i);
+                var checkedBlocks = CheckBlocks(getBlocks);
                 var blockControllerComponents = blockPresenter.GetComponentsInChildren<BlockControllerNet>();
-                foreach (var blockController in blockControllerComponents)
-                {
-                    var getBlocks = tmpMap.GetSingleEntityList<IBlock>(i);
-                    var checkedBlocks = CheckBlocks(getBlocks);
-                    if (checkedBlocks.Any())
-                    {
-                        var blockType =  checkedBlocks.First().GetType();
-                        if (blockController.Info.BlockType == blockType)  // インスペクターから設定
-                        {
-                            if (map.GetSingleEntity<IBlockMonoDelegate>(i) == null) // 複数同じコンポーネントがあるので、一度だけ追加すればよい
-                            {
-                                var blockMonoDelegate = new BlockMonoDelegate(checkedBlocks);
-                                blockController.Init(blockMonoDelegate);
-                                map.AddEntity(i, blockMonoDelegate);
-                            }
-                        }
+                var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
+                var blockMonoDelegate = new BlockMonoDelegate(gridPos,checkedBlocks,blockInfos, blockPresenter);  // すべてのマスにBlockMonoDelegateを配置させる
+                map.AddEntity(i, blockMonoDelegate);
 
-                    }
-
-                }
                 blockPresenters.Add(blockPresenter);
             }
-
-            map = tmpMap;
+            
+            Debug.Log($"blockPresenters.Count : {blockPresenters.Count}");
 
             return (blockControllers, blockPresenters);
 

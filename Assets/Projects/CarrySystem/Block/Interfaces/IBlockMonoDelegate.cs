@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using Carry.CarrySystem.Entity.Interfaces;
-using Projects.CarrySystem.Block.Info;
+#nullable enable
 
 namespace Carry.CarrySystem.Block.Interfaces
 {
-    public interface IBlockMonoDelegate : IEntity
+    public interface IBlockMonoDelegate : IEntity , IHighlightExecutor
     {
-        BlockInfo Info { get; }
-        IBlock Block { get; }
+        IBlock? Block { get; }
         IList<IBlock> Blocks { get; }
-        void SetInfo(BlockInfo info);
+        public void AddBlock(IBlock block);
+
+        public void RemoveBlock(IBlock block);
+
     }
 }

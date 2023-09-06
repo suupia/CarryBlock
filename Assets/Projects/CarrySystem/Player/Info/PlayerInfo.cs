@@ -3,25 +3,25 @@ using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using UnityEngine;
 using UnityEngine.Serialization;
+#nullable enable
 
 namespace Carry.CarrySystem.Player.Info
 {
     [Serializable]
     public record PlayerInfo
     {
-        [NonSerialized] public NetworkRunner runner;
-        
         // Property
-        [NonSerialized] public GameObject playerObj;
-        [NonSerialized] public Rigidbody playerRb;
-        [NonSerialized] public AbstractNetworkPlayerController playerController;
+        [NonSerialized] public GameObject PlayerObj = null!;
+        [NonSerialized] public Rigidbody PlayerRb = null!;
+        [NonSerialized] public AbstractNetworkPlayerController PlayerController = null!;
+        [NonSerialized] public PlayerRef PlayerRef;
 
-        public void Init(NetworkRunner runner, GameObject playerObj, AbstractNetworkPlayerController playerController)
+        public void Init(GameObject playerObj, AbstractNetworkPlayerController playerController,PlayerRef playerRef)
         {
-            this.runner = runner;
-            this.playerObj = playerObj;
-            this.playerController = playerController;
-            playerRb = playerObj.GetComponent<Rigidbody>();
+            this.PlayerObj = playerObj;
+            this.PlayerController = playerController;
+            this.PlayerRef = playerRef;
+            PlayerRb = playerObj.GetComponent<Rigidbody>();
         }
     }
 }

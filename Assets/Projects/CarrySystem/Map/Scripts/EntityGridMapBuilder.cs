@@ -3,37 +3,39 @@ using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
-using Projects.Utilty;
+using Projects.Utility;
 using UnityEngine;
+#nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class MapBuilderMonoDelegate : IEntityGridMapBuilder
+    public class EntityGridMapBuilder : IEntityGridMapBuilder
     {
         public EntityGridMap BuildEntityGridMap(EntityGridMapData gridMapData)
         {
             var map = new EntityGridMap(gridMapData.width, gridMapData.height);
             for (int i = 0; i < map.GetLength(); i++)
             {
-                AddEntityFromRecord<Ground, GroundRecord, Ground.Kind>(gridMapData.groundRecords[i], () => gridMapData.groundRecords.Length ,(record) => record.kinds, Ground.Kind.None, map, i );
-                AddEntityFromRecord<BasicBlock, BasicBlockRecord, BasicBlock.Kind>(gridMapData.basicBlockRecords[i], () =>gridMapData.basicBlockRecords.Length, (record) => record.kinds, BasicBlock.Kind.None, map, i );
-                AddEntityFromRecord<UnmovableBlock, RockRecord, UnmovableBlock.Kind>(gridMapData.rockRecords[i], () => gridMapData.rockRecords.Length,(record) => record.kinds, UnmovableBlock.Kind.None, map, i );
-                AddEntityFromRecord<HeavyBlock, HeavyBlockRecord, HeavyBlock.Kind>(gridMapData.heavyBlockRecords[i], () => gridMapData.heavyBlockRecords.Length, (record) => record.kinds, HeavyBlock.Kind.None, map, i );
-                AddEntityFromRecord<FragileBlock, FragileBlockRecord, FragileBlock.Kind>(gridMapData.fragileBlockRecords[i], () => gridMapData.fragileBlockRecords.Length, (record) => record.kinds, FragileBlock.Kind.None, map, i );
+                AddEntityFromRecord<Ground, GroundRecord, Ground.Kind>(gridMapData.groundRecords, () => gridMapData.groundRecords?.Length ??0 ,(record) => record.kinds, Ground.Kind.None, map, i );
+                AddEntityFromRecord<BasicBlock, BasicBlockRecord, BasicBlock.Kind>(gridMapData.basicBlockRecords, () =>gridMapData.basicBlockRecords?.Length?? 0, (record) => record.kinds, BasicBlock.Kind.None, map, i );
+                AddEntityFromRecord<UnmovableBlock, RockRecord, UnmovableBlock.Kind>(gridMapData.rockRecords, () => gridMapData.rockRecords?.Length?? 0,(record) => record.kinds, UnmovableBlock.Kind.None, map, i );
+                AddEntityFromRecord<HeavyBlock, HeavyBlockRecord, HeavyBlock.Kind>(gridMapData.heavyBlockRecords, () => gridMapData.heavyBlockRecords?.Length?? 0, (record) => record.kinds, HeavyBlock.Kind.None, map, i );
+                AddEntityFromRecord<FragileBlock, FragileBlockRecord, FragileBlock.Kind>(gridMapData.fragileBlockRecords, () => gridMapData.fragileBlockRecords?.Length ?? 0, (record) => record.kinds, FragileBlock.Kind.None, map, i );
                 
             }
 
             return map;
         }
         
-        void AddEntityFromRecord<TEntity,TRecord,TKind>(TRecord record,Func<int> getRecordLength, Func<TRecord,TKind[]> funcKins,TKind noneValue, EntityGridMap map, int index) 
+        void AddEntityFromRecord<TEntity,TRecord,TKind>(TRecord[]? records,Func<int> getRecordLength, Func<TRecord,TKind[]> funcKins,TKind noneValue, EntityGridMap map, int index) 
             where TEntity : IEntity
             where TRecord : class 
             where TKind : Enum
         {
-            var kinds = funcKins(record);
-            if (kinds != null)
+            
+            if (records != null)
             {
+                var kinds = funcKins(records[index]);
                 if (getRecordLength() == map.GetLength())
                 {
                     foreach (var kind in kinds)

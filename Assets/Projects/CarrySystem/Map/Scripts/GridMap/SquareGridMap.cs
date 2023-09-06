@@ -108,5 +108,6 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             return IsOutOfIncludeEdgeArea(x, y) || IsOnTheEdgeArea(x, y);
         }
+        
     }
 }
