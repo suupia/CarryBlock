@@ -110,8 +110,12 @@ namespace Carry.CarrySystem.Cart.Scripts
             foreach (var route in routes)
             {
                 var diff = route - beforeGridPos;
-                SetDirection(diff);  // ToDo: 向きを変更
+                SetDirection(diff);
+                var unitDirection = GetUnitVectorFromDirection(_direction);
+                var cartPos = _info.cartObj.transform.position;
+                _info.cartObj.transform.LookAt(cartPos + unitDirection);
                 await MoveTo(beforeGridPos, route);
+                beforeGridPos = route;
             }
             // 次のマップへ移動
             if (_mapUpdater != null)
@@ -177,6 +181,21 @@ namespace Carry.CarrySystem.Cart.Scripts
             {
                 _direction = Direction.Left;
             }
+        }
+        Vector3 GetUnitVectorFromDirection(Direction direction)
+        {
+            return direction switch
+            {
+                Direction.Right => new Vector3(0,0,1),
+                Direction.DiagRightBack => new Vector3(-1, 0,1),
+                Direction.Back => new Vector3(-1,0,0),
+                Direction.DiagLeftBack => new Vector3(-1,0,-1),
+                Direction.Left => new Vector3(0,0,-1),
+                Direction.DiagLeftFront => new Vector3(1, 0,-1),
+                Direction.Front => new Vector3(1, 0,0),
+                Direction.DiagRightFront => new Vector3(1, 0,1),
+                _ => throw new InvalidOperationException()
+            };
         }
 
     }
