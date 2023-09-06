@@ -53,10 +53,6 @@ namespace Carry.CarrySystem.Map.Scripts
                 var getBlocks = tmpMap.GetSingleEntityList<IBlock>(i);
                 var checkedBlocks = CheckBlocks(getBlocks);
                 var blockControllerComponents = blockPresenter.GetComponentsInChildren<BlockControllerNet>();
-                foreach (var blockControllerComponent in blockControllerComponents)
-                {
-                    blockControllerComponent.Init(checkedBlocks);
-                }
                 var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
                 var blockMonoDelegate = new BlockMonoDelegate(gridPos,checkedBlocks,blockInfos, blockPresenter);  // すべてのマスにBlockMonoDelegateを配置させる
                 map.AddEntity(i, blockMonoDelegate);

@@ -2,10 +2,13 @@
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
+using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Projects.CarrySystem.Block.Info;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 #nullable enable
 
@@ -37,18 +40,37 @@ namespace Carry.CarrySystem.Block.Scripts
              _blockPresenter = blockPresenter;
              
              _highLightExecutor = new HighlightExecutor(_blockInfos);
+        
+             // 最初のStartGimmickの処理
+             foreach (var gimmick in _blocks.OfType<IGimmickBlock>())
+             {
+                 gimmick.StartGimmick();
+             }
+             
+             // 代表として最初のBlockControllerの親に対してOnDestroyAsObservableを登録
+             var blockControllerParent = _blockInfos.First().BlockController.transform.parent;
+             blockControllerParent.gameObject.OnDestroyAsObservable().Subscribe(_ =>
+             {
+                 foreach (var gimmick in _blocks.OfType<IGimmickBlock>())
+                 {
+                     gimmick.EndGimmick();
+                 }
+             });
+             
 
          }
          
 
          public void AddBlock(IBlock block)
          {
+             if(block is IGimmickBlock gimmickBlock) gimmickBlock.StartGimmick();
              _blocks.Add(block);
             _blockPresenter.SetBlockActiveData(block, _blocks.Count);
 
          }
          public void RemoveBlock(IBlock block)
          {
+             if(block is IGimmickBlock gimmickBlock) gimmickBlock.EndGimmick();
              _blocks.Remove(block);
              _blockPresenter.SetBlockActiveData(block, _blocks.Count);
 
