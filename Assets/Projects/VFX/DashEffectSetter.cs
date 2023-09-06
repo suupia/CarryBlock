@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.VFX;
-
+[RequireComponent(typeof(VisualEffect))]
 public class DashEffectSetter : MonoBehaviour
 {
-    [SerializeField] VisualEffect _dashEffect;
+    VisualEffect _dashEffect;
     void Start()
     {
+        _dashEffect = GetComponent<VisualEffect>();
         _dashEffect.SendEvent("Stop");
     }
     
@@ -16,7 +18,7 @@ public class DashEffectSetter : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            _dashEffect.SendEvent("OnPlay");
+            _dashEffect.SendEvent("Start");
         }
 
         if (Input.GetKeyUp(KeyCode.A))
