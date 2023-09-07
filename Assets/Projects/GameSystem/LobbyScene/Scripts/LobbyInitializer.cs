@@ -1,4 +1,5 @@
 using System.Threading;
+using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
 using Cysharp.Threading.Tasks;
 using Fusion;
@@ -15,10 +16,10 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
     public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
         PlayerSpawner _playerSpawner;
+        PlayerCharacterHolder _playerCharacterHolder;
 
         [Inject]
-        public void Construct(PlayerSpawner playerSpawner
-            )
+        public void Construct(PlayerSpawner playerSpawner)
         {
             _playerSpawner = playerSpawner;
         }
@@ -37,6 +38,8 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
         void IPlayerJoined.PlayerJoined(PlayerRef player)
         {
             if (Runner.IsServer) _playerSpawner.SpawnPlayer(player );
+            
+            _playerCharacterHolder.SetIndex(player);
 
             // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
         }
