@@ -23,7 +23,6 @@ namespace Carry.CarrySystem.Player.Scripts
         IMapUpdater? _mapUpdater;
         PlayerNearCartHandlerNet _playerNearCartHandler = null!;
 
-        DashEffectSetter? _dashEffectSetter;
             
         public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater , PlayerNearCartHandlerNet playerNearCartHandler)
         {
@@ -49,7 +48,6 @@ namespace Carry.CarrySystem.Player.Scripts
                     Debug.LogError($"_mapUpdater is null");
             }
 
-            _dashEffectSetter = GetComponentInChildren<DashEffectSetter>();  // NetworkObjectなので、このコントローラーの子にしてある
         }
         
 
@@ -72,17 +70,7 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 Character.PassAction();
             }
-            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
-            {
-                Character.Dash();
-               if(_dashEffectSetter != null) _dashEffectSetter.StartDash();
-               else Debug.LogError($"_dashEffectSetter is null");
-            }
-            if (input.Buttons.WasReleased(PreButtons, PlayerOperation.Dash))
-            {
-                Character.Dash();
-                if(_dashEffectSetter != null) _dashEffectSetter.StopDash();
-            }
+
         }
 
         public override void Render() 

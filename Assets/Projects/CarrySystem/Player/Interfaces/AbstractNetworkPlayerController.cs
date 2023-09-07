@@ -27,6 +27,7 @@ namespace Carry.CarrySystem.Player.Interfaces
 
         protected ICharacter Character = null!; // サブクラスのInitでcharacterを受け取るようになっているのでnullになることはない
 
+        DashEffectSetter? _dashEffectSetter;
 
         public override void Spawned()
         {
@@ -37,6 +38,9 @@ namespace Carry.CarrySystem.Player.Interfaces
 
             // Instantiate the character.
             InstantiateCharacter();
+            
+            _dashEffectSetter = GetComponentInChildren<DashEffectSetter>();  // NetworkObjectなので、このコントローラーの子にしてある
+
             
         }
         
@@ -57,6 +61,18 @@ namespace Carry.CarrySystem.Player.Interfaces
                 {
                     Character.HoldAction();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
+                }
+                
+                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
+                {
+                    Character.Dash();
+                    if(_dashEffectSetter != null) _dashEffectSetter.StartDash();
+                    else Debug.LogError($"DashEffectSetter is null");
+                }
+                if (input.Buttons.WasReleased(PreButtons, PlayerOperation.Dash))
+                {
+                    Character.Dash();
+                    if(_dashEffectSetter != null) _dashEffectSetter.StopDash();
                 }
 
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
