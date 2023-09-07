@@ -17,7 +17,6 @@ namespace Carry.UISystem.UI.CarryScene
         void Start()
         {
             _width = fillImage.rectTransform.rect.width;
-            Debug.Log($"_width: {_width}");
         }
 
         void Update()
@@ -27,7 +26,6 @@ namespace Carry.UISystem.UI.CarryScene
                 edgeTransform.localPosition.y,
                 edgeTransform.localPosition.z
             );
-            Debug.Log($"_width * fillImage.fillAmount : {_width * fillImage.fillAmount}, _width / 2: {_width / 2} x : {edgeTransform.position.x}");
         }
     }
 }
