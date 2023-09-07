@@ -50,7 +50,6 @@ namespace Carry.CarrySystem.Player.Scripts
             }
 
             _dashEffectSetter = GetComponentInChildren<DashEffectSetter>();  // NetworkObjectなので、このコントローラーの子にしてある
-            Debug.Log($"_dashEffectSetter = {_dashEffectSetter}");
         }
         
 
@@ -75,14 +74,12 @@ namespace Carry.CarrySystem.Player.Scripts
             }
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
             {
-                Debug.Log($"Start Dash");
                 Character.Dash();
                if(_dashEffectSetter != null) _dashEffectSetter.StartDash();
                else Debug.LogError($"_dashEffectSetter is null");
             }
             if (input.Buttons.WasReleased(PreButtons, PlayerOperation.Dash))
             {
-                Debug.Log($"Stop Dash");
                 Character.Dash();
                 if(_dashEffectSetter != null) _dashEffectSetter.StopDash();
             }

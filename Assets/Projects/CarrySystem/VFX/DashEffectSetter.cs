@@ -44,13 +44,13 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 if (Data.IsDashing)
                 {
-                    Debug.Log($"SendEvent Start Dash");
+                    // Debug.Log($"SendEvent Start Dash");
                     _dashEffect.SendEvent("Start");
                     _isDashingLocal = Data.IsDashing;
                 }
                 else
                 {
-                    Debug.Log($"SendEvent Stop Dash");
+                    // Debug.Log($"SendEvent Stop Dash");
                     _dashEffect.SendEvent("Stop");
                     _isDashingLocal = Data.IsDashing;
                 }
