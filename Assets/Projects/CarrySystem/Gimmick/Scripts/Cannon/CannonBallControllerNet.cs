@@ -6,7 +6,7 @@ namespace Carry.CarrySystem.Gimmick.Scripts
 {
     public class CannonBallControllerNet : NetworkBehaviour
     {
-        // ToDo: とりあえず、まっすぐに進むようにしておく
+        readonly float _speed = 5f;
         public void Init()
         {
             Debug.Log($"CannonBallControllerNet.Init() called");
@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Gimmick.Scripts
 
         void Update()
         {
-            transform.position += transform.forward * Time.deltaTime * 10f;
+            transform.position += transform.forward * Time.deltaTime * _speed;
         }
     }
 }

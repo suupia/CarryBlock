@@ -28,7 +28,9 @@ namespace Carry.CarrySystem.Block.Scripts
         public int MaxPlacedBlockCount { get; } = 2;
         public CannonBlock.Kind KindValue { get; }
 
+        // CannonBall関連
         readonly float _fireInterval = 3.0f;
+        readonly float _spawnHeight = 0.8f;
         IDisposable? _gimmickDisposable = null;
         
 
@@ -54,8 +56,10 @@ namespace Carry.CarrySystem.Block.Scripts
             _gimmickDisposable =  Observable.Interval(System.TimeSpan.FromSeconds(_fireInterval))
                 .Subscribe(x =>
                     {
+                        var worldPos = GridConverter.GridPositionToWorldPosition(GridPosition);
+                        var spawnPos = new Vector3(worldPos.x, worldPos.y + _spawnHeight , worldPos.z);
                         // CannonBallを生成
-                        cannonBallBuilder.Build(GridConverter.GridPositionToWorldPosition(GridPosition), Quaternion.identity, PlayerRef.None);
+                        cannonBallBuilder.Build(spawnPos, Quaternion.identity, PlayerRef.None);
                     }
                 );
         }
