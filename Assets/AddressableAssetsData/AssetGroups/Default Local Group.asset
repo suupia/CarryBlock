@@ -78,7 +78,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 55e0b797e10fa314980a82e71b1d6810
-    m_Address: Assets/Resources_moved/Prefabs/Gimmick/Cannon/CannonBallNet.prefab
+    m_Address: Prefabs/Gimmick/Cannon/CannonBallNet
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

@@ -54,7 +54,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 var checkedBlocks = CheckBlocks(getBlocks);
                 var blockControllerComponents = blockPresenter.GetComponentsInChildren<BlockControllerNet>();
                 var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
-                var blockMonoDelegate = new BlockMonoDelegate(gridPos,checkedBlocks,blockInfos, blockPresenter);  // すべてのマスにBlockMonoDelegateを配置させる
+                var blockMonoDelegate = new BlockMonoDelegate(_runner, gridPos,checkedBlocks,blockInfos, blockPresenter);  // すべてのマスにBlockMonoDelegateを配置させる
                 map.AddEntity(i, blockMonoDelegate);
 
                 blockPresenters.Add(blockPresenter);

@@ -1,4 +1,5 @@
-﻿using Fusion;
+﻿using System;
+using Fusion;
 using UnityEngine;
 
 namespace Carry.CarrySystem.Gimmick.Scripts
@@ -10,6 +11,10 @@ namespace Carry.CarrySystem.Gimmick.Scripts
         {
             Debug.Log($"CannonBallControllerNet.Init() called");
         }
-        
+
+        void Update()
+        {
+            transform.position += transform.forward * Time.deltaTime * 10f;
+        }
     }
 }
