@@ -90,7 +90,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                     UnmovableBlock _ => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
                     HeavyBlock _ => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
                     FragileBlock _ => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
-                    CannonBlock _ => new CannonBlock(CannonBlock.Kind.Kind1, mouseGridPosOnGround),
+                    CannonBlock _ => new CannonBlock(CannonBlock.Kind.Up, mouseGridPosOnGround),
                     _ =>  throw new ArgumentOutOfRangeException(nameof(_blockType), _blockType, null),
                 };
                 _blockPlacer.AddBlock(map, mouseGridPosOnGround, block);
@@ -137,7 +137,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             if(Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
             {
-                _blockType = new CannonBlock(CannonBlock.Kind.Kind1, Vector2Int.zero);
+                _blockType = new CannonBlock(CannonBlock.Kind.Up, Vector2Int.zero);
             }
 
             if (Input.GetKeyDown(KeyCode.S))

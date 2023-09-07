@@ -37,7 +37,10 @@ namespace Carry.CarrySystem.Block.Scripts
         public enum Kind
         {
             None,
-            Kind1,
+            Up,
+            Left,
+            Down,
+            Right,
         }
 
         public CannonBlock(CannonBlock.Kind kind, Vector2Int gridPosition)
