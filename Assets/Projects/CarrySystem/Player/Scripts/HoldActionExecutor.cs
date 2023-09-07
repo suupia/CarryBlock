@@ -11,6 +11,9 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Carry.CarrySystem.Player.Info;
+using Cysharp.Threading.Tasks;
+using Carry.CarrySystem.Block;
+using Carry.CarrySystem.Block.Scripts;
 using UniRx;
 
 #nullable enable
@@ -26,6 +29,8 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IPlayerBlockPresenter _playerPresenterContainer;
 
         IDisposable? _searchBlockDisposable;
+
+        IBlockMonoDelegate? _searchedBlockMonoDelegate;
         IList<IBlock> _searchedBlocks = new List<IBlock>();
 
         public HoldActionExecutor(
@@ -58,60 +63,82 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         public void HoldAction()
         {
-            var transform = _info.playerObj.transform;
+            var transform = _info.PlayerObj.transform;
             var forwardGridPos = GetForwardGridPos(transform);
+            
+            Debug.Log($"IsHoldingBlock : {_blockContainer.IsHoldingBlock}");
 
             if (_blockContainer.IsHoldingBlock)
             {
-                // 前方にGroundがあるかどうかを確認
-                var grounds = _map.GetSingleEntityList<Ground>(forwardGridPos);
-                if(!grounds.Any()) return;
+                // マップの内部かどうかを判定
+                if(!_map.IsInDataRangeArea(forwardGridPos))return;
                 
+                Debug.Log($"CanPutDown : {_blockContainer.CanPutDown(_searchedBlocks)}");
                 if (_blockContainer.CanPutDown(_searchedBlocks))
                 {
                     var block = _blockContainer.PopBlock();
                     if (block == null)
                     {
-                        Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれない
+                        Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれないはず
                         return;
                     }
-                    block.PutDown(_info.playerController.GetCharacter);
-                    _map.AddEntity(forwardGridPos, block);
+                    block.PutDown(_info.PlayerController.GetCharacter);
+                    // _map.AddEntity(forwardGridPos, block);
+                    _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.AddBlock(block);
                     _playerPresenterContainer.PutDownBlock();
                 }
             }
             else
             {
-                IBlock block = null!;
-                if (_searchedBlocks.Any()) block = _searchedBlocks.First(); // 一つのマスにはIBlockは一種類しかないという前提
-                else return;
+                var blockMonoDelegate = _searchedBlockMonoDelegate;  // フレームごとに判定しているためここでキャッシュする
+                if(blockMonoDelegate?.Block == null)
+                {
+                    Debug.Log($"blockMonoDelegate.Block : null");
+                    return;
+                }
                 
+                // Debug
+                Debug.Log($"before currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
+
+                var block = blockMonoDelegate.Block;
                 if (block.CanPickUp())
                 {
-                    block.PickUp(_info.playerController.GetCharacter);
-                    _map.RemoveEntity(forwardGridPos, block);
+                    Debug.Log($"remove currentBlockMonos");
+                    block.PickUp(_info.PlayerController.GetCharacter);
+                    // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
+                    _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
                     _playerPresenterContainer.PickUpBlock(block);
                     _blockContainer.SetBlock(block);
                 }
+                Debug.Log($"after currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
+
             }
         }
-        
+
         void SearchBlocks()
         {
-            var transform = _info.playerObj.transform;
+            if (_info.PlayerObj == null) return; // EveryUpdateで呼ぶため、playerObjが破棄された後にも呼ばれる可能性がある
+            var transform = _info.PlayerObj.transform;
             var forwardGridPos = GetForwardGridPos(transform);
 
-            // 前方にBlockがあるかどうかを確認
-            var blocks = _map.GetSingleEntityList<IBlock>(forwardGridPos);
-            // Debug.Log($"forwardGridPos: {forwardGridPos}, blocks: {string.Join(",", blocks)}");
-            
-            _searchedBlocks = blocks;
+            // 前方のMonoBlockDelegateを取得
+            var blockMonoDelegate = _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos);
 
-            // ここにブロックの見た目を変える処理を入れる
-            blocks.ForEach(block =>
+            _searchedBlockMonoDelegate = blockMonoDelegate;
+            
+            if (blockMonoDelegate == null) return;
+
+            // Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
+
+            // _searchedBlockを更新
+            _searchedBlocks = blockMonoDelegate.Blocks;
+
+            // ハイライトの処理
+            if (blockMonoDelegate.Block == null) return;
+            if (blockMonoDelegate.Block.CanPickUp())
             {
-                // block.Highlight();
-            });
+                blockMonoDelegate.Highlight(blockMonoDelegate.Block, _info.PlayerRef); // ハイライトの処理
+            }
         }
 
 

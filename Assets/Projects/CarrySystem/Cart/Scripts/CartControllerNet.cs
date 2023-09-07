@@ -11,7 +11,7 @@ namespace Carry.CarrySystem.Cart.Scripts
         
         [SerializeField] Collider detectCollider = null!;
         
-        CartShortestRouteMove _move; 
+        CartShortestRouteMove _move = null!; 
         
         public void Init(CartShortestRouteMove move)
         {

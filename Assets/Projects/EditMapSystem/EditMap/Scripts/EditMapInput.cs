@@ -15,14 +15,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 {
     public class EditMapInput : MonoBehaviour
     {
-        [SerializeField] EditMapCUISave editMapCuiSave;
-        [SerializeField] EditMapCUILoad editMapCUILoad;
+        [SerializeField] EditMapCUISave editMapCuiSave = null!;
+        [SerializeField] EditMapCUILoad editMapCUILoad = null!;
 
         public  IBlock BlockType => _blockType;
 
-        BlockPlacer _blockPlacer;
-        IMapUpdater _editMapUpdater;
-        EntityGridMapSaver _entityGridMapSaver;
+        BlockPlacer _blockPlacer = null!;
+        IMapUpdater _editMapUpdater = null!;
 
         CUIState _cuiState = CUIState.Idle;
         IBlock _blockType = null!;

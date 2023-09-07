@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Player.Info;
+﻿using System.Security.Cryptography.X509Certificates;
+using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 
@@ -8,8 +9,8 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class CorrectlyStopMoveExecutor : IMoveExecutor
     {
-        PlayerInfo _info;
-        readonly float _acceleration = 30f;
+        PlayerInfo _info = null!;
+        readonly float _acceleration = 40f;
         readonly float _maxVelocity = 9f;
         readonly float _stoppingForce = 5f;
 
@@ -20,8 +21,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Move(Vector3 input)
         {
-            var transform = _info.playerObj.transform;
-            var rb = _info.playerRb;
+            var transform = _info.PlayerObj.transform;
+            var rb = _info.PlayerRb;
 
             var deltaAngle = Vector3.SignedAngle(transform.forward, input, Vector3.up);
             // Debug.Log($"deltaAngle = {deltaAngle}");
@@ -45,7 +46,16 @@ namespace Carry.CarrySystem.Player.Scripts
                 // Stop if there is no key input
                 // Define 0 < _stoppingForce < 1
                 float reductionFactor = Mathf.Max(0f, 1f - _stoppingForce * Time.deltaTime);
+                float _stoppingSpeed = 1.5f;
+
                 rb.velocity *= Mathf.Pow(reductionFactor, rb.velocity.magnitude);
+                
+                if (rb.velocity.magnitude <= _stoppingSpeed)
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
+
             }
         }
     }

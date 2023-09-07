@@ -15,7 +15,7 @@ namespace Carry.UISystem.UI.CarryScene
         [SerializeField] TextMeshProUGUI resultText;
         [SerializeField] TextMeshProUGUI remainingTimeToReturnText;
 
-        [SerializeField] Slider floorTimerSlider;
+        [SerializeField] Image floorTimerImage;
 
         FloorTimerNet _floorTimerNet;
 
@@ -84,8 +84,7 @@ namespace Carry.UISystem.UI.CarryScene
             var remainingTime = _floorTimerNet.CurrentFloorRemainingTime;
             floorTimerText.text = $"Time : {Mathf.Floor(remainingTime)}";
 
-            floorTimerSlider.value = remainingTime;
-            floorTimerSlider.maxValue = _floorTimerNet.CurrentFloorLimitTime;
+            floorTimerImage.fillAmount = remainingTime / _floorTimerNet.CurrentFloorLimitTime;
 
             // ローカル用のドメインの反映
             // remainingTimeToReturnText.text = _returnToMainBaseGauge.IsReturnToMainBase

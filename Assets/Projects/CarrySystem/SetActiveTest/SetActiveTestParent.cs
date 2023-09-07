@@ -36,7 +36,7 @@ namespace Carry.CarrySystem.SetActiveTest
 
         void Update()
         {
-            if (Object.InputAuthority)
+            if (Object.InputAuthority.IsValid)
             {
                 if (Input.GetKeyDown(KeyCode.R))
                 {

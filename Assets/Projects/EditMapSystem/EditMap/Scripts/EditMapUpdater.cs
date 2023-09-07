@@ -19,7 +19,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         readonly LoadedFilePresenter _loadedFilePresenter;
         readonly EntityGridMapLoader _gridMapLoader;
-        readonly AllPresenterBuilder _allPresenterBuilder;
+        readonly IPresenterPlacer _allPresenterPlacer;
         EntityGridMap _map;
         MapKey _mapKey;
         int _index;
@@ -30,12 +30,12 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public EditMapUpdater(
             LoadedFilePresenter loadedFilePresenter,
             EntityGridMapLoader entityGridMapLoader,
-            AllPresenterBuilder allPresenterBuilder
+            IPresenterPlacer allPresenterPlacer
             )
         {
             _loadedFilePresenter = loadedFilePresenter;
             _gridMapLoader = entityGridMapLoader;
-            _allPresenterBuilder = allPresenterBuilder;
+            _allPresenterPlacer = allPresenterPlacer;
             _mapKey = MapKey.Default;
             _index = -1; // LoadedFileを表示するために初期化が必要
             _map = _gridMapLoader.LoadDefaultEntityGridMap(); // Defaultのマップデータを読み込む
@@ -49,14 +49,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public void InitUpdateMap(MapKey mapKey, int index)
         {
             _map = _gridMapLoader.LoadEntityGridMap(mapKey, index);
-            _allPresenterBuilder.Build(_map);
+            _allPresenterPlacer.Place(_map);
             _loadedFilePresenter.FormatLoadedFileText(_mapKey,_index);
         }
 
         public void UpdateMap(MapKey mapKey, int index)
         {
             _map = _gridMapLoader.LoadEntityGridMap(mapKey, index);
-            _allPresenterBuilder.Build(_map);
+            _allPresenterPlacer.Place(_map);
             _mapKey = mapKey;
             _index = index;
             _loadedFilePresenter.FormatLoadedFileText(_mapKey,_index);
