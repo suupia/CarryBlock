@@ -22,7 +22,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         IMapUpdater? _mapUpdater;
         PlayerNearCartHandlerNet _playerNearCartHandler = null!;
-        readonly PlayerCharacterHolder _playerCharacterHolder = null!;
+        PlayerCharacterHolder _playerCharacterHolder = null!;
         public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater , PlayerNearCartHandlerNet playerNearCartHandler)
         {
             Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
@@ -88,6 +88,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         void ToSpawnPosition(EntityGridMap map)
         {
+            _playerCharacterHolder = new PlayerCharacterHolder();
             var spawnGridPos = new Vector2Int(1, map.Height / 2 + _playerCharacterHolder.GetPlayerIndex(info.PlayerRef));
             var spawnWorldPos = GridConverter.GridPositionToWorldPosition(spawnGridPos);
             var height = 0.5f;  // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）

@@ -9,19 +9,21 @@ using Projects.BattleSystem.Scripts;
 using Projects.BattleSystem.Spawners.Scripts;
 using UnityEngine;
 using VContainer;
+#nullable enable
 
 namespace Projects.BattleSystem.LobbyScene.Scripts
 {
     [DisallowMultipleComponent]
     public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
-        PlayerSpawner _playerSpawner;
-        PlayerCharacterHolder _playerCharacterHolder;
+        PlayerSpawner _playerSpawner = null!;
+        PlayerCharacterHolder _playerCharacterHolder = null!;
 
         [Inject]
-        public void Construct(PlayerSpawner playerSpawner)
+        public void Construct(PlayerSpawner playerSpawner , PlayerCharacterHolder playerCharacterHolder)
         {
             _playerSpawner = playerSpawner;
+            _playerCharacterHolder = playerCharacterHolder;
         }
 
         async void Start()
