@@ -8,6 +8,7 @@ using Projects.Utility.Interfaces;
 using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;
+#nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {

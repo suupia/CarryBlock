@@ -18,16 +18,17 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class BlockPresenterNet : NetworkBehaviour, IBlockPresenter
     {
-        public struct PresentData : INetworkStruct
+        struct PresentData : INetworkStruct
         {
             public int BasicBlockCount;
             public int UnmovableBlockCount;
             public int HeavyBlockCount;
             public int FragileBlockCount;
             public int CannonBlockCount;
+            public Direction CannonDirection;
         }
 
-        [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
+        [Networked] ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
         [SerializeField] GameObject basicBlockView = null!;
@@ -38,6 +39,8 @@ namespace Carry.CarrySystem.Map.Scripts
         [SerializeField] GameObject doubleHeavyBlockView = null!;
         [SerializeField] GameObject fragileBlockView = null!;
         [SerializeField] GameObject cannonBlockView = null!;
+
+        Direction _cannonDirectionLocal;
 
         public override void Render()
         {
@@ -100,6 +103,12 @@ namespace Carry.CarrySystem.Map.Scripts
                 1 => true,
                 _ => throw new InvalidOperationException($"CannonBlockCount : {PresentDataRef.CannonBlockCount}")
             });
+            if (_cannonDirectionLocal != PresentDataRef.CannonDirection)
+            {
+                _cannonDirectionLocal = PresentDataRef.CannonDirection;
+                // Viewの方を回転させても反映されないので、親を回転させる（たぶんNetwork関連のコンポーネントのせい）
+                cannonBlockView.transform.parent.Rotate(0,CalcRotationAmount(_cannonDirectionLocal),0);
+            }
         }
 
 
@@ -131,12 +140,41 @@ namespace Carry.CarrySystem.Map.Scripts
                 case FragileBlock _:
                     PresentDataRef.FragileBlockCount = count;
                     break;
-                case CannonBlock _:
+                case CannonBlock cannonBlock:
+                    Debug.Log($"CannonBlock KindValue : {cannonBlock.KindValue} ");
                     PresentDataRef.CannonBlockCount = count;
+                    PresentDataRef.CannonDirection = cannonBlock.KindValue switch
+                    {
+                        CannonBlock.Kind.Up => Direction.Up,
+                        CannonBlock.Kind.Left => Direction.Left,
+                        CannonBlock.Kind.Down => Direction.Down,
+                        CannonBlock.Kind.Right => Direction.Right,
+                        _ => throw new System.Exception($"想定外のCannonBlock.Kindが渡されました cannonBlock.KindValue : {cannonBlock.KindValue}")
+                    };
                     break;
                 default:
                     throw new System.Exception($"想定外のEntityが渡されました block : {block}");
             }
+        }
+        
+        float CalcRotationAmount(Direction direction)
+        {
+            return direction switch
+            {
+                Direction.Up => 0f,
+                Direction.Left => -90f,
+                Direction.Down => -180f,
+                Direction.Right => 90f,
+                _ => throw new System.Exception($"想定外のDirectionが渡されました direction : {direction}")
+            };
+        }
+        
+        enum Direction
+        {
+            Up,
+            Left,
+            Down,
+            Right
         }
     }
 }
