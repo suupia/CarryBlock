@@ -57,8 +57,6 @@ namespace Carry.CarrySystem.Map.Scripts
                 var blockMonoDelegate = new BlockMonoDelegate(_runner, gridPos,checkedBlocks,blockInfos, blockPresenter);  // すべてのマスにBlockMonoDelegateを配置させる
                 map.AddEntity(i, blockMonoDelegate);
                 
-                // Presenterの子要素の回転
-                RotatePresenterChildren(blockControllerComponents, getBlocks);
 
                 blockPresenters.Add(blockPresenter);
             }
@@ -87,29 +85,6 @@ namespace Carry.CarrySystem.Map.Scripts
             return blocks;
 
         }
-        
-        void RotatePresenterChildren(BlockControllerNet[]? blockControllerComponents , IList<IBlock> blocks)
-        {
-            if(blockControllerComponents == null) return;
-            foreach (var block in blocks)
-            {
-                if (block is CannonBlock cannonBlock)
-                {
-                    var rotateAngle = cannonBlock.KindValue switch
-                    {
-                        CannonBlock.Kind.Up => 0f,
-                        CannonBlock.Kind.Left => 90f,
-                        CannonBlock.Kind.Down => 180f,
-                        CannonBlock.Kind.Right => 270f,
-                        _ => 0f
-                    };
-                    var cannonBlockController =
-                        blockControllerComponents.FirstOrDefault(b => b.Info.BlockType == typeof(CannonBlock));
-                    if(cannonBlockController != null) cannonBlockController.gameObject.transform.Rotate(0, rotateAngle,0);
-                }
-            }
-            
-            
-        }
+
     }
 }
