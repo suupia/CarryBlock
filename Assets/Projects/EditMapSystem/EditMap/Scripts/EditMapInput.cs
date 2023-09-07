@@ -18,13 +18,15 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         [SerializeField] EditMapCUISave editMapCuiSave = null!;
         [SerializeField] EditMapCUILoad editMapCUILoad = null!;
 
-        public  IBlock BlockType => _blockType;
+        public  Type BlockType => _blockType;
+        
+        Direction _direction = Direction.Up; 
 
         BlockPlacer _blockPlacer = null!;
         IMapUpdater _editMapUpdater = null!;
 
         CUIState _cuiState = CUIState.Idle;
-        IBlock _blockType = null!;
+        Type _blockType = null!;
 
         enum CUIState
         {
@@ -65,8 +67,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                     _cuiState = CUIState.Idle;
                 }
             });
-            
-            _blockType = new BasicBlock(BasicBlock.Kind.Kind1, Vector2Int.zero);
+
+            _blockType = typeof(BasicBlock);
 
         }
 
@@ -84,14 +86,18 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
                 var map = _editMapUpdater.GetMap();
                 
-                IBlock block = _blockType switch
+                IBlock block = _blockType.Name switch
                 {
-                    BasicBlock _ => new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround),
-                    UnmovableBlock _ => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
-                    HeavyBlock _ => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
-                    FragileBlock _ => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
-                    CannonBlock _ => new CannonBlock(CannonBlock.Kind.Left, mouseGridPosOnGround),
-                    _ =>  throw new ArgumentOutOfRangeException(nameof(_blockType), _blockType, null),
+                    nameof(BasicBlock)  => new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround),
+                    nameof(UnmovableBlock)  => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
+                    nameof(HeavyBlock)  => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
+                    nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
+                    nameof(CannonBlock) => new CannonBlock(CannonBlock.Kind.Left, mouseGridPosOnGround),
+                    _ => ((Func<IBlock>)(() => 
+                    {
+                        Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}");
+                        return null!;
+                    }))(),
                 };
                 _blockPlacer.AddBlock(map, mouseGridPosOnGround, block);
             }
@@ -103,41 +109,41 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
                 var map = _editMapUpdater.GetMap();
                 
-                (_blockType switch
+                (_blockType.Name switch
                 {
-                    BasicBlock _ => () => _blockPlacer.RemoveBlock<BasicBlock>(map, mouseGridPosOnGround),
-                    UnmovableBlock _ => () => _blockPlacer.RemoveBlock<UnmovableBlock>(map, mouseGridPosOnGround),
-                    HeavyBlock _ => () => _blockPlacer.RemoveBlock<HeavyBlock>(map, mouseGridPosOnGround),
-                    FragileBlock _ => () => _blockPlacer.RemoveBlock<FragileBlock>(map, mouseGridPosOnGround),
-                    CannonBlock _ => () => _blockPlacer.RemoveBlock<CannonBlock>(map, mouseGridPosOnGround),
-                    _ => (Action)(() => throw new ArgumentOutOfRangeException(nameof(_blockType), _blockType, null) ),
+                    nameof(BasicBlock) => () => _blockPlacer.RemoveBlock<BasicBlock>(map, mouseGridPosOnGround),
+                    nameof(UnmovableBlock) => () => _blockPlacer.RemoveBlock<UnmovableBlock>(map, mouseGridPosOnGround),
+                    nameof(HeavyBlock) => () => _blockPlacer.RemoveBlock<HeavyBlock>(map, mouseGridPosOnGround),
+                    nameof(FragileBlock) => () => _blockPlacer.RemoveBlock<FragileBlock>(map, mouseGridPosOnGround),
+                    nameof(CannonBlock) => () => _blockPlacer.RemoveBlock<CannonBlock>(map, mouseGridPosOnGround),
+                    _ => (Action)(() => Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}") ),
                 })();
             }
 
             // 置くブロックを切り替える
             if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
             {
-                _blockType = new BasicBlock(BasicBlock.Kind.Kind1, Vector2Int.zero);
+                _blockType = typeof(BasicBlock);
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
             {
-                _blockType = new UnmovableBlock(UnmovableBlock.Kind.Kind1, Vector2Int.zero);
+                _blockType = typeof(UnmovableBlock);
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
             {
-                _blockType = new HeavyBlock(HeavyBlock.Kind.Kind1, Vector2Int.zero);
+                _blockType = typeof(HeavyBlock);
             }
             
             if(Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
             {
-                _blockType = new FragileBlock(FragileBlock.Kind.Kind1, Vector2Int.zero);
+                _blockType = typeof(FragileBlock);
             }
             
             if(Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
             {
-                _blockType = new CannonBlock(CannonBlock.Kind.Up, Vector2Int.zero);
+                _blockType =typeof(CannonBlock);
             }
 
             if (Input.GetKeyDown(KeyCode.S))
@@ -149,6 +155,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             {
                 if (_cuiState == CUIState.Idle) editMapCUILoad.OpenLoadUI();
             }
+        }
+
+        enum Direction
+        {
+            Up,
+            Left,
+            Down,
+            Right
         }
     }
 }
