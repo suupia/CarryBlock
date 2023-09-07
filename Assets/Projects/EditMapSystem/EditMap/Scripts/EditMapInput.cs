@@ -18,7 +18,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         [SerializeField] EditMapCUISave editMapCuiSave = null!;
         [SerializeField] EditMapCUILoad editMapCUILoad = null!;
 
-        public  Type BlockType => _blockType;
+        public  string BlockTypeString => _blockType?.Name ?? "None";
+        public string DirectionString => _direction.ToString();
         
         Direction _direction = Direction.Up; 
 
