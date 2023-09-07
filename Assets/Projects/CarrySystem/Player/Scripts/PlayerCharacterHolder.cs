@@ -8,10 +8,12 @@ namespace Carry.CarrySystem.Player.Scripts
     /// <summary>
     /// ロビーシーンからゲームシーンに遷移する際に、PlayerRefとPlayerColorTypeの組を保持するクラス
     /// 他にも保持したい状態があったらこのクラスに追加する
+    /// 追加:PlayerRefとPlayerIndexの組を保持する
     /// </summary>
     public class PlayerCharacterHolder
     {
         readonly Dictionary<PlayerRef, PlayerColorType> _colorDictionary = new Dictionary<PlayerRef, PlayerColorType>();
+        readonly Dictionary<PlayerRef, int> _playerIndexDictionary = new Dictionary<PlayerRef, int>();
 
         public PlayerColorType GetPlayerColorType(PlayerRef playerRef)
         {
@@ -26,6 +28,21 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             // Debug.Log($"Registering playerRef:{playerRef} as {colorType}");
             _colorDictionary.Add(playerRef, colorType);
+        }
+        
+        public int GetPlayerIndex(PlayerRef playerRef)
+        {
+            if (_playerIndexDictionary.TryGetValue(playerRef, out int index))
+            {
+                // Debug.Log($"GetPlayerIndex playerRef:{playerRef} is {index+1}P");
+                return index;
+            }
+            return 0;
+        }
+        public void SetIndex(PlayerRef playerRef)
+        {
+            // Debug.Log($"Registering playerRef:{playerRef} as {index+1}P");
+            _playerIndexDictionary.Add(playerRef, _playerIndexDictionary.Count);
         }
     }
 }
