@@ -18,7 +18,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         [SerializeField] EditMapCUISave editMapCuiSave = null!;
         [SerializeField] EditMapCUILoad editMapCUILoad = null!;
 
-        public  string BlockTypeString => _blockType?.Name ?? "None";
+        public  string BlockTypeString => _blockType?.Name ?? "(None)";
         public string DirectionString => _direction.ToString();
         
         Direction _direction = Direction.Up; 
@@ -93,7 +93,18 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                     nameof(UnmovableBlock)  => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
                     nameof(HeavyBlock)  => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
                     nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
-                    nameof(CannonBlock) => new CannonBlock(CannonBlock.Kind.Left, mouseGridPosOnGround),
+                    nameof(CannonBlock) =>  ((Func<IBlock>)(() =>
+                    {
+                        var kind = _direction switch
+                        {
+                            Direction.Up => CannonBlock.Kind.Up,
+                            Direction.Left => CannonBlock.Kind.Left,
+                            Direction.Down => CannonBlock.Kind.Down,
+                            Direction.Right => CannonBlock.Kind.Right,
+                            _ => throw new ArgumentOutOfRangeException(),
+                        };
+                        return new CannonBlock(kind, mouseGridPosOnGround);
+                    }))(),
                     _ => ((Func<IBlock>)(() => 
                     {
                         Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}");
@@ -146,12 +157,32 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             {
                 _blockType =typeof(CannonBlock);
             }
+            
+            // 方向を切り替える
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                _direction = Direction.Up;
+            }
+            if(Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                _direction = Direction.Left;
+            }
+            if(Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                _direction = Direction.Down;
+            }
+            if(Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                _direction = Direction.Right;
+            }
 
+            // Open Save CUI
             if (Input.GetKeyDown(KeyCode.S))
             {
                 if (_cuiState == CUIState.Idle) editMapCuiSave.OpenSaveUI();
             }
-
+            
+            // Open Load CUI
             if (Input.GetKeyDown(KeyCode.L))
             {
                 if (_cuiState == CUIState.Idle) editMapCUILoad.OpenLoadUI();
