@@ -57,21 +57,25 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 _animator.SetTrigger("PickUp");
                 _pickUpCount = PresentDataRef.PickUpCount;
+                Debug.Log($"PickUpCount: {PresentDataRef.PickUpCount},_pickUpCount: {_pickUpCount}");
             }
             if(PresentDataRef.PutDownCount > _putDownCount)
             {
                 _animator.SetTrigger("PutDown");
                 _putDownCount = PresentDataRef.PutDownCount;
+                Debug.Log($"PutDownCount: {PresentDataRef.PutDownCount},_putDownCount: {_putDownCount}");
             }
             if(PresentDataRef.ReceiveCount > _receiveCount)
             {
                 _animator.SetTrigger("Receive");
                 _receiveCount = PresentDataRef.ReceiveCount;
+                Debug.Log($"ReceiveCount: {PresentDataRef.ReceiveCount},_receiveCount: {_receiveCount}");
             }
             if(PresentDataRef.PassCount > _passCount)
             {
                 _animator.SetTrigger("Pass");
                 _passCount = PresentDataRef.PassCount;
+                Debug.Log($"PassCount: {PresentDataRef.PassCount},_passCount: {_passCount}");
             }
 
             switch (PresentDataRef.MovementState)
@@ -107,7 +111,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void ReceiveBlock(IBlock block)
         {
             PresentDataRef.ReceiveCount++;
-            PresentDataRef.IsHoldingBlock = false;
+            PresentDataRef.IsHoldingBlock = true;
         }
 
         public void PassBlock()
