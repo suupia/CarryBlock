@@ -22,7 +22,8 @@ namespace Carry.CarrySystem.Player.Scripts
         
         IMapUpdater? _mapUpdater;
         PlayerNearCartHandlerNet _playerNearCartHandler = null!;
-        
+
+            
         public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater , PlayerNearCartHandlerNet playerNearCartHandler)
         {
             Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
@@ -47,7 +48,6 @@ namespace Carry.CarrySystem.Player.Scripts
                     Debug.LogError($"_mapUpdater is null");
             }
 
-
         }
         
 
@@ -70,11 +70,7 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 Character.PassAction();
             }
-            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
-            {
-                Debug.Log($"Dash");
-                Character.Dash();
-            }
+
         }
 
         public override void Render() 
