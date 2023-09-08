@@ -121,6 +121,14 @@ namespace Carry.CarrySystem.Map.Scripts
             PresentDataRef.HeavyBlockCount = allEntityList.OfType<HeavyBlock>().Count();
             PresentDataRef.FragileBlockCount = allEntityList.OfType<FragileBlock>().Count();
             PresentDataRef.CannonBlockCount = allEntityList.OfType<CannonBlock>().Count();
+            PresentDataRef.CannonDirection = allEntityList.OfType<CannonBlock>().FirstOrDefault()?.KindValue switch
+            {
+                CannonBlock.Kind.Up => Direction.Up,
+                CannonBlock.Kind.Left => Direction.Left,
+                CannonBlock.Kind.Down => Direction.Down,
+                CannonBlock.Kind.Right => Direction.Right,
+                _ => throw new InvalidOperationException()
+            };
         }
 
         public void SetBlockActiveData(IBlock block, int count)
