@@ -50,10 +50,10 @@ namespace Carry.CarrySystem.Player.Scripts
 
                 rb.velocity *= Mathf.Pow(reductionFactor, rb.velocity.magnitude);
                 
-                if (rb.velocity.magnitude <= _stoppingSpeed)
+                if (rb.velocity.magnitude <= _stoppingSpeed )
                 {
-                    rb.velocity = Vector3.zero;
-                    rb.angularVelocity = Vector3.zero;
+                    rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
+                    rb.angularVelocity = new Vector3(0f, rb.angularVelocity.y, 0f);
                 }
 
             }
