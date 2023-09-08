@@ -62,7 +62,7 @@ namespace Carry.CarrySystem.Block.Scripts
                         var worldPos = GridConverter.GridPositionToWorldPosition(GridPosition);
                         var spawnPos = new Vector3(worldPos.x, worldPos.y + _spawnHeight , worldPos.z);
                         // CannonBallを生成
-                        cannonBallBuilder.Build(spawnPos, Quaternion.identity, PlayerRef.None);
+                        cannonBallBuilder.Build(KindValue, spawnPos, Quaternion.identity, PlayerRef.None);
                     }
                 );
         }
