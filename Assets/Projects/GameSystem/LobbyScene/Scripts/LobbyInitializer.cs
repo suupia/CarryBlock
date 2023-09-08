@@ -1,4 +1,5 @@
 using System.Threading;
+using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
 using Cysharp.Threading.Tasks;
 using Fusion;
@@ -8,19 +9,21 @@ using Projects.BattleSystem.Scripts;
 using Projects.BattleSystem.Spawners.Scripts;
 using UnityEngine;
 using VContainer;
+#nullable enable
 
 namespace Projects.BattleSystem.LobbyScene.Scripts
 {
     [DisallowMultipleComponent]
     public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
-        PlayerSpawner _playerSpawner;
+        PlayerSpawner _playerSpawner = null!;
+        PlayerCharacterHolder _playerCharacterHolder = null!;
 
         [Inject]
-        public void Construct(PlayerSpawner playerSpawner
-            )
+        public void Construct(PlayerSpawner playerSpawner , PlayerCharacterHolder playerCharacterHolder)
         {
             _playerSpawner = playerSpawner;
+            _playerCharacterHolder = playerCharacterHolder;
         }
 
         async void Start()
@@ -37,6 +40,8 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
         void IPlayerJoined.PlayerJoined(PlayerRef player)
         {
             if (Runner.IsServer) _playerSpawner.SpawnPlayer(player );
+            
+            _playerCharacterHolder.SetIndex(player);
 
             // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
         }
