@@ -15,5 +15,6 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"Executing Dash");
         }
+        
     }
-}
+} 
