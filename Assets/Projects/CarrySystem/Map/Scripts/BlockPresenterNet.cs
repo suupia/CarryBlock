@@ -127,6 +127,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 CannonBlock.Kind.Left => Direction.Left,
                 CannonBlock.Kind.Down => Direction.Down,
                 CannonBlock.Kind.Right => Direction.Right,
+                null => Direction.Up,  // 存在しない場合は上向きにしておく
                 _ => throw new InvalidOperationException()
             };
         }
