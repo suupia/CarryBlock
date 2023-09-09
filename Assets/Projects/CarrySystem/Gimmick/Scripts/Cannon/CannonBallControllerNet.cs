@@ -8,8 +8,10 @@ namespace Carry.CarrySystem.Gimmick.Scripts
     public class CannonBallControllerNet : NetworkBehaviour
     {
         readonly float _speed = 5f;
+        readonly float _lifeTime = 10f;
 
         Vector3 _direction;
+        float _timer;
         
         public void Init(CannonBlock.Kind kind)
         {
@@ -25,9 +27,19 @@ namespace Carry.CarrySystem.Gimmick.Scripts
             };
         }
 
-        void Update()
+       public override  void FixedUpdateNetwork()
         {
+            // 生存時間
+            _timer += Time.deltaTime;
+            if (_timer > _lifeTime)
+            {
+               Runner.Despawn(Object);
+            }
+            
+            // 移動
             transform.position += _direction * Time.deltaTime * _speed;
+            
+            
         }
     }
 }
