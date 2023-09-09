@@ -23,13 +23,14 @@ namespace Carry.CarrySystem.Player.Scripts
         IMapUpdater? _mapUpdater;
         PlayerNearCartHandlerNet _playerNearCartHandler = null!;
         PlayerCharacterHolder _playerCharacterHolder = null!;
-        public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater , PlayerNearCartHandlerNet playerNearCartHandler)
+        public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater , PlayerNearCartHandlerNet playerNearCartHandler, PlayerCharacterHolder playerCharacterHolder)
         {
             Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
             this.Character = character;
             ColorType = colorType;
             _mapUpdater = mapUpdater;
             _playerNearCartHandler = playerNearCartHandler;
+            _playerCharacterHolder = playerCharacterHolder;
 
             _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
         }
@@ -88,8 +89,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         void ToSpawnPosition(EntityGridMap map)
         {
-            _playerCharacterHolder = new PlayerCharacterHolder();
-            var spawnGridPos = new Vector2Int(1, map.Height / 2 + _playerCharacterHolder.GetPlayerIndex(info.PlayerRef));
+            var spawnGridPos = new Vector2Int(1, map.Height / 2 + _playerCharacterHolder.GetPlayerIndex(info.PlayerRef) -1);
             var spawnWorldPos = GridConverter.GridPositionToWorldPosition(spawnGridPos);
             var height = 0.5f;  // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
             info.PlayerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
