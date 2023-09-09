@@ -45,7 +45,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void SwitchToFastMove()
         {
-            _currentMoveExecutor =  _regularMoveExecutor;
+            _currentMoveExecutor =  _fastMoveExecutor;
         }
         public void SwitchToSlowMove()
         {
