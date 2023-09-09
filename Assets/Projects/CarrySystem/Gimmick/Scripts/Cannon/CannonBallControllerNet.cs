@@ -2,9 +2,11 @@
 using Carry.CarrySystem.Block.Scripts;
 using Fusion;
 using UnityEngine;
+#nullable enable
 
 namespace Carry.CarrySystem.Gimmick.Scripts
 {
+    [RequireComponent(typeof(Collider))]
     public class CannonBallControllerNet : NetworkBehaviour
     {
         readonly float _speed = 5f;
@@ -12,6 +14,8 @@ namespace Carry.CarrySystem.Gimmick.Scripts
 
         Vector3 _direction;
         float _timer;
+        
+        Collider _collider = null!;
         
         public void Init(CannonBlock.Kind kind)
         {
@@ -25,10 +29,13 @@ namespace Carry.CarrySystem.Gimmick.Scripts
                 CannonBlock.Kind.Right => Vector3.right,
                 _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, null)
             };
+            
         }
 
        public override  void FixedUpdateNetwork()
         {
+            if(!HasStateAuthority) return;
+            
             // 生存時間
             _timer += Time.deltaTime;
             if (_timer > _lifeTime)
@@ -41,5 +48,14 @@ namespace Carry.CarrySystem.Gimmick.Scripts
             
             
         }
+       
+       void OnTriggerEnter(Collider other)
+       {
+           if (other.CompareTag("Player"))
+           {
+               Debug.Log($"Playerに衝突");
+                Runner.Despawn(Object);
+           }
+       }
     }
 }
