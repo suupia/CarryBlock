@@ -1,5 +1,6 @@
 ﻿using System;
 using Carry.CarrySystem.Block.Scripts;
+using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using UnityEngine;
 #nullable enable
@@ -54,7 +55,10 @@ namespace Carry.CarrySystem.Gimmick.Scripts
            if (other.CompareTag("Player"))
            {
                Debug.Log($"Playerに衝突");
-                Runner.Despawn(Object);
+               var playerController = other.GetComponent<AbstractNetworkPlayerController>();
+               var character = playerController.GetCharacter;
+               character.OnDamage();
+               Runner.Despawn(Object);
            }
        }
     }

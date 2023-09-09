@@ -17,6 +17,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IHoldActionExecutor _holdActionExecutor;
         readonly IDashExecutor _dashExecutor;
         readonly IPassActionExecutor _passActionExecutor;
+        readonly IOnDamageExecutor _onDamageExecutor;
 
 
         public Character(
@@ -24,12 +25,14 @@ namespace Carry.CarrySystem.Player.Scripts
             IHoldActionExecutor holdActionExecutor,
             IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,
+            IOnDamageExecutor onDamageExecutor,
             PlayerBlockContainer blockContainer,
             PlayerPresenterContainer playerPresenterContainer)
         {
             _moveExecutorSwitcher = moveExecutorSwitcher;
             _holdActionExecutor = holdActionExecutor; 
             _passActionExecutor = passActionExecutor;
+            _onDamageExecutor = onDamageExecutor;
             PlayerBlockContainer = blockContainer;
             PresenterContainer = playerPresenterContainer;
             _dashExecutor = dashExecutor;
@@ -58,6 +61,8 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SetRegularMoveExecutor() => _moveExecutorSwitcher.SetRegularMoveExecutor();
         public void SetFastMoveExecutor() => _moveExecutorSwitcher.SetFastMoveExecutor();
         public void SetSlowMoveExecutor() => _moveExecutorSwitcher.SetSlowMoveExecutor();
+        
+        public void OnDamage() => _onDamageExecutor.OnDamage();
 
         // HoldActionExecutor
         public void SetHoldPresenter(IPlayerBlockPresenter presenter)
