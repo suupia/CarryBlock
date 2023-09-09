@@ -13,22 +13,22 @@ namespace Carry.CarrySystem.Player.Scripts
         public PlayerBlockContainer PlayerBlockContainer { get; }
         public PlayerPresenterContainer PresenterContainer { get; }
 
-        readonly IMoveExecutorContainer _moveExecutorContainer;
+        readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         readonly IHoldActionExecutor _holdActionExecutor;
         readonly IDashExecutor _dashExecutor;
         readonly IPassActionExecutor _passActionExecutor;
 
 
         public Character(
-            IMoveExecutorContainer moveExecutorContainer,
+            IMoveExecutorSwitcher moveExecutorSwitcher,
             IHoldActionExecutor holdActionExecutor,
             IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,
             PlayerBlockContainer blockContainer,
             PlayerPresenterContainer playerPresenterContainer)
         {
-            _moveExecutorContainer = moveExecutorContainer;
-            _holdActionExecutor = holdActionExecutor;
+            _moveExecutorSwitcher = moveExecutorSwitcher;
+            _holdActionExecutor = holdActionExecutor; 
             _passActionExecutor = passActionExecutor;
             PlayerBlockContainer = blockContainer;
             PresenterContainer = playerPresenterContainer;
@@ -43,7 +43,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Setup(PlayerInfo info)
         {
-            _moveExecutorContainer.Setup(info);
+            _moveExecutorSwitcher.Setup(info);
             _holdActionExecutor. Setup(info);
             _passActionExecutor.Setup(info);
             info.PlayerRb.useGravity = true;
@@ -52,11 +52,12 @@ namespace Carry.CarrySystem.Player.Scripts
         // MoveExecutorContainer
         public void Move(Vector3 direction)
         {
-            _moveExecutorContainer.Move(direction);
+            _moveExecutorSwitcher.Move(direction);
         }
 
-        public void SetRegularMoveExecutor() => _moveExecutorContainer.SetRegularMoveExecutor();
-        public void SetSlowMoveExecutor() => _moveExecutorContainer.SetSlowMoveExecutor();
+        public void SetRegularMoveExecutor() => _moveExecutorSwitcher.SetRegularMoveExecutor();
+        public void SetFastMoveExecutor() => _moveExecutorSwitcher.SetFastMoveExecutor();
+        public void SetSlowMoveExecutor() => _moveExecutorSwitcher.SetSlowMoveExecutor();
 
         // HoldActionExecutor
         public void SetHoldPresenter(IPlayerBlockPresenter presenter)

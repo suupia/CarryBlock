@@ -2,7 +2,7 @@
 using Carry.CarrySystem.Player.Scripts;
 namespace Carry.CarrySystem.Player.Interfaces
 {
-    public interface ICharacter: IMoveExecutorContainer, IHoldActionExecutor , IPassActionExecutor, IDashExecutor
+    public interface ICharacter: IMoveExecutorSwitcher, IHoldActionExecutor , IPassActionExecutor, IDashExecutor
     {
        new void Setup(PlayerInfo info);
        

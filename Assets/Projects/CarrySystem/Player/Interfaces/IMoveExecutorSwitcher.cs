@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Interfaces
 {
-    public interface IMoveExecutorContainer : IMoveExecutor
+    public interface IMoveExecutorSwitcher : IMoveExecutor
     {
         void SetRegularMoveExecutor();
+        void SetFastMoveExecutor();
         void SetSlowMoveExecutor();
     }
 }
