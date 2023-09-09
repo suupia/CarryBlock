@@ -29,6 +29,8 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _regularMoveExecutor.Setup(info);
             _slowMoveExecutor.Setup(info);
+            _faintedMoveExecutor.Setup(info);
+            _faintedMoveExecutor.Setup(info);
         }
         
         public void Move(Vector3 input)
