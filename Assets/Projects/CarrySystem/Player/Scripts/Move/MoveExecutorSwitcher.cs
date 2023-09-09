@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class MoveExecutorContainer : IMoveExecutorContainer
+    public class MoveExecutorSwitcher : IMoveExecutorSwitcher
     {
         public  IMoveExecutor CurrentMoveExecutor => _currentMoveExecutor;
         readonly IMoveExecutor _regularMoveExecutor;
         readonly IMoveExecutor _slowMoveExecutor;
         IMoveExecutor _currentMoveExecutor;
         
-        public MoveExecutorContainer(
+        public MoveExecutorSwitcher(
             )
         {
             _regularMoveExecutor = new CorrectlyStopMoveExecutor();
@@ -33,6 +33,11 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         
         public void SetRegularMoveExecutor()
+        {
+            _currentMoveExecutor =  _regularMoveExecutor;
+        }
+        
+        public void SetFastMoveExecutor()
         {
             _currentMoveExecutor =  _regularMoveExecutor;
         }
