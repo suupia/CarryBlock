@@ -11,6 +11,8 @@ namespace Carry.CarrySystem.Player.Scripts
         public  IMoveExecutor CurrentMoveExecutor => _currentMoveExecutor;
         readonly IMoveExecutor _regularMoveExecutor;
         readonly IMoveExecutor _slowMoveExecutor;
+        readonly IMoveExecutor _fastMoveExecutor;
+        readonly IMoveExecutor _faintedMoveExecutor;
         IMoveExecutor _currentMoveExecutor;
         
         public MoveExecutorSwitcher(
@@ -18,6 +20,8 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _regularMoveExecutor = new CorrectlyStopMoveExecutor();
             _slowMoveExecutor = new SlowMoveExecutor();
+            _fastMoveExecutor = new FastMoveExecutor();
+            _faintedMoveExecutor = new FaintedMoveExecutor();
             _currentMoveExecutor = _regularMoveExecutor;
         }
 
@@ -32,18 +36,23 @@ namespace Carry.CarrySystem.Player.Scripts
             _currentMoveExecutor.Move(input);
         }
         
-        public void SetRegularMoveExecutor()
+        public void SwitchToRegularMove()
         {
             _currentMoveExecutor =  _regularMoveExecutor;
         }
         
-        public void SetFastMoveExecutor()
+        public void SwitchToFastMove()
         {
             _currentMoveExecutor =  _regularMoveExecutor;
         }
-        public void SetSlowMoveExecutor()
+        public void SwitchToSlowMove()
         {
             _currentMoveExecutor =  _slowMoveExecutor;
+        }
+        
+        public void SwitchToFaintedMove()
+        {
+            _currentMoveExecutor =  _faintedMoveExecutor;
         }
     }
 }

@@ -5,8 +5,9 @@ namespace Carry.CarrySystem.Player.Interfaces
 {
     public interface IMoveExecutorSwitcher : IMoveExecutor
     {
-        void SetRegularMoveExecutor();
-        void SetFastMoveExecutor();
-        void SetSlowMoveExecutor();
+        public void SwitchToRegularMove();
+        public void SwitchToFastMove();
+        public void SwitchToSlowMove();
+        public void SwitchToFaintedMove();
     }
 }

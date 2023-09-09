@@ -44,7 +44,7 @@ namespace Carry.CarrySystem.Block.Scripts
         public void  PickUp(ICharacter character)
         {
             // 移動速度を遅くする
-            character.SetSlowMoveExecutor();
+            character.SwitchToSlowMove();
         }
 
         public bool CanPutDown(IList<ICarriableBlock> blocks)
@@ -65,7 +65,7 @@ namespace Carry.CarrySystem.Block.Scripts
         public void PutDown(ICharacter character) 
         {
             // 移動速度を元に戻す
-            character.SetRegularMoveExecutor();
+            character.SwitchToRegularMove();
         }
     }
 }

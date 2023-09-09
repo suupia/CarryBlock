@@ -58,9 +58,10 @@ namespace Carry.CarrySystem.Player.Scripts
             _moveExecutorSwitcher.Move(direction);
         }
 
-        public void SetRegularMoveExecutor() => _moveExecutorSwitcher.SetRegularMoveExecutor();
-        public void SetFastMoveExecutor() => _moveExecutorSwitcher.SetFastMoveExecutor();
-        public void SetSlowMoveExecutor() => _moveExecutorSwitcher.SetSlowMoveExecutor();
+        public void SwitchToRegularMove() => _moveExecutorSwitcher.SwitchToRegularMove();
+        public void SwitchToFastMove() => _moveExecutorSwitcher.SwitchToFastMove();
+        public void SwitchToSlowMove() => _moveExecutorSwitcher.SwitchToSlowMove();
+        public void SwitchToFaintedMove() => _moveExecutorSwitcher.SwitchToFaintedMove();
         
         public void OnDamage() => _onDamageExecutor.OnDamage();
 
