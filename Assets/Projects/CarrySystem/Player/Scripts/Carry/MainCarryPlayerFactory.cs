@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public ICharacter Create(PlayerColorType colorType)
         {
-            var moveExe = new MoveExecutorContainer();
+            var moveExe = new MoveExecutorSwitcher();
             var blockContainer = new PlayerBlockContainer();
             var playerPresenterContainer = new PlayerPresenterContainer();
             var holdExe = new HoldActionExecutor(blockContainer,playerPresenterContainer, _mapUpdater);
