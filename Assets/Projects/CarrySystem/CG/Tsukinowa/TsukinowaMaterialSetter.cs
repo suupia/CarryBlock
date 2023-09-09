@@ -24,20 +24,31 @@ namespace  Carry.CarrySystem.CG.Tsukinowa
         public void Blinking()
         {
             var _ = BlinkingTask();
+            Debug.Log($"SkinnedMeshRenderer.materials.Length : {skinnedMeshRenderer.materials.Length}");
+
         }
         
         async UniTaskVoid BlinkingTask()
         {
             Debug.Log($"BlinkingTask");
             float elapsedBlinkingTime = 0f;
-            bool transparencyOn = false;
+            bool isOn = false;
 
             while (elapsedBlinkingTime < _blinkingTime)
             {
-                transparencyOn = !transparencyOn;
-                float targetTransparency = transparencyOn ? 0f : 1f;
+                isOn = !isOn;
 
-                skinnedMeshRenderer.material.SetFloat("_TransparencyRatio", targetTransparency);
+                foreach (var material in skinnedMeshRenderer.materials)
+                {
+                    if (isOn)
+                    {
+                        material.SetColor("_BaseColor", new Color(178/255.0f,34/255.0f,34/255.0f));
+                    }
+                    else
+                    {
+                        material.SetColor("_BaseColor", Color.white);
+                    }
+                }
 
                 await UniTask.Delay((int)(_blinkInterval * 1000)); // Convert to milliseconds
 
