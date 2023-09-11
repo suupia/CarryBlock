@@ -51,7 +51,7 @@ namespace Carry.CarrySystem.Player.Scripts
             PresentDataRef.HoldingAidKit = true;
         }
         
-        public void PutDownAidKit()
+        public void UseAidKit()
         {
             PresentDataRef.HoldingAidKit = false;
         }

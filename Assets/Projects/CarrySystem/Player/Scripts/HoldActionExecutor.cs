@@ -101,7 +101,8 @@ namespace Carry.CarrySystem.Player.Scripts
                 // 使う処理
                 if (true)  // 倒れているキャラが近くにいる
                 {
-                    _holdingObjectContainer.PopAidKit();    
+                    _holdingObjectContainer.PopAidKit();
+                    if(_playerAidKitPresenter != null) _playerAidKitPresenter.UseAidKit();
                 }
                 else
                 {
@@ -126,7 +127,6 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SetAidKitPresenter(PlayerAidKitPresenterNet presenter)
         {
             _playerAidKitPresenter = presenter;
-            Debug.Log($"_playerAidKitPresenter : {_playerAidKitPresenter}");
         }
 
 
@@ -175,6 +175,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 // 拾う処理
                 Debug.Log($"PickUpAidKit");
                 _holdingObjectContainer.SetAidKit();
+                if(_playerAidKitPresenter != null) _playerAidKitPresenter.PickUpAidKit();
             }
             return false;
         }
