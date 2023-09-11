@@ -89,5 +89,9 @@ namespace Carry.CarrySystem.Player.Scripts
         public void PassAction() => _passActionExecutor.PassAction();
         public bool CanReceivePass() => _passActionExecutor.CanReceivePass();
         public void ReceivePass(ICarriableBlock block) => _passActionExecutor.ReceivePass(block);
+        
+        // IOnDamageExecutor
+        public bool IsFainted => _onDamageExecutor.IsFainted;   
+
     }
 }

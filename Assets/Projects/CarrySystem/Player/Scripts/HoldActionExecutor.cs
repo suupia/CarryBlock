@@ -102,9 +102,14 @@ namespace Carry.CarrySystem.Player.Scripts
                 if(TryToPickUpBlock(forwardGridPos)) return;
 
                 // 使う処理
-                if (true)  // 倒れているキャラが近くにいる
+                
+                // もし倒れているキャラが近くにいれば、AidKitを使う
+                // 1. PlayerControllerを取得
+                // 2. ICharacterを取得
+                // 3. IsFaintedで判定
+                
+                if (true)
                 {
-                    return;
                     _holdingObjectContainer.PopAidKit();
                     if(_playerAidKitPresenter != null) _playerAidKitPresenter.UseAidKit();
                 }

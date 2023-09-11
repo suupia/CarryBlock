@@ -10,6 +10,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class OnDamageExecutor : IOnDamageExecutor
     {
+        public  bool IsFainted { get; private set; }
         PlayerInfo _info = null!;
         readonly float _faintDuration = 1.0f;
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
@@ -32,11 +33,13 @@ namespace Carry.CarrySystem.Player.Scripts
         async UniTaskVoid Faint()
         {
             Debug.Log($"気絶する");
+            IsFainted = true;
             _moveExecutorSwitcher.SwitchToFaintedMove();
             Debug.Log($"_info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>()) : {_info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>()}");
             _info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>().Blinking();
             await UniTask.Delay((int)(_faintDuration * 1000));
             Debug.Log($"気絶から復帰する");
+            IsFainted = false;
             _moveExecutorSwitcher.SwitchToRegularMove();
         }
     }
