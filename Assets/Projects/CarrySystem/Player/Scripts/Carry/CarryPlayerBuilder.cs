@@ -67,8 +67,8 @@ namespace Carry.CarrySystem.Player.Scripts
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
                 });
             var info = playerControllerObj.Info;
-            playerControllerObj.GetComponentInChildren<PassRangeNet>().Init(info,LayerMask.GetMask("Player"));
-
+            playerControllerObj.GetComponentInChildren<PassRangeNet>()?.Init(info,LayerMask.GetMask("Player"));
+            playerControllerObj.GetComponentInChildren<AidKitRangeNet>()?.Init(info,LayerMask.GetMask("Player"));
             
             _carryPlayerContainer.AddPlayer(playerRef, playerControllerObj);
 

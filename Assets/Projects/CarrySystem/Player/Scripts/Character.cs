@@ -92,6 +92,6 @@ namespace Carry.CarrySystem.Player.Scripts
         
         // IOnDamageExecutor
         public bool IsFainted => _onDamageExecutor.IsFainted;   
-
+        public void OnRevive() => _onDamageExecutor.OnRevive();
     }
 }

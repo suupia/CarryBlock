@@ -35,6 +35,8 @@ namespace Carry.CarrySystem.Player.Scripts
         IBlockMonoDelegate? _searchedBlockMonoDelegate;
         IList<ICarriableBlock> _searchedBlocks = new List<ICarriableBlock>();
 
+        AidKitRangeNet? _aidKitRangeNet;
+
         public HoldActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer, 
             PlayerNearCartHandlerNet playerNearCartHandler,
@@ -101,22 +103,32 @@ namespace Carry.CarrySystem.Player.Scripts
                 // Even if character has an AidKit, player can overwrite with the block.
                 if(TryToPickUpBlock(forwardGridPos)) return;
 
-                // 使う処理
-                
                 // もし倒れているキャラが近くにいれば、AidKitを使う
                 // 1. PlayerControllerを取得
                 // 2. ICharacterを取得
                 // 3. IsFaintedで判定
                 
-                if (true)
+                if(_aidKitRangeNet == null) _aidKitRangeNet = _info.PlayerObj.GetComponentInChildren<AidKitRangeNet>();
+                
+                if(_aidKitRangeNet.DetectedTarget() is {} target)
                 {
+                    var targetPlayerController = target.GetComponent<CarryPlayerControllerNet>();
+                    if (targetPlayerController == null)
+                    {
+                        Debug.LogError($"{target.name} には CarryPlayerControllerNet がアタッチされていません");
+                        return;
+                    }
+                    if (!targetPlayerController.GetCharacter.IsFainted) return;
+                    Debug.Log($"Use AidKit");
                     _holdingObjectContainer.PopAidKit();
                     if(_playerAidKitPresenter != null) _playerAidKitPresenter.UseAidKit();
+                    targetPlayerController.GetCharacter.OnRevive();
                 }
                 else
                 {
-                    
+                    // Do nothing
                 }
+
             }
             else
             {

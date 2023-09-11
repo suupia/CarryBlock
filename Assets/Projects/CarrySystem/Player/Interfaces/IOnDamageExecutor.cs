@@ -9,6 +9,8 @@ namespace Carry.CarrySystem.Player.Interfaces
         public bool IsFainted { get; }
         public void Setup(PlayerInfo info);
         public void OnDamage();
-        
+
+        public void OnRevive();
+
     }
 }
