@@ -34,7 +34,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"ダメージを受けた！");
             _cancellationTokenSource = new CancellationTokenSource();
-            var _ = Faint(_cancellationTokenSource.Token);
+            var _ = AsyncOnDamaged(_cancellationTokenSource.Token);
         }
 
         public void OnRevive()
@@ -42,32 +42,39 @@ namespace Carry.CarrySystem.Player.Scripts
             if (IsFainted)
             {
                 _cancellationTokenSource?.Cancel();
-                IsFainted = false;
-                // 他の復帰処理もここで行うことができます。
+                Revive();
             }
         }
 
-        async UniTaskVoid Faint(CancellationToken cancellationToken)
+        async UniTaskVoid AsyncOnDamaged(CancellationToken cancellationToken)
         {
             try
             {
-                Debug.Log($"気絶する");
-                IsFainted = true;
-                _moveExecutorSwitcher.SwitchToFaintedMove();
-                Debug.Log($"_info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>()) : {_info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>()}");
-                _info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>().Blinking();
+                Faint();
                 await UniTask.Delay((int)(_faintDuration * 1000), cancellationToken: cancellationToken);
-                Debug.Log($"気絶から復帰する");
-                IsFainted = false;
-                _moveExecutorSwitcher.SwitchToRegularMove();
+                Revive();
             }
             catch (OperationCanceledException)
             {
-                // キャンセル処理
-                Debug.Log($"気絶がキャンセルされました");
-                IsFainted = false; // 一応
+                Revive();
             }
         }
-    }
 
+        void Faint()
+        {
+            Debug.Log($"気絶する");
+            IsFainted = true;
+            _moveExecutorSwitcher.SwitchToFaintedMove();
+            Debug.Log(
+                $"_info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>()) : {_info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>()}");
+            _info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>().Blinking();
+        }
+
+        void Revive()
+        {
+            Debug.Log($"気絶から復帰する");
+            IsFainted = false;
+            _moveExecutorSwitcher.SwitchToRegularMove();
+        }
+    }
 }
