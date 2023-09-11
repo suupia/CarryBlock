@@ -40,6 +40,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void OnRevive()
         {
+            Debug.Log($"復活する");
             if (IsFainted)
             {
                 _cancellationTokenSource?.Cancel();
@@ -57,7 +58,7 @@ namespace Carry.CarrySystem.Player.Scripts
             }
             catch (OperationCanceledException)
             {
-                Revive();
+                // Do Nothing
             }
         }
 
