@@ -27,7 +27,8 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         readonly IPlayerBlockPresenter _playerBlockPresenter;
-        readonly PlayerAidKitPresenterNet _playerAidKitPresenter;
+        
+        PlayerAidKitPresenterNet? _playerAidKitPresenter;
 
         IDisposable? _searchBlockDisposable;
 
@@ -42,7 +43,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _holdingObjectContainer = holdingObjectContainer;
             _playerNearCartHandler = playerNearCartHandler;
-            _playerBlockPresenter = playerBlockPresenter;    
+            _playerBlockPresenter = playerBlockPresenter;
             _mapUpdater = mapUpdater;
         }
 
@@ -121,7 +122,13 @@ namespace Carry.CarrySystem.Player.Scripts
             }
             
         }
-        
+
+        public void SetAidKitPresenter(PlayerAidKitPresenterNet presenter)
+        {
+            _playerAidKitPresenter = presenter;
+            Debug.Log($"_playerAidKitPresenter : {_playerAidKitPresenter}");
+        }
+
 
         bool TryToPickUpBlock(Vector2Int forwardGridPos)
         {

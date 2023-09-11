@@ -12,8 +12,6 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         public PlayerHoldingObjectContainer PlayerHoldingObjectContainer { get; }
         public PlayerPresenterContainer PresenterContainer { get; }
-        
-        public PlayerAidKitPresenterNet AidKitPresenter { get; set; } = null!;
 
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         readonly IHoldActionExecutor _holdActionExecutor;
@@ -76,7 +74,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void SetAidKitPresenter(PlayerAidKitPresenterNet presenter)
         {
-            AidKitPresenter = presenter;
+            _holdActionExecutor.SetAidKitPresenter(presenter);
         }
 
         public void HoldAction()
