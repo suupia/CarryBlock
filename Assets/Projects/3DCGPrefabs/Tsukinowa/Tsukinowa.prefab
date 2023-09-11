@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 3850730323418356798}
   - component: {fileID: 3333390922810667834}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: AidKitRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -296,7 +296,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8462765203295407320}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 2
