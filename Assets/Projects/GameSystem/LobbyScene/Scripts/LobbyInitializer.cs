@@ -41,6 +41,7 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
         {
             if (Runner.IsServer) _playerSpawner.SpawnPlayer(player );
             
+            Debug.Log($"PlayerJoined");
             _playerCharacterHolder.SetIndex(player);
 
             // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
