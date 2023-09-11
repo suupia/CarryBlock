@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Map.Interfaces;
+﻿using Carry.CarrySystem.Cart.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 using VContainer;
@@ -11,10 +12,15 @@ namespace Carry.CarrySystem.Player.Scripts
     public class MockPlayerFactory : ICarryPlayerFactory
     {
         readonly IMapUpdater _mapUpdater;
+        readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         [Inject]
-        public MockPlayerFactory(IMapUpdater mapUpdater)
+        public MockPlayerFactory(
+            IMapUpdater mapUpdater,
+            PlayerNearCartHandlerNet playerNearCartHandler
+            )
         {
             _mapUpdater = mapUpdater;
+            _playerNearCartHandler = playerNearCartHandler;
         }
         public ICharacter Create(PlayerColorType colorType)
         {
@@ -22,7 +28,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var moveExeSwitcher = new MoveExecutorSwitcher();
             var blockContainer = new PlayerBlockContainer();
             var playerPresenterContainer = new PlayerPresenterContainer();
-            var holdExe = new HoldActionExecutor(blockContainer,playerPresenterContainer,_mapUpdater);
+            var holdExe = new HoldActionExecutor(blockContainer,_playerNearCartHandler,playerPresenterContainer,_mapUpdater);
             var dashExe = new DashExecutor();
             var passExe = new PassActionExecutor(blockContainer,playerPresenterContainer, holdExe,10, LayerMask.GetMask("Player"));
             var onDamageExe = new OnDamageExecutor(moveExeSwitcher);

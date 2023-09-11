@@ -27,7 +27,6 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly ICarryPlayerFactory _carryPlayerFactory;
         // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などが想定される
         readonly PlayerCharacterHolder _playerCharacterHolder;
-        readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         readonly CarryPlayerContainer _carryPlayerContainer;
 
         [Inject]
@@ -37,7 +36,6 @@ namespace Carry.CarrySystem.Player.Scripts
             IPrefabLoader<CarryPlayerControllerNet> carryPlayerControllerLoader,
             ICarryPlayerFactory carryPlayerFactory,
             PlayerCharacterHolder playerCharacterHolder,
-            PlayerNearCartHandlerNet playerNearCartHandler,
             CarryPlayerContainer carryPlayerContainer
             )
         {
@@ -46,7 +44,6 @@ namespace Carry.CarrySystem.Player.Scripts
             _carryPlayerControllerLoader = carryPlayerControllerLoader;
             _carryPlayerFactory = carryPlayerFactory;
             _playerCharacterHolder  = playerCharacterHolder;
-            _playerNearCartHandler = playerNearCartHandler;
             _carryPlayerContainer = carryPlayerContainer;
         }
 
@@ -64,7 +61,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
-                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType,_mapUpdater, _playerNearCartHandler);
+                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType,_mapUpdater);
                     networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
                 });

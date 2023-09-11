@@ -21,15 +21,13 @@ namespace Carry.CarrySystem.Player.Scripts
         public PlayerInfo Info => info;
         
         IMapUpdater? _mapUpdater;
-        PlayerNearCartHandlerNet _playerNearCartHandler = null!;
         PlayerCharacterHolder _playerCharacterHolder = null!;
-        public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater , PlayerNearCartHandlerNet playerNearCartHandler)
+        public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater )
         {
             Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
             this.Character = character;
             ColorType = colorType;
             _mapUpdater = mapUpdater;
-            _playerNearCartHandler = playerNearCartHandler;
 
             _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
         }
@@ -58,12 +56,6 @@ namespace Carry.CarrySystem.Player.Scripts
         
         protected override void GetInputProcess(NetworkInputData input)
         {
-            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
-            {
-                // AidKit
-                var isNear =  _playerNearCartHandler.IsNearCart(info.PlayerObj);
-                // Debug.Log($"isNear = {isNear}");
-            }
 
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))
             {

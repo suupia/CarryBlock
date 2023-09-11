@@ -82,6 +82,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             
         }
 
+        #if UNITY_EDITOR
         void Update()
         {
             if(Runner == null) return;
@@ -100,7 +101,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             
             
         }
-        
+        #endif
 
     }
 }

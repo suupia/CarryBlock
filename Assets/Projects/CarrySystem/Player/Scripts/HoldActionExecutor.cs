@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -24,6 +25,7 @@ namespace Carry.CarrySystem.Player.Scripts
         PlayerInfo _info = null!;
         EntityGridMap _map = null!;
         readonly PlayerBlockContainer _blockContainer;
+        readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         readonly IPlayerBlockPresenter _playerPresenterContainer;
 
         IDisposable? _searchBlockDisposable;
@@ -33,10 +35,12 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public HoldActionExecutor(
             PlayerBlockContainer blockContainer, 
+            PlayerNearCartHandlerNet playerNearCartHandler,
             IPlayerBlockPresenter playerPresenterContainer,
             IMapUpdater mapUpdater)
         {
             _blockContainer = blockContainer;
+            _playerNearCartHandler = playerNearCartHandler;
             _playerPresenterContainer = playerPresenterContainer;    
             _mapUpdater = mapUpdater;
         }
@@ -139,6 +143,11 @@ namespace Carry.CarrySystem.Player.Scripts
         
         bool TryToPickUpAidKit(Vector2Int forwardGridPos)
         {
+            // もしカートの近くにいれば、AidKitを拾う
+            if (_playerNearCartHandler.IsNearCart(_info.PlayerObj))
+            {
+                 Debug.Log($"PickUpAidKit");   
+            }
             return false;
         }
 
