@@ -26,7 +26,7 @@ namespace Carry.CarrySystem.Player.Scripts
         EntityGridMap _map = null!;
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
-        readonly IPlayerBlockPresenter _playerPresenterContainer;
+        readonly IPlayerBlockPresenter _playerBlockPresenter;
 
         IDisposable? _searchBlockDisposable;
 
@@ -36,12 +36,12 @@ namespace Carry.CarrySystem.Player.Scripts
         public HoldActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer, 
             PlayerNearCartHandlerNet playerNearCartHandler,
-            IPlayerBlockPresenter playerPresenterContainer,
+            IPlayerBlockPresenter playerBlockPresenter,
             IMapUpdater mapUpdater)
         {
             _holdingObjectContainer = holdingObjectContainer;
             _playerNearCartHandler = playerNearCartHandler;
-            _playerPresenterContainer = playerPresenterContainer;    
+            _playerBlockPresenter = playerBlockPresenter;    
             _mapUpdater = mapUpdater;
         }
 
@@ -60,7 +60,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Reset()
         {
             var _ =  _holdingObjectContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
-            _playerPresenterContainer.PutDownBlock();
+            _playerBlockPresenter.PutDownBlock();
             _map = _mapUpdater.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
         public void HoldAction()
@@ -89,7 +89,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     block.PutDown(_info.PlayerController.GetCharacter);
                     // _map.AddEntity(forwardGridPos, block);
                     _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.AddBlock(block);
-                    _playerPresenterContainer.PutDownBlock();
+                    _playerBlockPresenter.PutDownBlock();
                 }
                 
             } else if (_holdingObjectContainer.IsHoldingAidKit)  // IsHoldingAidKit
@@ -97,7 +97,14 @@ namespace Carry.CarrySystem.Player.Scripts
                 // trying to use an aid kit
                 
                 // 使う処理
-                _holdingObjectContainer.PopAidKit();
+                if (true)  // 倒れているキャラが近くにいる
+                {
+                    _holdingObjectContainer.PopAidKit();    
+                }
+                else
+                {
+                    
+                }
             }
             else
             {
@@ -135,10 +142,16 @@ namespace Carry.CarrySystem.Player.Scripts
                 carriableBlock.PickUp(_info.PlayerController.GetCharacter);
                 // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
                 _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
-                _playerPresenterContainer.PickUpBlock(block);
+                _playerBlockPresenter.PickUpBlock(block);
                 _holdingObjectContainer.SetBlock(carriableBlock);
             }
             Debug.Log($"after currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
+            
+            // もしAidKitを持っていたらブロックで上書きする
+            if (_holdingObjectContainer.IsHoldingAidKit)
+            {
+                _holdingObjectContainer.PopAidKit();
+            }
 
             return true; // done picking up
 
