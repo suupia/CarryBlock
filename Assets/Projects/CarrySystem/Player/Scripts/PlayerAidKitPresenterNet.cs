@@ -55,6 +55,12 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             PresentDataRef.HoldingAidKit = false;
         }
+
+        public void DisableAidKit()
+        {
+            // blockを持つことによって上書きされたときに呼ばれる想定
+            PresentDataRef.HoldingAidKit = false;
+        }
          
     }
 }

@@ -98,9 +98,13 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 // trying to use an aid kit
                 
+                // Even if character has an AidKit, player can overwrite with the block.
+                if(TryToPickUpBlock(forwardGridPos)) return;
+
                 // 使う処理
                 if (true)  // 倒れているキャラが近くにいる
                 {
+                    return;
                     _holdingObjectContainer.PopAidKit();
                     if(_playerAidKitPresenter != null) _playerAidKitPresenter.UseAidKit();
                 }
@@ -159,6 +163,7 @@ namespace Carry.CarrySystem.Player.Scripts
             if (_holdingObjectContainer.IsHoldingAidKit)
             {
                 _holdingObjectContainer.PopAidKit();
+                if(_playerAidKitPresenter != null) _playerAidKitPresenter.DisableAidKit();
             }
 
             return true; // done picking up
