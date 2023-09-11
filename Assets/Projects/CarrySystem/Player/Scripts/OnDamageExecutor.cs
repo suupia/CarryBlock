@@ -33,6 +33,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void OnDamage()
         {
             Debug.Log($"ダメージを受けた！");
+            _cancellationTokenSource?.Cancel();
             _cancellationTokenSource = new CancellationTokenSource();
             var _ = AsyncOnDamaged(_cancellationTokenSource.Token);
         }
