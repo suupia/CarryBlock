@@ -16,7 +16,7 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         public bool IsFainted { get; private set; }
         PlayerInfo _info = null!;
-        readonly float _faintDuration = 1.0f;
+        readonly float _faintDuration = 10.0f;
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         CancellationTokenSource? _cancellationTokenSource;
 
