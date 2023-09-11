@@ -63,6 +63,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
                     networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType,_mapUpdater);
                     networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character);
+                    networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
                 });
             var info = playerControllerObj.Info;

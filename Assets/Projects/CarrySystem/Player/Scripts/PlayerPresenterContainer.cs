@@ -8,6 +8,8 @@ using UnityEngine;
 #nullable enable
 namespace Carry.CarrySystem.Player.Scripts
 {
+            
+    // AidKitのことを考えたらまとめるのが早かったかもしれない
     public class PlayerPresenterContainer : IPlayerAnimatorPresenter
     {
         readonly List<IPlayerBlockPresenter> _blockPresenters = new ();
