@@ -52,21 +52,18 @@ namespace Carry.CarrySystem.Gimmick.Scripts
        
        void OnTriggerEnter(Collider other)
        {
+           if(!HasStateAuthority) return;
+
            if (other.CompareTag("Player"))
            {
                Debug.Log($"Playerに衝突");
-                DealDamageRPC(other);
+               var playerController = other.GetComponent<AbstractNetworkPlayerController>();
+               var character = playerController.GetCharacter;
+               character.OnDamage();
+               Runner.Despawn(Object);
            }
        }
        
-       [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-       void DealDamageRPC(Collider other)
-       {
-           Debug.Log($"CannonBallControllerNet.DealDamageRPC() called");
-           var playerController = other.GetComponent<AbstractNetworkPlayerController>();
-           var character = playerController.GetCharacter;
-           character.OnDamage();
-           Runner.Despawn(Object);
-       }
+       
     }
 }
