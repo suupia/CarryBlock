@@ -16,7 +16,7 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         public bool IsFainted { get; private set; }
         PlayerInfo _info = null!;
-        readonly float _faintDuration = 10.0f;
+        readonly float _faintSeconds = 60.0f;  // ほぼ無限の気絶時間という感じ
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         CancellationTokenSource? _cancellationTokenSource;
 
@@ -53,7 +53,7 @@ namespace Carry.CarrySystem.Player.Scripts
             try
             {
                 Faint();
-                await UniTask.Delay((int)(_faintDuration * 1000), cancellationToken: cancellationToken);
+                await UniTask.Delay((int)(_faintSeconds * 1000), cancellationToken: cancellationToken);
                 Revive();
             }
             catch (OperationCanceledException)
