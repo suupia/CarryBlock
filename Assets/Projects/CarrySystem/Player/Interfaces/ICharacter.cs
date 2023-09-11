@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Player.Interfaces
        new void Reset();
        void SetHoldPresenter(IPlayerBlockPresenter presenter);
        
-       PlayerBlockContainer PlayerBlockContainer{get;}
+       PlayerHoldingObjectContainer PlayerHoldingObjectContainer{get;}
        PlayerPresenterContainer PresenterContainer{get;}
 
     }

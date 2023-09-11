@@ -24,7 +24,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IMapUpdater _mapUpdater;
         PlayerInfo _info = null!;
         EntityGridMap _map = null!;
-        readonly PlayerBlockContainer _blockContainer;
+        readonly PlayerHoldingObjectContainer _holdingObjectContainer;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         readonly IPlayerBlockPresenter _playerPresenterContainer;
 
@@ -34,12 +34,12 @@ namespace Carry.CarrySystem.Player.Scripts
         IList<ICarriableBlock> _searchedBlocks = new List<ICarriableBlock>();
 
         public HoldActionExecutor(
-            PlayerBlockContainer blockContainer, 
+            PlayerHoldingObjectContainer holdingObjectContainer, 
             PlayerNearCartHandlerNet playerNearCartHandler,
             IPlayerBlockPresenter playerPresenterContainer,
             IMapUpdater mapUpdater)
         {
-            _blockContainer = blockContainer;
+            _holdingObjectContainer = holdingObjectContainer;
             _playerNearCartHandler = playerNearCartHandler;
             _playerPresenterContainer = playerPresenterContainer;    
             _mapUpdater = mapUpdater;
@@ -59,7 +59,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Reset()
         {
-            var _ =  _blockContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
+            var _ =  _holdingObjectContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
             _playerPresenterContainer.PutDownBlock();
             _map = _mapUpdater.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
@@ -68,19 +68,19 @@ namespace Carry.CarrySystem.Player.Scripts
             var transform = _info.PlayerObj.transform;
             var forwardGridPos = GetForwardGridPos(transform);
             
-            Debug.Log($"IsHoldingBlock : {_blockContainer.IsHoldingBlock}");
+            Debug.Log($"IsHoldingBlock : {_holdingObjectContainer.IsHoldingBlock}");
 
 
-            if (_blockContainer.IsHoldingBlock)
+            if (_holdingObjectContainer.IsHoldingBlock)
             {
                 // trying to put down a block
                 // マップの内部かどうかを判定
                 if(!_map.IsInDataRangeArea(forwardGridPos))return;
                 
-                Debug.Log($"CanPutDown : {_blockContainer.CanPutDown(_searchedBlocks)}");
-                if (_blockContainer.CanPutDown(_searchedBlocks))
+                Debug.Log($"CanPutDown : {_holdingObjectContainer.CanPutDown(_searchedBlocks)}");
+                if (_holdingObjectContainer.CanPutDown(_searchedBlocks))
                 {
-                    var block = _blockContainer.PopBlock();
+                    var block = _holdingObjectContainer.PopBlock();
                     if (block == null)
                     {
                         Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれないはず
@@ -92,9 +92,12 @@ namespace Carry.CarrySystem.Player.Scripts
                     _playerPresenterContainer.PutDownBlock();
                 }
                 
-            } else if (false)  // IsHoldingAidKit
+            } else if (_holdingObjectContainer.IsHoldingAidKit)  // IsHoldingAidKit
             {
                 // trying to use an aid kit
+                
+                // 使う処理
+                _holdingObjectContainer.PopAidKit();
             }
             else
             {
@@ -103,7 +106,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 
                 if(TryToPickUpBlock(forwardGridPos)) return; 
 
-                if(TryToPickUpAidKit(forwardGridPos)) return;
+                if(TryToPickUpAidKit()) return;
                 
                 // nothing is in front of the player
 
@@ -133,7 +136,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
                 _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
                 _playerPresenterContainer.PickUpBlock(block);
-                _blockContainer.SetBlock(carriableBlock);
+                _holdingObjectContainer.SetBlock(carriableBlock);
             }
             Debug.Log($"after currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
 
@@ -141,12 +144,16 @@ namespace Carry.CarrySystem.Player.Scripts
 
         }
         
-        bool TryToPickUpAidKit(Vector2Int forwardGridPos)
+        bool TryToPickUpAidKit()
         {
             // もしカートの近くにいれば、AidKitを拾う
             if (_playerNearCartHandler.IsNearCart(_info.PlayerObj))
             {
-                 Debug.Log($"PickUpAidKit");   
+                if(_holdingObjectContainer.IsHoldingAidKit) return false;
+                
+                // 拾う処理
+                Debug.Log($"PickUpAidKit");
+                _holdingObjectContainer.SetAidKit();
             }
             return false;
         }

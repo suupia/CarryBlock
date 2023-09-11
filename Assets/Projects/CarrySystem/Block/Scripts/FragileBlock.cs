@@ -68,7 +68,7 @@ namespace Carry.CarrySystem.Block.Scripts
             await UniTask.Delay(TimeSpan.FromSeconds(0.25f));
             Debug.Log("BreakBlockを実行");
             
-            var _ = character.PlayerBlockContainer.PopBlock();
+            var _ = character.PlayerHoldingObjectContainer.PopBlock();
             character.PresenterContainer.PutDownBlock();
         }  
     }

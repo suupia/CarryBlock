@@ -10,7 +10,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class Character : ICharacter
     {
-        public PlayerBlockContainer PlayerBlockContainer { get; }
+        public PlayerHoldingObjectContainer PlayerHoldingObjectContainer { get; }
         public PlayerPresenterContainer PresenterContainer { get; }
 
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
@@ -26,14 +26,14 @@ namespace Carry.CarrySystem.Player.Scripts
             IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,
             IOnDamageExecutor onDamageExecutor,
-            PlayerBlockContainer blockContainer,
+            PlayerHoldingObjectContainer holdingObjectContainer,
             PlayerPresenterContainer playerPresenterContainer)
         {
             _moveExecutorSwitcher = moveExecutorSwitcher;
             _holdActionExecutor = holdActionExecutor; 
             _passActionExecutor = passActionExecutor;
             _onDamageExecutor = onDamageExecutor;
-            PlayerBlockContainer = blockContainer;
+            PlayerHoldingObjectContainer = holdingObjectContainer;
             PresenterContainer = playerPresenterContainer;
             _dashExecutor = dashExecutor;
         }
