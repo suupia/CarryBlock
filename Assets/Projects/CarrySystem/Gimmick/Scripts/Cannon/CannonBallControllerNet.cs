@@ -55,11 +55,18 @@ namespace Carry.CarrySystem.Gimmick.Scripts
            if (other.CompareTag("Player"))
            {
                Debug.Log($"Playerに衝突");
-               var playerController = other.GetComponent<AbstractNetworkPlayerController>();
-               var character = playerController.GetCharacter;
-               character.OnDamage();
-               Runner.Despawn(Object);
+                DealDamageRPC(other);
            }
+       }
+       
+       [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+       void DealDamageRPC(Collider other)
+       {
+           Debug.Log($"CannonBallControllerNet.DealDamageRPC() called");
+           var playerController = other.GetComponent<AbstractNetworkPlayerController>();
+           var character = playerController.GetCharacter;
+           character.OnDamage();
+           Runner.Despawn(Object);
        }
     }
 }
