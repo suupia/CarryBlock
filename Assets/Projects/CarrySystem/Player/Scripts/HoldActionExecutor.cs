@@ -66,8 +66,10 @@ namespace Carry.CarrySystem.Player.Scripts
             
             Debug.Log($"IsHoldingBlock : {_blockContainer.IsHoldingBlock}");
 
+
             if (_blockContainer.IsHoldingBlock)
             {
+                // trying to put down a block
                 // マップの内部かどうかを判定
                 if(!_map.IsInDataRangeArea(forwardGridPos))return;
                 
@@ -85,33 +87,59 @@ namespace Carry.CarrySystem.Player.Scripts
                     _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.AddBlock(block);
                     _playerPresenterContainer.PutDownBlock();
                 }
+                
+            } else if (false)  // IsHoldingAidKit
+            {
+                // trying to use an aid kit
             }
             else
             {
-                var blockMonoDelegate = _searchedBlockMonoDelegate;  // フレームごとに判定しているためここでキャッシュする
-                if(blockMonoDelegate?.Block == null)
-                {
-                    Debug.Log($"blockMonoDelegate.Block : null");
-                    return;
-                }
+                // try to pick up a block or an aid kit
+                // judge priority is block > aid kit > nothing
                 
-                // Debug
-                Debug.Log($"before currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
+                if(TryToPickUpBlock(forwardGridPos)) return; 
 
-                var block = blockMonoDelegate.Block;
-                if(!( block is ICarriableBlock carriableBlock)) return;
-                if (carriableBlock.CanPickUp())
-                {
-                    Debug.Log($"remove currentBlockMonos");
-                    carriableBlock.PickUp(_info.PlayerController.GetCharacter);
-                    // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
-                    _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
-                    _playerPresenterContainer.PickUpBlock(block);
-                    _blockContainer.SetBlock(carriableBlock);
-                }
-                Debug.Log($"after currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
+                if(TryToPickUpAidKit(forwardGridPos)) return;
+                
+                // nothing is in front of the player
 
             }
+            
+        }
+        
+
+        bool TryToPickUpBlock(Vector2Int forwardGridPos)
+        {
+            var blockMonoDelegate = _searchedBlockMonoDelegate;  // フレームごとに判定しているためここでキャッシュする
+            if(blockMonoDelegate?.Block == null)
+            {
+                Debug.Log($"blockMonoDelegate.Block : null");
+                return false;
+            }
+                
+            // Debug
+            Debug.Log($"before currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
+
+            var block = blockMonoDelegate.Block;
+            if(!( block is ICarriableBlock carriableBlock)) return false;
+            if (carriableBlock.CanPickUp())
+            {
+                Debug.Log($"remove currentBlockMonos");
+                carriableBlock.PickUp(_info.PlayerController.GetCharacter);
+                // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
+                _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
+                _playerPresenterContainer.PickUpBlock(block);
+                _blockContainer.SetBlock(carriableBlock);
+            }
+            Debug.Log($"after currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
+
+            return true; // done picking up
+
+        }
+        
+        bool TryToPickUpAidKit(Vector2Int forwardGridPos)
+        {
+            return false;
         }
 
         void SearchBlocks()
