@@ -68,6 +68,15 @@ namespace Carry.CarrySystem.Player.Scripts
             _playerAnimatorPresenter?.PutDownBlock();
             _map = _mapUpdater.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
+
+        /// <summary>
+        /// This method is called when the other class wants to put down a block.
+        /// </summary>
+        public void PutDownBlock()
+        {
+            _playerBlockPresenter?.PutDownBlock();
+            _playerAnimatorPresenter?.PutDownBlock();
+        }
         public void HoldAction()
         {
             var transform = _info.PlayerObj.transform;

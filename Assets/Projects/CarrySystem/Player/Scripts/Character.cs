@@ -67,6 +67,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void OnDamage() => _onDamageExecutor.OnDamage();
 
         // HoldActionExecutor
+        public void PutDownBlock() => _holdActionExecutor.PutDownBlock();
         public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
         {
             _holdActionExecutor.SetPlayerBlockPresenter(presenter);
