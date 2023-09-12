@@ -145,7 +145,7 @@ namespace Carry.CarrySystem.Player.Scripts
             
         }
 
-        public void SetAidKitPresenter(PlayerAidKitPresenterNet presenter)
+        public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
         {
             _playerAidKitPresenter = presenter;
         }

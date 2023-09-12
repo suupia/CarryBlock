@@ -72,9 +72,9 @@ namespace Carry.CarrySystem.Player.Scripts
             PresenterContainer.SetHoldPresenter(presenter);
         }
         
-        public void SetAidKitPresenter(PlayerAidKitPresenterNet presenter)
+        public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
         {
-            _holdActionExecutor.SetAidKitPresenter(presenter);
+            _holdActionExecutor.SetPlayerAidKitPresenter(presenter);
         }
 
         public void HoldAction()

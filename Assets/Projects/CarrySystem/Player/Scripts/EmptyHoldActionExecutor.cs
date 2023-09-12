@@ -25,7 +25,7 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log($"EmptyHoldAction: Action");
         }
         
-        public void SetAidKitPresenter(PlayerAidKitPresenterNet presenter)
+        public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
         {
             
         }

@@ -10,6 +10,6 @@ namespace Carry.CarrySystem.Player.Interfaces
         void Reset();
         void HoldAction();
         
-        public void SetAidKitPresenter(PlayerAidKitPresenterNet presenter);
+        public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter);
     }
 }

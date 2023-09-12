@@ -28,7 +28,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Init(ICharacter character)
         {
             // tie presenter to domain
-            character.SetAidKitPresenter(this);
+            character.SetPlayerAidKitPresenter(this);
         }
 
         void Awake()
