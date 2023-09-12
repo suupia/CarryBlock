@@ -18,19 +18,19 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly float _radius;
         readonly int _layerMask;
         readonly  Collider[] _targetBuffer = new Collider[10];
-        readonly PlayerBlockContainer _blockContainer;
+        readonly PlayerHoldingObjectContainer _holdingObjectContainer;
         readonly IPlayerBlockPresenter _playerPresenterContainer;
 
         PassRangeNet? _passRangeNet;
 
         public PassActionExecutor(
-            PlayerBlockContainer blockContainer,
+            PlayerHoldingObjectContainer holdingObjectContainer,
             IPlayerBlockPresenter playerPresenterContainer,
             HoldActionExecutor holdActionExecutor,
             float radius,
             int layerMask)
         {
-            _blockContainer = blockContainer;
+            _holdingObjectContainer = holdingObjectContainer;
             _playerPresenterContainer = playerPresenterContainer;
             _holdActionExecutor = holdActionExecutor;
             _radius = radius;
@@ -71,27 +71,27 @@ namespace Carry.CarrySystem.Player.Scripts
         // public
         public bool CanReceivePass()
         {
-            return !_blockContainer.IsHoldingBlock;
+            return !_holdingObjectContainer.IsHoldingBlock;
         }
-        public void ReceivePass(IBlock block)
+        public void ReceivePass(ICarriableBlock block)
         {
             Debug.Log("Receive Pass");
             block.PickUp(_info.PlayerController.GetCharacter);
-            _blockContainer.SetBlock(block);
+            _holdingObjectContainer.SetBlock(block);
             _playerPresenterContainer.ReceiveBlock(block);
         }
         
         // private
-        void PassBlock(IBlock block)
+        void PassBlock(ICarriableBlock block)
         {
             Debug.Log($"Pass Block");
             block.PutDown(_info.PlayerController.GetCharacter);
             _playerPresenterContainer.PassBlock();
         }
         
-        (bool, IBlock) CanPass(CarryPlayerControllerNet targetPlayerController)
+        (bool, ICarriableBlock) CanPass(CarryPlayerControllerNet targetPlayerController)
         {
-            if (!_blockContainer.IsHoldingBlock) 
+            if (!_holdingObjectContainer.IsHoldingBlock) 
             {
                 Debug.Log($"{_info.PlayerController.Object.InputAuthority} isn't holding a block. So, can't pass block");
                 return (false, null!);
@@ -101,7 +101,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 Debug.Log($"{targetPlayerController.Object.InputAuthority} is holding a block.So, can't receive pass");
                 return (false, null!);
             }
-            var block = _blockContainer.PopBlock();  // 判定の一番最後にPopする
+            var block = _holdingObjectContainer.PopBlock();  // 判定の一番最後にPopする
             if (block == null)
             {
                 Debug.LogError($"block is null");  // IsHoldingBlockがtrueなのに、blockがnullなのはおかしい

@@ -18,7 +18,7 @@ namespace Carry.CarrySystem.Block.Scripts
         public HeavyBlock.Kind[] kinds = new HeavyBlock.Kind[10];
     }
 
-    public class HeavyBlock : IBlock
+    public class HeavyBlock : ICarriableBlock
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 2;
@@ -44,10 +44,10 @@ namespace Carry.CarrySystem.Block.Scripts
         public void  PickUp(ICharacter character)
         {
             // 移動速度を遅くする
-            character.SetSlowMoveExecutor();
+            character.SwitchToSlowMove();
         }
 
-        public bool CanPutDown(IList<IBlock> blocks)
+        public bool CanPutDown(IList<ICarriableBlock> blocks)
         {
             var diffList = blocks.Select(x => x.GetType() != this.GetType());
             Debug.Log($"forward different block count: {diffList.Count()}, list : {string.Join(",", diffList)}");
@@ -65,7 +65,7 @@ namespace Carry.CarrySystem.Block.Scripts
         public void PutDown(ICharacter character) 
         {
             // 移動速度を元に戻す
-            character.SetRegularMoveExecutor();
+            character.SwitchToRegularMove();
         }
     }
 }

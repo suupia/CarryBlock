@@ -26,6 +26,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var basicBlockRecords = new BasicBlockRecord[mapLength];
             var heavyBlockRecords = new HeavyBlockRecord[mapLength];
             var fragileBlockRecords = new FragileBlockRecord[mapLength];
+            var cannonBlockRecords = new CannonBlockRecord[mapLength];
             
             for (int i = 0; i < mapLength; i++)
             {
@@ -34,6 +35,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 basicBlockRecords[i] = new BasicBlockRecord();
                 heavyBlockRecords[i] = new HeavyBlockRecord();
                 fragileBlockRecords[i] = new FragileBlockRecord();
+                cannonBlockRecords[i] = new CannonBlockRecord();
             }
 
             for (int i = 0; i < mapLength; i++)
@@ -52,6 +54,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 
                 var fragileBlocks = map.GetSingleEntityList<FragileBlock>(i);
                 fragileBlockRecords[i].kinds = fragileBlocks.Select(x => x.KindValue).ToArray();
+                
+                var cannonBlocks = map.GetSingleEntityList<CannonBlock>(i);
+                cannonBlockRecords[i].kinds = cannonBlocks.Select(x => x.KindValue).ToArray();
             }
 
             // 保存するデータの作成
@@ -63,6 +68,7 @@ namespace Carry.CarrySystem.Map.Scripts
             entityGridMapData.basicBlockRecords = basicBlockRecords;
             entityGridMapData.heavyBlockRecords = heavyBlockRecords;
             entityGridMapData.fragileBlockRecords = fragileBlockRecords;
+            entityGridMapData.cannonBlockRecords = cannonBlockRecords;
 
             Save(entityGridMapData,key, mapDataIndex);
         }

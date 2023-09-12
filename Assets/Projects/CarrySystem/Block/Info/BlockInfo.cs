@@ -1,6 +1,5 @@
 ﻿using System;
 using Carry.CarrySystem.Block.Scripts;
-using Projects.CarrySystem.Block.Scripts;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -34,6 +33,7 @@ namespace Projects.CarrySystem.Block.Info
                 BlockTypeEnum.UnmovableBlock => typeof(UnmovableBlock),
                 BlockTypeEnum.HeavyBlock => typeof(HeavyBlock),
                 BlockTypeEnum.FragileBlock => typeof(FragileBlock),
+                BlockTypeEnum.CannonBlock => typeof(CannonBlock),
                 _ => throw new ArgumentOutOfRangeException()
             };
             if(result == null)
@@ -52,6 +52,7 @@ namespace Projects.CarrySystem.Block.Info
             UnmovableBlock,
             HeavyBlock,
             FragileBlock,
+            CannonBlock,
         }
     }
 

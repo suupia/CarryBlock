@@ -10,13 +10,14 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class Character : ICharacter
     {
-        public PlayerBlockContainer PlayerBlockContainer { get; }
+        public PlayerHoldingObjectContainer PlayerHoldingObjectContainer { get; }
         public PlayerPresenterContainer PresenterContainer { get; }
 
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         readonly IHoldActionExecutor _holdActionExecutor;
         readonly IDashExecutor _dashExecutor;
         readonly IPassActionExecutor _passActionExecutor;
+        readonly IOnDamageExecutor _onDamageExecutor;
 
 
         public Character(
@@ -24,13 +25,15 @@ namespace Carry.CarrySystem.Player.Scripts
             IHoldActionExecutor holdActionExecutor,
             IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,
-            PlayerBlockContainer blockContainer,
+            IOnDamageExecutor onDamageExecutor,
+            PlayerHoldingObjectContainer holdingObjectContainer,
             PlayerPresenterContainer playerPresenterContainer)
         {
             _moveExecutorSwitcher = moveExecutorSwitcher;
             _holdActionExecutor = holdActionExecutor; 
             _passActionExecutor = passActionExecutor;
-            PlayerBlockContainer = blockContainer;
+            _onDamageExecutor = onDamageExecutor;
+            PlayerHoldingObjectContainer = holdingObjectContainer;
             PresenterContainer = playerPresenterContainer;
             _dashExecutor = dashExecutor;
         }
@@ -46,6 +49,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _moveExecutorSwitcher.Setup(info);
             _holdActionExecutor. Setup(info);
             _passActionExecutor.Setup(info);
+            _onDamageExecutor.Setup(info);
             info.PlayerRb.useGravity = true;
         }
 
@@ -55,14 +59,22 @@ namespace Carry.CarrySystem.Player.Scripts
             _moveExecutorSwitcher.Move(direction);
         }
 
-        public void SetRegularMoveExecutor() => _moveExecutorSwitcher.SetRegularMoveExecutor();
-        public void SetFastMoveExecutor() => _moveExecutorSwitcher.SetFastMoveExecutor();
-        public void SetSlowMoveExecutor() => _moveExecutorSwitcher.SetSlowMoveExecutor();
+        public void SwitchToRegularMove() => _moveExecutorSwitcher.SwitchToRegularMove();
+        public void SwitchToFastMove() => _moveExecutorSwitcher.SwitchToFastMove();
+        public void SwitchToSlowMove() => _moveExecutorSwitcher.SwitchToSlowMove();
+        public void SwitchToFaintedMove() => _moveExecutorSwitcher.SwitchToFaintedMove();
+        
+        public void OnDamage() => _onDamageExecutor.OnDamage();
 
         // HoldActionExecutor
         public void SetHoldPresenter(IPlayerBlockPresenter presenter)
         {
             PresenterContainer.SetHoldPresenter(presenter);
+        }
+        
+        public void SetAidKitPresenter(PlayerAidKitPresenterNet presenter)
+        {
+            _holdActionExecutor.SetAidKitPresenter(presenter);
         }
 
         public void HoldAction()
@@ -76,6 +88,10 @@ namespace Carry.CarrySystem.Player.Scripts
         // PassActionExecutor
         public void PassAction() => _passActionExecutor.PassAction();
         public bool CanReceivePass() => _passActionExecutor.CanReceivePass();
-        public void ReceivePass(IBlock block) => _passActionExecutor.ReceivePass(block);
+        public void ReceivePass(ICarriableBlock block) => _passActionExecutor.ReceivePass(block);
+        
+        // IOnDamageExecutor
+        public bool IsFainted => _onDamageExecutor.IsFainted;   
+        public void OnRevive() => _onDamageExecutor.OnRevive();
     }
 }

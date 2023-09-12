@@ -8,7 +8,6 @@ using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners;
 using Fusion;
-using Projects.CarrySystem.Block.Scripts;
 using Projects.Utility.Scripts;
 using Projects.Utility;
 using Projects.Utility.Interfaces;
@@ -55,8 +54,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 var checkedBlocks = CheckBlocks(getBlocks);
                 var blockControllerComponents = blockPresenter.GetComponentsInChildren<BlockControllerNet>();
                 var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
-                var blockMonoDelegate = new BlockMonoDelegate(gridPos,checkedBlocks,blockInfos, blockPresenter);  // すべてのマスにBlockMonoDelegateを配置させる
+                var blockMonoDelegate = new BlockMonoDelegate(_runner, gridPos,checkedBlocks,blockInfos, blockPresenter);  // すべてのマスにBlockMonoDelegateを配置させる
                 map.AddEntity(i, blockMonoDelegate);
+                
 
                 blockPresenters.Add(blockPresenter);
             }
@@ -85,5 +85,6 @@ namespace Carry.CarrySystem.Map.Scripts
             return blocks;
 
         }
+
     }
 }

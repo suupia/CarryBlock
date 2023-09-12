@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Carry.CarrySystem.Player.Info;
+using Carry.CarrySystem.Player.Scripts;
 
 namespace Carry.CarrySystem.Player.Interfaces
 {
@@ -8,5 +9,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         void Setup(PlayerInfo info);
         void Reset();
         void HoldAction();
+        
+        public void SetAidKitPresenter(PlayerAidKitPresenterNet presenter);
     }
 }

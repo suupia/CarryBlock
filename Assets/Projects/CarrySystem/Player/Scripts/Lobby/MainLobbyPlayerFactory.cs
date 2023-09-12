@@ -13,13 +13,14 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public ICharacter Create(PlayerColorType colorType)
         {
-            var moveExe = new MoveExecutorSwitcher();
-            var blockContainer = new PlayerBlockContainer();
+            var moveExeSwitcher = new MoveExecutorSwitcher();
+            var blockContainer = new PlayerHoldingObjectContainer();
             var playerPresenterContainer = new PlayerPresenterContainer();
             var holdExe = new EmptyHoldActionExecutor();
             var dashExe = new DashExecutor();
             var passExe = new EmptyPassActionExecutor();
-            var character = new Character(moveExe, holdExe,dashExe, passExe, blockContainer,playerPresenterContainer);
+            var onDamageExe = new OnDamageExecutor(moveExeSwitcher);
+            var character = new Character(moveExeSwitcher, holdExe,dashExe, passExe,onDamageExe, blockContainer,playerPresenterContainer);
             return character;
         }
     }

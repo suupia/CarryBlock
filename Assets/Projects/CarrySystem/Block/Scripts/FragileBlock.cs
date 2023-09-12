@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.Block.Scripts
         public FragileBlock.Kind[] kinds = new FragileBlock.Kind[10];
     }
 
-    public class FragileBlock : IBlock
+    public class FragileBlock : ICarriableBlock
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 1;
@@ -43,7 +43,7 @@ namespace Carry.CarrySystem.Block.Scripts
             var _ = BreakBlock(character);
         }
 
-        public bool CanPutDown(IList<IBlock> blocks)
+        public bool CanPutDown(IList<ICarriableBlock> blocks)
         {
             var diffList = blocks.Select(x => x.GetType() != this.GetType());
             Debug.Log($"forward different block count: {diffList.Count()}, list : {string.Join(",", diffList)}");
@@ -68,7 +68,7 @@ namespace Carry.CarrySystem.Block.Scripts
             await UniTask.Delay(TimeSpan.FromSeconds(0.25f));
             Debug.Log("BreakBlockを実行");
             
-            var _ = character.PlayerBlockContainer.PopBlock();
+            var _ = character.PlayerHoldingObjectContainer.PopBlock();
             character.PresenterContainer.PutDownBlock();
         }  
     }

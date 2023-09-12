@@ -26,7 +26,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
             // Debug.Log($"addBlockCount:{addBlockCount} groundCount:{groundCount} othersCount:{othersCount}");
             
-            if (addBlockCount >= addBlock.MaxPlacedBlockCount) return ;
+            if(addBlock is ICarriableBlock carriableBlock && addBlockCount >= carriableBlock.MaxPlacedBlockCount) return ;
             if (othersCount > 0) return ;
 
             map.AddEntity(gridPos, addBlock);

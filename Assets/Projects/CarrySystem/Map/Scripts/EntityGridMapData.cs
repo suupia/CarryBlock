@@ -20,6 +20,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public RockRecord[]? rockRecords;
         public HeavyBlockRecord[]? heavyBlockRecords;
         public FragileBlockRecord[]? fragileBlockRecords;
+        public CannonBlockRecord[]? cannonBlockRecords;
     }
 
     public enum MapKey
