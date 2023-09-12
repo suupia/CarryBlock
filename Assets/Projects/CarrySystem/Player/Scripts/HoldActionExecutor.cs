@@ -27,6 +27,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         
+        // Presenter
         IPlayerBlockPresenter? _playerBlockPresenter;
         PlayerAidKitPresenterNet? _playerAidKitPresenter;
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
@@ -64,6 +65,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             var _ =  _holdingObjectContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
             _playerBlockPresenter?.PutDownBlock();
+            _playerAnimatorPresenter?.PutDownBlock();
             _map = _mapUpdater.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
         public void HoldAction()
@@ -93,6 +95,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     // _map.AddEntity(forwardGridPos, block);
                     _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.AddBlock(block);
                     _playerBlockPresenter?.PutDownBlock();
+                    _playerAnimatorPresenter?.PutDownBlock();
                 }
                 
             } else if (_holdingObjectContainer.IsHoldingAidKit)  // IsHoldingAidKit
@@ -166,7 +169,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
                 _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
                 _playerBlockPresenter?.PickUpBlock(block);
-                Debug.Log($"_playerBlockPresenter : {_playerBlockPresenter}");
+                _playerAnimatorPresenter?.PickUpBlock(block);
                 _holdingObjectContainer.SetBlock(carriableBlock);
             }
             Debug.Log($"after currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
