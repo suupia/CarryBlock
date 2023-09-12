@@ -41,8 +41,8 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         public void SetIndex(PlayerRef playerRef)
         {
-             Debug.Log($"Registering playerRef:{playerRef} as {_playerIndexDictionary.Count}P");
-            _playerIndexDictionary.Add(playerRef, _playerIndexDictionary.Count);
+            // Debug.Log($"Registering playerRef:{playerRef} as {index+1}P");
+            _playerIndexDictionary.Add(playerRef, _playerIndexDictionary.Count+1);
         }
     }
 }
