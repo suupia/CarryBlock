@@ -26,8 +26,8 @@ namespace Carry.CarrySystem.Player.Scripts
         EntityGridMap _map = null!;
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
-        readonly IPlayerBlockPresenter _playerBlockPresenter;
         
+        IPlayerBlockPresenter _playerBlockPresenter;
         PlayerAidKitPresenterNet? _playerAidKitPresenter;
 
         IDisposable? _searchBlockDisposable;
@@ -143,6 +143,11 @@ namespace Carry.CarrySystem.Player.Scripts
 
             }
             
+        }
+        
+        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
+        {
+            _playerBlockPresenter = presenter;
         }
 
         public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)

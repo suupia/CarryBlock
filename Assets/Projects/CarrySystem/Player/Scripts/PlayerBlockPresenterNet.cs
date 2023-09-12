@@ -50,7 +50,7 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField] GameObject fragileBlockView = null!;
         public void Init(ICharacter character)
         {
-            character.SetHoldPresenter((IPlayerBlockPresenter)this);
+            character.SetPlayerBlockPresenter((IPlayerBlockPresenter)this);
             PresentDataRef.HoldingBlockType = BlockType.None;
         }
 

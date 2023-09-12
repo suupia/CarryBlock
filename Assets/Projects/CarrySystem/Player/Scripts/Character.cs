@@ -67,9 +67,9 @@ namespace Carry.CarrySystem.Player.Scripts
         public void OnDamage() => _onDamageExecutor.OnDamage();
 
         // HoldActionExecutor
-        public void SetHoldPresenter(IPlayerBlockPresenter presenter)
+        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
         {
-            PresenterContainer.SetHoldPresenter(presenter);
+            _holdActionExecutor.SetPlayerBlockPresenter(presenter);
         }
         
         public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)

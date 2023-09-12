@@ -38,7 +38,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Init(ICharacter character)
         {
             Debug.Log($"PlayerAnimatorPresenterNet Init");
-            character.SetHoldPresenter(this);
+            character.SetPlayerBlockPresenter(this);
         }
 
         public void SetAnimator(Animator animator)
