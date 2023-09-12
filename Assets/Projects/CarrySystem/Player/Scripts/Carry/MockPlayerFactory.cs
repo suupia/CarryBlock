@@ -30,7 +30,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var playerPresenterContainer = new PlayerPresenterContainer();
             var holdExe = new HoldActionExecutor(blockContainer,_playerNearCartHandler,_mapUpdater);
             var dashExe = new DashExecutor();
-            var passExe = new PassActionExecutor(blockContainer,playerPresenterContainer, holdExe,10, LayerMask.GetMask("Player"));
+            var passExe = new PassActionExecutor(blockContainer, holdExe,10, LayerMask.GetMask("Player"));
             var onDamageExe = new OnDamageExecutor(moveExeSwitcher);
             var character = new Character( moveExeSwitcher, holdExe,dashExe, passExe,onDamageExe, blockContainer,playerPresenterContainer);
             return character;
