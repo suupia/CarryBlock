@@ -74,6 +74,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
+            _moveExecutorSwitcher.SetPlayerAnimatorPresenter(presenter);
             _holdActionExecutor.SetPlayerAnimatorPresenter(presenter);
         }
         

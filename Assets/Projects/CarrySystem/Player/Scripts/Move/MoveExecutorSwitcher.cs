@@ -56,5 +56,15 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _currentMoveExecutor =  _faintedMoveExecutor;
         }
+        
+                
+        // Animator
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
+        {
+            _regularMoveExecutor.SetPlayerAnimatorPresenter(presenter);
+            _slowMoveExecutor.SetPlayerAnimatorPresenter(presenter);
+            _fastMoveExecutor.SetPlayerAnimatorPresenter(presenter);
+            _faintedMoveExecutor.SetPlayerAnimatorPresenter(presenter);
+        }
     }
 }

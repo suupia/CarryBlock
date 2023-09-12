@@ -12,6 +12,8 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly float _maxVelocity = 3f; // CorrectlyStopの半分以下
         readonly float _stoppingForce = 5f;
 
+        IPlayerAnimatorPresenter? _playerAnimatorPresenter;
+
         public void Setup(PlayerInfo info)
         {
             _info = info;
@@ -46,6 +48,21 @@ namespace Carry.CarrySystem.Player.Scripts
                 float reductionFactor = Mathf.Max(0f, 1f - _stoppingForce * Time.deltaTime);
                 rb.velocity *= Mathf.Pow(reductionFactor, rb.velocity.magnitude);
             }
+            
+            if (input != Vector3.zero)
+            {
+                _playerAnimatorPresenter?.Walk();   
+            }
+            else
+            {
+                _playerAnimatorPresenter?.Idle();
+            }
+        }
+        
+        // Animator
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
+        {
+            _playerAnimatorPresenter = presenter;
         }
     }
 }

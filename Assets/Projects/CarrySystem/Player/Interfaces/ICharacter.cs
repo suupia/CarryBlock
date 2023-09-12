@@ -15,6 +15,9 @@ namespace Carry.CarrySystem.Player.Interfaces
 
        PlayerHoldingObjectContainer PlayerHoldingObjectContainer{get;}
        PlayerPresenterContainer PresenterContainer{get;}
-
+       
+       // Animator
+       // Use "new" to avoid "Ambiguous invocation" error
+       public new void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter);
     }
 }
