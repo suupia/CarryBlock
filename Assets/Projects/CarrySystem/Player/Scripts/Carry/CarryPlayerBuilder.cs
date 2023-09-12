@@ -66,11 +66,12 @@ namespace Carry.CarrySystem.Player.Scripts
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
                     networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType,_mapUpdater, _playerNearCartHandler, _playerCharacterHolder);
                     networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character);
+                    networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
                 });
             var info = playerControllerObj.Info;
             playerControllerObj.GetComponentInChildren<PassRangeNet>().Init(info,LayerMask.GetMask("Player"));
-
+            playerControllerObj.GetComponentInChildren<AidKitRangeNet>().Init(info,LayerMask.GetMask("Player"));
             
             _carryPlayerContainer.AddPlayer(playerRef, playerControllerObj);
 
