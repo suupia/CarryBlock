@@ -20,12 +20,27 @@ namespace Carry.CarrySystem.Player.Scripts
             
         }
 
+        public void PutDownBlock()
+        {
+            
+        }
+
         public void HoldAction()
         {
             Debug.Log($"EmptyHoldAction: Action");
         }
         
-        public void SetAidKitPresenter(PlayerAidKitPresenterNet presenter)
+        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
+        {
+            
+        }
+        
+        public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
+        {
+            
+        }
+        
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
             
         }

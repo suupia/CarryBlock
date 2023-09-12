@@ -19,19 +19,20 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly int _layerMask;
         readonly  Collider[] _targetBuffer = new Collider[10];
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
-        readonly IPlayerBlockPresenter _playerPresenterContainer;
+        
+        // Presenter
+        IPlayerBlockPresenter? _playerBlockPresenter;
+        IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
         PassRangeNet? _passRangeNet;
 
         public PassActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer,
-            IPlayerBlockPresenter playerPresenterContainer,
-            HoldActionExecutor holdActionExecutor,
+            HoldActionExecutor holdActionExecutor, 
             float radius,
             int layerMask)
         {
             _holdingObjectContainer = holdingObjectContainer;
-            _playerPresenterContainer = playerPresenterContainer;
             _holdActionExecutor = holdActionExecutor;
             _radius = radius;
             _layerMask = layerMask; /*LayerMask.GetMask("Player");*/
@@ -78,7 +79,8 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log("Receive Pass");
             block.PickUp(_info.PlayerController.GetCharacter);
             _holdingObjectContainer.SetBlock(block);
-            _playerPresenterContainer.ReceiveBlock(block);
+            _playerBlockPresenter?.ReceiveBlock(block);
+            _playerAnimatorPresenter?.ReceiveBlock(block);
         }
         
         // private
@@ -86,7 +88,8 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"Pass Block");
             block.PutDown(_info.PlayerController.GetCharacter);
-            _playerPresenterContainer.PassBlock();
+            _playerBlockPresenter?.PassBlock();
+            _playerAnimatorPresenter?.PassBlock();
         }
         
         (bool, ICarriableBlock) CanPass(CarryPlayerControllerNet targetPlayerController)
@@ -110,7 +113,15 @@ namespace Carry.CarrySystem.Player.Scripts
             return (true, block);
         }
         
-        
+        // Presenter
+        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
+        {
+            _playerBlockPresenter = presenter;
+        }
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
+        {
+            _playerAnimatorPresenter = presenter;
+        }
         
     }
 }

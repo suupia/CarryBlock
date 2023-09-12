@@ -12,11 +12,11 @@ namespace Carry.CarrySystem.Player.Interfaces
        new void Setup(PlayerInfo info);
        
        new void Reset();
-       void SetHoldPresenter(IPlayerBlockPresenter presenter);
-       public void SetAidKitPresenter(PlayerAidKitPresenterNet presenter);
 
        PlayerHoldingObjectContainer PlayerHoldingObjectContainer{get;}
-       PlayerPresenterContainer PresenterContainer{get;}
-
+       
+       // Use "new" to avoid "Ambiguous invocation" error
+       public new void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter);
+       public new void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter);
     }
 }

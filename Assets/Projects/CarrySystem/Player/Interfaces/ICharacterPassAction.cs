@@ -12,5 +12,11 @@ namespace Carry.CarrySystem.Player.Interfaces
         bool CanReceivePass();
 
         void ReceivePass(ICarriableBlock block);
+        
+        // View
+        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter);
+        
+        // Animator
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter);
     }
 }

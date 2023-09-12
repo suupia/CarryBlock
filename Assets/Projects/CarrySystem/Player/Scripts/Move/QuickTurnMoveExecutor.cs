@@ -11,6 +11,8 @@ namespace Carry.CarrySystem.Player.Scripts
          readonly float _acceleration = 30f;
          readonly float _maxVelocity = 9f;
 
+         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
+
          public void Setup(PlayerInfo info)
         {
             _info = info;
@@ -45,6 +47,20 @@ namespace Carry.CarrySystem.Player.Scripts
                 if (rb.velocity.magnitude >= _maxVelocity)
                     rb.velocity = _maxVelocity * rb.velocity.normalized;
             }
+            if (input != Vector3.zero)
+            {
+                _playerAnimatorPresenter?.Walk();   
+            }
+            else
+            {
+                _playerAnimatorPresenter?.Idle();
+            }
+        }
+        
+        // Animator
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
+        {
+            _playerAnimatorPresenter = presenter;
         }
     }
 }

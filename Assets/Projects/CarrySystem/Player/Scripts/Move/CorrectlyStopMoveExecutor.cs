@@ -14,6 +14,8 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly float _maxVelocity = 9f;
         readonly float _stoppingForce = 5f;
 
+        IPlayerAnimatorPresenter? _playerAnimatorPresenter;
+
         public void Setup(PlayerInfo info)
         {
             _info = info;
@@ -46,17 +48,32 @@ namespace Carry.CarrySystem.Player.Scripts
                 // Stop if there is no key input
                 // Define 0 < _stoppingForce < 1
                 float reductionFactor = Mathf.Max(0f, 1f - _stoppingForce * Time.deltaTime);
-                float _stoppingSpeed = 1.5f;
+                float stoppingSpeed = 1.5f;
 
                 rb.velocity *= Mathf.Pow(reductionFactor, rb.velocity.magnitude);
                 
-                if (rb.velocity.magnitude <= _stoppingSpeed )
+                if (rb.velocity.magnitude <= stoppingSpeed )
                 {
                     rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
                     rb.angularVelocity = new Vector3(0f, rb.angularVelocity.y, 0f);
                 }
 
             }
+
+            if (input != Vector3.zero)
+            {
+                _playerAnimatorPresenter?.Walk();   
+            }
+            else
+            {
+                _playerAnimatorPresenter?.Idle();
+            }
+        }
+        
+        // Animator
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
+        {
+            _playerAnimatorPresenter = presenter;
         }
     }
 }
