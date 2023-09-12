@@ -63,9 +63,15 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Reset()
         {
+            // reset holding block
             var _ =  _holdingObjectContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
             _playerBlockPresenter?.PutDownBlock();
             _playerAnimatorPresenter?.PutDownBlock();
+            
+            // reset holding aid kit
+            _holdingObjectContainer.PopAidKit();
+            if (_playerAidKitPresenter != null) _playerAidKitPresenter.DisableAidKit();
+            
             _map = _mapUpdater.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
 
