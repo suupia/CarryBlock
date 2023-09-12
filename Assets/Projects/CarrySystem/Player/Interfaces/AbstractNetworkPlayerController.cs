@@ -79,15 +79,7 @@ namespace Carry.CarrySystem.Player.Interfaces
 
                 // Debug.Log($"_character = {_character}");
                 Character.Move( direction);
-
-                if (direction == Vector3.zero)
-                {
-                    Character.PresenterContainer.Idle();
-                }
-                else
-                {
-                    Character.PresenterContainer.Walk();
-                }
+                 
                 
                 GetInputProcess(input); // 子クラスで処理を追加するためのメソッド
 
