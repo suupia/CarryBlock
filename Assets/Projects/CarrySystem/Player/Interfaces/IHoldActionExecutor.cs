@@ -10,7 +10,11 @@ namespace Carry.CarrySystem.Player.Interfaces
         void Reset();
         void HoldAction();
 
+        // View
         public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter);
         public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter);
+        
+        // Animator
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter);
     }
 }

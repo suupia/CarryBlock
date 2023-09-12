@@ -50,7 +50,8 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField] GameObject fragileBlockView = null!;
         public void Init(ICharacter character)
         {
-            character.SetPlayerBlockPresenter((IPlayerBlockPresenter)this);
+            Debug.Log($"PlayerBlockPresenterNet.Init()");
+            character.SetPlayerBlockPresenter(this);
             PresentDataRef.HoldingBlockType = BlockType.None;
         }
 
@@ -90,6 +91,7 @@ namespace Carry.CarrySystem.Player.Scripts
         // 以下の処理はアニメーション、音、エフェクトの再生を行いたくなったら、それぞれのクラスの対応するメソッドを呼ぶようにするかも
         public void PickUpBlock(IBlock block)
         {
+            Debug.Log($"PlayerBlockPresenterNet.PickUpBlock()");
             PresentDataRef.HoldingBlockType = DecideBlockType(block);
         }
 

@@ -27,8 +27,9 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         
-        IPlayerBlockPresenter _playerBlockPresenter;
+        IPlayerBlockPresenter? _playerBlockPresenter;
         PlayerAidKitPresenterNet? _playerAidKitPresenter;
+        IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
         IDisposable? _searchBlockDisposable;
 
@@ -40,12 +41,10 @@ namespace Carry.CarrySystem.Player.Scripts
         public HoldActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer, 
             PlayerNearCartHandlerNet playerNearCartHandler,
-            IPlayerBlockPresenter playerBlockPresenter,
             IMapUpdater mapUpdater)
         {
             _holdingObjectContainer = holdingObjectContainer;
             _playerNearCartHandler = playerNearCartHandler;
-            _playerBlockPresenter = playerBlockPresenter;
             _mapUpdater = mapUpdater;
         }
 
@@ -64,7 +63,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Reset()
         {
             var _ =  _holdingObjectContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
-            _playerBlockPresenter.PutDownBlock();
+            _playerBlockPresenter?.PutDownBlock();
             _map = _mapUpdater.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
         public void HoldAction()
@@ -93,7 +92,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     block.PutDown(_info.PlayerController.GetCharacter);
                     // _map.AddEntity(forwardGridPos, block);
                     _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.AddBlock(block);
-                    _playerBlockPresenter.PutDownBlock();
+                    _playerBlockPresenter?.PutDownBlock();
                 }
                 
             } else if (_holdingObjectContainer.IsHoldingAidKit)  // IsHoldingAidKit
@@ -145,16 +144,6 @@ namespace Carry.CarrySystem.Player.Scripts
             
         }
         
-        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
-        {
-            _playerBlockPresenter = presenter;
-        }
-
-        public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
-        {
-            _playerAidKitPresenter = presenter;
-        }
-
 
         bool TryToPickUpBlock(Vector2Int forwardGridPos)
         {
@@ -176,7 +165,8 @@ namespace Carry.CarrySystem.Player.Scripts
                 carriableBlock.PickUp(_info.PlayerController.GetCharacter);
                 // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
                 _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
-                _playerBlockPresenter.PickUpBlock(block);
+                _playerBlockPresenter?.PickUpBlock(block);
+                Debug.Log($"_playerBlockPresenter : {_playerBlockPresenter}");
                 _holdingObjectContainer.SetBlock(carriableBlock);
             }
             Debug.Log($"after currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
@@ -234,7 +224,7 @@ namespace Carry.CarrySystem.Player.Scripts
             }
         }
 
-
+        // Presenter
         Vector2Int GetForwardGridPos(Transform transform)
         {
             var gridPos = GridConverter.WorldPositionToGridPosition(transform.position);
@@ -242,6 +232,21 @@ namespace Carry.CarrySystem.Player.Scripts
             var direction = new Vector2(forward.x, forward.z);
             var gridDirection = GridConverter.WorldDirectionToGridDirection(direction);
             return gridPos + gridDirection;
+        }
+        
+        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
+        {
+            _playerBlockPresenter = presenter;
+            Debug.Log($"_playerBlockPresenter : {presenter}");
+        }
+
+        public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
+        {
+            _playerAidKitPresenter = presenter;
+        }
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
+        {
+            _playerAnimatorPresenter = presenter;
         }
         
     }

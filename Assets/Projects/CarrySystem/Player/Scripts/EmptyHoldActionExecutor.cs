@@ -34,5 +34,10 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             
         }
+        
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
+        {
+            
+        }
     }
 }

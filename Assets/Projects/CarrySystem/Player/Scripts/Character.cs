@@ -72,6 +72,11 @@ namespace Carry.CarrySystem.Player.Scripts
             _holdActionExecutor.SetPlayerBlockPresenter(presenter);
         }
         
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
+        {
+            _holdActionExecutor.SetPlayerAnimatorPresenter(presenter);
+        }
+        
         public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
         {
             _holdActionExecutor.SetPlayerAidKitPresenter(presenter);

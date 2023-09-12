@@ -28,7 +28,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var moveExeSwitcher = new MoveExecutorSwitcher();
             var blockContainer = new PlayerHoldingObjectContainer();
             var playerPresenterContainer = new PlayerPresenterContainer();
-            var holdExe = new HoldActionExecutor(blockContainer,_playerNearCartHandler,playerPresenterContainer,_mapUpdater);
+            var holdExe = new HoldActionExecutor(blockContainer,_playerNearCartHandler,_mapUpdater);
             var dashExe = new DashExecutor();
             var passExe = new PassActionExecutor(blockContainer,playerPresenterContainer, holdExe,10, LayerMask.GetMask("Player"));
             var onDamageExe = new OnDamageExecutor(moveExeSwitcher);
