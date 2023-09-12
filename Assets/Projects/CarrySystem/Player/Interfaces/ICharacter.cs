@@ -14,7 +14,6 @@ namespace Carry.CarrySystem.Player.Interfaces
        new void Reset();
 
        PlayerHoldingObjectContainer PlayerHoldingObjectContainer{get;}
-       PlayerPresenterContainer PresenterContainer{get;}
        
        // Use "new" to avoid "Ambiguous invocation" error
        public new void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter);

@@ -27,12 +27,11 @@ namespace Carry.CarrySystem.Player.Scripts
             // ToDo: switch文で分ける
             var moveExeSwitcher = new MoveExecutorSwitcher();
             var blockContainer = new PlayerHoldingObjectContainer();
-            var playerPresenterContainer = new PlayerPresenterContainer();
             var holdExe = new HoldActionExecutor(blockContainer,_playerNearCartHandler,_mapUpdater);
             var dashExe = new DashExecutor();
             var passExe = new PassActionExecutor(blockContainer, holdExe,10, LayerMask.GetMask("Player"));
             var onDamageExe = new OnDamageExecutor(moveExeSwitcher);
-            var character = new Character( moveExeSwitcher, holdExe,dashExe, passExe,onDamageExe, blockContainer,playerPresenterContainer);
+            var character = new Character( moveExeSwitcher, holdExe,dashExe, passExe,onDamageExe, blockContainer);
             return character;
         }
     }
