@@ -9,6 +9,8 @@ using DG.Tweening;
 
 namespace Carry.UISystem.UI.CarryScene
 {
+    // 使う場合は Main Camera の設定でPostProcessingにチェックを入れること
+    
     public class VignetteBlinker : MonoBehaviour
     { 
         [SerializeField] Volume volume = null!;
