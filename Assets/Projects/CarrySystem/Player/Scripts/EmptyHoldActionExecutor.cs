@@ -20,6 +20,11 @@ namespace Carry.CarrySystem.Player.Scripts
             
         }
 
+        public void PutDownBlock()
+        {
+            
+        }
+
         public void HoldAction()
         {
             Debug.Log($"EmptyHoldAction: Action");
