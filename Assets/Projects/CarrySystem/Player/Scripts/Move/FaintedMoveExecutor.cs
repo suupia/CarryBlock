@@ -36,15 +36,9 @@ namespace Carry.CarrySystem.Player.Scripts
                 rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
                 rb.angularVelocity = new Vector3(0f, rb.angularVelocity.y, 0f);
             }
-
-            if (input != Vector3.zero)
-            {
-                _playerAnimatorPresenter?.Walk();   
-            }
-            else
-            {
-                _playerAnimatorPresenter?.Idle();
-            }
+            
+            _playerAnimatorPresenter?.Idle();
+            
         }
         
         // Animator
