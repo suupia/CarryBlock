@@ -39,6 +39,13 @@ namespace Carry.CarrySystem.Player.Scripts
                 if (rb.velocity.magnitude >= _maxVelocity)
                     rb.velocity = _maxVelocity * rb.velocity.normalized;
             }
+            else
+            {
+                // Stop if there is no key input
+                // Define 0 < _stoppingForce < 1
+                float reductionFactor = Mathf.Max(0f, 1f - _stoppingForce * Time.deltaTime);
+                rb.velocity *= Mathf.Pow(reductionFactor, rb.velocity.magnitude);
+            }
             
             if (input != Vector3.zero)
             {
