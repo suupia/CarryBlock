@@ -236,10 +236,16 @@ namespace Carry.CarrySystem.Player.Scripts
             // ハイライトの処理
             var block = blockMonoDelegate?.Block;
             if( block is not ICarriableBlock carriableBlock) return;
-            if (carriableBlock.CanPickUp())
+            if (_holdingObjectContainer.IsHoldingBlock)
             {
-                blockMonoDelegate?.Highlight(blockMonoDelegate.Block, _info.PlayerRef); // ハイライトの処理
+                if (!carriableBlock.CanPutDown(_searchedBlocks)) return;
             }
+            else
+            {
+                if(!carriableBlock.CanPickUp())return;
+            }
+            blockMonoDelegate?.Highlight(blockMonoDelegate.Block, _info.PlayerRef); // ハイライトの処理
+
         }
 
         // Presenter
