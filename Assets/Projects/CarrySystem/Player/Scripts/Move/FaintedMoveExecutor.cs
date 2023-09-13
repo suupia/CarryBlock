@@ -11,6 +11,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly float _acceleration = 30f;
         readonly float _maxVelocity = 3f; // CorrectlyStopの半分以下
         readonly float _stoppingForce = 5f;
+        readonly float _cannonStoppingForce = 3f;
 
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
@@ -23,14 +24,21 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             // CannonBallなどからダメージを受けたときの動き
             // 全く動けないか、動けても遅い動き
-            if (input != Vector3.zero)
+            
+            var rb = _info.PlayerRb;
+            float reductionFactor = Mathf.Max(0f, 1f - _cannonStoppingForce * Time.deltaTime);
+            float stoppingSpeed = 1.5f;
+
+            rb.velocity *= Mathf.Pow(reductionFactor, rb.velocity.magnitude);
+                
+            if (rb.velocity.magnitude <= stoppingSpeed )
             {
-                _playerAnimatorPresenter?.Walk();   
+                rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
+                rb.angularVelocity = new Vector3(0f, rb.angularVelocity.y, 0f);
             }
-            else
-            {
-                _playerAnimatorPresenter?.Idle();
-            }
+            
+            _playerAnimatorPresenter?.Idle();
+            
         }
         
         // Animator
