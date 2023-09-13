@@ -49,7 +49,7 @@ namespace Carry.CarrySystem.Player.Scripts
             
             if (input != Vector3.zero)
             {
-                _playerAnimatorPresenter?.Walk();   
+                _playerAnimatorPresenter?.Dash();   
             }
             else
             {

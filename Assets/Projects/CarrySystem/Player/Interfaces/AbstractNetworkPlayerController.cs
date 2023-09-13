@@ -65,13 +65,12 @@ namespace Carry.CarrySystem.Player.Interfaces
                 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
                 {
-                    Character.Dash();
                     if(_dashEffectSetter != null) _dashEffectSetter.StartDash();
                     else Debug.LogError($"DashEffectSetter is null");
+                    Character.Dash();
                 }
                 if (input.Buttons.WasReleased(PreButtons, PlayerOperation.Dash))
                 {
-                    Character.Dash();
                     if(_dashEffectSetter != null) _dashEffectSetter.StopDash();
                 }
 
