@@ -16,6 +16,8 @@ namespace Carry.CarrySystem.Map.Scripts
     /// </summary>
     public class EntityGridMapSwitcher : IMapUpdater
     {
+        public int Index => _currentIndex; 
+        
         readonly CartBuilder _cartBuilder;
         readonly FloorTimerNet _floorTimerNet;
         readonly EntityGridMapLoader _gridMapLoader;
