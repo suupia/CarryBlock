@@ -1,3 +1,4 @@
+using Carry.CarrySystem.CarryScene.Scripts;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
@@ -14,7 +15,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Carry.CarrySystem.CarryScene.Scripts
+namespace Carry.ScopeSystem.Scripts
 {
     public sealed class CarryScope : LifetimeScope
     {
