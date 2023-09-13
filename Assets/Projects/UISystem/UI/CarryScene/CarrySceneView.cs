@@ -16,18 +16,14 @@ namespace Carry.UISystem.UI.CarryScene
         [SerializeField] TextMeshProUGUI floorNumberText;  // 現在のフロア数
         [SerializeField] TextMeshProUGUI floorTimerText;
         [SerializeField] TextMeshProUGUI resultText;
-        [SerializeField] TextMeshProUGUI remainingTimeToReturnText;
 
         [SerializeField] Image floorTimerImage;
 
         [Networked] int FloorNumber { get; set; }
-        FloorTimerNet _floorTimerNet;
-
-        GameContext _gameContext;
-
-        // [Networked] float FloorTimerValue { get; set; }
         [Networked] NetworkString<_16> Result { get; set; }
         
+        FloorTimerNet _floorTimerNet;
+        GameContext _gameContext;
         IMapUpdater _mapUpdater;
 
 
