@@ -9,7 +9,7 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         PlayerInfo _info = null!;
         readonly float _acceleration = 30f;
-        readonly float _maxVelocity = 3f; // CorrectlyStopの半分以下
+        readonly float _maxVelocity = 2f; // CorrectlyStopの半分以下
         readonly float _stoppingForce = 5f;
 
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
