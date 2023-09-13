@@ -12,7 +12,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class DashExecutor : IDashExecutor
     {
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
-        readonly float _dashTime = 0.5f;
+        readonly float _dashTime = 0.25f;
         bool _isDashing;
         PlayerInfo _info = null!;
         CancellationTokenSource? _cancellationTokenSource;
