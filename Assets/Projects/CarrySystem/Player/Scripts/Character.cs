@@ -58,7 +58,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
 
         public void SwitchToRegularMove() => _moveExecutorSwitcher.SwitchToRegularMove();
-        public void SwitchToFastMove() => _moveExecutorSwitcher.SwitchToFastMove();
+        public void SwitchToDashMove() => _moveExecutorSwitcher.SwitchToDashMove();
         public void SwitchToSlowMove() => _moveExecutorSwitcher.SwitchToSlowMove();
         public void SwitchToFaintedMove() => _moveExecutorSwitcher.SwitchToFaintedMove();
         

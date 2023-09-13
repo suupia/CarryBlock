@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class FastMoveExecutor : IMoveExecutor
+    public class DashMoveExecutor : IMoveExecutor
     {
         PlayerInfo _info = null!;
         readonly float _acceleration = 30f;

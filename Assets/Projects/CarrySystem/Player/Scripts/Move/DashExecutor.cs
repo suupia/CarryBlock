@@ -12,7 +12,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class DashExecutor : IDashExecutor
     {
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
-        float _dashTime;
+        readonly float _dashTime = 0.5f;
         bool _isDashing;
         PlayerInfo _info = null!;
         CancellationTokenSource? _cancellationTokenSource;
@@ -34,16 +34,15 @@ namespace Carry.CarrySystem.Player.Scripts
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource = new CancellationTokenSource();
             var _ = AsyncDash(_cancellationTokenSource.Token);
-            
         }
         
         async UniTaskVoid AsyncDash(CancellationToken cancellationToken)
         {
             try
             {
-                ChangeMoveFast();
+                ChangeFastMove();
                 await UniTask.Delay((int)(_dashTime * 1000), cancellationToken: cancellationToken);
-                RechangeMove();
+                ChangeRegularMove();
             }
             catch (OperationCanceledException)
             {
@@ -51,14 +50,14 @@ namespace Carry.CarrySystem.Player.Scripts
             }
         }
 
-        void ChangeMoveFast()
+        void ChangeFastMove()
         {
             Debug.Log($"Executing Dash");
             _isDashing = true;
-            _moveExecutorSwitcher.SwitchToFastMove();
+            _moveExecutorSwitcher.SwitchToDashMove();
         }
 
-        void RechangeMove();
+        void ChangeRegularMove()
         {
             Debug.Log($"Finish dashing");
             _isDashing = false;
