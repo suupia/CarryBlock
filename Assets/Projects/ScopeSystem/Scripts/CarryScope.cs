@@ -79,6 +79,9 @@ namespace Carry.ScopeSystem.Scripts
             // View
             builder.RegisterComponentInHierarchy<PlayingCanvasUINet>();
             builder.RegisterComponentInHierarchy<ResultCanvasUINet>();
+            
+            // PostEffect
+            builder.RegisterComponentInHierarchy<VignetteBlinker>();
 
             // Clientのドメインスクリプト
             // builder.Register<ReturnToMainBaseGauge>(Lifetime.Singleton);

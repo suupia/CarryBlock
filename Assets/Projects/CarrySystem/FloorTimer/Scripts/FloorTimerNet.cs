@@ -6,8 +6,8 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
     public class FloorTimerNet : NetworkBehaviour
     {
         public float FloorLimitTime { get; } = 60f;
-
         public float FloorRemainingTime { get; set; }
+        public float FloorRemainingTimeRatio => FloorRemainingTime / FloorLimitTime;
 
         public bool IsExpired { get; set; } 
         [Networked] TickTimer TickTimer { get; set; }
