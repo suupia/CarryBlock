@@ -97,4 +97,4 @@ MonoBehaviour:
   volume: {fileID: 3024500954829895433}
   period: 1.5
   blinkTimeRate: 0.7
-  maxIntensity: 0.5
+  maxIntensity: 0.45
