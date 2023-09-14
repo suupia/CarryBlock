@@ -79,7 +79,7 @@ namespace Carry.ScopeSystem.Scripts
 
             // View
             builder.RegisterComponentInHierarchy<CarrySceneView>();
-
+            builder.RegisterComponentInHierarchy<ResultCanvasNet>();
 
             // Clientのドメインスクリプト
             // builder.Register<ReturnToMainBaseGauge>(Lifetime.Singleton);

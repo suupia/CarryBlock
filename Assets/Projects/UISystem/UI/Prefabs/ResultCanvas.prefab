@@ -89,6 +89,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  viewGameObject: {fileID: 1571858829925824183}
+  reStartButton: {fileID: 6538170491054402448}
+  titleButton: {fileID: 7947263651262181620}
 --- !u!114 &107287300035162386
 MonoBehaviour:
   m_ObjectHideFlags: 0
