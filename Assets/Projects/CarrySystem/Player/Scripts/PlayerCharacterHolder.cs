@@ -26,8 +26,8 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         public void SetColor(PlayerRef playerRef, PlayerColorType colorType)
         {
-            // Debug.Log($"Registering playerRef:{playerRef} as {colorType}");
-            _colorDictionary.Add(playerRef, colorType);
+             Debug.Log($"Registering playerRef:{playerRef} as {colorType}");
+            _colorDictionary[playerRef] =  colorType;
         }
         
         public int GetPlayerIndex(PlayerRef playerRef)
@@ -41,7 +41,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         public void SetIndex(PlayerRef playerRef)
         {
-            // Debug.Log($"Registering playerRef:{playerRef} as {index+1}P");
+             Debug.Log($"Registering playerRef:{playerRef} as {_playerIndexDictionary.Count+1}P");
             _playerIndexDictionary.Add(playerRef, _playerIndexDictionary.Count+1);
         }
     }
