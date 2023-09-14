@@ -65,7 +65,6 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
 
             // UI
-            builder.Register<GameContext>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<FloorTimerNet>();
 
             // Notifier
