@@ -12,5 +12,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         void Idle();
         void Walk();
         void Dash();
+        void Faint();
+        void Revive();
     }
 }
