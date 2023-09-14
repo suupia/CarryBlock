@@ -2823,7 +2823,7 @@ MonoBehaviour:
   - link:
     - context: {fileID: 8926484042661615178}
       slotIndex: 0
-  eventName: OnPlay
+  eventName: Start
 --- !u!114 &8926484042661615284
 MonoBehaviour:
   m_ObjectHideFlags: 0

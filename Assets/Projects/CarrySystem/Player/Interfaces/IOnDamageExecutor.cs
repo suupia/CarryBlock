@@ -11,6 +11,9 @@ namespace Carry.CarrySystem.Player.Interfaces
         public void OnDamage();
 
         public void OnRevive();
+        
+        // Animator
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter);
 
     }
 }
