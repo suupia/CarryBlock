@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.FloorTimer.Scripts;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
+using UniRx;
+using VContainer;
+
 #nullable enable
 
 
@@ -18,25 +22,43 @@ namespace Carry.UISystem.UI.CarryScene
         [SerializeField] [Range(0.0f,1.0f)] float blinkTimeRate;
         [SerializeField] [Range(0.0f,1.0f)] float maxIntensity;
 
-        private Vignette  _vigette = null!;
-        private Sequence _sequence = null!;
+        Vignette  _vignette = null!;
+        Sequence _sequence = null!;
         
-        private bool _stopFlag = true;
+        bool _stopFlag = true;
         
+        readonly float _playThreshold = 0.20f;  // 残り時間が2割の時に点滅を開始する
+        
+        [Inject]
+        public void Construct(FloorTimerNet floorTimerNet)
+        {
+            this.ObserveEveryValueChanged(_ => floorTimerNet.FloorRemainingTimeRatio)
+                .Subscribe(_ =>
+                {
+                    if (floorTimerNet.FloorRemainingTimeRatio <= _playThreshold)
+                    {
+                        if (_stopFlag)Play();
+                    }
+                    else
+                    {
+                        if(!_stopFlag)Stop();
+                    }
+                });
+        }
         
         void Start()
         {
-            volume.profile.TryGet(out _vigette);
+            volume.profile.TryGet(out _vignette);
 
-            _vigette.intensity.value = 0.0f;
+            _vignette.intensity.value = 0.0f;
 
             _sequence = DOTween.Sequence()
                 .Append
                 (
                     DOTween.To
                     (
-                        () => _vigette.intensity.value,
-                        (x) => _vigette.intensity.value = x,
+                        () => _vignette.intensity.value,
+                        (x) => _vignette.intensity.value = x,
                         maxIntensity,
                         period * blinkTimeRate
                     ).SetEase(Ease.OutFlash, 2)
@@ -57,7 +79,7 @@ namespace Carry.UISystem.UI.CarryScene
             // DOTween.defaultAutoPlay = AutoPlay.None;
             _sequence.Pause();  // 自動再生を止める
         }
-        
+
         public void Stop()
         {
             _stopFlag = true;
