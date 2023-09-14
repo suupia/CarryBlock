@@ -5,7 +5,7 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
 {
     public class FloorTimerNet : NetworkBehaviour
     {
-        public float FloorLimitTime { get; } = 3f;
+        public float FloorLimitTime { get; } = 60f;
 
         public float FloorRemainingTime { get; set; }
 
