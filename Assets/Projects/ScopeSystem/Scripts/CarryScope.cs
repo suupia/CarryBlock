@@ -1,3 +1,4 @@
+using Carry.CarrySystem.CarryScene.Scripts;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
@@ -14,7 +15,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Carry.CarrySystem.CarryScene.Scripts
+namespace Carry.ScopeSystem.Scripts
 {
     public sealed class CarryScope : LifetimeScope
     {
@@ -64,7 +65,6 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
 
             // UI
-            builder.Register<GameContext>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<FloorTimerNet>();
 
             // Notifier
@@ -77,8 +77,11 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             builder.RegisterComponentInHierarchy<CarryInitializer>();
 
             // View
-            builder.RegisterComponentInHierarchy<CarrySceneView>();
-
+            builder.RegisterComponentInHierarchy<PlayingCanvasUINet>();
+            builder.RegisterComponentInHierarchy<ResultCanvasUINet>();
+            
+            // PostEffect
+            builder.RegisterComponentInHierarchy<VignetteBlinker>();
 
             // Clientのドメインスクリプト
             // builder.Register<ReturnToMainBaseGauge>(Lifetime.Singleton);

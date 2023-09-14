@@ -8,6 +8,7 @@ namespace Carry.CarrySystem.Map.Interfaces
     public interface IMapUpdater
     {
         EntityGridMap GetMap();
+        int Index { get; }
         void InitUpdateMap(MapKey mapKey, int index); // ToDo: Initの方は引数なしかデフォルト引数があったほうがいいかも
         void UpdateMap(MapKey mapKey, int index = 0);
         
