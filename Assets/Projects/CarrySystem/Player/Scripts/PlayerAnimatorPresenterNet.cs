@@ -24,6 +24,7 @@ namespace Carry.CarrySystem.Player.Scripts
             public int PassCount { get; set; }
             public  MovementState MovementState { get; set; }
             [Networked] public bool IsHoldingBlock { get; set; }
+            public bool IsFainted { get; set; }
         }
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
@@ -76,6 +77,15 @@ namespace Carry.CarrySystem.Player.Scripts
                 _animator.SetTrigger("Pass");
                 _passCount = PresentDataRef.PassCount;
                 Debug.Log($"PassCount: {PresentDataRef.PassCount},_passCount: {_passCount}");
+            }
+            if(PresentDataRef.IsFainted)
+            {
+                _animator.SetBool("IsFainted",true);
+                Debug.Log($"IsFainted: {PresentDataRef.IsFainted}");
+            }
+            else
+            {
+                _animator.SetBool("IsFainted",false);
             }
 
             switch (PresentDataRef.MovementState)
@@ -134,6 +144,15 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Dash()
         {
             PresentDataRef.MovementState = MovementState.InDash;
+        }
+        
+        public void Faint()
+        {
+            PresentDataRef.IsFainted = true;
+        }
+        public void Revive()
+        {
+            PresentDataRef.IsFainted = false;
         }
     }
 }
