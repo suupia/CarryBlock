@@ -15,7 +15,7 @@ using UniRx;
 
 namespace Carry.UISystem.UI.CarryScene
 {
-    public class ResultCanvasNet : NetworkBehaviour
+    public class ResultCanvasUINet : NetworkBehaviour
     {
         [SerializeField] TextMeshProUGUI clearedFloorText = null!;
         [SerializeField] GameObject viewGameObject = null!;
