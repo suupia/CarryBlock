@@ -88,11 +88,11 @@ namespace Carry.UISystem.UI.CarryScene
         {
             // サーバー用のドメインの反映
             // scoreText.text = $"Score : {Score} / {_resourceAggregator.QuotaAmount}";
-            var remainingTime = _floorTimerNet.CurrentFloorRemainingTime;
+            var remainingTime = _floorTimerNet.FloorRemainingTime;
             floorNumberText.text = $"{FloorNumber} F";
             floorTimerText.text = $"Time : {Mathf.Floor(remainingTime)}";
 
-            floorTimerImage.fillAmount = remainingTime / _floorTimerNet.CurrentFloorLimitTime;
+            floorTimerImage.fillAmount = remainingTime / _floorTimerNet.FloorLimitTime;
 
             // ローカル用のドメインの反映
             // remainingTimeToReturnText.text = _returnToMainBaseGauge.IsReturnToMainBase
