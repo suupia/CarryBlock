@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.CG.Tsukinowa;
+using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Fusion;
@@ -23,7 +24,16 @@ namespace Carry.CarrySystem.Player.Scripts
         IMapUpdater? _mapUpdater;
         PlayerNearCartHandlerNet _playerNearCartHandler = null!;
         PlayerCharacterHolder _playerCharacterHolder = null!;
-        public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater , PlayerNearCartHandlerNet playerNearCartHandler, PlayerCharacterHolder playerCharacterHolder)
+        FloorTimerNet _floorTimerNet = null!;
+        
+        public void Init(
+            ICharacter character,
+            PlayerColorType colorType,
+            IMapUpdater mapUpdater,
+            PlayerNearCartHandlerNet playerNearCartHandler,
+            PlayerCharacterHolder playerCharacterHolder,
+            FloorTimerNet floorTimerNet
+            )
         {
             Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
             this.Character = character;
@@ -31,6 +41,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _mapUpdater = mapUpdater;
             _playerNearCartHandler = playerNearCartHandler;
             _playerCharacterHolder = playerCharacterHolder;
+            _floorTimerNet = floorTimerNet;
 
             _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
         }
@@ -53,6 +64,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public override void FixedUpdateNetwork()
         {
+            if(_floorTimerNet.IsExpired) return;
             base.FixedUpdateNetwork();
             if (!HasStateAuthority) return;
         }
