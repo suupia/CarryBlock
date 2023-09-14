@@ -22,8 +22,8 @@ namespace Carry.UISystem.UI.CarryScene
         [SerializeField] Button reStartButton = null!;
         [SerializeField] Button titleButton = null!;
         
-
         [Networked] bool ViewActive { get; set; } = false;
+        [Networked] int FloorNumber { get; set; }
         
         bool _viewActiveLocal = false;
 
@@ -40,7 +40,7 @@ namespace Carry.UISystem.UI.CarryScene
                 {
                     viewGameObject.SetActive(true);
                     ViewActive = true;
-                    clearedFloorText.text = $"Cleared Floor : {mapUpdater.Index + 1} F";
+                    FloorNumber = mapUpdater.Index + 1;
                 });
             
             Init();
@@ -74,6 +74,7 @@ namespace Carry.UISystem.UI.CarryScene
             {
                 _viewActiveLocal = ViewActive;
                 viewGameObject.SetActive(ViewActive);
+                clearedFloorText.text = $"Cleared Floor : {FloorNumber} F";
             }
         }
     }
