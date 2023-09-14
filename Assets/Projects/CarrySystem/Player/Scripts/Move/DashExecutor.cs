@@ -16,6 +16,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly float _dashTime = 0.25f;
         readonly float _dashCoolTime = 3f;
         bool _isDashing;
+        DashEffectPresenter _dashEffectPresenter;
         
         CancellationTokenSource? _cancellationTokenSource;
         
@@ -42,7 +43,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             try
             {
-                ChangeFastMove();
+                ChangeDashMove();
                 await UniTask.Delay((int)(_dashTime * 1000), cancellationToken: cancellationToken);
                 ChangeRegularMove();
                 await UniTask.Delay((int)(_dashCoolTime * 1000), cancellationToken: cancellationToken);
@@ -54,17 +55,24 @@ namespace Carry.CarrySystem.Player.Scripts
             }
         }
 
-        void ChangeFastMove()
+        void ChangeDashMove()
         {
             Debug.Log($"Executing Dash");
             _isDashing = true;
             _moveExecutorSwitcher.SwitchToDashMove();
+            _dashEffectPresenter.StartDash();
         }
 
         void ChangeRegularMove()
         {
             Debug.Log($"Finish dashing");
             _moveExecutorSwitcher.SwitchToRegularMove();
+            _dashEffectPresenter.StopDash();
+        }
+        
+        public void SetDashEffectPresenter(DashEffectPresenter presenter)
+        {
+            _dashEffectPresenter = presenter;
         }
     }
 } 

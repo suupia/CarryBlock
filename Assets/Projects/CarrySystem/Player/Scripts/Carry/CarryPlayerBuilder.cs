@@ -72,6 +72,8 @@ namespace Carry.CarrySystem.Player.Scripts
                     networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
+                    networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
+                    
                 });
             var info = playerControllerObj.Info;
             playerControllerObj.GetComponentInChildren<PassRangeNet>().Init(info,LayerMask.GetMask("Player"));
