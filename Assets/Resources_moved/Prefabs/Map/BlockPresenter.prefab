@@ -126,6 +126,10 @@ PrefabInstance:
       propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2478132344785946946, guid: bd9894fa290b604428596cd7d697415b, type: 3}
+      propertyPath: m_TagString
+      value: Block
+      objectReference: {fileID: 0}
     - target: {fileID: 5965080741896850020, guid: bd9894fa290b604428596cd7d697415b, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -173,6 +177,10 @@ PrefabInstance:
     - target: {fileID: 7756840550022308548, guid: bd9894fa290b604428596cd7d697415b, type: 3}
       propertyPath: m_Name
       value: HeavyBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 7756840550022308548, guid: bd9894fa290b604428596cd7d697415b, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd9894fa290b604428596cd7d697415b, type: 3}
@@ -224,6 +232,10 @@ PrefabInstance:
       propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2478132344785946946, guid: 4386fb9410f4bdf4b9d34bb00b99c72a, type: 3}
+      propertyPath: m_TagString
+      value: Block
+      objectReference: {fileID: 0}
     - target: {fileID: 5965080741896850020, guid: 4386fb9410f4bdf4b9d34bb00b99c72a, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -271,6 +283,10 @@ PrefabInstance:
     - target: {fileID: 7756840550022308548, guid: 4386fb9410f4bdf4b9d34bb00b99c72a, type: 3}
       propertyPath: m_Name
       value: BasicBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 7756840550022308548, guid: 4386fb9410f4bdf4b9d34bb00b99c72a, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4386fb9410f4bdf4b9d34bb00b99c72a, type: 3}
@@ -325,6 +341,10 @@ PrefabInstance:
       propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2478132344785946946, guid: ab26ec40c6e3c2f42a39e41dae9ccc5c, type: 3}
+      propertyPath: m_TagString
+      value: CannonBlock
+      objectReference: {fileID: 0}
     - target: {fileID: 5965080741896850020, guid: ab26ec40c6e3c2f42a39e41dae9ccc5c, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -369,9 +389,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7034619722233555081, guid: ab26ec40c6e3c2f42a39e41dae9ccc5c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7756840550022308548, guid: ab26ec40c6e3c2f42a39e41dae9ccc5c, type: 3}
       propertyPath: m_Name
       value: CannonBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 7756840550022308548, guid: ab26ec40c6e3c2f42a39e41dae9ccc5c, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab26ec40c6e3c2f42a39e41dae9ccc5c, type: 3}
@@ -431,6 +459,10 @@ PrefabInstance:
       propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2478132344785946946, guid: 075f71c22e3432849adb99be6082692a, type: 3}
+      propertyPath: m_TagString
+      value: Block
+      objectReference: {fileID: 0}
     - target: {fileID: 5965080741896850020, guid: 075f71c22e3432849adb99be6082692a, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -478,6 +510,10 @@ PrefabInstance:
     - target: {fileID: 7756840550022308548, guid: 075f71c22e3432849adb99be6082692a, type: 3}
       propertyPath: m_Name
       value: DoubleBasicBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 7756840550022308548, guid: 075f71c22e3432849adb99be6082692a, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 075f71c22e3432849adb99be6082692a, type: 3}
@@ -570,6 +606,10 @@ PrefabInstance:
       propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2478132344785946946, guid: 8a269dfac5fd73c41b252add41921923, type: 3}
+      propertyPath: m_TagString
+      value: Block
+      objectReference: {fileID: 0}
     - target: {fileID: 5965080741896850020, guid: 8a269dfac5fd73c41b252add41921923, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -617,6 +657,10 @@ PrefabInstance:
     - target: {fileID: 7756840550022308548, guid: 8a269dfac5fd73c41b252add41921923, type: 3}
       propertyPath: m_Name
       value: UnmovableBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 7756840550022308548, guid: 8a269dfac5fd73c41b252add41921923, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a269dfac5fd73c41b252add41921923, type: 3}
@@ -729,6 +773,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DoubleUnmovableBlock
       objectReference: {fileID: 0}
+    - target: {fileID: 2740271205244670574, guid: b492ede40f0570743856162625e709e5, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 2901051109668647212, guid: b492ede40f0570743856162625e709e5, type: 3}
       propertyPath: Flags
       value: 3073
@@ -740,6 +788,10 @@ PrefabInstance:
     - target: {fileID: 2901051109668647212, guid: b492ede40f0570743856162625e709e5, type: 3}
       propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3805145071249615381, guid: b492ede40f0570743856162625e709e5, type: 3}
+      propertyPath: m_TagString
+      value: Block
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b492ede40f0570743856162625e709e5, type: 3}
@@ -795,6 +847,10 @@ PrefabInstance:
       propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2478132344785946946, guid: f5d50925b3bc0124399dff464fbbbd5f, type: 3}
+      propertyPath: m_TagString
+      value: Block
+      objectReference: {fileID: 0}
     - target: {fileID: 5965080741896850020, guid: f5d50925b3bc0124399dff464fbbbd5f, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -842,6 +898,10 @@ PrefabInstance:
     - target: {fileID: 7756840550022308548, guid: f5d50925b3bc0124399dff464fbbbd5f, type: 3}
       propertyPath: m_Name
       value: DoubleHeavyBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 7756840550022308548, guid: f5d50925b3bc0124399dff464fbbbd5f, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5d50925b3bc0124399dff464fbbbd5f, type: 3}
@@ -907,6 +967,10 @@ PrefabInstance:
       propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2478132344785946946, guid: f7edde36dd302cb489b59cc432881deb, type: 3}
+      propertyPath: m_TagString
+      value: Block
+      objectReference: {fileID: 0}
     - target: {fileID: 5965080741896850020, guid: f7edde36dd302cb489b59cc432881deb, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -954,6 +1018,10 @@ PrefabInstance:
     - target: {fileID: 7756840550022308548, guid: f7edde36dd302cb489b59cc432881deb, type: 3}
       propertyPath: m_Name
       value: FragileBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 7756840550022308548, guid: f7edde36dd302cb489b59cc432881deb, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7edde36dd302cb489b59cc432881deb, type: 3}

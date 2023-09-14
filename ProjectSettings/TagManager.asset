@@ -16,7 +16,9 @@ TagManager:
   - EnemySpawnerTransform
   - BossSpawnerTransform
   - Cart
+  - Block
   - Wall
+  - CannonBlock
   layers:
   - Default
   - TransparentFX
