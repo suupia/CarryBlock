@@ -78,7 +78,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.RegisterComponentInHierarchy<CarryInitializer>();
 
             // View
-            builder.RegisterComponentInHierarchy<CarrySceneView>();
+            builder.RegisterComponentInHierarchy<PlayingCanvasUINet>();
             builder.RegisterComponentInHierarchy<ResultCanvasUINet>();
 
             // Clientのドメインスクリプト

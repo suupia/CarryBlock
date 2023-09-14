@@ -47,9 +47,7 @@ namespace Carry.UISystem.UI.CarryScene
                 case GameContext.GameState.Playing:
                     FixedUpdateNetwork_Playing();
                     break;
-                case GameContext.GameState.Result:
-                    FixedUpdateNetwork_Result();
-                    break;
+
             }
         }
 
@@ -62,9 +60,7 @@ namespace Carry.UISystem.UI.CarryScene
                 case GameContext.GameState.Playing:
                     Render_Playing();
                     break;
-                case GameContext.GameState.Result:
-                    Render_Result();
-                    break;
+
             }
         }
 
@@ -76,12 +72,6 @@ namespace Carry.UISystem.UI.CarryScene
             // FloorTimerValue = Mathf.Floor(_floorTimer.GetRemainingTime(Runner));
             
             FloorNumber = _mapUpdater.Index + 1;
-        }
-
-        void FixedUpdateNetwork_Result()
-        {
-            // Result = _resourceAggregator.IsSuccess() ? "Success" : "Failure";
-            Result = "Failure"; // とりあえず失敗にしておく
         }
 
         void Render_Playing()
@@ -100,9 +90,6 @@ namespace Carry.UISystem.UI.CarryScene
             //     : "";
         }
 
-        void Render_Result()
-        {
-            resultText.text = $"Result : {Result}";
-        }
+
     }
 }
