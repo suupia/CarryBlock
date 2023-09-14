@@ -10,7 +10,7 @@ namespace Carry.CarrySystem.Block.Interfaces
         int MaxPlacedBlockCount { get; }
         bool CanPickUp();
         void PickUp(ICharacter character);
-        bool CanPutDown(IList<ICarriableBlock> blocks);
+        bool CanPutDown(IList<ICarriableBlock> placedBlocks);
         void PutDown(ICharacter character);
     }
 }

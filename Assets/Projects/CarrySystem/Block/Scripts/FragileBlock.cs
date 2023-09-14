@@ -43,17 +43,17 @@ namespace Carry.CarrySystem.Block.Scripts
             var _ = BreakBlock(character);
         }
 
-        public bool CanPutDown(IList<ICarriableBlock> blocks)
+        public bool CanPutDown(IList<ICarriableBlock> placedBlocks)
         {
-            var diffList = blocks.Select(x => x.GetType() != this.GetType());
+            var diffList = placedBlocks.Select(x => x.GetType() != this.GetType());
             Debug.Log($"forward different block count: {diffList.Count()}, list : {string.Join(",", diffList)}");
-            if (blocks.Count(x => x.GetType() != this.GetType()) > 0)
+            if (placedBlocks.Count(x => x.GetType() != this.GetType()) > 0)
             {
                 Debug.Log($"FragileBlockと違う種類のBlockがあるため置けません");
                 return false;
             }
 
-            if (blocks.Count >= MaxPlacedBlockCount) return false; // 現在持ち上げているBlockの設置上限数以上ならfalse
+            if (placedBlocks.Count >= MaxPlacedBlockCount) return false; // 現在持ち上げているBlockの設置上限数以上ならfalse
 
             return true;
         }
