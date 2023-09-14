@@ -23,4 +23,4 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
             IsExpired = TickTimer.ExpiredOrNotRunning(Runner);
         }
     }
-}
+} 

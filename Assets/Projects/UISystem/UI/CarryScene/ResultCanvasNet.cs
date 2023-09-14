@@ -7,6 +7,7 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.UI;
 using Projects.BattleSystem.Scripts;
+using TMPro;
 using UnityEngine.Serialization;
 using VContainer;
 using UniRx;
@@ -16,11 +17,11 @@ namespace Carry.UISystem.UI.CarryScene
 {
     public class ResultCanvasNet : NetworkBehaviour
     {
+        [SerializeField] TextMeshProUGUI clearedFloorText = null!;
         [SerializeField] GameObject viewGameObject = null!;
         [SerializeField] Button reStartButton = null!;
         [SerializeField] Button titleButton = null!;
         
-        FloorTimerNet _floorTimerNet;
 
         [Networked] bool ViewActive { get; set; } = false;
         
@@ -28,17 +29,18 @@ namespace Carry.UISystem.UI.CarryScene
 
         [Inject]
         public void Construct(
-            FloorTimerNet floorTimerNet
+            FloorTimerNet floorTimerNet,
+            IMapUpdater mapUpdater
         )
         {
-            _floorTimerNet = floorTimerNet;
 
-            this.ObserveEveryValueChanged(x => x._floorTimerNet.IsExpired)
+            this.ObserveEveryValueChanged(_ => floorTimerNet.IsExpired)
                 .Where(isExpired => isExpired)
                 .Subscribe(_ =>
                 {
                     viewGameObject.SetActive(true);
                     ViewActive = true;
+                    clearedFloorText.text = $"Cleared Floor : {mapUpdater.Index + 1} F";
                 });
             
             Init();
