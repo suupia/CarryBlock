@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -9,7 +11,7 @@ using UnityEngine.VFX;
 namespace Carry.CarrySystem.Player.Scripts
 {
     [RequireComponent(typeof(VisualEffect))]
-    public class DashEffectSetter : NetworkBehaviour
+    public class DashEffectPresenter : NetworkBehaviour
     {
         public  struct DashEffectData : INetworkStruct
         {
@@ -19,25 +21,19 @@ namespace Carry.CarrySystem.Player.Scripts
         
         bool _isDashingLocal;
         VisualEffect _dashEffect;
-        void Start()
+        public void Init(ICharacter character)
+        {
+            character.SetDashEffectPresenter(this);
+            
+        }
+
+        void Awake()
         {
             _dashEffect = GetComponent<VisualEffect>();
             _dashEffect.SendEvent("Stop");
         }
         
-        // void Update()
-        // {
-        //     if (Input.GetKeyDown(KeyCode.A))
-        //     {
-        //         _dashEffect.SendEvent("Start");
-        //     }
-        //
-        //     if (Input.GetKeyUp(KeyCode.A))
-        //     {
-        //         _dashEffect.SendEvent("Stop");
-        //     }
-        // }
-    
+
         public override void Render()
         {
             if (_isDashingLocal != Data.IsDashing)
