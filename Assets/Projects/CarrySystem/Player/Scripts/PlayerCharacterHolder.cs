@@ -12,9 +12,10 @@ namespace Carry.CarrySystem.Player.Scripts
     /// </summary>
     public class PlayerCharacterHolder
     {
+        public  int PlayerCount => _playerIndexDictionary.Count;
         readonly Dictionary<PlayerRef, PlayerColorType> _colorDictionary = new Dictionary<PlayerRef, PlayerColorType>();
         readonly Dictionary<PlayerRef, int> _playerIndexDictionary = new Dictionary<PlayerRef, int>();
-
+        
         public PlayerColorType GetPlayerColorType(PlayerRef playerRef)
         {
             if (_colorDictionary.TryGetValue(playerRef, out PlayerColorType colorType))
@@ -37,12 +38,17 @@ namespace Carry.CarrySystem.Player.Scripts
                 // Debug.Log($"GetPlayerIndex playerRef:{playerRef} is {index+1}P");
                 return index;
             }
-            return 0;
+            else
+            {
+                Debug.LogError($"playerRef:{playerRef} is not registered in PlayerIndexDictionary");
+                return -1;
+            }
         }
         public void SetIndex(PlayerRef playerRef)
         {
-             Debug.Log($"Registering playerRef:{playerRef} as {_playerIndexDictionary.Count+1}P");
-            _playerIndexDictionary.Add(playerRef, _playerIndexDictionary.Count+1);
+            Debug.Log($"Registering playerRef:{playerRef} as {_playerIndexDictionary.Count+1}P");
+            _playerIndexDictionary[playerRef] = _playerIndexDictionary.Count+1;
+            // Debug.Log($"PlayerIndexDictionary.Count:{_playerIndexDictionary.Count}");
         }
     }
 }
