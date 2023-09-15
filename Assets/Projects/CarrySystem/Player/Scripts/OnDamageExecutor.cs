@@ -15,16 +15,21 @@ namespace Carry.CarrySystem.Player.Scripts
     public class OnDamageExecutor : IOnDamageExecutor
     {
         public bool IsFainted { get; private set; }
+        public float FaintedSeconds => CalcFaintedTime();
         PlayerInfo _info = null!;
-        readonly float _faintSeconds = 2.0f;  // ほぼ無限の気絶時間という感じ
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
+        readonly PlayerCharacterHolder _playerCharacterHolder;
         CancellationTokenSource? _cancellationTokenSource;
         
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
-        public OnDamageExecutor(IMoveExecutorSwitcher moveExecutorSwitcher)
+        public OnDamageExecutor(
+            IMoveExecutorSwitcher moveExecutorSwitcher,
+            PlayerCharacterHolder playerCharacterHolder
+            )
         {
             _moveExecutorSwitcher = moveExecutorSwitcher;
+            _playerCharacterHolder = playerCharacterHolder;
         }
 
         public void Setup(PlayerInfo info)
@@ -55,7 +60,7 @@ namespace Carry.CarrySystem.Player.Scripts
             try
             {
                 Faint();
-                await UniTask.Delay((int)(_faintSeconds * 1000), cancellationToken: cancellationToken);
+                await UniTask.Delay((int)(FaintedSeconds * 1000), cancellationToken: cancellationToken);
                 Revive();
             }
             catch (OperationCanceledException)
@@ -81,6 +86,26 @@ namespace Carry.CarrySystem.Player.Scripts
             IsFainted = false;
             _moveExecutorSwitcher.SwitchToRegularMove();
             _playerAnimatorPresenter?.Revive();
+        }
+        
+        float CalcFaintedTime()
+        {
+            float faintedTime = _playerCharacterHolder.PlayerCount switch
+            {
+                1 => 2,
+                2 => 3,
+                3 => 3.5f,
+                4 => 4f,
+                _ =>  InvalidPlayerCount(),
+            };
+            
+            return faintedTime;
+            
+            float InvalidPlayerCount()
+            {
+                Debug.LogError($"PlayerCount : {_playerCharacterHolder.PlayerCount} is invalid.");
+                return 5f;
+            }
         }
         
         //Animator

@@ -10,9 +10,9 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
 {
     public class FloorTimerNet : NetworkBehaviour
     {
-        public float FloorLimitTime =>  CalcFloorLimitTime();
-        public float FloorRemainingTime { get; set; }
-        public float FloorRemainingTimeRatio => FloorRemainingTime / FloorLimitTime;
+        public float FloorLimitSeconds =>  CalcFloorLimitTime();
+        public float FloorRemainingSeconds { get; set; }
+        public float FloorRemainingTimeRatio => FloorRemainingSeconds / FloorLimitSeconds;
 
         public bool IsExpired { get; set; } 
         [Networked] TickTimer TickTimer { get; set; }
@@ -27,13 +27,13 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
 
         public void StartTimer()
         {
-            TickTimer = TickTimer.CreateFromSeconds(Runner, FloorLimitTime);
+            TickTimer = TickTimer.CreateFromSeconds(Runner, FloorLimitSeconds);
             Debug.Log($"PlayerCount:{_playerCharacterHolder.PlayerCount}"); 
         }
 
         public override void FixedUpdateNetwork()
         {
-            FloorRemainingTime = TickTimer.RemainingTime(Runner).GetValueOrDefault();
+            FloorRemainingSeconds = TickTimer.RemainingTime(Runner).GetValueOrDefault();
             IsExpired = TickTimer.ExpiredOrNotRunning(Runner);
         }
 

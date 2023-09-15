@@ -44,11 +44,11 @@ namespace Carry.UISystem.UI.CarryScene
 
         public override void Render()
         {
-            var remainingTime = _floorTimerNet.FloorRemainingTime;
+            var remainingTime = _floorTimerNet.FloorRemainingSeconds;
             floorNumberText.text = $"{FloorNumber} F";
             floorTimerText.text = $"Time : {Mathf.Floor(remainingTime)}";
 
-            floorTimerImage.fillAmount = remainingTime / _floorTimerNet.FloorLimitTime;
+            floorTimerImage.fillAmount = remainingTime / _floorTimerNet.FloorLimitSeconds;
         }
 
 
