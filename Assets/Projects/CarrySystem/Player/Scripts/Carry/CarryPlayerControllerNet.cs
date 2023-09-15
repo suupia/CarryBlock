@@ -64,9 +64,9 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public override void FixedUpdateNetwork()
         {
+            if (!HasStateAuthority) return;
             if(_floorTimerNet.IsExpired) return;
             base.FixedUpdateNetwork();
-            if (!HasStateAuthority) return;
         }
         
         protected override void GetInputProcess(NetworkInputData input)
