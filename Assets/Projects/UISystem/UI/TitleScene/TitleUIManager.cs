@@ -49,13 +49,13 @@ public class TitleUIManager : MonoBehaviour
         joinPanel.SetActive(false);
 
 
-        soloPlayButton.interactable = false;
+        soloPlayButton.Interactable = false;
 
         multiPlayButton.AddListener(() => joinPanel.SetActive(true));
 
-        optionButton.interactable = false;
+        optionButton.Interactable = false;
 
-        musicRoomButton.interactable = false;
+        musicRoomButton.Interactable = false;
 
         quitButton.AddListener(Quit);
 
