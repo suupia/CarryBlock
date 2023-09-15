@@ -60,14 +60,14 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log($"Executing Dash");
             _isDashing = true;
             _moveExecutorSwitcher.SwitchToDashMove();
-            _dashEffectPresenter.StartDash();
+            if(_dashEffectPresenter != null) _dashEffectPresenter.StartDash();
         }
 
         void ChangeRegularMove()
         {
             Debug.Log($"Finish dashing");
             _moveExecutorSwitcher.SwitchToRegularMove();
-            _dashEffectPresenter.StopDash();
+            if(_dashEffectPresenter != null) _dashEffectPresenter.StopDash();
         }
         
         public void SetDashEffectPresenter(DashEffectPresenter presenter)
