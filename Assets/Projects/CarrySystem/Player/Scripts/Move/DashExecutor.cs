@@ -51,7 +51,7 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 ChangeDashMove();
                 await UniTask.Delay((int)(_dashTime * 1000), cancellationToken: cancellationToken);
-                ChangeRegularMove();
+                ChangeBeforeMove();
                 await UniTask.Delay((int)(_dashCoolTime * 1000), cancellationToken: cancellationToken);
                 _isDashing = false;
             }
@@ -69,10 +69,10 @@ namespace Carry.CarrySystem.Player.Scripts
             if(_dashEffectPresenter != null) _dashEffectPresenter.StartDash();
         }
 
-        void ChangeRegularMove()
+        void ChangeBeforeMove()
         {
             Debug.Log($"Finish dashing");
-            _moveExecutorSwitcher.SwitchToRegularMove();
+            _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
             if(_dashEffectPresenter != null) _dashEffectPresenter.StopDash();
         }
         

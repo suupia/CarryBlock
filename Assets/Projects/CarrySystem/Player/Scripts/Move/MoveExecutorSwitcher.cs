@@ -42,32 +42,41 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void SwitchToBeforeMoveExecutor()
         {
+            HoldBeforeMove();
             _currentMoveExecutor =  _beforeMoveExecutor;
         }
         
         public void SwitchToRegularMove()
         {
-            _beforeMoveExecutor = _currentMoveExecutor;
+            HoldBeforeMove();
             _currentMoveExecutor =  _regularMoveExecutor;
         }
         
         public void SwitchToDashMove()
         {
-            _beforeMoveExecutor = _currentMoveExecutor;
+            HoldBeforeMove();
             _currentMoveExecutor =  _dashMoveExecutor;
         }
         public void SwitchToSlowMove()
         {
-            _beforeMoveExecutor = _currentMoveExecutor;
+            HoldBeforeMove();
             _currentMoveExecutor =  _slowMoveExecutor;
         }
         
         public void SwitchToFaintedMove()
-        {            
-            _beforeMoveExecutor = _currentMoveExecutor;
+        {           
+            HoldBeforeMove();
             _currentMoveExecutor =  _faintedMoveExecutor;
         }
         
+        void HoldBeforeMove()
+        {
+            if (_currentMoveExecutor is CorrectlyStopMoveExecutor ||
+                _currentMoveExecutor is SlowMoveExecutor)
+            {
+                _beforeMoveExecutor = _currentMoveExecutor;
+            }
+        }
                 
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
