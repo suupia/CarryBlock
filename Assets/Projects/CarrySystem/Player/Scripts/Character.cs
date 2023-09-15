@@ -56,7 +56,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _moveExecutorSwitcher.Move(direction);
         }
-
+        public void SwitchToBeforeMoveExecutor() => _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
         public void SwitchToRegularMove() => _moveExecutorSwitcher.SwitchToRegularMove();
         public void SwitchToDashMove() => _moveExecutorSwitcher.SwitchToDashMove();
         public void SwitchToSlowMove() => _moveExecutorSwitcher.SwitchToSlowMove();

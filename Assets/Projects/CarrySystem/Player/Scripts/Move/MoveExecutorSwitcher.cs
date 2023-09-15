@@ -13,6 +13,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IMoveExecutor _slowMoveExecutor;
         readonly IMoveExecutor _dashMoveExecutor;
         readonly IMoveExecutor _faintedMoveExecutor;
+        IMoveExecutor _beforeMoveExecutor;
         IMoveExecutor _currentMoveExecutor;
         
         public MoveExecutorSwitcher(
@@ -23,6 +24,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _dashMoveExecutor = new DashMoveExecutor();
             _faintedMoveExecutor = new FaintedMoveExecutor();
             _currentMoveExecutor = _regularMoveExecutor;
+            _beforeMoveExecutor = _regularMoveExecutor;
         }
 
         public void Setup(PlayerInfo info)
@@ -38,22 +40,31 @@ namespace Carry.CarrySystem.Player.Scripts
             _currentMoveExecutor.Move(input);
         }
         
+        public void SwitchToBeforeMoveExecutor()
+        {
+            _currentMoveExecutor =  _beforeMoveExecutor;
+        }
+        
         public void SwitchToRegularMove()
         {
+            _beforeMoveExecutor = _currentMoveExecutor;
             _currentMoveExecutor =  _regularMoveExecutor;
         }
         
         public void SwitchToDashMove()
         {
+            _beforeMoveExecutor = _currentMoveExecutor;
             _currentMoveExecutor =  _dashMoveExecutor;
         }
         public void SwitchToSlowMove()
         {
+            _beforeMoveExecutor = _currentMoveExecutor;
             _currentMoveExecutor =  _slowMoveExecutor;
         }
         
         public void SwitchToFaintedMove()
-        {
+        {            
+            _beforeMoveExecutor = _currentMoveExecutor;
             _currentMoveExecutor =  _faintedMoveExecutor;
         }
         

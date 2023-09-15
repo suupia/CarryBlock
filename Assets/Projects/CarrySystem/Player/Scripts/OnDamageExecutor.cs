@@ -19,9 +19,10 @@ namespace Carry.CarrySystem.Player.Scripts
         PlayerInfo _info = null!;
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         readonly PlayerCharacterHolder _playerCharacterHolder;
-        CancellationTokenSource? _cancellationTokenSource;
         
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
+        
+        CancellationTokenSource? _cancellationTokenSource;
 
         public OnDamageExecutor(
             IMoveExecutorSwitcher moveExecutorSwitcher,
@@ -84,7 +85,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"気絶から復帰する");
             IsFainted = false;
-            _moveExecutorSwitcher.SwitchToRegularMove();
+            _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
             _playerAnimatorPresenter?.Revive();
         }
         
