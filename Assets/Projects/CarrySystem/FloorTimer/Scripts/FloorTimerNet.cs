@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Player.Scripts;
+﻿using System;
+using Carry.CarrySystem.Player.Scripts;
 using Fusion;
 using UnityEngine;
 using VContainer;
@@ -38,16 +39,22 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
 
         float CalcFloorLimitTime()
         {
-            var limitTime = _playerCharacterHolder.PlayerCount switch
+            float limitTime = _playerCharacterHolder.PlayerCount switch
             {
                 1 => 120,
                 2 => 90,
                 3 => 70,
                 4 => 60,
-                _ => 600  // 適当
+                _ =>  InvalidPlayerCount(),
             };
-
+            
             return limitTime;
+            
+            float InvalidPlayerCount()
+            {
+                Debug.LogError($"PlayerCount : {_playerCharacterHolder.PlayerCount} is invalid.");
+                return 60f;
+            }
         }
     }
 } 
