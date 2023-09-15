@@ -11,7 +11,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public  IMoveExecutor CurrentMoveExecutor => _currentMoveExecutor;
         readonly IMoveExecutor _regularMoveExecutor;
         readonly IMoveExecutor _slowMoveExecutor;
-        readonly IMoveExecutor _fastMoveExecutor;
+        readonly IMoveExecutor _dashMoveExecutor;
         readonly IMoveExecutor _faintedMoveExecutor;
         IMoveExecutor _currentMoveExecutor;
         
@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _regularMoveExecutor = new CorrectlyStopMoveExecutor();
             _slowMoveExecutor = new SlowMoveExecutor();
-            _fastMoveExecutor = new FastMoveExecutor();
+            _dashMoveExecutor = new DashMoveExecutor();
             _faintedMoveExecutor = new FaintedMoveExecutor();
             _currentMoveExecutor = _regularMoveExecutor;
         }
@@ -29,7 +29,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _regularMoveExecutor.Setup(info);
             _slowMoveExecutor.Setup(info);
-            _faintedMoveExecutor.Setup(info);
+            _dashMoveExecutor.Setup(info);
             _faintedMoveExecutor.Setup(info);
         }
         
@@ -43,9 +43,9 @@ namespace Carry.CarrySystem.Player.Scripts
             _currentMoveExecutor =  _regularMoveExecutor;
         }
         
-        public void SwitchToFastMove()
+        public void SwitchToDashMove()
         {
-            _currentMoveExecutor =  _fastMoveExecutor;
+            _currentMoveExecutor =  _dashMoveExecutor;
         }
         public void SwitchToSlowMove()
         {
@@ -63,7 +63,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _regularMoveExecutor.SetPlayerAnimatorPresenter(presenter);
             _slowMoveExecutor.SetPlayerAnimatorPresenter(presenter);
-            _fastMoveExecutor.SetPlayerAnimatorPresenter(presenter);
+            _dashMoveExecutor.SetPlayerAnimatorPresenter(presenter);
             _faintedMoveExecutor.SetPlayerAnimatorPresenter(presenter);
         }
     }

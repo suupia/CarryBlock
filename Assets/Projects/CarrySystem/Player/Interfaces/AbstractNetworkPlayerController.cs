@@ -64,7 +64,6 @@ namespace Carry.CarrySystem.Player.Interfaces
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
                 {
                     Character.Dash();
-
                 }
 
 
