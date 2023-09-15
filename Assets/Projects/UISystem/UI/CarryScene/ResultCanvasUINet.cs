@@ -44,7 +44,6 @@ namespace Carry.UISystem.UI.CarryScene
                     FloorNumber = mapUpdater.Index + 1;
                 });
             
-            Init();
         }
 
         void Start()
@@ -66,9 +65,14 @@ namespace Carry.UISystem.UI.CarryScene
                });
         }
         
-        void Init()
+        public override void Spawned()
         {
-
+            if (!HasStateAuthority)
+            {
+                // show button only for host player
+                reStartButton.gameObject.SetActive(false);
+                titleButton.gameObject.SetActive(false);
+            }
         }
         
         public override void Render()
