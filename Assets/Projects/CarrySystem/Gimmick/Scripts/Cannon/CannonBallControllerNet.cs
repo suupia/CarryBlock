@@ -62,6 +62,28 @@ namespace Carry.CarrySystem.Gimmick.Scripts
                character.OnDamage();
                Runner.Despawn(Object);
            }
+
+           if (other.CompareTag("Wall"))
+           {
+               Runner.Despawn(Object);
+           }
+           
+           if (other.CompareTag("Block"))
+           {
+               Runner.Despawn(Object);
+           }
+           
+           if (other.CompareTag("CannonBlock"))
+           {
+               //大砲の弾が出現した瞬間に自分の大砲に衝突して自壊するのを阻止して
+               //かつ他の大砲に衝突したときは消滅する
+               float _cannonBallBrokenTime = 0.04f;
+               if (_timer > _cannonBallBrokenTime)
+               {
+                   Runner.Despawn(Object);
+               }
+              
+           }
        }
        
        

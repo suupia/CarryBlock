@@ -7,6 +7,7 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.UI;
 using Projects.BattleSystem.Scripts;
+using Projects.UISystem.UI;
 using TMPro;
 using UnityEngine.Serialization;
 using VContainer;
@@ -19,8 +20,8 @@ namespace Carry.UISystem.UI.CarryScene
     {
         [SerializeField] TextMeshProUGUI clearedFloorText = null!;
         [SerializeField] GameObject viewGameObject = null!;
-        [SerializeField] Button reStartButton = null!;
-        [SerializeField] Button titleButton = null!;
+        [SerializeField] CustomButton reStartButton = null!;
+        [SerializeField] CustomButton titleButton = null!;
         
         [Networked] bool ViewActive { get; set; } = false;
         [Networked] int FloorNumber { get; set; }
@@ -43,29 +44,35 @@ namespace Carry.UISystem.UI.CarryScene
                     FloorNumber = mapUpdater.Index + 1;
                 });
             
-            Init();
         }
 
         void Start()
         {
                viewGameObject.SetActive(false);
+               
+                           
+               reStartButton.AddListener(() =>
+               {
+                   Debug.Log("ReStartButton Clicked");
+                   SceneTransition.TransitioningScene(Runner, SceneName.CarryScene);
+               });
+            
+               titleButton.AddListener(() =>
+               {
+                   Debug.Log("QuitButton Clicked");
+                   SceneTransition.TransitioningScene(Runner, SceneName.TitleScene);
+
+               });
         }
         
-        void Init()
+        public override void Spawned()
         {
-            
-            reStartButton.onClick.AddListener(() =>
+            if (!HasStateAuthority)
             {
-                Debug.Log("ReStartButton Clicked");
-                SceneTransition.TransitioningScene(Runner, SceneName.CarryScene);
-            });
-            
-            titleButton.onClick.AddListener(() =>
-            {
-                Debug.Log("QuitButton Clicked");
-                SceneTransition.TransitioningScene(Runner, SceneName.TitleScene);
-
-            });
+                // show button only for host player
+                reStartButton.gameObject.SetActive(false);
+                titleButton.gameObject.SetActive(false);
+            }
         }
         
         public override void Render()

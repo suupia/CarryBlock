@@ -90,8 +90,8 @@ MonoBehaviour:
   _interpolationDataSource: 0
   clearedFloorText: {fileID: 2873552137142498100}
   viewGameObject: {fileID: 1571858829925824183}
-  reStartButton: {fileID: 6538170491054402448}
-  titleButton: {fileID: 7947263651262181620}
+  reStartButton: {fileID: 3304682126900177904}
+  titleButton: {fileID: 8672410730924446373}
 --- !u!114 &107287300035162386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -717,6 +717,7 @@ GameObject:
   - component: {fileID: 6538170491054402462}
   - component: {fileID: 6538170491054402463}
   - component: {fileID: 6538170491054402448}
+  - component: {fileID: 3304682126900177904}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -827,6 +828,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3304682126900177904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6538170491054402449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a9d377266014ab98bfdf3220abc29c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSound: {fileID: 8300000, guid: 8b882210137097748ae360d7c9cc1092, type: 3}
 --- !u!1 &7947263651262181621
 GameObject:
   m_ObjectHideFlags: 0
@@ -839,6 +853,7 @@ GameObject:
   - component: {fileID: 7947263651262181626}
   - component: {fileID: 7947263651262181627}
   - component: {fileID: 7947263651262181620}
+  - component: {fileID: 8672410730924446373}
   m_Layer: 5
   m_Name: Button_1
   m_TagString: Untagged
@@ -949,6 +964,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8672410730924446373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7947263651262181621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a9d377266014ab98bfdf3220abc29c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSound: {fileID: 8300000, guid: 8b882210137097748ae360d7c9cc1092, type: 3}
 --- !u!1 &7947263651633590058
 GameObject:
   m_ObjectHideFlags: 0
