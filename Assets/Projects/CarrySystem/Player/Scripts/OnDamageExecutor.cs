@@ -16,7 +16,7 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         public bool IsFainted { get; private set; }
         PlayerInfo _info = null!;
-        readonly float _faintSeconds = 60.0f;  // ほぼ無限の気絶時間という感じ
+        readonly float _faintSeconds = 2.0f;  // ほぼ無限の気絶時間という感じ
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         CancellationTokenSource? _cancellationTokenSource;
         
