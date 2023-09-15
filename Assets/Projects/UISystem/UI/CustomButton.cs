@@ -22,7 +22,13 @@ namespace Projects.UISystem.UI
             // audioSourceを取得せずに、 Playのときに　 SoundManager.Instance.Play(clickSound);　という処理にしてもよいかも
         }
         
-        public void AddListenerWithSound(UnityAction action)
+        public bool interactable
+        {
+            get => _button.interactable;
+            set => _button.interactable = value;
+        }
+        
+        public void AddListener(UnityAction action)
         {
             _button.onClick.AddListener(() =>
             {

@@ -1,5 +1,6 @@
 using Fusion;
 using Projects.BattleSystem.TitleScene.Scripts;
+using Projects.UISystem.UI;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -12,19 +13,19 @@ using Assert = UnityEngine.Assertions.Assert;
 /// </summary>
 public class TitleUIManager : MonoBehaviour
 {
-    [Header("Title")] [SerializeField] Button soloPlayButton;
+    [Header("Title")] [SerializeField] CustomButton soloPlayButton;
 
-    [SerializeField] Button multiPlayButton;
-    [SerializeField] Button optionButton;
-    [SerializeField] Button musicRoomButton;
-    [SerializeField] Button quitButton;
+    [SerializeField] CustomButton multiPlayButton;
+    [SerializeField] CustomButton optionButton;
+    [SerializeField] CustomButton musicRoomButton;
+    [SerializeField] CustomButton quitButton;
 
 
     [Header("JoinPanel")] [SerializeField] GameObject joinPanel;
-    [SerializeField] Button joinAsHostButton;
-    [SerializeField] Button joinAsClientButton;
+    [SerializeField] CustomButton joinAsHostButton;
+    [SerializeField] CustomButton joinAsClientButton;
     [SerializeField] TMP_InputField roomNameInputField;
-    [SerializeField] Button backButton;
+    [SerializeField] CustomButton backButton;
 
     string RoomName => roomNameInputField.text;
 
@@ -39,10 +40,10 @@ public class TitleUIManager : MonoBehaviour
         Assert.IsNotNull(titleInitializer, "TitleInitializerをシーンに配置してください");
 
 
-        joinAsClientButton.onClick.AddListener(() => titleInitializer.StartGame(RoomName, GameMode.Client));
+        joinAsClientButton.AddListener(() => titleInitializer.StartGame(RoomName, GameMode.Client));
         //GameMode.Hostとして扱うかは未定。仮でAutoHostOrClientに設定
         //もし、GameMode.Hostかつ同じルーム名で始めた場合はStartGameExceptionがthrowされる
-        joinAsHostButton.onClick.AddListener(() => titleInitializer.StartGame(RoomName, GameMode.AutoHostOrClient));
+        joinAsHostButton.AddListener(() => titleInitializer.StartGame(RoomName, GameMode.AutoHostOrClient));
 
 
         joinPanel.SetActive(false);
@@ -50,15 +51,15 @@ public class TitleUIManager : MonoBehaviour
 
         soloPlayButton.interactable = false;
 
-        multiPlayButton.onClick.AddListener(() => joinPanel.SetActive(true));
+        multiPlayButton.AddListener(() => joinPanel.SetActive(true));
 
         optionButton.interactable = false;
 
         musicRoomButton.interactable = false;
 
-        quitButton.onClick.AddListener(Quit);
+        quitButton.AddListener(Quit);
 
-        backButton.onClick.AddListener(() => joinPanel.SetActive(false));
+        backButton.AddListener(() => joinPanel.SetActive(false));
     }
 
     void Quit()
