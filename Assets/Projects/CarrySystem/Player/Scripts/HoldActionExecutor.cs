@@ -35,7 +35,7 @@ namespace Carry.CarrySystem.Player.Scripts
         IDisposable? _searchBlockDisposable;
 
         IBlockMonoDelegate? _searchedBlockMonoDelegate;
-        IList<ICarriableBlock> _searchedBlocks = new List<ICarriableBlock>();
+        IList<IBlock > _searchedBlocks = new List<IBlock>();
 
         AidKitRangeNet? _aidKitRangeNet;
 
@@ -97,8 +97,16 @@ namespace Carry.CarrySystem.Player.Scripts
                 // マップの内部かどうかを判定
                 if(!_map.IsInDataRangeArea(forwardGridPos))return;
                 
-                Debug.Log($"CanPutDown : {_holdingObjectContainer.CanPutDown(_searchedBlocks)}");
-                if (_holdingObjectContainer.CanPutDown(_searchedBlocks))
+                // if there is a non carriable block in front of a player, do nothing
+                if (_searchedBlocks.Any(x => !(x is ICarriableBlock)))
+                {
+                    Debug.Log($"There is a non carriable block in front of a player");
+                    return;
+                }
+                var carriableBlocks = _searchedBlocks.OfType<ICarriableBlock>().ToList();
+                
+                Debug.Log($"CanPutDown : {_holdingObjectContainer.CanPutDown(carriableBlocks)}");
+                if (_holdingObjectContainer.CanPutDown(carriableBlocks))
                 {
                     var block = _holdingObjectContainer.PopBlock();
                     if (block == null)
@@ -231,14 +239,15 @@ namespace Carry.CarrySystem.Player.Scripts
             // Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
 
             // _searchedBlockを更新
-            _searchedBlocks = blockMonoDelegate.Blocks.OfType<ICarriableBlock>().ToList();
+            _searchedBlocks = blockMonoDelegate.Blocks.OfType<IBlock>().ToList();
 
             // ハイライトの処理
             var block = blockMonoDelegate?.Block;
             if( block is not ICarriableBlock carriableBlock) return;
             if (_holdingObjectContainer.IsHoldingBlock)
             {
-                if (!carriableBlock.CanPutDown(_searchedBlocks)) return;
+                var carriableBlocks = _searchedBlocks.OfType<ICarriableBlock>().ToList();
+                if (!carriableBlock.CanPutDown(carriableBlocks)) return;
             }
             else
             {
