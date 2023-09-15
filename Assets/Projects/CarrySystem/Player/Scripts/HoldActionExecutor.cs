@@ -97,10 +97,16 @@ namespace Carry.CarrySystem.Player.Scripts
                 // マップの内部かどうかを判定
                 if(!_map.IsInDataRangeArea(forwardGridPos))return;
                 
-                // if there is a non carriable block, do nothing
+                // if there is a non carriable block in front of a player, do nothing
+                if (_searchedBlocks.Any(x => !(x is ICarriableBlock)))
+                {
+                    Debug.Log($"There is a non carriable block in front of a player");
+                    return;
+                }
+                var carriableBlocks = _searchedBlocks.OfType<ICarriableBlock>().ToList();
                 
-                Debug.Log($"CanPutDown : {_holdingObjectContainer.CanPutDown(_searchedBlocks)}");
-                if (_holdingObjectContainer.CanPutDown(_searchedBlocks))
+                Debug.Log($"CanPutDown : {_holdingObjectContainer.CanPutDown(carriableBlocks)}");
+                if (_holdingObjectContainer.CanPutDown(carriableBlocks))
                 {
                     var block = _holdingObjectContainer.PopBlock();
                     if (block == null)
@@ -240,7 +246,8 @@ namespace Carry.CarrySystem.Player.Scripts
             if( block is not ICarriableBlock carriableBlock) return;
             if (_holdingObjectContainer.IsHoldingBlock)
             {
-                if (!carriableBlock.CanPutDown(_searchedBlocks)) return;
+                var carriableBlocks = _searchedBlocks.OfType<ICarriableBlock>().ToList();
+                if (!carriableBlock.CanPutDown(carriableBlocks)) return;
             }
             else
             {
