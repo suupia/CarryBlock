@@ -29,7 +29,12 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
             if(Runner == null) return;
             if(Runner.IsServer && Input.GetKeyDown(KeyCode.N))
             {
-                _mapSwitcher.UpdateMap(MapKey.Default, 0);  // ToDo : 現時点では引数は使われていないので適当でよい
+                _mapSwitcher.UpdateMap(MapKey.Default, _mapSwitcher.Index + 1);
+            }
+
+            if (Runner.IsServer && Input.GetKeyDown(KeyCode.B))
+            {
+                _mapSwitcher.UpdateMap(MapKey.Default, _mapSwitcher.Index - 1);
             }
             
         }

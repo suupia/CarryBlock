@@ -60,7 +60,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             // Generate map
             if (Runner.IsServer)
             {
-                _entityGridMapSwitcher.InitUpdateMap(MapKey.Default, 1);  // ToDo : keyやindexの計算処理を追加する
+                _entityGridMapSwitcher.InitUpdateMap(MapKey.Default, 0);
 
             }
             

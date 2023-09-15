@@ -53,10 +53,10 @@ namespace Carry.CarrySystem.Map.Scripts
             return _currentMap;
         }
 
-        public void InitUpdateMap(MapKey mapKey, int index)
+        public void InitUpdateMap(MapKey mapKey, int index = 0)
         {
-            var key = _mapKeyDataNet.MapKeyDataList[_currentIndex].mapKey;
-            var mapIndex =  _mapKeyDataNet.MapKeyDataList[_currentIndex].index;
+            var key = _mapKeyDataNet.MapKeyDataList[index].mapKey;
+            var mapIndex =  _mapKeyDataNet.MapKeyDataList[index].index;
             _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _allPresenterPlacer.Place(_currentMap);
             _cartBuilder.Build(_currentMap, this);
@@ -65,10 +65,20 @@ namespace Carry.CarrySystem.Map.Scripts
 
         }
 
-        public void UpdateMap(MapKey mapKey, int index = 0)
+        public void UpdateMap(MapKey mapKey, int index)
         {
-            Debug.Log($"次のフロアに変更します nextIndex: {_currentIndex + 1}");
-            _currentIndex++;
+            Debug.Log($"次のフロアに変更します nextIndex: {index}");
+            if (index < 0)
+            {
+                Debug.LogWarning($"index is under the min value");
+                index = 0; // 0未満にならないようにする
+            }
+            if (index > _mapKeyDataNet.MapKeyDataList.Count - 1)
+            {
+                Debug.LogWarning($"index is over the max value");
+                index = _mapKeyDataNet.MapKeyDataList.Count - 1; // 最大値を超えないようにする
+            }
+            _currentIndex = index;
             var key = _mapKeyDataNet.MapKeyDataList[_currentIndex].mapKey;
             var mapIndex = _mapKeyDataNet.MapKeyDataList[_currentIndex].index;
             var nextMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
