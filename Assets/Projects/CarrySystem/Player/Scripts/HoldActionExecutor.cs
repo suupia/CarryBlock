@@ -35,7 +35,7 @@ namespace Carry.CarrySystem.Player.Scripts
         IDisposable? _searchBlockDisposable;
 
         IBlockMonoDelegate? _searchedBlockMonoDelegate;
-        IList<ICarriableBlock> _searchedBlocks = new List<ICarriableBlock>();
+        IList<IBlock > _searchedBlocks = new List<IBlock>();
 
         AidKitRangeNet? _aidKitRangeNet;
 
@@ -96,6 +96,8 @@ namespace Carry.CarrySystem.Player.Scripts
                 // trying to put down a block
                 // マップの内部かどうかを判定
                 if(!_map.IsInDataRangeArea(forwardGridPos))return;
+                
+                // if there is a non carriable block, do nothing
                 
                 Debug.Log($"CanPutDown : {_holdingObjectContainer.CanPutDown(_searchedBlocks)}");
                 if (_holdingObjectContainer.CanPutDown(_searchedBlocks))
@@ -231,7 +233,7 @@ namespace Carry.CarrySystem.Player.Scripts
             // Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
 
             // _searchedBlockを更新
-            _searchedBlocks = blockMonoDelegate.Blocks.OfType<ICarriableBlock>().ToList();
+            _searchedBlocks = blockMonoDelegate.Blocks.OfType<IBlock>().ToList();
 
             // ハイライトの処理
             var block = blockMonoDelegate?.Block;
