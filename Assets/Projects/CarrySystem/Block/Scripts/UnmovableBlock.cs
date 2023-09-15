@@ -46,7 +46,7 @@ namespace Carry.CarrySystem.Block.Scripts
             // 特になし
         }
 
-        public bool CanPutDown(IList<ICarriableBlock> blocks)
+        public bool CanPutDown(IList<ICarriableBlock> placedBlocks)
         {
             return false; // 常に置けない
         }
