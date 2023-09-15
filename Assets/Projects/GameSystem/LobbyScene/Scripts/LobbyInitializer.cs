@@ -31,9 +31,12 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             var runner = FindObjectOfType<NetworkRunner>();
             runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner));
-            
 
-            if (Runner.IsServer) _playerSpawner.RespawnAllPlayer();
+            if (Runner.IsServer)
+            {
+                _playerCharacterHolder.SetIndex(Runner.LocalPlayer);
+                _playerSpawner.RespawnAllPlayer();
+            }
 
         }
 
