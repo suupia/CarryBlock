@@ -10,7 +10,7 @@ namespace Carry.CarrySystem.Gimmick.Scripts
     [RequireComponent(typeof(Collider))]
     public class CannonBallControllerNet : NetworkBehaviour
     {
-        readonly float _speed = 5f;
+        readonly float _speed = 3f;
         readonly float _lifeTime = 10f;
 
         Vector3 _direction;
@@ -45,8 +45,9 @@ namespace Carry.CarrySystem.Gimmick.Scripts
             }
             
             // 移動
-            transform.position += _direction * Time.deltaTime * _speed;
+            transform.position += _direction * Runner.DeltaTime * _speed;
             
+            Debug.Log($"speed : {_speed}");
             
         }
        
