@@ -16,9 +16,11 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         public bool IsFainted { get; private set; }
         PlayerInfo _info = null!;
-        readonly float _faintSeconds = 60.0f;  // ほぼ無限の気絶時間という感じ
+        readonly float _faintSeconds = 2.0f;  // ほぼ無限の気絶時間という感じ
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         CancellationTokenSource? _cancellationTokenSource;
+        
+        IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
         public OnDamageExecutor(IMoveExecutorSwitcher moveExecutorSwitcher)
         {
@@ -70,6 +72,7 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log(
                 $"_info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>()) : {_info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>()}");
             _info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>().Blinking();
+            _playerAnimatorPresenter?.Faint();
         }
 
         void Revive()
@@ -77,6 +80,13 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log($"気絶から復帰する");
             IsFainted = false;
             _moveExecutorSwitcher.SwitchToRegularMove();
+            _playerAnimatorPresenter?.Revive();
+        }
+        
+        //Animator
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
+        {
+            _playerAnimatorPresenter = presenter;
         }
     }
 }
