@@ -18,9 +18,9 @@ namespace Carry.CarrySystem.Player.Scripts
             var moveExeSwitcher = new MoveExecutorSwitcher();
             var blockContainer = new PlayerHoldingObjectContainer();
             var holdExe = new EmptyHoldActionExecutor();
-            var dashExe = new DashExecutor(moveExeSwitcher);
             var passExe = new EmptyPassActionExecutor();
             var onDamageExe = new OnDamageExecutor(moveExeSwitcher, _playerCharacterHolder);
+            var dashExe = new DashExecutor(moveExeSwitcher, onDamageExe);
             var character = new Character(moveExeSwitcher, holdExe,dashExe, passExe,onDamageExe, blockContainer);
             return character;
         }

@@ -13,6 +13,7 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         PlayerInfo _info = null!;
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
+        readonly IOnDamageExecutor _onDamageExecutor;
         DashEffectPresenter? _dashEffectPresenter;
         readonly float _dashTime = 0.25f;
         readonly float _dashCoolTime = 1f;
@@ -20,9 +21,13 @@ namespace Carry.CarrySystem.Player.Scripts
         
         CancellationTokenSource? _cancellationTokenSource;
         
-        public DashExecutor(IMoveExecutorSwitcher moveExecutorSwitcher)
+        public DashExecutor(
+            IMoveExecutorSwitcher moveExecutorSwitcher,
+            IOnDamageExecutor onDamageExecutor
+            )
         {
             _moveExecutorSwitcher = moveExecutorSwitcher;
+            _onDamageExecutor = onDamageExecutor;
         }
         
         public void Setup(PlayerInfo info)
@@ -33,6 +38,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Dash()
         {
             if (_isDashing) return;
+            if(_onDamageExecutor.IsFainted) return;
             
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource = new CancellationTokenSource();

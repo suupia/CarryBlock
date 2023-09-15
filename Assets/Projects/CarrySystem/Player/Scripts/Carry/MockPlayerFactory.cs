@@ -32,9 +32,9 @@ namespace Carry.CarrySystem.Player.Scripts
             var moveExeSwitcher = new MoveExecutorSwitcher();
             var blockContainer = new PlayerHoldingObjectContainer();
             var holdExe = new HoldActionExecutor(blockContainer,_playerNearCartHandler,_mapUpdater);
-            var dashExe = new DashExecutor(moveExeSwitcher);
             var passExe = new PassActionExecutor(blockContainer, holdExe,10, LayerMask.GetMask("Player"));
             var onDamageExe = new OnDamageExecutor(moveExeSwitcher, _playerCharacterHolder);
+            var dashExe = new DashExecutor(moveExeSwitcher,onDamageExe);
             var character = new Character( moveExeSwitcher, holdExe,dashExe, passExe,onDamageExe, blockContainer);
             return character;
         }
