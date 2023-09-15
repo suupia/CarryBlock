@@ -37,18 +37,16 @@ namespace Carry.CarrySystem.Gimmick.Scripts
         {
             if(!HasStateAuthority) return;
             
+            // 移動
+            transform.position += _direction * Runner.DeltaTime * _speed;
+            
             // 生存時間
             _timer += Time.deltaTime;
             if (_timer > _lifeTime)
             {
-               Runner.Despawn(Object);
+               Runner.Despawn(Object);  // you have to write this code at bottom of this method
             }
-            
-            // 移動
-            transform.position += _direction * Runner.DeltaTime * _speed;
-            
-            Debug.Log($"speed : {_speed}");
-            
+
         }
        
        void OnTriggerEnter(Collider other)
