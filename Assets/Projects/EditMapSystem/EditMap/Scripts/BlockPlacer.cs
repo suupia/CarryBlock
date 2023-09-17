@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Scripts;
 using UnityEngine;
@@ -20,13 +21,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             if (!map.IsInDataRangeArea(gridPos)) return ;
 
             var allEntityList = map.GetAllEntityList(gridPos).ToList();
-            var addBlockCount = allEntityList.OfType<T>().Count();
+            var addedBlockCount = allEntityList.Count(e => e.GetType() == addBlock.GetType());
             var groundCount = allEntityList.OfType<Ground>().Count();
-            var othersCount = allEntityList.Count() - addBlockCount - groundCount;
+            var othersCount = allEntityList.Count() - addedBlockCount - groundCount;
 
-            // Debug.Log($"addBlockCount:{addBlockCount} groundCount:{groundCount} othersCount:{othersCount}");
+            Debug.Log($"addedBlockCount:{addedBlockCount} groundCount:{groundCount} othersCount:{othersCount}");
             
-            if(addBlock is ICarriableBlock carriableBlock && addBlockCount >= carriableBlock.MaxPlacedBlockCount) return ;
+            if(addBlock is ICarriableBlock carriableBlock && addedBlockCount >= carriableBlock.MaxPlacedBlockCount) return ;
             if (othersCount > 0) return ;
 
             map.AddEntity(gridPos, addBlock);
