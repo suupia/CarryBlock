@@ -58,6 +58,8 @@ GameObject:
   - component: {fileID: 5965080741896850020}
   - component: {fileID: -1882458635062836858}
   - component: {fileID: 4593946109718481354}
+  - component: {fileID: 6754265564281612620}
+  - component: {fileID: 5746684046199233614}
   m_Layer: 0
   m_Name: UnmovableBlock
   m_TagString: Untagged
@@ -104,6 +106,8 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4593946109718481354}
+  - {fileID: 6754265564281612620}
+  - {fileID: 5746684046199233614}
   SimulationBehaviours: []
 --- !u!114 &4593946109718481354
 MonoBehaviour:
@@ -133,6 +137,35 @@ MonoBehaviour:
     RotTeleportRadians: 1.5
   UseLegacySharedModeInterpolation: 0
   TargetInterpolationDelay: 0.03
+--- !u!114 &6754265564281612620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756840550022308548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c2f93b52154d9e91d9de562d158c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  blockViewObj: {fileID: 2478132344785946946}
+  _info:
+    _blockType: 2
+--- !u!114 &5746684046199233614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756840550022308548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd03a1a39e484a1595d4132635e64a02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
 --- !u!1001 &739831911681019670
 PrefabInstance:
   m_ObjectHideFlags: 0

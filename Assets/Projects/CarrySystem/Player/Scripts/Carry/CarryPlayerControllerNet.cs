@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.CG.Tsukinowa;
+using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Fusion;
@@ -22,15 +23,26 @@ namespace Carry.CarrySystem.Player.Scripts
         
         IMapUpdater? _mapUpdater;
         PlayerNearCartHandlerNet _playerNearCartHandler = null!;
+        PlayerCharacterHolder _playerCharacterHolder = null!;
+        FloorTimerNet _floorTimerNet = null!;
         
-        public void Init(ICharacter character, PlayerColorType colorType, IMapUpdater mapUpdater , PlayerNearCartHandlerNet playerNearCartHandler)
+        public void Init(
+            ICharacter character,
+            PlayerColorType colorType,
+            IMapUpdater mapUpdater,
+            PlayerNearCartHandlerNet playerNearCartHandler,
+            PlayerCharacterHolder playerCharacterHolder,
+            FloorTimerNet floorTimerNet
+            )
         {
             Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
             this.Character = character;
             ColorType = colorType;
             _mapUpdater = mapUpdater;
             _playerNearCartHandler = playerNearCartHandler;
-            
+            _playerCharacterHolder = playerCharacterHolder;
+            _floorTimerNet = floorTimerNet;
+
             _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
         }
 
@@ -47,14 +59,14 @@ namespace Carry.CarrySystem.Player.Scripts
                     Debug.LogError($"_mapUpdater is null");
             }
 
-
         }
         
 
         public override void FixedUpdateNetwork()
         {
-            base.FixedUpdateNetwork();
             if (!HasStateAuthority) return;
+            if(_floorTimerNet.IsExpired) return;
+            base.FixedUpdateNetwork();
         }
         
         protected override void GetInputProcess(NetworkInputData input)
@@ -62,19 +74,15 @@ namespace Carry.CarrySystem.Player.Scripts
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
             {
                 // AidKit
-                var isNear =  _playerNearCartHandler.IsNearCart(info.playerObj);
-                Debug.Log($"isNear = {isNear}");
+                var isNear =  _playerNearCartHandler.IsNearCart(info.PlayerObj);
+                // Debug.Log($"isNear = {isNear}");
             }
 
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))
             {
                 Character.PassAction();
             }
-            if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
-            {
-                Debug.Log($"Dash");
-                Character.Dash();
-            }
+
         }
 
         public override void Render() 
@@ -93,12 +101,11 @@ namespace Carry.CarrySystem.Player.Scripts
 
         void ToSpawnPosition(EntityGridMap map)
         {
-            // ToDo: みんな同じ場所にスポーンする。　プレイヤーごとに分けられたらいいのかも
-            var spawnGridPos = new Vector2Int(1, map.Height / 2);
+            var spawnGridPos = new Vector2Int(1, map.Height / 2 + _playerCharacterHolder.GetPlayerIndex(info.PlayerRef) -1);
             var spawnWorldPos = GridConverter.GridPositionToWorldPosition(spawnGridPos);
             var height = 0.5f;  // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
-            info.playerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
-            info.playerRb.velocity = Vector3.zero;
+            info.PlayerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
+            info.PlayerRb.velocity = Vector3.zero;
             
         }
 

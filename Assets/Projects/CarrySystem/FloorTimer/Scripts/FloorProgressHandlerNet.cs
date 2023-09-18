@@ -6,16 +6,16 @@ using Fusion;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-
+#nullable enable
 
 namespace Carry.CarrySystem.FloorTimer.Scripts
 {
     public class FloorProgressHandlerNet : NetworkBehaviour
     {
         // ToDo: 仮置きクラス　ドメインの設計やコンテナの関係をしっかり考えれば、NetworkBehaviourである必要がないかも
-        float _updateTime = 7;
+        // float _updateTime = 7;
 
-        IMapUpdater _mapSwitcher;
+        IMapUpdater _mapSwitcher = null!;
         public void Start()
         {
             // 仮クラスのため、コンテナには登録していない
@@ -29,7 +29,12 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
             if(Runner == null) return;
             if(Runner.IsServer && Input.GetKeyDown(KeyCode.N))
             {
-                _mapSwitcher.UpdateMap(MapKey.Default, 0);  // ToDo : 現時点では引数は使われていないので適当でよい
+                _mapSwitcher.UpdateMap(MapKey.Default, _mapSwitcher.Index + 1);
+            }
+
+            if (Runner.IsServer && Input.GetKeyDown(KeyCode.B))
+            {
+                _mapSwitcher.UpdateMap(MapKey.Default, _mapSwitcher.Index - 1);
             }
             
         }

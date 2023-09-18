@@ -11,26 +11,32 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         readonly IMapUpdater _mapUpdater;
         readonly  HoldingBlockObserver  _holdingBlockObserver;
+        readonly PlayerNearCartHandlerNet _playerNearCartHandler;
+        readonly PlayerCharacterHolder _playerCharacterHolder;
         [Inject]
         public MainCarryPlayerFactory(
             IMapUpdater mapUpdater ,
-            HoldingBlockObserver holdingBlockObserver
+            HoldingBlockObserver holdingBlockObserver,
+            PlayerNearCartHandlerNet playerNearCartHandler,
+            PlayerCharacterHolder playerCharacterHolder
             )
         {
             _mapUpdater = mapUpdater;
             _holdingBlockObserver = holdingBlockObserver;
+            _playerNearCartHandler = playerNearCartHandler;
+            _playerCharacterHolder = playerCharacterHolder;
         }
         
         public ICharacter Create(PlayerColorType colorType)
         {
-            var moveExe = new MoveExecutorContainer();
-            var blockContainer = new PlayerBlockContainer();
-            var playerPresenterContainer = new PlayerPresenterContainer();
-            var holdExe = new HoldActionExecutor(blockContainer,playerPresenterContainer, _mapUpdater);
+            var moveExeSwitcher = new MoveExecutorSwitcher();
+            var blockContainer = new PlayerHoldingObjectContainer();
+            var holdExe = new HoldActionExecutor(blockContainer,_playerNearCartHandler, _mapUpdater);
             _holdingBlockObserver.RegisterHoldAction(blockContainer);
-            var dashExe = new DashExecutor();
-            var passExe = new PassActionExecutor(blockContainer,playerPresenterContainer, holdExe,10, LayerMask.GetMask("Player"));
-            var character = new Character(moveExe, holdExe,dashExe, passExe, blockContainer, playerPresenterContainer);
+            var passExe = new PassActionExecutor(blockContainer, holdExe,10, LayerMask.GetMask("Player"));
+            var onDamageExe = new OnDamageExecutor(moveExeSwitcher, _playerCharacterHolder);
+            var dashExe = new DashExecutor(moveExeSwitcher, onDamageExe);
+            var character = new Character(moveExeSwitcher, holdExe,dashExe, passExe,onDamageExe, blockContainer);
             return character;
         }
     }

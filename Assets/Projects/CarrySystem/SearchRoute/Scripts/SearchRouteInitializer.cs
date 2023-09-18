@@ -26,10 +26,14 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
        async  void Start()
         {
             var runner = FindObjectOfType<NetworkRunner>();
-            if(runner == null) Debug.LogError($"NetworkRunner is not found.");
+            if (runner == null)
+            {
+                Debug.LogError($"NetworkRunner is not found.");
+                return;
+            }
             await UniTask.WaitUntil(() => runner.SceneManager.IsReady(runner));
             
-            _entityGridMapSwitcher.InitUpdateMap(MapKey.Default, 1);
+            _entityGridMapSwitcher.InitUpdateMap(MapKey.Default,0);
 
 
             var startPos = new Vector2Int(2, 2);

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Carry.CarrySystem.Player.Info;
+using Carry.CarrySystem.Player.Scripts;
 
 namespace Carry.CarrySystem.Player.Interfaces
 {
@@ -8,5 +9,14 @@ namespace Carry.CarrySystem.Player.Interfaces
         void Setup(PlayerInfo info);
         void Reset();
         void HoldAction();
+
+        public void PutDownBlock();
+
+        // View
+        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter);
+        public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter);
+        
+        // Animator
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter);
     }
 }

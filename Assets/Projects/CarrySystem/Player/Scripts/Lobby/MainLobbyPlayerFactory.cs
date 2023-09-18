@@ -6,6 +6,8 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class MainLobbyPlayerFactory : ICarryPlayerFactory
     {
+        readonly PlayerCharacterHolder _playerCharacterHolder;
+
         [Inject]
         public MainLobbyPlayerFactory()
         {
@@ -13,13 +15,13 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public ICharacter Create(PlayerColorType colorType)
         {
-            var moveExe = new MoveExecutorContainer();
-            var blockContainer = new PlayerBlockContainer();
-            var playerPresenterContainer = new PlayerPresenterContainer();
+            var moveExeSwitcher = new MoveExecutorSwitcher();
+            var blockContainer = new PlayerHoldingObjectContainer();
             var holdExe = new EmptyHoldActionExecutor();
-            var dashExe = new DashExecutor();
             var passExe = new EmptyPassActionExecutor();
-            var character = new Character(moveExe, holdExe,dashExe, passExe, blockContainer,playerPresenterContainer);
+            var onDamageExe = new OnDamageExecutor(moveExeSwitcher, _playerCharacterHolder);
+            var dashExe = new DashExecutor(moveExeSwitcher, onDamageExe);
+            var character = new Character(moveExeSwitcher, holdExe,dashExe, passExe,onDamageExe, blockContainer);
             return character;
         }
     }

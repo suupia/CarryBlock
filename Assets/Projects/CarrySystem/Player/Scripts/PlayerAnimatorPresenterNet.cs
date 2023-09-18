@@ -18,12 +18,13 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         public struct PresentData : INetworkStruct
         {
-            [Networked] public int PickUpCount { get; set; }
-            [Networked] public int PutDownCount { get; set; }
-            [Networked] public int ReceiveCount { get; set; }
-            [Networked] public int PassCount { get; set; }
-            [Networked] public  MovementState MovementState { get; set; }
+            public int PickUpCount { get; set; }
+            public int PutDownCount { get; set; }
+            public int ReceiveCount { get; set; }
+            public int PassCount { get; set; }
+            public  MovementState MovementState { get; set; }
             [Networked] public bool IsHoldingBlock { get; set; }
+            public bool IsFainted { get; set; }
         }
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
@@ -38,7 +39,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Init(ICharacter character)
         {
             Debug.Log($"PlayerAnimatorPresenterNet Init");
-            character.SetHoldPresenter(this);
+            character.SetPlayerAnimatorPresenter(this);
         }
 
         public void SetAnimator(Animator animator)
@@ -57,21 +58,34 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 _animator.SetTrigger("PickUp");
                 _pickUpCount = PresentDataRef.PickUpCount;
+                Debug.Log($"PickUpCount: {PresentDataRef.PickUpCount},_pickUpCount: {_pickUpCount}");
             }
             if(PresentDataRef.PutDownCount > _putDownCount)
             {
                 _animator.SetTrigger("PutDown");
                 _putDownCount = PresentDataRef.PutDownCount;
+                Debug.Log($"PutDownCount: {PresentDataRef.PutDownCount},_putDownCount: {_putDownCount}");
             }
             if(PresentDataRef.ReceiveCount > _receiveCount)
             {
                 _animator.SetTrigger("Receive");
                 _receiveCount = PresentDataRef.ReceiveCount;
+                Debug.Log($"ReceiveCount: {PresentDataRef.ReceiveCount},_receiveCount: {_receiveCount}");
             }
             if(PresentDataRef.PassCount > _passCount)
             {
                 _animator.SetTrigger("Pass");
                 _passCount = PresentDataRef.PassCount;
+                Debug.Log($"PassCount: {PresentDataRef.PassCount},_passCount: {_passCount}");
+            }
+            if(PresentDataRef.IsFainted)
+            {
+                _animator.SetBool("IsFainted",true);
+                Debug.Log($"IsFainted: {PresentDataRef.IsFainted}");
+            }
+            else
+            {
+                _animator.SetBool("IsFainted",false);
             }
 
             switch (PresentDataRef.MovementState)
@@ -107,7 +121,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void ReceiveBlock(IBlock block)
         {
             PresentDataRef.ReceiveCount++;
-            PresentDataRef.IsHoldingBlock = false;
+            PresentDataRef.IsHoldingBlock = true;
         }
 
         public void PassBlock()
@@ -130,6 +144,15 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Dash()
         {
             PresentDataRef.MovementState = MovementState.InDash;
+        }
+        
+        public void Faint()
+        {
+            PresentDataRef.IsFainted = true;
+        }
+        public void Revive()
+        {
+            PresentDataRef.IsFainted = false;
         }
     }
 }

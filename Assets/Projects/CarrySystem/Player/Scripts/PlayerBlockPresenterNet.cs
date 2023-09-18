@@ -25,6 +25,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         /// <summary>
         /// switch文ではなるべく使用しないようにする。代わりにパターンマッチングを使う
+        /// HoldingBlockTypeのためにpublicにしているがほかのクラスでは使用しないようにする
         /// </summary>
         public enum BlockType
         {
@@ -36,7 +37,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         public struct PresentData : INetworkStruct
         {
-            [Networked] public BlockType HoldingBlockType { get; set; } // enumは共有できない(?)ので、int16で送る
+            public BlockType HoldingBlockType { get; set; } // enumは共有できない(?)ので、int16で送る
         }
         Dictionary<BlockType, GameObject> blockTypeToGameObjectMap = new Dictionary<BlockType, GameObject>();
 
@@ -49,14 +50,15 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField] GameObject fragileBlockView = null!;
         public void Init(ICharacter character)
         {
-            character.SetHoldPresenter((IPlayerBlockPresenter)this);
+            Debug.Log($"PlayerBlockPresenterNet.Init()");
+            character.SetPlayerBlockPresenter(this);
             PresentDataRef.HoldingBlockType = BlockType.None;
         }
 
         public void Awake()
         {
             // これらの処理はクライアントでも必要なことに注意
-            blockTypeToGameObjectMap[BlockType.None] = null; // No game object for 'None'
+            blockTypeToGameObjectMap[BlockType.None] = null!; // No game object for 'None'
             blockTypeToGameObjectMap[BlockType.BasicBlock] = basicBlockView;
             blockTypeToGameObjectMap[BlockType.UnmovableBlock] = unmovableBlockView;
             blockTypeToGameObjectMap[BlockType.HeavyBlock] = heavyBlockView;
@@ -89,6 +91,7 @@ namespace Carry.CarrySystem.Player.Scripts
         // 以下の処理はアニメーション、音、エフェクトの再生を行いたくなったら、それぞれのクラスの対応するメソッドを呼ぶようにするかも
         public void PickUpBlock(IBlock block)
         {
+            Debug.Log($"PlayerBlockPresenterNet.PickUpBlock()");
             PresentDataRef.HoldingBlockType = DecideBlockType(block);
         }
 

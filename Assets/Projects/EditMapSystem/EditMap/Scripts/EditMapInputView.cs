@@ -9,10 +9,12 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     {
         [SerializeField] EditMapInput editMapInput;
         [SerializeField] TextMeshProUGUI blockTypeText;
+        [SerializeField] TextMeshProUGUI directionText;
 
         void Update()
         {
-            blockTypeText.text = $"BlockType : {editMapInput.BlockType.GetType().Name}"; 
+            blockTypeText.text = $"BlockType : {editMapInput.BlockTypeString}"; 
+            directionText.text = $"Direction : {editMapInput.DirectionString}";
         }
 
     }

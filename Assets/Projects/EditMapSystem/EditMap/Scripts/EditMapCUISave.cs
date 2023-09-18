@@ -9,24 +9,25 @@ using VContainer;
 using TMPro;
 using UniRx;
 using UnityEngine.Serialization;
+#nullable enable
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
     public class EditMapCUISave : MonoBehaviour
     {
-        [SerializeField] GameObject CUISaveCanvas;
-        [SerializeField] TextMeshProUGUI messageText;
-        [SerializeField] TextMeshProUGUI inputText;
+        [SerializeField] GameObject CUISaveCanvas = null!;
+        [SerializeField] TextMeshProUGUI messageText = null!;
+        [SerializeField] TextMeshProUGUI inputText = null!;
 
         public bool IsOpened => _isOpened;
 
-        IMapUpdater _editMapUpdater;
-        EntityGridMapSaver _entityGridMapSaver;
-        CUIHandleNumber _handleNumber;
-        AutoSaveManager _autoSaveManager;
+        IMapUpdater _editMapUpdater = null!;
+        EntityGridMapSaver _entityGridMapSaver = null!;
+        CUIHandleNumber _handleNumber = null!;
+        AutoSaveManager _autoSaveManager = null!;
         CUIInputState _inputState;
 
-        readonly int _maxDigit = 10; // インデックスの最大の桁数
+        // readonly int _maxDigit = 10; // インデックスの最大の桁数
         readonly float _displayTime = 1.5f; // メッセージを表示する時間
         readonly float _autoSaveInterval = 3f; // オートセーブの間隔
         bool _isOpened = false;

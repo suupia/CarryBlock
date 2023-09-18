@@ -24,11 +24,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.RegisterComponent(runner);
             
             // Map
+            builder.Register<EntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
-            builder.Register<TilePresenterBuilder>(Lifetime.Scoped);
-            builder.Register<WallPresenterBuilder>(Lifetime.Scoped);
-            builder.Register<GroundPresenterBuilder>(Lifetime.Scoped);
-            builder.Register<AllPresenterBuilder>(Lifetime.Scoped);
+            builder.Register<EditMapBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();
+            builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>();
+            builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<AllPresenterPlacer>(Lifetime.Scoped).As<IPresenterPlacer>();
 
 
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);

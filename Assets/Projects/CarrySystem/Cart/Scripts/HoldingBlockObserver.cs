@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.Cart.Scripts
     public class HoldingBlockObserver
     {
         public bool IsMapClear { get; private set; }
-        readonly List<PlayerBlockContainer> _playerBlockContainers = new List<PlayerBlockContainer>();
+        readonly List<PlayerHoldingObjectContainer> _playerBlockContainers = new List<PlayerHoldingObjectContainer>();
         readonly IMapUpdater _mapUpdater;
         readonly WaveletSearchBuilder _waveletSearchBuilder;
         readonly CartMovementNotifierNet _cartMovementNotifierNet;
@@ -48,7 +48,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             _mapSubscription?.Dispose();
         }
 
-        public void RegisterHoldAction(PlayerBlockContainer holdActionExecutor)
+        public void RegisterHoldAction(PlayerHoldingObjectContainer holdActionExecutor)
         {
             Debug.Log($"Register HoldAction {holdActionExecutor}");
             _playerBlockContainers.Add(holdActionExecutor);
@@ -61,11 +61,11 @@ namespace Carry.CarrySystem.Cart.Scripts
         }
         
 
-        void ShowAccessibleArea()
+        void  ShowAccessibleArea()
         {
             Debug.Log("ShowAccessibleArea");
             var map = _mapUpdater.GetMap();
-            Func<int, int, bool> isWall = (x, y) => map.GetSingleEntityList<IBlock>(new Vector2Int(x, y)).Count > 0;
+            Func<int, int, bool> isWall = (x, y) => map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
             var waveletSearchExecutor = _waveletSearchBuilder.Build(_mapUpdater.GetMap());
 
             var startPos = new Vector2Int(1, map.Height / 2);

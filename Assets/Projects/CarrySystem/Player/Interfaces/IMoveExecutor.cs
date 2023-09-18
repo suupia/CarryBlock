@@ -7,5 +7,8 @@ namespace Carry.CarrySystem.Player.Interfaces
     {
         void Setup(PlayerInfo info);
         void Move(Vector3 input);
+        
+        // Animator
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter);
     }
 }

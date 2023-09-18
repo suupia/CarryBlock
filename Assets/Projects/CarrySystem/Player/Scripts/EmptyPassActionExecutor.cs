@@ -36,7 +36,19 @@ namespace Carry.CarrySystem.Player.Scripts
             
         }
         
-        public void ReceivePass(IBlock block)
+        public void ReceivePass(ICarriableBlock block)
+        {
+            
+        }
+        
+        // Presenter
+        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
+        {
+            
+        }
+        
+        // Animator
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
             
         }

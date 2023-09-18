@@ -1,7 +1,9 @@
 ﻿using Carry.CarrySystem.Cart.Scripts;
+using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
+using Projects.Utility.Interfaces;
 using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;
@@ -28,6 +30,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PlayerCharacterHolder _playerCharacterHolder;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         readonly CarryPlayerContainer _carryPlayerContainer;
+        readonly FloorTimerNet _floorTimerNet;
 
         [Inject]
         public CarryPlayerBuilder(
@@ -37,7 +40,8 @@ namespace Carry.CarrySystem.Player.Scripts
             ICarryPlayerFactory carryPlayerFactory,
             PlayerCharacterHolder playerCharacterHolder,
             PlayerNearCartHandlerNet playerNearCartHandler,
-            CarryPlayerContainer carryPlayerContainer
+            CarryPlayerContainer carryPlayerContainer,
+            FloorTimerNet floorTimerNet
             )
         {
             _runner = runner;
@@ -47,6 +51,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _playerCharacterHolder  = playerCharacterHolder;
             _playerNearCartHandler = playerNearCartHandler;
             _carryPlayerContainer = carryPlayerContainer;
+            _floorTimerNet = floorTimerNet;
         }
 
         public AbstractNetworkPlayerController Build(Vector3 position, Quaternion rotation, PlayerRef playerRef)
@@ -63,13 +68,16 @@ namespace Carry.CarrySystem.Player.Scripts
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
-                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType,_mapUpdater, _playerNearCartHandler);
+                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType,_mapUpdater, _playerNearCartHandler, _playerCharacterHolder,_floorTimerNet);
                     networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character);
+                    networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
+                    networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
+                    
                 });
             var info = playerControllerObj.Info;
             playerControllerObj.GetComponentInChildren<PassRangeNet>().Init(info,LayerMask.GetMask("Player"));
-
+            playerControllerObj.GetComponentInChildren<AidKitRangeNet>().Init(info,LayerMask.GetMask("Player"));
             
             _carryPlayerContainer.AddPlayer(playerRef, playerControllerObj);
 

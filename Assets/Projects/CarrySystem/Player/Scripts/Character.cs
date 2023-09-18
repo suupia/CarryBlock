@@ -10,28 +10,29 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class Character : ICharacter
     {
-        public PlayerBlockContainer PlayerBlockContainer { get; }
-        public PlayerPresenterContainer PresenterContainer { get; }
+        public PlayerHoldingObjectContainer PlayerHoldingObjectContainer { get; }
 
-        readonly IMoveExecutorContainer _moveExecutorContainer;
+        readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         readonly IHoldActionExecutor _holdActionExecutor;
         readonly IDashExecutor _dashExecutor;
         readonly IPassActionExecutor _passActionExecutor;
+        readonly IOnDamageExecutor _onDamageExecutor;
 
 
         public Character(
-            IMoveExecutorContainer moveExecutorContainer,
+            IMoveExecutorSwitcher moveExecutorSwitcher,
             IHoldActionExecutor holdActionExecutor,
             IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,
-            PlayerBlockContainer blockContainer,
-            PlayerPresenterContainer playerPresenterContainer)
+            IOnDamageExecutor onDamageExecutor,
+            PlayerHoldingObjectContainer holdingObjectContainer
+            )
         {
-            _moveExecutorContainer = moveExecutorContainer;
-            _holdActionExecutor = holdActionExecutor;
+            _moveExecutorSwitcher = moveExecutorSwitcher;
+            _holdActionExecutor = holdActionExecutor; 
             _passActionExecutor = passActionExecutor;
-            PlayerBlockContainer = blockContainer;
-            PresenterContainer = playerPresenterContainer;
+            _onDamageExecutor = onDamageExecutor;
+            PlayerHoldingObjectContainer = holdingObjectContainer;
             _dashExecutor = dashExecutor;
         }
 
@@ -43,25 +44,45 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Setup(PlayerInfo info)
         {
-            _moveExecutorContainer.Setup(info);
-            _holdActionExecutor.Setup(info);
+            _moveExecutorSwitcher.Setup(info);
+            _holdActionExecutor. Setup(info);
             _passActionExecutor.Setup(info);
-            info.playerRb.useGravity = true;
+            _onDamageExecutor.Setup(info);
+            info.PlayerRb.useGravity = true;
         }
 
         // MoveExecutorContainer
         public void Move(Vector3 direction)
         {
-            _moveExecutorContainer.Move(direction);
+            _moveExecutorSwitcher.Move(direction);
         }
-
-        public void SetRegularMoveExecutor() => _moveExecutorContainer.SetRegularMoveExecutor();
-        public void SetSlowMoveExecutor() => _moveExecutorContainer.SetSlowMoveExecutor();
+        public void SwitchToBeforeMoveExecutor() => _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
+        public void SwitchToRegularMove() => _moveExecutorSwitcher.SwitchToRegularMove();
+        public void SwitchToDashMove() => _moveExecutorSwitcher.SwitchToDashMove();
+        public void SwitchToSlowMove() => _moveExecutorSwitcher.SwitchToSlowMove();
+        public void SwitchToFaintedMove() => _moveExecutorSwitcher.SwitchToFaintedMove();
+        
+        public void OnDamage() => _onDamageExecutor.OnDamage();
 
         // HoldActionExecutor
-        public void SetHoldPresenter(IPlayerBlockPresenter presenter)
+        public void PutDownBlock() => _holdActionExecutor.PutDownBlock();
+        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
         {
-            PresenterContainer.SetHoldPresenter(presenter);
+            _holdActionExecutor.SetPlayerBlockPresenter(presenter);
+            _passActionExecutor.SetPlayerBlockPresenter(presenter);
+        }
+        
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
+        {
+            _moveExecutorSwitcher.SetPlayerAnimatorPresenter(presenter);
+            _holdActionExecutor.SetPlayerAnimatorPresenter(presenter);
+            _passActionExecutor.SetPlayerAnimatorPresenter(presenter);
+            _onDamageExecutor.SetPlayerAnimatorPresenter(presenter);
+        }
+        
+        public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
+        {
+            _holdActionExecutor.SetPlayerAidKitPresenter(presenter);
         }
 
         public void HoldAction()
@@ -71,10 +92,16 @@ namespace Carry.CarrySystem.Player.Scripts
 
         // DashExecutor
         public void Dash() => _dashExecutor.Dash();
+        
+        public void SetDashEffectPresenter(DashEffectPresenter presenter) => _dashExecutor.SetDashEffectPresenter(presenter);
 
         // PassActionExecutor
         public void PassAction() => _passActionExecutor.PassAction();
         public bool CanReceivePass() => _passActionExecutor.CanReceivePass();
-        public void ReceivePass(IBlock block) => _passActionExecutor.ReceivePass(block);
+        public void ReceivePass(ICarriableBlock block) => _passActionExecutor.ReceivePass(block);
+        
+        // IOnDamageExecutor
+        public bool IsFainted => _onDamageExecutor.IsFainted;   
+        public void OnRevive() => _onDamageExecutor.OnRevive();
     }
 }

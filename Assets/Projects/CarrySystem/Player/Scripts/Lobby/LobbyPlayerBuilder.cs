@@ -1,5 +1,6 @@
 ﻿using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
+using Projects.Utility.Interfaces;
 using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;
@@ -44,7 +45,8 @@ namespace Carry.CarrySystem.Player.Scripts
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
                     networkObj.GetComponent<LobbyPlayerControllerNet>().Init(character,colorType,_playerCharacterHolder);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
-                   //  networkObj.GetComponent<HoldPresenter_Net>().Init(character);
+                    networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
+
                 });
             
             // 各MonoBehaviourにドメインを設定

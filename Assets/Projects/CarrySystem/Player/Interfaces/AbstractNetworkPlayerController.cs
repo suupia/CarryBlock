@@ -33,10 +33,12 @@ namespace Carry.CarrySystem.Player.Interfaces
             Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
 
             // init info
-            info.Init(Runner, gameObject, this);
+            info.Init(gameObject, this, Object.InputAuthority);
 
             // Instantiate the character.
             InstantiateCharacter();
+            
+
             
         }
         
@@ -58,20 +60,18 @@ namespace Carry.CarrySystem.Player.Interfaces
                     Character.HoldAction();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
+                
+                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
+                {
+                    Character.Dash();
+                }
+
 
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
                 // Debug.Log($"_character = {_character}");
                 Character.Move( direction);
-
-                if (direction == Vector3.zero)
-                {
-                    Character.PresenterContainer.Idle();
-                }
-                else
-                {
-                    Character.PresenterContainer.Walk();
-                }
+                 
                 
                 GetInputProcess(input); // 子クラスで処理を追加するためのメソッド
 

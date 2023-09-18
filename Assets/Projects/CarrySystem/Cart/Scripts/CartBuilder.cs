@@ -5,6 +5,7 @@ using Carry.CarrySystem.Player.Scripts;
 using Fusion;
 using Projects.CarrySystem.Cart.Info;
 using Projects.CarrySystem.SearchRoute.Scripts;
+using Projects.Utility.Interfaces;
 using Projects.Utility.Scripts;
 using UnityEngine;
 using VContainer;
