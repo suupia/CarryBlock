@@ -42,16 +42,29 @@ namespace Carry.UISystem.UI.LobbyScene
         public override void FixedUpdateNetwork()
         {
             if(!HasStateAuthority)return;
-            if (GetInput(out NetworkInputData input))
+            
+            
+            // 以下の処理はうまくいかない　多分、InputAuthorityがないからだと思う
+            // if (GetInput(out NetworkInputData input))
+            // {
+            //     if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ToggleSelectStageCanvas))
+            //     {
+            //         Debug.Log($"Toggle SelectStageCanvas");
+            //         viewObject.SetActive(!viewObject.activeSelf);
+            //     }
+            //
+            //
+            //     PreButtons = input.Buttons;
+            // }
+        }
+
+        void Update()
+        {
+            if(!HasStateAuthority)return;
+            
+            if (Input.GetKeyDown(KeyCode.T))
             {
-                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ToggleSelectStageCanvas))
-                {
-                    Debug.Log($"Toggle SelectStageCanvas");
-                    viewObject.SetActive(!viewObject.activeSelf);
-                }
-
-
-                PreButtons = input.Buttons;
+                viewObject.SetActive(!viewObject.activeSelf);
             }
         }
         
