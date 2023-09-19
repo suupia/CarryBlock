@@ -59,6 +59,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void InitUpdateMap(MapKey mapKey, int index = 0)
         {
+            Debug.Log($"StageIndex : {_stageIndexTransporter.StageIndex}");
             var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
             var key =mapKeyDataList[index].mapKey;
             var mapIndex =  mapKeyDataList[index].index;
@@ -72,7 +73,6 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void UpdateMap(MapKey mapKey, int index)
         {
-            Debug.Log($"StageIndex : {_stageIndexTransporter.StageIndex}");
             var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
             Debug.Log($"次のフロアに変更します nextIndex: {index}");
             if (index < 0)
