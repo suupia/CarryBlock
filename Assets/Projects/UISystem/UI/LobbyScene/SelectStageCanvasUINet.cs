@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Fusion;
 using Projects.BattleSystem.LobbyScene.Scripts;
+using Projects.NetworkUtility.Inputs.Scripts;
 using Projects.UISystem.UI;
 using TMPro;
 using UnityEngine;
@@ -16,17 +17,15 @@ namespace Carry.UISystem.UI.LobbyScene
         [SerializeField] Transform buttonParent = null!;
         List<CustomButton> stageButtons = new List<CustomButton>();
         
+        [Networked] protected NetworkButtons PreButtons { get; set; }
+
         public override void Spawned()
         {
-            Debug.Log($"SelectStageCanvasUINet.Spawned()");
-            if (!HasStateAuthority)
-            {
-                viewObject.SetActive(false);
-                return;
-            } 
-            
+            viewObject.SetActive(false);
+
+            if (!HasStateAuthority)return;
+
             stageButtons = buttonParent.GetComponentsInChildren<CustomButton>().ToList();
-            Debug.Log($"CustomButtons : {stageButtons.Count}");
             
             var lobbyInitializer = FindObjectOfType<LobbyInitializer>();
             for(int i = 0; i< stageButtons.Count; i++)
@@ -37,6 +36,22 @@ namespace Carry.UISystem.UI.LobbyScene
                 {
                     lobbyInitializer.TransitionToGameScene();
                 });
+            }
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            if(!HasStateAuthority)return;
+            if (GetInput(out NetworkInputData input))
+            {
+                if (input.Buttons.WasPressed(PreButtons, PlayerOperation.ToggleSelectStageCanvas))
+                {
+                    Debug.Log($"Toggle SelectStageCanvas");
+                    viewObject.SetActive(!viewObject.activeSelf);
+                }
+
+
+                PreButtons = input.Buttons;
             }
         }
         
