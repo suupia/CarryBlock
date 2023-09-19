@@ -8,7 +8,7 @@ using UnityEngine;
 
 #nullable enable
 
-namespace Carry.UISystem.UI.CarryScene
+namespace Carry.UISystem.UI.LobbyScene
 {
     public class LobbyCanvasUINet : NetworkBehaviour
     {
