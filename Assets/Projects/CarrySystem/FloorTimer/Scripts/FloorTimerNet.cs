@@ -17,18 +17,18 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
         public bool IsExpired { get; set; } 
         [Networked] TickTimer TickTimer { get; set; }
 
-        PlayerCharacterHolder _playerCharacterHolder = null!;
+        PlayerCharacterTransporter _playerCharacterTransporter = null!;
 
         [Inject]
-        public void Construct(PlayerCharacterHolder playerCharacterHolder)
+        public void Construct(PlayerCharacterTransporter playerCharacterTransporter)
         {
-            _playerCharacterHolder = playerCharacterHolder;
+            _playerCharacterTransporter = playerCharacterTransporter;
         }
 
         public void StartTimer()
         {
             TickTimer = TickTimer.CreateFromSeconds(Runner, FloorLimitSeconds);
-            Debug.Log($"PlayerCount:{_playerCharacterHolder.PlayerCount}"); 
+            Debug.Log($"PlayerCount:{_playerCharacterTransporter.PlayerCount}"); 
         }
 
         public override void FixedUpdateNetwork()
@@ -39,7 +39,7 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
 
         float CalcFloorLimitTime()
         {
-            float limitTime = _playerCharacterHolder.PlayerCount switch
+            float limitTime = _playerCharacterTransporter.PlayerCount switch
             {
                 1 => 120,
                 2 => 90,
@@ -52,7 +52,7 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
             
             float InvalidPlayerCount()
             {
-                Debug.LogError($"PlayerCount : {_playerCharacterHolder.PlayerCount} is invalid.");
+                Debug.LogError($"PlayerCount : {_playerCharacterTransporter.PlayerCount} is invalid.");
                 return 60f;
             }
         }

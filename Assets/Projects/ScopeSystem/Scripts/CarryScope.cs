@@ -55,7 +55,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<AllPresenterPlacer>(Lifetime.Scoped).As<IPresenterPlacer>();
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
 
-            builder.RegisterComponentInHierarchy<MapKeyDataNet>();
+            builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
 
             // Cart
             builder.Register<CartBuilder>(Lifetime.Scoped);

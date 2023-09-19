@@ -12,19 +12,19 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IMapUpdater _mapUpdater;
         readonly  HoldingBlockObserver  _holdingBlockObserver;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
-        readonly PlayerCharacterHolder _playerCharacterHolder;
+        readonly PlayerCharacterTransporter _playerCharacterTransporter;
         [Inject]
         public MainCarryPlayerFactory(
             IMapUpdater mapUpdater ,
             HoldingBlockObserver holdingBlockObserver,
             PlayerNearCartHandlerNet playerNearCartHandler,
-            PlayerCharacterHolder playerCharacterHolder
+            PlayerCharacterTransporter playerCharacterTransporter
             )
         {
             _mapUpdater = mapUpdater;
             _holdingBlockObserver = holdingBlockObserver;
             _playerNearCartHandler = playerNearCartHandler;
-            _playerCharacterHolder = playerCharacterHolder;
+            _playerCharacterTransporter = playerCharacterTransporter;
         }
         
         public ICharacter Create(PlayerColorType colorType)
@@ -34,7 +34,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var holdExe = new HoldActionExecutor(blockContainer,_playerNearCartHandler, _mapUpdater);
             _holdingBlockObserver.RegisterHoldAction(blockContainer);
             var passExe = new PassActionExecutor(blockContainer, holdExe,10, LayerMask.GetMask("Player"));
-            var onDamageExe = new OnDamageExecutor(moveExeSwitcher, _playerCharacterHolder);
+            var onDamageExe = new OnDamageExecutor(moveExeSwitcher, _playerCharacterTransporter);
             var dashExe = new DashExecutor(moveExeSwitcher, onDamageExe);
             var character = new Character(moveExeSwitcher, holdExe,dashExe, passExe,onDamageExe, blockContainer);
             return character;

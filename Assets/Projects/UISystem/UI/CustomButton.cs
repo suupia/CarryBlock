@@ -1,4 +1,5 @@
 ﻿
+using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
@@ -11,8 +12,8 @@ namespace Projects.UISystem.UI
     [RequireComponent(typeof(Button))]
     public class CustomButton : UIBehaviour
     {
-        
         [SerializeField] AudioClip clickSound = null!;
+        [SerializeField] TextMeshProUGUI? textMeshProUGUI;
         Button _button = null!;
         AudioSource? _audioSource;
         
@@ -40,6 +41,12 @@ namespace Projects.UISystem.UI
                 if(_audioSource != null) _audioSource.PlayOneShot(clickSound);
                 else Debug.LogError($"_audioSource is null");
             });
+        }
+        
+        public void SetText(string text)
+        {
+            if(textMeshProUGUI == null) return;
+            textMeshProUGUI.text = text;
         }
     }
 }

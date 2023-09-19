@@ -17,13 +17,13 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
     public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
         PlayerSpawner _playerSpawner = null!;
-        PlayerCharacterHolder _playerCharacterHolder = null!;
+        PlayerCharacterTransporter _playerCharacterTransporter = null!;
 
         [Inject]
-        public void Construct(PlayerSpawner playerSpawner , PlayerCharacterHolder playerCharacterHolder)
+        public void Construct(PlayerSpawner playerSpawner , PlayerCharacterTransporter playerCharacterTransporter)
         {
             _playerSpawner = playerSpawner;
-            _playerCharacterHolder = playerCharacterHolder;
+            _playerCharacterTransporter = playerCharacterTransporter;
         }
 
         async void Start()
@@ -34,7 +34,7 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
 
             if (Runner.IsServer)
             {
-                _playerCharacterHolder.SetIndex(Runner.LocalPlayer);
+                _playerCharacterTransporter.SetIndex(Runner.LocalPlayer);
                 _playerSpawner.RespawnAllPlayer();
             }
 
@@ -45,7 +45,7 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             if (Runner.IsServer) _playerSpawner.SpawnPlayer(player );
             
             Debug.Log($"PlayerJoined");
-            _playerCharacterHolder.SetIndex(player);
+            _playerCharacterTransporter.SetIndex(player);
 
             // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
         }

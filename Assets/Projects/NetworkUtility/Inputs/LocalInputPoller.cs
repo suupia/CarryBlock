@@ -13,6 +13,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
     {
         MainAction = 0,
         Ready,
+        ToggleSelectStageCanvas,
         ChangeUnit,
         Dash,
         Pass,
@@ -27,6 +28,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
         NetworkInputData _localInput;
         readonly InputActionMap _inputActionMap;
 
+        readonly InputAction _toggleSelectStageCanvas;
         readonly InputAction _move;
         readonly InputAction _mainAction;
         readonly InputAction _dash;
@@ -48,6 +50,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
             //本来は以下を適切なタイミングで呼ぶべき
             // _inputActionMap.Disable();
 
+            _toggleSelectStageCanvas = _inputActionMap.FindAction("ToggleSelectStageCanvas");
             _move = _inputActionMap.FindAction("Move");
             _mainAction = _inputActionMap.FindAction("MainAction");
             _dash = _inputActionMap.FindAction("Dash");
@@ -62,6 +65,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
         {
             _localInput = default;
 
+            var isDownOpenSelectStageCanvas = _toggleSelectStageCanvas.ReadValue<float>();
             var moveVector = _move.ReadValue<Vector2>().normalized;
             var mainActionValue = _mainAction.ReadValue<float>(); 
             var dashValue = _dash.ReadValue<float>();
@@ -73,6 +77,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
             
             _localInput.Horizontal = moveVector.x;
             _localInput.Vertical = moveVector.y;
+            _localInput.Buttons.Set(PlayerOperation.ToggleSelectStageCanvas, isDownOpenSelectStageCanvas != 0);
             _localInput.Buttons.Set(PlayerOperation.MainAction, mainActionValue != 0);
             _localInput.Buttons.Set(PlayerOperation.Dash, dashValue != 0);
             _localInput.Buttons.Set(PlayerOperation.Pass, passValue != 0);
