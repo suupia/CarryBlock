@@ -73,6 +73,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
                     networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
+                    networkObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(character);
                     
                 });
             var info = playerControllerObj.Info;
