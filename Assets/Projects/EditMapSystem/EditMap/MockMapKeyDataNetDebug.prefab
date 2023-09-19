@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4083379182302277477}
   - component: {fileID: -1599650411451427176}
   m_Layer: 0
-  m_Name: MockMapKeyDataNet
+  m_Name: MockMapKeyDataNetDebug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   mapKeyDataList:
-  - mapKey: 1
+  - mapKey: 5
     index: 1
   - mapKey: 3
     index: 4

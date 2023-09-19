@@ -19,5 +19,6 @@ namespace Carry.CarrySystem.Player.Interfaces
        public new void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter);
        public new void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter);
        public new void SetDashEffectPresenter(DashEffectPresenter presenter);
+       public new void SetReviveEffectPresenter(ReviveEffectPresenter presenter);
     }
 }

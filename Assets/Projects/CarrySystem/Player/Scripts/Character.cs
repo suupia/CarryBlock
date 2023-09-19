@@ -103,5 +103,6 @@ namespace Carry.CarrySystem.Player.Scripts
         // IOnDamageExecutor
         public bool IsFainted => _onDamageExecutor.IsFainted;   
         public void OnRevive() => _onDamageExecutor.OnRevive();
+        public void SetReviveEffectPresenter(ReviveEffectPresenter presenter) => _onDamageExecutor.SetReviveEffectPresenter(presenter);
     }
 }
