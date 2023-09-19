@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using Carry.CarrySystem.Player.Info;
+using Carry.CarrySystem.Player.Scripts;
 
 namespace Carry.CarrySystem.Player.Interfaces
 {
@@ -14,6 +15,8 @@ namespace Carry.CarrySystem.Player.Interfaces
         
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter);
+        
+        public void SetReviveEffectPresenter(ReviveEffectPresenter presenter);
 
     }
 }

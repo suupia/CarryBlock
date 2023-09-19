@@ -21,6 +21,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PlayerCharacterHolder _playerCharacterHolder;
         
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
+        ReviveEffectPresenter? _reviveEffectPresenter;
         
         CancellationTokenSource? _cancellationTokenSource;
 
@@ -87,6 +88,7 @@ namespace Carry.CarrySystem.Player.Scripts
             IsFainted = false;
             _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
             _playerAnimatorPresenter?.Revive();
+            if (_reviveEffectPresenter != null) _reviveEffectPresenter.StartRevive();
         }
         
         float CalcFaintedTime()
@@ -113,6 +115,11 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
             _playerAnimatorPresenter = presenter;
+        }
+        
+        public void SetReviveEffectPresenter(ReviveEffectPresenter presenter)
+        {
+            _reviveEffectPresenter = presenter;
         }
     }
 }
