@@ -27,7 +27,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IPrefabLoader<CarryPlayerControllerNet> _carryPlayerControllerLoader;
         readonly ICarryPlayerFactory _carryPlayerFactory;
         // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などが想定される
-        readonly PlayerCharacterHolder _playerCharacterHolder;
+        readonly PlayerCharacterTransporter _playerCharacterTransporter;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         readonly CarryPlayerContainer _carryPlayerContainer;
         readonly FloorTimerNet _floorTimerNet;
@@ -38,7 +38,7 @@ namespace Carry.CarrySystem.Player.Scripts
             IMapUpdater  mapUpdater ,
             IPrefabLoader<CarryPlayerControllerNet> carryPlayerControllerLoader,
             ICarryPlayerFactory carryPlayerFactory,
-            PlayerCharacterHolder playerCharacterHolder,
+            PlayerCharacterTransporter playerCharacterTransporter,
             PlayerNearCartHandlerNet playerNearCartHandler,
             CarryPlayerContainer carryPlayerContainer,
             FloorTimerNet floorTimerNet
@@ -48,7 +48,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _mapUpdater = mapUpdater;
             _carryPlayerControllerLoader = carryPlayerControllerLoader;
             _carryPlayerFactory = carryPlayerFactory;
-            _playerCharacterHolder  = playerCharacterHolder;
+            _playerCharacterTransporter  = playerCharacterTransporter;
             _playerNearCartHandler = playerNearCartHandler;
             _carryPlayerContainer = carryPlayerContainer;
             _floorTimerNet = floorTimerNet;
@@ -60,7 +60,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var playerController = _carryPlayerControllerLoader.Load();
             
             // ドメインスクリプトをnew
-            var colorType = _playerCharacterHolder.GetPlayerColorType(playerRef);
+            var colorType = _playerCharacterTransporter.GetPlayerColorType(playerRef);
             var character = _carryPlayerFactory.Create(colorType);
             
             // プレハブをスポーン
@@ -68,7 +68,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
-                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType,_mapUpdater, _playerNearCartHandler, _playerCharacterHolder,_floorTimerNet);
+                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType,_mapUpdater, _playerNearCartHandler, _playerCharacterTransporter,_floorTimerNet);
                     networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);

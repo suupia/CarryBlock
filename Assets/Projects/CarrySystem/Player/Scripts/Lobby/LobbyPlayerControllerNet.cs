@@ -15,15 +15,15 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         [SerializeField] GameObject cameraPrefab= null!;
         
-        PlayerCharacterHolder _playerCharacterHolder = null!;  // PlayerColorTypeを次のシーンに保持するために必要
+        PlayerCharacterTransporter _playerCharacterTransporter = null!;  // PlayerColorTypeを次のシーンに保持するために必要
         
         
-        public void Init(ICharacter character, PlayerColorType colorType, PlayerCharacterHolder playerCharacterHolder)
+        public void Init(ICharacter character, PlayerColorType colorType, PlayerCharacterTransporter playerCharacterTransporter)
         {
             Debug.Log($"LobbyPlayerControllerNet.Init(), character = {character}");
             this.Character = character;
             ColorType = colorType;
-            _playerCharacterHolder = playerCharacterHolder;
+            _playerCharacterTransporter = playerCharacterTransporter;
         }
 
         public override void Spawned()
@@ -59,7 +59,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 var afterColor  = (PlayerColorType)(((int)ColorType + 1) % Enum.GetValues(typeof(PlayerColorType)).Length);
 
                 ColorType = afterColor;
-                _playerCharacterHolder.SetColor(Object.InputAuthority, afterColor); // プレイヤーの色を設定して覚えておく
+                _playerCharacterTransporter.SetColor(Object.InputAuthority, afterColor); // プレイヤーの色を設定して覚えておく
 
                 RPC_ChangeNextUnit();
             }

@@ -18,7 +18,7 @@ namespace  Carry.GameSystem.Scripts
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.Register<PlayerCharacterHolder>(Lifetime.Singleton);
+            builder.Register<PlayerCharacterTransporter>(Lifetime.Singleton);
             builder.Register<StageIndexTransporter>(Lifetime.Singleton);
 
         }

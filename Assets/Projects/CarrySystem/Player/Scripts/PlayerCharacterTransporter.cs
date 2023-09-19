@@ -10,7 +10,7 @@ namespace Carry.CarrySystem.Player.Scripts
     /// 他にも保持したい状態があったらこのクラスに追加する
     /// 追加:PlayerRefとPlayerIndexの組を保持する
     /// </summary>
-    public class PlayerCharacterHolder
+    public class PlayerCharacterTransporter
     {
         public  int PlayerCount => _playerIndexDictionary.Count;
         readonly Dictionary<PlayerRef, PlayerColorType> _colorDictionary = new Dictionary<PlayerRef, PlayerColorType>();
