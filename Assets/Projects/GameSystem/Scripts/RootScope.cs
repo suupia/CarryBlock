@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
@@ -18,6 +19,7 @@ namespace  Carry.GameSystem.Scripts
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<PlayerCharacterHolder>(Lifetime.Singleton);
+            builder.Register<StageIndexTransporter>(Lifetime.Singleton);
 
         }
     }

@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Carry.CarrySystem.Map.Scripts;
 using Fusion;
 using Projects.BattleSystem.LobbyScene.Scripts;
 using Projects.NetworkUtility.Inputs.Scripts;
 using Projects.UISystem.UI;
 using TMPro;
 using UnityEngine;
+using VContainer;
+
 #nullable enable
 
 namespace Carry.UISystem.UI.LobbyScene
@@ -18,6 +21,14 @@ namespace Carry.UISystem.UI.LobbyScene
         List<CustomButton> stageButtons = new List<CustomButton>();
         
         [Networked] protected NetworkButtons PreButtons { get; set; }
+
+        StageIndexTransporter _stageIndexTransporter;
+        
+        [Inject]
+        public void Construct(StageIndexTransporter stageIndexTransporter)
+        {
+            _stageIndexTransporter = stageIndexTransporter;
+        }
 
         public override void Spawned()
         {
@@ -32,8 +43,10 @@ namespace Carry.UISystem.UI.LobbyScene
             {
                 var stageButton = stageButtons[i];
                 stageButton.SetText($"Stage {i + 1}");
+                var index = i;
                 stageButton.AddListener(() =>
                 {
+                    _stageIndexTransporter.SetStageIndex(index);
                     lobbyInitializer.TransitionToGameScene();
                 });
             }

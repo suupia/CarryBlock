@@ -3,6 +3,7 @@ using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
+using Carry.UISystem.UI.LobbyScene;
 using Fusion;
 using Projects.BattleSystem.Spawners.Scripts;
 using Projects.Utility.Interfaces;
@@ -35,6 +36,8 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             builder.Register<LobbyPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
             
+            // UI
+            builder.RegisterComponentInHierarchy<SelectStageCanvasUINet>();
             
             builder.RegisterComponentInHierarchy<LobbyInitializer>();
             

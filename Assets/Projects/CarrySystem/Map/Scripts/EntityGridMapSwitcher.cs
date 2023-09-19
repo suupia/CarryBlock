@@ -22,6 +22,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly FloorTimerNet _floorTimerNet;
         readonly EntityGridMapLoader _gridMapLoader;
         readonly MapKeyDataNet _mapKeyDataNet;
+        readonly StageIndexTransporter _stageIndexTransporter;
         readonly IPresenterPlacer _allPresenterPlacer;
         int _currentIndex;
         EntityGridMap? _currentMap;
@@ -34,12 +35,15 @@ namespace Carry.CarrySystem.Map.Scripts
             CartBuilder cartBuilder,
             FloorTimerNet floorTimerNet,
             MapKeyDataNet mapKeyDataNet,
-            IPresenterPlacer allPresenterPlacer)
+            StageIndexTransporter stageIndexTransporter,
+            IPresenterPlacer allPresenterPlacer
+            )
         {
             _gridMapLoader = gridMapGridMapLoader;
             _cartBuilder = cartBuilder;
             _floorTimerNet = floorTimerNet;
             _mapKeyDataNet = mapKeyDataNet;
+            _stageIndexTransporter = stageIndexTransporter;
             _allPresenterPlacer　= allPresenterPlacer;
         }
 
@@ -67,6 +71,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void UpdateMap(MapKey mapKey, int index)
         {
+            Debug.Log($"StageIndex : {_stageIndexTransporter.StageIndex}");
             Debug.Log($"次のフロアに変更します nextIndex: {index}");
             if (index < 0)
             {
