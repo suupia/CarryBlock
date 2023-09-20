@@ -18,7 +18,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     {
         [SerializeField] EditMapCUISave editMapCuiSave = null!;
         [SerializeField] EditMapCUILoad editMapCUILoad = null!;
-        [SerializeField] GameObject hopUpCanvas;
 
         public  string BlockTypeString => _blockType?.Name ?? "(None)";
         public string DirectionString => _direction.ToString();
@@ -122,8 +121,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 }
                 else
                 {
-                    GameObject canvas = Instantiate(hopUpCanvas);
-                    canvas.GetComponent<HopUpCanvasCon>().SetText("Blocks cannot be placed in respawn areas");
+                    FindObjectOfType<HopUpCanvasGenerator>().PopMessage("Blocks cannot be placed in respawn areas");
                 }
             }
 

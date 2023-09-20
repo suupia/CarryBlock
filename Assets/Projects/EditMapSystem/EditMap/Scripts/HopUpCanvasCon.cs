@@ -16,10 +16,10 @@ public class HopUpCanvasCon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DestroyObject();
+        DestroyObject().Forget();
     }
 
-    private async void DestroyObject()
+    private async UniTaskVoid DestroyObject()
     {
         await UniTask.Delay(TimeSpan.FromSeconds(2.0f));
         Destroy(this.gameObject);

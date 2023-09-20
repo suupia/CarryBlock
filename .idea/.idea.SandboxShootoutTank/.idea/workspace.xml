@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cf13caa4-bdd2-49cf-b3d5-bec88d577648" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/MainBaseMoniter/Material/pointer.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MainBaseMoniter/Material/pointer.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SandboxShootoutTank/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SandboxShootoutTank/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/Scripts/EditMapInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/Scripts/EditMapInput.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/Scripts/EditMapInput.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/Scripts/EditMapInput.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/Scripts/HopUpCanvasCon.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/Scripts/HopUpCanvasCon.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMapScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMapScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/i2/I2/Localization/Examples/Resources/ARIAL SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/i2/I2/Localization/Examples/Resources/ARIAL SDF.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +20,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/Scripts/HopUpCanvasCon.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/Scripts/HopUpCanvasGenerator.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
@@ -104,7 +103,7 @@
       <workItem from="1694556095652" duration="4201000" />
       <workItem from="1694731097176" duration="3769000" />
       <workItem from="1695127488419" duration="10002000" />
-      <workItem from="1695201768008" duration="3357000" />
+      <workItem from="1695201768008" duration="5338000" />
     </task>
     <servers />
   </component>
