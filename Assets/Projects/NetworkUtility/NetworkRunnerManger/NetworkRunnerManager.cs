@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using Fusion;
 using Projects.NetworkUtility.Inputs.Scripts;
 using Projects.NetworkUtility.ObjectPool.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
@@ -29,7 +30,8 @@ namespace Projects.NetworkUtility.NetworkRunnerManager.Scripts
                 // Set up NetworkRunner
                 Runner = Instantiate(networkRunner);
                 DontDestroyOnLoad(Runner);
-                Runner.AddCallbacks(new LocalInputPoller());
+                var inputActionMap = InputActionMapLoader.GetInputActionMap();
+                Runner.AddCallbacks(new LocalInputPoller(inputActionMap));
 
                 // Set up SceneMangerDefault
                 var sceneMangerDefault = Instantiate(networkSceneManagerDefault);

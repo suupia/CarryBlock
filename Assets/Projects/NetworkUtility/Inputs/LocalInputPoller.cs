@@ -26,7 +26,6 @@ namespace Projects.NetworkUtility.Inputs.Scripts
     public class LocalInputPoller : INetworkRunnerCallbacks
     {
         NetworkInputData _localInput;
-        readonly InputActionMap _inputActionMap;
 
         readonly InputAction _toggleSelectStageCanvas;
         readonly InputAction _move;
@@ -35,29 +34,20 @@ namespace Projects.NetworkUtility.Inputs.Scripts
         readonly InputAction _pass;
         readonly InputAction _changeUnit;
 
-        public LocalInputPoller()
+        public LocalInputPoller(InputActionMap inputActionMap)
         {
-            //本来はDI的思想で設定したい
-            var loader =
-                new ScriptableObjectLoaderFromAddressable<InputActionAsset>("InputActionAssets/PlayerInputAction");
-            
-            (var inputActionAsset ,var handler) = loader.Load();
-            Assert.IsNotNull(inputActionAsset, "InputActionを設定してください。Pathが間違っている可能性があります");
-
-            _inputActionMap = inputActionAsset.FindActionMap("Default");
-            _inputActionMap.Enable();
+            inputActionMap.Enable();
             
             //本来は以下を適切なタイミングで呼ぶべき
             // _inputActionMap.Disable();
 
-            _toggleSelectStageCanvas = _inputActionMap.FindAction("ToggleSelectStageCanvas");
-            _move = _inputActionMap.FindAction("Move");
-            _mainAction = _inputActionMap.FindAction("MainAction");
-            _dash = _inputActionMap.FindAction("Dash");
-            _pass = _inputActionMap.FindAction("Pass");
-            _changeUnit = _inputActionMap.FindAction("ChangeUnit");
+            _toggleSelectStageCanvas = inputActionMap.FindAction("ToggleSelectStageCanvas");
+            _move = inputActionMap.FindAction("Move");
+            _mainAction = inputActionMap.FindAction("MainAction");
+            _dash = inputActionMap.FindAction("Dash");
+            _pass = inputActionMap.FindAction("Pass");
+            _changeUnit = inputActionMap.FindAction("ChangeUnit");
             
-            loader.Release(handler);
         }
 
 
