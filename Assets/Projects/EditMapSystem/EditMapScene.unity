@@ -1481,6 +1481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   editMapCuiSave: {fileID: 262955259}
   editMapCUILoad: {fileID: 695484811}
+  hopUpCanvas: {fileID: 1179662814340773290, guid: 654ca42347161bb46b74456131f3204e, type: 3}
 --- !u!4 &736475061
 Transform:
   m_ObjectHideFlags: 0

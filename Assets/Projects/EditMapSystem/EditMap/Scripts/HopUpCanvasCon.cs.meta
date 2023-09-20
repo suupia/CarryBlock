@@ -1,12 +1,9 @@
 fileFormatVersion: 2
-guid: dee5dc0438134dbebeb97c2d57b22fb4
+guid: 7b1837815652a444994be4da51c6bb22
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - editMapCuiSave: {instanceID: 0}
-  - editMapCUILoad: {instanceID: 0}
-  - hopUpCanvas: {instanceID: 0}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
