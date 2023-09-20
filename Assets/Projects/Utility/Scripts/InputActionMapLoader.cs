@@ -1,17 +1,28 @@
-﻿using UnityEngine.Assertions;
+﻿using log4net.Util;
+using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
+#nullable enable
 
 namespace Projects.Utility.Scripts
 {
-    public class InputActionMapLoader
+    public static class InputActionMapLoader
     {
-        public InputActionMap InputActionMap { get; private set; }
-        public  InputActionMapLoader()
+        // NetworkRunnerManagerにDIするのがよいが、NetworkRunnerManagerがVContainerに依存するのがいやなので、
+        // InputActionMapLoaderの方をstaticにして、別のところでも使用できるようにする
+        public static InputActionMap GetInputActionMap()
         {
-            Load();
+            if (_inputActionMap == null)
+            {
+                Load();
+            }
+            
+            return _inputActionMap;  
         }
 
-        void Load()
+        static InputActionMap? _inputActionMap;
+        
+
+        static void Load()
         {
             var loader =
                 new ScriptableObjectLoaderFromAddressable<InputActionAsset>("InputActionAssets/PlayerInputAction");
@@ -19,8 +30,8 @@ namespace Projects.Utility.Scripts
             (var inputActionAsset ,var handler) = loader.Load();
             Assert.IsNotNull(inputActionAsset, "InputActionを設定してください。Pathが間違っている可能性があります");
 
-            InputActionMap = inputActionAsset.FindActionMap("Default");
-            // InputActionMap.Enable();
+            _inputActionMap = inputActionAsset.FindActionMap("Default");
+            Assert.IsNotNull(_inputActionMap, "FindActionMap()の引数が間違っている可能性があります");
 
             loader.Release(handler);
         }
