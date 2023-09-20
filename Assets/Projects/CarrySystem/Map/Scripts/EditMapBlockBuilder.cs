@@ -32,7 +32,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var blockPresenters = new List<BlockPresenterNet>();
 
             // BlockPresenterをスポーンさせる
-            for (int i = 0; i < map.GetLength(); i++)
+            for (int i = 0; i < map.Length; i++)
             {
                 var girdPos = map.ToVector(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);

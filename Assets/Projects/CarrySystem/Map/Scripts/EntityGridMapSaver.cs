@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void SaveMap(EntityGridMap map,MapKey key, int mapDataIndex)
         {
-            var mapLength = map.GetLength();
+            var mapLength = map.Length;
             var groundRecords = new GroundRecord[mapLength];
             var rockRecords = new RockRecord[mapLength];
             var basicBlockRecords = new BasicBlockRecord[mapLength];

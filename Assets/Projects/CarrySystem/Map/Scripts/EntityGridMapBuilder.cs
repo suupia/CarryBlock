@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public EntityGridMap BuildEntityGridMap(EntityGridMapData gridMapData)
         {
             var map = new EntityGridMap(gridMapData.width, gridMapData.height);
-            for (int i = 0; i < map.GetLength(); i++)
+            for (int i = 0; i < map.Length; i++)
             {
                 AddEntityFromRecord<Ground, GroundRecord, Ground.Kind>(gridMapData.groundRecords, () => gridMapData.groundRecords?.Length ??0 ,(record) => record.kinds, Ground.Kind.None, map, i );
                 AddEntityFromRecord<BasicBlock, BasicBlockRecord, BasicBlock.Kind>(gridMapData.basicBlockRecords, () =>gridMapData.basicBlockRecords?.Length?? 0, (record) => record.kinds, BasicBlock.Kind.None, map, i );
@@ -37,7 +37,7 @@ namespace Carry.CarrySystem.Map.Scripts
             if (records != null)
             {
                 var kinds = funcKins(records[index]);
-                if (getRecordLength() == map.GetLength())
+                if (getRecordLength() == map.Length)
                 {
                     foreach (var kind in kinds)
                     {

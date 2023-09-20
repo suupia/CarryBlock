@@ -40,7 +40,7 @@ namespace Carry.CarrySystem.Map.Scripts
             map.ClearMap();
 
             // BlockPresenterをスポーンさせる
-            for (int i = 0; i < tmpMap.GetLength(); i++)
+            for (int i = 0; i < tmpMap.Length; i++)
             {
                 var gridPos = tmpMap.ToVector(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(gridPos);

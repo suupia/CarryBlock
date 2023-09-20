@@ -14,15 +14,14 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EntityGridMap : SquareGridMap
     {
-        public int GetLength() => Width * Height;
         List<IEntity>[] _entityMaps;
         readonly IBlockPresenter?[] _blockPresenter;
         
         public EntityGridMap(int width, int height) : base (width, height)
         {
-            _entityMaps = new List<IEntity>[GetLength()];
-            _blockPresenter = new IBlockPresenter?[GetLength()];
-            for (int i = 0; i < GetLength(); i++)
+            _entityMaps = new List<IEntity>[Length];
+            _blockPresenter = new IBlockPresenter?[Length];
+            for (int i = 0; i < Length; i++)
             {
                 _entityMaps[i] = new List<IEntity>();
             }
@@ -38,7 +37,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public EntityGridMap ClearMap()
         {
-            for (int i = 0; i < GetLength(); i++)
+            for (int i = 0; i < Length; i++)
             {
                 _entityMaps[i] = new List<IEntity>();
             }
@@ -69,7 +68,7 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public TEntity? GetSingleEntity<TEntity>(int index) where TEntity : IEntity
         {
-            if (index < 0 || index > GetLength())
+            if (index < 0 || index > Length)
             {
                 Debug.LogError("領域外の値を習得しようとしました");
                 return default(TEntity);
@@ -102,7 +101,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public List<TEntity> GetSingleEntityList<TEntity>(int index) where TEntity : IEntity
         {
             
-            if (index < 0 || index > GetLength())
+            if (index < 0 || index > Length)
             {
                 Debug.LogError("領域外の値を習得しようとしました");
                 return new List<TEntity>(); // 空のリストを返す
@@ -134,7 +133,7 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public IEnumerable<IEntity> GetAllEntityList(int  index)
         {
-            if (index < 0 || index > GetLength())
+            if (index < 0 || index > Length)
             {
                 Debug.LogError("領域外の値を習得しようとしました");
                 return new List<IEntity>(); // 空のリストを返す
@@ -160,7 +159,7 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public void AddEntity<TEntity>(int index, TEntity entity) where TEntity : IEntity
         {
-            if (index < 0 || index > GetLength())
+            if (index < 0 || index > Length)
             {
                 Debug.LogError("領域外に値を設定しようとしました");
                 return;
