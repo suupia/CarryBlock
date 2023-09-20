@@ -1,5 +1,4 @@
-﻿using log4net.Util;
-using UnityEngine.Assertions;
+﻿using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 #nullable enable
 
