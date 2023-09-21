@@ -1,10 +1,9 @@
 ﻿using Carry.CarrySystem.SearchRoute.Scripts;
 using NUnit.Framework;
-using Projects.CarrySystem.SearchRoute.Scripts;
 using UnityEngine;
 using static Carry.CarrySystem.SearchRoute.Scripts.OrderInDirectionArrayContainer;
 
-namespace Projects.CarrySystem.RoutingAlgorithm.Tests
+namespace Carry.CarrySystem.RoutingAlgorithm.Tests
 {
     public class OrderInDirectionArrayTest
     {

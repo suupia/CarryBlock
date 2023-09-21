@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Projects.BattleSystem.Player.Scripts
+namespace Carry.GameSystem.Player.Scripts
 {
     public class CameraFollowTarget : MonoBehaviour
     {

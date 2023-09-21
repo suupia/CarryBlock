@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Projects.Utility.Interfaces
+namespace Carry.Utility.Interfaces
 {
     public interface IPrefabLoader<out T> where T : Object
     {

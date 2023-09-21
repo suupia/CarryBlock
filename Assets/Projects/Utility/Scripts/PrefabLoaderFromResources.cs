@@ -4,9 +4,9 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Object = UnityEngine.Object;
 using Addler.Runtime.Core.LifetimeBinding;
-using Projects.Utility.Interfaces;
+using Carry.Utility.Interfaces;
 
-namespace Projects.Utility.Scripts
+namespace Carry.Utility.Scripts
 {
 
 // Other classes can be created by implementing IPrefabLoader, such as PrefabLoaderFromAssetBundle and PrefabLoaderFromStreamingAssets.

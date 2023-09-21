@@ -6,7 +6,7 @@ using Carry.CarrySystem.SearchRoute.Scripts;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Projects.CarrySystem.RoutingAlgorithm.Tests
+namespace Carry.CarrySystem.RoutingAlgorithm.Tests
 {
     public class WaveletSearchTest
     {
