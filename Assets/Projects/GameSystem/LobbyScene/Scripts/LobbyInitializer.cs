@@ -3,15 +3,15 @@ using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Projects.Utility.Scripts;
-using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
-using Projects.BattleSystem.Scripts;
-using Projects.BattleSystem.Spawners.Scripts;
+using Carry.Utility.Scripts;
+using Carry.NetworkUtility.NetworkRunnerManager.Scripts;
+using Carry.GameSystem.Spawners.Scripts;
+using Carry.GameSystem.Scripts;
 using UnityEngine;
 using VContainer;
 #nullable enable
 
-namespace Projects.BattleSystem.LobbyScene.Scripts
+namespace Carry.GameSystem.LobbyScene.Scripts
 {
     [DisallowMultipleComponent]
     public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft

@@ -4,15 +4,15 @@ using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
 using Carry.UISystem.UI.LobbyScene;
+using Carry.Utility.Interfaces;
+using Carry.Utility.Scripts;
 using Fusion;
-using Projects.BattleSystem.Spawners.Scripts;
-using Projects.Utility.Interfaces;
-using Projects.Utility.Scripts;
+using Carry.GameSystem.Spawners.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Projects.BattleSystem.LobbyScene.Scripts
+namespace Carry.GameSystem.LobbyScene.Scripts
 {
     public sealed class LobbyScope : LifetimeScope
     {

@@ -1,6 +1,6 @@
 using Fusion;
-using Projects.BattleSystem.TitleScene.Scripts;
-using Projects.UISystem.UI;
+using Carry.GameSystem.TitleScene.Scripts;
+using Carry.UISystem.UI;
 using TMPro;
 using UnityEditor;
 using UnityEngine;

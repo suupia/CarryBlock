@@ -2,7 +2,7 @@
 using UnityEngine.InputSystem;
 #nullable enable
 
-namespace Projects.Utility.Scripts
+namespace Carry.Utility.Scripts
 {
     public static class InputActionMapLoader
     {

@@ -9,8 +9,8 @@ using Fusion;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
-using Projects.Utility.Scripts;
+using Carry.NetworkUtility.NetworkRunnerManager.Scripts;
+using Carry.Utility.Scripts;
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
