@@ -40,10 +40,10 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
             
             // Map
-            builder.Register<EditMapBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();
+            builder.Register<EditMapBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();  // ToDo:LobbyなのにEditMapのスクリプトがあるのはまずい
             builder.Register<EntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
             
-            builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>();
+            builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>(); // ToDo:LobbyなのにEditMapのスクリプトがあるのはまずい
             builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<AllPresenterPlacer>(Lifetime.Scoped).As<IPresenterPlacer>();
