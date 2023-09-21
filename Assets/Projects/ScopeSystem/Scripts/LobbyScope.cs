@@ -1,5 +1,8 @@
+using System.Runtime.InteropServices.ComTypes;
 using Carry.CarrySystem.CarryScene.Scripts;
 using Carry.CarrySystem.Cart.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
@@ -35,6 +38,18 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             builder.Register<MainLobbyPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
             builder.Register<LobbyPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
+            
+            // Map
+            builder.Register<EditMapBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();
+            builder.Register<EntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
+            
+            builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>();
+            builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<AllPresenterPlacer>(Lifetime.Scoped).As<IPresenterPlacer>();
+
+            builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
+            builder.Register<LobbyMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
             
             // UI
             builder.RegisterComponentInHierarchy<SelectStageCanvasUINet>();

@@ -22,7 +22,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _carryBlockBuilder = carryBlockBuilder;
         }
 
-        
+         
         public void Place(EntityGridMap map)
         {
             // 以前のTilePresenterを削除

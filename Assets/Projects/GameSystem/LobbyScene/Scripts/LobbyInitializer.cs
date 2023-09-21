@@ -1,4 +1,7 @@
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
+using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
 using Cysharp.Threading.Tasks;
@@ -18,12 +21,18 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
     {
         PlayerSpawner _playerSpawner = null!;
         PlayerCharacterTransporter _playerCharacterTransporter = null!;
+        IMapUpdater _lobbyMapUpdater;
 
         [Inject]
-        public void Construct(PlayerSpawner playerSpawner , PlayerCharacterTransporter playerCharacterTransporter)
+        public void Construct(
+            PlayerSpawner playerSpawner ,
+            PlayerCharacterTransporter playerCharacterTransporter,
+            IMapUpdater lobbyMapUpdater
+            )
         {
             _playerSpawner = playerSpawner;
             _playerCharacterTransporter = playerCharacterTransporter;
+            _lobbyMapUpdater = lobbyMapUpdater;
         }
 
         async void Start()
@@ -31,6 +40,8 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             var runner = FindObjectOfType<NetworkRunner>();
             runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner));
+            
+            _lobbyMapUpdater.InitUpdateMap(MapKey.Default,-1); // -1が初期マップ
 
             if (Runner.IsServer)
             {
