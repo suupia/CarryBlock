@@ -40,15 +40,18 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
             
             // Map
-            builder.Register<EditMapBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();  // ToDo:LobbyなのにEditMapのスクリプトがあるのはまずい
+            // JsonとEntityGridMapに関する処理
             builder.Register<EntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
+            builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             
+            // 対応するプレハブをEntityGridMapを元に生成する
+            builder.Register<EditMapBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();  // ToDo:LobbyなのにEditMapのスクリプトがあるのはまずい
             builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>(); // ToDo:LobbyなのにEditMapのスクリプトがあるのはまずい
             builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<AllPresenterPlacer>(Lifetime.Scoped).As<IPresenterPlacer>();
-
-            builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
+            
+            // IMapUpdater
             builder.Register<LobbyMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
             
             // UI
