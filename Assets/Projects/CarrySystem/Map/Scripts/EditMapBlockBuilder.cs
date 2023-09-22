@@ -4,8 +4,8 @@ using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Fusion;
-using Projects.Utility.Interfaces;
-using Projects.Utility.Scripts;
+using Carry.Utility.Interfaces;
+using Carry.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 #nullable enable

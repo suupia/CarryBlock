@@ -9,8 +9,8 @@ using Fusion;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
-using Projects.Utility.Scripts;
+using Carry.NetworkUtility.NetworkRunnerManager.Scripts;
+using Carry.Utility.Scripts;
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
@@ -24,20 +24,23 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.RegisterComponent(runner);
             
             // Map
+            // JsonとEntityGridMapに関する処理
             builder.Register<EntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
+            builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
+            
+            // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<EditMapBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();
             builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>();
             builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<AllPresenterPlacer>(Lifetime.Scoped).As<IPresenterPlacer>();
 
-
-            builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
-            builder.Register<BlockPlacer>(Lifetime.Scoped);
+            // IMapUpdater
             builder.Register<EditMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
             
             // Input
+            builder.Register<BlockPlacer>(Lifetime.Scoped);
             builder.Register<CUIHandleNumber>(Lifetime.Scoped);
             builder.Register<AutoSaveManager>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<EditMapInput>();

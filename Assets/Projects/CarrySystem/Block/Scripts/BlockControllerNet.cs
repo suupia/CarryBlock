@@ -3,7 +3,7 @@ using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Gimmick.Interfaces;
 using Fusion;
-using Projects.CarrySystem.Block.Info;
+using Carry.CarrySystem.Block.Info;
 using UnityEngine;
 using UnityEngine.Serialization;
 #nullable enable

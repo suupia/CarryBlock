@@ -1,8 +1,8 @@
-﻿using Projects.Utility.Scripts;
-using Projects.Utility.Interfaces;
+﻿using Carry.Utility.Interfaces;
+using Carry.Utility.Scripts;
 using UnityEngine;
 
-namespace Projects.BattleSystem.Spawners.Scripts
+namespace Carry.GameSystem.Spawners.Scripts
 {
     public class ComponentPrefabInstantiate<T> where  T : Component
     {

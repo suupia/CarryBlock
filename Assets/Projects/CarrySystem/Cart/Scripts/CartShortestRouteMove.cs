@@ -8,8 +8,7 @@ using Carry.CarrySystem.SearchRoute.Scripts;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using JetBrains.Annotations;
-using Projects.CarrySystem.Cart.Info;
-using Projects.CarrySystem.SearchRoute.Scripts;
+using Carry.CarrySystem.Cart.Info;
 using UnityEngine;
 using VContainer;
 

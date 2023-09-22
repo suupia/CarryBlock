@@ -8,7 +8,7 @@ using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Fusion;
-using Projects.NetworkUtility.Inputs.Scripts;
+using Carry.NetworkUtility.Inputs.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Info;
 using VContainer;
