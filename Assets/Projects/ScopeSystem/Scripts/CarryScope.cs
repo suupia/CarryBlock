@@ -51,9 +51,9 @@ namespace Carry.ScopeSystem.Scripts
             
             // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<CarryBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();
-            builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>();;
-            builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RegularWallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RegularGroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<CarryPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
             
             // どのマップたちを使うかを決める

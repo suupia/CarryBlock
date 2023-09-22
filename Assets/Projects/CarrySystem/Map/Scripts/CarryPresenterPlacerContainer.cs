@@ -10,14 +10,14 @@ namespace Carry.CarrySystem.Map.Scripts
 
         [Inject]
         public  CarryPresenterPlacerContainer(         
-            IBlockPresenterPlacer blockPresenterPlacer,
-            WallPresenterPlacer wallPresenterPlacer,
-            GroundPresenterPlacer groundPresenterPlacer
+            CarryBlockPresenterPlacer blockPresenterPlacer,
+            RegularWallPresenterPlacer regularWallPresenterPlacer,
+            RegularGroundPresenterPlacer regularGroundPresenterPlacer
             )
         {
             _presenterBuilders.Add(blockPresenterPlacer);
-            _presenterBuilders.Add(wallPresenterPlacer);
-            _presenterBuilders.Add(groundPresenterPlacer);
+            _presenterBuilders.Add(regularWallPresenterPlacer);
+            _presenterBuilders.Add(regularGroundPresenterPlacer);
         }
         
         public void Place(EntityGridMap map)

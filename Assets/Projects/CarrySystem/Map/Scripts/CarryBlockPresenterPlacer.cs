@@ -7,7 +7,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class CarryBlockPresenterPlacer : IBlockPresenterPlacer
+    public class CarryBlockPresenterPlacer : IPresenterPlacer
     {
         [Inject] readonly NetworkRunner _runner;
         readonly IBlockBuilder _carryBlockBuilder;

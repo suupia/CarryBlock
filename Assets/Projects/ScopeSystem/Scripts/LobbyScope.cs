@@ -45,8 +45,8 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
-            builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RegularWallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RegularGroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LobbyPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
             
             // IMapUpdater

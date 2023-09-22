@@ -31,9 +31,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<EditMapBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();
-            builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>();
-            builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RegularWallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RegularGroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<EditMapPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
 
             // IMapUpdater
