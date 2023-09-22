@@ -54,7 +54,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>();;
             builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<AllPresenterPlacer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            builder.Register<CarryPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
             
             // どのマップたちを使うかを決める
             builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();

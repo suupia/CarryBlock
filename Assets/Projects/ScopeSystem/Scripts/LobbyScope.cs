@@ -49,7 +49,7 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>(); // ToDo:LobbyなのにEditMapのスクリプトがあるのはまずい
             builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<AllPresenterPlacer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            builder.Register<CarryPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
             
             // IMapUpdater
             builder.Register<LobbyMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();

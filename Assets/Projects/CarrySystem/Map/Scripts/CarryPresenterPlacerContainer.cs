@@ -4,25 +4,25 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class AllPresenterPlacer : IPresenterPlacer
+    public class CarryPresenterPlacerContainer : IPresenterPlacer
     {
-        List< IPresenterPlacer>presenterBuilders = new List<IPresenterPlacer>();
+        readonly List<IPresenterPlacer>_presenterBuilders = new ();
 
         [Inject]
-        public  AllPresenterPlacer(         
+        public  CarryPresenterPlacerContainer(         
             IBlockPresenterPlacer blockPresenterPlacer,
             WallPresenterPlacer wallPresenterPlacer,
             GroundPresenterPlacer groundPresenterPlacer
             )
         {
-            presenterBuilders.Add(blockPresenterPlacer);
-            presenterBuilders.Add(wallPresenterPlacer);
-            presenterBuilders.Add(groundPresenterPlacer);
+            _presenterBuilders.Add(blockPresenterPlacer);
+            _presenterBuilders.Add(wallPresenterPlacer);
+            _presenterBuilders.Add(groundPresenterPlacer);
         }
         
         public void Place(EntityGridMap map)
         {
-            foreach (var presenterBuilder in presenterBuilders)
+            foreach (var presenterBuilder in _presenterBuilders)
             {
                 presenterBuilder.Place(map);
             }
