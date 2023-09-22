@@ -44,18 +44,24 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
 
 
-            // Serverのドメインスクリプト
             // Map
+            // JsonからEntityGridMapを生成する
             builder.Register<EntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
+            
+            // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<CarryBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();
             builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>();;
             builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<AllPresenterPlacer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            
+            // どのマップたちを使うかを決める
+            builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
+            
+            // IMapUpdater
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
 
-            builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
 
             // Cart
             builder.Register<CartBuilder>(Lifetime.Scoped);
