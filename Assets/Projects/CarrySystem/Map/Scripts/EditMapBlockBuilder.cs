@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.Map.Scripts
     /// <summary>
     /// Spawn BlockPresenterPrefabs depending on the EntityGridMap data.
     /// </summary>
-    public class EditMapBlockBuilder : IBlockBuilder
+    public class EditMapBlockBuilder
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<BlockPresenterNet> _blockPresenterPrefabSpawner;

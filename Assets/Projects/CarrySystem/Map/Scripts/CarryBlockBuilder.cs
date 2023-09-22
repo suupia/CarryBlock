@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class CarryBlockBuilder :  IBlockBuilder
+    public class CarryBlockBuilder
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<BlockPresenterNet> _blockPresenterPrefabSpawner;

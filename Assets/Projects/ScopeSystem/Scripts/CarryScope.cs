@@ -50,7 +50,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
-            builder.Register<CarryBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();
+            builder.Register<CarryBlockBuilder>(Lifetime.Scoped);
             builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
             builder.Register<RegularWallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<RegularGroundPresenterPlacer>(Lifetime.Scoped);
