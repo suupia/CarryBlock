@@ -45,11 +45,9 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
-            builder.Register<EditMapBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();  // ToDo:LobbyなのにEditMapのスクリプトがあるのはまずい
-            builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>(); // ToDo:LobbyなのにEditMapのスクリプトがあるのはまずい
             builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<CarryPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            builder.Register<LobbyPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
             
             // IMapUpdater
             builder.Register<LobbyMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
