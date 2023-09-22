@@ -10,8 +10,8 @@ namespace Carry.CarrySystem.Map.Scripts
 
         [Inject]
         public  LobbyPresenterPlacerContainer(         
-            RegularWallPresenterPlacer regularWallPresenterPlacer,
-            RegularGroundPresenterPlacer regularGroundPresenterPlacer
+            LobbyWallPresenterPlacer regularWallPresenterPlacer,
+            LobbyGroundPresenterPlacer regularGroundPresenterPlacer
         )
         {
             _presenterBuilders.Add(regularWallPresenterPlacer);
