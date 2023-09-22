@@ -18,7 +18,8 @@ namespace Carry.CarrySystem.Cart.Scripts
     public class PlayerNearCartHandlerNet : NetworkBehaviour
     {
         HoldingBlockObserver _holdingBlockObserver =null!;
-        CarryPlayerContainer _carryPlayerContainer = null!;
+        CarryPlayerContainer _carryPlayerContainer = null!; 
+        PlayerFollowMovingCart _playerFollowMovingCart = null!;
         IMapUpdater _mapUpdater = null!;
         
         bool _isCartStarted = false;
@@ -27,11 +28,13 @@ namespace Carry.CarrySystem.Cart.Scripts
         public void Construct(
             HoldingBlockObserver holdingBlockObserver,
             CarryPlayerContainer carryPlayerContainer,
+            PlayerFollowMovingCart playerFollowMovingCart,
             IMapUpdater mapUpdater
             )
         {
             _holdingBlockObserver = holdingBlockObserver;
             _carryPlayerContainer = carryPlayerContainer;
+            _playerFollowMovingCart = playerFollowMovingCart;
             _mapUpdater = mapUpdater;
             
             
@@ -43,6 +46,7 @@ namespace Carry.CarrySystem.Cart.Scripts
                     // すべてのプレイヤーがカートの近くにいれば、カートを動かす
                     if (IsAllPlayerNearCart())
                     {
+                        _playerFollowMovingCart.FollowMovingCart();
                         var cart = FindObjectOfType<CartControllerNet>();
                         cart.StartMove();
                         _isCartStarted = true;
@@ -99,9 +103,9 @@ namespace Carry.CarrySystem.Cart.Scripts
 
             }
             
-            
         }
         #endif
 
     }
+    
 }

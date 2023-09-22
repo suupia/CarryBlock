@@ -71,6 +71,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.RegisterComponentInHierarchy<CartMovementNotifierNet>();
 
             // Handler
+            builder.Register<PlayerFollowMovingCart>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<PlayerNearCartHandlerNet>();
 
             // Initializer
