@@ -12,7 +12,10 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EditMapBlockBuilder : IBlockBuilder
+    /// <summary>
+    /// Spawn BlockPresenterPrefabs depending on the EntityGridMap data.
+    /// </summary>
+    public class EditMapBlockBuilder
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<BlockPresenterNet> _blockPresenterPrefabSpawner;

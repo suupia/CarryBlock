@@ -1,5 +1,8 @@
+using System.Runtime.InteropServices.ComTypes;
 using Carry.CarrySystem.CarryScene.Scripts;
 using Carry.CarrySystem.Cart.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
@@ -35,6 +38,19 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             builder.Register<MainLobbyPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
             builder.Register<LobbyPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
+            
+            // Map
+            // JsonとEntityGridMapに関する処理
+            builder.Register<EntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
+            builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
+            
+            // 対応するプレハブをEntityGridMapを元に生成する
+            builder.Register<LobbyWallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<LobbyGroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<LobbyPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            
+            // IMapUpdater
+            builder.Register<LobbyMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
             
             // UI
             builder.RegisterComponentInHierarchy<SelectStageCanvasUINet>();
