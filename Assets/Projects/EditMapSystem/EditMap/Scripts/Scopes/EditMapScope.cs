@@ -40,7 +40,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<EditMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
             
             // Input
-            builder.Register<BlockPlacer>(Lifetime.Scoped);
+            builder.Register<EditMapBlockAttacher>(Lifetime.Scoped);
             builder.Register<CUIHandleNumber>(Lifetime.Scoped);
             builder.Register<AutoSaveManager>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<EditMapInput>();

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
-    public class BlockPlacer
+    public class EditMapBlockAttacher
     {
         /// <summary>
         /// Addできない場合はnullを返す
