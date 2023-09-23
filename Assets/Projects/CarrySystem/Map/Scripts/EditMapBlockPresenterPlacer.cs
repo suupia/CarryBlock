@@ -10,19 +10,19 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EditMapBlockPresenterPlacer : IBlockPresenterPlacer
+    public class EditMapBlockPresenterPlacer : IPresenterPlacer
     {
         [Inject] readonly NetworkRunner _runner;
-        readonly IBlockBuilder _carryBlockBuilder;
+        readonly EditMapBlockBuilder _carryBlockBuilder;
         IEnumerable<BlockPresenterNet> _blockPresenters =  new List<BlockPresenterNet>();
         
         [Inject]
-        public EditMapBlockPresenterPlacer(IBlockBuilder carryBlockBuilder)
+        public EditMapBlockPresenterPlacer(EditMapBlockBuilder carryBlockBuilder)
         {
             _carryBlockBuilder = carryBlockBuilder;
         }
 
-        
+         
         public void Place(EntityGridMap map)
         {
             // 以前のTilePresenterを削除

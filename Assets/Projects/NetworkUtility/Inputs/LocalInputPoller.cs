@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
-using Projects.Utility.Scripts;
+using Carry.Utility.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Assert = UnityEngine.Assertions.Assert;
 
-namespace Projects.NetworkUtility.Inputs.Scripts
+namespace Carry.NetworkUtility.Inputs.Scripts
 {
     public enum PlayerOperation
     {

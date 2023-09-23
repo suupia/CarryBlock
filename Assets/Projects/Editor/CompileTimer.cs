@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 // 参考サイト：https://techblog.kayac.com/visualize-compile-time
 
-namespace Projects.Utility.Editor
+namespace Carry.Utility.Editor
 {
     public class CompileTimer : EditorWindow
     {

@@ -1,7 +1,7 @@
 ﻿using Carry.CarrySystem.Map.Scripts;
 using Fusion;
-using Projects.Utility.Interfaces;
-using Projects.Utility.Scripts;
+using Carry.Utility.Interfaces;
+using Carry.Utility.Scripts;
 using UnityEngine;
 
 namespace Carry.CarrySystem.Spawners

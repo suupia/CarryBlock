@@ -24,7 +24,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         
         Direction _direction = Direction.Up; 
 
-        BlockPlacer _blockPlacer = null!;
+        EditMapBlockAttacher _editMapBlockAttacher = null!;
         IMapUpdater _editMapUpdater = null!;
 
         CUIState _cuiState = CUIState.Idle;
@@ -42,9 +42,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
 
         [Inject]
-        public void Construct(BlockPlacer blockPlacer, IMapUpdater editMapUpdater)
+        public void Construct(EditMapBlockAttacher editMapBlockAttacher, IMapUpdater editMapUpdater)
         {
-            _blockPlacer = blockPlacer;
+            _editMapBlockAttacher = editMapBlockAttacher;
             _editMapUpdater = editMapUpdater;
         }
 
@@ -117,7 +117,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                             return null!;
                         }))(),
                     };
-                    _blockPlacer.AddBlock(map, mouseGridPosOnGround, block);
+                    _editMapBlockAttacher.AddBlock(map, mouseGridPosOnGround, block);
                 }
                 else
                 {
@@ -134,11 +134,11 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 
                 (_blockType.Name switch
                 {
-                    nameof(BasicBlock) => () => _blockPlacer.RemoveBlock<BasicBlock>(map, mouseGridPosOnGround),
-                    nameof(UnmovableBlock) => () => _blockPlacer.RemoveBlock<UnmovableBlock>(map, mouseGridPosOnGround),
-                    nameof(HeavyBlock) => () => _blockPlacer.RemoveBlock<HeavyBlock>(map, mouseGridPosOnGround),
-                    nameof(FragileBlock) => () => _blockPlacer.RemoveBlock<FragileBlock>(map, mouseGridPosOnGround),
-                    nameof(CannonBlock) => () => _blockPlacer.RemoveBlock<CannonBlock>(map, mouseGridPosOnGround),
+                    nameof(BasicBlock) => () => _editMapBlockAttacher.RemoveBlock<BasicBlock>(map, mouseGridPosOnGround),
+                    nameof(UnmovableBlock) => () => _editMapBlockAttacher.RemoveBlock<UnmovableBlock>(map, mouseGridPosOnGround),
+                    nameof(HeavyBlock) => () => _editMapBlockAttacher.RemoveBlock<HeavyBlock>(map, mouseGridPosOnGround),
+                    nameof(FragileBlock) => () => _editMapBlockAttacher.RemoveBlock<FragileBlock>(map, mouseGridPosOnGround),
+                    nameof(CannonBlock) => () => _editMapBlockAttacher.RemoveBlock<CannonBlock>(map, mouseGridPosOnGround),
                     _ => (Action)(() => Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}") ),
                 })();
             }

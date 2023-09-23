@@ -4,15 +4,18 @@ using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Fusion;
-using Projects.Utility.Interfaces;
-using Projects.Utility.Scripts;
+using Carry.Utility.Interfaces;
+using Carry.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 #nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EditMapBlockBuilder : IBlockBuilder
+    /// <summary>
+    /// Spawn BlockPresenterPrefabs depending on the EntityGridMap data.
+    /// </summary>
+    public class EditMapBlockBuilder
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<BlockPresenterNet> _blockPresenterPrefabSpawner;

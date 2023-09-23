@@ -1,21 +1,22 @@
+using Carry.NetworkUtility.Inputs.Scripts;
+using Carry.NetworkUtility.ObjectPool.Scripts;
+using Carry.Utility.Attributes;
+using Carry.Utility.Scripts;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Projects.NetworkUtility.Inputs.Scripts;
-using Projects.NetworkUtility.ObjectPool.Scripts;
-using Projects.Utility.Scripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
 
-namespace Projects.NetworkUtility.NetworkRunnerManager.Scripts
+namespace Carry.NetworkUtility.NetworkRunnerManager.Scripts
 {
     // 全てのシーンにこれを配置しておけば、NetworkRunnerを使える
 // シーン上にNetworkRunnerがないならインスタンス化し、runner.StartGame()を実行
     public class NetworkRunnerManager : MonoBehaviour
     {
-        [SerializeField] NetworkRunner networkRunner;
-        [SerializeField] NetworkSceneManagerDefault networkSceneManagerDefault;
-        [SerializeField] NetworkObjectPoolDefault networkObjectPoolDefault;
+        [NullCheck][SerializeField] NetworkRunner networkRunner;
+        [NullCheck][SerializeField] NetworkSceneManagerDefault networkSceneManagerDefault;
+        [NullCheck][SerializeField] NetworkObjectPoolDefault networkObjectPoolDefault;
         public NetworkRunner Runner { get; private set; }
 
         public bool IsReady => Runner != null && Runner.SceneManager.IsReady(Runner);

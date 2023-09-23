@@ -2,8 +2,8 @@
 using Carry.CarrySystem.CG.Tsukinowa;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
-using Projects.BattleSystem.Player.Scripts;
-using Projects.NetworkUtility.Inputs.Scripts;
+using Carry.GameSystem.Player.Scripts;
+using Carry.NetworkUtility.Inputs.Scripts;
 using UnityEngine;
 using AbstractNetworkPlayerController = Carry.CarrySystem.Player.Interfaces.AbstractNetworkPlayerController;
 using PlayerInfo = Carry.CarrySystem.Player.Info.PlayerInfo;

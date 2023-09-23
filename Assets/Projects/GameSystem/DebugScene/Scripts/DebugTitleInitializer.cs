@@ -1,10 +1,10 @@
+using Carry.GameSystem.Scripts;
+using Carry.NetworkUtility.NetworkRunnerManager.Scripts;
 using Fusion;
-using Projects.BattleSystem.Scripts;
-using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
 
-namespace Projects.GameSystem.DebugScene.Scripts
+namespace Carry.GameSystem.DebugScene.Scripts
 {
     public class DebugTitleInitializer : MonoBehaviour
     {

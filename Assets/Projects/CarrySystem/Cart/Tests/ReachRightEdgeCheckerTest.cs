@@ -4,8 +4,7 @@ using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using NUnit.Framework;
-using Projects.CarrySystem.RoutingAlgorithm.Tests;
-using Projects.CarrySystem.SearchRoute.Scripts;
+using Carry.CarrySystem.RoutingAlgorithm.Tests;
 using UnityEngine;
 
 public class ReachRightEdgeCheckerTest

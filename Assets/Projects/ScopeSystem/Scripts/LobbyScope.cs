@@ -1,18 +1,21 @@
+using System.Runtime.InteropServices.ComTypes;
 using Carry.CarrySystem.CarryScene.Scripts;
 using Carry.CarrySystem.Cart.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
 using Carry.UISystem.UI.LobbyScene;
+using Carry.Utility.Interfaces;
+using Carry.Utility.Scripts;
 using Fusion;
-using Projects.BattleSystem.Spawners.Scripts;
-using Projects.Utility.Interfaces;
-using Projects.Utility.Scripts;
+using Carry.GameSystem.Spawners.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Projects.BattleSystem.LobbyScene.Scripts
+namespace Carry.GameSystem.LobbyScene.Scripts
 {
     public sealed class LobbyScope : LifetimeScope
     {
@@ -35,6 +38,19 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             builder.Register<MainLobbyPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
             builder.Register<LobbyPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
+            
+            // Map
+            // JsonとEntityGridMapに関する処理
+            builder.Register<EntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
+            builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
+            
+            // 対応するプレハブをEntityGridMapを元に生成する
+            builder.Register<LobbyWallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<LobbyGroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<LobbyPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            
+            // IMapUpdater
+            builder.Register<LobbyMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
             
             // UI
             builder.RegisterComponentInHierarchy<SelectStageCanvasUINet>();
