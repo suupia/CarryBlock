@@ -18,6 +18,7 @@ namespace Carry.UISystem.UI.LobbyScene
     {
         [SerializeField] GameObject viewObject = null!;
         [SerializeField] Transform buttonParent = null!;
+        [SerializeField] CustomButton buttonPrefab;
         List<CustomButton> stageButtons = new List<CustomButton>();
         
         [Networked] protected NetworkButtons PreButtons { get; set; }
@@ -36,7 +37,13 @@ namespace Carry.UISystem.UI.LobbyScene
 
             if (!HasStateAuthority)return;
 
-            stageButtons = buttonParent.GetComponentsInChildren<CustomButton>().ToList();
+            var buttonCount = 5;
+            for (int i = 0; i < buttonCount; i++)
+            {
+                var button = Instantiate(buttonPrefab, buttonParent);
+                button.Init();
+                stageButtons.Add(button);
+            }
             
             var lobbyInitializer = FindObjectOfType<LobbyInitializer>();
             for(int i = 0; i< stageButtons.Count; i++)

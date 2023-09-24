@@ -9,6 +9,8 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         [SerializeField] List<MapKeyDataNet> mapKeyDataNetList = null!;
 
+        public int MapKeyDataNetListCount => mapKeyDataNetList.Count;
+
         public IReadOnlyList<MapKeyData> SelectMapKeyDataList(int index)
         {
             if (index < 0 || index >= mapKeyDataNetList.Count)
