@@ -5,7 +5,7 @@ using System.Text;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using JetBrains.Annotations;
-using Projects.CarrySystem.RoutingAlgorithm.Interfaces;
+using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using UnityEngine;
 
 #nullable enable

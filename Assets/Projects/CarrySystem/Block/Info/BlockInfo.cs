@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 #nullable enable
 
-namespace Projects.CarrySystem.Block.Info
+namespace Carry.CarrySystem.Block.Info
 {
     [Serializable]
     public class BlockInfo

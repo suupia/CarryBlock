@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
@@ -23,11 +24,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         
         Direction _direction = Direction.Up; 
 
-        BlockPlacer _blockPlacer = null!;
+        EditMapBlockAttacher _editMapBlockAttacher = null!;
         IMapUpdater _editMapUpdater = null!;
 
         CUIState _cuiState = CUIState.Idle;
         Type _blockType = null!;
+
+        private Vector2Int _respawnAreaOrigin = new Vector2Int(0,4);
+        private int _respawnSize = 3;
 
         enum CUIState
         {
@@ -38,9 +42,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
 
         [Inject]
-        public void Construct(BlockPlacer blockPlacer, IMapUpdater editMapUpdater)
+        public void Construct(EditMapBlockAttacher editMapBlockAttacher, IMapUpdater editMapUpdater)
         {
-            _blockPlacer = blockPlacer;
+            _editMapBlockAttacher = editMapBlockAttacher;
             _editMapUpdater = editMapUpdater;
         }
 
@@ -70,7 +74,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             });
 
             _blockType = typeof(BasicBlock);
-
+            
         }
 
         void Update()
@@ -85,33 +89,40 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
 
-                var map = _editMapUpdater.GetMap();
-                
-                IBlock block = _blockType.Name switch
+                if (!IsInsideGrid(mouseGridPosOnGround))
                 {
-                    nameof(BasicBlock)  => new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround),
-                    nameof(UnmovableBlock)  => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
-                    nameof(HeavyBlock)  => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
-                    nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
-                    nameof(CannonBlock) =>  ((Func<IBlock>)(() =>
+                    var map = _editMapUpdater.GetMap();
+                
+                    IBlock block = _blockType.Name switch
                     {
-                        var kind = _direction switch
+                        nameof(BasicBlock)  => new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround),
+                        nameof(UnmovableBlock)  => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
+                        nameof(HeavyBlock)  => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
+                        nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
+                        nameof(CannonBlock) =>  ((Func<IBlock>)(() =>
                         {
-                            Direction.Up => CannonBlock.Kind.Up,
-                            Direction.Left => CannonBlock.Kind.Left,
-                            Direction.Down => CannonBlock.Kind.Down,
-                            Direction.Right => CannonBlock.Kind.Right,
-                            _ => throw new ArgumentOutOfRangeException(),
-                        };
-                        return new CannonBlock(kind, mouseGridPosOnGround);
-                    }))(),
-                    _ => ((Func<IBlock>)(() => 
-                    {
-                        Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}");
-                        return null!;
-                    }))(),
-                };
-                _blockPlacer.AddBlock(map, mouseGridPosOnGround, block);
+                            var kind = _direction switch
+                            {
+                                Direction.Up => CannonBlock.Kind.Up,
+                                Direction.Left => CannonBlock.Kind.Left,
+                                Direction.Down => CannonBlock.Kind.Down,
+                                Direction.Right => CannonBlock.Kind.Right,
+                                _ => throw new ArgumentOutOfRangeException(),
+                            };
+                            return new CannonBlock(kind, mouseGridPosOnGround);
+                        }))(),
+                        _ => ((Func<IBlock>)(() => 
+                        {
+                            Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}");
+                            return null!;
+                        }))(),
+                    };
+                    _editMapBlockAttacher.AddBlock(map, mouseGridPosOnGround, block);
+                }
+                else
+                {
+                    FindObjectOfType<HopUpCanvasGenerator>().PopMessage("Blocks cannot be placed in respawn areas");
+                }
             }
 
             if (Input.GetMouseButtonDown(1))
@@ -123,11 +134,11 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 
                 (_blockType.Name switch
                 {
-                    nameof(BasicBlock) => () => _blockPlacer.RemoveBlock<BasicBlock>(map, mouseGridPosOnGround),
-                    nameof(UnmovableBlock) => () => _blockPlacer.RemoveBlock<UnmovableBlock>(map, mouseGridPosOnGround),
-                    nameof(HeavyBlock) => () => _blockPlacer.RemoveBlock<HeavyBlock>(map, mouseGridPosOnGround),
-                    nameof(FragileBlock) => () => _blockPlacer.RemoveBlock<FragileBlock>(map, mouseGridPosOnGround),
-                    nameof(CannonBlock) => () => _blockPlacer.RemoveBlock<CannonBlock>(map, mouseGridPosOnGround),
+                    nameof(BasicBlock) => () => _editMapBlockAttacher.RemoveBlock<BasicBlock>(map, mouseGridPosOnGround),
+                    nameof(UnmovableBlock) => () => _editMapBlockAttacher.RemoveBlock<UnmovableBlock>(map, mouseGridPosOnGround),
+                    nameof(HeavyBlock) => () => _editMapBlockAttacher.RemoveBlock<HeavyBlock>(map, mouseGridPosOnGround),
+                    nameof(FragileBlock) => () => _editMapBlockAttacher.RemoveBlock<FragileBlock>(map, mouseGridPosOnGround),
+                    nameof(CannonBlock) => () => _editMapBlockAttacher.RemoveBlock<CannonBlock>(map, mouseGridPosOnGround),
                     _ => (Action)(() => Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}") ),
                 })();
             }
@@ -195,6 +206,15 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             Left,
             Down,
             Right
+        }
+        
+        bool IsInsideGrid(Vector2Int mouseGridPos)
+        {
+            // 指定した座標がグリッド内にあるかどうかを判定します。
+            bool isInsideX = mouseGridPos.x >= _respawnAreaOrigin.x && mouseGridPos.x < _respawnAreaOrigin.x + _respawnSize;
+            bool isInsideY = mouseGridPos.y >= _respawnAreaOrigin.y && mouseGridPos.y < _respawnAreaOrigin.y + _respawnSize;
+            
+            return isInsideX && isInsideY;
         }
     }
 }

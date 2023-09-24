@@ -6,7 +6,7 @@ using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
-using Projects.CarrySystem.Block.Info;
+using Carry.CarrySystem.Block.Info;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;

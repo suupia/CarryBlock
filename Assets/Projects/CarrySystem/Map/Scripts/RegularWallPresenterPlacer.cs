@@ -11,7 +11,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class WallPresenterPlacer  : IPresenterPlacer
+    public class RegularWallPresenterPlacer  : IPresenterPlacer
     {
         [Inject] NetworkRunner _runner;
         IEnumerable<WallPresenterNet> _tilePresenters = new List<WallPresenterNet>();
@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly int _wallVerticalNum = 2;
 
         [Inject]
-        public WallPresenterPlacer()
+        public RegularWallPresenterPlacer()
         {
         }
 

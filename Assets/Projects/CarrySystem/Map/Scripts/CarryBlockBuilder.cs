@@ -8,15 +8,15 @@ using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners;
 using Fusion;
-using Projects.Utility.Scripts;
-using Projects.Utility;
-using Projects.Utility.Interfaces;
+using Carry.Utility.Scripts;
+using Carry.Utility;
+using Carry.Utility.Interfaces;
 using UnityEngine;
 #nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class CarryBlockBuilder :  IBlockBuilder
+    public class CarryBlockBuilder
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<BlockPresenterNet> _blockPresenterPrefabSpawner;
@@ -40,7 +40,7 @@ namespace Carry.CarrySystem.Map.Scripts
             map.ClearMap();
 
             // BlockPresenterをスポーンさせる
-            for (int i = 0; i < tmpMap.GetLength(); i++)
+            for (int i = 0; i < tmpMap.Length; i++)
             {
                 var gridPos = tmpMap.ToVector(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(gridPos);

@@ -1,11 +1,11 @@
 ﻿using System;
 using Addler.Runtime.Core.LifetimeBinding;
-using Projects.Utility.Interfaces;
+using Carry.Utility.Interfaces;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Object = UnityEngine.Object;
 
-namespace Projects.Utility.Scripts
+namespace Carry.Utility.Scripts
 {
     public class PrefabLoaderFromAddressable<T> : IPrefabLoader<T> where T : Object
     {

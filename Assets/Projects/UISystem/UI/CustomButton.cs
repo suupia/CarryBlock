@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 #nullable enable
 
-namespace Projects.UISystem.UI
+namespace Carry.UISystem.UI
 {
     [RequireComponent(typeof(Button))]
     public class CustomButton : UIBehaviour

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
-using Projects.NetworkUtility.Inputs.Scripts;
+using Carry.NetworkUtility.Inputs.Scripts;
 using UnityEngine;
 
 namespace Carry.CarrySystem.SetActiveTest

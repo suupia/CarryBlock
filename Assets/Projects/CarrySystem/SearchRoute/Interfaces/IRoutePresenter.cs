@@ -1,4 +1,4 @@
-﻿namespace Projects.CarrySystem.RoutingAlgorithm.Interfaces
+﻿namespace Carry.CarrySystem.RoutingAlgorithm.Interfaces
 {
     public interface IRoutePresenter
     {

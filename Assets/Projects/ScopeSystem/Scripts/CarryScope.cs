@@ -9,8 +9,8 @@ using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners;
 using Carry.UISystem.UI.CarryScene;
 using Fusion;
-using Projects.Utility.Interfaces;
-using Projects.Utility.Scripts;
+using Carry.Utility.Interfaces;
+using Carry.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -44,18 +44,24 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
 
 
-            // Serverのドメインスクリプト
             // Map
+            // JsonからEntityGridMapを生成する
             builder.Register<EntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
-            builder.Register<CarryBlockBuilder>(Lifetime.Scoped).As<IBlockBuilder>();
-            builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped).As<IBlockPresenterPlacer>();;
-            builder.Register<WallPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<AllPresenterPlacer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            
+            // 対応するプレハブをEntityGridMapを元に生成する
+            builder.Register<CarryBlockBuilder>(Lifetime.Scoped);
+            builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RegularWallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RegularGroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<CarryPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            
+            // どのマップたちを使うかを決める
+            builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
+            
+            // IMapUpdater
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
 
-            builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
 
             // Cart
             builder.Register<CartBuilder>(Lifetime.Scoped);
