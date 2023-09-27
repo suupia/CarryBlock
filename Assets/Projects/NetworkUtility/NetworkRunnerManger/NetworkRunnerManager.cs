@@ -6,7 +6,7 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
-using Carry.Editor;
+
 
 namespace Carry.NetworkUtility.NetworkRunnerManager.Scripts
 {
@@ -14,9 +14,9 @@ namespace Carry.NetworkUtility.NetworkRunnerManager.Scripts
 // シーン上にNetworkRunnerがないならインスタンス化し、runner.StartGame()を実行
     public class NetworkRunnerManager : MonoBehaviour
     {
-        [NullCheck][SerializeField] NetworkRunner networkRunner;
-        [NullCheck][SerializeField] NetworkSceneManagerDefault networkSceneManagerDefault;
-        [NullCheck][SerializeField] NetworkObjectPoolDefault networkObjectPoolDefault;
+        [SerializeField] NetworkRunner networkRunner;
+        [SerializeField] NetworkSceneManagerDefault networkSceneManagerDefault;
+        [SerializeField] NetworkObjectPoolDefault networkObjectPoolDefault;
         public NetworkRunner Runner { get; private set; }
 
         public bool IsReady => Runner != null && Runner.SceneManager.IsReady(Runner);
