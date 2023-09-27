@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Carry.Utility.Attributes
+namespace  Carry.Editor
 {
     public class NullCheckAttribute : PropertyAttribute
     {
