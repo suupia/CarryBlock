@@ -1,17 +1,8 @@
-﻿#nullable enable
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
-namespace Carry.Utility.Attributes
+namespace Carry.Utility.Editor
 {
-    public class NullCheckAttribute : PropertyAttribute
-    {
-        public NullCheckAttribute()
-        {
-            
-        }
-    }
-    
     [CustomPropertyDrawer(typeof(NullCheckAttribute))]
     public class NullCheckDrawer : PropertyDrawer
     {
