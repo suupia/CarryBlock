@@ -26,7 +26,9 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void Place(EntityGridMap map)
         {
-            var wallPresenterSpawner = new WallPresenterSpawner(_runner);
+            //var wallPresenterSpawner = new WallPresenterSpawner(_runner);
+            var wallPresenterSpawners = new List<WallPresenterSpawner>()
+                {new WallPresenterSpawner1(_runner), new WallPresenterSpawner2(_runner)}
             var wallPresenters = new List<WallPresenterNet>();
 
             // 以前のWallPresenterを削除
@@ -48,6 +50,13 @@ namespace Carry.CarrySystem.Map.Scripts
             }
             
             _tilePresenters = wallPresenters;
+        }
+
+        int DecideWallPresenterType()
+        {
+            var random = new System.Random();
+            var num = random.Next(2);
+            return num;
         }
 
         void DestroyWallPresenter()

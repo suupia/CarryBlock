@@ -22,7 +22,6 @@ namespace Carry.CarrySystem.Map.Scripts
 
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
         [SerializeField] GameObject wall1View = null!;
-        [SerializeField] GameObject wall2View = null!;
 
         public override void Render()
         {
