@@ -6,7 +6,7 @@ using Fusion;
 using Carry.GameSystem.LobbyScene.Scripts;
 using Carry.NetworkUtility.Inputs.Scripts;
 using Carry.UISystem.UI;
-using Carry.Utility.Attributes;
+using Carry.Utility;
 using Carry.Utility.Scripts;
 using TMPro;
 using UnityEngine;
@@ -21,7 +21,7 @@ namespace Carry.UISystem.UI.LobbyScene
     {
         [SerializeField] GameObject viewObject = null!;
         [SerializeField] Transform buttonParent = null!;
-        [NullCheck][SerializeField] CustomButton buttonPrefab;
+        [SerializeField] CustomButton buttonPrefab;
         List<CustomButton> stageButtons = new List<CustomButton>();
         
         [Networked] protected NetworkButtons PreButtons { get; set; }
