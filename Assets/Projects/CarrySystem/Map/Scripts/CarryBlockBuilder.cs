@@ -11,6 +11,7 @@ using Fusion;
 using Carry.Utility.Scripts;
 using Carry.Utility;
 using Carry.Utility.Interfaces;
+using Projects.CarrySystem.Item.Interfaces;
 using UnityEngine;
 #nullable enable
 
@@ -47,18 +48,19 @@ namespace Carry.CarrySystem.Map.Scripts
                 
                 // Presenterの生成
                 var blockPresenterPrefab = _blockPresenterPrefabSpawner.Load();
-                var blockPresenter =  _runner.Spawn(blockPresenterPrefab, worldPos, Quaternion.identity, PlayerRef.None);
+                var entityPresenter =  _runner.Spawn(blockPresenterPrefab, worldPos, Quaternion.identity, PlayerRef.None);
                 
                 // BlockMonoDelegateの生成
                 var getBlocks = tmpMap.GetSingleEntityList<IBlock>(i);
                 var checkedBlocks = CheckBlocks(getBlocks);
-                var blockControllerComponents = blockPresenter.GetComponentsInChildren<BlockControllerNet>();
+                var items = tmpMap.GetSingleEntityList<IItem>(i);
+                var blockControllerComponents = entityPresenter.GetComponentsInChildren<BlockControllerNet>();
                 var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
-                var blockMonoDelegate = new BlockMonoDelegate(_runner, gridPos,checkedBlocks,blockInfos, blockPresenter);  // すべてのマスにBlockMonoDelegateを配置させる
+                var blockMonoDelegate = new BlockMonoDelegate(_runner, gridPos,checkedBlocks,blockInfos,items, entityPresenter);  // すべてのマスにBlockMonoDelegateを配置させる
                 map.AddEntity(i, blockMonoDelegate);
                 
 
-                blockPresenters.Add(blockPresenter);
+                blockPresenters.Add(entityPresenter);
             }
             
             Debug.Log($"blockPresenters.Count : {blockPresenters.Count}");
@@ -67,6 +69,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         }
         
+        // Check if the blocks are the same type.
         List<IBlock> CheckBlocks(List<IBlock> blocks)
         {
             if (!blocks.Any())

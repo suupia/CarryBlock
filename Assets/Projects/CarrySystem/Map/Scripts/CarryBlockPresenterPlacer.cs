@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Fusion;
+using Projects.CarrySystem.Item.Interfaces;
 using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
@@ -51,8 +54,12 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 var blockPresenterNet = blockPresenterNets.ElementAt(i);
 
-                // IBlockMonoDelegateが入っているので、そこからIBlockを取得して渡す
-                blockPresenterNet.SetInitAllEntityActiveData(map.GetSingleEntity<IBlockMonoDelegate>(i).Blocks  );
+                // IBlockMonoDelegateが入っているので、そこからIBlockとIItemを取得して渡す
+                var monoDelegate = map.GetSingleEntity<IBlockMonoDelegate>(i);
+                var blocks = monoDelegate.Blocks.Cast<IEntity>();
+                var items = monoDelegate.Items.Cast<IEntity>();
+                var placeableObject = blocks.Concat(items).ToList();
+                blockPresenterNet.SetInitAllEntityActiveData(placeableObject);
 
                 // mapにTilePresenterを登録
                 map.RegisterTilePresenter(blockPresenterNet, i);
