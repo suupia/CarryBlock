@@ -62,7 +62,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 var cannonBlocks = map.GetSingleEntityList<CannonBlock>(i);
                 cannonBlockRecords[i].kinds = cannonBlocks.Select(x => x.KindValue).ToArray();
                 
-                var treasureCoinBlocks = map.GetSingleEntityList<TreasureCoinBlock>(i);
+                var treasureCoinBlocks = map.GetSingleEntityList<TreasureCoin>(i);
                 treasureCoinRecords[i].kinds = treasureCoinBlocks.Select(x => x.KindValue).ToArray();
             }
 

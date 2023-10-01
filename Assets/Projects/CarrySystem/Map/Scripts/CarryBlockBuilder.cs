@@ -19,21 +19,21 @@ namespace Carry.CarrySystem.Map.Scripts
     public class CarryBlockBuilder
     {
         readonly NetworkRunner _runner;
-        readonly IPrefabLoader<BlockPresenterNet> _blockPresenterPrefabSpawner;
+        readonly IPrefabLoader<EntityPresenterNet> _blockPresenterPrefabSpawner;
 
         public CarryBlockBuilder(NetworkRunner runner)
         {
             _runner = runner;
             _blockPresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<BlockPresenterNet>("Prefabs/Map/BlockPresenter");
+                new PrefabLoaderFromAddressable<EntityPresenterNet>("Prefabs/Map/BlockPresenter");
         }
 
 
         // CarryBuilderと対応させてある。
-        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList< BlockPresenterNet>) Build (ref EntityGridMap map)
+        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList< EntityPresenterNet>) Build (ref EntityGridMap map)
         {
             var blockControllers = new List<BlockControllerNet>();
-            var blockPresenters = new List<BlockPresenterNet>();
+            var blockPresenters = new List<EntityPresenterNet>();
 
             // IBlockをIBlockMonoDelegateに置き換えたマップにする
             var tmpMap = map.CloneMap();  // tmpMapを見て、mapを変更する

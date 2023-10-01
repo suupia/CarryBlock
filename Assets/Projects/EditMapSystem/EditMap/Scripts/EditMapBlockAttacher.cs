@@ -2,6 +2,7 @@
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Interfaces;
+using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.GimmickBlock.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -18,12 +19,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         /// <param name="gridPos"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public void AddBlock<T>(EntityGridMap map , Vector2Int gridPos, T addBlock) where T : IBlock
+        public void AddBlock<T>(EntityGridMap map , Vector2Int gridPos, T addBlock) where T : IEntity
         {
             if (!map.IsInDataRangeArea(gridPos)) return ;
 
             var allEntityList = map.GetAllEntityList(gridPos).ToList();
-            var addedBlockCount = allEntityList.Count(e => e.GetType() == addBlock.GetType());
+            // var addedBlockCount = allEntityList.Count(e => e.GetType() == addBlock.GetType());
+            var addedBlockCount = allEntityList.OfType<IBlock>().Count();
             var groundCount = allEntityList.OfType<Ground>().Count();
             var othersCount = allEntityList.Count() - addedBlockCount - groundCount;
 
@@ -46,7 +48,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         /// <param name="gridPos"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public void RemoveBlock<T>(EntityGridMap map, Vector2Int gridPos) where T : IBlock
+        public void RemoveBlock<T>(EntityGridMap map, Vector2Int gridPos) where T : IEntity
         {
             var entities = map.GetSingleEntityList<T>(gridPos);
             if (!entities.Any()) return ;

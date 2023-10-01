@@ -27,19 +27,19 @@ namespace Carry.CarrySystem.Block.Scripts
          readonly IList<IBlock> _blocks;
          readonly IList<BlockInfo> _blockInfos;
          readonly IBlock? _block;
-         readonly IBlockPresenter _blockPresenter;
+         readonly IEntityPresenter _entityPresenter;
 
          readonly IHighlightExecutor _highLightExecutor;
 
          Vector2Int _gridPosition;
         
-         public BlockMonoDelegate(NetworkRunner runner, Vector2Int gridPos, IList<IBlock> blocks, IList<BlockInfo> blockInfos, IBlockPresenter blockPresenter)
+         public BlockMonoDelegate(NetworkRunner runner, Vector2Int gridPos, IList<IBlock> blocks, IList<BlockInfo> blockInfos, IEntityPresenter entityPresenter)
          {
              _runner = runner;
              _gridPosition = gridPos;
              _blocks = blocks;
              _blockInfos = blockInfos;
-             _blockPresenter = blockPresenter;
+             _entityPresenter = entityPresenter;
              
              _highLightExecutor = new HighlightExecutor(_blockInfos);
         
@@ -67,14 +67,14 @@ namespace Carry.CarrySystem.Block.Scripts
          {
              if(block is IGimmickBlock gimmickBlock) gimmickBlock.StartGimmick(_runner);
              _blocks.Add(block);
-            _blockPresenter.SetBlockActiveData(block, _blocks.Count);
+            _entityPresenter.SetEntityActiveData(block, _blocks.Count);
 
          }
          public void RemoveBlock(IBlock block)
          {
              if(block is IGimmickBlock gimmickBlock) gimmickBlock.EndGimmick(_runner);
              _blocks.Remove(block);
-             _blockPresenter.SetBlockActiveData(block, _blocks.Count);
+             _entityPresenter.SetEntityActiveData(block, _blocks.Count);
 
          }
          

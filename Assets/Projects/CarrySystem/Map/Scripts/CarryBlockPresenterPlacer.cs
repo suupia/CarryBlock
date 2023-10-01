@@ -11,7 +11,7 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         [Inject] readonly NetworkRunner _runner;
         readonly CarryBlockBuilder _carryBlockBuilder;
-        IEnumerable<BlockPresenterNet> _blockPresenters =  new List<BlockPresenterNet>();
+        IEnumerable<EntityPresenterNet> _blockPresenters =  new List<EntityPresenterNet>();
         
         [Inject]
         public CarryBlockPresenterPlacer(CarryBlockBuilder carryBlockBuilder)
@@ -42,10 +42,10 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 _runner.Despawn(blockPresenterNet.Object);
             }
-            _blockPresenters = new List<BlockPresenterNet>();
+            _blockPresenters = new List<EntityPresenterNet>();
         }
         
-        void AttachTilePresenter(IReadOnlyList<BlockPresenterNet> blockPresenterNets , EntityGridMap map)
+        void AttachTilePresenter(IReadOnlyList<EntityPresenterNet> blockPresenterNets , EntityGridMap map)
         {
             for (int i = 0; i < blockPresenterNets.Count(); i++)
             {

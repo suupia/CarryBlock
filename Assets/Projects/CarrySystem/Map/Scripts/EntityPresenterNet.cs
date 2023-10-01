@@ -18,7 +18,7 @@ using UnityEngine.Serialization;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class BlockPresenterNet : NetworkBehaviour, IBlockPresenter
+    public class EntityPresenterNet : NetworkBehaviour, IEntityPresenter
     {
         struct PresentData : INetworkStruct
         {
@@ -132,7 +132,7 @@ namespace Carry.CarrySystem.Map.Scripts
             PresentDataRef.HeavyBlockCount = allEntityList.OfType<HeavyBlock>().Count();
             PresentDataRef.FragileBlockCount = allEntityList.OfType<FragileBlock>().Count();
             PresentDataRef.CannonBlockCount = allEntityList.OfType<CannonBlock>().Count();
-            PresentDataRef.TreasureCoinCount = allEntityList.OfType<TreasureCoinBlock>().Count();
+            PresentDataRef.TreasureCoinCount = allEntityList.OfType<TreasureCoin>().Count();
             PresentDataRef.CannonDirection = allEntityList.OfType<CannonBlock>().FirstOrDefault()?.KindValue switch
             {
                 CannonBlock.Kind.Up => Direction.Up,
@@ -144,10 +144,10 @@ namespace Carry.CarrySystem.Map.Scripts
             };
         }
 
-        public void SetBlockActiveData(IBlock block, int count)
+        public void SetEntityActiveData(IEntity entity, int count)
         {
             // Debug.Log($"BlockPresenterNet.SetBlockActiveData block : {block} count : {count}");
-            switch (block)
+            switch (entity)
             {
                 case BasicBlock _:
                     PresentDataRef.BasicBlockCount = count;
@@ -161,7 +161,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 case FragileBlock _:
                     PresentDataRef.FragileBlockCount = count;
                     break;
-                case TreasureCoinBlock _:
+                case TreasureCoin _:
                     PresentDataRef.TreasureCoinCount = count;
                     break;
                 case CannonBlock cannonBlock:
@@ -177,8 +177,9 @@ namespace Carry.CarrySystem.Map.Scripts
                     };
                     break;
                 default:
-                    throw new System.Exception($"想定外のEntityが渡されました block : {block}");
+                    throw new System.Exception($"想定外のEntityが渡されました block : {entity}");
             }
+            Debug.Log($"BasicBlockCount : {PresentDataRef.BasicBlockCount}");
         }
         
         float CalcRotationAmount(Direction direction)

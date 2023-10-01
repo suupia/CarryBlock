@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
+using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -97,13 +98,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 {
                     var map = _editMapUpdater.GetMap();
                 
-                    IBlock block = _blockType.Name switch
+                    IEntity block = _blockType.Name switch
                     {
                         nameof(BasicBlock)  => new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround),
                         nameof(UnmovableBlock)  => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
                         nameof(HeavyBlock)  => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
                         nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
-                        nameof(TreasureCoinBlock) => new TreasureCoinBlock(TreasureCoinBlock.Kind.Kind1, mouseGridPosOnGround),
+                        nameof(TreasureCoin) => new TreasureCoin(TreasureCoin.Kind.Kind1, mouseGridPosOnGround),
                         nameof(CannonBlock) =>  ((Func<IBlock>)(() =>
                         {
                             var kind = _direction switch
@@ -143,7 +144,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                     nameof(UnmovableBlock) => () => _editMapBlockAttacher.RemoveBlock<UnmovableBlock>(map, mouseGridPosOnGround),
                     nameof(HeavyBlock) => () => _editMapBlockAttacher.RemoveBlock<HeavyBlock>(map, mouseGridPosOnGround),
                     nameof(FragileBlock) => () => _editMapBlockAttacher.RemoveBlock<FragileBlock>(map, mouseGridPosOnGround),
-                    nameof(TreasureCoinBlock) => () => _editMapBlockAttacher.RemoveBlock<TreasureCoinBlock>(map, mouseGridPosOnGround),
+                    nameof(TreasureCoin) => () => _editMapBlockAttacher.RemoveBlock<TreasureCoin>(map, mouseGridPosOnGround),
                     nameof(CannonBlock) => () => _editMapBlockAttacher.RemoveBlock<CannonBlock>(map, mouseGridPosOnGround),
                     _ => (Action)(() => Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}") ),
                 })();
@@ -172,7 +173,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             if(Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
             {
-                _blockType =typeof(TreasureCoinBlock);
+                _blockType =typeof(TreasureCoin);
             }
             
             if(Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))

@@ -8,13 +8,13 @@ namespace Projects.CarrySystem.ItemBlock.Scripts
     [Serializable]
     public record TreasureCoinRecord
     {
-        public TreasureCoinBlock.Kind[] kinds =new TreasureCoinBlock.Kind[5];
+        public TreasureCoin.Kind[] kinds =new TreasureCoin.Kind[5];
     }
     
-    public class TreasureCoinBlock : IItemBlock
+    public class TreasureCoin : IItem
     {
         public Vector2Int GridPosition { get; set; }
-        public TreasureCoinBlock.Kind KindValue { get; }
+        public TreasureCoin.Kind KindValue { get; }
 
 
         public enum Kind
@@ -23,7 +23,7 @@ namespace Projects.CarrySystem.ItemBlock.Scripts
             Kind1,
         }
 
-        public TreasureCoinBlock(TreasureCoinBlock.Kind kind, Vector2Int gridPosition)
+        public TreasureCoin(TreasureCoin.Kind kind, Vector2Int gridPosition)
         {
             KindValue = kind;
             GridPosition = gridPosition;

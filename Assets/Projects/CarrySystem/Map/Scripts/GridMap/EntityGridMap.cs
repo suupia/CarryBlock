@@ -7,6 +7,7 @@ using Carry.CarrySystem.Block.Interfaces;
 using UnityEngine;
 using  Carry.CarrySystem.Map.Interfaces;
 using Fusion.Collections;
+using Projects.CarrySystem.ItemBlock.Interfaces;
 
 #nullable enable
 
@@ -15,12 +16,12 @@ namespace Carry.CarrySystem.Map.Scripts
     public class EntityGridMap : SquareGridMap
     {
         List<IEntity>[] _entityMaps;
-        readonly IBlockPresenter?[] _blockPresenter;
+        readonly IEntityPresenter?[] _blockPresenter;
         
         public EntityGridMap(int width, int height) : base (width, height)
         {
             _entityMaps = new List<IEntity>[Length];
-            _blockPresenter = new IBlockPresenter?[Length];
+            _blockPresenter = new IEntityPresenter?[Length];
             for (int i = 0; i < Length; i++)
             {
                 _entityMaps[i] = new List<IEntity>();
@@ -50,9 +51,9 @@ namespace Carry.CarrySystem.Map.Scripts
             // ToDo :　後で実装する
         }
         
-        public void RegisterTilePresenter(IBlockPresenter blockPresenter, int index)
+        public void RegisterTilePresenter(IEntityPresenter entityPresenter, int index)
         {
-            _blockPresenter[index] = blockPresenter;
+            _blockPresenter[index] = entityPresenter;
         }
 
         //Getter
@@ -177,9 +178,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _entityMaps[index].Add(entity);
 
             // presenter
-            var count =_entityMaps[index].OfType<TEntity>().Count();
-            // Debug.Log($"AddEntity({index}) count:{count}");
-            if (entity is IBlock block) _blockPresenter[index]?.SetBlockActiveData(block, count);
+            CallSetEntityActiveData(entity, index);
         }
 
         
@@ -197,14 +196,29 @@ namespace Carry.CarrySystem.Map.Scripts
             _entityMaps[index].Remove(entity);
 
             // presenter
-            var count = _entityMaps[index].OfType<TEntity>().Count();
-            // Debug.Log($"RemoveEntity({x},{y}) count:{count}");
-            if(entity is IBlock block ) _blockPresenter[index]?.SetBlockActiveData(block, count);
+            CallSetEntityActiveData(entity, index);
+
         }
 
         public void RemoveEntity<TEntity>(Vector2Int vector, TEntity entity) where TEntity : IEntity
         {
             RemoveEntity(vector.x, vector.y, entity);
+        }
+        
+        void CallSetEntityActiveData(IEntity entity , int index)
+        {
+            if (entity is IBlock block)
+            {
+                var count = _entityMaps[index].OfType<IBlock>().Count();
+                // Debug.Log($"AddEntity({index}) count:{count}");
+                _blockPresenter[index]?.SetEntityActiveData(block, count);
+            }
+            if (entity is IItem item)
+            {
+                var count = _entityMaps[index].OfType<IItem>().Count();
+                // Debug.Log($"AddEntity({index}) count:{count}");
+                _blockPresenter[index]?.SetEntityActiveData(item, count);
+            }
         }
 
 
