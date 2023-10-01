@@ -6,7 +6,7 @@ using Fusion;
 
 namespace Carry.CarrySystem.Gimmick.Interfaces
 {
-    public interface IGimmick : IEntity
+    public interface IGimmick : IPlaceable
     {
         public void StartGimmick(NetworkRunner runner);
         public void EndGimmick(NetworkRunner runner);
