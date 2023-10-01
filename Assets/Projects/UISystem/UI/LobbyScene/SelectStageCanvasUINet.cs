@@ -22,8 +22,7 @@ namespace Carry.UISystem.UI.LobbyScene
         [SerializeField] GameObject viewObject = null!;
         [SerializeField] Transform buttonParent = null!;
         [SerializeField] CustomButton buttonPrefab;
-        List<CustomButton> stageButtons = new List<CustomButton>();
-        
+
         [Networked] protected NetworkButtons PreButtons { get; set; }
 
         StageIndexTransporter _stageIndexTransporter;
@@ -42,6 +41,7 @@ namespace Carry.UISystem.UI.LobbyScene
             if (!HasStateAuthority)return;
 
             var buttonCount = 5;
+            var stageButtons = buttonParent.GetComponentsInChildren<CustomButton>().ToList();
             for (int i = 0; i < buttonCount; i++)
             {
                 var button = Instantiate(buttonPrefab, buttonParent);
