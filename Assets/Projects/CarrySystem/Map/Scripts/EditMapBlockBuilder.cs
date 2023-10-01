@@ -18,21 +18,21 @@ namespace Carry.CarrySystem.Map.Scripts
     public class EditMapBlockBuilder
     {
         readonly NetworkRunner _runner;
-        readonly IPrefabLoader<BlockPresenterNet> _blockPresenterPrefabSpawner;
+        readonly IPrefabLoader<EntityPresenterNet> _blockPresenterPrefabSpawner;
 
         public EditMapBlockBuilder(NetworkRunner runner)
         {
             _runner = runner;
             _blockPresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<BlockPresenterNet>("Prefabs/Map/BlockPresenter");
+                new PrefabLoaderFromAddressable<EntityPresenterNet>("Prefabs/Map/BlockPresenter");
         }
 
 
         // CarryBuilderと対応させてある。
-        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList< BlockPresenterNet>) Build (ref EntityGridMap map)
+        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList< EntityPresenterNet>) Build (ref EntityGridMap map)
         {
             var blockControllers = new List<BlockControllerNet>();
-            var blockPresenters = new List<BlockPresenterNet>();
+            var blockPresenters = new List<EntityPresenterNet>();
 
             // BlockPresenterをスポーンさせる
             for (int i = 0; i < map.Length; i++)

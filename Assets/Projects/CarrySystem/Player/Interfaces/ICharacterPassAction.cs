@@ -1,4 +1,5 @@
 ﻿using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.CarriableBlock.Interfaces;
 using Carry.CarrySystem.Player.Info;
 
 namespace Carry.CarrySystem.Player.Interfaces

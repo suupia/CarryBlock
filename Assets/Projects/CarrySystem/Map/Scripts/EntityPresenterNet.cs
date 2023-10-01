@@ -4,19 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
+using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using UnityEngine;
 using Fusion;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
+using Projects.CarrySystem.Item.Scripts;
 using UnityEngine.Serialization;
 
 #nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class BlockPresenterNet : NetworkBehaviour, IBlockPresenter
+    public class EntityPresenterNet : NetworkBehaviour, IEntityPresenter
     {
         struct PresentData : INetworkStruct
         {
@@ -25,6 +27,7 @@ namespace Carry.CarrySystem.Map.Scripts
             public int HeavyBlockCount;
             public int FragileBlockCount;
             public int CannonBlockCount;
+            public int TreasureCoinCount;
             public Direction CannonDirection;
         }
 
@@ -38,6 +41,7 @@ namespace Carry.CarrySystem.Map.Scripts
         [SerializeField] GameObject heavyBlockView = null!;
         [SerializeField] GameObject doubleHeavyBlockView = null!;
         [SerializeField] GameObject fragileBlockView = null!;
+        [SerializeField] GameObject treasureCoinView = null!;
         [SerializeField] GameObject cannonBlockView = null!;
 
         Direction _cannonDirectionLocal;
@@ -96,6 +100,13 @@ namespace Carry.CarrySystem.Map.Scripts
                 _ => throw new InvalidOperationException($"FragileBlockCount : {PresentDataRef.FragileBlockCount}")
             });
             
+            // TreasureCoinBlock
+            treasureCoinView.SetActive(PresentDataRef.TreasureCoinCount switch
+            {
+                1 => true,
+                _ => false
+            });
+            
             // CannonBlock
             cannonBlockView.SetActive(PresentDataRef.CannonBlockCount switch
             {
@@ -121,6 +132,7 @@ namespace Carry.CarrySystem.Map.Scripts
             PresentDataRef.HeavyBlockCount = allEntityList.OfType<HeavyBlock>().Count();
             PresentDataRef.FragileBlockCount = allEntityList.OfType<FragileBlock>().Count();
             PresentDataRef.CannonBlockCount = allEntityList.OfType<CannonBlock>().Count();
+            PresentDataRef.TreasureCoinCount = allEntityList.OfType<TreasureCoin>().Count();
             PresentDataRef.CannonDirection = allEntityList.OfType<CannonBlock>().FirstOrDefault()?.KindValue switch
             {
                 CannonBlock.Kind.Up => Direction.Up,
@@ -132,10 +144,10 @@ namespace Carry.CarrySystem.Map.Scripts
             };
         }
 
-        public void SetBlockActiveData(IBlock block, int count)
+        public void SetEntityActiveData(IEntity entity, int count)
         {
             // Debug.Log($"BlockPresenterNet.SetBlockActiveData block : {block} count : {count}");
-            switch (block)
+            switch (entity)
             {
                 case BasicBlock _:
                     PresentDataRef.BasicBlockCount = count;
@@ -148,6 +160,9 @@ namespace Carry.CarrySystem.Map.Scripts
                     break;
                 case FragileBlock _:
                     PresentDataRef.FragileBlockCount = count;
+                    break;
+                case TreasureCoin _:
+                    PresentDataRef.TreasureCoinCount = count;
                     break;
                 case CannonBlock cannonBlock:
                     Debug.Log($"CannonBlock KindValue : {cannonBlock.KindValue} ");
@@ -162,8 +177,9 @@ namespace Carry.CarrySystem.Map.Scripts
                     };
                     break;
                 default:
-                    throw new System.Exception($"想定外のEntityが渡されました block : {block}");
+                    throw new System.Exception($"想定外のEntityが渡されました block : {entity}");
             }
+            Debug.Log($"BasicBlockCount : {PresentDataRef.BasicBlockCount}");
         }
         
         float CalcRotationAmount(Direction direction)

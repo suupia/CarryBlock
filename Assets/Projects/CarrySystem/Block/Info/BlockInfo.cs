@@ -1,5 +1,6 @@
 ﻿using System;
 using Carry.CarrySystem.Block.Scripts;
+using Carry.CarrySystem.CarriableBlock.Scripts;
 using UnityEngine;
 using UnityEngine.Serialization;
 

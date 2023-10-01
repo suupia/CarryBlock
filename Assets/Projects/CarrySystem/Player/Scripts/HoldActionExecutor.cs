@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.CarriableBlock.Interfaces;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;

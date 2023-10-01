@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.CarriableBlock.Interfaces;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 #nullable  enable
 
-namespace Carry.CarrySystem.Block.Scripts
+namespace Carry.CarrySystem.CarriableBlock.Scripts
 {
     [Serializable]
     public record RockRecord
