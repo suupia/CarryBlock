@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
+using Carry.CarrySystem.CarriableBlock.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Map.Scripts;

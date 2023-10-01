@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.CarriableBlock.Interfaces;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
