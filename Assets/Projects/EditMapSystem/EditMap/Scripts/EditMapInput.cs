@@ -6,6 +6,7 @@ using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
+using Projects.CarrySystem.ItemBlock.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -78,6 +79,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
         }
 
+        // ToDo: Update関数が長くなっているので、分割する
+        // 具体的には、Input.~~は使用せずにInputActionを使用するようにする
         void Update()
         {
             var mouseXYPos = Input.mousePosition; // xy座標であることに注意
@@ -100,6 +103,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                         nameof(UnmovableBlock)  => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
                         nameof(HeavyBlock)  => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
                         nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
+                        nameof(TreasureCoinBlock) => new TreasureCoinBlock(TreasureCoinBlock.Kind.Kind1, mouseGridPosOnGround),
                         nameof(CannonBlock) =>  ((Func<IBlock>)(() =>
                         {
                             var kind = _direction switch
@@ -139,6 +143,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                     nameof(UnmovableBlock) => () => _editMapBlockAttacher.RemoveBlock<UnmovableBlock>(map, mouseGridPosOnGround),
                     nameof(HeavyBlock) => () => _editMapBlockAttacher.RemoveBlock<HeavyBlock>(map, mouseGridPosOnGround),
                     nameof(FragileBlock) => () => _editMapBlockAttacher.RemoveBlock<FragileBlock>(map, mouseGridPosOnGround),
+                    nameof(TreasureCoinBlock) => () => _editMapBlockAttacher.RemoveBlock<TreasureCoinBlock>(map, mouseGridPosOnGround),
                     nameof(CannonBlock) => () => _editMapBlockAttacher.RemoveBlock<CannonBlock>(map, mouseGridPosOnGround),
                     _ => (Action)(() => Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}") ),
                 })();
@@ -167,8 +172,16 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             if(Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
             {
+                _blockType =typeof(TreasureCoinBlock);
+            }
+            
+            if(Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
+            {
                 _blockType =typeof(CannonBlock);
             }
+            
+            
+            
             
             // 方向を切り替える
             if (Input.GetKeyDown(KeyCode.UpArrow))

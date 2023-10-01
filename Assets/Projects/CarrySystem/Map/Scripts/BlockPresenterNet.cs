@@ -11,6 +11,7 @@ using UnityEngine;
 using Fusion;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
+using Projects.CarrySystem.ItemBlock.Scripts;
 using UnityEngine.Serialization;
 
 #nullable enable
@@ -26,6 +27,7 @@ namespace Carry.CarrySystem.Map.Scripts
             public int HeavyBlockCount;
             public int FragileBlockCount;
             public int CannonBlockCount;
+            public int TreasureCoinCount;
             public Direction CannonDirection;
         }
 
@@ -39,6 +41,7 @@ namespace Carry.CarrySystem.Map.Scripts
         [SerializeField] GameObject heavyBlockView = null!;
         [SerializeField] GameObject doubleHeavyBlockView = null!;
         [SerializeField] GameObject fragileBlockView = null!;
+        [SerializeField] GameObject treasureCoinView = null!;
         [SerializeField] GameObject cannonBlockView = null!;
 
         Direction _cannonDirectionLocal;
@@ -97,6 +100,13 @@ namespace Carry.CarrySystem.Map.Scripts
                 _ => throw new InvalidOperationException($"FragileBlockCount : {PresentDataRef.FragileBlockCount}")
             });
             
+            // TreasureCoinBlock
+            treasureCoinView.SetActive(PresentDataRef.TreasureCoinCount switch
+            {
+                1 => true,
+                _ => false
+            });
+            
             // CannonBlock
             cannonBlockView.SetActive(PresentDataRef.CannonBlockCount switch
             {
@@ -122,6 +132,7 @@ namespace Carry.CarrySystem.Map.Scripts
             PresentDataRef.HeavyBlockCount = allEntityList.OfType<HeavyBlock>().Count();
             PresentDataRef.FragileBlockCount = allEntityList.OfType<FragileBlock>().Count();
             PresentDataRef.CannonBlockCount = allEntityList.OfType<CannonBlock>().Count();
+            PresentDataRef.TreasureCoinCount = allEntityList.OfType<TreasureCoinBlock>().Count();
             PresentDataRef.CannonDirection = allEntityList.OfType<CannonBlock>().FirstOrDefault()?.KindValue switch
             {
                 CannonBlock.Kind.Up => Direction.Up,
@@ -149,6 +160,9 @@ namespace Carry.CarrySystem.Map.Scripts
                     break;
                 case FragileBlock _:
                     PresentDataRef.FragileBlockCount = count;
+                    break;
+                case TreasureCoinBlock _:
+                    PresentDataRef.TreasureCoinCount = count;
                     break;
                 case CannonBlock cannonBlock:
                     Debug.Log($"CannonBlock KindValue : {cannonBlock.KindValue} ");
