@@ -85,6 +85,10 @@ MonoBehaviour:
     m_Address: Assets/Projects/EditMapSystem/EditMap/MockMapKeyDataNetDebug.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 4883827d04ed0674fb8e25e2ece5b301
+    m_Address: Prefabs/Items/TreasureCoinBlock
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 405937dcad4604950956d0fac118dce9, type: 2}
   m_SchemaSet:
