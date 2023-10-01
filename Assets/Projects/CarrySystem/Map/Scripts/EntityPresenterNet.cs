@@ -11,7 +11,7 @@ using UnityEngine;
 using Fusion;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
-using Projects.CarrySystem.ItemBlock.Scripts;
+using Projects.CarrySystem.Item.Scripts;
 using UnityEngine.Serialization;
 
 #nullable enable

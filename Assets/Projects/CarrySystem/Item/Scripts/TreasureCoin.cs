@@ -1,9 +1,9 @@
 ﻿using System;
 using Carry.CarrySystem.Block.Scripts;
-using Projects.CarrySystem.ItemBlock.Interfaces;
+using Projects.CarrySystem.Item.Interfaces;
 using UnityEngine;
 
-namespace Projects.CarrySystem.ItemBlock.Scripts
+namespace Projects.CarrySystem.Item.Scripts
 {
     [Serializable]
     public record TreasureCoinRecord

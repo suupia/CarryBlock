@@ -7,7 +7,7 @@ using Carry.CarrySystem.Block.Interfaces;
 using UnityEngine;
 using  Carry.CarrySystem.Map.Interfaces;
 using Fusion.Collections;
-using Projects.CarrySystem.ItemBlock.Interfaces;
+using Projects.CarrySystem.Item.Interfaces;
 
 #nullable enable
 

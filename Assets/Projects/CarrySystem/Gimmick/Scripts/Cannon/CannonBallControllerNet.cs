@@ -5,7 +5,7 @@ using Fusion;
 using UnityEngine;
 #nullable enable
 
-namespace Carry.CarrySystem.GimmickBlock.Scripts
+namespace Carry.CarrySystem.Gimmick.Scripts
 {
     [RequireComponent(typeof(Collider))]
     public class CannonBallControllerNet : NetworkBehaviour

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
-using Projects.CarrySystem.ItemBlock.Scripts;
+using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 #nullable enable
 

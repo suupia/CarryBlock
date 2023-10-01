@@ -2,7 +2,7 @@
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
-using Carry.CarrySystem.GimmickBlock.Interfaces;
+using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
-using Carry.CarrySystem.GimmickBlock.Interfaces;
+using Carry.CarrySystem.Gimmick.Interfaces;
 using Fusion;
 using Carry.CarrySystem.Block.Info;
 using UnityEngine;

@@ -2,7 +2,7 @@
 using UnityEngine;
 #nullable enable
 
-namespace Carry.CarrySystem.GimmickBlock.Scripts
+namespace Carry.CarrySystem.Gimmick.Scripts
 {
     public class CannonBallInfo
     {

@@ -1,13 +1,13 @@
 ﻿using Carry.CarrySystem.Block.Scripts;
 using Carry.Utility.Interfaces;
-using Carry.CarrySystem.GimmickBlock.Scripts;
+using Carry.CarrySystem.Gimmick.Scripts;
 using Fusion;
 using Carry.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 #nullable enable
 
-namespace Carry.CarrySystem.GimmickBlock.Scripts
+namespace Carry.CarrySystem.Gimmick.Scripts
 {
     public class CannonBallBuilder
     {

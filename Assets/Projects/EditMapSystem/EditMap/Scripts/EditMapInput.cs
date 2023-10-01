@@ -7,7 +7,7 @@ using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
-using Projects.CarrySystem.ItemBlock.Scripts;
+using Projects.CarrySystem.Item.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
