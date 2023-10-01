@@ -48,7 +48,7 @@ namespace Carry.CarrySystem.Block.Scripts
              _highLightExecutor = new HighlightExecutor(_blockInfos);
         
              // 最初のStartGimmickの処理
-             foreach (var gimmick in _blocks.OfType<IGimmickBlock>())
+             foreach (var gimmick in _blocks.OfType<IGimmick>())
              {
                  gimmick.StartGimmick(runner);
              }
@@ -57,7 +57,7 @@ namespace Carry.CarrySystem.Block.Scripts
              var blockControllerParent = _blockInfos.First().BlockController.transform.parent;
              blockControllerParent.gameObject.OnDestroyAsObservable().Subscribe(_ =>
              {
-                 foreach (var gimmick in _blocks.OfType<IGimmickBlock>())
+                 foreach (var gimmick in _blocks.OfType<IGimmick>())
                  {
                      gimmick.EndGimmick(runner);
                  }
@@ -69,14 +69,14 @@ namespace Carry.CarrySystem.Block.Scripts
 
          public void AddBlock(IBlock block)
          {
-             if(block is IGimmickBlock gimmickBlock) gimmickBlock.StartGimmick(_runner);
+             if(block is IGimmick gimmickBlock) gimmickBlock.StartGimmick(_runner);
              _blocks.Add(block);
             _entityPresenter.SetEntityActiveData(block, _blocks.Count);
 
          }
          public void RemoveBlock(IBlock block)
          {
-             if(block is IGimmickBlock gimmickBlock) gimmickBlock.EndGimmick(_runner);
+             if(block is IGimmick gimmickBlock) gimmickBlock.EndGimmick(_runner);
              _blocks.Remove(block);
              _entityPresenter.SetEntityActiveData(block, _blocks.Count);
 

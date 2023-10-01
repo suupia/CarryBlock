@@ -33,7 +33,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             // Judge MaxPlacedBlockCount by type.
             if(addBlock is ICarriableBlock carriableBlock && addedBlockCount >= carriableBlock.MaxPlacedBlockCount) return;
-            if(addBlock is IGimmickBlock gimmickBlock && addedBlockCount >= 1) return;
+            if(addBlock is IGimmick gimmickBlock && addedBlockCount >= 1) return;
             
             // If there already exits an another type of block, then return.
             if (othersCount > 0) return;

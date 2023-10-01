@@ -105,17 +105,17 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                         nameof(HeavyBlock)  => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
                         nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
                         nameof(TreasureCoin) => new TreasureCoin(TreasureCoin.Kind.Kind1, mouseGridPosOnGround),
-                        nameof(CannonBlock) =>  ((Func<IBlock>)(() =>
+                        nameof(Cannon) =>  ((Func<IBlock>)(() =>
                         {
                             var kind = _direction switch
                             {
-                                Direction.Up => CannonBlock.Kind.Up,
-                                Direction.Left => CannonBlock.Kind.Left,
-                                Direction.Down => CannonBlock.Kind.Down,
-                                Direction.Right => CannonBlock.Kind.Right,
+                                Direction.Up => Cannon.Kind.Up,
+                                Direction.Left => Cannon.Kind.Left,
+                                Direction.Down => Cannon.Kind.Down,
+                                Direction.Right => Cannon.Kind.Right,
                                 _ => throw new ArgumentOutOfRangeException(),
                             };
-                            return new CannonBlock(kind, mouseGridPosOnGround);
+                            return new Cannon(kind, mouseGridPosOnGround);
                         }))(),
                         _ => ((Func<IBlock>)(() => 
                         {
@@ -145,7 +145,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                     nameof(HeavyBlock) => () => _editMapBlockAttacher.RemoveBlock<HeavyBlock>(map, mouseGridPosOnGround),
                     nameof(FragileBlock) => () => _editMapBlockAttacher.RemoveBlock<FragileBlock>(map, mouseGridPosOnGround),
                     nameof(TreasureCoin) => () => _editMapBlockAttacher.RemoveBlock<TreasureCoin>(map, mouseGridPosOnGround),
-                    nameof(CannonBlock) => () => _editMapBlockAttacher.RemoveBlock<CannonBlock>(map, mouseGridPosOnGround),
+                    nameof(Cannon) => () => _editMapBlockAttacher.RemoveBlock<Cannon>(map, mouseGridPosOnGround),
                     _ => (Action)(() => Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}") ),
                 })();
             }
@@ -178,7 +178,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             if(Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
             {
-                _blockType =typeof(CannonBlock);
+                _blockType =typeof(Cannon);
             }
             
             
