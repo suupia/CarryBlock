@@ -3,7 +3,7 @@ using Fusion;
 
 # nullable enable
 
-namespace Carry.CarrySystem.Gimmick.Interfaces
+namespace Carry.CarrySystem.GimmickBlock.Interfaces
 {
     public interface IGimmickBlock : IBlock
     {
