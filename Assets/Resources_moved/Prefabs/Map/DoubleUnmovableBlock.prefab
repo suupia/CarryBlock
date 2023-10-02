@@ -129,9 +129,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6335748571286557211}
   - component: {fileID: 7973578373173793207}
+  - component: {fileID: 7534419753787928446}
   m_Layer: 0
   m_Name: DoubleUnmovableView
-  m_TagString: Untagged
+  m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -164,10 +165,23 @@ BoxCollider:
   m_GameObject: {fileID: 3805145071249615381}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1.1900415, y: 1.3556347, z: 1.2419493}
   m_Center: {x: 0.026079029, y: 0.6782576, z: 0.025807858}
+--- !u!135 &7534419753787928446
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3805145071249615381}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.44
+  m_Center: {x: 0, y: 0.38, z: 0}
 --- !u!1001 &5077868485038588863
 PrefabInstance:
   m_ObjectHideFlags: 0
