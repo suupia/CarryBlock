@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
+using Carry.CarrySystem.CarriableBlock.Interfaces;
+using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -17,23 +19,21 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         /// <param name="gridPos"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public void AddBlock<T>(EntityGridMap map , Vector2Int gridPos, T addBlock) where T : IBlock
+        public void AddPlaceable<T>(EntityGridMap map , Vector2Int gridPos, T addBlock) where T : IPlaceable
         {
             if (!map.IsInDataRangeArea(gridPos)) return ;
 
             var allEntityList = map.GetAllEntityList(gridPos).ToList();
-            var addedBlockCount = allEntityList.Count(e => e.GetType() == addBlock.GetType());
-            var groundCount = allEntityList.OfType<Ground>().Count();
-            var othersCount = allEntityList.Count() - addedBlockCount - groundCount;
+            var allPlaceableList = allEntityList.OfType<IPlaceable>().ToList();
+            var addPlaceableList = allEntityList.Where(e => e.GetType() == addBlock.GetType());
 
-            Debug.Log($"addedBlockCount:{addedBlockCount} groundCount:{groundCount} othersCount:{othersCount}");
+            // If there already exits an another type of block, then return.
+            if(allPlaceableList.Count() != addPlaceableList.Count()) return;
             
             // Judge MaxPlacedBlockCount by type.
-            if(addBlock is ICarriableBlock carriableBlock && addedBlockCount >= carriableBlock.MaxPlacedBlockCount) return;
-            if(addBlock is IGimmickBlock gimmickBlock && addedBlockCount >= 1) return;
+            if(addBlock is ICarriableBlock carriableBlock && allPlaceableList.OfType<IBlock>().Count() >= carriableBlock.MaxPlacedBlockCount) return;
+            if(addBlock is IGimmick gimmickBlock && allPlaceableList.OfType<IGimmick>().Any()) return;
             
-            // If there already exits an another type of block, then return.
-            if (othersCount > 0) return;
 
             map.AddEntity(gridPos, addBlock);
         }
@@ -45,7 +45,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         /// <param name="gridPos"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public void RemoveBlock<T>(EntityGridMap map, Vector2Int gridPos) where T : IBlock
+        public void RemovePlaceable<T>(EntityGridMap map, Vector2Int gridPos) where T : IPlaceable
         {
             var entities = map.GetSingleEntityList<T>(gridPos);
             if (!entities.Any()) return ;

@@ -20,13 +20,13 @@ namespace Carry.CarrySystem.Block.Scripts
     [Serializable]
     public record CannonBlockRecord
     {
-        public CannonBlock.Kind[] kinds = new CannonBlock.Kind[10];
+        public Cannon.Kind[] kinds = new Cannon.Kind[10];
     }
-    public class CannonBlock : IGimmickBlock
+    public class Cannon : IBlock, IGimmick
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 2;
-        public CannonBlock.Kind KindValue { get; }
+        public Cannon.Kind KindValue { get; }
 
         // CannonBall関連
         readonly float _fireInterval = 4.0f;
@@ -43,7 +43,7 @@ namespace Carry.CarrySystem.Block.Scripts
             Right,
         }
 
-        public CannonBlock(CannonBlock.Kind kind, Vector2Int gridPosition)
+        public Cannon(Cannon.Kind kind, Vector2Int gridPosition)
         {
             KindValue = kind;
             GridPosition = gridPosition;

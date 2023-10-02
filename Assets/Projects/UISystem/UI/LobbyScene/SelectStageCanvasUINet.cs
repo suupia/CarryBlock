@@ -6,6 +6,7 @@ using Fusion;
 using Carry.GameSystem.LobbyScene.Scripts;
 using Carry.NetworkUtility.Inputs.Scripts;
 using Carry.UISystem.UI;
+using Carry.Utility;
 using Carry.Utility.Scripts;
 using TMPro;
 using UnityEngine;
@@ -20,8 +21,8 @@ namespace Carry.UISystem.UI.LobbyScene
     {
         [SerializeField] GameObject viewObject = null!;
         [SerializeField] Transform buttonParent = null!;
-        List<CustomButton> stageButtons = new List<CustomButton>();
-        
+        [SerializeField] CustomButton buttonPrefab;
+
         [Networked] protected NetworkButtons PreButtons { get; set; }
 
         StageIndexTransporter _stageIndexTransporter;
@@ -39,7 +40,14 @@ namespace Carry.UISystem.UI.LobbyScene
 
             if (!HasStateAuthority)return;
 
-            stageButtons = buttonParent.GetComponentsInChildren<CustomButton>().ToList();
+            var buttonCount = 5;
+            var stageButtons = buttonParent.GetComponentsInChildren<CustomButton>().ToList();
+            for (int i = 0; i < buttonCount; i++)
+            {
+                var button = Instantiate(buttonPrefab, buttonParent);
+                button.Init();
+                stageButtons.Add(button);
+            }
             
             var lobbyInitializer = FindObjectOfType<LobbyInitializer>();
             for(int i = 0; i< stageButtons.Count; i++)

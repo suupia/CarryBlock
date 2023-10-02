@@ -34,14 +34,14 @@ namespace Carry.CarrySystem.Cart.Scripts
             _waveletSearchBuilder = waveletSearchBuilder;
             _cartMovementNotifierNet = cartMovementNotifierNet;
             _reachRightEdgeChecker = reachRightEdgeChecker;
-            
+
             entityGridMapSwitcher.RegisterResetAction(() =>
             {
                 IsMapClear = false;
                 ShowAccessibleArea();
             });
         }
-        
+
         public void StopObserve()
         {
             _isHoldSubscription?.Dispose();
@@ -57,24 +57,24 @@ namespace Carry.CarrySystem.Cart.Scripts
             _isHoldSubscription = _playerBlockContainers.ToObservable()
                 .SelectMany(holdAction => holdAction.ObserveEveryValueChanged(h => h.IsHoldingBlock))
                 .Subscribe(_ => ShowAccessibleArea());
-            
         }
-        
 
-        void  ShowAccessibleArea()
+
+        void ShowAccessibleArea()
         {
             Debug.Log("ShowAccessibleArea");
             var map = _mapUpdater.GetMap();
-            Func<int, int, bool> isWall = (x, y) => map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
+            Func<int, int, bool> isWall = (x, y) =>
+                map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
             var waveletSearchExecutor = _waveletSearchBuilder.Build(_mapUpdater.GetMap());
 
             var startPos = new Vector2Int(1, map.Height / 2);
-            var endPos = new Vector2Int(map.Width - 2,  map.Height / 2);
+            var endPos = new Vector2Int(map.Width - 2, map.Height / 2);
             var searcherSize = SearcherSize.SizeThree;
             var accessibleArea = waveletSearchExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
 
             // Show the result
-            if (_reachRightEdgeChecker. CanCartReachRightEdge(accessibleArea, map, searcherSize))
+            if (_reachRightEdgeChecker.CanCartReachRightEdge(accessibleArea, map, searcherSize))
             {
                 if (AllPlayerIsNotHoldingBlock())
                 {
@@ -96,7 +96,7 @@ namespace Carry.CarrySystem.Cart.Scripts
                 IsMapClear = false;
             }
         }
-        
+
 
         bool AllPlayerIsNotHoldingBlock()
         {

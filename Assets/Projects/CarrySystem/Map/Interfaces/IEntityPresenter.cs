@@ -5,8 +5,8 @@ using Carry.CarrySystem.Map.Scripts;
 
 namespace Carry.CarrySystem.Map.Interfaces
 {
-    public interface IBlockPresenter
+    public interface IEntityPresenter
     {
-        public void SetBlockActiveData(IBlock block, int count);
+        public void SetEntityActiveData(IEntity entity, int count);
     }
 }

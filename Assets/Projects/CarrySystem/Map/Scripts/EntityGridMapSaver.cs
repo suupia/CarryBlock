@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Carry.CarrySystem.Block.Scripts;
+using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Spawners;
+using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 
 #nullable enable
@@ -27,6 +29,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var heavyBlockRecords = new HeavyBlockRecord[mapLength];
             var fragileBlockRecords = new FragileBlockRecord[mapLength];
             var cannonBlockRecords = new CannonBlockRecord[mapLength];
+            var treasureCoinRecords = new TreasureCoinRecord[mapLength];
             
             for (int i = 0; i < mapLength; i++)
             {
@@ -36,6 +39,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 heavyBlockRecords[i] = new HeavyBlockRecord();
                 fragileBlockRecords[i] = new FragileBlockRecord();
                 cannonBlockRecords[i] = new CannonBlockRecord();
+                treasureCoinRecords[i] = new TreasureCoinRecord();
             }
 
             for (int i = 0; i < mapLength; i++)
@@ -55,8 +59,11 @@ namespace Carry.CarrySystem.Map.Scripts
                 var fragileBlocks = map.GetSingleEntityList<FragileBlock>(i);
                 fragileBlockRecords[i].kinds = fragileBlocks.Select(x => x.KindValue).ToArray();
                 
-                var cannonBlocks = map.GetSingleEntityList<CannonBlock>(i);
+                var cannonBlocks = map.GetSingleEntityList<Cannon>(i);
                 cannonBlockRecords[i].kinds = cannonBlocks.Select(x => x.KindValue).ToArray();
+                
+                var treasureCoinBlocks = map.GetSingleEntityList<TreasureCoin>(i);
+                treasureCoinRecords[i].kinds = treasureCoinBlocks.Select(x => x.KindValue).ToArray();
             }
 
             // 保存するデータの作成
@@ -69,6 +76,7 @@ namespace Carry.CarrySystem.Map.Scripts
             entityGridMapData.heavyBlockRecords = heavyBlockRecords;
             entityGridMapData.fragileBlockRecords = fragileBlockRecords;
             entityGridMapData.cannonBlockRecords = cannonBlockRecords;
+            entityGridMapData.treasureCoinRecords = treasureCoinRecords;
 
             Save(entityGridMapData,key, mapDataIndex);
         }
