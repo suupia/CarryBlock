@@ -5,6 +5,6 @@ namespace Projects.CarrySystem.Item.Interfaces
 {
     public interface IItem : IPlaceable
     {
-        
+        public void OnGained();
     }
 }

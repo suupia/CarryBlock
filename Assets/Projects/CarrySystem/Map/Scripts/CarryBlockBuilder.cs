@@ -12,7 +12,10 @@ using Carry.Utility.Scripts;
 using Carry.Utility;
 using Carry.Utility.Interfaces;
 using Projects.CarrySystem.Item.Interfaces;
+using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
+using VContainer;
+
 #nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
@@ -20,11 +23,14 @@ namespace Carry.CarrySystem.Map.Scripts
     public class CarryBlockBuilder
     {
         readonly NetworkRunner _runner;
+        readonly TreasureCoinCounter _treasureCoinCounter;
         readonly IPrefabLoader<EntityPresenterNet> _blockPresenterPrefabSpawner;
 
-        public CarryBlockBuilder(NetworkRunner runner)
+        [Inject]
+        public CarryBlockBuilder(NetworkRunner runner, TreasureCoinCounter treasureCoinCounter)
         {
             _runner = runner;
+            _treasureCoinCounter = treasureCoinCounter;
             _blockPresenterPrefabSpawner =
                 new PrefabLoaderFromAddressable<EntityPresenterNet>("Prefabs/Map/BlockPresenter");
         }
@@ -54,9 +60,13 @@ namespace Carry.CarrySystem.Map.Scripts
                 var getBlocks = tmpMap.GetSingleEntityList<IBlock>(i);
                 var checkedBlocks = CheckBlocks(getBlocks);
                 var items = tmpMap.GetSingleEntityList<IItem>(i);
+                // get blockInfos from blockController
                 var blockControllerComponents = entityPresenter.GetComponentsInChildren<BlockControllerNet>();
                 var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
-                var blockMonoDelegate = new BlockMonoDelegate(_runner, gridPos,checkedBlocks,blockInfos,items, entityPresenter);  // すべてのマスにBlockMonoDelegateを配置させる
+                // get itemInfos from blockController
+                var itemControllerComponents = entityPresenter.GetComponentsInChildren<ItemControllerNet>();
+                var itemInfos = itemControllerComponents.Select(c => c.Info).ToList();
+                var blockMonoDelegate = new BlockMonoDelegate(_runner, gridPos,checkedBlocks,blockInfos,items,itemInfos, entityPresenter);  // すべてのマスにBlockMonoDelegateを配置させる
                 map.AddEntity(i, blockMonoDelegate);
                 
 

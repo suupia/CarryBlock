@@ -2,7 +2,7 @@
 using Carry.CarrySystem.Block.Scripts;
 using Projects.CarrySystem.Item.Interfaces;
 using UnityEngine;
-
+#nullable enable
 namespace Projects.CarrySystem.Item.Scripts
 {
     [Serializable]
@@ -16,17 +16,23 @@ namespace Projects.CarrySystem.Item.Scripts
         public Vector2Int GridPosition { get; set; }
         public TreasureCoin.Kind KindValue { get; }
 
-
+        readonly TreasureCoinCounter _counter;
         public enum Kind
         {
             None,
             Kind1,
         }
 
-        public TreasureCoin(TreasureCoin.Kind kind, Vector2Int gridPosition)
+        public TreasureCoin(TreasureCoin.Kind kind, Vector2Int gridPosition, TreasureCoinCounter counter)
         {
             KindValue = kind;
             GridPosition = gridPosition;
+            _counter = counter;
+        }
+        
+        public void OnGained()
+        {
+            _counter.Add(1);
         }
 
     }
