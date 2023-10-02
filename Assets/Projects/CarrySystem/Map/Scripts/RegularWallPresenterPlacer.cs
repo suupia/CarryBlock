@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
@@ -28,7 +29,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             //var wallPresenterSpawner = new WallPresenterSpawner(_runner);
             var wallPresenterSpawners = new List<WallPresenterSpawner>()
-                {new WallPresenterSpawner1(_runner), new WallPresenterSpawner2(_runner)}
+                { new WallPresenterSpawner(_runner), new WallPresenterSpawner(_runner) };
             var wallPresenters = new List<WallPresenterNet>();
 
             // 以前のWallPresenterを削除
@@ -43,6 +44,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 if (map.IsInDataRangeArea(convertedGridPos)) continue;
                 if (IsNotPlacingBlock(map, convertedGridPos)) continue;
                 var worldPos = GridConverter.GridPositionToWorldPosition(convertedGridPos);
+                var wallPresenterSpawner = DecideWallPresenterType(wallPresenterSpawners);
                 var wallPresenter = wallPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 wallPresenters.Add(wallPresenter);
                 
@@ -52,11 +54,10 @@ namespace Carry.CarrySystem.Map.Scripts
             _tilePresenters = wallPresenters;
         }
 
-        int DecideWallPresenterType()
+        IWallPresenterSpawner DecideWallPresenterType(List<WallPresenterSpawner> wallPresenterSpawners)
         {
             var random = new System.Random();
-            var num = random.Next(2);
-            return num;
+            return wallPresenterSpawners[random.Next(2)];
         }
 
         void DestroyWallPresenter()

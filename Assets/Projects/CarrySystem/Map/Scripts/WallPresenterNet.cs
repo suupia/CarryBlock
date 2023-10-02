@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
@@ -26,10 +27,10 @@ namespace Carry.CarrySystem.Map.Scripts
         public override void Render()
         {
             // PresentDataRefの状態を監視して、見た目を変える
-            Random random = new Random();
+            /*Random random = new Random();
             int WallType = random.Next(2);
             wall1View.SetActive(WallType == 0);
-            wall2View.SetActive(WallType == 1);
+            wall2View.SetActive(WallType == 1);*/
         }
 
 
