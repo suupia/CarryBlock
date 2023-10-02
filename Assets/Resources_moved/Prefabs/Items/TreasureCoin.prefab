@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 303809037212723409}
   m_Layer: 0
   m_Name: TreasureCoinView
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: -8152286633096479497}
   m_Layer: 0
   m_Name: TreasureCoin
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
