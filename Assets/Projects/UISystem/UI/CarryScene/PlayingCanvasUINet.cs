@@ -17,8 +17,10 @@ namespace Carry.UISystem.UI.CarryScene
  // NetworkObject must be attached to the parent of this script.
         [SerializeField] TextMeshProUGUI floorNumberText;  // 現在のフロア数
         [SerializeField] TextMeshProUGUI floorTimerText;
+        [SerializeField] TextMeshProUGUI cointTotalText;
         [SerializeField] Image floorTimerImage;
         [Networked] int FloorNumber { get; set; }
+        [Networked] int CoinTotal { get; set; }
         
         FloorTimerNet _floorTimerNet;
         IMapUpdater _mapUpdater;
@@ -47,6 +49,7 @@ namespace Carry.UISystem.UI.CarryScene
             var remainingTime = _floorTimerNet.FloorRemainingSeconds;
             floorNumberText.text = $"{FloorNumber} F";
             floorTimerText.text = $"Time : {Mathf.Floor(remainingTime)}";
+            cointTotalText.text = $"Coin : {CoinTotal}";
 
             floorTimerImage.fillAmount = remainingTime / _floorTimerNet.FloorLimitSeconds;
         }
