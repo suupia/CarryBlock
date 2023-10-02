@@ -117,6 +117,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  itemViewObj: {fileID: 1088784092791101167}
+  info:
+    itemType: 1
 --- !u!1001 &8752524188137871391
 PrefabInstance:
   m_ObjectHideFlags: 0

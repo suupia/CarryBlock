@@ -11,6 +11,7 @@ using Carry.UISystem.UI.CarryScene;
 using Fusion;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
+using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -69,6 +70,9 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<WaveletSearchBuilder>(Lifetime.Scoped);
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
             builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
+            
+            //Item
+            builder.Register<TreasureCoinCounter>(Lifetime.Scoped);
 
             // UI
             builder.RegisterComponentInHierarchy<FloorTimerNet>();
