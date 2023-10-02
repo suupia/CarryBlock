@@ -32,9 +32,21 @@ namespace Carry.CarrySystem.Map.Scripts
                 AddEntityFromRecord<HeavyBlock, HeavyBlockRecord, HeavyBlock.Kind>(gridMapData.heavyBlockRecords, () => gridMapData.heavyBlockRecords?.Length?? 0, (record) => record.kinds, HeavyBlock.Kind.None, map, i );
                 AddEntityFromRecord<FragileBlock, FragileBlockRecord, FragileBlock.Kind>(gridMapData.fragileBlockRecords, () => gridMapData.fragileBlockRecords?.Length ?? 0, (record) => record.kinds, FragileBlock.Kind.None, map, i );
                 AddEntityFromRecord<Cannon, CannonBlockRecord, Cannon.Kind>(gridMapData.cannonBlockRecords, () => gridMapData.cannonBlockRecords?.Length ?? 0, (record) => record.kinds, Cannon.Kind.None, map, i );
-                // AddEntityFromRecord<TreasureCoin, TreasureCoinRecord, TreasureCoin.Kind>(gridMapData.treasureCoinRecords, () => gridMapData.treasureCoinRecords?.Length ?? 0, (record) => record.kinds, TreasureCoin.Kind.None, map, i );
-                var treasureCoin = new TreasureCoin(TreasureCoin.Kind.Kind1, map.ToVector(i), null);
-                map.AddEntity(i, treasureCoin);
+               
+                // TreasureCoin
+                if (gridMapData.treasureCoinRecords != null)
+                {
+                    var kinds = gridMapData.treasureCoinRecords[i].kinds;
+                    foreach (var kind in kinds)
+                    {
+                        if (!kind.Equals(TreasureCoin.Kind.None))
+                        {
+                            // This will create a new entity
+                            var item = new TreasureCoin(kind, map.ToVector(i), new TreasureCoinCounter());
+                            map.AddEntity(i, item);
+                        }
+                    }
+                }
             }
 
             return map;

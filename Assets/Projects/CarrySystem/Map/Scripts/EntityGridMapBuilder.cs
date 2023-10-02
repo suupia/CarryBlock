@@ -26,6 +26,8 @@ namespace Carry.CarrySystem.Map.Scripts
                 AddEntityFromRecord<HeavyBlock, HeavyBlockRecord, HeavyBlock.Kind>(gridMapData.heavyBlockRecords, () => gridMapData.heavyBlockRecords?.Length?? 0, (record) => record.kinds, HeavyBlock.Kind.None, map, i );
                 AddEntityFromRecord<FragileBlock, FragileBlockRecord, FragileBlock.Kind>(gridMapData.fragileBlockRecords, () => gridMapData.fragileBlockRecords?.Length ?? 0, (record) => record.kinds, FragileBlock.Kind.None, map, i );
                 AddEntityFromRecord<Cannon, CannonBlockRecord, Cannon.Kind>(gridMapData.cannonBlockRecords, () => gridMapData.cannonBlockRecords?.Length ?? 0, (record) => record.kinds, Cannon.Kind.None, map, i );
+               
+                // TreasureCoin
                 if (gridMapData.treasureCoinRecords != null)
                 {
                     var kinds = gridMapData.treasureCoinRecords[i].kinds;

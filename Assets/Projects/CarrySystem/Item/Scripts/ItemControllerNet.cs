@@ -1,4 +1,5 @@
-﻿using Fusion;
+﻿using Carry.CarrySystem.Map.Scripts;
+using Fusion;
 using UnityEngine;
 
 namespace Projects.CarrySystem.Item.Scripts
@@ -15,10 +16,9 @@ namespace Projects.CarrySystem.Item.Scripts
             
         }
         
-        public void OnGain()
+        public void OnGained()
         {
-            Debug.Log($"Gain Item {gameObject.name} pos:{transform.position}");
-            Debug.Log($"Gain Item info.ItemType :{info.ItemType}");
+            var gridPos = GridConverter.WorldPositionToGridPosition(gameObject.transform.position);
         }
     }
 }

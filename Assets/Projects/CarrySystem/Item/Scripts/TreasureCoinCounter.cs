@@ -1,4 +1,6 @@
 ﻿#nullable enable
+using UnityEngine;
+
 namespace Projects.CarrySystem.Item.Scripts
 {
     public class TreasureCoinCounter
@@ -8,6 +10,7 @@ namespace Projects.CarrySystem.Item.Scripts
         public void Add(int count)
         {
             Count += count;
+            Debug.Log($"Count: {Count}");
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Carry.CarrySystem.Cart.Scripts
                     Debug.LogWarning($"itemController is null");
                     return;
                 }
-                itemController.OnGain();
+                itemController.OnGained();
             }
             
         }
