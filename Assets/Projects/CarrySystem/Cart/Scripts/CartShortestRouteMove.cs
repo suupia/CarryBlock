@@ -17,6 +17,7 @@ namespace Carry.CarrySystem.Cart.Scripts
 {
     public class CartShortestRouteMove
     {
+        public bool IsMoving { get; private set; } = false;
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
         EntityGridMap? _map; // このクラスはMapを登録して使用する (コンストラクタでIMapUpdaterを受け取らない)
         IMapUpdater? _mapUpdater;
@@ -105,6 +106,7 @@ namespace Carry.CarrySystem.Cart.Scripts
 
         async UniTaskVoid Move(List<Vector2Int> routes)
         {
+            IsMoving = true;
             var beforeGridPos = routes.First();
             foreach (var route in routes)
             {
@@ -120,6 +122,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             if (_mapUpdater != null)
             {
                 _mapUpdater.UpdateMap(MapKey.Default, _mapUpdater.Index + 1);  // ToDo : 現時点では引数は使われていないので適当でよい
+                IsMoving = false;
             }
             else
             {
