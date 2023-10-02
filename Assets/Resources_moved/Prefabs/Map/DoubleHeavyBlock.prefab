@@ -153,8 +153,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   blockViewObj: {fileID: 2478132344785946946}
-  _info:
-    _blockType: 3
+  info:
+    blockType: 3
 --- !u!114 &5388587707438105925
 MonoBehaviour:
   m_ObjectHideFlags: 0

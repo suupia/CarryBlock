@@ -11,7 +11,7 @@ namespace Carry.CarrySystem.Block.Info
     [Serializable]
     public class BlockInfo
     {
-        [FormerlySerializedAs("_blockType")] [SerializeField] BlockTypeEnum blockType;
+        [SerializeField] BlockTypeEnum blockType;
         [NonSerialized] public BlockMaterialSetter BlockMaterialSetter = null!;
         [NonSerialized] public GameObject BlockViewObj = null!;
         [NonSerialized] public BlockControllerNet BlockController = null!;
