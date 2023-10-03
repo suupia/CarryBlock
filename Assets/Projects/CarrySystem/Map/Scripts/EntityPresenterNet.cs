@@ -131,14 +131,14 @@ namespace Carry.CarrySystem.Map.Scripts
             PresentDataRef.UnmovableBlockCount = allEntityList.OfType<UnmovableBlock>().Count();
             PresentDataRef.HeavyBlockCount = allEntityList.OfType<HeavyBlock>().Count();
             PresentDataRef.FragileBlockCount = allEntityList.OfType<FragileBlock>().Count();
-            PresentDataRef.CannonBlockCount = allEntityList.OfType<Cannon>().Count();
+            PresentDataRef.CannonBlockCount = allEntityList.OfType<CannonBlock>().Count();
             PresentDataRef.TreasureCoinCount = allEntityList.OfType<TreasureCoin>().Count();
-            PresentDataRef.CannonDirection = allEntityList.OfType<Cannon>().FirstOrDefault()?.KindValue switch
+            PresentDataRef.CannonDirection = allEntityList.OfType<CannonBlock>().FirstOrDefault()?.KindValue switch
             {
-                Cannon.Kind.Up => Direction.Up,
-                Cannon.Kind.Left => Direction.Left,
-                Cannon.Kind.Down => Direction.Down,
-                Cannon.Kind.Right => Direction.Right,
+                CannonBlock.Kind.Up => Direction.Up,
+                CannonBlock.Kind.Left => Direction.Left,
+                CannonBlock.Kind.Down => Direction.Down,
+                CannonBlock.Kind.Right => Direction.Right,
                 null => Direction.Up,  // 存在しない場合は上向きにしておく
                 _ => throw new InvalidOperationException()
             };
@@ -164,15 +164,15 @@ namespace Carry.CarrySystem.Map.Scripts
                 case TreasureCoin _:
                     PresentDataRef.TreasureCoinCount = count;
                     break;
-                case Cannon cannonBlock:
+                case CannonBlock cannonBlock:
                     Debug.Log($"CannonBlock KindValue : {cannonBlock.KindValue} ");
                     PresentDataRef.CannonBlockCount = count;
                     PresentDataRef.CannonDirection = cannonBlock.KindValue switch
                     {
-                        Cannon.Kind.Up => Direction.Up,
-                        Cannon.Kind.Left => Direction.Left,
-                        Cannon.Kind.Down => Direction.Down,
-                        Cannon.Kind.Right => Direction.Right,
+                        CannonBlock.Kind.Up => Direction.Up,
+                        CannonBlock.Kind.Left => Direction.Left,
+                        CannonBlock.Kind.Down => Direction.Down,
+                        CannonBlock.Kind.Right => Direction.Right,
                         _ => throw new System.Exception($"想定外のCannonBlock.Kindが渡されました cannonBlock.KindValue : {cannonBlock.KindValue}")
                     };
                     break;
