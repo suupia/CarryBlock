@@ -6,7 +6,8 @@ using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
-using Projects.CarrySystem.Block.Info;
+using Carry.CarrySystem.Block.Info;
+using Projects.CarrySystem.Item.Interfaces;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -22,29 +23,32 @@ namespace Carry.CarrySystem.Block.Scripts
     {
          public IBlock? Block => _blocks.FirstOrDefault(); 
          public IList<IBlock> Blocks => _blocks;
+         public IList<IItem> Items => _items;
 
          readonly NetworkRunner _runner;
          readonly IList<IBlock> _blocks;
+         readonly IList<IItem> _items;
          readonly IList<BlockInfo> _blockInfos;
          readonly IBlock? _block;
-         readonly IBlockPresenter _blockPresenter;
+         readonly IEntityPresenter _entityPresenter;
 
          readonly IHighlightExecutor _highLightExecutor;
 
          Vector2Int _gridPosition;
         
-         public BlockMonoDelegate(NetworkRunner runner, Vector2Int gridPos, IList<IBlock> blocks, IList<BlockInfo> blockInfos, IBlockPresenter blockPresenter)
+         public BlockMonoDelegate(NetworkRunner runner, Vector2Int gridPos, IList<IBlock> blocks, IList<BlockInfo> blockInfos, IList<IItem> items, IEntityPresenter entityPresenter)
          {
              _runner = runner;
              _gridPosition = gridPos;
              _blocks = blocks;
+             _items = items;
              _blockInfos = blockInfos;
-             _blockPresenter = blockPresenter;
+             _entityPresenter = entityPresenter;
              
              _highLightExecutor = new HighlightExecutor(_blockInfos);
         
              // 最初のStartGimmickの処理
-             foreach (var gimmick in _blocks.OfType<IGimmickBlock>())
+             foreach (var gimmick in _blocks.OfType<IGimmick>())
              {
                  gimmick.StartGimmick(runner);
              }
@@ -53,7 +57,7 @@ namespace Carry.CarrySystem.Block.Scripts
              var blockControllerParent = _blockInfos.First().BlockController.transform.parent;
              blockControllerParent.gameObject.OnDestroyAsObservable().Subscribe(_ =>
              {
-                 foreach (var gimmick in _blocks.OfType<IGimmickBlock>())
+                 foreach (var gimmick in _blocks.OfType<IGimmick>())
                  {
                      gimmick.EndGimmick(runner);
                  }
@@ -65,16 +69,16 @@ namespace Carry.CarrySystem.Block.Scripts
 
          public void AddBlock(IBlock block)
          {
-             if(block is IGimmickBlock gimmickBlock) gimmickBlock.StartGimmick(_runner);
+             if(block is IGimmick gimmickBlock) gimmickBlock.StartGimmick(_runner);
              _blocks.Add(block);
-            _blockPresenter.SetBlockActiveData(block, _blocks.Count);
+            _entityPresenter.SetEntityActiveData(block, _blocks.Count);
 
          }
          public void RemoveBlock(IBlock block)
          {
-             if(block is IGimmickBlock gimmickBlock) gimmickBlock.EndGimmick(_runner);
+             if(block is IGimmick gimmickBlock) gimmickBlock.EndGimmick(_runner);
              _blocks.Remove(block);
-             _blockPresenter.SetBlockActiveData(block, _blocks.Count);
+             _entityPresenter.SetEntityActiveData(block, _blocks.Count);
 
          }
          

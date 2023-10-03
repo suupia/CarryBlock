@@ -1,9 +1,9 @@
+using Carry.Utility.Interfaces;
 using Fusion;
-using Projects.Utility.Scripts;
-using Projects.Utility.Interfaces;
+using Carry.Utility.Scripts;
 using UnityEngine;
 
-namespace Projects.Utility.Scripts
+namespace Carry.Utility.Scripts
 {
     public class NetworkBehaviourPrefabSpawner<T> where T : NetworkBehaviour
     {

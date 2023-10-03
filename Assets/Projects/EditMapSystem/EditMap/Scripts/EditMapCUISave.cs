@@ -229,7 +229,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             var clearedMap = _editMapUpdater.GetMap().ClearMap();
             
             // すべてのマスにGroundを1つ設置する
-            for (int i = 0; i < clearedMap.GetLength(); i++)
+            for (int i = 0; i < clearedMap.Length; i++)
             {
                 var gridPosition = clearedMap.ToVector(i);
 

@@ -4,35 +4,38 @@ using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Fusion;
-using Projects.Utility.Interfaces;
-using Projects.Utility.Scripts;
+using Carry.Utility.Interfaces;
+using Carry.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 #nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EditMapBlockBuilder : IBlockBuilder
+    /// <summary>
+    /// Spawn BlockPresenterPrefabs depending on the EntityGridMap data.
+    /// </summary>
+    public class EditMapBlockBuilder
     {
         readonly NetworkRunner _runner;
-        readonly IPrefabLoader<BlockPresenterNet> _blockPresenterPrefabSpawner;
+        readonly IPrefabLoader<EntityPresenterNet> _blockPresenterPrefabSpawner;
 
         public EditMapBlockBuilder(NetworkRunner runner)
         {
             _runner = runner;
             _blockPresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<BlockPresenterNet>("Prefabs/Map/BlockPresenter");
+                new PrefabLoaderFromAddressable<EntityPresenterNet>("Prefabs/Map/BlockPresenter");
         }
 
 
         // CarryBuilderと対応させてある。
-        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList< BlockPresenterNet>) Build (ref EntityGridMap map)
+        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList< EntityPresenterNet>) Build (ref EntityGridMap map)
         {
             var blockControllers = new List<BlockControllerNet>();
-            var blockPresenters = new List<BlockPresenterNet>();
+            var blockPresenters = new List<EntityPresenterNet>();
 
             // BlockPresenterをスポーンさせる
-            for (int i = 0; i < map.GetLength(); i++)
+            for (int i = 0; i < map.Length; i++)
             {
                 var girdPos = map.ToVector(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);

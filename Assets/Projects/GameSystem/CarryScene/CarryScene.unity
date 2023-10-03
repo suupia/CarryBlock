@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1766,6 +1766,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5580503282736364754, guid: 4ce507046ee004f719102ee39cba630d, type: 3}
+      propertyPath: mapKeyDataNetList.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5580503282736364754, guid: 4ce507046ee004f719102ee39cba630d, type: 3}
+      propertyPath: mapKeyDataNetList.Array.data[3]
+      value: 
+      objectReference: {fileID: 4083379182302277477, guid: 045d43c93332f7845bc3d9c6efd869fe, type: 3}
     - target: {fileID: 8729571036883059389, guid: 4ce507046ee004f719102ee39cba630d, type: 3}
       propertyPath: m_Name
       value: MapKeyDataSelectorNet

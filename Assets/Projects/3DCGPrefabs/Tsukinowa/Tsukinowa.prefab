@@ -126,7 +126,10 @@ VisualEffect:
     m_NamedObject:
       m_Array: []
     m_Bool:
-      m_Array: []
+      m_Array:
+      - m_Value: 0
+        m_Name: New bool
+        m_Overridden: 0
 --- !u!73398921 &4603120740533322898
 VFXRenderer:
   serializedVersion: 1

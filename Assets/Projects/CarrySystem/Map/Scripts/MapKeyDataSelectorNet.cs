@@ -4,10 +4,14 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    // You should this class to be a prefab
+    /// <summary>
+    /// This class is used to select which MapKeyData prefab to use.
+    /// </summary>
     public class MapKeyDataSelectorNet : NetworkBehaviour
     {
         [SerializeField] List<MapKeyDataNet> mapKeyDataNetList = null!;
+
+        public int MapKeyDataNetListCount => mapKeyDataNetList.Count;
 
         public IReadOnlyList<MapKeyData> SelectMapKeyDataList(int index)
         {

@@ -1,8 +1,8 @@
 ﻿using Carry.CarrySystem.Block.Scripts;
-using Projects.Utility.Interfaces;
+using Carry.Utility.Interfaces;
 using Carry.CarrySystem.Gimmick.Scripts;
 using Fusion;
-using Projects.Utility.Scripts;
+using Carry.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 #nullable enable

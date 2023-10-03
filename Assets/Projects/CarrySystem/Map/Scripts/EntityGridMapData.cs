@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Block.Scripts;
+using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
+using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 #nullable enable
 
@@ -20,7 +22,9 @@ namespace Carry.CarrySystem.Map.Scripts
         public RockRecord[]? rockRecords;
         public HeavyBlockRecord[]? heavyBlockRecords;
         public FragileBlockRecord[]? fragileBlockRecords;
+        public ConfusionBlockRecord[]? confusionBlockRecords;
         public CannonBlockRecord[]? cannonBlockRecords;
+        public TreasureCoinRecord[]? treasureCoinRecords;
     }
 
     public enum MapKey

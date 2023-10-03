@@ -1,29 +1,38 @@
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
+using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Projects.Utility.Scripts;
-using Projects.NetworkUtility.NetworkRunnerManager.Scripts;
-using Projects.BattleSystem.Scripts;
-using Projects.BattleSystem.Spawners.Scripts;
+using Carry.Utility.Scripts;
+using Carry.NetworkUtility.NetworkRunnerManager.Scripts;
+using Carry.GameSystem.Spawners.Scripts;
+using Carry.GameSystem.Scripts;
 using UnityEngine;
 using VContainer;
 #nullable enable
 
-namespace Projects.BattleSystem.LobbyScene.Scripts
+namespace Carry.GameSystem.LobbyScene.Scripts
 {
     [DisallowMultipleComponent]
     public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
         PlayerSpawner _playerSpawner = null!;
         PlayerCharacterTransporter _playerCharacterTransporter = null!;
+        IMapUpdater _lobbyMapUpdater;
 
         [Inject]
-        public void Construct(PlayerSpawner playerSpawner , PlayerCharacterTransporter playerCharacterTransporter)
+        public void Construct(
+            PlayerSpawner playerSpawner ,
+            PlayerCharacterTransporter playerCharacterTransporter,
+            IMapUpdater lobbyMapUpdater
+            )
         {
             _playerSpawner = playerSpawner;
             _playerCharacterTransporter = playerCharacterTransporter;
+            _lobbyMapUpdater = lobbyMapUpdater;
         }
 
         async void Start()
@@ -31,6 +40,8 @@ namespace Projects.BattleSystem.LobbyScene.Scripts
             var runner = FindObjectOfType<NetworkRunner>();
             runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner));
+            
+            _lobbyMapUpdater.InitUpdateMap(MapKey.Default,-1); // -1が初期マップ
 
             if (Runner.IsServer)
             {

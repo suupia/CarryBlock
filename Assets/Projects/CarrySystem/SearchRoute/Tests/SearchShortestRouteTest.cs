@@ -3,10 +3,9 @@ using System.Linq;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using NUnit.Framework;
-using Projects.CarrySystem.SearchRoute.Scripts;
 using UnityEngine;
 
-namespace Projects.CarrySystem.RoutingAlgorithm.Tests
+namespace Carry.CarrySystem.RoutingAlgorithm.Tests
 {
     public class SearchShortestRouteTest
     {

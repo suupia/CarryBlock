@@ -2,7 +2,7 @@
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Scripts;
 using Fusion;
-using Projects.NetworkUtility.Inputs.Scripts;
+using Carry.NetworkUtility.Inputs.Scripts;
 using UnityEngine;
 
 #nullable enable
