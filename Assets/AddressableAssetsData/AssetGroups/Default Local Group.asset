@@ -89,6 +89,10 @@ MonoBehaviour:
     m_Address: Prefabs/Items/TreasureCoinBlock
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 9a9f2f937f91dd742b104532c10016d8
+    m_Address: Prefabs/Map/WallPresenter2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 405937dcad4604950956d0fac118dce9, type: 2}
   m_SchemaSet:
