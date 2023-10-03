@@ -39,7 +39,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
 
         public void  PickUp(ICharacter character)
         {
-            // 移動速度を遅くする
+            // todo: 上下左右を入れ替えた混乱の動きに切り替える
             character.SwitchToSlowMove();
         }
 
@@ -60,7 +60,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         
         public void PutDown(ICharacter character) 
         {
-            // 移動速度を元に戻す
+            // 混乱状態をもとに戻す
             character.SwitchToRegularMove();
         }
     }
