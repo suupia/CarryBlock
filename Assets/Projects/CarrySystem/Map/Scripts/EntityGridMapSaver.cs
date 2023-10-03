@@ -28,6 +28,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var basicBlockRecords = new BasicBlockRecord[mapLength];
             var heavyBlockRecords = new HeavyBlockRecord[mapLength];
             var fragileBlockRecords = new FragileBlockRecord[mapLength];
+            var confusionBlockRecords = new ConfusionBlockRecord[mapLength];
             var cannonBlockRecords = new CannonBlockRecord[mapLength];
             var treasureCoinRecords = new TreasureCoinRecord[mapLength];
             
@@ -38,6 +39,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 basicBlockRecords[i] = new BasicBlockRecord();
                 heavyBlockRecords[i] = new HeavyBlockRecord();
                 fragileBlockRecords[i] = new FragileBlockRecord();
+                confusionBlockRecords[i] = new ConfusionBlockRecord();
                 cannonBlockRecords[i] = new CannonBlockRecord();
                 treasureCoinRecords[i] = new TreasureCoinRecord();
             }
@@ -59,7 +61,10 @@ namespace Carry.CarrySystem.Map.Scripts
                 var fragileBlocks = map.GetSingleEntityList<FragileBlock>(i);
                 fragileBlockRecords[i].kinds = fragileBlocks.Select(x => x.KindValue).ToArray();
                 
-                var cannonBlocks = map.GetSingleEntityList<Cannon>(i);
+                var confusionBlocks = map.GetSingleEntityList<ConfusionBlock>(i);
+                confusionBlockRecords[i].kinds = confusionBlocks.Select(x => x.KindValue).ToArray();
+                
+                var cannonBlocks = map.GetSingleEntityList<CannonBlock>(i);
                 cannonBlockRecords[i].kinds = cannonBlocks.Select(x => x.KindValue).ToArray();
                 
                 var treasureCoinBlocks = map.GetSingleEntityList<TreasureCoin>(i);
@@ -75,6 +80,7 @@ namespace Carry.CarrySystem.Map.Scripts
             entityGridMapData.basicBlockRecords = basicBlockRecords;
             entityGridMapData.heavyBlockRecords = heavyBlockRecords;
             entityGridMapData.fragileBlockRecords = fragileBlockRecords;
+            entityGridMapData.confusionBlockRecords = confusionBlockRecords;
             entityGridMapData.cannonBlockRecords = cannonBlockRecords;
             entityGridMapData.treasureCoinRecords = treasureCoinRecords;
 

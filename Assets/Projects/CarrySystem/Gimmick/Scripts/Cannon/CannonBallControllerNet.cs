@@ -18,16 +18,16 @@ namespace Carry.CarrySystem.Gimmick.Scripts
         
         Collider _collider = null!;
         
-        public void Init(Cannon.Kind kind)
+        public void Init(CannonBlock.Kind kind)
         {
             Debug.Log($"CannonBallControllerNet.Init() called");
 
             _direction = kind switch
             {
-                Cannon.Kind.Up => Vector3.forward,
-                Cannon.Kind.Down => Vector3.back,
-                Cannon.Kind.Left => Vector3.left,
-                Cannon.Kind.Right => Vector3.right,
+                CannonBlock.Kind.Up => Vector3.forward,
+                CannonBlock.Kind.Down => Vector3.back,
+                CannonBlock.Kind.Left => Vector3.left,
+                CannonBlock.Kind.Right => Vector3.right,
                 _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, null)
             };
             
