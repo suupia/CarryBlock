@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cf13caa4-bdd2-49cf-b3d5-bec88d577648" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SandboxShootoutTank/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SandboxShootoutTank/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Projects/CarrySystem/Cart/Scripts/HoldingBlockObserver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/CarrySystem/Cart/Scripts/HoldingBlockObserver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Projects/CarrySystem/Player/Scripts/Move/PlayerFollowMovingCart.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/CarrySystem/Player/Scripts/Move/PlayerFollowMovingCart.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Projects/UISystem/UI/CarryScene/PlayingCanvasUINet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/UISystem/UI/CarryScene/PlayingCanvasUINet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Projects/UISystem/UI/LobbyScene/SelectStageCanvasUINet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/UISystem/UI/LobbyScene/SelectStageCanvasUINet.cs" afterDir="false" />
-    </list>
+    <list default="true" id="cf13caa4-bdd2-49cf-b3d5-bec88d577648" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,6 +24,9 @@
   &quot;associatedIndex&quot;: 5
 }</component>
   <component name="ProjectId" id="2TnvRvS95W8h70oSTNoeCWoJPku" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -126,6 +123,7 @@
       <workItem from="1695127488419" duration="10002000" />
       <workItem from="1695201768008" duration="5338000" />
       <workItem from="1696158921661" duration="1390000" />
+      <workItem from="1696334910059" duration="306000" />
     </task>
     <servers />
   </component>
