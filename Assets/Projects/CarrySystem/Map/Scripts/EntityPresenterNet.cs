@@ -26,6 +26,7 @@ namespace Carry.CarrySystem.Map.Scripts
             public int UnmovableBlockCount;
             public int HeavyBlockCount;
             public int FragileBlockCount;
+            public int ConfusionBlockCount;
             public int CannonBlockCount;
             public int TreasureCoinCount;
             public Direction CannonDirection;
@@ -41,6 +42,7 @@ namespace Carry.CarrySystem.Map.Scripts
         [SerializeField] GameObject heavyBlockView = null!;
         [SerializeField] GameObject doubleHeavyBlockView = null!;
         [SerializeField] GameObject fragileBlockView = null!;
+        [SerializeField] GameObject confusionBlockView = null!;
         [SerializeField] GameObject treasureCoinView = null!;
         [SerializeField] GameObject cannonBlockView = null!;
 
@@ -100,6 +102,14 @@ namespace Carry.CarrySystem.Map.Scripts
                 _ => throw new InvalidOperationException($"FragileBlockCount : {PresentDataRef.FragileBlockCount}")
             });
             
+            // ConfusionBlock
+            confusionBlockView.SetActive(PresentDataRef.ConfusionBlockCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"ConfusionBlockCount : {PresentDataRef.ConfusionBlockCount}")
+            });
+            
             // TreasureCoinBlock
             treasureCoinView.SetActive(PresentDataRef.TreasureCoinCount switch
             {
@@ -132,6 +142,7 @@ namespace Carry.CarrySystem.Map.Scripts
             PresentDataRef.HeavyBlockCount = allEntityList.OfType<HeavyBlock>().Count();
             PresentDataRef.FragileBlockCount = allEntityList.OfType<FragileBlock>().Count();
             PresentDataRef.CannonBlockCount = allEntityList.OfType<CannonBlock>().Count();
+            PresentDataRef.ConfusionBlockCount = allEntityList.OfType<ConfusionBlock>().Count();
             PresentDataRef.TreasureCoinCount = allEntityList.OfType<TreasureCoin>().Count();
             PresentDataRef.CannonDirection = allEntityList.OfType<CannonBlock>().FirstOrDefault()?.KindValue switch
             {
@@ -160,6 +171,9 @@ namespace Carry.CarrySystem.Map.Scripts
                     break;
                 case FragileBlock _:
                     PresentDataRef.FragileBlockCount = count;
+                    break;
+                case ConfusionBlock _:
+                    PresentDataRef.ConfusionBlockCount = count;
                     break;
                 case TreasureCoin _:
                     PresentDataRef.TreasureCoinCount = count;

@@ -194,10 +194,15 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             if(Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
             {
-                _blockType =typeof(TreasureCoin);
+                _blockType = typeof(ConfusionBlock);
             }
             
             if(Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
+            {
+                _blockType =typeof(TreasureCoin);
+            }
+            
+            if(Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
             {
                 _blockType =typeof(CannonBlock);
             }
