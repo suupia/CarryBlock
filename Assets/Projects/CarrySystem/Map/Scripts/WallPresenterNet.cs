@@ -22,7 +22,7 @@ namespace Carry.CarrySystem.Map.Scripts
         [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
-        [SerializeField] GameObject wall1View = null!;
+        [SerializeField] GameObject wallView = null!;
 
         public override void Render()
         {

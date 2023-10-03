@@ -28,8 +28,8 @@ namespace Carry.CarrySystem.Map.Scripts
         public void Place(EntityGridMap map)
         {
             //var wallPresenterSpawner = new WallPresenterSpawner(_runner);
-            var wallPresenterSpawners = new List<WallPresenterSpawner>()
-                { new WallPresenterSpawner(_runner), new WallPresenterSpawner(_runner) };
+            var wallPresenterSpawners = new List<IWallPresenterSpawner>()
+                { new WallPresenterSpawner(_runner), new WallPresenterSpawner2(_runner) };
             var wallPresenters = new List<WallPresenterNet>();
 
             // 以前のWallPresenterを削除
@@ -54,7 +54,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _tilePresenters = wallPresenters;
         }
 
-        IWallPresenterSpawner DecideWallPresenterType(List<WallPresenterSpawner> wallPresenterSpawners)
+        IWallPresenterSpawner DecideWallPresenterType(List<IWallPresenterSpawner> wallPresenterSpawners)
         {
             var random = new System.Random();
             return wallPresenterSpawners[random.Next(2)];
