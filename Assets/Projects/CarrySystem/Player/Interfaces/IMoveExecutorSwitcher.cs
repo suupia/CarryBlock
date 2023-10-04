@@ -9,6 +9,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         public void SwitchToRegularMove();
         public void SwitchToDashMove();
         public void SwitchToSlowMove();
+        public void SwitchToConfusionMove();
         public void SwitchToFaintedMove();
     }
 }
