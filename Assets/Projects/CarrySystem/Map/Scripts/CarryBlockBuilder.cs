@@ -41,10 +41,20 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             var blockControllers = new List<BlockControllerNet>();
             var blockPresenters = new List<EntityPresenterNet>();
+            
+            var tmpMapForItem = map;
+            // itemあるかデバック
+            for(int i = 0; i< tmpMapForItem.Length; i++)
+            {
+                var items = tmpMapForItem.GetSingleEntityList<IItem>(i);
+                if(items.Count() != 0) Debug.Log($"debug items.Count() : {items.Count()}");
+            }
 
             // IBlockをIBlockMonoDelegateに置き換えたマップにする
-            var tmpMap = map.CloneMap();  // tmpMapを見て、mapを変更する
-            map.ClearMap();
+             var tmpMap = map.CloneMap();  // tmpMapを見て、mapを変更する
+            // map.ClearMap();
+            
+            List<BlockMonoDelegate> blockMonoDelegates = new List<BlockMonoDelegate>();
 
             // BlockPresenterをスポーンさせる
             for (int i = 0; i < tmpMap.Length; i++)
@@ -54,7 +64,17 @@ namespace Carry.CarrySystem.Map.Scripts
                 
                 // Presenterの生成
                 var blockPresenterPrefab = _blockPresenterPrefabSpawner.Load();
-                var entityPresenter =  _runner.Spawn(blockPresenterPrefab, worldPos, Quaternion.identity, PlayerRef.None);
+                var entityPresenter =  _runner.Spawn(blockPresenterPrefab, worldPos, Quaternion.identity, PlayerRef.None,
+                    (runner, networkObj) =>
+                    {
+                       var itemControllers = networkObj.GetComponentsInChildren<ItemControllerNet>();
+                       var items = tmpMapForItem.GetSingleEntityList<IItem>(gridPos);
+                       if(items.Count() != 0) Debug.Log($"items.Count() : {items.Count()}");
+                       foreach (var itemController in itemControllers)
+                       {
+                           itemController.Init(items);
+                       }
+                    });
                 
                 // BlockMonoDelegateの生成
                 var getBlocks = tmpMap.GetSingleEntityList<IBlock>(i);
@@ -67,10 +87,16 @@ namespace Carry.CarrySystem.Map.Scripts
                 var itemControllerComponents = entityPresenter.GetComponentsInChildren<ItemControllerNet>();
                 var itemInfos = itemControllerComponents.Select(c => c.Info).ToList();
                 var blockMonoDelegate = new BlockMonoDelegate(_runner, gridPos,checkedBlocks,blockInfos,items,itemInfos, entityPresenter);  // すべてのマスにBlockMonoDelegateを配置させる
-                map.AddEntity(i, blockMonoDelegate);
+                // map.AddEntity(i, blockMonoDelegate);
+                blockMonoDelegates.Add(blockMonoDelegate);
                 
 
                 blockPresenters.Add(entityPresenter);
+            }
+
+            for (int i = 0; i < tmpMap.Length; i++)
+            {
+                map.AddEntity(i, blockMonoDelegates[i]);
             }
             
             Debug.Log($"blockPresenters.Count : {blockPresenters.Count}");

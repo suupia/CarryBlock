@@ -33,6 +33,7 @@ namespace Projects.CarrySystem.Item.Scripts
         public void OnGained()
         {
             _counter.Add(1);
+            Debug.Log($"_counter.Count = {_counter.Count}");
         }
 
     }
