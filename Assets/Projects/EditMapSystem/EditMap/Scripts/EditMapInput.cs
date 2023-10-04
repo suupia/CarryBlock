@@ -125,7 +125,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
                 nameof(ConfusionBlock) => new ConfusionBlock(ConfusionBlock.Kind.Kind1, mouseGridPosOnGround),
                 nameof(CannonBlock) =>CreateCannonBlock(),
-                nameof(TreasureCoin) => new TreasureCoin(TreasureCoin.Kind.Kind1, mouseGridPosOnGround),
+                nameof(TreasureCoin) => new TreasureCoin(TreasureCoin.Kind.Kind1, mouseGridPosOnGround, map , new TreasureCoinCounter()),
                 _ => CreateUnknownBlock(),
             };
             _editMapBlockAttacher.AddPlaceable(map, mouseGridPosOnGround, placeable);
