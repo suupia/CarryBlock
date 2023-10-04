@@ -123,7 +123,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 nameof(UnmovableBlock) => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
                 nameof(HeavyBlock) => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
                 nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
-                nameof(TreasureCoin) => new TreasureCoin(TreasureCoin.Kind.Kind1, mouseGridPosOnGround, new TreasureCoinCounter()),
+                nameof(TreasureCoin) => new TreasureCoin(TreasureCoin.Kind.Kind1, mouseGridPosOnGround,map, new TreasureCoinCounter()),
                 nameof(Cannon) =>CreateCannonBlock(),
                 _ => CreateUnknownBlock(),
             };

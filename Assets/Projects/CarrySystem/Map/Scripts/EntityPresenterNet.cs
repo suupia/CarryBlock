@@ -179,7 +179,6 @@ namespace Carry.CarrySystem.Map.Scripts
                 default:
                     throw new System.Exception($"想定外のEntityが渡されました block : {entity}");
             }
-            Debug.Log($"BasicBlockCount : {PresentDataRef.BasicBlockCount}");
         }
         
         float CalcRotationAmount(Direction direction)

@@ -18,22 +18,19 @@ namespace Projects.CarrySystem.Item.Scripts
         public void Init(IList<IItem> items)
         {
             _items = items;
-            Debug.Log($"_items = {_items}");
         }
 
         public override void Spawned()
         {
-            info.Init(itemViewObj, this);
-            
+           info.Init(itemViewObj, this);
         }
-        
+
         public void OnGained()
         {
             var gridPos = GridConverter.WorldPositionToGridPosition(gameObject.transform.position);
             foreach (var item in _items)
             {
-                Debug.Log($"item.OnGained()");
-                item.OnGained();
+                item.OnGained(this);
             }
         }
     }

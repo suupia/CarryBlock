@@ -42,13 +42,6 @@ namespace Carry.CarrySystem.Map.Scripts
             var blockControllers = new List<BlockControllerNet>();
             var blockPresenters = new List<EntityPresenterNet>();
             
-            var tmpMapForItem = map;
-            // itemあるかデバック
-            for(int i = 0; i< tmpMapForItem.Length; i++)
-            {
-                var items = tmpMapForItem.GetSingleEntityList<IItem>(i);
-                if(items.Count() != 0) Debug.Log($"debug items.Count() : {items.Count()}");
-            }
 
             // IBlockをIBlockMonoDelegateに置き換えたマップにする
              var tmpMap = map.CloneMap();  // tmpMapを見て、mapを変更する
@@ -68,7 +61,7 @@ namespace Carry.CarrySystem.Map.Scripts
                     (runner, networkObj) =>
                     {
                        var itemControllers = networkObj.GetComponentsInChildren<ItemControllerNet>();
-                       var items = tmpMapForItem.GetSingleEntityList<IItem>(gridPos);
+                       var items = tmpMap.GetSingleEntityList<IItem>(gridPos);
                        if(items.Count() != 0) Debug.Log($"items.Count() : {items.Count()}");
                        foreach (var itemController in itemControllers)
                        {

@@ -36,7 +36,7 @@ namespace Carry.CarrySystem.Map.Scripts
                         if (!kind.Equals(TreasureCoin.Kind.None))
                         {
                             // This will create a new entity
-                            var item = new TreasureCoin(kind, map.ToVector(i), new TreasureCoinCounter());
+                            var item = new TreasureCoin(kind, map.ToVector(i), map,new TreasureCoinCounter());
                             map.AddEntity(i, item);
                         }
                     }
