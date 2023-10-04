@@ -14,6 +14,7 @@ namespace Projects.CarrySystem.Item.Scripts
     public class TreasureCoin : IItem
     {
         public Vector2Int GridPosition { get; set; }
+        public int MaxPlacedBlockCount { get; } = 1;
         public TreasureCoin.Kind KindValue { get; }
 
         readonly TreasureCoinCounter _counter;
