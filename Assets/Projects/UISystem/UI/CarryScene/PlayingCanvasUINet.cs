@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Fusion;
+using Projects.CarrySystem.Item.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,25 +23,28 @@ namespace Carry.UISystem.UI.CarryScene
         [Networked] int FloorNumber { get; set; }
         [Networked] int CoinTotal { get; set; }
         
-        FloorTimerNet _floorTimerNet;
-        IMapUpdater _mapUpdater;
+        IMapUpdater _mapUpdater = null!;
+        FloorTimerNet _floorTimerNet = null!;
+        TreasureCoinCounter _treasureCoinCounter = null!;
 
 
         [Inject]
         public void Construct(
+            IMapUpdater mapUpdater,
             FloorTimerNet floorTimerNet,
-            IMapUpdater mapUpdater
+            TreasureCoinCounter treasureCoinCounter
             )
         {
-            _floorTimerNet = floorTimerNet;
             _mapUpdater = mapUpdater;
+            _floorTimerNet = floorTimerNet;
+            _treasureCoinCounter = treasureCoinCounter;
         }
 
         public override void FixedUpdateNetwork()
         {
             if (!HasStateAuthority) return;
             FloorNumber = _mapUpdater.Index + 1;
-
+            CoinTotal = _treasureCoinCounter.Count;
         }
 
 
