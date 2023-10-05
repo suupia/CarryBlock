@@ -16,7 +16,7 @@ namespace Carry.CarrySystem.Spawners
         {
             _runner = runner;
             _tilePresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<WallPresenterNet>("Prefabs/Map/WallPresenter2");
+                new PrefabLoaderFromAddressable<WallPresenterNet>("Prefabs/Map/WallPresenterNet2");
         }
 
         public WallPresenterNet SpawnPrefab(Vector3 position, Quaternion rotation)
