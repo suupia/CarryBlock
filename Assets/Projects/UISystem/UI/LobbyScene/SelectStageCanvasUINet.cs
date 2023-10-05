@@ -72,6 +72,8 @@ namespace Carry.UISystem.UI.LobbyScene
             var inputActionMap = InputActionMapLoader.GetInputActionMap();
             _toggleSelectStageCanvas = inputActionMap.FindAction("ToggleSelectStageCanvas");
             _toggleSelectStageCanvas.performed += OnToggleSelectStageCanvas;
+            
+            Debug.Log("T押した１");
         }
         
         void OnToggleSelectStageCanvas(InputAction.CallbackContext context)
@@ -80,7 +82,11 @@ namespace Carry.UISystem.UI.LobbyScene
             if (context.performed)
             {
                 viewObject.SetActive(!viewObject.activeSelf);
+                
+                Debug.Log("T押した3");
             }
+            
+            Debug.Log("T押した2");
         }
         
     }
