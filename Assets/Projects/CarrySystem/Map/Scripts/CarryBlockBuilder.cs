@@ -23,40 +23,40 @@ namespace Carry.CarrySystem.Map.Scripts
     public class CarryBlockBuilder
     {
         readonly NetworkRunner _runner;
-        readonly TreasureCoinCounter _treasureCoinCounter;
         readonly IPrefabLoader<EntityPresenterNet> _blockPresenterPrefabSpawner;
 
         [Inject]
-        public CarryBlockBuilder(NetworkRunner runner, TreasureCoinCounter treasureCoinCounter)
+        public CarryBlockBuilder(NetworkRunner runner)
         {
             _runner = runner;
-            _treasureCoinCounter = treasureCoinCounter;
             _blockPresenterPrefabSpawner =
                 new PrefabLoaderFromAddressable<EntityPresenterNet>("Prefabs/Map/BlockPresenter");
         }
 
 
         // CarryBuilderと対応させてある。
-        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList< EntityPresenterNet>) Build (ref EntityGridMap map)
+        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList< EntityPresenterNet>) Build (EntityGridMap map)
         {
             var blockControllers = new List<BlockControllerNet>();
             var blockPresenters = new List<EntityPresenterNet>();
             
 
             // IBlockをIBlockMonoDelegateに置き換えたマップにする
-             var tmpMap = map.CloneMap();  // tmpMapを見て、mapを変更する
-            // map.ClearMap();
-            
-            List<BlockMonoDelegate> blockMonoDelegates = new List<BlockMonoDelegate>();
+             // var tmpMap = map.CloneMap();  // tmpMapを見て、mapを変更する
+
+             List<BlockMonoDelegate> blockMonoDelegates = new List<BlockMonoDelegate>();
+             
+             var blockPresenterPrefab = _blockPresenterPrefabSpawner.Load();
+
 
             // BlockPresenterをスポーンさせる
-            for (int i = 0; i < tmpMap.Length; i++)
+            for (int i = 0; i < map.Length; i++)
             {
-                var gridPos = tmpMap.ToVector(i);
+                var gridPos = map.ToVector(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(gridPos);
                 
                 // Presenterの生成
-                var blockPresenterPrefab = _blockPresenterPrefabSpawner.Load();
+                var tmpMap = map;
                 var entityPresenter =  _runner.Spawn(blockPresenterPrefab, worldPos, Quaternion.identity, PlayerRef.None,
                     (runner, networkObj) =>
                     {
@@ -70,9 +70,9 @@ namespace Carry.CarrySystem.Map.Scripts
                     });
                 
                 // BlockMonoDelegateの生成
-                var getBlocks = tmpMap.GetSingleEntityList<IBlock>(i);
+                var getBlocks = map.GetSingleEntityList<IBlock>(i);
                 var checkedBlocks = CheckBlocks(getBlocks);
-                var items = tmpMap.GetSingleEntityList<IItem>(i);
+                var items = map.GetSingleEntityList<IItem>(i);
                 // get blockInfos from blockController
                 var blockControllerComponents = entityPresenter.GetComponentsInChildren<BlockControllerNet>();
                 var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
@@ -87,7 +87,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 blockPresenters.Add(entityPresenter);
             }
 
-            for (int i = 0; i < tmpMap.Length; i++)
+            for (int i = 0; i < map.Length; i++)
             {
                 map.AddEntity(i, blockMonoDelegates[i]);
             }
