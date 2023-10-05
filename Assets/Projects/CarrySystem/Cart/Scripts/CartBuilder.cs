@@ -3,10 +3,10 @@ using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Fusion;
-using Projects.CarrySystem.Cart.Info;
-using Projects.CarrySystem.SearchRoute.Scripts;
-using Projects.Utility.Interfaces;
-using Projects.Utility.Scripts;
+using Carry.CarrySystem.Cart.Info;
+using Carry.CarrySystem.SearchRoute.Scripts;
+using Carry.Utility.Interfaces;
+using Carry.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 #nullable enable

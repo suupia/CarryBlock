@@ -22,7 +22,7 @@ namespace Carry.CarrySystem.Block.Scripts
     {
         public CannonBlock.Kind[] kinds = new CannonBlock.Kind[10];
     }
-    public class CannonBlock : IGimmickBlock
+    public class CannonBlock : IBlock, IGimmick
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 2;

@@ -2,7 +2,7 @@
 using Fusion;
 using UnityEngine;
 
-namespace Projects.CarrySystem.Cart.Info
+namespace Carry.CarrySystem.Cart.Info
 {
     public record CartInfo
     {

@@ -18,19 +18,20 @@ namespace Carry.CarrySystem.Player.Scripts
         public float FaintedSeconds => CalcFaintedTime();
         PlayerInfo _info = null!;
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
-        readonly PlayerCharacterHolder _playerCharacterHolder;
+        readonly PlayerCharacterTransporter _playerCharacterTransporter;
         
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
+        ReviveEffectPresenter? _reviveEffectPresenter;
         
         CancellationTokenSource? _cancellationTokenSource;
 
         public OnDamageExecutor(
             IMoveExecutorSwitcher moveExecutorSwitcher,
-            PlayerCharacterHolder playerCharacterHolder
+            PlayerCharacterTransporter playerCharacterTransporter
             )
         {
             _moveExecutorSwitcher = moveExecutorSwitcher;
-            _playerCharacterHolder = playerCharacterHolder;
+            _playerCharacterTransporter = playerCharacterTransporter;
         }
 
         public void Setup(PlayerInfo info)
@@ -87,11 +88,12 @@ namespace Carry.CarrySystem.Player.Scripts
             IsFainted = false;
             _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
             _playerAnimatorPresenter?.Revive();
+            if (_reviveEffectPresenter != null) _reviveEffectPresenter.StartRevive();
         }
         
         float CalcFaintedTime()
         {
-            float faintedTime = _playerCharacterHolder.PlayerCount switch
+            float faintedTime = _playerCharacterTransporter.PlayerCount switch
             {
                 1 => 2,
                 2 => 3,
@@ -104,7 +106,7 @@ namespace Carry.CarrySystem.Player.Scripts
             
             float InvalidPlayerCount()
             {
-                Debug.LogError($"PlayerCount : {_playerCharacterHolder.PlayerCount} is invalid.");
+                Debug.LogError($"PlayerCount : {_playerCharacterTransporter.PlayerCount} is invalid.");
                 return 5f;
             }
         }
@@ -113,6 +115,11 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
             _playerAnimatorPresenter = presenter;
+        }
+        
+        public void SetReviveEffectPresenter(ReviveEffectPresenter presenter)
+        {
+            _reviveEffectPresenter = presenter;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         readonly IOnDamageExecutor _onDamageExecutor;
         DashEffectPresenter? _dashEffectPresenter;
-        readonly float _dashTime = 0.25f;
+        readonly float _dashTime = 0.6f;
         readonly float _dashCoolTime = 1f;
         bool _isDashing;
         

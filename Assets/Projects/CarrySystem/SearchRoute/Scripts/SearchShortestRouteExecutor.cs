@@ -7,7 +7,7 @@ using UnityEngine;
 
 #nullable enable
 
-namespace Projects.CarrySystem.SearchRoute.Scripts
+namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     /// <summary>
     /// このクラスはDIせずにnewする

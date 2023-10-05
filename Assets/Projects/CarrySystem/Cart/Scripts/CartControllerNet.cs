@@ -1,4 +1,6 @@
-﻿using Fusion;
+﻿using System;
+using Fusion;
+using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 
 #nullable enable
@@ -22,6 +24,22 @@ namespace Carry.CarrySystem.Cart.Scripts
         {
             _move.MoveAlongWithShortestRoute();
         }
-        
+
+        void OnTriggerEnter(Collider other)
+        {
+            if(!_move.IsMoving)return;
+            if (other.CompareTag("Item"))
+            {
+                var itemView= other.gameObject;
+                var itemController = itemView.transform.parent.GetComponent<ItemControllerNet>(); // ItemControllerNet was attached to parent object
+                if (itemController == null)
+                {
+                    Debug.LogWarning($"itemController is null");
+                    return;
+                }
+                itemController.OnGained();
+            }
+            
+        }
     }
 }

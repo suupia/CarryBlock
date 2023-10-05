@@ -6,7 +6,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class MainLobbyPlayerFactory : ICarryPlayerFactory
     {
-        readonly PlayerCharacterHolder _playerCharacterHolder;
+        readonly PlayerCharacterTransporter _playerCharacterTransporter;
 
         [Inject]
         public MainLobbyPlayerFactory()
@@ -19,7 +19,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var blockContainer = new PlayerHoldingObjectContainer();
             var holdExe = new EmptyHoldActionExecutor();
             var passExe = new EmptyPassActionExecutor();
-            var onDamageExe = new OnDamageExecutor(moveExeSwitcher, _playerCharacterHolder);
+            var onDamageExe = new OnDamageExecutor(moveExeSwitcher, _playerCharacterTransporter);
             var dashExe = new DashExecutor(moveExeSwitcher, onDamageExe);
             var character = new Character(moveExeSwitcher, holdExe,dashExe, passExe,onDamageExe, blockContainer);
             return character;

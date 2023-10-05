@@ -2,17 +2,18 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
-using Projects.Utility.Scripts;
+using Carry.Utility.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Assert = UnityEngine.Assertions.Assert;
 
-namespace Projects.NetworkUtility.Inputs.Scripts
+namespace Carry.NetworkUtility.Inputs.Scripts
 {
     public enum PlayerOperation
     {
         MainAction = 0,
         Ready,
+        ToggleSelectStageCanvas,
         ChangeUnit,
         Dash,
         Pass,
@@ -25,36 +26,28 @@ namespace Projects.NetworkUtility.Inputs.Scripts
     public class LocalInputPoller : INetworkRunnerCallbacks
     {
         NetworkInputData _localInput;
-        readonly InputActionMap _inputActionMap;
 
+        readonly InputAction _toggleSelectStageCanvas;
         readonly InputAction _move;
         readonly InputAction _mainAction;
         readonly InputAction _dash;
         readonly InputAction _pass;
         readonly InputAction _changeUnit;
 
-        public LocalInputPoller()
+        public LocalInputPoller(InputActionMap inputActionMap)
         {
-            //本来はDI的思想で設定したい
-            var loader =
-                new ScriptableObjectLoaderFromAddressable<InputActionAsset>("InputActionAssets/PlayerInputAction");
-            
-            (var inputActionAsset ,var handler) = loader.Load();
-            Assert.IsNotNull(inputActionAsset, "InputActionを設定してください。Pathが間違っている可能性があります");
-
-            _inputActionMap = inputActionAsset.FindActionMap("Default");
-            _inputActionMap.Enable();
+            inputActionMap.Enable();
             
             //本来は以下を適切なタイミングで呼ぶべき
             // _inputActionMap.Disable();
 
-            _move = _inputActionMap.FindAction("Move");
-            _mainAction = _inputActionMap.FindAction("MainAction");
-            _dash = _inputActionMap.FindAction("Dash");
-            _pass = _inputActionMap.FindAction("Pass");
-            _changeUnit = _inputActionMap.FindAction("ChangeUnit");
+            _toggleSelectStageCanvas = inputActionMap.FindAction("ToggleSelectStageCanvas");
+            _move = inputActionMap.FindAction("Move");
+            _mainAction = inputActionMap.FindAction("MainAction");
+            _dash = inputActionMap.FindAction("Dash");
+            _pass = inputActionMap.FindAction("Pass");
+            _changeUnit = inputActionMap.FindAction("ChangeUnit");
             
-            loader.Release(handler);
         }
 
 
@@ -62,6 +55,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
         {
             _localInput = default;
 
+            var isDownOpenSelectStageCanvas = _toggleSelectStageCanvas.ReadValue<float>();
             var moveVector = _move.ReadValue<Vector2>().normalized;
             var mainActionValue = _mainAction.ReadValue<float>(); 
             var dashValue = _dash.ReadValue<float>();
@@ -73,6 +67,7 @@ namespace Projects.NetworkUtility.Inputs.Scripts
             
             _localInput.Horizontal = moveVector.x;
             _localInput.Vertical = moveVector.y;
+            _localInput.Buttons.Set(PlayerOperation.ToggleSelectStageCanvas, isDownOpenSelectStageCanvas != 0);
             _localInput.Buttons.Set(PlayerOperation.MainAction, mainActionValue != 0);
             _localInput.Buttons.Set(PlayerOperation.Dash, dashValue != 0);
             _localInput.Buttons.Set(PlayerOperation.Pass, passValue != 0);

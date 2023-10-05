@@ -1,7 +1,7 @@
 ﻿using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
-using Projects.Utility.Interfaces;
-using Projects.Utility.Scripts;
+using Carry.Utility.Interfaces;
+using Carry.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 
@@ -13,20 +13,20 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IPrefabLoader<LobbyPlayerControllerNet> _carryPlayerControllerLoader;
         readonly ICarryPlayerFactory _carryPlayerFactory;
         // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などが想定される
-        readonly PlayerCharacterHolder _playerCharacterHolder;
+        readonly PlayerCharacterTransporter _playerCharacterTransporter;
 
         [Inject]
         public LobbyPlayerBuilder(
             NetworkRunner runner ,
             IPrefabLoader<LobbyPlayerControllerNet> carryPlayerControllerLoader, 
             ICarryPlayerFactory carryPlayerFactory,
-            PlayerCharacterHolder playerCharacterHolder
+            PlayerCharacterTransporter playerCharacterTransporter
             )
         {
             _runner = runner;
             _carryPlayerControllerLoader = carryPlayerControllerLoader;
             _carryPlayerFactory = carryPlayerFactory;
-            _playerCharacterHolder  = playerCharacterHolder;
+            _playerCharacterTransporter  = playerCharacterTransporter;
         }
 
         public AbstractNetworkPlayerController Build( Vector3 position, Quaternion rotation, PlayerRef playerRef)
@@ -35,7 +35,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var playerController = _carryPlayerControllerLoader.Load();
             
             // ドメインスクリプトをnew
-            var colorType = _playerCharacterHolder.GetPlayerColorType(playerRef);
+            var colorType = _playerCharacterTransporter.GetPlayerColorType(playerRef);
             var character = _carryPlayerFactory.Create(colorType);
             
             // プレハブをスポーン
@@ -43,7 +43,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
-                    networkObj.GetComponent<LobbyPlayerControllerNet>().Init(character,colorType,_playerCharacterHolder);
+                    networkObj.GetComponent<LobbyPlayerControllerNet>().Init(character,colorType,_playerCharacterTransporter);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
                     networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
 

@@ -1,12 +1,13 @@
 ﻿using Carry.CarrySystem.Map.Scripts;
+using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
-using Projects.Utility.Interfaces;
-using Projects.Utility.Scripts;
+using Carry.Utility.Interfaces;
+using Carry.Utility.Scripts;
 using UnityEngine;
 
 namespace Carry.CarrySystem.Spawners
 {
-    public class WallPresenterSpawner
+    public class WallPresenterSpawner: IWallPresenterSpawner
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<WallPresenterNet> _tilePresenterPrefabSpawner;

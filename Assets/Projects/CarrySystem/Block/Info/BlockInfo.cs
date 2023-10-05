@@ -1,16 +1,17 @@
 ﻿using System;
 using Carry.CarrySystem.Block.Scripts;
+using Carry.CarrySystem.CarriableBlock.Scripts;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 #nullable enable
 
-namespace Projects.CarrySystem.Block.Info
+namespace Carry.CarrySystem.Block.Info
 {
     [Serializable]
     public class BlockInfo
     {
-        [FormerlySerializedAs("_blockType")] [SerializeField] BlockTypeEnum blockType;
+        [SerializeField] BlockTypeEnum blockType;
         [NonSerialized] public BlockMaterialSetter BlockMaterialSetter = null!;
         [NonSerialized] public GameObject BlockViewObj = null!;
         [NonSerialized] public BlockControllerNet BlockController = null!;

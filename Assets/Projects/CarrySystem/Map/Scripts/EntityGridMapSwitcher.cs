@@ -21,7 +21,8 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly CartBuilder _cartBuilder;
         readonly FloorTimerNet _floorTimerNet;
         readonly EntityGridMapLoader _gridMapLoader;
-        readonly MapKeyDataNet _mapKeyDataNet;
+        readonly MapKeyDataSelectorNet _mapKeyDataSelectorNet;
+        readonly StageIndexTransporter _stageIndexTransporter;
         readonly IPresenterPlacer _allPresenterPlacer;
         int _currentIndex;
         EntityGridMap? _currentMap;
@@ -33,13 +34,16 @@ namespace Carry.CarrySystem.Map.Scripts
             EntityGridMapLoader gridMapGridMapLoader,
             CartBuilder cartBuilder,
             FloorTimerNet floorTimerNet,
-            MapKeyDataNet mapKeyDataNet,
-            IPresenterPlacer allPresenterPlacer)
+            MapKeyDataSelectorNet mapKeyDataSelectorNet,
+            StageIndexTransporter stageIndexTransporter,
+            IPresenterPlacer allPresenterPlacer
+            )
         {
             _gridMapLoader = gridMapGridMapLoader;
             _cartBuilder = cartBuilder;
             _floorTimerNet = floorTimerNet;
-            _mapKeyDataNet = mapKeyDataNet;
+            _mapKeyDataSelectorNet = mapKeyDataSelectorNet;
+            _stageIndexTransporter = stageIndexTransporter;
             _allPresenterPlacer　= allPresenterPlacer;
         }
 
@@ -55,8 +59,10 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void InitUpdateMap(MapKey mapKey, int index = 0)
         {
-            var key = _mapKeyDataNet.MapKeyDataList[index].mapKey;
-            var mapIndex =  _mapKeyDataNet.MapKeyDataList[index].index;
+            Debug.Log($"StageIndex : {_stageIndexTransporter.StageIndex}");
+            var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
+            var key =mapKeyDataList[index].mapKey;
+            var mapIndex =  mapKeyDataList[index].index;
             _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _allPresenterPlacer.Place(_currentMap);
             _cartBuilder.Build(_currentMap, this);
@@ -67,20 +73,21 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void UpdateMap(MapKey mapKey, int index)
         {
+            var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
             Debug.Log($"次のフロアに変更します nextIndex: {index}");
             if (index < 0)
             {
                 Debug.LogWarning($"index is under the min value");
                 index = 0; // 0未満にならないようにする
             }
-            if (index > _mapKeyDataNet.MapKeyDataList.Count - 1)
+            if (index > mapKeyDataList.Count - 1)
             {
                 Debug.LogWarning($"index is over the max value");
-                index = _mapKeyDataNet.MapKeyDataList.Count - 1; // 最大値を超えないようにする
+                index = mapKeyDataList.Count - 1; // 最大値を超えないようにする
             }
             _currentIndex = index;
-            var key = _mapKeyDataNet.MapKeyDataList[_currentIndex].mapKey;
-            var mapIndex = _mapKeyDataNet.MapKeyDataList[_currentIndex].index;
+            var key = mapKeyDataList[_currentIndex].mapKey;
+            var mapIndex = mapKeyDataList[_currentIndex].index;
             var nextMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _currentMap = nextMap;
             _allPresenterPlacer.Place(_currentMap);

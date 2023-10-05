@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners;
 using Fusion;
-using Projects.BattleSystem.LobbyScene.Scripts;
-using Projects.BattleSystem.Scripts;
-using Projects.Utility.Scripts;
+using Carry.GameSystem.LobbyScene.Scripts;
+using Carry.GameSystem.Scripts;
+using Carry.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -17,7 +18,8 @@ namespace  Carry.GameSystem.Scripts
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.Register<PlayerCharacterHolder>(Lifetime.Singleton);
+            builder.Register<PlayerCharacterTransporter>(Lifetime.Singleton);
+            builder.Register<StageIndexTransporter>(Lifetime.Singleton);
 
         }
     }

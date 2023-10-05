@@ -10,19 +10,19 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EditMapBlockPresenterPlacer : IBlockPresenterPlacer
+    public class EditMapBlockPresenterPlacer : IPresenterPlacer
     {
         [Inject] readonly NetworkRunner _runner;
-        readonly IBlockBuilder _carryBlockBuilder;
-        IEnumerable<BlockPresenterNet> _blockPresenters =  new List<BlockPresenterNet>();
+        readonly EditMapBlockBuilder _carryBlockBuilder;
+        IEnumerable<EntityPresenterNet> _blockPresenters =  new List<EntityPresenterNet>();
         
         [Inject]
-        public EditMapBlockPresenterPlacer(IBlockBuilder carryBlockBuilder)
+        public EditMapBlockPresenterPlacer(EditMapBlockBuilder carryBlockBuilder)
         {
             _carryBlockBuilder = carryBlockBuilder;
         }
 
-        
+         
         public void Place(EntityGridMap map)
         {
             // 以前のTilePresenterを削除
@@ -45,10 +45,10 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 _runner.Despawn(blockPresenterNet.Object);
             }
-            _blockPresenters = new List<BlockPresenterNet>();
+            _blockPresenters = new List<EntityPresenterNet>();
         }
         
-         void AttachTilePresenter(IReadOnlyList<BlockPresenterNet> blockPresenterNets , EntityGridMap map)
+         void AttachTilePresenter(IReadOnlyList<EntityPresenterNet> blockPresenterNets , EntityGridMap map)
         {
             for (int i = 0; i < blockPresenterNets.Count(); i++)
             {

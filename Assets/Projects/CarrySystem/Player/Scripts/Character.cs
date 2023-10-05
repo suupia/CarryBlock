@@ -1,4 +1,5 @@
 using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.CarriableBlock.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using UnityEngine;
@@ -103,5 +104,6 @@ namespace Carry.CarrySystem.Player.Scripts
         // IOnDamageExecutor
         public bool IsFainted => _onDamageExecutor.IsFainted;   
         public void OnRevive() => _onDamageExecutor.OnRevive();
+        public void SetReviveEffectPresenter(ReviveEffectPresenter presenter) => _onDamageExecutor.SetReviveEffectPresenter(presenter);
     }
 }

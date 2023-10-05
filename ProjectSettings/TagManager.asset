@@ -19,6 +19,7 @@ TagManager:
   - Block
   - Wall
   - CannonBlock
+  - Item
   layers:
   - Default
   - TransparentFX

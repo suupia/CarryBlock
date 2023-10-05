@@ -7,7 +7,8 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Block.Interfaces
 {
-    public interface IBlock : IEntity
+    // If a block implementing this interface is placed, the cart route will be blocked by this block.
+    public interface IBlock : IPlaceable
     {
 
     }
