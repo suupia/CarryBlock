@@ -148,7 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
-    passTag: Color
+    passTag: PlayerWallTransparent
     Event: 300
     filterSettings:
       RenderQueueType: 0
