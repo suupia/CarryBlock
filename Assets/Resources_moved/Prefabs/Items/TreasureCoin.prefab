@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7560793237144289020}
+  - component: {fileID: 303809037212723409}
   m_Layer: 0
   m_Name: TreasureCoinView
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,6 +33,19 @@ Transform:
   m_Father: {fileID: 4622639919520152248}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &303809037212723409
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088784092791101167}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.44
+  m_Center: {x: 0, y: 0.98, z: 0}
 --- !u!1 &3908524257027688657
 GameObject:
   m_ObjectHideFlags: 0
@@ -44,8 +58,8 @@ GameObject:
   - component: {fileID: 5064836375135560690}
   - component: {fileID: -8152286633096479497}
   m_Layer: 0
-  m_Name: TreasureCoinBlock
-  m_TagString: Untagged
+  m_Name: TreasureCoin
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,6 +117,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  itemViewObj: {fileID: 1088784092791101167}
+  info:
+    itemType: 1
 --- !u!1001 &8752524188137871391
 PrefabInstance:
   m_ObjectHideFlags: 0
