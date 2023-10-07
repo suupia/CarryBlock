@@ -40,7 +40,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         public void  PickUp(ICharacter character)
         {
             // todo: 上下左右を入れ替えた混乱の動きに切り替える
-            character.SwitchToSlowMove();
+            character.SwitchToConfusionMove();
         }
 
         public bool CanPutDown(IList<ICarriableBlock> placedBlocks)

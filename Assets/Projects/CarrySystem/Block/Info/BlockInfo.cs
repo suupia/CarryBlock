@@ -34,6 +34,7 @@ namespace Carry.CarrySystem.Block.Info
                 BlockTypeEnum.UnmovableBlock => typeof(UnmovableBlock),
                 BlockTypeEnum.HeavyBlock => typeof(HeavyBlock),
                 BlockTypeEnum.FragileBlock => typeof(FragileBlock),
+                BlockTypeEnum.ConfusionBlock => typeof(ConfusionBlock),
                 BlockTypeEnum.CannonBlock => typeof(CannonBlock),
                 _ => throw new ArgumentOutOfRangeException()
             };
@@ -53,6 +54,7 @@ namespace Carry.CarrySystem.Block.Info
             UnmovableBlock,
             HeavyBlock,
             FragileBlock,
+            ConfusionBlock,
             CannonBlock,
         }
     }
