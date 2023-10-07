@@ -9,9 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5003323942659364831}
-  - component: {fileID: 8197061430170545929}
-  - component: {fileID: 4922042967918774524}
-  - component: {fileID: -3280920279706656952}
+  - component: {fileID: 4608511015458623159}
+  - component: {fileID: -35644347263828590}
   m_Layer: 0
   m_Name: GroundPresenterLocal
   m_TagString: Untagged
@@ -37,7 +36,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8197061430170545929
+--- !u!114 &4608511015458623159
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,38 +45,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5003323942659364829}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caf0db5ff70b4379833d666c15fa8e9f, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f22fed2f78d4050865fce439e0ada6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
---- !u!114 &4922042967918774524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5003323942659364829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectInterest: 1
-  DefaultInterestGroups: []
-  DestroyWhenStateAuthorityLeaves: 0
-  AllowStateAuthorityOverride: 1
-  AoiPositionSource: {fileID: 0}
-  Flags: 2305
-  NetworkGuid:
-    RawGuidValue: f512935cdf4e3354fb6f18b404e3c66a
-  NestedObjects:
-  - {fileID: 6332906570604874039}
-  - {fileID: 7659016054574733368}
-  - {fileID: 8774447048955767329}
-  NetworkedBehaviours:
-  - {fileID: 8197061430170545929}
-  SimulationBehaviours: []
---- !u!114 &-3280920279706656952
+--- !u!114 &-35644347263828590
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -201,17 +172,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5965080741896850020, guid: 4386fb9410f4bdf4b9d34bb00b99c72a, type: 3}
   m_PrefabInstance: {fileID: 1128823911539431870}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7659016054574733368 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -1882458635062836858, guid: 4386fb9410f4bdf4b9d34bb00b99c72a, type: 3}
-  m_PrefabInstance: {fileID: 1128823911539431870}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5003323941402432815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -286,17 +246,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5082306230323153108, guid: 019d130d8399e1b4099bb743f283390d, type: 3}
   m_PrefabInstance: {fileID: 5003323941402432815}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6332906570604874039 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1336549174851394584, guid: 019d130d8399e1b4099bb743f283390d, type: 3}
-  m_PrefabInstance: {fileID: 5003323941402432815}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7730843820562085433
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -375,14 +324,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5082306230323153108, guid: 0b849f7e81da7dc479f90d7988b217b7, type: 3}
   m_PrefabInstance: {fileID: 7730843820562085433}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8774447048955767329 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1336549174851394584, guid: 0b849f7e81da7dc479f90d7988b217b7, type: 3}
-  m_PrefabInstance: {fileID: 7730843820562085433}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -1,6 +1,8 @@
-﻿namespace Carry.CarrySystem.Map.Scripts
+﻿using UnityEngine;
+
+namespace Carry.CarrySystem.Map.Scripts
 {
-    public class GroundPresenterLocal
+    public class GroundPresenterLocal : MonoBehaviour
     {
         
     }

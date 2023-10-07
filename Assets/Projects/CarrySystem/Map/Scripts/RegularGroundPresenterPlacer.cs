@@ -10,7 +10,7 @@ namespace Carry.CarrySystem.Map.Scripts
     public class RegularGroundPresenterPlacer : IPresenterPlacer
     {
         [Inject] NetworkRunner _runner;
-        IEnumerable<GroundPresenterNet> _tilePresenters = new List<GroundPresenterNet>();
+        IEnumerable<GroundPresenterLocal> _tilePresenters = new List<GroundPresenterLocal>();
 
         readonly int _groundHorizontalNum = 3;
         readonly int _groundVerticalNum = 2;
@@ -22,8 +22,8 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void Place(EntityGridMap map)
         {
-            var wallPresenterSpawner = new GroundPresenterSpawner(_runner);
-            var wallPresenters = new List<GroundPresenterNet>();
+            var wallPresenterSpawner = new LocalGroundPresenterSpawner();
+            var wallPresenters = new List<GroundPresenterLocal>();
 
             // 以前のTilePresenterを削除
             DestroyWallPresenter();
@@ -49,10 +49,11 @@ namespace Carry.CarrySystem.Map.Scripts
 
             foreach (var tilePresenter in _tilePresenters)
             {
-                _runner.Despawn(tilePresenter.Object);
+                // _runner.Despawn(tilePresenter.Object);
+                UnityEngine.Object.Destroy(tilePresenter);
             }
 
-            _tilePresenters = new List<GroundPresenterNet>();
+            _tilePresenters = new List<GroundPresenterLocal>();
         }
     }
 }
