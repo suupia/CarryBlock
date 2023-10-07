@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   mapKeyDataNetList:
+  - {fileID: 8423385723093209936, guid: 3f7a0693a1c8b424dac39b45e5aed07f, type: 3}
   - {fileID: 4083379182302277477, guid: 6f0f0f38d4f899f48b89ef40477d3f2a, type: 3}
   - {fileID: 4083379182302277477, guid: f4916510476830b46a988191b1d55af8, type: 3}
   - {fileID: 4083379182302277477, guid: 08c042f0407042242b36a21be3f9f668, type: 3}

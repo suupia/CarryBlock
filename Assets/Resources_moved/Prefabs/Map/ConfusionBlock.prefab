@@ -153,7 +153,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   blockViewObj: {fileID: 2478132344785946946}
   info:
-    blockType: 3
+    blockType: 5
 --- !u!114 &5301068089461518865
 MonoBehaviour:
   m_ObjectHideFlags: 0
