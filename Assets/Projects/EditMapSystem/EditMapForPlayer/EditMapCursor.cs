@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -9,7 +6,7 @@ using UnityEngine.Assertions;
 
 #nullable enable
 
-namespace Carry.EditMapSystem.EditMap.Scripts
+namespace Carry.EditMapSystem.EDitMapForPlayer
 {
     public class EditMapCursor : MonoBehaviour
     {
@@ -17,7 +14,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         
         InputActionMap? _inputActionMap;
         InputAction _moveCursorAction = null!;
-        InputAction _clickCursorAction = null!;
+        //InputAction _clickCursorAction = null!;
 
         void Start()
         {
@@ -62,5 +59,4 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             }
         }
     }
-
 }
