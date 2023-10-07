@@ -25,19 +25,16 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         [SerializeField] FloorTimerNet floorTimerNet;
         PlayerSpawner _playerSpawner;
         IMapUpdater _entityGridMapSwitcher;
-        HoldingBlockObserver _holdingBlockObserver;
         public bool IsInitialized { get; private set; }
         
         [Inject]
         public void Construct(
             PlayerSpawner playerSpawner,
-            IMapUpdater entityGridMapSwitcher,
-            HoldingBlockObserver holdingBlockObserver
-            )
+            IMapUpdater entityGridMapSwitcher
+        )
         {
             _playerSpawner = playerSpawner;
             _entityGridMapSwitcher = entityGridMapSwitcher;
-            _holdingBlockObserver = holdingBlockObserver;
         }
 
 
@@ -61,7 +58,6 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             if (Runner.IsServer)
             {
                 _entityGridMapSwitcher.InitUpdateMap(MapKey.Default, 0);
-
             }
             
 
