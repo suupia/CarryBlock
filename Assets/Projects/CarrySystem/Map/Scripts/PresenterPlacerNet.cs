@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         [Inject] NetworkRunner _runner;
         IPresenterPlacer _blockPresenterPlacer;
-        IPresenterPlacer _wallPresenterPlacer;
+        LocalWallPresenterPlacer _wallPresenterPlacer;
         LocalGroundPresenterPlacer _groundPresenterPlacer;
 
         readonly int _wallHorizontalNum = 3;
@@ -24,14 +24,14 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public struct PresenterPlacerData : INetworkStruct
         {
-            [Networked, Capacity(375)] public NetworkArray<NetworkBool> WallArray => default;
+            [Networked, Capacity(442)] public NetworkArray<NetworkBool> WallArray => default;
             [Networked, Capacity(375)] public NetworkArray<NetworkBool> GroundArray => default;
         }
 
         [Inject]
         public void Construct(
             CarryBlockPresenterPlacer blockPresenterPlacer,
-            RandomWallPresenterPlacer wallPresenterPlacer,
+            LocalWallPresenterPlacer wallPresenterPlacer,
             LocalGroundPresenterPlacer groundPresenterPlacer
             )
         {
@@ -55,39 +55,50 @@ namespace Carry.CarrySystem.Map.Scripts
             
             // ground
             for(int i = 0 ; i < map.Length; i++){
-                presenterPlacerData.GroundArray.Set(i, (NetworkBool)map.GetSingleEntityList<Ground>(i).Any()); // 他のやり方ありそうだけど、、
+                presenterPlacerData.GroundArray.Set(i, (NetworkBool)map.GetSingleEntityList<Ground>(i).Any());
             }
             
             // wall
-            // // todo: WallもEntityで管理するのがよさそう
-            // var expandedMap = new SquareGridMap(map.Width + 2 * _wallHorizontalNum, map.Height + 2 * _wallVerticalNum);
-            // var wallArray = new bool[expandedMap.Length];
-            // for(int i = 0; i< wallArray.Length; i++){
-            //     // wallArray[i] = map.GetSingleEntityList<Ground>(i).Any();  // todo: Wallの判定方法をLobbyWallPresenterPlacerから持ってくる
-            //     groundArray[i] = map.GetSingleEntityList<Ground>(i).Any();
-            // }
+            // todo: WallもEntityで管理するのもよさそう
+            var expandedMap = new SquareGridMap(map.Width + 2 * _wallHorizontalNum, map.Height + 2 * _wallVerticalNum);
+            var wallArray = new bool[expandedMap.Length];
+            for(int i = 0; i< wallArray.Length; i++){
+                var gridPos = expandedMap.ToVector(i);
+                var convertedGridPos = new Vector2Int(gridPos.x - _wallHorizontalNum, gridPos.y - _wallVerticalNum);
+                if (map.IsInDataRangeArea(convertedGridPos))
+                {
+                    presenterPlacerData.WallArray.Set(i, false);
+                    continue;
+                }
+                if (IsNotPlacingBlock(map, convertedGridPos))
+                {
+                    presenterPlacerData.WallArray.Set(i, false);
+                    continue;
+                }
+                presenterPlacerData.WallArray.Set(i, true);
+            }
 
 
             RPC_PlacePresenters(presenterPlacerData, map.Width, map.Height);
 
         }
         
-        // bool IsNotPlacingBlock(EntityGridMap map, Vector2Int gridPos)
-        // {
-        //     // 右端においては、ブロックがない場所には置かない
-        //     if (gridPos.x >= map.Width)
-        //     {
-        //         if (map.GetSingleEntityList<IBlock>(new Vector2Int(gridPos.x, map.Width - 1)).Count == 0) return true;
-        //     }
-        //     
-        //     // 左端においては、真ん中から3マス分の範囲には置かない
-        //     if (gridPos.x < 0)
-        //     {
-        //         if (map.Height / 2 - 1 <= gridPos.y && gridPos.y <= map.Height / 2 + 1) return true;
-        //     } 
-        //
-        //     return false;
-        // }
+        bool IsNotPlacingBlock(EntityGridMap map, Vector2Int gridPos)
+        {
+            // 右端においては、ブロックがない場所には置かない
+            if (gridPos.x >= map.Width)
+            {
+                if (map.GetSingleEntityList<IBlock>(new Vector2Int(gridPos.x, map.Width - 1)).Count == 0) return true;
+            }
+            
+            // 左端においては、真ん中から3マス分の範囲には置かない
+            if (gridPos.x < 0)
+            {
+                if (map.Height / 2 - 1 <= gridPos.y && gridPos.y <= map.Height / 2 + 1) return true;
+            }
+
+            return false;
+        }
         
         
         [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
@@ -95,7 +106,7 @@ namespace Carry.CarrySystem.Map.Scripts
             Debug.Log($"RPC_PresenterPlace");
             var wallArray = presenterPlacerData.WallArray;
             var groundArray =  presenterPlacerData.GroundArray;
-            // _wallPresenterPlacer.Place(wallArray);
+            _wallPresenterPlacer.Place(wallArray,width,height);
             _groundPresenterPlacer.Place(groundArray,width, height); // todo: bool[]を渡せるようにする
         }
 
