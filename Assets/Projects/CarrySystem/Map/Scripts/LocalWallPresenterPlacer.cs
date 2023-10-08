@@ -38,11 +38,14 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 if (booleanMap[i])
                 {
+                    var gridPos = ToVector(i, width);
+                    var convertedGridPos = new Vector2Int(gridPos.x - _wallHorizontalNum, gridPos.y - _wallVerticalNum);
+                    var worldPos = GridConverter.GridPositionToWorldPosition(convertedGridPos);
                     var wallPresenterSpawner = DecideWallPresenterType(wallPresenterSpawners);
-                    var wallPresenter = wallPresenterSpawner.SpawnPrefab(Vector3.zero, Quaternion.identity);
+                    var wallPresenter = wallPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                     wallPresenters.Add(wallPresenter);
                 }
-            
+                
             }
             
             // var expandedMap = new SquareGridMap(width+ 2 * _wallHorizontalNum, height + 2 * _wallVerticalNum);
@@ -67,6 +70,13 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             var random = new System.Random();
             return wallPresenterSpawners[random.Next(2)];
+        }
+        
+        Vector2Int ToVector(int subscript, int width)
+        {
+            int x = subscript % width;
+            int y = subscript / width;
+            return new Vector2Int(x, y);
         }
 
         void DestroyWallPresenter()
