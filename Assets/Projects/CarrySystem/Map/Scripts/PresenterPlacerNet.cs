@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Spawners;
 using Fusion;
 using UnityEngine;
 using VContainer;
@@ -15,11 +18,15 @@ namespace Carry.CarrySystem.Map.Scripts
         IPresenterPlacer _wallPresenterPlacer;
         IPresenterPlacer _groundPresenterPlacer;
 
-        // public struct PresenterPlacerData : INetworkStruct
-        // {
-        //    public bool[] wallArray;
-        //    public bool[] groundArray;
-        // }
+        readonly int _wallHorizontalNum = 3;
+        readonly int _wallVerticalNum = 2;
+
+
+        public struct PresenterPlacerData : INetworkStruct
+        {
+            [Networked, Capacity(375)] public NetworkArray<NetworkBool> WallArray => default;
+            [Networked, Capacity(375)] public NetworkArray<NetworkBool> GroundArray => default;
+        }
 
         [Inject]
         public void Construct(
@@ -39,39 +46,62 @@ namespace Carry.CarrySystem.Map.Scripts
         /// <param name="map"></param>
         public void Place(EntityGridMap map)
         {
+            // block
             _blockPresenterPlacer.Place(map);
             
-            var wallArray = new bool[map.Length];
+            // ground
             var groundArray = new bool[map.Length];
             for(int i = 0; i< map.Length; i++){
-                // wallArray[i] = map.GetSingleEntityList<Ground>(i).Any();  // todo: Wallの判定方法をLobbyWallPresenterPlacerから持ってくる
                 groundArray[i] = map.GetSingleEntityList<Ground>(i).Any();
             }
+            
+            // wall
+            // // todo: WallもEntityで管理するのがよさそう
+            // var expandedMap = new SquareGridMap(map.Width + 2 * _wallHorizontalNum, map.Height + 2 * _wallVerticalNum);
+            // var wallArray = new bool[expandedMap.Length];
+            // for(int i = 0; i< wallArray.Length; i++){
+            //     // wallArray[i] = map.GetSingleEntityList<Ground>(i).Any();  // todo: Wallの判定方法をLobbyWallPresenterPlacerから持ってくる
+            //     groundArray[i] = map.GetSingleEntityList<Ground>(i).Any();
+            // }
             // var presenterPlacerData = new PresenterPlacerData{
-            //     wallArray = wallArray,
-            //     groundArray = groundArray
+            //     groundArray = groundArray,
+            //     wallArray = new bool[0],
             // };
-           // RPC_PlacePresenters();
+            // RPC_PlacePresenters(presenterPlacerData);
         }
         
-        // [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
-        // public void RPC_PlacePresenters(){
-        //     Debug.Log($"RPC_PresenterPlace");
-        //     var presenterPlacerData = new PresenterPlacerData{
-        //         wallArray = new bool[0],
-        //         groundArray = new bool[0]
-        //     };
-        //     var wallArray = presenterPlacerData.wallArray;
-        //     var groundArray = presenterPlacerData.groundArray;
-        //     // _wallPresenterPlacer.Place(wallArray);
-        //     // _groundPresenterPlacer.Place(groundArray);
+        // bool IsNotPlacingBlock(EntityGridMap map, Vector2Int gridPos)
+        // {
+        //     // 右端においては、ブロックがない場所には置かない
+        //     if (gridPos.x >= map.Width)
+        //     {
+        //         if (map.GetSingleEntityList<IBlock>(new Vector2Int(gridPos.x, map.Width - 1)).Count == 0) return true;
+        //     }
+        //     
+        //     // 左端においては、真ん中から3マス分の範囲には置かない
+        //     if (gridPos.x < 0)
+        //     {
+        //         if (map.Height / 2 - 1 <= gridPos.y && gridPos.y <= map.Height / 2 + 1) return true;
+        //     }
+        //
+        //     return false;
         // }
         
-        // todo: test , so delete this method
-        [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
-        public void RPC_PresenterPlace(RpcInfo info = default){
+        
+        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+        public void RPC_PlacePresenters(PresenterPlacerData presenterPlacerData){
             Debug.Log($"RPC_PresenterPlace");
+            var wallArray = presenterPlacerData.WallArray;
+            var groundArray =  presenterPlacerData.GroundArray;
+            // _wallPresenterPlacer.Place(wallArray);
+            // _groundPresenterPlacer.Place(groundArray); // todo: bool[]を渡せるようにする
         }
+        
+        // // todo: test , so delete this method
+        // [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
+        // public void RPC_PresenterPlace(RpcInfo info = default){
+        //     Debug.Log($"RPC_PresenterPlace");
+        // }
 
         
     }
