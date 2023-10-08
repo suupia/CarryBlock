@@ -46,6 +46,7 @@ namespace Carry.CarrySystem.Map.Scripts
         /// <param name="map"></param>
         public void Place(EntityGridMap map)
         {
+            Debug.Log($"PresenterPlacerNet.Place");
             var presenterPlacerData = new PresenterPlacerData();
 
             // block
@@ -67,6 +68,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
 
             RPC_PlacePresenters(presenterPlacerData, map.Width, map.Height);
+            RPC_Hello();
         }
         
         // bool IsNotPlacingBlock(EntityGridMap map, Vector2Int gridPos)
@@ -96,11 +98,11 @@ namespace Carry.CarrySystem.Map.Scripts
             _groundPresenterPlacer.Place(groundArray,width, height); // todo: bool[]を渡せるようにする
         }
         
-        // // todo: test , so delete this method
-        // [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
-        // public void RPC_PresenterPlace(RpcInfo info = default){
-        //     Debug.Log($"RPC_PresenterPlace");
-        // }
+        // todo: test , so delete this method
+        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+        public void RPC_Hello(){
+            Debug.Log($"RPC_Hello");
+        }
 
         
     }

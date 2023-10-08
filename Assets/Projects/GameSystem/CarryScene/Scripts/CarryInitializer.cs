@@ -65,6 +65,8 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             if (Runner.IsServer) _playerSpawner.RespawnAllPlayer();
 
             IsInitialized = true;
+            
+            RPC_CarryInitializerHello(Runner);
 
         }
 
@@ -85,6 +87,13 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         {
             if (Runner.IsServer) SceneTransition.TransitioningScene(Runner, SceneName.LobbyScene);
         }
+        
+        // todo: test , so delete this method
+        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+        public static void RPC_CarryInitializerHello(NetworkRunner runner){
+            Debug.Log($"RPC_CarryInitializerHello");
+        }
+
 
 
     }
