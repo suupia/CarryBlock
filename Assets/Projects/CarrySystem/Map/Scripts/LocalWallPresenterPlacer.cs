@@ -14,16 +14,13 @@ namespace Carry.CarrySystem.Map.Scripts
     public class LocalWallPresenterPlacer
     {
         IEnumerable<WallPresenterMono> _tilePresenters = new List<WallPresenterMono>();
-
-        readonly int _wallHorizontalNum = 3;
-        readonly int _wallVerticalNum = 2;
-
+        
         [Inject]
         public LocalWallPresenterPlacer()
         {
         }
 
-        public void Place(NetworkArray<NetworkBool> booleanMap, Int32 width, Int32 height)
+        public void Place(NetworkArray<NetworkBool> booleanMap, Int32 width, Int32 height, Int32 wallHorizontalNum, Int32 wallVerticalNum)
         {
             //var wallPresenterSpawner = new WallPresenterSpawner(_runner);
             var wallPresenterSpawners = new List<IWallPresenterMonoSpawner>()
@@ -34,12 +31,12 @@ namespace Carry.CarrySystem.Map.Scripts
             DestroyWallPresenter();
 
             // WallPresenterをスポーンさせる
-            for (int i = 0; i < booleanMap.Length; i++)
+            for (int i = 0; i < width * height; i++)  // 余剰分があるためboolMapのLengthではなくwidth * height
             {
                 if (booleanMap[i])
                 {
                     var gridPos = ToVector(i, width);
-                    var convertedGridPos = new Vector2Int(gridPos.x - _wallHorizontalNum, gridPos.y - _wallVerticalNum);
+                    var convertedGridPos = new Vector2Int(gridPos.x - wallHorizontalNum, gridPos.y - wallVerticalNum);
                     var worldPos = GridConverter.GridPositionToWorldPosition(convertedGridPos);
                     var wallPresenterSpawner = DecideWallPresenterType(wallPresenterSpawners);
                     var wallPresenter = wallPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);

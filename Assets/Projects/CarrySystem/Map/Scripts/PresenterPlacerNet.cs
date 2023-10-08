@@ -80,8 +80,8 @@ namespace Carry.CarrySystem.Map.Scripts
             }
 
 
-            RPC_PlacePresenters(presenterPlacerData, map.Width, map.Height);
-
+            RPC_PlaceGroundPresenters(presenterPlacerData, map.Width, map.Height);
+            RPC_PlaceWallPresenters(presenterPlacerData, expandedMap.Width, expandedMap.Height,_wallHorizontalNum,_wallVerticalNum);
         }
         
         bool IsNotPlacingBlock(EntityGridMap map, Vector2Int gridPos)
@@ -103,12 +103,15 @@ namespace Carry.CarrySystem.Map.Scripts
         
         
         [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
-        public void RPC_PlacePresenters(PresenterPlacerData presenterPlacerData, Int32 width, Int32 height){
-            Debug.Log($"RPC_PresenterPlace");
-            var wallArray = presenterPlacerData.WallArray;
+        public void RPC_PlaceGroundPresenters(PresenterPlacerData presenterPlacerData, Int32 width, Int32 height){
             var groundArray =  presenterPlacerData.GroundArray;
-            _wallPresenterPlacer.Place(wallArray,width,height);
-            _groundPresenterPlacer.Place(groundArray,width, height); // todo: bool[]を渡せるようにする
+            _groundPresenterPlacer.Place(groundArray,width, height);
+        }
+        
+        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+        public void RPC_PlaceWallPresenters(PresenterPlacerData presenterPlacerData, Int32 width, Int32 height, Int32 wallHorizontalNum, Int32 wallVerticalNum){
+            var wallArray = presenterPlacerData.WallArray;
+            _wallPresenterPlacer.Place(wallArray,width,height,wallHorizontalNum,wallVerticalNum);
         }
 
     }
