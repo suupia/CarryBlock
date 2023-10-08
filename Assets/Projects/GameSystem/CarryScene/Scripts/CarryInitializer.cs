@@ -13,9 +13,11 @@ using Carry.CarrySystem.Spawners;
 using Cysharp.Threading.Tasks;
 using Carry.GameSystem.Scripts;
 using Carry.NetworkUtility.NetworkRunnerManager.Scripts;
+using JetBrains.Annotations;
 using UnityEngine.Serialization;
 using VContainer.Unity;
 using VContainer;
+#nullable enable
 
 
 namespace Carry.CarrySystem.CarryScene.Scripts
@@ -25,19 +27,17 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         [SerializeField] FloorTimerNet floorTimerNet;
         PlayerSpawner _playerSpawner;
         IMapUpdater _entityGridMapSwitcher;
-        CarryInitializersReady _carryInitializersReady = null!;
+        CarryInitializersReady? _carryInitializersReady;
         public bool IsInitialized { get; private set; }
         
         [Inject]
         public void Construct(
             PlayerSpawner playerSpawner,
-            IMapUpdater entityGridMapSwitcher,
-            CarryInitializersReady carryInitializersReady
+            IMapUpdater entityGridMapSwitcher
         )
         {
             _playerSpawner = playerSpawner;
             _entityGridMapSwitcher = entityGridMapSwitcher;
-            _carryInitializersReady = carryInitializersReady;
         }
 
 
@@ -47,6 +47,12 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             var runner = FindObjectOfType<NetworkRunner>();
             runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner));
+            _carryInitializersReady = FindObjectOfType<CarryInitializersReady>();
+            if (_carryInitializersReady == null)
+            {
+                Debug.LogError($"_carryInitializersReady is null");
+                return;
+            }
             _carryInitializersReady.SetInitializerReady(Runner.LocalPlayer);
             await UniTask.WaitUntil(() => _carryInitializersReady.IsAllInitializersReady());
             

@@ -1,18 +1,30 @@
 ﻿using System.Collections.Generic;
 using Fusion;
+using UnityEngine;
+
 #nullable enable
 
 namespace Carry.CarrySystem.CarryScene.Scripts
 {
-    public class CarryInitializersReady
+    public class CarryInitializersReady : NetworkBehaviour
     {
-        readonly Dictionary<PlayerRef, bool> _initializersReady = new Dictionary<PlayerRef, bool>();
-        
+        [Networked]
+        [Capacity(4)] // Sets the fixed capacity of the collection
+        [UnitySerializeField] // Show this private property in the inspector.
+        NetworkDictionary<int, NetworkBool> InitializersReady => default;
+
+        public override void Spawned()
+        {
+            base.Spawned();
+            DontDestroyOnLoad(this);
+        }
+
         public bool IsAllInitializersReady()
         {
-            foreach (var initializerReady in _initializersReady.Values)
+            Debug.Log($"InitializersReady.Count:{InitializersReady.Count}");
+            foreach (var initializerReady in InitializersReady)
             {
-                if (!initializerReady)
+                if (!initializerReady.Value)
                 {
                     return false;
                 }
@@ -23,12 +35,12 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         
         public void AddInitializerReady(PlayerRef playerRef)
         {
-            _initializersReady[playerRef] = false;
+            InitializersReady.Add(playerRef, false);
         }
         
         public void SetInitializerReady(PlayerRef playerRef)
         {
-            _initializersReady[playerRef] = true;
+            InitializersReady.Set(playerRef, true);
         }
     }
 }
