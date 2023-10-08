@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Carry.CarrySystem.Spawners;
 using Fusion;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
         }
 
-        public void Place(EntityGridMap map)
+        public void Place(NetworkArray<NetworkBool> booleanMap, Int32 width, Int32 height )
         {
             var wallPresenterSpawner = new LocalGroundPresenterSpawner();
             var wallPresenters = new List<GroundPresenterLocal>();
@@ -27,7 +28,7 @@ namespace Carry.CarrySystem.Map.Scripts
             DestroyWallPresenter();
 
             // GroundPresenterをスポーンさせる
-            var expandedMap = new SquareGridMap(map.Width + 2 * _groundHorizontalNum, map.Height + 2 * _groundVerticalNum);
+            var expandedMap = new SquareGridMap(width+ 2 * _groundHorizontalNum, height + 2 * _groundVerticalNum);
             for (int i = 0; i < expandedMap.Length; i++)
             {
                 var gridPos = expandedMap.ToVector(i);

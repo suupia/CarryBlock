@@ -16,7 +16,7 @@ namespace Carry.CarrySystem.Map.Scripts
         [Inject] NetworkRunner _runner;
         IPresenterPlacer _blockPresenterPlacer;
         IPresenterPlacer _wallPresenterPlacer;
-        IPresenterPlacer _groundPresenterPlacer;
+        LocalGroundPresenterPlacer _groundPresenterPlacer;
 
         readonly int _wallHorizontalNum = 3;
         readonly int _wallVerticalNum = 2;
@@ -32,7 +32,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public void Construct(
             CarryBlockPresenterPlacer blockPresenterPlacer,
             RandomWallPresenterPlacer wallPresenterPlacer,
-            RegularGroundPresenterPlacer groundPresenterPlacer
+            LocalGroundPresenterPlacer groundPresenterPlacer
             )
         {
             _blockPresenterPlacer = blockPresenterPlacer;
@@ -46,13 +46,14 @@ namespace Carry.CarrySystem.Map.Scripts
         /// <param name="map"></param>
         public void Place(EntityGridMap map)
         {
+            var presenterPlacerData = new PresenterPlacerData();
+
             // block
             _blockPresenterPlacer.Place(map);
             
             // ground
-            var groundArray = new bool[map.Length];
-            for(int i = 0; i< map.Length; i++){
-                groundArray[i] = map.GetSingleEntityList<Ground>(i).Any();
+            for(int i = 0 ; i < map.Length; i++){
+                presenterPlacerData.GroundArray.Set(i, (NetworkBool)map.GetSingleEntityList<Ground>(i).Any()); // 他のやり方ありそうだけど、、
             }
             
             // wall
@@ -63,11 +64,9 @@ namespace Carry.CarrySystem.Map.Scripts
             //     // wallArray[i] = map.GetSingleEntityList<Ground>(i).Any();  // todo: Wallの判定方法をLobbyWallPresenterPlacerから持ってくる
             //     groundArray[i] = map.GetSingleEntityList<Ground>(i).Any();
             // }
-            // var presenterPlacerData = new PresenterPlacerData{
-            //     groundArray = groundArray,
-            //     wallArray = new bool[0],
-            // };
-            // RPC_PlacePresenters(presenterPlacerData);
+
+
+            RPC_PlacePresenters(presenterPlacerData, map.Width, map.Height);
         }
         
         // bool IsNotPlacingBlock(EntityGridMap map, Vector2Int gridPos)
@@ -89,12 +88,12 @@ namespace Carry.CarrySystem.Map.Scripts
         
         
         [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
-        public void RPC_PlacePresenters(PresenterPlacerData presenterPlacerData){
+        public void RPC_PlacePresenters(PresenterPlacerData presenterPlacerData, Int32 width, Int32 height){
             Debug.Log($"RPC_PresenterPlace");
             var wallArray = presenterPlacerData.WallArray;
             var groundArray =  presenterPlacerData.GroundArray;
             // _wallPresenterPlacer.Place(wallArray);
-            // _groundPresenterPlacer.Place(groundArray); // todo: bool[]を渡せるようにする
+            _groundPresenterPlacer.Place(groundArray,width, height); // todo: bool[]を渡せるようにする
         }
         
         // // todo: test , so delete this method

@@ -55,9 +55,11 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<RegularGroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<LocalGroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<RegularGroundPresenterPlacer>(Lifetime.Scoped);
+            builder.RegisterComponentInHierarchy<PresenterPlacerNet>();
             
             // どのマップたちを使うかを決める
             builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
