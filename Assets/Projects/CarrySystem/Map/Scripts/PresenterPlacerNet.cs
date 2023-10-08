@@ -104,12 +104,14 @@ namespace Carry.CarrySystem.Map.Scripts
         
         [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
         public void RPC_PlaceGroundPresenters(PresenterPlacerData presenterPlacerData, Int32 width, Int32 height){
+            Debug.Log($"RPC_PlaceGroundPresenters");
             var groundArray =  presenterPlacerData.GroundArray;
             _groundPresenterPlacer.Place(groundArray,width, height);
         }
         
         [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
         public void RPC_PlaceWallPresenters(PresenterPlacerData presenterPlacerData, Int32 width, Int32 height, Int32 wallHorizontalNum, Int32 wallVerticalNum){
+            Debug.Log($"RPC_PlaceWallPresenters");
             var wallArray = presenterPlacerData.WallArray;
             _wallPresenterPlacer.Place(wallArray,width,height,wallHorizontalNum,wallVerticalNum);
         }
