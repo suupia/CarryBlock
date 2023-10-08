@@ -39,16 +39,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _wallPresenterPlacer = wallPresenterPlacer;
             _groundPresenterPlacer = groundPresenterPlacer;
         }
-
-        public override void Spawned()
-        {
-            if (HasStateAuthority)
-            {
-                RPC_Hello_StateAuthority_Spawned();
-            }
-
-            RPC_Hello_All_Spawned();
-        }
+        
 
         /// <summary>
         /// This method should be called from host only.
@@ -76,9 +67,9 @@ namespace Carry.CarrySystem.Map.Scripts
             //     groundArray[i] = map.GetSingleEntityList<Ground>(i).Any();
             // }
 
-            // Runner.RemoveSimulationBehavior(this);
+
             RPC_PlacePresenters(presenterPlacerData, map.Width, map.Height);
-            RPC_PresenterPlacerNetHello();
+
         }
         
         // bool IsNotPlacingBlock(EntityGridMap map, Vector2Int gridPos)
@@ -107,22 +98,6 @@ namespace Carry.CarrySystem.Map.Scripts
             // _wallPresenterPlacer.Place(wallArray);
             _groundPresenterPlacer.Place(groundArray,width, height); // todo: bool[]を渡せるようにする
         }
-        
-        // todo: test , so delete this method
-        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
-        public void RPC_PresenterPlacerNetHello(){
-            Debug.Log($"RPC_PresenterPlacerNetHello");
-        }
-        
-        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
-        public void RPC_Hello_StateAuthority_Spawned(){
-            Debug.Log($"RPC_Hello_StateAuthority_Spawned");
-        } 
- 
-        [Rpc(sources: RpcSources.All, targets: RpcTargets.All)]
-        public void RPC_Hello_All_Spawned(){
-            Debug.Log($"RPC_Hello_All_Spawned");
-        } 
-        
+
     }
 }
