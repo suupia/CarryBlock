@@ -40,6 +40,16 @@ namespace Carry.CarrySystem.Map.Scripts
             _groundPresenterPlacer = groundPresenterPlacer;
         }
 
+        public override void Spawned()
+        {
+            if (HasStateAuthority)
+            {
+                RPC_Hello_StateAuthority_Spawned();
+            }
+
+            RPC_Hello_All_Spawned();
+        }
+
         /// <summary>
         /// This method should be called from host only.
         /// </summary>
@@ -66,9 +76,9 @@ namespace Carry.CarrySystem.Map.Scripts
             //     groundArray[i] = map.GetSingleEntityList<Ground>(i).Any();
             // }
 
-
-            RPC_PlacePresenters(presenterPlacerData, map.Width, map.Height);
-            RPC_Hello();
+            // Runner.RemoveSimulationBehavior(this);
+            // RPC_PlacePresenters(presenterPlacerData, map.Width, map.Height);
+            RPC_PresenterPlacerNetHello();
         }
         
         // bool IsNotPlacingBlock(EntityGridMap map, Vector2Int gridPos)
@@ -83,27 +93,36 @@ namespace Carry.CarrySystem.Map.Scripts
         //     if (gridPos.x < 0)
         //     {
         //         if (map.Height / 2 - 1 <= gridPos.y && gridPos.y <= map.Height / 2 + 1) return true;
-        //     }
+        //     } 
         //
         //     return false;
         // }
         
         
-        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
-        public void RPC_PlacePresenters(PresenterPlacerData presenterPlacerData, Int32 width, Int32 height){
-            Debug.Log($"RPC_PresenterPlace");
-            var wallArray = presenterPlacerData.WallArray;
-            var groundArray =  presenterPlacerData.GroundArray;
-            // _wallPresenterPlacer.Place(wallArray);
-            _groundPresenterPlacer.Place(groundArray,width, height); // todo: bool[]を渡せるようにする
-        }
+        // [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+        // public void RPC_PlacePresenters(PresenterPlacerData presenterPlacerData, Int32 width, Int32 height){
+        //     Debug.Log($"RPC_PresenterPlace");
+        //     var wallArray = presenterPlacerData.WallArray;
+        //     var groundArray =  presenterPlacerData.GroundArray;
+        //     // _wallPresenterPlacer.Place(wallArray);
+        //     _groundPresenterPlacer.Place(groundArray,width, height); // todo: bool[]を渡せるようにする
+        // }
         
         // todo: test , so delete this method
         [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
-        public void RPC_Hello(){
-            Debug.Log($"RPC_Hello");
+        public void RPC_PresenterPlacerNetHello(){
+            Debug.Log($"RPC_PresenterPlacerNetHello");
         }
-
+        
+        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+        public void RPC_Hello_StateAuthority_Spawned(){
+            Debug.Log($"RPC_Hello_StateAuthority_Spawned");
+        } 
+ 
+        [Rpc(sources: RpcSources.All, targets: RpcTargets.All)]
+        public void RPC_Hello_All_Spawned(){
+            Debug.Log($"RPC_Hello_All_Spawned");
+        } 
         
     }
 }
