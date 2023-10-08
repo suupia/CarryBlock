@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
+using Carry.CarrySystem.CarryScene.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
@@ -21,18 +22,21 @@ namespace Carry.GameSystem.LobbyScene.Scripts
     {
         PlayerSpawner _playerSpawner = null!;
         PlayerCharacterTransporter _playerCharacterTransporter = null!;
-        IMapUpdater _lobbyMapUpdater;
+        IMapUpdater _lobbyMapUpdater = null!;
+        CarryInitializersReady _carryInitializersReady = null!;
 
         [Inject]
         public void Construct(
             PlayerSpawner playerSpawner ,
             PlayerCharacterTransporter playerCharacterTransporter,
-            IMapUpdater lobbyMapUpdater
-            )
+            IMapUpdater lobbyMapUpdater,
+            CarryInitializersReady carryInitializersReady
+        )
         {
             _playerSpawner = playerSpawner;
             _playerCharacterTransporter = playerCharacterTransporter;
             _lobbyMapUpdater = lobbyMapUpdater;
+            _carryInitializersReady = carryInitializersReady;
         }
 
         async void Start()
@@ -48,6 +52,8 @@ namespace Carry.GameSystem.LobbyScene.Scripts
                 _playerCharacterTransporter.SetIndex(Runner.LocalPlayer);
                 _playerSpawner.RespawnAllPlayer();
             }
+            
+            _carryInitializersReady.AddInitializerReady(Runner.LocalPlayer);
 
         }
 

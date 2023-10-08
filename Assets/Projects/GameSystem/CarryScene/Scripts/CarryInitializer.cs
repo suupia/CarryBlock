@@ -25,16 +25,19 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         [SerializeField] FloorTimerNet floorTimerNet;
         PlayerSpawner _playerSpawner;
         IMapUpdater _entityGridMapSwitcher;
+        CarryInitializersReady _carryInitializersReady = null!;
         public bool IsInitialized { get; private set; }
         
         [Inject]
         public void Construct(
             PlayerSpawner playerSpawner,
-            IMapUpdater entityGridMapSwitcher
+            IMapUpdater entityGridMapSwitcher,
+            CarryInitializersReady carryInitializersReady
         )
         {
             _playerSpawner = playerSpawner;
             _entityGridMapSwitcher = entityGridMapSwitcher;
+            _carryInitializersReady = carryInitializersReady;
         }
 
 
@@ -44,7 +47,8 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             var runner = FindObjectOfType<NetworkRunner>();
             runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner));
-
+            _carryInitializersReady.SetInitializerReady(Runner.LocalPlayer);
+            await UniTask.WaitUntil(() => _carryInitializersReady.IsAllInitializersReady());
             
             // Start Timer
             if (Runner.IsServer)
