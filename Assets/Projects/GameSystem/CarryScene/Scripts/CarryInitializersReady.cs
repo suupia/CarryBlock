@@ -22,12 +22,16 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         public bool IsAllInitializersReady()
         {
             Debug.Log($"InitializersReady.Count:{InitializersReady.Count}");
+            int i = 0;
             foreach (var initializerReady in InitializersReady)
             {
+                Debug.Log($"initializerReady.Value:{initializerReady.Value}, i:{i}");
                 if (!initializerReady.Value)
                 {
                     return false;
                 }
+
+                i++;
             }
 
             return true;
