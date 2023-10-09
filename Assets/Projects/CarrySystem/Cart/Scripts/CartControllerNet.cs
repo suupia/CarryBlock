@@ -27,7 +27,8 @@ namespace Carry.CarrySystem.Cart.Scripts
 
         void OnTriggerEnter(Collider other)
         {
-            if(!_move.IsMoving)return;
+            if(!HasStateAuthority) return;
+            if(!_move.IsMoving) return;
             if (other.CompareTag("Item"))
             {
                 var itemView= other.gameObject;
