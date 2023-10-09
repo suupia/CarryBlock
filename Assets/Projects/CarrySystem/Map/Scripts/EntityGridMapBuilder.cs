@@ -5,6 +5,7 @@ using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.Utility;
+using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 #nullable enable
@@ -25,6 +26,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 AddEntityFromRecord<FragileBlock, FragileBlockRecord, FragileBlock.Kind>(gridMapData.fragileBlockRecords, () => gridMapData.fragileBlockRecords?.Length ?? 0, (record) => record.kinds, FragileBlock.Kind.None, map, i );
                 AddEntityFromRecord<Cannon, CannonBlockRecord, Cannon.Kind>(gridMapData.cannonBlockRecords, () => gridMapData.cannonBlockRecords?.Length ?? 0, (record) => record.kinds, Cannon.Kind.None, map, i );
                 AddEntityFromRecord<TreasureCoin, TreasureCoinRecord, TreasureCoin.Kind>(gridMapData.treasureCoinRecords, () => gridMapData.treasureCoinRecords?.Length ?? 0, (record) => record.kinds, TreasureCoin.Kind.None, map, i );
+                AddEntityFromRecord<Spike, SpikeGimmickRecord, Spike.Kind>(gridMapData.spikeGimmickRecords, () =>gridMapData.spikeGimmickRecords?.Length?? 0, (record) => record.kinds, Spike.Kind.None, map, i );
 
             }
 

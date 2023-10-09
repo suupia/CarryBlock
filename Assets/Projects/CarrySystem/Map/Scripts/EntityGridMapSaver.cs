@@ -6,6 +6,7 @@ using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Spawners;
+using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 
@@ -30,6 +31,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var fragileBlockRecords = new FragileBlockRecord[mapLength];
             var cannonBlockRecords = new CannonBlockRecord[mapLength];
             var treasureCoinRecords = new TreasureCoinRecord[mapLength];
+            var spikeGimmickRecords = new SpikeGimmickRecord[mapLength];
             
             for (int i = 0; i < mapLength; i++)
             {
@@ -40,6 +42,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 fragileBlockRecords[i] = new FragileBlockRecord();
                 cannonBlockRecords[i] = new CannonBlockRecord();
                 treasureCoinRecords[i] = new TreasureCoinRecord();
+                spikeGimmickRecords[i] = new SpikeGimmickRecord();
             }
 
             for (int i = 0; i < mapLength; i++)
@@ -64,6 +67,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 
                 var treasureCoinBlocks = map.GetSingleEntityList<TreasureCoin>(i);
                 treasureCoinRecords[i].kinds = treasureCoinBlocks.Select(x => x.KindValue).ToArray();
+                
+                var spikes = map.GetSingleEntityList<Spike>(i);
+                spikeGimmickRecords[i].kinds = spikes.Select(x => x.KindValue).ToArray();
             }
 
             // 保存するデータの作成
@@ -77,6 +83,7 @@ namespace Carry.CarrySystem.Map.Scripts
             entityGridMapData.fragileBlockRecords = fragileBlockRecords;
             entityGridMapData.cannonBlockRecords = cannonBlockRecords;
             entityGridMapData.treasureCoinRecords = treasureCoinRecords;
+            entityGridMapData.spikeGimmickRecords = spikeGimmickRecords;
 
             Save(entityGridMapData,key, mapDataIndex);
         }

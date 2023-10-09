@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
+using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 #nullable enable
@@ -24,6 +25,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public FragileBlockRecord[]? fragileBlockRecords;
         public CannonBlockRecord[]? cannonBlockRecords;
         public TreasureCoinRecord[]? treasureCoinRecords;
+        public SpikeGimmickRecord[]? spikeGimmickRecords;
     }
 
     public enum MapKey

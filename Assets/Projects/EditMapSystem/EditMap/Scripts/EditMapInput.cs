@@ -7,6 +7,7 @@ using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
+using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 using TMPro;
 using UnityEngine;
@@ -125,6 +126,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
                 nameof(TreasureCoin) => new TreasureCoin(TreasureCoin.Kind.Kind1, mouseGridPosOnGround),
                 nameof(Cannon) =>CreateCannonBlock(),
+                nameof(Spike) => new Spike(Spike.Kind.Kind1, mouseGridPosOnGround),
                 _ => CreateUnknownBlock(),
             };
             _editMapBlockAttacher.AddPlaceable(map, mouseGridPosOnGround, placeable);
@@ -161,6 +163,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 nameof(FragileBlock) => () => _editMapBlockAttacher.RemovePlaceable<FragileBlock>(map, mouseGridPosOnGround),
                 nameof(TreasureCoin) => () => _editMapBlockAttacher.RemovePlaceable<TreasureCoin>(map, mouseGridPosOnGround),
                 nameof(Cannon) => () => _editMapBlockAttacher.RemovePlaceable<Cannon>(map, mouseGridPosOnGround),
+                nameof(Spike) => () => _editMapBlockAttacher.RemovePlaceable<Spike>(map, mouseGridPosOnGround),
                 _ => (Action)(() => Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}") ),
             })();
         }
@@ -200,7 +203,11 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 _blockType =typeof(Cannon);
             }
 
-
+            if(Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
+            {
+                _blockType =typeof(Spike);
+            }
+            
             // 方向を切り替える
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
