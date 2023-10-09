@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.Users;
+using Carry.Utility.Scripts;
 
 #nullable enable
 
@@ -17,23 +14,26 @@ namespace Carry.UISystem.UI.Prefabs
         [SerializeField] RectTransform cursorTransform = null!;
         [SerializeField] Canvas canvas = null!;
 
-        Mouse? _virtualMouse;
-        Mouse _currentMouse = null!;
-        bool _previousMouseState = false;
-        Camera _mainCamera = null!;
-        
-        string _previousControlScheme = "";
         readonly string _mouseScheme = "Mouse";
-        readonly string _otherScheme = "other";
-
+        readonly string _otherScheme = "Other";
         readonly float _cursorSpeed = 500.0f;
         readonly float _padding = 50.0f;
+        
+        Mouse? _virtualMouse;
+        Mouse _currentMouse = null!;
+        Camera _mainCamera = null!;
+        InputAction _cursorAction = null!;
+        InputAction _selectAction = null!;
+        bool _previousMouseState = false;
+        string _previousControlScheme = "Mouse";
+        
         
         private void OnEnable()
         {
             _mainCamera = Camera.main!;
             _currentMouse = Mouse.current;
             
+            // 仮想マウスを作成し，InputSystemに追加する
             if (_virtualMouse == null)
             {
                 _virtualMouse = (Mouse)InputSystem.AddDevice("VirtualMouse");  
@@ -53,12 +53,18 @@ namespace Carry.UISystem.UI.Prefabs
 
             InputSystem.onAfterUpdate += UpdateMotion;
             playerInput.onControlsChanged += OnControlsChanged;
-            
+
+            // InputActionを取得する
+            InputActionMap inputActionMap = InputActionMapLoader.GetInputActionMap(InputActionMapLoader.ActionMapName.UI);
+            _cursorAction = inputActionMap.FindAction("MoveCursor");
+            _selectAction = inputActionMap.FindAction("Select");
+
             Debug.Log("OnEnable");
         }
 
         private void OnDisable()
         {
+            // 必ず追加したデバイスを削除すること
             if(_virtualMouse != null && _virtualMouse.added)InputSystem.RemoveDevice(_virtualMouse);
             
             InputSystem.onAfterUpdate -= UpdateMotion;
@@ -75,7 +81,8 @@ namespace Carry.UISystem.UI.Prefabs
                 return;
             }
 
-            Vector2 deltaValue = Gamepad.current.leftStick.ReadValue(); //todo InputActionで取得するようにする
+            // 仮想マウスの位置を更新する
+            Vector2 deltaValue = _cursorAction.ReadValue<Vector2>();
             deltaValue *= _cursorSpeed * Time.unscaledDeltaTime;
             
             Vector2 currentPos = _virtualMouse.position.ReadValue();
@@ -88,7 +95,8 @@ namespace Carry.UISystem.UI.Prefabs
             InputState.Change(_virtualMouse.delta, deltaValue);
             cursorTransform.transform.position = newPos;
 
-            bool isPressed = Gamepad.current.aButton.IsPressed();   //todo InputActionで取得するようにする
+            // 仮想マウスのボタン(クリック)の状態を更新する
+            bool isPressed = _selectAction.IsPressed();
             if (_previousMouseState != isPressed)
             {
                 _virtualMouse.CopyState<MouseState>(out var mouseState);
