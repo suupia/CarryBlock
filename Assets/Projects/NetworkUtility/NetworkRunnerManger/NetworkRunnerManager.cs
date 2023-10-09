@@ -31,7 +31,7 @@ namespace Carry.NetworkUtility.NetworkRunnerManager.Scripts
                 // Set up NetworkRunner
                 Runner = Instantiate(networkRunner);
                 DontDestroyOnLoad(Runner);
-                var inputActionMap = InputActionMapLoader.GetInputActionMap();
+                var inputActionMap = InputActionMapLoader.GetInputActionMap(InputActionMapLoader.ActionMapName.Default);
                 Runner.AddCallbacks(new LocalInputPoller(inputActionMap));
 
                 // Set up SceneMangerDefault
