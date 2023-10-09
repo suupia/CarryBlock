@@ -53,6 +53,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
                 Debug.LogError($"_carryInitializersReady is null");
                 return;
             }
+            Debug.Log($"CarryInitializersReady LocalPlayer:{Runner.LocalPlayer} true");
             _carryInitializersReady.SetInitializerReady(Runner.LocalPlayer);
             await UniTask.WaitUntil(() => _carryInitializersReady.IsAllInitializersReady());
             
