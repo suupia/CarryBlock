@@ -48,9 +48,9 @@ MonoBehaviour:
   _interpolationDataSource: 0
   mapKeyDataList:
   - mapKey: 6
-    index: 101
+    index: 7
   - mapKey: 6
-    index: 102
+    index: 101
 --- !u!114 &-1599650411451427176
 MonoBehaviour:
   m_ObjectHideFlags: 0
