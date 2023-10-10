@@ -82,8 +82,6 @@ namespace Carry.UISystem.UI.LobbyScene
                 viewObject.SetActive(!viewObject.activeSelf);
             }
         }
-        
     }
-
 }
 
