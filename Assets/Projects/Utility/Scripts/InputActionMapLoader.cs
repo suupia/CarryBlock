@@ -7,12 +7,6 @@ namespace Carry.Utility.Scripts
 {
     public static class InputActionMapLoader
     {
-        public enum ActionMapName
-        {
-            Default,
-            UI
-        }
-        
         // NetworkRunnerManagerにDIするのがよいが、NetworkRunnerManagerがVContainerに依存するのがいやなので、
         // InputActionMapLoaderの方をstaticにして、別のところでも使用できるようにする
         public static InputActionMap GetInputActionMap(ActionMapName actionMapName)
@@ -24,8 +18,14 @@ namespace Carry.Utility.Scripts
             
             return _inputActionMap[actionMapName];  
         }
-
-        static readonly Dictionary<ActionMapName,InputActionMap?> _inputActionMap = new Dictionary<ActionMapName, InputActionMap?>();
+        
+        public enum ActionMapName
+        {
+            Default,
+            UI
+        }
+        
+        static readonly Dictionary<ActionMapName,InputActionMap?> _inputActionMap = new ();
         
 
         static void Load(ActionMapName actionMapName)
