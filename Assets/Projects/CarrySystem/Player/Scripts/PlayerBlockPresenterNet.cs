@@ -35,6 +35,7 @@ namespace Carry.CarrySystem.Player.Scripts
             UnmovableBlock,
             HeavyBlock,
             FragileBlock,
+            ConfusionBlock
         }
         public struct PresentData : INetworkStruct
         {
@@ -49,6 +50,7 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField] GameObject unmovableBlockView= null!;
         [SerializeField] GameObject heavyBlockView= null!;
         [SerializeField] GameObject fragileBlockView = null!;
+        [SerializeField] GameObject ConfusionBlockView = null!;
         public void Init(ICharacter character)
         {
             Debug.Log($"PlayerBlockPresenterNet.Init()");
@@ -64,12 +66,13 @@ namespace Carry.CarrySystem.Player.Scripts
             blockTypeToGameObjectMap[BlockType.UnmovableBlock] = unmovableBlockView;
             blockTypeToGameObjectMap[BlockType.HeavyBlock] = heavyBlockView;
             blockTypeToGameObjectMap[BlockType.FragileBlock] = fragileBlockView;
+            blockTypeToGameObjectMap[BlockType.ConfusionBlock] = ConfusionBlockView;
 
             basicBlockView.GetComponent<Collider>().enabled = false;
             unmovableBlockView.GetComponent<Collider>().enabled = false;
             heavyBlockView.GetComponent<Collider>().enabled = false;
             fragileBlockView.GetComponent<Collider>().enabled = false;
-            
+            ConfusionBlockView.GetComponent<Collider>().enabled = false;
         }
 
         public override void Render()
@@ -120,6 +123,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 UnmovableBlock _ => BlockType.UnmovableBlock,
                 HeavyBlock _ => BlockType.HeavyBlock,
                 FragileBlock _ => BlockType.FragileBlock,
+                ConfusionBlock _ => BlockType.ConfusionBlock,
                 _ => throw new ArgumentOutOfRangeException(nameof(block), block, null)
             };
             return blockType;

@@ -23,6 +23,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public RockRecord[]? rockRecords;
         public HeavyBlockRecord[]? heavyBlockRecords;
         public FragileBlockRecord[]? fragileBlockRecords;
+        public ConfusionBlockRecord[]? confusionBlockRecords;
         public CannonBlockRecord[]? cannonBlockRecords;
         public TreasureCoinRecord[]? treasureCoinRecords;
         public SpikeGimmickRecord[]? spikeGimmickRecords;

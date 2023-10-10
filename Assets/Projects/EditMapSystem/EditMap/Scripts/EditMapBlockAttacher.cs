@@ -31,9 +31,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             if(allPlaceableList.Count() != addPlaceableList.Count()) return;
             
             // Judge MaxPlacedBlockCount by type.
-            if(addBlock is ICarriableBlock carriableBlock && allPlaceableList.OfType<IBlock>().Count() >= carriableBlock.MaxPlacedBlockCount) return;
-            if(addBlock is IGimmick gimmickBlock && allPlaceableList.OfType<IGimmick>().Any()) return;
-            
+            if(addBlock.MaxPlacedBlockCount <= allPlaceableList.Count() )return;
+
 
             map.AddEntity(gridPos, addBlock);
         }

@@ -11,7 +11,7 @@ namespace Carry.CarrySystem.Block.Info
     [Serializable]
     public class BlockInfo
     {
-        [FormerlySerializedAs("_blockType")] [SerializeField] BlockTypeEnum blockType;
+        [SerializeField] BlockTypeEnum blockType;
         [NonSerialized] public BlockMaterialSetter BlockMaterialSetter = null!;
         [NonSerialized] public GameObject BlockViewObj = null!;
         [NonSerialized] public BlockControllerNet BlockController = null!;
@@ -34,7 +34,8 @@ namespace Carry.CarrySystem.Block.Info
                 BlockTypeEnum.UnmovableBlock => typeof(UnmovableBlock),
                 BlockTypeEnum.HeavyBlock => typeof(HeavyBlock),
                 BlockTypeEnum.FragileBlock => typeof(FragileBlock),
-                BlockTypeEnum.CannonBlock => typeof(Cannon),
+                BlockTypeEnum.ConfusionBlock => typeof(ConfusionBlock),
+                BlockTypeEnum.CannonBlock => typeof(CannonBlock),
                 _ => throw new ArgumentOutOfRangeException()
             };
             if(result == null)
@@ -53,6 +54,7 @@ namespace Carry.CarrySystem.Block.Info
             UnmovableBlock,
             HeavyBlock,
             FragileBlock,
+            ConfusionBlock,
             CannonBlock,
         }
     }

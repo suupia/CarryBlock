@@ -6,6 +6,6 @@ namespace Carry.CarrySystem.Block.Interfaces
     // Needed to differentiate from "Ground"
     public interface IPlaceable : IEntity
     {
-        
+        int MaxPlacedBlockCount { get; }
     }
 }
