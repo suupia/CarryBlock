@@ -65,6 +65,8 @@ namespace Carry.CarrySystem.Map.Scripts
                 var checkedBlocks = CheckBlocks(getBlocks);
                 var items = map.GetSingleEntityList<IItem>(i);
                 var gimmicks = map.GetSingleEntityList<IGimmick>(i);
+                Debug.Log($"gimmicks.Count: {gimmicks.Count}");
+                
                 // get blockInfos from blockController
                 var blockControllerComponents = entityPresenter.GetComponentsInChildren<BlockControllerNet>();
                 var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();

@@ -16,10 +16,10 @@ namespace Projects.CarrySystem.Gimmick.Scripts
         public Spike.Kind[] kinds = new Spike.Kind[10];
     }
     
-    public class Spike : IBlock, IGimmick
+    public class Spike :  IGimmick
     {
         public Vector2Int GridPosition { get; set; }
-        public int MaxPlacedBlockCount { get; } = 2;
+        public int MaxPlacedBlockCount { get; } = 1;
         public Spike.Kind KindValue { get; }
         
         public enum Kind
