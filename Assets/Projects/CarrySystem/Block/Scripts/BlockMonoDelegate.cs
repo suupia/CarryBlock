@@ -8,6 +8,7 @@ using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Carry.CarrySystem.Block.Info;
 using Projects.CarrySystem.Item.Interfaces;
+using Projects.CarrySystem.Item.Scripts;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -29,6 +30,7 @@ namespace Carry.CarrySystem.Block.Scripts
          readonly IList<IBlock> _blocks;
          readonly IList<IItem> _items;
          readonly IList<BlockInfo> _blockInfos;
+         readonly IList<ItemInfo> _itemInfos;
          readonly IBlock? _block;
          readonly IEntityPresenter _entityPresenter;
 
@@ -36,13 +38,21 @@ namespace Carry.CarrySystem.Block.Scripts
 
          Vector2Int _gridPosition;
         
-         public BlockMonoDelegate(NetworkRunner runner, Vector2Int gridPos, IList<IBlock> blocks, IList<BlockInfo> blockInfos, IList<IItem> items, IEntityPresenter entityPresenter)
+         public BlockMonoDelegate(
+             NetworkRunner runner,
+             Vector2Int gridPos,
+             IList<IBlock> blocks,
+             IList<BlockInfo> blockInfos,
+             IList<IItem> items,
+             IList<ItemInfo> itemInfos,
+             IEntityPresenter entityPresenter)
          {
              _runner = runner;
              _gridPosition = gridPos;
              _blocks = blocks;
              _items = items;
              _blockInfos = blockInfos;
+             _itemInfos = itemInfos;
              _entityPresenter = entityPresenter;
              
              _highLightExecutor = new HighlightExecutor(_blockInfos);

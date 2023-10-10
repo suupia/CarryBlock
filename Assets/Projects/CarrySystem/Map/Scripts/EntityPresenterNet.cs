@@ -26,6 +26,7 @@ namespace Carry.CarrySystem.Map.Scripts
             public int UnmovableBlockCount;
             public int HeavyBlockCount;
             public int FragileBlockCount;
+            public int ConfusionBlockCount;
             public int CannonBlockCount;
             public int TreasureCoinCount;
             public Direction CannonDirection;
@@ -41,6 +42,7 @@ namespace Carry.CarrySystem.Map.Scripts
         [SerializeField] GameObject heavyBlockView = null!;
         [SerializeField] GameObject doubleHeavyBlockView = null!;
         [SerializeField] GameObject fragileBlockView = null!;
+        [SerializeField] GameObject confusionBlockView = null!;
         [SerializeField] GameObject treasureCoinView = null!;
         [SerializeField] GameObject cannonBlockView = null!;
 
@@ -100,6 +102,14 @@ namespace Carry.CarrySystem.Map.Scripts
                 _ => throw new InvalidOperationException($"FragileBlockCount : {PresentDataRef.FragileBlockCount}")
             });
             
+            // ConfusionBlock
+            confusionBlockView.SetActive(PresentDataRef.ConfusionBlockCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"ConfusionBlockCount : {PresentDataRef.ConfusionBlockCount}")
+            });
+            
             // TreasureCoinBlock
             treasureCoinView.SetActive(PresentDataRef.TreasureCoinCount switch
             {
@@ -131,14 +141,15 @@ namespace Carry.CarrySystem.Map.Scripts
             PresentDataRef.UnmovableBlockCount = allEntityList.OfType<UnmovableBlock>().Count();
             PresentDataRef.HeavyBlockCount = allEntityList.OfType<HeavyBlock>().Count();
             PresentDataRef.FragileBlockCount = allEntityList.OfType<FragileBlock>().Count();
-            PresentDataRef.CannonBlockCount = allEntityList.OfType<Cannon>().Count();
+            PresentDataRef.CannonBlockCount = allEntityList.OfType<CannonBlock>().Count();
+            PresentDataRef.ConfusionBlockCount = allEntityList.OfType<ConfusionBlock>().Count();
             PresentDataRef.TreasureCoinCount = allEntityList.OfType<TreasureCoin>().Count();
-            PresentDataRef.CannonDirection = allEntityList.OfType<Cannon>().FirstOrDefault()?.KindValue switch
+            PresentDataRef.CannonDirection = allEntityList.OfType<CannonBlock>().FirstOrDefault()?.KindValue switch
             {
-                Cannon.Kind.Up => Direction.Up,
-                Cannon.Kind.Left => Direction.Left,
-                Cannon.Kind.Down => Direction.Down,
-                Cannon.Kind.Right => Direction.Right,
+                CannonBlock.Kind.Up => Direction.Up,
+                CannonBlock.Kind.Left => Direction.Left,
+                CannonBlock.Kind.Down => Direction.Down,
+                CannonBlock.Kind.Right => Direction.Right,
                 null => Direction.Up,  // 存在しない場合は上向きにしておく
                 _ => throw new InvalidOperationException()
             };
@@ -161,25 +172,27 @@ namespace Carry.CarrySystem.Map.Scripts
                 case FragileBlock _:
                     PresentDataRef.FragileBlockCount = count;
                     break;
+                case ConfusionBlock _:
+                    PresentDataRef.ConfusionBlockCount = count;
+                    break;
                 case TreasureCoin _:
                     PresentDataRef.TreasureCoinCount = count;
                     break;
-                case Cannon cannonBlock:
+                case CannonBlock cannonBlock:
                     Debug.Log($"CannonBlock KindValue : {cannonBlock.KindValue} ");
                     PresentDataRef.CannonBlockCount = count;
                     PresentDataRef.CannonDirection = cannonBlock.KindValue switch
                     {
-                        Cannon.Kind.Up => Direction.Up,
-                        Cannon.Kind.Left => Direction.Left,
-                        Cannon.Kind.Down => Direction.Down,
-                        Cannon.Kind.Right => Direction.Right,
+                        CannonBlock.Kind.Up => Direction.Up,
+                        CannonBlock.Kind.Left => Direction.Left,
+                        CannonBlock.Kind.Down => Direction.Down,
+                        CannonBlock.Kind.Right => Direction.Right,
                         _ => throw new System.Exception($"想定外のCannonBlock.Kindが渡されました cannonBlock.KindValue : {cannonBlock.KindValue}")
                     };
                     break;
                 default:
                     throw new System.Exception($"想定外のEntityが渡されました block : {entity}");
             }
-            Debug.Log($"BasicBlockCount : {PresentDataRef.BasicBlockCount}");
         }
         
         float CalcRotationAmount(Direction direction)

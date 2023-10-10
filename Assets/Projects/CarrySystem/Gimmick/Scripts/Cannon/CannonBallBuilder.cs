@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Gimmick.Scripts
             _canonBallControllerLoader = new PrefabLoaderFromAddressable<CannonBallControllerNet>("Prefabs/Gimmick/Cannon/CannonBallNet");
         }
         
-        public CannonBallControllerNet Build(Cannon.Kind kind, Vector3 position, Quaternion rotation, PlayerRef playerRef)
+        public CannonBallControllerNet Build(CannonBlock.Kind kind, Vector3 position, Quaternion rotation, PlayerRef playerRef)
         {
             // Load prefab
             var cannonBallController = _canonBallControllerLoader.Load();

@@ -123,8 +123,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 nameof(UnmovableBlock) => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
                 nameof(HeavyBlock) => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
                 nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
-                nameof(TreasureCoin) => new TreasureCoin(TreasureCoin.Kind.Kind1, mouseGridPosOnGround),
-                nameof(Cannon) =>CreateCannonBlock(),
+                nameof(ConfusionBlock) => new ConfusionBlock(ConfusionBlock.Kind.Kind1, mouseGridPosOnGround),
+                nameof(CannonBlock) =>CreateCannonBlock(),
+                nameof(TreasureCoin) => new TreasureCoin(TreasureCoin.Kind.Kind1, mouseGridPosOnGround, map , new TreasureCoinCounter()),
                 _ => CreateUnknownBlock(),
             };
             _editMapBlockAttacher.AddPlaceable(map, mouseGridPosOnGround, placeable);
@@ -134,13 +135,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             {
                 var kind = _direction switch
                 {
-                    Direction.Up => Cannon.Kind.Up,
-                    Direction.Left => Cannon.Kind.Left,
-                    Direction.Down => Cannon.Kind.Down,
-                    Direction.Right => Cannon.Kind.Right,
+                    Direction.Up => CannonBlock.Kind.Up,
+                    Direction.Left => CannonBlock.Kind.Left,
+                    Direction.Down => CannonBlock.Kind.Down,
+                    Direction.Right => CannonBlock.Kind.Right,
                     _ => throw new ArgumentOutOfRangeException(),
                 };
-                return new Cannon(kind, mouseGridPosOnGround);
+                return new CannonBlock(kind, mouseGridPosOnGround);
             }
             IBlock CreateUnknownBlock()
             {
@@ -159,8 +160,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 nameof(UnmovableBlock) => () => _editMapBlockAttacher.RemovePlaceable<UnmovableBlock>(map, mouseGridPosOnGround),
                 nameof(HeavyBlock) => () => _editMapBlockAttacher.RemovePlaceable<HeavyBlock>(map, mouseGridPosOnGround),
                 nameof(FragileBlock) => () => _editMapBlockAttacher.RemovePlaceable<FragileBlock>(map, mouseGridPosOnGround),
+                nameof(ConfusionBlock) => () => _editMapBlockAttacher.RemovePlaceable<ConfusionBlock>(map, mouseGridPosOnGround),
+                nameof(CannonBlock) => () => _editMapBlockAttacher.RemovePlaceable<CannonBlock>(map, mouseGridPosOnGround),
                 nameof(TreasureCoin) => () => _editMapBlockAttacher.RemovePlaceable<TreasureCoin>(map, mouseGridPosOnGround),
-                nameof(Cannon) => () => _editMapBlockAttacher.RemovePlaceable<Cannon>(map, mouseGridPosOnGround),
                 _ => (Action)(() => Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}") ),
             })();
         }
@@ -192,12 +194,17 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             if(Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
             {
-                _blockType =typeof(TreasureCoin);
+                _blockType = typeof(ConfusionBlock);
             }
             
             if(Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
             {
-                _blockType =typeof(Cannon);
+                _blockType =typeof(TreasureCoin);
+            }
+            
+            if(Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
+            {
+                _blockType =typeof(CannonBlock);
             }
 
 
