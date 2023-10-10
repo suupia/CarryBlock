@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
+using Carry.CarrySystem.Gimmick.Interfaces;
 using Fusion;
 using Carry.Utility.Scripts;
 using Carry.Utility;
 using Carry.Utility.Interfaces;
+using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Interfaces;
 using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
@@ -62,15 +64,26 @@ namespace Carry.CarrySystem.Map.Scripts
                 var getBlocks = map.GetSingleEntityList<IBlock>(i);
                 var checkedBlocks = CheckBlocks(getBlocks);
                 var items = map.GetSingleEntityList<IItem>(i);
+                var gimmicks = map.GetSingleEntityList<IGimmick>(i);
+                Debug.Log($"gimmicks.Count: {gimmicks.Count}");
+                
                 // get blockInfos from blockController
                 var blockControllerComponents = entityPresenter.GetComponentsInChildren<BlockControllerNet>();
                 var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
-                // get itemInfos from blockController
+                // get itemInfos from itemController
                 var itemControllerComponents = entityPresenter.GetComponentsInChildren<ItemControllerNet>();
                 var itemInfos = itemControllerComponents.Select(c => c.Info).ToList();
+                // get gimmickInfos from gimmickController
+                var gimmickControllerComponents = entityPresenter.GetComponentsInChildren<GimmickControllerNet>();
+                var gimmickInfos = gimmickControllerComponents.Select(c => c.Info).ToList();
+                
                 var blockMonoDelegate =
-                    new BlockMonoDelegate(_runner, gridPos, checkedBlocks, blockInfos, items,
-                    itemInfos, entityPresenter); // すべてのマスにBlockMonoDelegateを配置させる
+                    new BlockMonoDelegate(
+                        _runner, gridPos, 
+                        checkedBlocks, blockInfos,
+                        items, itemInfos,
+                        gimmicks, gimmickInfos,
+                        entityPresenter); // すべてのマスにBlockMonoDelegateを配置させる
                 blockMonoDelegates.Add(blockMonoDelegate);
 
                 blockPresenters.Add(entityPresenter);

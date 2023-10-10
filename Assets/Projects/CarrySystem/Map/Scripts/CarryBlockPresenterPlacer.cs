@@ -58,7 +58,8 @@ namespace Carry.CarrySystem.Map.Scripts
                 var monoDelegate = map.GetSingleEntity<IBlockMonoDelegate>(i);
                 var blocks = monoDelegate.Blocks.Cast<IEntity>();
                 var items = monoDelegate.Items.Cast<IEntity>();
-                var placeableObject = blocks.Concat(items).ToList();
+                var gimmicks = monoDelegate.Gimmicks.Cast<IEntity>();
+                var placeableObject = blocks.Concat(items).Concat(gimmicks).ToList();
                 blockPresenterNet.SetInitAllEntityActiveData(placeableObject);
 
                 // mapにTilePresenterを登録
