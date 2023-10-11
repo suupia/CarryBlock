@@ -49,94 +49,94 @@ namespace Carry.CarrySystem.Map.Scripts
             Destroy(this);
         }
 
-void Update()
-{
-    // UnmovableBlock
-    unmovableBlockView.SetActive(_unmovableBlockCount switch
-    {
-        0 or 2 => false,
-        1 => true,
-        _ => throw new InvalidOperationException($"RockCount : {_unmovableBlockCount}")
-    });
-    doubleUnmovableBlockView.SetActive(_unmovableBlockCount switch
-    {
-        0 or 1 => false,
-        2 => true,
-        _ => throw new InvalidOperationException($"RockCount : {_unmovableBlockCount}")
-    });
+        void Update()
+        {
+            // UnmovableBlock
+            unmovableBlockView.SetActive(_unmovableBlockCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"RockCount : {_unmovableBlockCount}")
+            });
+            doubleUnmovableBlockView.SetActive(_unmovableBlockCount switch
+            {
+                0 or 1 => false,
+                2 => true,
+                _ => throw new InvalidOperationException($"RockCount : {_unmovableBlockCount}")
+            });
 
-    // BasicBlock
-    basicBlockView.SetActive(_basicBlockCount switch
-    {
-        0 or 2 => false,
-        1 => true,
-        _ => throw new InvalidOperationException($"BasicBlockCount : {_basicBlockCount}")
-    });
-    doubleBasicBlockView.SetActive(_basicBlockCount switch
-    {
-        0 or 1 => false,
-        2 => true,
-        _ => throw new InvalidOperationException($"BasicBlockCount : {_basicBlockCount}")
-    });
+            // BasicBlock
+            basicBlockView.SetActive(_basicBlockCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"BasicBlockCount : {_basicBlockCount}")
+            });
+            doubleBasicBlockView.SetActive(_basicBlockCount switch
+            {
+                0 or 1 => false,
+                2 => true,
+                _ => throw new InvalidOperationException($"BasicBlockCount : {_basicBlockCount}")
+            });
 
-    // HeavyBlock
-    heavyBlockView.SetActive(_heavyBlockCount switch
-    {
-        0 or 2 => false,
-        1 => true,
-        _ => throw new InvalidOperationException($"HeavyBlockCount : {_heavyBlockCount}")
-    });
-    doubleHeavyBlockView.SetActive(_heavyBlockCount switch
-    {
-        0 or 1 => false,
-        2 => true,
-        _ => throw new InvalidOperationException($"HeavyBlockCount : {_heavyBlockCount}")
-    });
+            // HeavyBlock
+            heavyBlockView.SetActive(_heavyBlockCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"HeavyBlockCount : {_heavyBlockCount}")
+            });
+            doubleHeavyBlockView.SetActive(_heavyBlockCount switch
+            {
+                0 or 1 => false,
+                2 => true,
+                _ => throw new InvalidOperationException($"HeavyBlockCount : {_heavyBlockCount}")
+            });
 
-    // FragileBlock
-    fragileBlockView.SetActive(_fragileBlockCount switch
-    {
-        0 or 2 => false,
-        1 => true,
-        _ => throw new InvalidOperationException($"FragileBlockCount : {_fragileBlockCount}")
-    });
+            // FragileBlock
+            fragileBlockView.SetActive(_fragileBlockCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"FragileBlockCount : {_fragileBlockCount}")
+            });
 
-    // ConfusionBlock
-    confusionBlockView.SetActive(_confusionBlockCount switch
-    {
-        0 or 2 => false,
-        1 => true,
-        _ => throw new InvalidOperationException($"ConfusionBlockCount : {_confusionBlockCount}")
-    });
+            // ConfusionBlock
+            confusionBlockView.SetActive(_confusionBlockCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"ConfusionBlockCount : {_confusionBlockCount}")
+            });
 
-    // TreasureCoinBlock
-    treasureCoinView.SetActive(_treasureCoinCount switch
-    {
-        1 => true,
-        _ => false
-    });
+            // TreasureCoinBlock
+            treasureCoinView.SetActive(_treasureCoinCount switch
+            {
+                1 => true,
+                _ => false
+            });
 
-    // CannonBlock
-    cannonBlockView.SetActive(_cannonBlockCount switch
-    {
-        0 or 2 => false,
-        1 => true,
-        _ => throw new InvalidOperationException($"CannonBlockCount : {_cannonBlockCount}")
-    });
-    if (_cannonDirectionLocal != _cannonDirection)
-    {
-        _cannonDirectionLocal = _cannonDirection;
-        cannonBlockView.transform.parent.Rotate(0,CalcRotationAmount(_cannonDirectionLocal),0);
-    }
+            // CannonBlock
+            cannonBlockView.SetActive(_cannonBlockCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"CannonBlockCount : {_cannonBlockCount}")
+            });
+            if (_cannonDirectionLocal != _cannonDirection)
+            {
+                _cannonDirectionLocal = _cannonDirection;
+                cannonBlockView.transform.parent.Rotate(0, CalcRotationAmount(_cannonDirectionLocal), 0);
+            }
 
-    // Spike
-    spikeView.SetActive(_spikeCount switch
-    {
-        0 or 2 => false,
-        1 => true,
-        _ => throw new InvalidOperationException($"SpikeCount : {_spikeCount}")
-    });
-}
+            // Spike
+            spikeView.SetActive(_spikeCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"SpikeCount : {_spikeCount}")
+            });
+        }
 
 
 
