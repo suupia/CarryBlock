@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
+using Carry.CarrySystem.CarryScene.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
@@ -21,14 +22,15 @@ namespace Carry.GameSystem.LobbyScene.Scripts
     {
         PlayerSpawner _playerSpawner = null!;
         PlayerCharacterTransporter _playerCharacterTransporter = null!;
-        IMapUpdater _lobbyMapUpdater;
+        IMapUpdater _lobbyMapUpdater = null!;
+        CarryInitializersReady _carryInitializersReady = null!;
 
         [Inject]
         public void Construct(
             PlayerSpawner playerSpawner ,
             PlayerCharacterTransporter playerCharacterTransporter,
             IMapUpdater lobbyMapUpdater
-            )
+        )
         {
             _playerSpawner = playerSpawner;
             _playerCharacterTransporter = playerCharacterTransporter;
@@ -48,6 +50,7 @@ namespace Carry.GameSystem.LobbyScene.Scripts
                 _playerCharacterTransporter.SetIndex(Runner.LocalPlayer);
                 _playerSpawner.RespawnAllPlayer();
             }
+            
 
         }
 
@@ -57,6 +60,14 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             
             Debug.Log($"PlayerJoined");
             _playerCharacterTransporter.SetIndex(player);
+            _carryInitializersReady = FindObjectOfType<CarryInitializersReady>();
+            if (_carryInitializersReady == null)
+            {
+                Debug.LogError($"_carryInitializersReady is null");
+                return;
+            }
+            _carryInitializersReady.AddInitializerReady(player);
+
 
             // Todo: RunnerがSetActiveシーンでシーンの切り替えをする時に対応するシーンマネジャーのUniTaskのキャンセルトークンを呼びたい
         }

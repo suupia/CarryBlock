@@ -13,9 +13,11 @@ using Carry.CarrySystem.Spawners;
 using Cysharp.Threading.Tasks;
 using Carry.GameSystem.Scripts;
 using Carry.NetworkUtility.NetworkRunnerManager.Scripts;
+using JetBrains.Annotations;
 using UnityEngine.Serialization;
 using VContainer.Unity;
 using VContainer;
+#nullable enable
 
 
 namespace Carry.CarrySystem.CarryScene.Scripts
@@ -25,19 +27,17 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         [SerializeField] FloorTimerNet floorTimerNet;
         PlayerSpawner _playerSpawner;
         IMapUpdater _entityGridMapSwitcher;
-        HoldingBlockObserver _holdingBlockObserver;
+        CarryInitializersReady? _carryInitializersReady;
         public bool IsInitialized { get; private set; }
         
         [Inject]
         public void Construct(
             PlayerSpawner playerSpawner,
-            IMapUpdater entityGridMapSwitcher,
-            HoldingBlockObserver holdingBlockObserver
-            )
+            IMapUpdater entityGridMapSwitcher
+        )
         {
             _playerSpawner = playerSpawner;
             _entityGridMapSwitcher = entityGridMapSwitcher;
-            _holdingBlockObserver = holdingBlockObserver;
         }
 
 
@@ -47,7 +47,15 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             var runner = FindObjectOfType<NetworkRunner>();
             runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner));
-
+            _carryInitializersReady = FindObjectOfType<CarryInitializersReady>();
+            if (_carryInitializersReady == null)
+            {
+                Debug.LogError($"_carryInitializersReady is null");
+                return;
+            }
+            Debug.Log($"CarryInitializersReady LocalPlayer:{Runner.LocalPlayer} true");
+            _carryInitializersReady.SetInitializerReady(Runner.LocalPlayer);
+            await UniTask.WaitUntil(() => _carryInitializersReady.IsAllInitializersReady());
             
             // Start Timer
             if (Runner.IsServer)
@@ -61,7 +69,6 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             if (Runner.IsServer)
             {
                 _entityGridMapSwitcher.InitUpdateMap(MapKey.Default, 0);
-
             }
             
 
@@ -69,7 +76,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             if (Runner.IsServer) _playerSpawner.RespawnAllPlayer();
 
             IsInitialized = true;
-
+            
         }
 
         void IPlayerJoined.PlayerJoined(PlayerRef player)

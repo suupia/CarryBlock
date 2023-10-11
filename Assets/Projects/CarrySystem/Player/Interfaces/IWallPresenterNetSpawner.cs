@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Interfaces
 {
-    public interface IWallPresenterSpawner
+    public interface IWallPresenterNetSpawner
     {
         public WallPresenterNet SpawnPrefab(Vector3 position, Quaternion rotation);
     }

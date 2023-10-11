@@ -66,11 +66,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 252aca1700536ba43917079473578788
-    m_Address: Prefabs/Map/WallPresenter
+    m_Address: Prefabs/Map/WallPresenterNet
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 5226544fc348fdb498dce39550218a5b
-    m_Address: Prefabs/Map/GroundPresenter
+    m_Address: Prefabs/Map/GroundPresenterNet
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: b23734d4732420b4180733b599b4a55c
@@ -90,7 +90,19 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 9a9f2f937f91dd742b104532c10016d8
-    m_Address: Prefabs/Map/WallPresenter2
+    m_Address: Prefabs/Map/WallPresenterNet2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f512935cdf4e3354fb6f18b404e3c66a
+    m_Address: Prefabs/Map/GroundPresenterLocal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4033ea45c477a7843a431bdc41a8267d
+    m_Address: Prefabs/Map/WallPresenterMono
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e54be73ebb25d0e46bf127f3f3e34873
+    m_Address: Prefabs/Map/WallPresenterMono1
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 10dbd96b06d59b140bc18b4c22093f14

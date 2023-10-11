@@ -7,16 +7,16 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Spawners
 {
-    public class WallPresenterSpawner2: IWallPresenterSpawner
+    public class WallPresenterNetSpawner: IWallPresenterNetSpawner
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<WallPresenterNet> _tilePresenterPrefabSpawner;
 
-        public WallPresenterSpawner2(NetworkRunner runner)
+        public WallPresenterNetSpawner(NetworkRunner runner)
         {
             _runner = runner;
             _tilePresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<WallPresenterNet>("Prefabs/Map/WallPresenter2");
+                new PrefabLoaderFromAddressable<WallPresenterNet>("Prefabs/Map/WallPresenterNet");
         }
 
         public WallPresenterNet SpawnPrefab(Vector3 position, Quaternion rotation)

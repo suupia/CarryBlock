@@ -55,7 +55,12 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<RegularGroundPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<CarryPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            builder.Register<LocalGroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<LocalWallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RegularGroundPresenterPlacer>(Lifetime.Scoped);
+            builder.RegisterComponentInHierarchy<PresenterPlacerNet>();
             
             // どのマップたちを使うかを決める
             builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
@@ -89,7 +94,6 @@ namespace Carry.ScopeSystem.Scripts
 
             // View
             builder.RegisterComponentInHierarchy<PlayingCanvasUINet>();
-            builder.RegisterComponentInHierarchy<ResultCanvasUINet>();
             
             // PostEffect
             builder.RegisterComponentInHierarchy<VignetteBlinker>();

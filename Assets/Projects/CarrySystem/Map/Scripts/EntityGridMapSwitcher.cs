@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly EntityGridMapLoader _gridMapLoader;
         readonly MapKeyDataSelectorNet _mapKeyDataSelectorNet;
         readonly StageIndexTransporter _stageIndexTransporter;
-        readonly IPresenterPlacer _allPresenterPlacer;
+        readonly PresenterPlacerNet _presenterPlacerNet;
         int _currentIndex;
         EntityGridMap? _currentMap;
         
@@ -36,7 +36,7 @@ namespace Carry.CarrySystem.Map.Scripts
             FloorTimerNet floorTimerNet,
             MapKeyDataSelectorNet mapKeyDataSelectorNet,
             StageIndexTransporter stageIndexTransporter,
-            IPresenterPlacer allPresenterPlacer
+            PresenterPlacerNet presenterPlacerNet
             )
         {
             _gridMapLoader = gridMapGridMapLoader;
@@ -44,7 +44,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _floorTimerNet = floorTimerNet;
             _mapKeyDataSelectorNet = mapKeyDataSelectorNet;
             _stageIndexTransporter = stageIndexTransporter;
-            _allPresenterPlacer　= allPresenterPlacer;
+            _presenterPlacerNet = presenterPlacerNet;
         }
 
         public EntityGridMap GetMap()
@@ -64,7 +64,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var key =mapKeyDataList[index].mapKey;
             var mapIndex =  mapKeyDataList[index].index;
             _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
-            _allPresenterPlacer.Place(_currentMap);
+            _presenterPlacerNet.Place(_currentMap);
             _cartBuilder.Build(_currentMap, this);
 
             _resetAction();
@@ -90,7 +90,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var mapIndex = mapKeyDataList[_currentIndex].index;
             var nextMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _currentMap = nextMap;
-            _allPresenterPlacer.Place(_currentMap);
+            _presenterPlacerNet.Place(_currentMap);
             _cartBuilder.Build(_currentMap, this);
 
             _floorTimerNet.StartTimer();
