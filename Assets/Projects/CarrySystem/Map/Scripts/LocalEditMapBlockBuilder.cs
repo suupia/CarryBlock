@@ -13,22 +13,22 @@ using VContainer;
 namespace Carry.CarrySystem.Map.Scripts
 {
 
-    public class LocalEditMapBlockBuilder
+    public class  LocalEditMapBlockBuilder
     {
-        readonly IPrefabLoader<EntityPresenterNet> _blockPresenterPrefabSpawner;
+        readonly IPrefabLoader<EntityPresenterLocal> _blockPresenterPrefabSpawner;
 
         public LocalEditMapBlockBuilder()
         { 
             _blockPresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<EntityPresenterNet>("Prefabs/Map/LocalEntityPresenter");
+                new PrefabLoaderFromAddressable<EntityPresenterLocal>("Prefabs/Map/LocalEntityPresenter");
         }
 
 
         // CarryBuilderと対応させてある。
-        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList< EntityPresenterNet>) Build (ref EntityGridMap map)
+        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList< EntityPresenterLocal>) Build (ref EntityGridMap map)
         {
             var blockControllers = new List<BlockControllerNet>();
-            var blockPresenters = new List<EntityPresenterNet>();
+            var blockPresenters = new List<EntityPresenterLocal>();
 
             // BlockPresenterをスポーンさせる
             for (int i = 0; i < map.Length; i++)

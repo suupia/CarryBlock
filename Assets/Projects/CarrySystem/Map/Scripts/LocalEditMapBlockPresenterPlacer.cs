@@ -5,6 +5,7 @@ using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners;
 using Fusion;
+using UniRx;
 using UnityEngine;
 using VContainer;
 
@@ -12,9 +13,8 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class LocalEditMapBlockPresenterPlacer : IPresenterPlacer
     {
-        [Inject] readonly NetworkRunner _runner;
         readonly LocalEditMapBlockBuilder _localEditMapBlockBuilder;
-        IEnumerable<EntityPresenterNet> _blockPresenters =  new List<EntityPresenterNet>();
+        IEnumerable<EntityPresenterLocal> _blockPresenters =  new List<EntityPresenterLocal>();
         
         [Inject]
         public LocalEditMapBlockPresenterPlacer(LocalEditMapBlockBuilder localEditMapBlockBuilder)
@@ -43,12 +43,13 @@ namespace Carry.CarrySystem.Map.Scripts
             
             foreach (var blockPresenterNet in _blockPresenters)
             {
-                _runner.Despawn(blockPresenterNet.Object);
+                // _runner.Despawn(blockPresenterNet.Object);
+                UnityEngine.Object.Destroy(blockPresenterNet);
             }
-            _blockPresenters = new List<EntityPresenterNet>();
+            _blockPresenters = new List<EntityPresenterLocal>();
         }
         
-         void AttachTilePresenter(IReadOnlyList<EntityPresenterNet> blockPresenterNets , EntityGridMap map)
+         void AttachTilePresenter(IReadOnlyList<EntityPresenterLocal> blockPresenterNets , EntityGridMap map)
         {
             for (int i = 0; i < blockPresenterNets.Count(); i++)
             {
