@@ -4,7 +4,8 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
-using Carry.CarrySystem.Spawners;
+using Carry.CarrySystem.Spawners.Interfaces;
+using Carry.CarrySystem.Spawners.Scripts;
 using Fusion;
 using UnityEngine;
 using VContainer;
@@ -23,6 +24,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             var runner = FindObjectOfType<NetworkRunner>();
             Debug.Log($"NetworkRunner : {runner}"); 
             builder.RegisterComponent(runner);
+
+            var mapKeyContainer = FindObjectOfType<MapKeyContainer>();
+            Debug.Log($"MapKeyContainer : {mapKeyContainer}");
+            builder.RegisterComponent(mapKeyContainer);
             
             // Map
             // JsonとEntityGridMapに関する処理
@@ -31,10 +36,11 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
+            builder.Register<EntityPresenterSpawner>(Lifetime.Scoped).As<IEntityPresenterSpawner>();
             builder.Register<EditMapBlockBuilder>(Lifetime.Scoped);
             builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<RegularGroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RandomWallPresenterPlacerNet>(Lifetime.Scoped);
+            builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
             builder.Register<EditMapPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
 
             // IMapUpdater

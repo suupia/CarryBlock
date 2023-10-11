@@ -53,13 +53,15 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             IMapUpdater editMapUpdater,
             EntityGridMapSaver entityGridMapSaver,
             CUIHandleNumber handleNumber,
-            AutoSaveManager autoSaveManager)
+            AutoSaveManager autoSaveManager,
+            MapKeyContainer mapKeyContainer
+            )
         {
             _editMapUpdater = editMapUpdater;
             _entityGridMapSaver = entityGridMapSaver;
             _handleNumber = handleNumber;
             _autoSaveManager = autoSaveManager;
-            _key = FindObjectOfType<MapKeyContainer>().MapKey; //　ここで取得しておく
+            _key = mapKeyContainer.MapKey;
         }
         
 
