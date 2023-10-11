@@ -7,7 +7,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class RegularGroundPresenterPlacer : IPresenterPlacer
+    public class RegularGroundPresenterPlacerLocal : IPresenterPlacer
     {
         IEnumerable<GroundPresenterLocal> _tilePresenters = new List<GroundPresenterLocal>();
 
@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly int _groundVerticalNum = 2;
 
         [Inject]
-        public RegularGroundPresenterPlacer()
+        public RegularGroundPresenterPlacerLocal()
         {
         }
 

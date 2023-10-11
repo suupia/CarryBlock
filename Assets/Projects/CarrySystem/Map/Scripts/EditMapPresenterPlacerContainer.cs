@@ -13,12 +13,12 @@ namespace Carry.CarrySystem.Map.Scripts
         public  EditMapPresenterPlacerContainer(         
             EditMapBlockPresenterPlacer blockPresenterPlacer,
             RandomWallPresenterPlacer randomWallPresenterPlacer,
-            RegularGroundPresenterPlacer regularGroundPresenterPlacer
+            RegularGroundPresenterPlacerLocal regularGroundPresenterPlacerLocal
         )
         {
             _presenterBuilders.Add(blockPresenterPlacer);
             _presenterBuilders.Add(randomWallPresenterPlacer);
-            _presenterBuilders.Add(regularGroundPresenterPlacer);
+            _presenterBuilders.Add(regularGroundPresenterPlacerLocal);
         }
         
         public void Place(EntityGridMap map)

@@ -33,7 +33,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<LocalEditMapBlockBuilder>(Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<RegularGroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
             builder.Register<LocalEditMapBlockPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LocalEditMapPresenterPlacerComponent>(Lifetime.Scoped).As<IPresenterPlacer>();
 
