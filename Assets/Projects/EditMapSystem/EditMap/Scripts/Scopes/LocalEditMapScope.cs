@@ -37,7 +37,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<EditMapBlockBuilder>(Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacerLocal>(Lifetime.Scoped);
             builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
-            builder.Register<LocalEditMapBlockPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LocalEditMapPresenterPlacerComponent>(Lifetime.Scoped).As<IPresenterPlacer>();
 
             // IMapUpdater

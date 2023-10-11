@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Map.Interfaces;
-using Fusion;
 using VContainer;
 #nullable enable
 
@@ -9,14 +8,13 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EditMapBlockPresenterPlacer : IPresenterPlacer
     {
-        [Inject] readonly NetworkRunner _runner;
-        readonly EditMapBlockBuilder _carryBlockBuilder;
+        readonly EditMapBlockBuilder _editMapBlockBuilder;
         IEnumerable<IEntityPresenter> _entityPresenters =  new List<IEntityPresenter>();
         
         [Inject]
-        public EditMapBlockPresenterPlacer(EditMapBlockBuilder carryBlockBuilder)
+        public EditMapBlockPresenterPlacer(EditMapBlockBuilder editMapBlockBuilder)
         {
-            _carryBlockBuilder = carryBlockBuilder;
+            _editMapBlockBuilder = editMapBlockBuilder;
         }
 
          
@@ -25,7 +23,7 @@ namespace Carry.CarrySystem.Map.Scripts
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
             
-            var (blockControllers, blockPresenterNets) = _carryBlockBuilder.Build(ref map);
+            var (blockControllers, blockPresenterNets) = _editMapBlockBuilder.Build(ref map);
             
             // BlockPresenterをドメインのEntityGridMapに紐づける
             AttachTilePresenter(blockPresenterNets, map);
@@ -39,7 +37,7 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 entityPresenter.DestroyPresenter();
             }
-            _entityPresenters = new List<EntityPresenterNet>();
+            _entityPresenters = new List<IEntityPresenter>();
         }
         
          void AttachTilePresenter(IReadOnlyList<IEntityPresenter> blockPresenterNets , EntityGridMap map)
