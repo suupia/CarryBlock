@@ -11,12 +11,10 @@ namespace Carry.CarrySystem.Spawners.Scripts
 {
     public class LocalEntityPresenterSpawner : IEntityPresenterSpawner
     {
-        readonly NetworkRunner _runner;
         readonly IPrefabLoader<EntityPresenterLocal> _tilePresenterPrefabSpawner;
 
-        public LocalEntityPresenterSpawner(NetworkRunner runner)
+        public LocalEntityPresenterSpawner()
         {
-            _runner = runner;
             _tilePresenterPrefabSpawner =
                 new PrefabLoaderFromAddressable<EntityPresenterLocal>("Prefabs/Map/LocalEntityPresenter");
         }

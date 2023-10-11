@@ -8,11 +8,11 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class LocalEditMapBlockPresenterPlacer : IPresenterPlacer
     {
-        readonly LocalEditMapBlockBuilder _localEditMapBlockBuilder;
+        readonly EditMapBlockBuilder _localEditMapBlockBuilder;
         IEnumerable<IEntityPresenter> _entityPresenters =  new List<IEntityPresenter>();
         
         [Inject]
-        public LocalEditMapBlockPresenterPlacer(LocalEditMapBlockBuilder localEditMapBlockBuilder)
+        public LocalEditMapBlockPresenterPlacer(EditMapBlockBuilder localEditMapBlockBuilder)
         {
             _localEditMapBlockBuilder = localEditMapBlockBuilder;
         }
@@ -40,7 +40,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _entityPresenters = new List<EntityPresenterLocal>();
         }
         
-         void AttachTilePresenter(IReadOnlyList<EntityPresenterLocal> blockPresenterNets , EntityGridMap map)
+         void AttachTilePresenter(IReadOnlyList<IEntityPresenter> blockPresenterNets , EntityGridMap map)
         {
             for (int i = 0; i < blockPresenterNets.Count(); i++)
             {

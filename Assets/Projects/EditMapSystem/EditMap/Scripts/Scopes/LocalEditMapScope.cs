@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
+using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
 using Fusion;
 using UnityEngine;
@@ -31,7 +33,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
-            builder.Register<LocalEditMapBlockBuilder>(Lifetime.Scoped);
+            builder.Register<LocalEntityPresenterSpawner>(Lifetime.Scoped).As<IEntityPresenterSpawner>();
+            builder.Register<EditMapBlockBuilder>(Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacerLocal>(Lifetime.Scoped);
             builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
             builder.Register<LocalEditMapBlockPresenterPlacer>(Lifetime.Scoped);
