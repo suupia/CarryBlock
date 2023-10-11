@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Map.Scripts
     public class LocalEditMapBlockPresenterPlacer : IPresenterPlacer
     {
         readonly LocalEditMapBlockBuilder _localEditMapBlockBuilder;
-        IEnumerable<EntityPresenterLocal> _blockPresenters =  new List<EntityPresenterLocal>();
+        IEnumerable<IEntityPresenter> _entityPresenters =  new List<IEntityPresenter>();
         
         [Inject]
         public LocalEditMapBlockPresenterPlacer(LocalEditMapBlockBuilder localEditMapBlockBuilder)
@@ -33,17 +33,16 @@ namespace Carry.CarrySystem.Map.Scripts
             // BlockPresenterをドメインのEntityGridMapに紐づける
             AttachTilePresenter(blockPresenterNets, map);
 
-            _blockPresenters = blockPresenterNets;
+            _entityPresenters = blockPresenterNets;
         }
         
         void DestroyTilePresenter()
         {
-            foreach (var blockPresenterNet in _blockPresenters)
+            foreach (var entityPresenter in _entityPresenters)
             {
-                // _runner.Despawn(blockPresenterNet.Object);
-                UnityEngine.Object.Destroy(blockPresenterNet);
+                entityPresenter.DestroyPresenter();
             }
-            _blockPresenters = new List<EntityPresenterLocal>();
+            _entityPresenters = new List<EntityPresenterLocal>();
         }
         
          void AttachTilePresenter(IReadOnlyList<EntityPresenterLocal> blockPresenterNets , EntityGridMap map)
