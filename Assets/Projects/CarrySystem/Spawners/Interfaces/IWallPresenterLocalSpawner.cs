@@ -1,7 +1,8 @@
 ﻿using Carry.CarrySystem.Map.Scripts;
 using UnityEngine;
+#nullable enable
 
-namespace Carry.CarrySystem.Player.Interfaces
+namespace Carry.CarrySystem.Spawners.Interfaces
 {
     public interface IWallPresenterLocalSpawner
     {

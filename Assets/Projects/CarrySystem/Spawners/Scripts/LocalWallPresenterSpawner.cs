@@ -1,9 +1,8 @@
 ﻿using Carry.CarrySystem.Map.Scripts;
-using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
 using UnityEngine;
-using Fusion;
 #nullable enable
 
 namespace Carry.CarrySystem.Spawners.Scripts
