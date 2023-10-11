@@ -50,7 +50,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             RPC_SetInitializerReady(playerRef);
         }
 
-        [Rpc(sources: RpcSources.Proxies, targets: RpcTargets.StateAuthority)]
+        [Rpc(sources: RpcSources.All, targets: RpcTargets.StateAuthority)] // RpcSources is Proxies or StateAuthority, so set RpcSources.All
         public void RPC_SetInitializerReady(PlayerRef playerRef){
             Debug.Log($"RPC_SetInitializerReady");
             InitializersReady.Set(playerRef, true);
