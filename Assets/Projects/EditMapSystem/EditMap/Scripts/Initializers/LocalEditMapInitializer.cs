@@ -22,13 +22,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         }
 
-        void Start()
+        void Awake()
         {
             _editMapUpdater.InitUpdateMap(MapKey.Default,-1); // -1が初期マップ
-
-            // 準備シーンからMapKeyを受け取る
-            // var mapKeyContainer = FindObjectOfType<MapKeyContainer>();
-            // mapKeyText.text = $"MapKey : {mapKeyContainer.MapKey.ToString()}" ;
+            
         }
     }
 }

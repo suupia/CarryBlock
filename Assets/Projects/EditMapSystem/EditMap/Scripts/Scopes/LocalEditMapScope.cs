@@ -55,6 +55,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             // Presenter
             builder.RegisterComponentInHierarchy<LoadedFilePresenter>();
             
+            // MapKey
+            builder.RegisterComponentInHierarchy<MapKeyContainer>();
             
             // Initializer
             builder.RegisterComponentInHierarchy<LocalEditMapInitializer>();
