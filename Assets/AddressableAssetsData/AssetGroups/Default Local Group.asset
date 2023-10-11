@@ -42,7 +42,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 6bd0745e0d02f4475a925ffda8c9f8c6
-    m_Address: Prefabs/Map/BlockPresenter
+    m_Address: Prefabs/Map/EntityPresenter
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 4386fb9410f4bdf4b9d34bb00b99c72a
@@ -107,6 +107,10 @@ MonoBehaviour:
     m_SerializedLabels: []
   - m_GUID: 10dbd96b06d59b140bc18b4c22093f14
     m_Address: Assets/Projects/3DCG/Material/Texture/tileset_remains.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4f518d2237000194f8968fda4cc50ac7
+    m_Address: Prefabs/Map/LocalEntityPresenter
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
