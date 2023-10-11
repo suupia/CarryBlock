@@ -8,17 +8,17 @@ using Fusion;
 
 namespace Carry.CarrySystem.Spawners
 {
-    public class LocalWallPresenterSpawner : IWallPresenterMonoSpawner
+    public class LocalWallPresenterSpawner : IWallPresenterLocalSpawner
     {
-        readonly IPrefabLoader<WallPresenterMono> _tilePresenterPrefabSpawner;
+        readonly IPrefabLoader<WallPresenterLocal> _tilePresenterPrefabSpawner;
 
         public LocalWallPresenterSpawner()
         {
             _tilePresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<WallPresenterMono>("Prefabs/Map/WallPresenterMono");
+                new PrefabLoaderFromAddressable<WallPresenterLocal>("Prefabs/Map/WallPresenterLocal");
         }
 
-        public WallPresenterMono SpawnPrefab(Vector3 position, Quaternion rotation)
+        public WallPresenterLocal SpawnPrefab(Vector3 position, Quaternion rotation)
         {
             var tilePresenter = _tilePresenterPrefabSpawner.Load();
             return UnityEngine.Object.Instantiate(tilePresenter, position, rotation);

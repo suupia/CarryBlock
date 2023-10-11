@@ -7,18 +7,18 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Spawners
 {
-    public class LocalWallPresenterSpawner1: IWallPresenterMonoSpawner
+    public class LocalWallPresenterSpawner1: IWallPresenterLocalSpawner
 
     {
-    readonly IPrefabLoader<WallPresenterMono> _tilePresenterPrefabSpawner;
+    readonly IPrefabLoader<WallPresenterLocal> _tilePresenterPrefabSpawner;
 
     public LocalWallPresenterSpawner1()
     {
         _tilePresenterPrefabSpawner =
-            new PrefabLoaderFromAddressable<WallPresenterMono>("Prefabs/Map/WallPresenterMono1");
+            new PrefabLoaderFromAddressable<WallPresenterLocal>("Prefabs/Map/WallPresenterLocal1");
     }
 
-    public WallPresenterMono SpawnPrefab(Vector3 position, Quaternion rotation)
+    public WallPresenterLocal SpawnPrefab(Vector3 position, Quaternion rotation)
     {
         var tilePresenter = _tilePresenterPrefabSpawner.Load();
         return UnityEngine.Object.Instantiate(tilePresenter, position, rotation);

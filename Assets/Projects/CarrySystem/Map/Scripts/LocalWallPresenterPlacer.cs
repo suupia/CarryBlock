@@ -13,7 +13,7 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class LocalWallPresenterPlacer
     {
-        IEnumerable<WallPresenterMono> _tilePresenters = new List<WallPresenterMono>();
+        IEnumerable<WallPresenterLocal> _tilePresenters = new List<WallPresenterLocal>();
         
         [Inject]
         public LocalWallPresenterPlacer()
@@ -23,9 +23,9 @@ namespace Carry.CarrySystem.Map.Scripts
         public void Place(NetworkArray<NetworkBool> booleanMap, Int32 width, Int32 height, Int32 wallHorizontalNum, Int32 wallVerticalNum)
         {
             //var wallPresenterSpawner = new WallPresenterSpawner(_runner);
-            var wallPresenterSpawners = new List<IWallPresenterMonoSpawner>()
+            var wallPresenterSpawners = new List<IWallPresenterLocalSpawner>()
                 { new LocalWallPresenterSpawner(), new LocalWallPresenterSpawner1() };
-            var wallPresenters = new List<WallPresenterMono>();
+            var wallPresenters = new List<WallPresenterLocal>();
 
             // 以前のWallPresenterを削除
             DestroyWallPresenter();
@@ -63,7 +63,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _tilePresenters = wallPresenters;
         }
 
-        IWallPresenterMonoSpawner DecideWallPresenterType(List<IWallPresenterMonoSpawner> wallPresenterSpawners)
+        IWallPresenterLocalSpawner DecideWallPresenterType(List<IWallPresenterLocalSpawner> wallPresenterSpawners)
         {
             var random = new System.Random();
             return wallPresenterSpawners[random.Next(2)];
@@ -86,7 +86,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 UnityEngine.Object.Destroy(tilePresenter);
             }
 
-            _tilePresenters = new List<WallPresenterMono>();
+            _tilePresenters = new List<WallPresenterLocal>();
         }
         
         bool IsNotPlacingBlock(EntityGridMap map, Vector2Int gridPos)
