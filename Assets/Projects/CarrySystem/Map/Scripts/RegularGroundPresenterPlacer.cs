@@ -9,7 +9,6 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class RegularGroundPresenterPlacer : IPresenterPlacer
     {
-        [Inject] NetworkRunner _runner;
         IEnumerable<GroundPresenterLocal> _tilePresenters = new List<GroundPresenterLocal>();
 
         readonly int _groundHorizontalNum = 3;
@@ -49,7 +48,6 @@ namespace Carry.CarrySystem.Map.Scripts
 
             foreach (var tilePresenter in _tilePresenters)
             {
-                // _runner.Despawn(tilePresenter.Object);
                 UnityEngine.Object.Destroy(tilePresenter);
             }
 
