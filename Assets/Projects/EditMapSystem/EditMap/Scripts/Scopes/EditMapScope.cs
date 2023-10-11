@@ -23,6 +23,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             var runner = FindObjectOfType<NetworkRunner>();
             Debug.Log($"NetworkRunner : {runner}"); 
             builder.RegisterComponent(runner);
+
+            var mapKeyContainer = FindObjectOfType<MapKeyContainer>();
+            Debug.Log($"MapKeyContainer : {mapKeyContainer}");
+            builder.RegisterComponent(mapKeyContainer);
             
             // Map
             // JsonとEntityGridMapに関する処理
