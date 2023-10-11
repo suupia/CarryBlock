@@ -11,6 +11,7 @@ using UnityEngine;
 using Fusion;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
+using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 using UnityEngine.Serialization;
 
@@ -30,6 +31,7 @@ namespace Carry.CarrySystem.Map.Scripts
             public int CannonBlockCount;
             public int TreasureCoinCount;
             public Direction CannonDirection;
+            public int SpikeCount;
         }
 
         [Networked] ref PresentData PresentDataRef => ref MakeRef<PresentData>();
@@ -45,8 +47,8 @@ namespace Carry.CarrySystem.Map.Scripts
         [SerializeField] GameObject confusionBlockView = null!;
         [SerializeField] GameObject treasureCoinView = null!;
         [SerializeField] GameObject cannonBlockView = null!;
-
         Direction _cannonDirectionLocal;
+        [SerializeField] GameObject spikeView = null!; 
 
         public override void Render()
         {
@@ -130,6 +132,14 @@ namespace Carry.CarrySystem.Map.Scripts
                 // Viewの方を回転させても反映されないので、親を回転させる（たぶんNetwork関連のコンポーネントのせい）
                 cannonBlockView.transform.parent.Rotate(0,CalcRotationAmount(_cannonDirectionLocal),0);
             }
+            
+            // Spike
+            spikeView.SetActive(PresentDataRef.SpikeCount switch
+            {
+                0 or 2 => false,
+                1 => true,
+                _ => throw new InvalidOperationException($"SpikeCount : {PresentDataRef.SpikeCount}")
+            });
         }
 
 
@@ -153,6 +163,8 @@ namespace Carry.CarrySystem.Map.Scripts
                 null => Direction.Up,  // 存在しない場合は上向きにしておく
                 _ => throw new InvalidOperationException()
             };
+            PresentDataRef.SpikeCount = allEntityList.OfType<Spike>().Count();
+            Debug.Log($"SpikeCount : {PresentDataRef.SpikeCount}");
         }
 
         public void SetEntityActiveData(IEntity entity, int count)
@@ -192,6 +204,9 @@ namespace Carry.CarrySystem.Map.Scripts
                     break;
                 default:
                     throw new System.Exception($"想定外のEntityが渡されました block : {entity}");
+                case Spike _:
+                    PresentDataRef.SpikeCount = count;
+                    break;
             }
         }
         

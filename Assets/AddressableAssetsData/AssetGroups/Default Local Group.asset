@@ -105,6 +105,10 @@ MonoBehaviour:
     m_Address: Prefabs/Map/WallPresenterMono1
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 10dbd96b06d59b140bc18b4c22093f14
+    m_Address: Assets/Projects/3DCG/Material/Texture/tileset_remains.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 405937dcad4604950956d0fac118dce9, type: 2}
   m_SchemaSet:
