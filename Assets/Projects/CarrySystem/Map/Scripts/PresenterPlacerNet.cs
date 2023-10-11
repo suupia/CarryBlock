@@ -75,7 +75,6 @@ namespace Carry.CarrySystem.Map.Scripts
                     presenterPlacerData.WallArray.Set(i, false);
                     continue;
                 }
-                Debug.Log($"true!! gridPos: {gridPos}, convertedGridPos: {convertedGridPos}, i: {i}");
                 presenterPlacerData.WallArray.Set(i, true);
             }
 

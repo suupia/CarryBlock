@@ -45,8 +45,6 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         public void SetInitializerReady(PlayerRef playerRef)
         {
             Debug.Log($"playerRef:{playerRef} is ready");
-            // InitializersReady.Set(playerRef, true);
-            // Debug.Log($"InitializersReady[playerRef]:{InitializersReady[playerRef]}");
             RPC_SetInitializerReady(playerRef);
         }
 
