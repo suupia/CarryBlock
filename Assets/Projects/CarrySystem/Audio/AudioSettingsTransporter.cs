@@ -7,12 +7,17 @@ namespace Carry.CarrySystem.Audio.Scripts
     public class AudioSettingsTransporter
     {
         public float BgmVolume { get; private set; }
-        
+        public float SeVolume { get; private set; }
+
         public void SetBgmVolume(float bgmVolume)
         {
             BgmVolume = bgmVolume;
         }
         
+        public void SetSeVolume(float seVolume)
+        {
+            SeVolume = seVolume;
+        }
         
     }
 }

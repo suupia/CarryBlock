@@ -11,6 +11,7 @@ namespace Carry.UISystem.UI.TitleScene
     public class OptionCanvasMono : MonoBehaviour
     {
         [SerializeField] Slider bgmSlider;
+        [SerializeField] Slider seSlider;
 
         AudioSettingsTransporter _audioSettingsTransporter;
 
@@ -23,6 +24,7 @@ namespace Carry.UISystem.UI.TitleScene
         void Awake()
         {
             bgmSlider.onValueChanged.AddListener(OnBgmSliderValueChanged);
+            seSlider.onValueChanged.AddListener(OnSeSliderValueChanged);
         }
 
         void OnBgmSliderValueChanged(float value)
@@ -30,5 +32,10 @@ namespace Carry.UISystem.UI.TitleScene
             _audioSettingsTransporter.SetBgmVolume(value);
         }
         
+        void OnSeSliderValueChanged(float value)
+        {
+            _audioSettingsTransporter.SetSeVolume(value);
+        }
+
     }
 }

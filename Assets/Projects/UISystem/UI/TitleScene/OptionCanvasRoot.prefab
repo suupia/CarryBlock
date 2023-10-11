@@ -394,7 +394,7 @@ GameObject:
   - component: {fileID: 5906894250874091485}
   - component: {fileID: 7817555694779839948}
   m_Layer: 0
-  m_Name: Slider
+  m_Name: BgmSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
