@@ -42,7 +42,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _entityPresenters = new List<EntityPresenterNet>();
         }
         
-         void AttachTilePresenter(IReadOnlyList<EntityPresenterNet> blockPresenterNets , EntityGridMap map)
+         void AttachTilePresenter(IReadOnlyList<IEntityPresenter> blockPresenterNets , EntityGridMap map)
         {
             for (int i = 0; i < blockPresenterNets.Count(); i++)
             {

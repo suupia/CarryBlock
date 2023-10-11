@@ -3,6 +3,7 @@ using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Spawners.Interfaces;
 using Fusion;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
@@ -17,22 +18,19 @@ namespace Carry.CarrySystem.Map.Scripts
     /// </summary>
     public class EditMapBlockBuilder
     {
-        readonly NetworkRunner _runner;
-        readonly IPrefabLoader<EntityPresenterNet> _blockPresenterPrefabSpawner;
+        readonly IEntityPresenterSpawner _entityPresenterSpawner;
 
-        public EditMapBlockBuilder(NetworkRunner runner)
+        public EditMapBlockBuilder(IEntityPresenterSpawner entityPresenterSpawner)
         {
-            _runner = runner;
-            _blockPresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<EntityPresenterNet>("Prefabs/Map/EntityPresenter");
+            _entityPresenterSpawner = entityPresenterSpawner;
         }
 
 
         // CarryBuilderと対応させてある。
-        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList< EntityPresenterNet>) Build (ref EntityGridMap map)
+        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList<IEntityPresenter>) Build (ref EntityGridMap map)
         {
             var blockControllers = new List<BlockControllerNet>();
-            var blockPresenters = new List<EntityPresenterNet>();
+            var blockPresenters = new List<IEntityPresenter>();
 
             // BlockPresenterをスポーンさせる
             for (int i = 0; i < map.Length; i++)
@@ -41,11 +39,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
                 
                 // Presenterの生成
-                var blockPresenterPrefab = _blockPresenterPrefabSpawner.Load();
-                var blockPresenter =  _runner.Spawn(blockPresenterPrefab, worldPos, Quaternion.identity, PlayerRef.None);
-                
+                var entityPresenter = _entityPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
 
-                blockPresenters.Add(blockPresenter);
+                blockPresenters.Add(entityPresenter);
             }
             
             Debug.Log($"blockPresenters.Count : {blockPresenters.Count}");
