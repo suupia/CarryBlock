@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Carry.CarrySystem.Entity.Interfaces;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.Gimmick.Interfaces;
 using UnityEngine;
 using  Carry.CarrySystem.Map.Interfaces;
 using Fusion.Collections;
@@ -207,17 +208,11 @@ namespace Carry.CarrySystem.Map.Scripts
         
         void CallSetEntityActiveData(IEntity entity , int index)
         {
-            if (entity is IBlock block)
+            if(entity is IPlaceable placeable)
             {
-                var count = _entityMaps[index].OfType<IBlock>().Count();
+                var count = _entityMaps[index].OfType<IPlaceable>().Count();
                 // Debug.Log($"AddEntity({index}) count:{count}");
-                _blockPresenter[index]?.SetEntityActiveData(block, count);
-            }
-            if (entity is IItem item)
-            {
-                var count = _entityMaps[index].OfType<IItem>().Count();
-                // Debug.Log($"AddEntity({index}) count:{count}");
-                _blockPresenter[index]?.SetEntityActiveData(item, count);
+                _blockPresenter[index]?.SetEntityActiveData(placeable, count);
             }
         }
 

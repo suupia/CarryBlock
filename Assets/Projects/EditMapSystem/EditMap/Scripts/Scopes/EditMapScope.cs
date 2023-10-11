@@ -11,6 +11,7 @@ using VContainer;
 using VContainer.Unity;
 using Carry.NetworkUtility.NetworkRunnerManager.Scripts;
 using Carry.Utility.Scripts;
+using Projects.CarrySystem.Item.Scripts;
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
@@ -20,12 +21,12 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             // このシーンに遷移した時点でNetworkRunnerは存在していると仮定している
             var runner = FindObjectOfType<NetworkRunner>();
-            Debug.Log($"NetworkRunner : {runner}");
+            Debug.Log($"NetworkRunner : {runner}"); 
             builder.RegisterComponent(runner);
             
             // Map
             // JsonとEntityGridMapに関する処理
-            builder.Register<EntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
+            builder.Register<EntityGridMapBuilder>(Lifetime.Scoped);
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
             
@@ -46,6 +47,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.RegisterComponentInHierarchy<EditMapInput>();
             builder.RegisterComponentInHierarchy<EditMapCUISave>();
             builder.RegisterComponentInHierarchy<EditMapCUILoad>();
+            
+                        
+            //Item
+            builder.Register<TreasureCoinCounter>(Lifetime.Scoped);
             
             // Presenter
             builder.RegisterComponentInHierarchy<LoadedFilePresenter>();

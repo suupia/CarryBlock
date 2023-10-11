@@ -17,9 +17,9 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EntityGridMapLoader
     {
-        readonly IEntityGridMapBuilder _entityGridMapBuilder;
+        readonly EntityGridMapBuilder _entityGridMapBuilder;
         
-        public EntityGridMapLoader(IEntityGridMapBuilder entityGridMapBuilder)
+        public EntityGridMapLoader(EntityGridMapBuilder entityGridMapBuilder)
         {
             _entityGridMapBuilder = entityGridMapBuilder;
         }
