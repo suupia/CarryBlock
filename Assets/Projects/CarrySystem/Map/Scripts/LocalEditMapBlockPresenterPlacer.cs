@@ -38,9 +38,6 @@ namespace Carry.CarrySystem.Map.Scripts
         
         void DestroyTilePresenter()
         {
-            // マップの大きさが変わっても対応できるようにDestroyが必要
-            // ToDo: マップの大きさを変えてテストをする 
-            
             foreach (var blockPresenterNet in _blockPresenters)
             {
                 // _runner.Despawn(blockPresenterNet.Object);
