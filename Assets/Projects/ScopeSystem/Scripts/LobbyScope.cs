@@ -42,7 +42,7 @@ namespace Carry.GameSystem.LobbyScene.Scripts
 
             // Map
             // JsonとEntityGridMapに関する処理
-            builder.Register<CarryEntityGridMapBuilder>(Lifetime.Scoped);
+            builder.Register<EntityGridMapBuilder>(Lifetime.Scoped);
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する

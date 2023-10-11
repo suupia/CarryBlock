@@ -14,11 +14,11 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class CarryEntityGridMapBuilder
+    public class EntityGridMapBuilder
     {
         readonly TreasureCoinCounter _treasureCoinCounter;
         [Inject]
-        public CarryEntityGridMapBuilder(TreasureCoinCounter treasureCoinCounter)
+        public EntityGridMapBuilder(TreasureCoinCounter treasureCoinCounter)
         {
             _treasureCoinCounter = treasureCoinCounter;
         }
