@@ -27,7 +27,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             _runner = runner;
             _blockPresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<EntityPresenterNet>("Prefabs/Map/BlockPresenter");
+                new PrefabLoaderFromAddressable<EntityPresenterNet>("Prefabs/Map/EntityPresenter");
         }
 
 
@@ -65,8 +65,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 var checkedBlocks = CheckBlocks(getBlocks);
                 var items = map.GetSingleEntityList<IItem>(i);
                 var gimmicks = map.GetSingleEntityList<IGimmick>(i);
-                Debug.Log($"gimmicks.Count: {gimmicks.Count}");
-                
+
                 // get blockInfos from blockController
                 var blockControllerComponents = entityPresenter.GetComponentsInChildren<BlockControllerNet>();
                 var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();

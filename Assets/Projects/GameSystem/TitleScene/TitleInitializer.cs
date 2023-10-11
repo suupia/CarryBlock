@@ -3,11 +3,13 @@ using Carry.NetworkUtility.NetworkRunnerManager.Scripts;
 using Fusion;
 using UnityEngine;
 using Assert = UnityEngine.Assertions.Assert;
+#nullable enable
 
 namespace Carry.GameSystem.TitleScene.Scripts
 {
     public class TitleInitializer : MonoBehaviour
     {
+        [SerializeField] NetworkPrefabRef carryInitializerPrefab;
         bool _isStarted; // StarGameWithRoomName() is called only once.
 
         // Called by UI Button
@@ -18,9 +20,13 @@ namespace Carry.GameSystem.TitleScene.Scripts
             Assert.IsNotNull(runnerManager, "NetworkRunnerManagerをシーンに配置してください");
 
             await runnerManager.AttemptStartScene(roomName, gameMode);
+            
+            runnerManager.Runner.Spawn(carryInitializerPrefab);
 
             Debug.Log("Transitioning to LobbySceneTestRoom");
             SceneTransition.TransitioningScene(runnerManager.Runner, SceneName.LobbyScene);
+
+            
             _isStarted = true;
         }
     }

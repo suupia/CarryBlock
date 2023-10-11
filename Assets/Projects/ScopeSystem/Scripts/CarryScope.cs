@@ -6,7 +6,7 @@ using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
-using Carry.CarrySystem.Spawners;
+using Carry.CarrySystem.Spawners.Scripts;
 using Carry.UISystem.UI.CarryScene;
 using Fusion;
 using Carry.Utility.Interfaces;
@@ -47,15 +47,20 @@ namespace Carry.ScopeSystem.Scripts
 
             // Map
             // JsonからEntityGridMapを生成する
-            builder.Register<CarryEntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
+            builder.Register<EntityGridMapBuilder>(Lifetime.Scoped);
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<CarryBlockBuilder>(Lifetime.Scoped);
             builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<RegularGroundPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<CarryPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            builder.Register<RandomWallPresenterPlacerNet>(Lifetime.Scoped);
+            builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
+            builder.Register<LocalGroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<LocalWallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RandomWallPresenterPlacerNet>(Lifetime.Scoped);
+            builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
+            builder.RegisterComponentInHierarchy<PresenterPlacerNet>();
             
             // どのマップたちを使うかを決める
             builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
@@ -89,7 +94,6 @@ namespace Carry.ScopeSystem.Scripts
 
             // View
             builder.RegisterComponentInHierarchy<PlayingCanvasUINet>();
-            builder.RegisterComponentInHierarchy<ResultCanvasUINet>();
             
             // PostEffect
             builder.RegisterComponentInHierarchy<VignetteBlinker>();

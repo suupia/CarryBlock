@@ -48,7 +48,12 @@ namespace Carry.CarrySystem.Map.Scripts
         [SerializeField] GameObject treasureCoinView = null!;
         [SerializeField] GameObject cannonBlockView = null!;
         Direction _cannonDirectionLocal;
-        [SerializeField] GameObject spikeView = null!; 
+        [SerializeField] GameObject spikeView = null!;
+
+        public void DestroyPresenter()
+        {
+           Runner.Despawn(this.Object);
+        }
 
         public override void Render()
         {
@@ -164,7 +169,6 @@ namespace Carry.CarrySystem.Map.Scripts
                 _ => throw new InvalidOperationException()
             };
             PresentDataRef.SpikeCount = allEntityList.OfType<Spike>().Count();
-            Debug.Log($"SpikeCount : {PresentDataRef.SpikeCount}");
         }
 
         public void SetEntityActiveData(IEntity entity, int count)

@@ -4,7 +4,7 @@ using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
-using Carry.CarrySystem.Spawners;
+using Carry.CarrySystem.Spawners.Scripts;
 using Fusion;
 using UnityEngine;
 using VContainer;
@@ -26,7 +26,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void Place(EntityGridMap map)
         {
-            var wallPresenterSpawner = new WallPresenterSpawner(_runner);
+            var wallPresenterSpawner = new WallPresenterNetSpawner(_runner);
             var wallPresenters = new List<WallPresenterNet>();
 
             // 以前のWallPresenterを削除
