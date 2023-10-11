@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Spawners
 {
-    public class WallPresenterNetSpawner2: IWallPresenterNetSpawner
+    public class WallPresenterNetSpawner1: IWallPresenterNetSpawner
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<WallPresenterNet> _tilePresenterPrefabSpawner;
 
-        public WallPresenterNetSpawner2(NetworkRunner runner)
+        public WallPresenterNetSpawner1(NetworkRunner runner)
         {
             _runner = runner;
             _tilePresenterPrefabSpawner =

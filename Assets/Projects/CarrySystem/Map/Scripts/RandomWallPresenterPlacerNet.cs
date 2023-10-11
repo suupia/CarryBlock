@@ -29,7 +29,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             //var wallPresenterSpawner = new WallPresenterSpawner(_runner);
             var wallPresenterSpawners = new List<IWallPresenterNetSpawner>()
-                { new WallPresenterNetSpawner(_runner), new WallPresenterNetSpawner2(_runner) };
+                { new WallPresenterNetSpawner(_runner), new WallPresenterNetSpawner1(_runner) };
             var wallPresenters = new List<WallPresenterNet>();
 
             // 以前のWallPresenterを削除
