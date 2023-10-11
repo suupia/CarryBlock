@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
-using Carry.CarrySystem.Spawners;
+using Carry.CarrySystem.Spawners.Scripts;
 using Fusion;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;

@@ -4,7 +4,7 @@ using Carry.Utility.Scripts;
 using UnityEngine;
 using VContainer;
 
-namespace Carry.CarrySystem.Spawners
+namespace Carry.CarrySystem.Spawners.Scripts
 {
     public class CarryPlayerPrefabSpawner : IPrefabSpawner<CarryPlayerControllerNet>
     {

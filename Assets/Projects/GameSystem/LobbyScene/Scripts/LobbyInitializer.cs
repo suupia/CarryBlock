@@ -4,7 +4,7 @@ using Carry.CarrySystem.CarryScene.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
-using Carry.CarrySystem.Spawners;
+using Carry.CarrySystem.Spawners.Scripts;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Carry.Utility.Scripts;

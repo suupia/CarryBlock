@@ -6,7 +6,7 @@ using UnityEngine;
 using Fusion;
 #nullable enable
 
-namespace Carry.CarrySystem.Spawners
+namespace Carry.CarrySystem.Spawners.Scripts
 {
     public class LocalWallPresenterSpawner : IWallPresenterLocalSpawner
     {

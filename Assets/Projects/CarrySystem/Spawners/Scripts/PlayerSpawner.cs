@@ -5,7 +5,7 @@ using Fusion;
 using UnityEngine;
 using VContainer;
 
-namespace Carry.CarrySystem.Spawners
+namespace Carry.CarrySystem.Spawners.Scripts
 {
     public class PlayerSpawner
     {

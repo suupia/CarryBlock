@@ -4,7 +4,7 @@ using Fusion;
 using Carry.Utility.Scripts;
 using UnityEngine;
 
-namespace Carry.CarrySystem.Spawners
+namespace Carry.CarrySystem.Spawners.Scripts
 {
     public abstract class AbstractNetworkPlayerSpawner<T> where T : AbstractNetworkPlayerController
     {

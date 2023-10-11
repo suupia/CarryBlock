@@ -5,7 +5,7 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
-using Carry.CarrySystem.Spawners;
+using Carry.CarrySystem.Spawners.Scripts;
 using Carry.UISystem.UI.LobbyScene;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;

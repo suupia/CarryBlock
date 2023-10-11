@@ -4,7 +4,7 @@ using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
 using UnityEngine;
 
-namespace Carry.CarrySystem.Spawners
+namespace Carry.CarrySystem.Spawners.Scripts
 {
     public class GroundPresenterSpawner
     {
