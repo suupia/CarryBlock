@@ -657,6 +657,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 4009084235261956055, guid: bd9894fa290b604428596cd7d697415b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5350026852843926613, guid: bd9894fa290b604428596cd7d697415b, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -1326,6 +1330,18 @@ PrefabInstance:
       propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1714081022566001862, guid: c8d65db14bd774ad4b6e2b2ac93b79e1, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2115769586841569970, guid: c8d65db14bd774ad4b6e2b2ac93b79e1, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2478132344785946946, guid: c8d65db14bd774ad4b6e2b2ac93b79e1, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5965080741896850020, guid: c8d65db14bd774ad4b6e2b2ac93b79e1, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -1375,8 +1391,16 @@ PrefabInstance:
       value: ConfusionBlock
       objectReference: {fileID: 0}
     - target: {fileID: 7756840550022308548, guid: c8d65db14bd774ad4b6e2b2ac93b79e1, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7756840550022308548, guid: c8d65db14bd774ad4b6e2b2ac93b79e1, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9163969231137430473, guid: c8d65db14bd774ad4b6e2b2ac93b79e1, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8d65db14bd774ad4b6e2b2ac93b79e1, type: 3}
