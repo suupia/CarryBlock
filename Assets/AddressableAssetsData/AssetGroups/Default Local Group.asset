@@ -113,6 +113,22 @@ MonoBehaviour:
     m_Address: Prefabs/Map/LocalEntityPresenter
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 85ea75f6bb7e9c84ea0ec785ed94a324
+    m_Address: Prefabs/Map/DoubleBasicBlockLocal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a1d8c40f132dcef46ade4abc4e559899
+    m_Address: Prefabs/Map/UnmovableBlockLocal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bd9894fa290b604428596cd7d697415b
+    m_Address: Prefabs/Map/HeavyBlock
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c1be80ffd233b9648be6d2d41a02d64f
+    m_Address: Prefabs/Map/HeavyBlockLocal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 405937dcad4604950956d0fac118dce9, type: 2}
   m_SchemaSet:
