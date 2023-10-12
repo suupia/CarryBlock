@@ -29,13 +29,15 @@ namespace Carry.CarrySystem.Map.Scripts
         NumericGridMap _map;
         readonly int _initValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
         readonly int _wallValue = -5; // wallのマス
+        readonly int _edgeValue = -8;
+        readonly int _outOfRangeValue = -88;
 
         IRoutePresenter?[] _routePresenters;
 
 
         public WaveletSearchExecutor(IGridMap girdMap)
         {
-            _map = new NumericGridMap(girdMap.Width, girdMap.Height, _initValue, -8, -88);
+            _map = new NumericGridMap(girdMap.Width, girdMap.Height, _initValue, _edgeValue, _outOfRangeValue);
             _routePresenters = new IRoutePresenter[_map.Length];
         }
 
@@ -60,10 +62,10 @@ namespace Carry.CarrySystem.Map.Scripts
             var searchedMap = WaveletSearch(startPos, isWall, searcherSize);
             var accessibleAreaArray = CalcAccessibleArea(searchedMap, searcherSize);
 
-            ExtendToAccessibleNumericMap(searchedMap, accessibleAreaArray);
+            var extendedMap =  ExtendToAccessibleNumericMap(searchedMap, searcherSize);
 
             // UpdatePresenter(accessibleAreaArray);
-            UpdatePresenter(searchedMap);
+            UpdatePresenter(extendedMap);
 
             return accessibleAreaArray;
         }
@@ -257,26 +259,26 @@ namespace Carry.CarrySystem.Map.Scripts
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         bool[] CalcAccessibleArea(NumericGridMap map, SearcherSize searcherSize)
         {
-            var tmpBoolArray = new bool[map.Length];
+            var routeArray = new bool[map.Length];
             var resultBoolArray = new bool[map.Length];
             var waveletResult = map;
             // 数字がある部分をtrueにする
-            for (int i = 0; i < tmpBoolArray.Length; i++)
+            for (int i = 0; i < routeArray.Length; i++)
             {
-                tmpBoolArray[i] = waveletResult.GetValue(i) != _wallValue &&
+                routeArray[i] = waveletResult.GetValue(i) != _wallValue &&
                                   waveletResult.GetValue(i) != _initValue;
             }
 
             switch (searcherSize)
             {
                 case SearcherSize.SizeOne:
-                    resultBoolArray = tmpBoolArray;
+                    resultBoolArray = routeArray;
                     break;
                 case SearcherSize.SizeThree:
                     // set true to the squares around ture
-                    for (int i = 0; i < tmpBoolArray.Length; i++)
+                    for (int i = 0; i < routeArray.Length; i++)
                     {
-                        if (tmpBoolArray[i])
+                        if (routeArray[i])
                         {
                             for (int y = -1; y <= 1; y++)
                             {
@@ -300,22 +302,51 @@ namespace Carry.CarrySystem.Map.Scripts
             return resultBoolArray;
         }
 
-        void ExtendToAccessibleNumericMap(NumericGridMap map, bool[] accessibleAreaArray)
+        NumericGridMap ExtendToAccessibleNumericMap(NumericGridMap map, SearcherSize searcherSize)
         {
-            for (int x = 0; x < map.Width; x++)
+            var extendedMap = new NumericGridMap(map.Width, map.Height, _initValue, _edgeValue, _outOfRangeValue);
+            var routeArray = new bool[map.Length];
+            // 数字がある部分をtrueにする
+            for (int i = 0; i < routeArray.Length; i++)
             {
-                for (int y = 0; y < map.Height; y++)
-                {
-                    var index = map.ToSubscript(x, y);
-                    if(!accessibleAreaArray[index]) continue;
-                    var value = map.GetValue(index);
-                    if (value == _wallValue)
-                    {
-                        map.SetValue(index, 1);
-                    }
-                    else map.SetValue(index, map.GetValue(index) + 1);
-                }
+                routeArray[i] = map.GetValue(i) != _wallValue &&
+                                map.GetValue(i) != _initValue;
             }
+
+            switch (searcherSize)
+            {
+                case SearcherSize.SizeOne:
+                    for (int i = 0; i < routeArray.Length; i++)
+                    {
+                        extendedMap.SetValue(i, map.GetValue(i));
+                    }
+                    break;
+                case SearcherSize.SizeThree:
+                    // set true to the squares around ture
+                    for (int i = 0; i < routeArray.Length; i++)
+                    {
+                        if (routeArray[i])
+                        {
+                            for (int y = -1; y <= 1; y++)
+                            {
+                                for (int x = -1; x <= 1; x++)
+                                {
+                                    var pos = map.ToVector(i);
+                                    var newX = pos.x + x;
+                                    var newY = pos.y + y;
+                                    if (!map.IsInDataRangeArea(newX, newY)) continue;
+                                    extendedMap.SetValue(newX,newY, map.GetValue(i) + 1);
+                                }
+                            }
+                        }
+                    }
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
+            }
+
+            return extendedMap;
         }
 
         public void DebugAccessibleArea(int height, int width,bool[] accessibleAreaArray )
