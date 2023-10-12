@@ -6,6 +6,7 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using JetBrains.Annotations;
 using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 #nullable enable
@@ -58,7 +59,8 @@ namespace Carry.CarrySystem.Map.Scripts
             var searchedMap = WaveletSearch(startPos, isWall, searcherSize);
             var resultBoolArray = CalcAccessibleArea(searchedMap, searcherSize);
 
-            UpdatePresenter(resultBoolArray);
+            // UpdatePresenter(resultBoolArray);
+            UpdatePresenter(searchedMap);
 
             return resultBoolArray;
         }
@@ -315,6 +317,26 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 _routePresenters[i]?.SetPresenterActive(resultBoolArray[i]);
             }
+        }
+        
+        // 時間差でpresenterをupdateする
+        void UpdatePresenter(NumericGridMap numericGridMap)
+        {
+            for (int i = 0; i < numericGridMap.Length; i++)
+            {
+                // _routePresenters[i]?.SetPresenterActive(resultBoolArray[i]);
+                DelayUpdate(_routePresenters[i], numericGridMap.GetValue(i)).Forget();
+            }
+        }
+
+        async UniTaskVoid DelayUpdate(IRoutePresenter? routePresenter, long value)
+        {
+            if(routePresenter == null) return;
+            if(value < 1)return;
+
+            await UniTask.Delay((int)value * 1000);
+            routePresenter.SetPresenterActive(true);
+        
         }
     }
 }
