@@ -12,13 +12,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 {
     public class EditMapBlockAttacher
     {
-        /// <summary>
-        /// Addできない場合はnullを返す
-        /// </summary>
-        /// <param name="map"></param>
-        /// <param name="gridPos"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+
         public void AddPlaceable<T>(EntityGridMap map , Vector2Int gridPos, T addBlock) where T : IPlaceable
         {
             if (!map.IsInDataRangeArea(gridPos)) return ;
@@ -37,13 +31,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             map.AddEntity(gridPos, addBlock);
         }
 
-        /// <summary>
-        /// Removeできない場合はnullを返す
-        /// </summary>
-        /// <param name="map"></param>
-        /// <param name="gridPos"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+
         public void RemovePlaceable<T>(EntityGridMap map, Vector2Int gridPos) where T : IPlaceable
         {
             var entities = map.GetSingleEntityList<T>(gridPos);

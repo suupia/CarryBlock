@@ -4,7 +4,7 @@ using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
-using Carry.CarrySystem.Spawners;
+using Carry.CarrySystem.Spawners.Scripts;
 using Fusion;
 using UnityEngine;
 using VContainer;

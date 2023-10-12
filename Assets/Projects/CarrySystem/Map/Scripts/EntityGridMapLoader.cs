@@ -7,7 +7,7 @@ using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
-using Carry.CarrySystem.Spawners;
+using Carry.CarrySystem.Spawners.Scripts;
 using Carry.Utility;
 using UnityEngine;
 
@@ -17,9 +17,9 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EntityGridMapLoader
     {
-        readonly IEntityGridMapBuilder _entityGridMapBuilder;
+        readonly EntityGridMapBuilder _entityGridMapBuilder;
         
-        public EntityGridMapLoader(IEntityGridMapBuilder entityGridMapBuilder)
+        public EntityGridMapLoader(EntityGridMapBuilder entityGridMapBuilder)
         {
             _entityGridMapBuilder = entityGridMapBuilder;
         }

@@ -1,25 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Carry.CarrySystem.Block.Scripts;
-using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
-using Carry.CarrySystem.Spawners;
-using Fusion;
-using UnityEngine;
 using VContainer;
+#nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
     public class EditMapBlockPresenterPlacer : IPresenterPlacer
     {
-        [Inject] readonly NetworkRunner _runner;
-        readonly EditMapBlockBuilder _carryBlockBuilder;
-        IEnumerable<EntityPresenterNet> _blockPresenters =  new List<EntityPresenterNet>();
+        readonly EditMapBlockBuilder _editMapBlockBuilder;
+        IEnumerable<IEntityPresenter> _entityPresenters =  new List<IEntityPresenter>();
         
         [Inject]
-        public EditMapBlockPresenterPlacer(EditMapBlockBuilder carryBlockBuilder)
+        public EditMapBlockPresenterPlacer(EditMapBlockBuilder editMapBlockBuilder)
         {
-            _carryBlockBuilder = carryBlockBuilder;
+            _editMapBlockBuilder = editMapBlockBuilder;
         }
 
          
@@ -28,27 +23,24 @@ namespace Carry.CarrySystem.Map.Scripts
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
             
-            var (blockControllers, blockPresenterNets) = _carryBlockBuilder.Build(ref map);
+            var (blockControllers, blockPresenterNets) = _editMapBlockBuilder.Build(ref map);
             
             // BlockPresenterをドメインのEntityGridMapに紐づける
             AttachTilePresenter(blockPresenterNets, map);
 
-            _blockPresenters = blockPresenterNets;
+            _entityPresenters = blockPresenterNets;
         }
         
         void DestroyTilePresenter()
         {
-            // マップの大きさが変わっても対応できるようにDestroyが必要
-            // ToDo: マップの大きさを変えてテストをする 
-            
-            foreach (var blockPresenterNet in _blockPresenters)
+            foreach (var entityPresenter in _entityPresenters)
             {
-                _runner.Despawn(blockPresenterNet.Object);
+                entityPresenter.DestroyPresenter();
             }
-            _blockPresenters = new List<EntityPresenterNet>();
+            _entityPresenters = new List<IEntityPresenter>();
         }
         
-         void AttachTilePresenter(IReadOnlyList<EntityPresenterNet> blockPresenterNets , EntityGridMap map)
+         void AttachTilePresenter(IReadOnlyList<IEntityPresenter> blockPresenterNets , EntityGridMap map)
         {
             for (int i = 0; i < blockPresenterNets.Count(); i++)
             {

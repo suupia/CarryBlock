@@ -48,7 +48,12 @@ namespace Carry.CarrySystem.Map.Scripts
         [SerializeField] GameObject treasureCoinView = null!;
         [SerializeField] GameObject cannonBlockView = null!;
         Direction _cannonDirectionLocal;
-        [SerializeField] GameObject spikeView = null!; 
+        [SerializeField] GameObject spikeView = null!;
+
+        public void DestroyPresenter()
+        {
+           Runner.Despawn(this.Object);
+        }
 
         public override void Render()
         {
