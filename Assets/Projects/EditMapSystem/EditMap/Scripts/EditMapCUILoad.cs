@@ -20,6 +20,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         CUIHandleNumber _handleNumber;
         CUIInputState _inputState;
         AutoSaveManager _autoSaveManager;
+        MapKeyContainer _mapKeyContainer;
 
         readonly float _displayTime = 1.5f; // メッセージを表示する時間
         bool _isOpened = false;
@@ -42,17 +43,20 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         public void Construct(
             IMapUpdater editMapUpdater,
             CUIHandleNumber handleNumber,
-            AutoSaveManager autoSaveManager)
+            AutoSaveManager autoSaveManager,
+            MapKeyContainer mapKeyContainer
+            )
         {
             _editMapUpdater = editMapUpdater;
             _handleNumber = handleNumber;
             _autoSaveManager = autoSaveManager;
+            _mapKeyContainer = mapKeyContainer;
         }
         public void OpenLoadUI()
         {
             CUILoadCanvas.SetActive(true);
             _inputState = CUIInputState.InputIndex;
-            _key =  FindObjectOfType<MapKeyContainer>().MapKey;
+            _key =  _mapKeyContainer.MapKey;
             _index = 0;
             _isOpened = true;
         }

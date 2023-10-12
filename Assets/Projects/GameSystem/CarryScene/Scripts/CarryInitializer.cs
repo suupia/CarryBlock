@@ -9,7 +9,7 @@ using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
 using UnityEngine;
 using Fusion;
-using Carry.CarrySystem.Spawners;
+using Carry.CarrySystem.Spawners.Scripts;
 using Cysharp.Threading.Tasks;
 using Carry.GameSystem.Scripts;
 using Carry.NetworkUtility.NetworkRunnerManager.Scripts;

@@ -4,7 +4,7 @@ using System.Linq;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
-using Carry.CarrySystem.Spawners;
+using Carry.CarrySystem.Spawners.Scripts;
 using Fusion;
 using JetBrains.Annotations;
 using UnityEngine;

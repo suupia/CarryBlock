@@ -27,7 +27,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             _runner = runner;
             _blockPresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<EntityPresenterNet>("Prefabs/Map/BlockPresenter");
+                new PrefabLoaderFromAddressable<EntityPresenterNet>("Prefabs/Map/EntityPresenter");
         }
 
 

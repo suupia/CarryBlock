@@ -25,7 +25,7 @@ namespace Carry.CarrySystem.Block.Scripts
     public class CannonBlock : IBlock, IGimmick
     {
         public Vector2Int GridPosition { get; set; }
-        public int MaxPlacedBlockCount { get; } = 2;
+        public int MaxPlacedBlockCount { get; } = 1;
         public CannonBlock.Kind KindValue { get; }
 
         // CannonBall関連
