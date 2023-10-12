@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using JetBrains.Annotations;
@@ -294,21 +295,24 @@ namespace Carry.CarrySystem.Map.Scripts
                     throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
             }
 
-            // //デバッグ用
-            // StringBuilder debugCell = new StringBuilder();
-            // for (int y = 0; y < map.Height; y++)
-            // {
-            //     for (int x = 0; x < map.Width; x++)
-            //     {
-            //         bool value = resultBoolArray[x + (map.Height - y - 1) * map.Width];
-            //         debugCell.AppendFormat("{0,4},", value.ToString()); // 桁数をそろえるために0を追加していると思う
-            //     }
-            //
-            //     debugCell.AppendLine();
-            // }
-            // Debug.Log($"すべてのresultBoolArrayの結果は\n{debugCell}");
-
             return resultBoolArray;
+        }
+
+        public void DebugAccessibleArea(int height, int width,bool[] accessibleAreaArray )
+        {
+            //デバッグ用
+            StringBuilder debugCell = new StringBuilder();
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    bool value = accessibleAreaArray[x + (height - y - 1) * width];
+                    debugCell.AppendFormat("{0,4},", value.ToString()); // 桁数をそろえるために0を追加していると思う
+                }
+            
+                debugCell.AppendLine();
+            }
+            Debug.Log($"すべてのresultBoolArrayの結果は\n{debugCell}");
         }
 
         void UpdatePresenter(bool[] resultBoolArray)
