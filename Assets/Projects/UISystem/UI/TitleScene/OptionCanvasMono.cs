@@ -10,6 +10,14 @@ namespace Carry.UISystem.UI.TitleScene
 {
     public class OptionCanvasMono : MonoBehaviour
     {
+        enum Resolution
+        {
+            R1920x1080,
+            R1680x1050,
+            R1440x900,
+            R960x600
+        }
+    
         [SerializeField] Slider bgmSlider;
         [SerializeField] Slider seSlider;
 
