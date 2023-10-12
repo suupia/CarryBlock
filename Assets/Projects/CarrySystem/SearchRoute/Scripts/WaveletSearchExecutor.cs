@@ -58,12 +58,14 @@ namespace Carry.CarrySystem.Map.Scripts
             SearcherSize searcherSize = SearcherSize.SizeOne)
         {
             var searchedMap = WaveletSearch(startPos, isWall, searcherSize);
-            var resultBoolArray = CalcAccessibleArea(searchedMap, searcherSize);
+            var accessibleAreaArray = CalcAccessibleArea(searchedMap, searcherSize);
 
-            // UpdatePresenter(resultBoolArray);
+            ExtendToAccessibleNumericMap(searchedMap, accessibleAreaArray);
+
+            // UpdatePresenter(accessibleAreaArray);
             UpdatePresenter(searchedMap);
 
-            return resultBoolArray;
+            return accessibleAreaArray;
         }
 
 
@@ -298,6 +300,24 @@ namespace Carry.CarrySystem.Map.Scripts
             return resultBoolArray;
         }
 
+        void ExtendToAccessibleNumericMap(NumericGridMap map, bool[] accessibleAreaArray)
+        {
+            for (int x = 0; x < map.Width; x++)
+            {
+                for (int y = 0; y < map.Height; y++)
+                {
+                    var index = map.ToSubscript(x, y);
+                    if(!accessibleAreaArray[index]) continue;
+                    var value = map.GetValue(index);
+                    if (value == _wallValue)
+                    {
+                        map.SetValue(index, 1);
+                    }
+                    else map.SetValue(index, map.GetValue(index) + 1);
+                }
+            }
+        }
+
         public void DebugAccessibleArea(int height, int width,bool[] accessibleAreaArray )
         {
             //デバッグ用
@@ -336,9 +356,9 @@ namespace Carry.CarrySystem.Map.Scripts
         async UniTaskVoid DelayUpdate(IRoutePresenter? routePresenter, long value)
         {
             if(routePresenter == null) return;
-            if(value < 1)return;
+            if(value < 0)return;
 
-            await UniTask.Delay((int)value * 1000);
+            await UniTask.Delay((int)value * 250);
             routePresenter.SetPresenterActive(true);
         
         }
