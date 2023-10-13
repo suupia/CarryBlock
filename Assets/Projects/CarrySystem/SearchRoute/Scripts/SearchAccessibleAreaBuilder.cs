@@ -14,15 +14,15 @@ using VContainer;
 namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     /// <summary>
-    /// ドメインスクリプトWaveletSearchExecutorにRoutePresenterを紐づけるクラス
+    /// ドメインスクリプトSearchAccessibleAreaExecutorにRoutePresenterを紐づけるクラス
     /// </summary>
-    public class WaveletSearchBuilder
+    public class SearchAccessibleAreaBuilder
     {
         [Inject] readonly NetworkRunner _runner = null!;
         IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
 
         [Inject]
-        public WaveletSearchBuilder()
+        public SearchAccessibleAreaBuilder()
         {
             
         }
