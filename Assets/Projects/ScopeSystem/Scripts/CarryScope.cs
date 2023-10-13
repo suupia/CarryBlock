@@ -72,7 +72,7 @@ namespace Carry.ScopeSystem.Scripts
             // Cart
             builder.Register<CartBuilder>(Lifetime.Scoped);
             builder.Register<CartShortestRouteMove>(Lifetime.Scoped);
-            builder.Register<WaveletSearchBuilder>(Lifetime.Scoped);
+            builder.Register<SearchAccessibleAreaBuilder>(Lifetime.Scoped);
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
             builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
             

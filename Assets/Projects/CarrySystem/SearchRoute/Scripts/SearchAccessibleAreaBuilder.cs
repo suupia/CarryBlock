@@ -14,20 +14,20 @@ using VContainer;
 namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     /// <summary>
-    /// ドメインスクリプトWaveletSearchExecutorにRoutePresenterを紐づけるクラス
+    /// ドメインスクリプトSearchAccessibleAreaExecutorにRoutePresenterを紐づけるクラス
     /// </summary>
-    public class WaveletSearchBuilder
+    public class SearchAccessibleAreaBuilder
     {
         [Inject] readonly NetworkRunner _runner = null!;
         IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
 
         [Inject]
-        public WaveletSearchBuilder()
+        public SearchAccessibleAreaBuilder()
         {
             
         }
 
-        public WaveletSearchExecutor Build(SquareGridMap map)
+        public SearchAccessibleAreaExecutor Build(SquareGridMap map)
         {
             var routePresenterSpawner = new RoutePresenterSpawner(_runner);
             var routePresenters = new List<RoutePresenter_Net>();
@@ -62,7 +62,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             _routePresenters = new List<RoutePresenter_Net>();
         }
 
-        WaveletSearchExecutor AttachRoutePresenter(IReadOnlyList<RoutePresenter_Net> routePresenters , IGridMap map)
+        SearchAccessibleAreaExecutor AttachRoutePresenter(IReadOnlyList<RoutePresenter_Net> routePresenters , IGridMap map)
         {
             for (int i = 0; i < routePresenters.Count(); i++)
             {
@@ -73,8 +73,9 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             }
 
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
-            waveletSearchExecutor.RegisterRoutePresenters(routePresenters);
-            return waveletSearchExecutor;
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(map, waveletSearchExecutor);
+            searchAccessibleAreaExecutor.RegisterRoutePresenters(routePresenters);
+            return searchAccessibleAreaExecutor;
         }
     }
 }
