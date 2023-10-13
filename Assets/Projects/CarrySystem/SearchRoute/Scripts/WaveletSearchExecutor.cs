@@ -346,20 +346,11 @@ namespace Carry.CarrySystem.Map.Scripts
             Debug.Log($"すべてのresultBoolArrayの結果は\n{debugCell}");
         }
 
-        void UpdatePresenter(bool[] resultBoolArray)
-        {
-            for (int i = 0; i < resultBoolArray.Length; i++)
-            {
-                _routePresenters[i]?.SetPresenterActive(resultBoolArray[i]);
-            }
-        }
-        
         // 時間差でpresenterをupdateする
         void UpdatePresenter(NumericGridMap numericGridMap)
         {
             for (int i = 0; i < numericGridMap.Length; i++)
             {
-                // _routePresenters[i]?.SetPresenterActive(resultBoolArray[i]);
                 DelayUpdate(_routePresenters[i], numericGridMap.GetValue(i)).Forget();
             }
         }
