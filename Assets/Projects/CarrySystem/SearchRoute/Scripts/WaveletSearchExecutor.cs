@@ -14,11 +14,6 @@ using UnityEngine.Assertions;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public enum SearcherSize
-    {
-        SizeOne = 1,
-        SizeThree = 3,
-    }
 
     /// <summary>
     /// このクラスはDIせずにnewする
@@ -88,7 +83,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 return _map; // _initValueのみが入ったmap
             }
 
-            ExpandVirtualWall(isWall, searcherSize);
+            ExpandVirtualWall(_map, isWall, searcherSize);
             
             
             //壁でないマスに数字を順番に振っていく
@@ -195,16 +190,16 @@ namespace Carry.CarrySystem.Map.Scripts
             return true;
         }
         
-        void ExpandVirtualWall(Func<int , int, bool> isWall, SearcherSize searcherSize)
+        void ExpandVirtualWall(NumericGridMap map, Func<int , int, bool> isWall, SearcherSize searcherSize)
         {
             var searcherSizeInt = (int) searcherSize;
             UnityEngine.Assertions.Assert.IsTrue(searcherSizeInt % 2 ==  1, "searcherSize must be odd number");
             
             var expandSize = (searcherSizeInt-1) / 2;
             
-            for (int y = 0; y < _map.Height; y++)
+            for (int y = 0; y < map.Height; y++)
             {
-                for (int x = 0; x < _map.Width; x++)
+                for (int x = 0; x < map.Width; x++)
                 {
                     // expand wall
                     if (isWall(x, y)) 
@@ -213,17 +208,17 @@ namespace Carry.CarrySystem.Map.Scripts
                         {
                             for (int i = -expandSize; i <= expandSize; i++)
                             {
-                                _map.SetValue(x + i, y + j, _wallValue);
+                                map.SetValue(x + i, y + j, _wallValue);
                             }
                         }
                     }
                     // expand edge
                     else if (x <= -1 + expandSize
-                             || x >= _map.Width - expandSize
+                             || x >= map.Width - expandSize
                              || y <= -1 + expandSize ||
-                             y >= _map.Height - expandSize) 
+                             y >= map.Height - expandSize) 
                     {
-                        _map.SetValue(x, y, _wallValue);
+                        map.SetValue(x, y, _wallValue);
                     }
                 }
             }
