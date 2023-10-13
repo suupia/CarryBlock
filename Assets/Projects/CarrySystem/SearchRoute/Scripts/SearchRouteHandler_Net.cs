@@ -45,8 +45,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             var map = _entityGridMapSwitcher.GetMap();
             Func<int, int, bool> isWall = (x, y) => map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
 
-            var waveletSearchExecutor = _waveletSearchBuilder.Build(_entityGridMapSwitcher.GetMap());
-            waveletSearchExecutor.SearchAccessibleArea(startPos, isWall);
+            var searchAccessibleAreaExecutor = _waveletSearchBuilder.Build(_entityGridMapSwitcher.GetMap());
+            searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall);
         }
     }
 }

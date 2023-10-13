@@ -89,7 +89,8 @@ namespace Carry.CarrySystem.Cart.Scripts
             var searchShortestRouteExecutor = new SearchShortestRouteExecutor(waveletSearchExecutor);
             var startPos = new Vector2Int(1, _map.Height % 2 == 1 ? (_map.Height - 1) / 2 : _map.Height / 2);
             Func<int, int, bool> isWall = (x, y) => _map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
-            var accessibleArea = waveletSearchExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(_map, waveletSearchExecutor);
+            var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
             var endPosY = _reachRightEdgeChecker.CalcCartReachRightEdge(accessibleArea, _map, searcherSize);
             var routeEndPos = new Vector2Int(_map.Width - 2, endPosY);
             

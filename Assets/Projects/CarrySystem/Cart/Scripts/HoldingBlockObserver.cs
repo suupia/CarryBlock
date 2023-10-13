@@ -66,14 +66,14 @@ namespace Carry.CarrySystem.Cart.Scripts
             var map = _mapUpdater.GetMap();
             Func<int, int, bool> isWall = (x, y) =>
                 map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
-            var waveletSearchExecutor = _waveletSearchBuilder.Build(_mapUpdater.GetMap());
 
             var startPos = new Vector2Int(1, map.Height / 2);
             var endPos = new Vector2Int(map.Width - 2, map.Height / 2);
             var searcherSize = SearcherSize.SizeThree;
-            var accessibleArea = waveletSearchExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
+            var searchAccessibleAreaExecutor = _waveletSearchBuilder.Build(_mapUpdater.GetMap());
+            var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
 
-            // Show the result
+            // Show the result  
             if (_reachRightEdgeChecker.CanCartReachRightEdge(accessibleArea, map, searcherSize))
             {
                 if (AllPlayerIsNotHoldingBlock())
