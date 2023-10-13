@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Serialization;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
-using JetBrains.Annotations;
 using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Cysharp.Threading.Tasks;
+using Fusion;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 #nullable enable
 
@@ -88,19 +88,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 return _map; // _initValueのみが入ったmap
             }
 
-
-            switch (searcherSize)
-            {
-                case SearcherSize.SizeOne:
-                    BasicSetWall(isWall);
-                    break;
-                case SearcherSize.SizeThree:
-                    SetWallSizeThree(isWall);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
-            }
-
+            ExpandVirtualWall(isWall, searcherSize);
+            
+            
             //壁でないマスに数字を順番に振っていく
             // Debug.Log($"WaveletSearchを実行します startPos:{startPos}");
             WaveletSearch();
@@ -204,51 +194,41 @@ namespace Carry.CarrySystem.Map.Scripts
 
             return true;
         }
-
-
-        // 探索者の大きさが1*1の場合
-        void BasicSetWall(Func<int, int, bool> isWall)
+        
+        void ExpandVirtualWall(Func<int , int, bool> isWall, SearcherSize searcherSize)
         {
-            //mapをコピーして、壁のマスを-1にする。
+            var searcherSizeInt = (int) searcherSize;
+            UnityEngine.Assertions.Assert.IsTrue(searcherSizeInt % 2 ==  1, "searcherSize must be odd number");
+            
+            var expandSize = (searcherSizeInt-1) / 2;
+            
             for (int y = 0; y < _map.Height; y++)
             {
                 for (int x = 0; x < _map.Width; x++)
                 {
-                    if (isWall(x, y))
+                    // expand wall
+                    if (isWall(x, y)) 
                     {
-                        _map.SetValue(x, y, _wallValue);
-                    }
-                }
-            }
-        }
-
-        // 探索者の大きさが3*3の場合
-        void SetWallSizeThree(Func<int, int, bool> isWall)
-        {
-            //mapをコピーして、壁のマスを-1にする。
-            for (int y = 0; y < _map.Height; y++)
-            {
-                for (int x = 0; x < _map.Width; x++)
-                {
-                    if (isWall(x, y))
-                    {
-                        // 壁を中心として3*3の範囲を壁にする
-                        for (int j = -1; j <= 1; j++)
+                        for (int j = -expandSize; j <= expandSize; j++)
                         {
-                            for (int i = -1; i <= 1; i++)
+                            for (int i = -expandSize; i <= expandSize; i++)
                             {
                                 _map.SetValue(x + i, y + j, _wallValue);
                             }
                         }
                     }
-                    else if (x == 0 || x == _map.Width - 1 || y == 0 || y == _map.Height - 1)
+                    // expand edge
+                    else if (x <= -1 + expandSize
+                             || x >= _map.Width - expandSize
+                             || y <= -1 + expandSize ||
+                             y >= _map.Height - expandSize) 
                     {
-                        // 壁の周りのマスを壁にする
                         _map.SetValue(x, y, _wallValue);
                     }
                 }
             }
         }
+
 
         /// <summary>
         /// 仮置きでおいた壁を戻すために数字のマスに接しているマスをtrueにする
@@ -366,20 +346,11 @@ namespace Carry.CarrySystem.Map.Scripts
             Debug.Log($"すべてのresultBoolArrayの結果は\n{debugCell}");
         }
 
-        void UpdatePresenter(bool[] resultBoolArray)
-        {
-            for (int i = 0; i < resultBoolArray.Length; i++)
-            {
-                _routePresenters[i]?.SetPresenterActive(resultBoolArray[i]);
-            }
-        }
-        
         // 時間差でpresenterをupdateする
         void UpdatePresenter(NumericGridMap numericGridMap)
         {
             for (int i = 0; i < numericGridMap.Length; i++)
             {
-                // _routePresenters[i]?.SetPresenterActive(resultBoolArray[i]);
                 DelayUpdate(_routePresenters[i], numericGridMap.GetValue(i)).Forget();
             }
         }
