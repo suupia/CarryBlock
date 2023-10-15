@@ -1,15 +1,18 @@
 using System;
+using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.EditMapSystem.EditMap.Scripts;
+using Carry.Utility.Scripts;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 using VContainer;
 using UniRx;
+using UnityEngine.InputSystem;
 
 #nullable enable
 
@@ -30,8 +33,13 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
         CuiState _cuiState = CuiState.Idle;
         Type _blockType = null!;
 
+        bool _eraseMode = false;
+        
         Vector2Int _respawnAreaOrigin = new Vector2Int(0, 4);
-        int _respawnSize = 3;
+        readonly int _respawnSize = 3;
+
+        InputAction _clickAction = null!;
+        InputAction _moveAction = null!;
 
         enum CuiState
         {
@@ -56,6 +64,24 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             _editMapUpdater = editMapUpdater;
         }
 
+        public void ToggleEraseMode()
+        {
+            _eraseMode = !_eraseMode;
+        }
+        
+        public void ClearMap()
+        {
+            var map = _editMapUpdater.GetMap();
+            
+            //mapの全要素にRemoveEntityを適用する
+            for (int i = 0; i < map.Length; i++)
+            {
+                var entities = map.GetSingleEntityList<IPlaceable>(i);
+            
+                if(entities.Count != 0)map.RemoveEntity<IPlaceable>(map.ToVector(i), entities.First());
+            }
+        }
+        
         void Start()
         {
             this.ObserveEveryValueChanged(_ => editMapCuiSave.IsOpened).Subscribe(isOpened =>
@@ -83,29 +109,39 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
 
             _blockType = typeof(BasicBlock);
 
+            InputActionMap inputActionMap =
+                InputActionMapLoader.GetInputActionMap(InputActionMapLoader.ActionMapName.UI);
+            
+            _clickAction = inputActionMap.FindAction("Click");
+            _moveAction = inputActionMap.FindAction("Point");
         }
 
         void Update()
         {
-            var mouseXYPos = Input.mousePosition; // xy座標であることに注意
+            var mouseXYPos = _moveAction.ReadValue<Vector2>(); // xy座標であることに注意
             var cameraHeight = Camera.main.transform.position.y;
             var mousePosOnGround =
                 Camera.main.ScreenToWorldPoint(new Vector3(mouseXYPos.x, mouseXYPos.y, cameraHeight));
 
-            if (Input.GetMouseButtonDown(0))
+            if (_clickAction.WasPressedThisFrame())
             {
-                var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
-                Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
+                if (!_eraseMode)
+                {
+                    var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
+                    Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
 
-                TryToAddPlaceable(mouseGridPosOnGround);
-            }
+                    TryToAddPlaceable(mouseGridPosOnGround);
+                }
+                else
+                {
+                    var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
+                    Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
 
-            if (Input.GetMouseButtonDown(1))
-            {
-                var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
-                Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
+                    var map = _editMapUpdater.GetMap();
 
-                TryToRemovePlaceable(mouseGridPosOnGround);
+                    // この書き方で問題なく動作するけど，この書き方で大丈夫なのだろうか？
+                    _editMapBlockAttacher.RemovePlaceable<IPlaceable>(map, mouseGridPosOnGround);
+                }
             }
 
             GetInput();
@@ -155,32 +191,6 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
                 return null!;
             }
         }
-
-        void TryToRemovePlaceable(Vector2Int mouseGridPosOnGround)
-        {
-            var map = _editMapUpdater.GetMap();
-
-            (_blockType.Name switch
-            {
-                nameof(BasicBlock) => () =>
-                    _editMapBlockAttacher.RemovePlaceable<BasicBlock>(map, mouseGridPosOnGround),
-                nameof(UnmovableBlock) => () =>
-                    _editMapBlockAttacher.RemovePlaceable<UnmovableBlock>(map, mouseGridPosOnGround),
-                nameof(HeavyBlock) => () =>
-                    _editMapBlockAttacher.RemovePlaceable<HeavyBlock>(map, mouseGridPosOnGround),
-                nameof(FragileBlock) => () =>
-                    _editMapBlockAttacher.RemovePlaceable<FragileBlock>(map, mouseGridPosOnGround),
-                nameof(ConfusionBlock) => () =>
-                    _editMapBlockAttacher.RemovePlaceable<ConfusionBlock>(map, mouseGridPosOnGround),
-                nameof(CannonBlock) => () =>
-                    _editMapBlockAttacher.RemovePlaceable<CannonBlock>(map, mouseGridPosOnGround),
-                nameof(TreasureCoin) => () =>
-                    _editMapBlockAttacher.RemovePlaceable<TreasureCoin>(map, mouseGridPosOnGround),
-                nameof(Spike) => () => _editMapBlockAttacher.RemovePlaceable<Spike>(map, mouseGridPosOnGround),
-                _ => (Action)(() => Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}")),
-            })();
-        }
-
 
         // ToDo: Input.~~は使用せずにInputActionを使用するようにする
         void GetInput()

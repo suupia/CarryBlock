@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Carry.UISystem.UI;
+using Carry.EditMapSystem.EditMapForPlayer.Scripts;
 
 public class EditMapToolCanvas : MonoBehaviour
 {
@@ -10,15 +9,18 @@ public class EditMapToolCanvas : MonoBehaviour
 
     void Start()
     {
-        // CustomButtonをインスタンス化する
-        for (int i = 0; i < 5; i++)
-        {
-            var customButton = Instantiate(buttonPrefab, buttonParent);
-            customButton.transform.SetParent(buttonParent.transform);
-            
-            // ボタンのテキストを設定する
-            customButton.SetText($"Stage {i + 1}");
-        }
+        var editMapForPlayerInput = FindObjectOfType<EditMapForPlayerInput>();
+
+
+        var customButton = Instantiate(buttonPrefab, buttonParent);
+        customButton.Init();
+        customButton.SetText("Erase Mode");
+        customButton.AddListener(() => editMapForPlayerInput.ToggleEraseMode());
+        
+        customButton = Instantiate(buttonPrefab, buttonParent);
+        customButton.Init();
+        customButton.SetText("Reset Map");
+        customButton.AddListener(() => editMapForPlayerInput.ClearMap());
     }
     
     void Update()

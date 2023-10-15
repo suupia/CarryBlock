@@ -13,9 +13,7 @@ namespace Carry.UISystem.UI.Prefabs
     /// </summary>
     public class CustomViewButton : 
         MonoBehaviour, 
-        IPointerClickHandler, 
-        IPointerDownHandler, 
-        IPointerUpHandler, 
+        IPointerClickHandler,
         IPointerEnterHandler, 
         IPointerExitHandler
     {
@@ -23,10 +21,26 @@ namespace Carry.UISystem.UI.Prefabs
         [SerializeField] Image iconImage = null!;
         [SerializeField] Image pressedImage = null!;
         [SerializeField] TextMeshPro? text;
+
+        float ClickInterval { get; set; } = 0.1f;
+
+        bool  _isClickable;
+        float _clickTime;
         
         Action<object>? _clickEvent;
         object? _clickEventTag;
-        
+
+        void Update()
+        {
+            if (!_isClickable)
+            {
+                if (_clickTime + ClickInterval < Time.time)
+                {
+                    _isClickable = true;
+                }
+            }
+        }
+
         enum ButtonState
         {
             Normal,
@@ -36,22 +50,17 @@ namespace Carry.UISystem.UI.Prefabs
         
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
-            Debug.Log("ボタンがクリックされた(押され，ドラッグされずに離された)");    
+            if (!_isClickable)
+            {
+                Debug.Log("連打を防止するためにクリックを無視する");
+                return;
+            }
+            
+            _isClickable = false;
             _clickEvent?.Invoke(_clickEventTag);
+            Debug.Log("ボタンがクリックされた(押され，ドラッグされずに離された)");
         }
-        
-        void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
-        {
-            Debug.Log("ボタンが押された");
-            DisplayButton(ButtonState.Pressed);
-        }
-        
-        void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
-        {
-            Debug.Log("ボタンが離された");
-            DisplayButton(ButtonState.Hover);
-        }
-        
+
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
             Debug.Log("カーソルがボタンに重なった");
