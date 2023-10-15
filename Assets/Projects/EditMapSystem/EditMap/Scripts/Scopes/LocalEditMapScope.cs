@@ -7,6 +7,7 @@ using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
+using Carry.EditMapSystem.EditMap.Scripts;
 using Fusion;
 using UnityEngine;
 using VContainer;
@@ -15,7 +16,7 @@ using Carry.NetworkUtility.NetworkRunnerManager.Scripts;
 using Carry.Utility.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 
-namespace Carry.EditMapSystem.EditMap.Scripts
+namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
 {
     public class LocalEditMapScope: LifetimeScope
     {
@@ -47,7 +48,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<EditMapBlockAttacher>(Lifetime.Scoped);
             builder.Register<CUIHandleNumber>(Lifetime.Scoped);
             builder.Register<AutoSaveManager>(Lifetime.Scoped);
-            builder.RegisterComponentInHierarchy<EditMapInput>();
+            builder.RegisterComponentInHierarchy<EditMapForPlayerInput>();
             builder.RegisterComponentInHierarchy<EditMapCUISave>();
             builder.RegisterComponentInHierarchy<EditMapCUILoad>();
             
