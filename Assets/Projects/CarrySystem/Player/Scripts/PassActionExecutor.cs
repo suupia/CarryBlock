@@ -63,8 +63,8 @@ namespace Carry.CarrySystem.Player.Scripts
                 Debug.Log($"{_info.PlayerController.Object.InputAuthority}から{targetPlayerController.Object.InputAuthority}に対してPassを試みます");
                 
                 var canPass = CanPass(targetPlayerController);
-                if(!canPass.Item1) return;
-                var block = canPass.Item2;
+                if(!canPass.CanPass) return;
+                var block = canPass.CarriableBlock;
                 PassBlock(block);
                 targetPlayerController.GetCharacter.ReceivePass(block);
             }
@@ -93,7 +93,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _playerAnimatorPresenter?.PassBlock();
         }
         
-        (bool, ICarriableBlock) CanPass(CarryPlayerControllerNet targetPlayerController)
+        (bool CanPass, ICarriableBlock CarriableBlock) CanPass(CarryPlayerControllerNet targetPlayerController)
         {
             if (!_holdingObjectContainer.IsHoldingBlock) 
             {
