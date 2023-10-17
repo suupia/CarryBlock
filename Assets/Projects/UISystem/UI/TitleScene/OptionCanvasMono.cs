@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Audio.Scripts;
+using Fusion;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
 using VContainer;
 
@@ -20,7 +22,8 @@ namespace Carry.UISystem.UI.TitleScene
     
         [SerializeField] Slider bgmSlider;
         [SerializeField] Slider seSlider;
-
+        [SerializeField] Transform resolutionButtonParent;
+        
         AudioSettingsTransporter _audioSettingsTransporter;
 
         [Inject]
@@ -28,6 +31,27 @@ namespace Carry.UISystem.UI.TitleScene
         {
             _audioSettingsTransporter = audioSettingsTransporter;
         }
+
+        void Start()
+        {
+            var buttons = resolutionButtonParent.GetComponentsInChildren<Button>();
+            foreach (var button in buttons)
+            {
+                button.onClick.AddListener(() =>   _audioSettingsTransporter.SetResolution(button));
+            }
+            
+            List<Button> buttonList = new List<Button>(buttons); // ボタンをリストに変換
+
+            for (int i = 0; i < buttonList.Count; i++)
+            {
+                Button button = buttonList[i];
+                button.onClick.AddListener(() => _audioSettingsTransporter.SetResolution(button));
+
+                // インデックスを利用する例
+                Debug.Log("Button at index " + i + " is " + button.name);
+            }
+        }
+
 
         void Awake()
         {
@@ -44,6 +68,7 @@ namespace Carry.UISystem.UI.TitleScene
         {
             _audioSettingsTransporter.SetSeVolume(value);
         }
+        
 
     }
 }
