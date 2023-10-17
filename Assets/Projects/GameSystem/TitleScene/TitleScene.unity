@@ -2366,6 +2366,18 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1504547787491056317, guid: c69faaae96cba85459a099a1f9baa20a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1504547787491056317, guid: c69faaae96cba85459a099a1f9baa20a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1504547787491056317, guid: c69faaae96cba85459a099a1f9baa20a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2430599752001537799, guid: c69faaae96cba85459a099a1f9baa20a, type: 3}
       propertyPath: m_Name
       value: OptionCanvasRoot

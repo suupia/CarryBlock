@@ -8,6 +8,14 @@ namespace Carry.CarrySystem.Audio.Scripts
 {
     public class AudioSettingsTransporter
     {
+        public enum Resolution
+        {
+            R1920x1080,
+            R1680x1050,
+            R1440x900,
+            R960x600
+        }
+        
         public float BgmVolume { get; private set; }
         public float SeVolume { get; private set; }
         
@@ -23,9 +31,10 @@ namespace Carry.CarrySystem.Audio.Scripts
             SeVolume = seVolume;
         }
 
-        public void SetResolution(Button button)
+        public void SetResolution(Resolution resolution)
         {
-           
+            ResolutionValue = resolution;
+            Debug.Log($"Resolution;{resolution}");
         }
         
     }

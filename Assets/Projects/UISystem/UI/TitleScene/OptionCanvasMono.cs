@@ -12,14 +12,7 @@ namespace Carry.UISystem.UI.TitleScene
 {
     public class OptionCanvasMono : MonoBehaviour
     {
-        enum Resolution
-        {
-            R1920x1080,
-            R1680x1050,
-            R1440x900,
-            R960x600
-        }
-    
+        
         [SerializeField] Slider bgmSlider;
         [SerializeField] Slider seSlider;
         [SerializeField] Transform resolutionButtonParent;
@@ -30,35 +23,27 @@ namespace Carry.UISystem.UI.TitleScene
         public void Construct(AudioSettingsTransporter audioSettingsTransporter)
         {
             _audioSettingsTransporter = audioSettingsTransporter;
+            Initialize();
         }
 
-        void Start()
+        void Initialize()
         {
             var buttons = resolutionButtonParent.GetComponentsInChildren<Button>();
-            foreach (var button in buttons)
-            {
-                button.onClick.AddListener(() =>   _audioSettingsTransporter.SetResolution(button));
-            }
             
-            List<Button> buttonList = new List<Button>(buttons); // ボタンをリストに変換
-
-            for (int i = 0; i < buttonList.Count; i++)
+            for (int i = 0; i < buttons.Length; i++)
             {
-                Button button = buttonList[i];
-                button.onClick.AddListener(() => _audioSettingsTransporter.SetResolution(button));
+                Button button = buttons[i];
+                AudioSettingsTransporter.Resolution resolution = (AudioSettingsTransporter.Resolution)i;
+                button.onClick.AddListener(() => _audioSettingsTransporter.SetResolution(resolution));
 
                 // インデックスを利用する例
                 Debug.Log("Button at index " + i + " is " + button.name);
             }
-        }
-
-
-        void Awake()
-        {
+            
             bgmSlider.onValueChanged.AddListener(OnBgmSliderValueChanged);
             seSlider.onValueChanged.AddListener(OnSeSliderValueChanged);
         }
-
+        
         void OnBgmSliderValueChanged(float value)
         {
             _audioSettingsTransporter.SetBgmVolume(value);
