@@ -20,6 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly int _layerMask;
         readonly  Collider[] _targetBuffer = new Collider[10];
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
+        readonly PassBlockMoveExecutor _passBlockMoveExecutor;
         
         // Presenter
         IPlayerBlockPresenter? _playerBlockPresenter;
@@ -30,13 +31,16 @@ namespace Carry.CarrySystem.Player.Scripts
         public PassActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer,
             HoldActionExecutor holdActionExecutor, 
+            PassBlockMoveExecutor passBlockMoveExecutor,
             float radius,
             int layerMask)
         {
             _holdingObjectContainer = holdingObjectContainer;
             _holdActionExecutor = holdActionExecutor;
+            _passBlockMoveExecutor = passBlockMoveExecutor;
             _radius = radius;
             _layerMask = layerMask; /*LayerMask.GetMask("Player");*/
+            
         }
         public void Setup(PlayerInfo info)
         {
@@ -66,6 +70,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 if(!canPass.CanPass) return;
                 var block = canPass.CarriableBlock;
                 PassBlock(block);
+                _passBlockMoveExecutor.WaitPassAction();
                 targetPlayerController.GetCharacter.ReceivePass(block);
             }
         }
