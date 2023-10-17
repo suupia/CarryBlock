@@ -15,10 +15,6 @@ namespace Carry.CarrySystem.Player.Scripts
     public class PassActionExecutor : IPassActionExecutor
     {
         PlayerInfo _info = null!;
-        readonly HoldActionExecutor _holdActionExecutor;
-        readonly float _radius;
-        readonly int _layerMask;
-        readonly  Collider[] _targetBuffer = new Collider[10];
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
         readonly PassBlockMoveExecutor _passBlockMoveExecutor;
         
@@ -30,17 +26,11 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public PassActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer,
-            HoldActionExecutor holdActionExecutor, 
-            PassBlockMoveExecutor passBlockMoveExecutor,
-            float radius,
-            int layerMask)
+            PassBlockMoveExecutor passBlockMoveExecutor)
         {
             _holdingObjectContainer = holdingObjectContainer;
-            _holdActionExecutor = holdActionExecutor;
             _passBlockMoveExecutor = passBlockMoveExecutor;
-            _radius = radius;
-            _layerMask = layerMask; /*LayerMask.GetMask("Player");*/
-            
+
         }
         public void Setup(PlayerInfo info)
         {
