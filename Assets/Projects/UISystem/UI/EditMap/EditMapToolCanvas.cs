@@ -21,6 +21,16 @@ public class EditMapToolCanvas : MonoBehaviour
         customButton.Init();
         customButton.SetText("Reset Map");
         customButton.AddListener(() => editMapForPlayerInput.ClearMap());
+        
+        customButton = Instantiate(buttonPrefab, buttonParent);
+        customButton.Init();
+        customButton.SetText("Redo");
+        customButton.AddListener(() => editMapForPlayerInput.ClearMap());
+        
+        customButton = Instantiate(buttonPrefab, buttonParent);
+        customButton.Init();
+        customButton.SetText("Undo");
+        customButton.AddListener(() => editMapForPlayerInput.ClearMap());
     }
     
     void Update()

@@ -78,7 +78,14 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             {
                 var entities = map.GetSingleEntityList<IPlaceable>(i);
             
-                if(entities.Count != 0)map.RemoveEntity<IPlaceable>(map.ToVector(i), entities.First());
+                if(entities.Any())map.RemoveEntity<IPlaceable>(map.ToVector(i), entities.First());
+            }
+            
+            for (int i = 0; i < map.Length; i++)
+            {
+                var entities = map.GetSingleEntityList<IPlaceable>(i);
+            
+                if(entities.Any())map.RemoveEntity<IPlaceable>(map.ToVector(i), entities.First());
             }
         }
         
