@@ -23,6 +23,7 @@ namespace Carry.UISystem.UI.TitleScene
         public void Construct(AudioSettingsTransporter audioSettingsTransporter)
         {
             _audioSettingsTransporter = audioSettingsTransporter;
+            
             Initialize();
         }
 
