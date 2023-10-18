@@ -51,23 +51,22 @@ namespace Carry.CarrySystem.Player.Scripts
         public void PassAction()
         {
             if (_passRangeNet == null) _passRangeNet = _info.PlayerController.GetComponentInChildren<PassRangeNet>();
-            if (_passRangeNet.DetectedTarget() is {} target)
+
+            var targetPlayerController = _passRangeNet.DetectedTarget();
+            if (targetPlayerController == null)
             {
-                var targetPlayerController  = target.GetComponent<CarryPlayerControllerNet>();
-                if (targetPlayerController == null)
-                {
-                    Debug.LogError($"{target.name} には CarryPlayerControllerNet がアタッチされていません");
-                    return;
-                }
-                
-                Debug.Log($"{_info.PlayerController.Object.InputAuthority}から{targetPlayerController.Object.InputAuthority}に対してPassを試みます");
-                
-                var canPass = CanPass(targetPlayerController);
-                if(!canPass.CanPass) return;
-                var block = canPass.CarriableBlock;
-                PassBlock(block);
-                targetPlayerController.GetCharacter.ReceivePass(block);
+                Debug.Log($"targetPlayerController is null");
+                return;
             }
+
+            Debug.Log(
+                $"{_info.PlayerController.Object.InputAuthority}から{targetPlayerController.Object.InputAuthority}に対してPassを試みます");
+
+            var canPass = CanPass(targetPlayerController);
+            if (!canPass.CanPass) return;
+            var block = canPass.CarriableBlock;
+            PassBlock(block);
+            targetPlayerController.GetCharacter.ReceivePass(block);
         }
 
         // public
