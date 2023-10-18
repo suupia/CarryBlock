@@ -57,9 +57,9 @@ public class TitleUIManager : MonoBehaviour
         multiPlayButton.AddListener(() => joinPanel.SetActive(true));
 
         optionButton.Interactable = true;
-        optionCanvas.SetActive(false); // 最初は非表示
         optionButton.AddListener( () => optionCanvas.SetActive(true));
         closeOptionButton.AddListener( () => optionCanvas.SetActive(false));
+        optionCanvas.SetActive(false); // 最初は非表示 （最後に処理する）
         
         musicRoomButton.Interactable = false;
 
