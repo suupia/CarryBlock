@@ -20,6 +20,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     {
         [Inject] readonly NetworkRunner _runner = null!;
         IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
+        private bool _isRoutePresenterInit = false;
 
         [Inject]
         public SearchAccessibleAreaBuilder()
@@ -31,23 +32,29 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         {
             var routePresenterSpawner = new RoutePresenterSpawner(_runner);
             var routePresenters = new List<RoutePresenter_Net>();
-
-            // 以前のTilePresenterを削除
-            DestroyRoutePresenter();
             
-            // RoutePresenterをスポーンさせる
-            for (int i = 0; i < map.Length; i++)
+            if (!_isRoutePresenterInit)
             {
-                var girdPos = map.ToVector(i);
-                var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
-                var routePresenter = routePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
-                routePresenters.Add(routePresenter);
+                // 以前のTilePresenterを削除
+                DestroyRoutePresenter();
+
+                // RoutePresenterをスポーンさせる
+                for (int i = 0; i < map.Length; i++)
+                {
+                    var girdPos = map.ToVector(i);
+                    var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
+                    var routePresenter = routePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                    routePresenters.Add(routePresenter);
+                }
+                _routePresenters = routePresenters;
+                _isRoutePresenterInit = true;
+            }
+            else
+            {
+                routePresenters = _routePresenters;
             }
             
-            _routePresenters = routePresenters;
-            
-           return  AttachRoutePresenter(routePresenters, map);
-
+            return  AttachRoutePresenter(routePresenters, map);
         }
         
         void DestroyRoutePresenter()
@@ -68,8 +75,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             {
                 var routePresenter = routePresenters.ElementAt(i);
                 // RoutePresenter用に書き直し
-                routePresenter.SetPresenterActive(false);  // ToDo: 初期化の処理
-
+                //routePresenter.SetPresenterActive(false);  // ToDo: 初期化の処理
             }
 
             var waveletSearchExecutor = new WaveletSearchExecutor(map);

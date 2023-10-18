@@ -171,7 +171,11 @@ namespace Carry.CarrySystem.Map.Scripts
         async UniTaskVoid DelayUpdate(IRoutePresenter? routePresenter, long value)
         {
             if(routePresenter == null) return;
-            if(value < 0)return;
+            if (value < 0)
+            {
+                routePresenter.SetPresenterActive(false);
+                return;
+            }
 
             await UniTask.Delay((int)value * 250);
             routePresenter.SetPresenterActive(true);
