@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4083379182302277477}
   - component: {fileID: -1599650411451427176}
   m_Layer: 0
-  m_Name: MapKeyDataNetForDebugByTsukamoto
+  m_Name: MapKeyDataNetByTsukamoto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   mapKeyDataList:
   - mapKey: 6
-    index: 7
+    index: 103
   - mapKey: 6
     index: 101
 --- !u!114 &-1599650411451427176
