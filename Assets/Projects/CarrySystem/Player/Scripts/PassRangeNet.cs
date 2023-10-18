@@ -25,39 +25,41 @@ namespace Carry.CarrySystem.Player.Scripts
         }
 
 
-        public Transform? DetectedTarget()
+        public CarryPlayerControllerNet? DetectedTarget()
         {
             var targetUnits = Search();
             var target = DetermineTarget(targetUnits);
             return target;
         }
 
-        Transform? DetermineTarget(IEnumerable<Transform> targets)
+        CarryPlayerControllerNet? DetermineTarget(IEnumerable<CarryPlayerControllerNet?> targets)
         {
-            Transform? minTransform = null;
+            CarryPlayerControllerNet? minPlayerController = null;
             float minDistance = float.PositiveInfinity;
-            foreach (var targetTransform in targets)
+            foreach (var targetController in targets)
             {
-                var distance = Vector3.Distance(_info.PlayerObj.transform.position, targetTransform.position);
+                if(targetController == null) continue;
+                var distance = Vector3.Distance(_info.PlayerObj.transform.position, targetController.gameObject.transform.position);
                 if (distance < minDistance)
                 {
-                    minTransform = targetTransform;
+                    minPlayerController = targetController;
                     minDistance = distance;
                 }
             }
-            return minTransform;
+            return minPlayerController;
         }
         
-        Transform[] Search()
+        CarryPlayerControllerNet?[] Search()
         {
-            var center = _info.PlayerObj. transform.position;
+            var center = _info.PlayerObj.transform.position;
             var radius = detectCollider.transform.localScale.x * detectCollider.radius; // radiusを倍率とするとうまく計算できる（0.5倍）
             var targetBuffer = new Collider[10];
             var numFound = Physics.OverlapSphereNonAlloc(center, radius,targetBuffer, _layerMask);
+            Debug.Log($"targetBuffer {string.Join(",", targetBuffer.ToList())}");
             var targets =  targetBuffer
                 .Where(c => c != null) // Filter out any null colliders
                 .Where(c => c.transform != _info.PlayerObj.transform) // 自分以外を選択する
-                .Select(c => c.transform)
+                .Select(c => c.gameObject.GetComponent<CarryPlayerControllerNet>())
                 .ToArray();
             Debug.Log($"targets {string.Join(",", targets.ToList())}");
             return targets;
