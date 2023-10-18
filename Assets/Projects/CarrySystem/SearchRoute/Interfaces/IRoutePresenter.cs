@@ -6,7 +6,5 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Interfaces
     {
          [Networked] public NetworkBool IsActive { get; set; }
          void SetPresenterActive(bool isActive);
-
-         void StartAnimation();
     }
 }

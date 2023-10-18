@@ -17,26 +17,11 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         public override void Render()
         {
             routeHighlightObject.SetActive(IsActive);
-            StartAnimation();
         }
         
         public void SetPresenterActive(bool isActive)
         {
             IsActive = isActive;
-        }
-
-        public void StartAnimation()
-        {
-            if (!IsActive)
-            {
-                IsAnimated = false;
-                return;
-            }
-            if (IsAnimated) return;
-            
-            routeHighlightObject.SetActive(IsActive);
-            //Debug.Log("animation");
-            IsAnimated = true;
         }
     }
 }

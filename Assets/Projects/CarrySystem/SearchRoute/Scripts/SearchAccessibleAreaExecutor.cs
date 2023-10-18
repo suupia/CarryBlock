@@ -177,7 +177,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 return;
             }
 
-            await UniTask.Delay((int)value * 250);
+            if (routePresenter.IsActive) return;
+            
+            await UniTask.Delay((int)value * 5);
             routePresenter.SetPresenterActive(true);
         
         }

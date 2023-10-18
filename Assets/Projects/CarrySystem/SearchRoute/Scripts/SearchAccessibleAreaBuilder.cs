@@ -33,7 +33,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             var routePresenterSpawner = new RoutePresenterSpawner(_runner);
             var routePresenters = new List<RoutePresenter_Net>();
             
-            if (!_isRoutePresenterInit)
+            if (!_isRoutePresenterInit) //最初にすべてスポーン
             {
                 // 以前のTilePresenterを削除
                 DestroyRoutePresenter();
@@ -51,9 +51,9 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             }
             else
             {
-                routePresenters = _routePresenters;
+                routePresenters = _routePresenters.ToList();
             }
-            
+
             return  AttachRoutePresenter(routePresenters, map);
         }
         
