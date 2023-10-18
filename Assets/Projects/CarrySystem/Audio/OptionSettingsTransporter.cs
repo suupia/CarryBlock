@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Carry.CarrySystem.Audio.Scripts
 {
-    public class AudioSettingsTransporter
+    public class OptionSettingsTransporter
     {
         public enum Resolution
         {
@@ -32,7 +32,7 @@ namespace Carry.CarrySystem.Audio.Scripts
         }
 
         public void SetResolution(Resolution resolution)
-        {
+        {   
             ResolutionValue = resolution;
             Debug.Log($"Resolution;{resolution}");
         }

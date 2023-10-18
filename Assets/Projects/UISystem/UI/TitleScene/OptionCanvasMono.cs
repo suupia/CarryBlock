@@ -17,12 +17,12 @@ namespace Carry.UISystem.UI.TitleScene
         [SerializeField] Slider seSlider;
         [SerializeField] Transform resolutionButtonParent;
         
-        AudioSettingsTransporter _audioSettingsTransporter;
+        OptionSettingsTransporter _optionSettingsTransporter;
 
         [Inject]
-        public void Construct(AudioSettingsTransporter audioSettingsTransporter)
+        public void Construct(OptionSettingsTransporter optionSettingsTransporter)
         {
-            _audioSettingsTransporter = audioSettingsTransporter;
+            _optionSettingsTransporter = optionSettingsTransporter;
             
             Initialize();
         }
@@ -34,8 +34,8 @@ namespace Carry.UISystem.UI.TitleScene
             for (int i = 0; i < buttons.Length; i++)
             {
                 Button button = buttons[i];
-                AudioSettingsTransporter.Resolution resolution = (AudioSettingsTransporter.Resolution)i;
-                button.onClick.AddListener(() => _audioSettingsTransporter.SetResolution(resolution));
+                OptionSettingsTransporter.Resolution resolution = (OptionSettingsTransporter.Resolution)i;
+                button.onClick.AddListener(() => _optionSettingsTransporter.SetResolution(resolution));
 
                 // インデックスを利用する例
                 Debug.Log("Button at index " + i + " is " + button.name);
@@ -47,12 +47,12 @@ namespace Carry.UISystem.UI.TitleScene
         
         void OnBgmSliderValueChanged(float value)
         {
-            _audioSettingsTransporter.SetBgmVolume(value);
+            _optionSettingsTransporter.SetBgmVolume(value);
         }
         
         void OnSeSliderValueChanged(float value)
         {
-            _audioSettingsTransporter.SetSeVolume(value);
+            _optionSettingsTransporter.SetSeVolume(value);
         }
         
 

@@ -23,7 +23,7 @@ namespace  Carry.GameSystem.Scripts
             builder.Register<PlayerCharacterTransporter>(Lifetime.Singleton);
             builder.Register<StageIndexTransporter>(Lifetime.Singleton);
             builder.Register<CarryInitializersReady>(Lifetime.Singleton);
-            builder.Register<AudioSettingsTransporter>(Lifetime.Singleton);
+            builder.Register<OptionSettingsTransporter>(Lifetime.Singleton);
         }
     }
 
