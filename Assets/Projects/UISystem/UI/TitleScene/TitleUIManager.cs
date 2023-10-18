@@ -17,6 +17,7 @@ public class TitleUIManager : MonoBehaviour
 
     [SerializeField] CustomButton multiPlayButton;
     [SerializeField] CustomButton optionButton;
+    [SerializeField] CustomButton closeOptionButton;
     [SerializeField] CustomButton musicRoomButton;
     [SerializeField] CustomButton quitButton;
 
@@ -26,6 +27,8 @@ public class TitleUIManager : MonoBehaviour
     [SerializeField] CustomButton joinAsClientButton;
     [SerializeField] TMP_InputField roomNameInputField;
     [SerializeField] CustomButton backButton;
+
+    [SerializeField] GameObject optionCanvas;
 
     string RoomName => roomNameInputField.text;
 
@@ -54,7 +57,10 @@ public class TitleUIManager : MonoBehaviour
         multiPlayButton.AddListener(() => joinPanel.SetActive(true));
 
         optionButton.Interactable = true;
-
+        optionCanvas.SetActive(false); // 最初は非表示
+        optionButton.AddListener( () => optionCanvas.SetActive(true));
+        closeOptionButton.AddListener( () => optionCanvas.SetActive(false));
+        
         musicRoomButton.Interactable = false;
 
         quitButton.AddListener(Quit);

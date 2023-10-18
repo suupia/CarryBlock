@@ -10,7 +10,6 @@ public class OptionCanvasSwitcher : MonoBehaviour
 {
     [SerializeField] Button openOptionButton;
     [SerializeField] Button closeOptionButton;
-    [SerializeField] Canvas _canvas;
     [SerializeField] GameObject optioncanvas;
     [SerializeField] GameObject canvasContainer;
     
