@@ -61,7 +61,10 @@ namespace Carry.CarrySystem.Player.Scripts
                 var block = canPass.CarriableBlock;
                 PassBlock(block);
                 _passBlockMoveExecutor.WaitPassAction();
-                targetPlayerController.GetCharacter.ReceivePass(block);
+                if (!_passBlockMoveExecutor.IsPassing)
+                {
+                    targetPlayerController.GetCharacter.ReceivePass(block);
+                }
             }
         }
 
