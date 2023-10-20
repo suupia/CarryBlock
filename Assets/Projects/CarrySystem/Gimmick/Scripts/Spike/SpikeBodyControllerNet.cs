@@ -9,7 +9,7 @@ namespace Projects.CarrySystem.Gimmick.Scripts
     [RequireComponent(typeof(Collider))]
     public class SpikeBodyControllerNet : NetworkBehaviour
     {
-        readonly float _lifeTime = 3f;
+        readonly float _lifeTime = 1f;
 
         float _timer;
         
@@ -34,6 +34,7 @@ namespace Projects.CarrySystem.Gimmick.Scripts
         {
             if (!HasStateAuthority) return;
 
+            Debug.Log($"SpikeBody OnTriggerEnter() called");
             if (other.CompareTag("Player"))
             {
                 Debug.Log($"痛ったぁぁぁぁい");
