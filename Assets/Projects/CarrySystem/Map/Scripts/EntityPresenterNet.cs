@@ -170,7 +170,6 @@ namespace Carry.CarrySystem.Map.Scripts
             };
             PresentDataRef.SpikeCount = allEntityList.OfType<SpikeGimmick>().Count();
             
-            Debug.Log($"CannonBlockCount : {PresentDataRef.CannonBlockCount}");
         }
 
         public void SetEntityActiveData(IEntity entity, int count)
