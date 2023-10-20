@@ -38,13 +38,15 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Move(Vector3 input)
         {
             _currentMoveExecutor.Move(input);
-            Debug.Log($"Move _currentMoveExecutor.GetType() : {_currentMoveExecutor.GetType()}");
-            if(_currentMoveExecutor is IMoveExecutorLeaf leaf) Debug.Log($"Move _currentMoveExecutor.MaxVelocity : {leaf.MaxVelocity}");
+            
+            // Debug.Log($"Move _currentMoveExecutor.GetType() : {_currentMoveExecutor.GetType()}");
+            // if(_currentMoveExecutor is IMoveExecutorLeaf leaf) Debug.Log($"Move _currentMoveExecutor.MaxVelocity : {leaf.MaxVelocity}");
+            //
         }
         
         public void SwitchToBeforeMoveExecutor()
         {
-            Debug.Log($"_beforeMoveExecutorNew.GetType() : {_beforeMoveExecutorLeaf.GetType()}");
+            // Debug.Log($"_beforeMoveExecutorNew.GetType() : {_beforeMoveExecutorLeaf.GetType()}");
             _currentMoveExecutor = _beforeMoveExecutorLeaf;
         }
         

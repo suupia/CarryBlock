@@ -28,8 +28,6 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Move(Vector3 input)
         {
             _moveExecutor.Move(input);
-            Debug.Log($"_moveExecutor.MaxVelocity : {_moveExecutor.MaxVelocity}");
-
 
             // Todo : アニメーションの処理を無理やり上書きしているので、メソッドを切り出して修正する
             if (input != Vector3.zero)
