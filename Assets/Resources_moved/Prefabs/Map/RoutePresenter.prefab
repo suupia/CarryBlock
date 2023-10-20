@@ -48,6 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  _IsActive:
+    _value: 0
   routeHighlightObject: {fileID: 2440805246477216562}
 --- !u!114 &4718657467805471533
 MonoBehaviour:
