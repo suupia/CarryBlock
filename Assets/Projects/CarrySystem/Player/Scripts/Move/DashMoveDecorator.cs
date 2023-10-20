@@ -16,43 +16,24 @@ namespace Carry.CarrySystem.Player.Scripts
 
         readonly IMoveExecutor _moveExecutor;
         
-        public DashMoveDecorator(IMoveExecutor moveExecutor)
+        public DashMoveDecorator(RegularMoveExecutor moveExecutor)
         {
-            _moveExecutor = moveExecutor;
+            var acceleration = moveExecutor.Acceleration * 10.0f / 4.0f;
+            var maxVelocity = moveExecutor.MaxVelocity * 10.0f / 5.0f;
+            var stoppingForce = moveExecutor.StoppingForce;
+            _moveExecutor = new RegularMoveExecutor(acceleration, maxVelocity, stoppingForce);
         }
 
         public void Setup(PlayerInfo info)
         {
             _info = info;
+            _moveExecutor.Setup(info);
         }
 
         public void Move(Vector3 input)
         {
-            var transform = _info.PlayerObj.transform;
-            var rb = _info.PlayerRb;
-            var deltaAngle = Vector3.SignedAngle(transform.forward, input, Vector3.up);
-            
-            if (input != Vector3.zero)
-            {
-                if (Mathf.Abs(deltaAngle) >= float.Epsilon)
-                {
-                    var rotateQuaternion = Quaternion.Euler(0, deltaAngle, 0);
-                    rb.MoveRotation(rb.rotation * rotateQuaternion);
-                }
+            _moveExecutor.Move(input);
 
-                rb.AddForce(_acceleration * input, ForceMode.Acceleration);
-
-                if (rb.velocity.magnitude >= _maxVelocity)
-                    rb.velocity = _maxVelocity * rb.velocity.normalized;
-            }
-            else
-            {
-                // Stop if there is no key input
-                // Define 0 < _stoppingForce < 1
-                float reductionFactor = Mathf.Max(0f, 1f - _stoppingForce * Time.deltaTime);
-                rb.velocity *= Mathf.Pow(reductionFactor, rb.velocity.magnitude);
-            }
-            
             // Todo : アニメーションの処理を無理やり上書きしているので、メソッドを切り出して修正する
             if (input != Vector3.zero)
             {

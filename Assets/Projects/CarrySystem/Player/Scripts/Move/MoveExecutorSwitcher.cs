@@ -27,11 +27,11 @@ namespace Carry.CarrySystem.Player.Scripts
         public MoveExecutorSwitcher(
             )
         {
-            _regularMoveLeaf = new RegularMoveExecutor();
+            _regularMoveLeaf = new RegularMoveExecutor(40, 5, 5);
             _slowMoveExecutor = new SlowMoveExecutor();
             _faintedMoveExecutor = new FaintedMoveExecutor();
             _confusionMoveExecutor = new InverseInputDecorator(_regularMoveLeaf);
-            _dashMoveExecutor = new DashMoveDecorator(_regularMoveLeaf);
+            _dashMoveExecutor = new DashMoveDecorator( new RegularMoveExecutor(40, 5, 5));
             _confusionDashMoveExecutor = new InverseInputDecorator(_dashMoveExecutor);
             
             _currentMoveExecutor = _regularMoveLeaf;
@@ -79,9 +79,12 @@ namespace Carry.CarrySystem.Player.Scripts
             //         break;
             // }
             _beforeMoveExecutorNew = _currentMoveExecutor;
-            var dash = new DashMoveDecorator(_currentMoveExecutor);
-            dash.Setup(_info);
-            _currentMoveExecutor = dash;
+            if (_currentMoveExecutor is RegularMoveExecutor regularMoveExecutor)
+            {
+                var dash = new DashMoveDecorator(regularMoveExecutor);
+                dash.Setup(_info);
+                _currentMoveExecutor = dash;
+            }
             
         }
         public void SwitchToSlowMove()
