@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
@@ -12,20 +13,25 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IMoveExecutor _regularMoveLeaf;
         readonly IMoveExecutor _slowMoveExecutor;
         readonly IMoveExecutor _confusionMoveExecutor;
-        readonly IMoveExecutor _confusionDashMoveExecutor;
         readonly IMoveExecutor _dashMoveExecutor;
+        readonly IMoveExecutor _confusionDashMoveExecutor;
         readonly IMoveExecutor _faintedMoveExecutor;
+        
         IMoveExecutor _beforeMoveExecutor;
         IMoveExecutor _currentMoveExecutor;
+
+        IMoveExecutor? _beforeMoveExecutorNew;
+        
+        PlayerInfo _info = null!;
         
         public MoveExecutorSwitcher(
             )
         {
             _regularMoveLeaf = new RegularMoveExecutor();
             _slowMoveExecutor = new SlowMoveExecutor();
-            _dashMoveExecutor = new DashMoveExecutor();
             _faintedMoveExecutor = new FaintedMoveExecutor();
             _confusionMoveExecutor = new InverseInputDecorator(_regularMoveLeaf);
+            _dashMoveExecutor = new DashMoveDecorator(_regularMoveLeaf);
             _confusionDashMoveExecutor = new InverseInputDecorator(_dashMoveExecutor);
             
             _currentMoveExecutor = _regularMoveLeaf;
@@ -38,6 +44,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _slowMoveExecutor.Setup(info);
             _dashMoveExecutor.Setup(info);
             _faintedMoveExecutor.Setup(info);
+            _info = info;
         }
         
         public void Move(Vector3 input)
@@ -48,7 +55,8 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SwitchToBeforeMoveExecutor()
         {
             StoreBeforeMove();
-            _currentMoveExecutor =  _beforeMoveExecutor;
+            // _currentMoveExecutor =  _beforeMoveExecutor;
+            if(_beforeMoveExecutorNew != null) _currentMoveExecutor = _beforeMoveExecutorNew;
         }
         
         public void SwitchToRegularMove()
@@ -59,17 +67,22 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void SwitchToDashMove()
         {
-            StoreBeforeMove();
-            switch (_currentMoveExecutor)
-            {
-                case InverseInputDecorator _:
-                    _currentMoveExecutor = _confusionDashMoveExecutor;
-                    Debug.Log($"_confusionDashMoveExecutor");
-                    break;
-                default:
-                    _currentMoveExecutor = _dashMoveExecutor;
-                    break;
-            }
+            // StoreBeforeMove();
+            // switch (_currentMoveExecutor)
+            // {
+            //     case InverseInputDecorator _:
+            //         _currentMoveExecutor = _confusionDashMoveExecutor;
+            //         Debug.Log($"_confusionDashMoveExecutor");
+            //         break;
+            //     default:
+            //         _currentMoveExecutor = _dashMoveExecutor;
+            //         break;
+            // }
+            _beforeMoveExecutorNew = _currentMoveExecutor;
+            var dash = new DashMoveDecorator(_currentMoveExecutor);
+            dash.Setup(_info);
+            _currentMoveExecutor = dash;
+            
         }
         public void SwitchToSlowMove()
         {
