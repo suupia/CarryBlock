@@ -1,28 +1,28 @@
 ﻿using Carry.CarrySystem.Block.Scripts;
-using Carry.Utility.Interfaces;
 using Carry.CarrySystem.Gimmick.Scripts;
-using Fusion;
+using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
+using Fusion;
 using UnityEngine;
 using VContainer;
 #nullable enable
 
-namespace Carry.CarrySystem.Gimmick.Scripts
+namespace Projects.CarrySystem.Gimmick.Scripts
 {
-    public class CannonBallBuilder
+    public class SpikeBodyBuilder
     {
         readonly NetworkRunner _runner;
-        readonly IPrefabLoader<CannonBallControllerNet> _canonBallControllerLoader;
+        readonly IPrefabLoader<SpikeBodyControllerNet> _canonBallControllerLoader;
 
         [Inject]
-        public CannonBallBuilder(NetworkRunner runner)
+        public SpikeBodyBuilder(NetworkRunner runner)
         {
             _runner = runner;
-            // LoaderはDIしなくてもよいのではと思った
-            _canonBallControllerLoader = new PrefabLoaderFromAddressable<CannonBallControllerNet>("Prefabs/Gimmick/Cannon/CannonBallNet");
+            // I decided to not DI Loader
+            _canonBallControllerLoader = new PrefabLoaderFromAddressable<SpikeBodyControllerNet>("Prefabs/Gimmick/Spike/SpikeBodyNet");
         }
         
-        public CannonBallControllerNet Build(CannonBlock.Kind kind, Vector3 position, Quaternion rotation, PlayerRef playerRef)
+        public SpikeBodyControllerNet Build(SpikeGimmick.Kind kind, Vector3 position, Quaternion rotation, PlayerRef playerRef)
         {
             // Load prefab
             var cannonBallController = _canonBallControllerLoader.Load();
@@ -31,7 +31,7 @@ namespace Carry.CarrySystem.Gimmick.Scripts
             var cannonBallControllerObj = _runner.Spawn(cannonBallController, position, rotation, playerRef,
                 (runner, networkObj) =>
                 {
-                    networkObj.GetComponent<CannonBallControllerNet>().Init(kind);
+                    networkObj.GetComponent<SpikeBodyControllerNet>().Init(kind);
                 });
             
             // Setup Info

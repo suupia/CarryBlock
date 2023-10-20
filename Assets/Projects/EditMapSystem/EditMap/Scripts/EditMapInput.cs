@@ -124,7 +124,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 nameof(UnmovableBlock) => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
                 nameof(HeavyBlock) => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
                 nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
-                nameof(Spike) => new Spike(Spike.Kind.Kind1, mouseGridPosOnGround),
+                nameof(SpikeGimmick) => new SpikeGimmick(SpikeGimmick.Kind.Kind1, mouseGridPosOnGround),
                 nameof(ConfusionBlock) => new ConfusionBlock(ConfusionBlock.Kind.Kind1, mouseGridPosOnGround),
                 nameof(CannonBlock) =>CreateCannonBlock(),
                 nameof(TreasureCoin) => new TreasureCoin(TreasureCoin.Kind.Kind1, mouseGridPosOnGround, map , new TreasureCoinCounter()),
@@ -165,7 +165,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 nameof(ConfusionBlock) => () => _editMapBlockAttacher.RemovePlaceable<ConfusionBlock>(map, mouseGridPosOnGround),
                 nameof(CannonBlock) => () => _editMapBlockAttacher.RemovePlaceable<CannonBlock>(map, mouseGridPosOnGround),
                 nameof(TreasureCoin) => () => _editMapBlockAttacher.RemovePlaceable<TreasureCoin>(map, mouseGridPosOnGround),
-                nameof(Spike) => () => _editMapBlockAttacher.RemovePlaceable<Spike>(map, mouseGridPosOnGround),
+                nameof(SpikeGimmick) => () => _editMapBlockAttacher.RemovePlaceable<SpikeGimmick>(map, mouseGridPosOnGround),
                 _ => (Action)(() => Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}") ),
             })();
         }
@@ -212,7 +212,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
             if(Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
             {
-                _blockType =typeof(Spike);
+                _blockType =typeof(SpikeGimmick);
             }
             
             // 方向を切り替える
