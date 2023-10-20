@@ -5,18 +5,19 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class SlowMoveDecorator : IMoveExecutor
+    public class DashMoveExecutor : IMoveExecutor
     {
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
         readonly IMoveExecutorLeaf _moveExecutor;
         
-        public SlowMoveDecorator(IMoveExecutorLeaf moveExecutorLeaf)
+        public DashMoveExecutor(IMoveExecutorLeaf moveExecutorLeaf)
         {
-            var acceleration = moveExecutorLeaf.Acceleration * 3.0f / 4.0f;
-            var maxVelocity = moveExecutorLeaf.MaxVelocity * 2.0f / 5.0f;
-            var stoppingForce = moveExecutorLeaf.StoppingForce;
-            _moveExecutor = new RegularMoveExecutor(acceleration, maxVelocity, stoppingForce);
+            _moveExecutor = moveExecutorLeaf.CreateNewLeaf();
+            _moveExecutor.Acceleration *= 10.0f / 4.0f;
+            _moveExecutor.MaxVelocity *= 10.0f / 5.0f;
+            Debug.Log($"Construct _moveExecutor.MaxVelocity : {_moveExecutor.MaxVelocity}");
+
         }
 
         public void Setup(PlayerInfo info)
@@ -27,11 +28,13 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Move(Vector3 input)
         {
             _moveExecutor.Move(input);
+            Debug.Log($"_moveExecutor.MaxVelocity : {_moveExecutor.MaxVelocity}");
+
 
             // Todo : アニメーションの処理を無理やり上書きしているので、メソッドを切り出して修正する
             if (input != Vector3.zero)
             {
-                _playerAnimatorPresenter?.Walk();   
+                _playerAnimatorPresenter?.Dash();   
             }
             else
             {

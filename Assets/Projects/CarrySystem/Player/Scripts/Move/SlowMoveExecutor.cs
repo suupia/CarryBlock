@@ -1,21 +1,20 @@
 ﻿using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
-
 #nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class FaintedMoveDecorator : IMoveExecutor
+    public class SlowMoveExecutor : IMoveExecutor
     {
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
         readonly IMoveExecutorLeaf _moveExecutor;
-
-        public FaintedMoveDecorator(IMoveExecutorLeaf moveExecutorLeaf)
+        
+        public SlowMoveExecutor(IMoveExecutorLeaf moveExecutorLeaf)
         {
-            var acceleration = 0;
-            var maxVelocity = 0;
+            var acceleration = moveExecutorLeaf.Acceleration * 3.0f / 4.0f;
+            var maxVelocity = moveExecutorLeaf.MaxVelocity * 2.0f / 5.0f;
             var stoppingForce = moveExecutorLeaf.StoppingForce;
             _moveExecutor = new RegularMoveExecutor(acceleration, maxVelocity, stoppingForce);
         }
@@ -30,9 +29,16 @@ namespace Carry.CarrySystem.Player.Scripts
             _moveExecutor.Move(input);
 
             // Todo : アニメーションの処理を無理やり上書きしているので、メソッドを切り出して修正する
-            _playerAnimatorPresenter?.Idle();
+            if (input != Vector3.zero)
+            {
+                _playerAnimatorPresenter?.Walk();   
+            }
+            else
+            {
+                _playerAnimatorPresenter?.Idle();
+            }
         }
-
+        
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {

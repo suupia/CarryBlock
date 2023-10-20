@@ -1,23 +1,23 @@
 ﻿using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
+
 #nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class DashMoveDecorator : IMoveExecutor
+    public class FaintedMoveExecutor : IMoveExecutor
     {
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
         readonly IMoveExecutorLeaf _moveExecutor;
-        
-        public DashMoveDecorator(IMoveExecutorLeaf moveExecutorLeaf)
-        {
-            _moveExecutor = moveExecutorLeaf.CreateNewLeaf();
-            _moveExecutor.Acceleration *= 10.0f / 4.0f;
-            _moveExecutor.MaxVelocity *= 10.0f / 5.0f;
-            Debug.Log($"Construct _moveExecutor.MaxVelocity : {_moveExecutor.MaxVelocity}");
 
+        public FaintedMoveExecutor(IMoveExecutorLeaf moveExecutorLeaf)
+        {
+            var acceleration = 0;
+            var maxVelocity = 0;
+            var stoppingForce = moveExecutorLeaf.StoppingForce;
+            _moveExecutor = new RegularMoveExecutor(acceleration, maxVelocity, stoppingForce);
         }
 
         public void Setup(PlayerInfo info)
@@ -28,20 +28,11 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Move(Vector3 input)
         {
             _moveExecutor.Move(input);
-            Debug.Log($"_moveExecutor.MaxVelocity : {_moveExecutor.MaxVelocity}");
-
 
             // Todo : アニメーションの処理を無理やり上書きしているので、メソッドを切り出して修正する
-            if (input != Vector3.zero)
-            {
-                _playerAnimatorPresenter?.Dash();   
-            }
-            else
-            {
-                _playerAnimatorPresenter?.Idle();
-            }
+            _playerAnimatorPresenter?.Idle();
         }
-        
+
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
