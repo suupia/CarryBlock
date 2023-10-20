@@ -29,7 +29,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             var regularMoveExecutor = new RegularMoveExecutor(40, 5, 5);
             _regularMoveLeaf = regularMoveExecutor;
-            _faintedMoveExecutor = new FaintedMoveExecutor();
+            _faintedMoveExecutor = new FaintedMoveDecorator(regularMoveExecutor);
             _confusionMoveExecutor = new InverseInputDecorator(_regularMoveLeaf);
             _dashMoveExecutor = new DashMoveDecorator( regularMoveExecutor);
             _confusionDashMoveExecutor = new InverseInputDecorator(_dashMoveExecutor);
