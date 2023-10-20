@@ -8,30 +8,33 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class InverseInputDecorator : IMoveExecutor
+    public class InverseInputDecorator : IMoveExecutorLeaf
     {
-        readonly IMoveExecutor _moveExecutor;
+        public float Acceleration => _moveExecutorLeaf.Acceleration;
+        public float MaxVelocity => _moveExecutorLeaf.MaxVelocity;
+        public float StoppingForce => _moveExecutorLeaf.StoppingForce;
+        readonly IMoveExecutorLeaf _moveExecutorLeaf;
 
-        public InverseInputDecorator(IMoveExecutor moveExecutor)
+        public InverseInputDecorator(IMoveExecutorLeaf moveExecutorLeaf)
         {
-            _moveExecutor = moveExecutor;
+            _moveExecutorLeaf = moveExecutorLeaf;
         }
 
         public void Setup(PlayerInfo info)
         {
-            _moveExecutor.Setup(info);
+            _moveExecutorLeaf.Setup(info);
         }
 
         public void Move(Vector3 input)
         {
             var reverseInput = new Vector3(-input.x, input.y, -input.z);
-            _moveExecutor.Move(reverseInput);
+            _moveExecutorLeaf.Move(reverseInput);
         }
 
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
-            _moveExecutor.SetPlayerAnimatorPresenter(presenter);
+            _moveExecutorLeaf.SetPlayerAnimatorPresenter(presenter);
         }
     }
 }

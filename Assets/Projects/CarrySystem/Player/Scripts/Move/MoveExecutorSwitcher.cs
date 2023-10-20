@@ -10,7 +10,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class MoveExecutorSwitcher : IMoveExecutorSwitcher
     {
         public  IMoveExecutor CurrentMoveExecutor => _currentMoveExecutor;
-        readonly IMoveExecutor _regularMoveLeaf;
+        readonly IMoveExecutorLeaf _regularMoveLeaf;
         readonly IMoveExecutor _slowMoveExecutor;
         readonly IMoveExecutor _confusionMoveExecutor;
         readonly IMoveExecutor _dashMoveExecutor;
@@ -30,9 +30,9 @@ namespace Carry.CarrySystem.Player.Scripts
             var regularMoveExecutor = new RegularMoveExecutor(40, 5, 5);
             _regularMoveLeaf = regularMoveExecutor;
             _faintedMoveExecutor = new FaintedMoveDecorator(regularMoveExecutor);
-            _confusionMoveExecutor = new InverseInputDecorator(_regularMoveLeaf);
+            _confusionMoveExecutor = new InverseInputDecorator(regularMoveExecutor);
             _dashMoveExecutor = new DashMoveDecorator( regularMoveExecutor);
-            _confusionDashMoveExecutor = new InverseInputDecorator(_dashMoveExecutor);
+          //   _confusionDashMoveExecutor = new InverseInputDecorator(_dashMoveExecutor);
             _slowMoveExecutor = new SlowMoveDecorator(regularMoveExecutor);
             
             _currentMoveExecutor = _regularMoveLeaf;
@@ -80,9 +80,10 @@ namespace Carry.CarrySystem.Player.Scripts
             //         break;
             // }
             _beforeMoveExecutorNew = _currentMoveExecutor;
-            if (_currentMoveExecutor is RegularMoveExecutor regularMoveExecutor)
+            Debug.Log($"_currentMoveExecutor.GetType() : {_currentMoveExecutor.GetType()}");
+            if (_currentMoveExecutor is IMoveExecutorLeaf moveExecutorLeaf)
             {
-                var dash = new DashMoveDecorator(regularMoveExecutor);
+                var dash = new DashMoveDecorator(moveExecutorLeaf);
                 dash.Setup(_info);
                 _currentMoveExecutor = dash;
             }

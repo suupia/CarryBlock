@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class RegularMoveExecutor : IMoveExecutor
+    public class RegularMoveExecutor : IMoveExecutorLeaf
     {
         public float Acceleration => _acceleration;
         public float MaxVelocity => _maxVelocity;

@@ -11,7 +11,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         readonly IMoveExecutor _moveExecutor;
         
-        public DashMoveDecorator(RegularMoveExecutor moveExecutor)
+        public DashMoveDecorator(IMoveExecutorLeaf moveExecutor)
         {
             var acceleration = moveExecutor.Acceleration * 10.0f / 4.0f;
             var maxVelocity = moveExecutor.MaxVelocity * 10.0f / 5.0f;
