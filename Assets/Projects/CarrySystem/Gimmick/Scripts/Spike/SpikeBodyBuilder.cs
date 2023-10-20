@@ -19,10 +19,10 @@ namespace Projects.CarrySystem.Gimmick.Scripts
         {
             _runner = runner;
             // I decided to not DI Loader
-            _canonBallControllerLoader = new PrefabLoaderFromAddressable<SpikeBodyControllerNet>("Prefabs/Gimmick/Cannon/CannonBallNet");
+            _canonBallControllerLoader = new PrefabLoaderFromAddressable<SpikeBodyControllerNet>("Prefabs/Gimmick/Spike/SpikeBodyNet");
         }
         
-        public SpikeBodyControllerNet Build(CannonBlock.Kind kind, Vector3 position, Quaternion rotation, PlayerRef playerRef)
+        public SpikeBodyControllerNet Build(SpikeGimmick.Kind kind, Vector3 position, Quaternion rotation, PlayerRef playerRef)
         {
             // Load prefab
             var cannonBallController = _canonBallControllerLoader.Load();
@@ -31,7 +31,7 @@ namespace Projects.CarrySystem.Gimmick.Scripts
             var cannonBallControllerObj = _runner.Spawn(cannonBallController, position, rotation, playerRef,
                 (runner, networkObj) =>
                 {
-                    networkObj.GetComponent<CannonBallControllerNet>().Init(kind);
+                    networkObj.GetComponent<SpikeBodyControllerNet>().Init(kind);
                 });
             
             // Setup Info

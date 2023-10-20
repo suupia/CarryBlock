@@ -13,6 +13,10 @@ namespace Projects.CarrySystem.Gimmick.Scripts
 
         float _timer;
         
+        public void Init(SpikeGimmick.Kind kind)
+        {
+            Debug.Log($"SpikeBodyControllerNet.Init() called");
+        }
         
         public override void FixedUpdateNetwork()
         {

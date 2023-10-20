@@ -73,7 +73,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 var treasureCoinBlocks = map.GetSingleEntityList<TreasureCoin>(i);
                 treasureCoinRecords[i].kinds = treasureCoinBlocks.Select(x => x.KindValue).ToArray();
                 
-                var spikes = map.GetSingleEntityList<Spike>(i);
+                var spikes = map.GetSingleEntityList<SpikeGimmick>(i);
                 spikeGimmickRecords[i].kinds = spikes.Select(x => x.KindValue).ToArray();
             }
 

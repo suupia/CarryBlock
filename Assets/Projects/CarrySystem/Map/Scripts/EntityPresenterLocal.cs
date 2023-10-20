@@ -160,7 +160,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 null => Direction.Up,  // 存在しない場合は上向きにしておく
                 _ => throw new InvalidOperationException()
             };
-            _spikeCount = allEntityList.OfType<Spike>().Count();
+            _spikeCount = allEntityList.OfType<SpikeGimmick>().Count();
         }
 
         public void SetEntityActiveData(IEntity entity, int count)
@@ -200,7 +200,7 @@ namespace Carry.CarrySystem.Map.Scripts
                     break;
                 default:
                     throw new System.Exception($"想定外のEntityが渡されました block : {entity}");
-                case Spike _:
+                case SpikeGimmick _:
                     _spikeCount = count;
                     break;
             }
