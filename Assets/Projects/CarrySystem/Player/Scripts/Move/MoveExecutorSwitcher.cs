@@ -12,6 +12,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly IMoveExecutor _regularMoveExecutor;
         readonly IMoveExecutor _slowMoveExecutor;
         readonly IMoveExecutor _confusionMoveExecutor;
+        readonly IMoveExecutor _confusionDashMoveExecutor;
         readonly IMoveExecutor _dashMoveExecutor;
         readonly IMoveExecutor _faintedMoveExecutor;
         IMoveExecutor _beforeMoveExecutor;
@@ -22,9 +23,11 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _regularMoveExecutor = new CorrectlyStopMoveExecutor();
             _slowMoveExecutor = new SlowMoveExecutor();
-            _confusionMoveExecutor = new ConfusionMoveExecutor(_regularMoveExecutor);
             _dashMoveExecutor = new DashMoveExecutor();
             _faintedMoveExecutor = new FaintedMoveExecutor();
+            _confusionMoveExecutor = new InverseInputDecorator(_regularMoveExecutor);
+            _confusionDashMoveExecutor = new InverseInputDecorator(_dashMoveExecutor);
+            
             _currentMoveExecutor = _regularMoveExecutor;
             _beforeMoveExecutor = _regularMoveExecutor;
         }
@@ -44,42 +47,53 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void SwitchToBeforeMoveExecutor()
         {
-            HoldBeforeMove();
+            StoreBeforeMove();
             _currentMoveExecutor =  _beforeMoveExecutor;
         }
         
         public void SwitchToRegularMove()
         {
-            HoldBeforeMove();
+            StoreBeforeMove();
             _currentMoveExecutor =  _regularMoveExecutor;
         }
         
         public void SwitchToDashMove()
         {
-            HoldBeforeMove();
-            _currentMoveExecutor =  _dashMoveExecutor;
+            StoreBeforeMove();
+            switch (_currentMoveExecutor)
+            {
+                case InverseInputDecorator _:
+                    _currentMoveExecutor = _confusionDashMoveExecutor;
+                    Debug.Log($"_confusionDashMoveExecutor");
+                    break;
+                default:
+                    _currentMoveExecutor = _dashMoveExecutor;
+                    break;
+            }
         }
         public void SwitchToSlowMove()
         {
-            HoldBeforeMove();
+            StoreBeforeMove();
             _currentMoveExecutor =  _slowMoveExecutor;
         }
         public void SwitchToConfusionMove()
         {
-            HoldBeforeMove();
+            StoreBeforeMove();
             _currentMoveExecutor =  _confusionMoveExecutor;
         }
         public void SwitchToFaintedMove()
         {           
-            HoldBeforeMove();
+            StoreBeforeMove();
             _currentMoveExecutor =  _faintedMoveExecutor;
         }
         
-        void HoldBeforeMove()
+        void StoreBeforeMove()
         {
             if (_currentMoveExecutor is CorrectlyStopMoveExecutor ||
-                _currentMoveExecutor is SlowMoveExecutor)
+                _currentMoveExecutor is SlowMoveExecutor || 
+                _currentMoveExecutor is InverseInputDecorator)
             {
+                if(_currentMoveExecutor == _confusionDashMoveExecutor) return; // dash move is not stored
                 _beforeMoveExecutor = _currentMoveExecutor;
             }
         }

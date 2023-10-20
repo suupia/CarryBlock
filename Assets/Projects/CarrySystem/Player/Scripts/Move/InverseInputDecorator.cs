@@ -8,11 +8,11 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class ConfusionMoveExecutor : IMoveExecutor
+    public class InverseInputDecorator : IMoveExecutor
     {
         readonly IMoveExecutor _moveExecutor;
 
-        public ConfusionMoveExecutor(IMoveExecutor moveExecutor)
+        public InverseInputDecorator(IMoveExecutor moveExecutor)
         {
             _moveExecutor = moveExecutor;
         }
