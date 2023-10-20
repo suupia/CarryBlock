@@ -11,16 +11,13 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         public  IMoveExecutor CurrentMoveExecutor => _currentMoveExecutor;
         readonly IMoveExecutorLeaf _regularMoveLeaf;
-        readonly IMoveExecutor _slowMoveExecutor;
         readonly IMoveExecutorLeaf _confusionMoveLeaf;
-        readonly IMoveExecutor _dashMoveExecutor;
-        readonly IMoveExecutor _faintedMoveExecutor;
         
         IMoveExecutor _currentMoveExecutor;
-
-        IMoveExecutor? _beforeMoveExecutorNew;
+        IMoveExecutorLeaf _beforeMoveExecutorLeaf;
         
         PlayerInfo _info = null!;
+        IPlayerAnimatorPresenter _playerAnimatorPresenter = null!;
         
         public MoveExecutorSwitcher(
             )
@@ -28,19 +25,13 @@ namespace Carry.CarrySystem.Player.Scripts
             var regularMoveExecutor = new RegularMoveExecutor(40, 5, 5);
             _regularMoveLeaf = regularMoveExecutor;
             _confusionMoveLeaf = new InverseInputMoveExecutorLeaf(regularMoveExecutor);
-            _faintedMoveExecutor = new FaintedMoveExecutor(regularMoveExecutor);
-            _dashMoveExecutor = new DashMoveExecutor( regularMoveExecutor);
-            _slowMoveExecutor = new SlowMoveExecutor(regularMoveExecutor);
-            
+            _beforeMoveExecutorLeaf = regularMoveExecutor;
             _currentMoveExecutor = _regularMoveLeaf;
         }
 
         public void Setup(PlayerInfo info)
         {
             _regularMoveLeaf.Setup(info);
-            _slowMoveExecutor.Setup(info);
-            _dashMoveExecutor.Setup(info);
-            _faintedMoveExecutor.Setup(info);
             _info = info;
         }
         
@@ -53,37 +44,55 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void SwitchToBeforeMoveExecutor()
         {
-            if(_beforeMoveExecutorNew != null) _currentMoveExecutor = _beforeMoveExecutorNew;
+            Debug.Log($"_beforeMoveExecutorNew.GetType() : {_beforeMoveExecutorLeaf.GetType()}");
+            _currentMoveExecutor = _beforeMoveExecutorLeaf;
         }
         
         public void SwitchToRegularMove()
         {
             _currentMoveExecutor =  _regularMoveLeaf;
+            _beforeMoveExecutorLeaf = _regularMoveLeaf;
+        }
+        
+        public void SwitchToConfusionMove()
+        {
+            _currentMoveExecutor =  _confusionMoveLeaf;
+            _beforeMoveExecutorLeaf = _confusionMoveLeaf;
         }
         
         public void SwitchToDashMove()
         {
-
-            _beforeMoveExecutorNew = _currentMoveExecutor;
             if (_currentMoveExecutor is IMoveExecutorLeaf moveExecutorLeaf)
             {
-                var dash = new DashMoveExecutor(moveExecutorLeaf);
-                dash.Setup(_info);
-                _currentMoveExecutor = dash;
+                _beforeMoveExecutorLeaf = moveExecutorLeaf;
             }
-            
+            var nextMoveExe = new DashMoveExecutor(_beforeMoveExecutorLeaf);
+            nextMoveExe.Setup(_info);
+            nextMoveExe.SetPlayerAnimatorPresenter(_playerAnimatorPresenter);
+            _currentMoveExecutor = nextMoveExe;
         }
         public void SwitchToSlowMove()
         {
-            _currentMoveExecutor =  _slowMoveExecutor;
+            if (_currentMoveExecutor is IMoveExecutorLeaf moveExecutorLeaf)
+            {
+                _beforeMoveExecutorLeaf = moveExecutorLeaf;
+            }
+            var nextMoveExe = new SlowMoveExecutor(_beforeMoveExecutorLeaf);
+            nextMoveExe.Setup(_info);
+            nextMoveExe.SetPlayerAnimatorPresenter(_playerAnimatorPresenter);
+            _currentMoveExecutor = nextMoveExe;
         }
-        public void SwitchToConfusionMove()
-        {
-            _currentMoveExecutor =  _confusionMoveLeaf;
-        }
+
         public void SwitchToFaintedMove()
-        {           
-            _currentMoveExecutor =  _faintedMoveExecutor;
+        {
+            if (_currentMoveExecutor is IMoveExecutorLeaf moveExecutorLeaf)
+            {
+                _beforeMoveExecutorLeaf = moveExecutorLeaf;
+            }
+            var nextMoveExe = new FaintedMoveExecutor(_beforeMoveExecutorLeaf);
+            nextMoveExe.Setup(_info);
+            nextMoveExe.SetPlayerAnimatorPresenter(_playerAnimatorPresenter);
+            _currentMoveExecutor = nextMoveExe;
         }
         
                 
@@ -91,9 +100,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
             _regularMoveLeaf.SetPlayerAnimatorPresenter(presenter);
-            _slowMoveExecutor.SetPlayerAnimatorPresenter(presenter);
-            _dashMoveExecutor.SetPlayerAnimatorPresenter(presenter);
-            _faintedMoveExecutor.SetPlayerAnimatorPresenter(presenter);
+            _playerAnimatorPresenter = presenter;
         }
     }
 }
