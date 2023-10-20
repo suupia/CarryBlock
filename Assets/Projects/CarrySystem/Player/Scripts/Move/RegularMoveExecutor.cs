@@ -78,10 +78,9 @@ namespace Carry.CarrySystem.Player.Scripts
             }
         }
 
-        public IMoveExecutorLeaf Clone()
+        public IMoveExecutorLeaf CreateNewLeaf()
         {
-            // Object型で返ってくるのでキャストが必要
-            return (IMoveExecutorLeaf)MemberwiseClone();
+            return new RegularMoveExecutor(Acceleration, MaxVelocity, StoppingForce);
         }
         
         // Animator

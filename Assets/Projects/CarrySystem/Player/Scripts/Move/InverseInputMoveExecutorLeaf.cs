@@ -8,14 +8,14 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class InverseInputDecorator : IMoveExecutorLeaf
+    public class InverseInputMoveExecutorLeaf : IMoveExecutorLeaf
     {
         public float Acceleration { get => _moveExecutorLeaf.Acceleration ;set => _moveExecutorLeaf.Acceleration = value;}
         public float MaxVelocity { get => _moveExecutorLeaf.MaxVelocity ;set => _moveExecutorLeaf.MaxVelocity = value; }
         public float StoppingForce {get => _moveExecutorLeaf.StoppingForce ;set => _moveExecutorLeaf.StoppingForce = value;}
         readonly IMoveExecutorLeaf _moveExecutorLeaf;
 
-        public InverseInputDecorator(IMoveExecutorLeaf moveExecutorLeaf)
+        public InverseInputMoveExecutorLeaf(IMoveExecutorLeaf moveExecutorLeaf)
         {
             _moveExecutorLeaf = moveExecutorLeaf;
         }
@@ -31,10 +31,9 @@ namespace Carry.CarrySystem.Player.Scripts
             _moveExecutorLeaf.Move(reverseInput);
         }
         
-        public IMoveExecutorLeaf Clone()
+        public IMoveExecutorLeaf CreateNewLeaf()
         {
-            // Object型で返ってくるのでキャストが必要
-            return (IMoveExecutorLeaf)MemberwiseClone();
+            return new InverseInputMoveExecutorLeaf(_moveExecutorLeaf.CreateNewLeaf());
         }
 
         // Animator

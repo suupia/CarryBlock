@@ -8,6 +8,6 @@ namespace Carry.CarrySystem.Player.Interfaces
         public float MaxVelocity { get; set; }
         public float StoppingForce { get; set; }
 
-        public IMoveExecutorLeaf Clone();
+        public IMoveExecutorLeaf CreateNewLeaf();
     }
 }

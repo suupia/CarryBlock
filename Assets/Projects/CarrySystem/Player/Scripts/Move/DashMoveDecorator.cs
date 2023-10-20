@@ -13,7 +13,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public DashMoveDecorator(IMoveExecutorLeaf moveExecutor)
         {
-            _moveExecutor = moveExecutor.Clone();
+            _moveExecutor = moveExecutor.CreateNewLeaf();
             _moveExecutor.Acceleration *= 10.0f / 4.0f;
             _moveExecutor.MaxVelocity *= 10.0f / 5.0f;
             Debug.Log($"Construct _moveExecutor.MaxVelocity : {_moveExecutor.MaxVelocity}");
