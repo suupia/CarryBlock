@@ -9,7 +9,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class MoveExecutorSwitcher : IMoveExecutorSwitcher
     {
         public  IMoveExecutor CurrentMoveExecutor => _currentMoveExecutor;
-        readonly IMoveExecutor _regularMoveExecutor;
+        readonly IMoveExecutor _regularMoveLeaf;
         readonly IMoveExecutor _slowMoveExecutor;
         readonly IMoveExecutor _confusionMoveExecutor;
         readonly IMoveExecutor _confusionDashMoveExecutor;
@@ -21,20 +21,20 @@ namespace Carry.CarrySystem.Player.Scripts
         public MoveExecutorSwitcher(
             )
         {
-            _regularMoveExecutor = new CorrectlyStopMoveExecutor();
+            _regularMoveLeaf = new RegularMoveExecutor();
             _slowMoveExecutor = new SlowMoveExecutor();
             _dashMoveExecutor = new DashMoveExecutor();
             _faintedMoveExecutor = new FaintedMoveExecutor();
-            _confusionMoveExecutor = new InverseInputDecorator(_regularMoveExecutor);
+            _confusionMoveExecutor = new InverseInputDecorator(_regularMoveLeaf);
             _confusionDashMoveExecutor = new InverseInputDecorator(_dashMoveExecutor);
             
-            _currentMoveExecutor = _regularMoveExecutor;
-            _beforeMoveExecutor = _regularMoveExecutor;
+            _currentMoveExecutor = _regularMoveLeaf;
+            _beforeMoveExecutor = _regularMoveLeaf;
         }
 
         public void Setup(PlayerInfo info)
         {
-            _regularMoveExecutor.Setup(info);
+            _regularMoveLeaf.Setup(info);
             _slowMoveExecutor.Setup(info);
             _dashMoveExecutor.Setup(info);
             _faintedMoveExecutor.Setup(info);
@@ -54,7 +54,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SwitchToRegularMove()
         {
             StoreBeforeMove();
-            _currentMoveExecutor =  _regularMoveExecutor;
+            _currentMoveExecutor =  _regularMoveLeaf;
         }
         
         public void SwitchToDashMove()
@@ -89,7 +89,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         void StoreBeforeMove()
         {
-            if (_currentMoveExecutor is CorrectlyStopMoveExecutor ||
+            if (_currentMoveExecutor is RegularMoveExecutor ||
                 _currentMoveExecutor is SlowMoveExecutor || 
                 _currentMoveExecutor is InverseInputDecorator)
             {
@@ -101,7 +101,7 @@ namespace Carry.CarrySystem.Player.Scripts
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
-            _regularMoveExecutor.SetPlayerAnimatorPresenter(presenter);
+            _regularMoveLeaf.SetPlayerAnimatorPresenter(presenter);
             _slowMoveExecutor.SetPlayerAnimatorPresenter(presenter);
             _dashMoveExecutor.SetPlayerAnimatorPresenter(presenter);
             _faintedMoveExecutor.SetPlayerAnimatorPresenter(presenter);

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class CorrectlyStopMoveExecutor : IMoveExecutor
+    public class RegularMoveExecutor : IMoveExecutor
     {
         PlayerInfo _info = null!;
         readonly float _acceleration = 40f;
