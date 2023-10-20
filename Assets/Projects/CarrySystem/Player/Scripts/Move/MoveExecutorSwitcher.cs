@@ -27,12 +27,13 @@ namespace Carry.CarrySystem.Player.Scripts
         public MoveExecutorSwitcher(
             )
         {
-            _regularMoveLeaf = new RegularMoveExecutor(40, 5, 5);
-            _slowMoveExecutor = new SlowMoveExecutor();
+            var regularMoveExecutor = new RegularMoveExecutor(40, 5, 5);
+            _regularMoveLeaf = regularMoveExecutor;
             _faintedMoveExecutor = new FaintedMoveExecutor();
             _confusionMoveExecutor = new InverseInputDecorator(_regularMoveLeaf);
-            _dashMoveExecutor = new DashMoveDecorator( new RegularMoveExecutor(40, 5, 5));
+            _dashMoveExecutor = new DashMoveDecorator( regularMoveExecutor);
             _confusionDashMoveExecutor = new InverseInputDecorator(_dashMoveExecutor);
+            _slowMoveExecutor = new SlowMoveDecorator(regularMoveExecutor);
             
             _currentMoveExecutor = _regularMoveLeaf;
             _beforeMoveExecutor = _regularMoveLeaf;
