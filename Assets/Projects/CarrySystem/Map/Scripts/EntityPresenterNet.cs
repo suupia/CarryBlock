@@ -169,6 +169,8 @@ namespace Carry.CarrySystem.Map.Scripts
                 _ => throw new InvalidOperationException()
             };
             PresentDataRef.SpikeCount = allEntityList.OfType<Spike>().Count();
+            
+            Debug.Log($"CannonBlockCount : {PresentDataRef.CannonBlockCount}");
         }
 
         public void SetEntityActiveData(IEntity entity, int count)
