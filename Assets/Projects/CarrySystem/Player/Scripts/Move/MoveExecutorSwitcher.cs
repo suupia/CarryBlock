@@ -65,14 +65,11 @@ namespace Carry.CarrySystem.Player.Scripts
         {
 
             _beforeMoveExecutorNew = _currentMoveExecutor;
-            Debug.Log($"_currentMoveExecutor.GetType() : {_currentMoveExecutor.GetType()}");
             if (_currentMoveExecutor is IMoveExecutorLeaf moveExecutorLeaf)
             {
-                Debug.Log($"moveExecutorLeaf _moveExecutor.MaxVelocity : {moveExecutorLeaf.MaxVelocity}");
                 var dash = new DashMoveDecorator(moveExecutorLeaf);
                 dash.Setup(_info);
                 _currentMoveExecutor = dash;
-                Debug.Log($"dash _currentMoveExecutor.GetType() : {_currentMoveExecutor.GetType()}");
             }
             
         }

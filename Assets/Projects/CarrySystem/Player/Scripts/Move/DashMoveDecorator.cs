@@ -11,9 +11,9 @@ namespace Carry.CarrySystem.Player.Scripts
 
         readonly IMoveExecutorLeaf _moveExecutor;
         
-        public DashMoveDecorator(IMoveExecutorLeaf moveExecutor)
+        public DashMoveDecorator(IMoveExecutorLeaf moveExecutorLeaf)
         {
-            _moveExecutor = moveExecutor.CreateNewLeaf();
+            _moveExecutor = moveExecutorLeaf.CreateNewLeaf();
             _moveExecutor.Acceleration *= 10.0f / 4.0f;
             _moveExecutor.MaxVelocity *= 10.0f / 5.0f;
             Debug.Log($"Construct _moveExecutor.MaxVelocity : {_moveExecutor.MaxVelocity}");

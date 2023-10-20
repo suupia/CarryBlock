@@ -9,13 +9,13 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
-        readonly IMoveExecutor _moveExecutor;
+        readonly IMoveExecutorLeaf _moveExecutor;
         
-        public SlowMoveDecorator(RegularMoveExecutor moveExecutor)
+        public SlowMoveDecorator(IMoveExecutorLeaf moveExecutorLeaf)
         {
-            var acceleration = moveExecutor.Acceleration * 3.0f / 4.0f;
-            var maxVelocity = moveExecutor.MaxVelocity * 2.0f / 5.0f;
-            var stoppingForce = moveExecutor.StoppingForce;
+            var acceleration = moveExecutorLeaf.Acceleration * 3.0f / 4.0f;
+            var maxVelocity = moveExecutorLeaf.MaxVelocity * 2.0f / 5.0f;
+            var stoppingForce = moveExecutorLeaf.StoppingForce;
             _moveExecutor = new RegularMoveExecutor(acceleration, maxVelocity, stoppingForce);
         }
 

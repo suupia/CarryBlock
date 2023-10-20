@@ -10,13 +10,13 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
-        readonly IMoveExecutor _moveExecutor;
+        readonly IMoveExecutorLeaf _moveExecutor;
 
-        public FaintedMoveDecorator(RegularMoveExecutor moveExecutor)
+        public FaintedMoveDecorator(IMoveExecutorLeaf moveExecutorLeaf)
         {
             var acceleration = 0;
             var maxVelocity = 0;
-            var stoppingForce = moveExecutor.StoppingForce;
+            var stoppingForce = moveExecutorLeaf.StoppingForce;
             _moveExecutor = new RegularMoveExecutor(acceleration, maxVelocity, stoppingForce);
         }
 
