@@ -7,11 +7,6 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class DashMoveDecorator : IMoveExecutor
     {
-        PlayerInfo _info = null!;
-        readonly float _acceleration = 100f;
-        readonly float _maxVelocity = 10f; // ダッシュ1回につき3マス移動
-        readonly float _stoppingForce = 5f;
-        
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
         readonly IMoveExecutor _moveExecutor;
@@ -26,7 +21,6 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Setup(PlayerInfo info)
         {
-            _info = info;
             _moveExecutor.Setup(info);
         }
 
