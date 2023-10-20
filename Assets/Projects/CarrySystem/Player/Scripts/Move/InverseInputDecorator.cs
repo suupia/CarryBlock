@@ -10,9 +10,9 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class InverseInputDecorator : IMoveExecutorLeaf
     {
-        public float Acceleration => _moveExecutorLeaf.Acceleration;
-        public float MaxVelocity => _moveExecutorLeaf.MaxVelocity;
-        public float StoppingForce => _moveExecutorLeaf.StoppingForce;
+        public float Acceleration { get => _moveExecutorLeaf.Acceleration ;set => _moveExecutorLeaf.Acceleration = value;}
+        public float MaxVelocity { get => _moveExecutorLeaf.MaxVelocity ;set => _moveExecutorLeaf.MaxVelocity = value; }
+        public float StoppingForce {get => _moveExecutorLeaf.StoppingForce ;set => _moveExecutorLeaf.StoppingForce = value;}
         readonly IMoveExecutorLeaf _moveExecutorLeaf;
 
         public InverseInputDecorator(IMoveExecutorLeaf moveExecutorLeaf)
@@ -29,6 +29,12 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             var reverseInput = new Vector3(-input.x, input.y, -input.z);
             _moveExecutorLeaf.Move(reverseInput);
+        }
+        
+        public IMoveExecutorLeaf Clone()
+        {
+            // Object型で返ってくるのでキャストが必要
+            return (IMoveExecutorLeaf)MemberwiseClone();
         }
 
         // Animator

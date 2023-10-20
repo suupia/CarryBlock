@@ -4,8 +4,10 @@ namespace Carry.CarrySystem.Player.Interfaces
 {
     public interface IMoveExecutorLeaf : IMoveExecutor
     {
-        public float Acceleration { get; }
-        public float MaxVelocity { get; }
-        public float StoppingForce { get; }
+        public float Acceleration { get; set; }
+        public float MaxVelocity { get; set; }
+        public float StoppingForce { get; set; }
+
+        public IMoveExecutorLeaf Clone();
     }
 }

@@ -12,7 +12,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public  IMoveExecutor CurrentMoveExecutor => _currentMoveExecutor;
         readonly IMoveExecutorLeaf _regularMoveLeaf;
         readonly IMoveExecutor _slowMoveExecutor;
-        readonly IMoveExecutor _confusionMoveExecutor;
+        readonly IMoveExecutorLeaf _confusionMoveLeaf;
         readonly IMoveExecutor _dashMoveExecutor;
         readonly IMoveExecutor _faintedMoveExecutor;
         
@@ -27,8 +27,8 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             var regularMoveExecutor = new RegularMoveExecutor(40, 5, 5);
             _regularMoveLeaf = regularMoveExecutor;
+            _confusionMoveLeaf = new InverseInputDecorator(regularMoveExecutor);
             _faintedMoveExecutor = new FaintedMoveDecorator(regularMoveExecutor);
-            _confusionMoveExecutor = new InverseInputDecorator(regularMoveExecutor);
             _dashMoveExecutor = new DashMoveDecorator( regularMoveExecutor);
             _slowMoveExecutor = new SlowMoveDecorator(regularMoveExecutor);
             
@@ -47,6 +47,8 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Move(Vector3 input)
         {
             _currentMoveExecutor.Move(input);
+            Debug.Log($"Move _currentMoveExecutor.GetType() : {_currentMoveExecutor.GetType()}");
+            if(_currentMoveExecutor is IMoveExecutorLeaf leaf) Debug.Log($"Move _currentMoveExecutor.MaxVelocity : {leaf.MaxVelocity}");
         }
         
         public void SwitchToBeforeMoveExecutor()
@@ -66,9 +68,11 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log($"_currentMoveExecutor.GetType() : {_currentMoveExecutor.GetType()}");
             if (_currentMoveExecutor is IMoveExecutorLeaf moveExecutorLeaf)
             {
+                Debug.Log($"moveExecutorLeaf _moveExecutor.MaxVelocity : {moveExecutorLeaf.MaxVelocity}");
                 var dash = new DashMoveDecorator(moveExecutorLeaf);
                 dash.Setup(_info);
                 _currentMoveExecutor = dash;
+                Debug.Log($"dash _currentMoveExecutor.GetType() : {_currentMoveExecutor.GetType()}");
             }
             
         }
@@ -78,7 +82,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         public void SwitchToConfusionMove()
         {
-            _currentMoveExecutor =  _confusionMoveExecutor;
+            _currentMoveExecutor =  _confusionMoveLeaf;
         }
         public void SwitchToFaintedMove()
         {           
