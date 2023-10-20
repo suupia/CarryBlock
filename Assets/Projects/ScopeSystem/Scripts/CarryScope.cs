@@ -26,6 +26,11 @@ namespace Carry.ScopeSystem.Scripts
             var runner = FindObjectOfType<NetworkRunner>();
             Debug.Log($"NetworkRunner : {runner}");
             builder.RegisterComponent(runner);
+            
+            // MapKeyDataSelectorNet is DontDestroyOnLoad Object
+            var mapKeyDataSelectorNet = FindObjectOfType<MapKeyDataSelectorNet>();
+            Debug.Log($"MapKeyDataSelectorNet : {mapKeyDataSelectorNet}");
+            builder.RegisterComponent(mapKeyDataSelectorNet);
 
             // PrefabLoader 
             builder.Register<PrefabLoaderFromAddressable<CarryPlayerControllerNet>>(Lifetime.Scoped)
@@ -62,8 +67,6 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<PresenterPlacerNet>();
             
-            // どのマップたちを使うかを決める
-            builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
             
             // IMapUpdater
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
