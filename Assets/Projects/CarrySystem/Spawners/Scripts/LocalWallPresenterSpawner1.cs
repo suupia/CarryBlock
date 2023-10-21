@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.Spawners.Scripts
     public LocalWallPresenterSpawner1()
     {
         _tilePresenterPrefabSpawner =
-            new PrefabLoaderFromAddressable<WallPresenterLocal>("Prefabs/Map/WallPresenterLocalB_1");
+            new PrefabLoaderFromAddressable<WallPresenterLocal>("Prefabs/Map/WallPresenterLocalC_1");
     }
 
     public WallPresenterLocal SpawnPrefab(Vector3 position, Quaternion rotation)
