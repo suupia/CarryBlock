@@ -169,7 +169,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
                 nameof(UnmovableBlock) => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
                 nameof(HeavyBlock) => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
                 nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
-                nameof(Spike) => new Spike(Spike.Kind.Kind1, mouseGridPosOnGround),
+                nameof(SpikeGimmick) => new SpikeGimmick(SpikeGimmick.Kind.Kind1, mouseGridPosOnGround),
                 nameof(ConfusionBlock) => new ConfusionBlock(ConfusionBlock.Kind.Kind1, mouseGridPosOnGround),
                 nameof(CannonBlock) => CreateCannonBlock(),
                 nameof(TreasureCoin) => new TreasureCoin(TreasureCoin.Kind.Kind1, mouseGridPosOnGround, map,
@@ -240,7 +240,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
 
             if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
             {
-                _blockType = typeof(Spike);
+                _blockType = typeof(SpikeGimmick);
             }
 
             // 方向を切り替える

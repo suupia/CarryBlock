@@ -1,23 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
-using Carry.CarrySystem.Player.Interfaces;
-using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
-using Fusion;
-using UnityEngine;
+using Carry.EditMapSystem.EditMap.Scripts;
 using VContainer;
 using VContainer.Unity;
-using Carry.NetworkUtility.NetworkRunnerManager.Scripts;
-using Carry.Utility.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 
-namespace Carry.EditMapSystem.EditMap.Scripts
+namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
 {
-    public class LocalEditMapScope: LifetimeScope
+    public class EditMapForPlayerScope: LifetimeScope
     {
         protected override void Configure(IContainerBuilder builder)
         {
@@ -47,7 +39,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<EditMapBlockAttacher>(Lifetime.Scoped);
             builder.Register<CUIHandleNumber>(Lifetime.Scoped);
             builder.Register<AutoSaveManager>(Lifetime.Scoped);
-            builder.RegisterComponentInHierarchy<EditMapInput>();
+            builder.RegisterComponentInHierarchy<EditMapForPlayerInput>();
             builder.RegisterComponentInHierarchy<EditMapCUISave>();
             builder.RegisterComponentInHierarchy<EditMapCUILoad>();
             
