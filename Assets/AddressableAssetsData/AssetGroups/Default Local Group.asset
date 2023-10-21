@@ -94,11 +94,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 4033ea45c477a7843a431bdc41a8267d
-    m_Address: Prefabs/Map/WallPresenterLocal
+    m_Address: Prefabs/Map/WallPresenterLocalA_0
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: e54be73ebb25d0e46bf127f3f3e34873
-    m_Address: Prefabs/Map/WallPresenterLocal1
+    m_Address: Prefabs/Map/WallPresenterLocalA_1
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 10dbd96b06d59b140bc18b4c22093f14
