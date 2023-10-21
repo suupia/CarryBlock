@@ -12,10 +12,10 @@ namespace Carry.CarrySystem.Spawners.Scripts
     {
     readonly IPrefabLoader<WallPresenterLocal> _tilePresenterPrefabSpawner;
 
-    public LocalWallPresenterSpawner1()
+    public LocalWallPresenterSpawner1(WallType type = WallType.A)
     {
         _tilePresenterPrefabSpawner =
-            new PrefabLoaderFromAddressable<WallPresenterLocal>("Prefabs/Map/WallPresenterLocalC_1");
+            new PrefabLoaderFromAddressable<WallPresenterLocal>($"Prefabs/Map/WallPresenterLocal{type.ToString()}_1");
     }
 
     public WallPresenterLocal SpawnPrefab(Vector3 position, Quaternion rotation)
