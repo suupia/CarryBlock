@@ -61,10 +61,6 @@ MonoBehaviour:
     m_Address: Prefabs/Map/DoubleBasicBlock
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 0b849f7e81da7dc479f90d7988b217b7
-    m_Address: Prefabs/Map/Wall
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 252aca1700536ba43917079473578788
     m_Address: Prefabs/Map/WallPresenterNet
     m_ReadOnly: 0
@@ -98,11 +94,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 4033ea45c477a7843a431bdc41a8267d
-    m_Address: Prefabs/Map/WallPresenterLocal
+    m_Address: Prefabs/Map/WallPresenterLocalA_0
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: e54be73ebb25d0e46bf127f3f3e34873
-    m_Address: Prefabs/Map/WallPresenterLocal1
+    m_Address: Prefabs/Map/WallPresenterLocalA_1
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 10dbd96b06d59b140bc18b4c22093f14
@@ -127,6 +123,26 @@ MonoBehaviour:
     m_SerializedLabels: []
   - m_GUID: c1be80ffd233b9648be6d2d41a02d64f
     m_Address: Prefabs/Map/HeavyBlockLocal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 82ab1897a573d0141b1c3cfbd569aee5
+    m_Address: Prefabs/Gimmick/Spike/SpikeBodyNet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c0bf6b20d2f93974ab166df997add2ce
+    m_Address: Prefabs/Map/WallPresenterLocalB_0
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: caaeeff076a71f34eab712ffdd9812ca
+    m_Address: Prefabs/Map/WallPresenterLocalB_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3ea0bc70e999182418585ca6797e107d
+    m_Address: Prefabs/Map/WallPresenterLocalC_0
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a6716b03ffebe5d4099a7419e15fe095
+    m_Address: Prefabs/Map/WallPresenterLocalC_1
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

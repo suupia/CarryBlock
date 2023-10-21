@@ -50,6 +50,8 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             builder.Register<LobbyGroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LobbyPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
             
+            builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
+            
             //Item
             builder.Register<TreasureCoinCounter>(Lifetime.Scoped);
             

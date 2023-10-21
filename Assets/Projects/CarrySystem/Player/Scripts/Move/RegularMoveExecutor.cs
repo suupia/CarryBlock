@@ -7,14 +7,23 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class CorrectlyStopMoveExecutor : IMoveExecutor
+    public class RegularMoveExecutor : IMoveExecutorLeaf
     {
+        public float Acceleration { get; set; }
+        public float MaxVelocity { get; set; }
+        public float StoppingForce  { get; set; }
+
         PlayerInfo _info = null!;
-        readonly float _acceleration = 40f;
-        readonly float _maxVelocity = 5f;
-        readonly float _stoppingForce = 5f;
+
 
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
+
+        public RegularMoveExecutor(float acceleration, float maxVelocity, float stoppingForce)
+        {
+            Acceleration = acceleration;
+            MaxVelocity = maxVelocity;
+            StoppingForce = stoppingForce;
+        }
 
         public void Setup(PlayerInfo info)
         {
@@ -38,16 +47,16 @@ namespace Carry.CarrySystem.Player.Scripts
                     rb.MoveRotation(rb.rotation * rotateQuaternion);
                 }
 
-                rb.AddForce(_acceleration * input, ForceMode.Acceleration);
+                rb.AddForce(Acceleration * input, ForceMode.Acceleration);
 
-                if (rb.velocity.magnitude >= _maxVelocity)
-                    rb.velocity = _maxVelocity * rb.velocity.normalized;
+                if (rb.velocity.magnitude >= MaxVelocity)
+                    rb.velocity = MaxVelocity * rb.velocity.normalized;
             }
             else
             {
                 // Stop if there is no key input
                 // Define 0 < _stoppingForce < 1
-                float reductionFactor = Mathf.Max(0f, 1f - _stoppingForce * Time.deltaTime);
+                float reductionFactor = Mathf.Max(0f, 1f - StoppingForce * Time.deltaTime);
                 float stoppingSpeed = 1.5f;
 
                 rb.velocity *= Mathf.Pow(reductionFactor, rb.velocity.magnitude);
@@ -67,6 +76,11 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 _playerAnimatorPresenter?.Idle();
             }
+        }
+
+        public IMoveExecutorLeaf CreateNewLeaf()
+        {
+            return new RegularMoveExecutor(Acceleration, MaxVelocity, StoppingForce);
         }
         
         // Animator
