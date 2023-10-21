@@ -1,5 +1,8 @@
 using System;
-using System.Linq;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UniRx;
+using VContainer;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
@@ -9,10 +12,7 @@ using Carry.EditMapSystem.EditMap.Scripts;
 using Carry.Utility.Scripts;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
-using UnityEngine;
-using VContainer;
-using UniRx;
-using UnityEngine.InputSystem;
+
 
 #nullable enable
 
@@ -68,27 +68,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
         {
             _eraseMode = !_eraseMode;
         }
-        
-        public void ClearMap()
-        {
-            var map = _editMapUpdater.GetMap();
-            
-            //mapの全要素にRemoveEntityを適用する
-            for (int i = 0; i < map.Length; i++)
-            {
-                var entities = map.GetSingleEntityList<IPlaceable>(i);
-            
-                if(entities.Any())map.RemoveEntity<IPlaceable>(map.ToVector(i), entities.First());
-            }
-            
-            for (int i = 0; i < map.Length; i++)
-            {
-                var entities = map.GetSingleEntityList<IPlaceable>(i);
-            
-                if(entities.Any())map.RemoveEntity<IPlaceable>(map.ToVector(i), entities.First());
-            }
-        }
-        
+
         void Start()
         {
             this.ObserveEveryValueChanged(_ => editMapCuiSave.IsOpened).Subscribe(isOpened =>

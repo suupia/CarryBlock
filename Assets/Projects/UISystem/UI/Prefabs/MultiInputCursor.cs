@@ -24,11 +24,11 @@ namespace Carry.UISystem.UI.Prefabs
         Camera _mainCamera = null!;
         InputAction _cursorAction = null!;
         InputAction _selectAction = null!;
-        bool _previousMouseState = false;
+        bool _previousMouseIsPressed = false;
         string _previousControlScheme = "Mouse";
         
         
-        private void OnEnable()
+        void OnEnable()
         {
             _mainCamera = Camera.main!;
             _currentMouse = Mouse.current;
@@ -62,7 +62,7 @@ namespace Carry.UISystem.UI.Prefabs
             Debug.Log("OnEnable");
         }
 
-        private void OnDisable()
+        void OnDisable()
         {
             // 必ず追加したデバイスを削除すること
             if(_virtualMouse != null && _virtualMouse.added)InputSystem.RemoveDevice(_virtualMouse);
@@ -73,7 +73,7 @@ namespace Carry.UISystem.UI.Prefabs
             Debug.Log("OnDisable");
         }
 
-        private void UpdateMotion()
+        void UpdateMotion()
         {
             if (_virtualMouse == null)
             {
@@ -97,12 +97,12 @@ namespace Carry.UISystem.UI.Prefabs
 
             // 仮想マウスのボタン(クリック)の状態を更新する
             bool isPressed = _selectAction.IsPressed();
-            if (_previousMouseState != isPressed)
+            if (_previousMouseIsPressed != isPressed)
             {
                 _virtualMouse.CopyState<MouseState>(out var mouseState);
                 mouseState.WithButton(MouseButton.Left, isPressed);
                 InputState.Change(_virtualMouse, mouseState);
-                _previousMouseState = isPressed;
+                _previousMouseIsPressed = isPressed;
             }
         }
 
@@ -130,7 +130,7 @@ namespace Carry.UISystem.UI.Prefabs
             }
         }
         
-        private void SetVirtualCursorPosByAnchor(Vector2 pos)
+        void SetVirtualCursorPosByAnchor(Vector2 pos)
         {
             Vector2 anchoredPosition = pos;
             

@@ -145,6 +145,18 @@ MonoBehaviour:
     m_Address: Prefabs/Map/WallPresenterLocalC_1
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: a581f9f2bb94043458708a455782b444
+    m_Address: Assets/Projects/UISystem/UI/Sprites/EditMap/Redo.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f6f061c3502f9de4bb58506a401a50a2
+    m_Address: Assets/Projects/UISystem/UI/Sprites/EditMap/Undo.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: df156eb573602ad46ae1db79927eb989
+    m_Address: Assets/Projects/UISystem/UI/Sprites/EditMap/Reset.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 405937dcad4604950956d0fac118dce9, type: 2}
   m_SchemaSet:

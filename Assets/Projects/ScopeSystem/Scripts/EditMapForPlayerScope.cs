@@ -1,11 +1,13 @@
+using VContainer;
+using VContainer.Unity;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
 using Carry.EditMapSystem.EditMap.Scripts;
-using VContainer;
-using VContainer.Unity;
+using Carry.UISystem.UI.EditMap;
 using Projects.CarrySystem.Item.Scripts;
+
 
 namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
 {
@@ -13,11 +15,6 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            // // このシーンではNetworkRunnerは使用しない！
-            // var runner = FindObjectOfType<NetworkRunner>();
-            // Debug.Log($"NetworkRunner : {runner}"); 
-            // builder.RegisterComponent(runner);
-            
             // Map
             // JsonとEntityGridMapに関する処理
             builder.Register<EntityGridMapBuilder>(Lifetime.Scoped);
@@ -42,6 +39,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             builder.RegisterComponentInHierarchy<EditMapForPlayerInput>();
             builder.RegisterComponentInHierarchy<EditMapCUISave>();
             builder.RegisterComponentInHierarchy<EditMapCUILoad>();
+            builder.RegisterComponentInHierarchy<EditMapToolCanvas>();
             
                         
             //Item
