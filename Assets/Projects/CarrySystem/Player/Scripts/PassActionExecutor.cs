@@ -16,7 +16,7 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         PlayerInfo _info = null!;
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
-        readonly PassBlockMoveExecutor _passBlockMoveExecutor;
+        readonly PassWaitExecutor _passWaitExecutor;
         
         // Presenter
         IPlayerBlockPresenter? _playerBlockPresenter;
@@ -26,10 +26,10 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public PassActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer,
-            PassBlockMoveExecutor passBlockMoveExecutor)
+            PassWaitExecutor passWaitExecutor)
         {
             _holdingObjectContainer = holdingObjectContainer;
-            _passBlockMoveExecutor = passBlockMoveExecutor;
+            _passWaitExecutor = passWaitExecutor;
 
         }
         public void Setup(PlayerInfo info)
@@ -60,11 +60,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 if(!canPass.CanPass) return;
                 var block = canPass.CarriableBlock;
                 PassBlock(block);
-                _passBlockMoveExecutor.WaitPassAction();
-                if (!_passBlockMoveExecutor.IsPassing)
-                {
-                    targetPlayerController.GetCharacter.ReceivePass(block);
-                }
+                _passWaitExecutor.WaitPassAction(targetPlayerController.GetCharacter, block);
             }
         }
 

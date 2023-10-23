@@ -15,26 +15,25 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     using System.Threading;
     using Cysharp.Threading.Tasks;
-    public class PassBlockMoveExecutor
+    public class PassWaitExecutor
     {
-        public bool IsPassing { get; private set; }
+        //public bool IsPassing { get; private set; }
         CancellationTokenSource? _cts;
         
-        public void WaitPassAction()
+        public void WaitPassAction(ICharacter character, ICarriableBlock block)
         {
-            IsPassing = true;
             _cts?.Cancel();
             _cts = new CancellationTokenSource();
-            AsyncPassed(_cts.Token).Forget();
+            AsyncPassed(character, block , _cts.Token).Forget();
         }
-        
-        async UniTaskVoid AsyncPassed(CancellationToken cts)
+
+        async UniTaskVoid AsyncPassed(ICharacter character, ICarriableBlock block, CancellationToken cts)
         {
             try
             {
                 //Debug.Log($"PassBlockMoveExecutor.AsyncPassed()");
-                await UniTask.Delay(5000, cancellationToken: cts);
-                IsPassing = false;
+                await UniTask.Delay(1000, cancellationToken: cts);
+                character.ReceivePass(block);
             }
             catch (OperationCanceledException)
             {
