@@ -1,6 +1,7 @@
 ﻿using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.CarriableBlock.Interfaces;
 using Carry.CarrySystem.Player.Info;
+using Carry.CarrySystem.Player.Scripts;
 
 namespace Carry.CarrySystem.Player.Interfaces
 {
@@ -19,5 +20,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter);
+        
+        public void SetPassBlockMoveExecutor(PassBlockMoveExecutor passBlockMoveExecutor);
     }
 }
