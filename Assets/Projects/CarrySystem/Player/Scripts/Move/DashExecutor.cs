@@ -72,8 +72,9 @@ namespace Carry.CarrySystem.Player.Scripts
         void ChangeBeforeMove()
         {
             Debug.Log($"Finish dashing");
-            _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
             if(_dashEffectPresenter != null) _dashEffectPresenter.StopDash();
+            if(_onDamageExecutor.IsFainted) return;
+            _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
         }
         
         public void SetDashEffectPresenter(DashEffectPresenter presenter)
