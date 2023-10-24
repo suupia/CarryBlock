@@ -12,7 +12,6 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     {
         [Networked] public NetworkBool IsActive { get; set; }
         [Networked] private NetworkBool IsAnimated { get; set; }
-        private bool _isInit = false;
 
         [SerializeField] GameObject routeHighlightObject = null!;
         
@@ -27,7 +26,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             IsActive = isActive;
         }
 
-        public void StartAnimation()
+        void StartAnimation()
         {
             if (!IsActive)
             {

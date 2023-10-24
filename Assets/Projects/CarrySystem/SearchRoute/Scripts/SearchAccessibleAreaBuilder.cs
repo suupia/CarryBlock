@@ -21,7 +21,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     {
         [Inject] readonly NetworkRunner _runner = null!;
         IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
-        private bool _isRoutePresenterInit = false;
+        private bool _isRoutePresenterInit;
         CancellationTokenSource[]? _cTSs;
         [Inject]
         public SearchAccessibleAreaBuilder()
