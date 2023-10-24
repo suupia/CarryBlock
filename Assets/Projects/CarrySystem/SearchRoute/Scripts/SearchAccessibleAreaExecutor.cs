@@ -23,13 +23,13 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly WaveletSearchExecutor _waveletSearchExecutor;
         readonly IGridMap _gridMap;
         readonly IRoutePresenter?[] _routePresenters;
-        readonly CancellationTokenSource?[] _cancellationTokenSources;
-        public SearchAccessibleAreaExecutor(IGridMap gridMap, WaveletSearchExecutor waveletSearchExecutor)
+        readonly CancellationTokenSource?[]? _cancellationTokenSources;
+        public SearchAccessibleAreaExecutor(IGridMap gridMap, WaveletSearchExecutor waveletSearchExecutor, CancellationTokenSource[]? cancellationTokenSources)
         {
             _waveletSearchExecutor = waveletSearchExecutor;
             _gridMap = gridMap;
             _routePresenters = new IRoutePresenter[gridMap.Length];
-            _cancellationTokenSources = new CancellationTokenSource[gridMap.Length];
+            _cancellationTokenSources = cancellationTokenSources;
         }
         
         public void RegisterRoutePresenters(IReadOnlyList<RoutePresenter_Net> routePresenters)
@@ -169,7 +169,7 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 _cancellationTokenSources[i]?.Cancel();
                 _cancellationTokenSources[i] = new CancellationTokenSource();
-                DelayUpdate(_cancellationTokenSources[i]!.Token, _routePresenters[i], numericGridMap.GetValue(i)).Forget();
+                DelayUpdate(_cancellationTokenSources[i].Token, _routePresenters[i], numericGridMap.GetValue(i)).Forget();
             }
         }
 

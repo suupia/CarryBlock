@@ -4,6 +4,7 @@ using System.Linq;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using NUnit.Framework;
+using System.Threading;
 using UnityEngine;
 
 namespace Carry.CarrySystem.RoutingAlgorithm.Tests
@@ -15,7 +16,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute);
+            var ctss = new CancellationTokenSource[mapData.Map.Length];
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute, ctss);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
 
@@ -52,7 +54,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7B();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute);
+            var ctss = new CancellationTokenSource[mapData.Map.Length];
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute, ctss);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
 
@@ -89,7 +92,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map10X8A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute);
+            var ctss = new CancellationTokenSource[mapData.Map.Length];
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute, ctss);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
 
@@ -137,7 +141,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute);
+            var ctss = new CancellationTokenSource[mapData.Map.Length];
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute, ctss);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
 
@@ -173,7 +178,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7B();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute);
+            var ctss = new CancellationTokenSource[mapData.Map.Length];
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute, ctss);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
 
@@ -209,7 +215,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map10X8A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute);
+            var ctss = new CancellationTokenSource[mapData.Map.Length];
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute, ctss);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
 

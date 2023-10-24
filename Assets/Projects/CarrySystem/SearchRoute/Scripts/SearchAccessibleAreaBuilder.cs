@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -21,7 +22,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         [Inject] readonly NetworkRunner _runner = null!;
         IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
         private bool _isRoutePresenterInit = false;
-
+        CancellationTokenSource[]? _cTSs;
         [Inject]
         public SearchAccessibleAreaBuilder()
         {
@@ -78,8 +79,12 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                 //routePresenter.SetPresenterActive(false);  // ToDo: 初期化の処理
             }
 
+            if (_cTSs == null || _cTSs.Length != map.Length)
+            {
+                _cTSs = new CancellationTokenSource[map.Length];
+            }
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(map, waveletSearchExecutor);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(map, waveletSearchExecutor, _cTSs);
             searchAccessibleAreaExecutor.RegisterRoutePresenters(routePresenters);
             return searchAccessibleAreaExecutor;
         }
