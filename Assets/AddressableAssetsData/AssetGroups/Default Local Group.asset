@@ -145,6 +145,10 @@ MonoBehaviour:
     m_Address: Prefabs/Map/WallPresenterLocalC_1
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 33f1b0804a41aab4d8a84bd8d764df89
+    m_Address: Assets/Resources_moved/Prefabs/Enemy/EnemyControllerNet.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 405937dcad4604950956d0fac118dce9, type: 2}
   m_SchemaSet:
