@@ -165,11 +165,17 @@ namespace Carry.CarrySystem.Map.Scripts
         // 時間差でpresenterをupdateする
         void UpdatePresenter(NumericGridMap numericGridMap)
         {
+            if (_cancellationTokenSources == null)
+            {
+                Debug.LogError($"_cancellationTokenSources is null");
+                return;
+            }
             for (int i = 0; i < numericGridMap.Length; i++)
             {
                 _cancellationTokenSources[i]?.Cancel();
                 _cancellationTokenSources[i] = new CancellationTokenSource();
-                DelayUpdate(_cancellationTokenSources[i].Token, _routePresenters[i], numericGridMap.GetValue(i)).Forget();
+                if(_cancellationTokenSources[i] == null) return;
+                DelayUpdate(_cancellationTokenSources[i].Token, _routePresenters[i], numericGridMap.GetValue(i)).Forget();  // _cancellationTokenSources[i]でDereference of a possibly null referenceがでる　なぜ？
             }
         }
 
