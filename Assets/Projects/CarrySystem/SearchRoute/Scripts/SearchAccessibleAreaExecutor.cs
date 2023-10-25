@@ -23,6 +23,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly WaveletSearchExecutor _waveletSearchExecutor;
         readonly IGridMap _gridMap;
         readonly IRoutePresenter?[] _routePresenters;
+        readonly int _delayMilliSec = 5;
         CancellationTokenSource?[]? _cancellationTokenSources;
         public SearchAccessibleAreaExecutor(IGridMap gridMap, WaveletSearchExecutor waveletSearchExecutor)
         {
@@ -192,7 +193,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
             try
             {
-                await UniTask.Delay((int)value * 5, cancellationToken: cts);
+                await UniTask.Delay((int)value * _delayMilliSec, cancellationToken: cts);
                 routePresenter.SetPresenterActive(true);
             }
             catch (OperationCanceledException)
