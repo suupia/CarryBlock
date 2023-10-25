@@ -23,13 +23,12 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly WaveletSearchExecutor _waveletSearchExecutor;
         readonly IGridMap _gridMap;
         readonly IRoutePresenter?[] _routePresenters;
-        readonly CancellationTokenSource?[]? _cancellationTokenSources;
-        public SearchAccessibleAreaExecutor(IGridMap gridMap, WaveletSearchExecutor waveletSearchExecutor, CancellationTokenSource[]? cancellationTokenSources)
+        CancellationTokenSource?[]? _cancellationTokenSources;
+        public SearchAccessibleAreaExecutor(IGridMap gridMap, WaveletSearchExecutor waveletSearchExecutor)
         {
             _waveletSearchExecutor = waveletSearchExecutor;
             _gridMap = gridMap;
             _routePresenters = new IRoutePresenter[gridMap.Length];
-            _cancellationTokenSources = cancellationTokenSources;
         }
         
         public void RegisterRoutePresenters(IReadOnlyList<RoutePresenter_Net> routePresenters)
@@ -49,8 +48,9 @@ namespace Carry.CarrySystem.Map.Scripts
 
         
         public bool[] SearchAccessibleArea(Vector2Int startPos, Func<int, int, bool> isWall,
-            SearcherSize searcherSize = SearcherSize.SizeOne)
+             CancellationTokenSource[]? cancellationTokenSources, SearcherSize searcherSize = SearcherSize.SizeOne)
         {
+            _cancellationTokenSources = cancellationTokenSources;
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
             var accessibleAreaArray = CalcAccessibleArea(searchedMap, searcherSize);
     

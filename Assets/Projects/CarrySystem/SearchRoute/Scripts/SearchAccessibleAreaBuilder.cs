@@ -21,8 +21,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     {
         [Inject] readonly NetworkRunner _runner = null!;
         IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
-        private bool _isRoutePresenterInit;
-        CancellationTokenSource[]? _cTSs;
+         bool _isRoutePresenterInit;
+         
         [Inject]
         public SearchAccessibleAreaBuilder()
         {
@@ -78,13 +78,9 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                 // RoutePresenter用に書き直し
                 //routePresenter.SetPresenterActive(false);  // ToDo: 初期化の処理
             }
-
-            if (_cTSs == null || _cTSs.Length != map.Length)
-            {
-                _cTSs = new CancellationTokenSource[map.Length];
-            }
+            
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(map, waveletSearchExecutor, _cTSs);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(map, waveletSearchExecutor);
             searchAccessibleAreaExecutor.RegisterRoutePresenters(routePresenters);
             return searchAccessibleAreaExecutor;
         }
