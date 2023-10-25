@@ -13,6 +13,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
 using Carry.CarrySystem.Player.Scripts;
+using DG.Tweening;
+using Carry.CarrySystem.Player.Info;
+using Carry.CarrySystem.Player.Interfaces;
 
 #nullable enable
 
@@ -30,14 +33,19 @@ namespace Carry.UISystem.UI.LobbyScene
         StageIndexTransporter _stageIndexTransporter =  null!;
         InputAction _toggleSelectStageCanvas = null!;
         LobbyPlayerContainer _lobbyPlayerContainer = null!;
+        IPlayerAnimatorPresenter _playerAnimatorPresenter;
+        
+        //PlayerNearCartHandlerNet _playerNearCartHandler = null!;
         
         [Inject]
         public void Construct(
             MapKeyDataSelectorNet mapKeyDataSelectorNet,
             StageIndexTransporter stageIndexTransporter,
             LobbyPlayerContainer lobbyPlayerContainer
+            //IPlayerAnimatorPresenter? _playerAnimatorPresenter
             )
         {
+            
             _mapKeyDataSelectorNet = mapKeyDataSelectorNet;
             _stageIndexTransporter = stageIndexTransporter;
             _lobbyPlayerContainer = lobbyPlayerContainer;
@@ -69,13 +77,22 @@ namespace Carry.UISystem.UI.LobbyScene
                     //ゲームスタート前のアニメーション
                     _lobbyPlayerContainer.PlayerControllers.ForEach(playerController =>
                     {
+                        viewObject.SetActive(false);
                         var playerTransform = playerController.transform;
                         Debug.Log(playerTransform.position.ToString());
+                        var cartPosition = new Vector3(0f, 0.5f, 0f);
+                        _playerAnimatorPresenter?.Dash();
+                        playerTransform.DOMove(cartPosition, 3f).OnComplete(() =>
+                        {
+                            Debug.Log("finish move");
+                            _playerAnimatorPresenter?.Idle();
+                            _stageIndexTransporter.SetStageIndex(index);
+                            lobbyInitializer.TransitionToGameScene();
+                        });
                     });
                     
                     
-                    _stageIndexTransporter.SetStageIndex(index);
-                    lobbyInitializer.TransitionToGameScene();
+                    
                 });
             }
             
