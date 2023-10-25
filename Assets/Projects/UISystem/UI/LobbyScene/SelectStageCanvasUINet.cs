@@ -12,6 +12,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
+using Carry.CarrySystem.Player.Scripts;
 
 #nullable enable
 
@@ -27,16 +28,19 @@ namespace Carry.UISystem.UI.LobbyScene
 
         MapKeyDataSelectorNet  _mapKeyDataSelectorNet = null!;
         StageIndexTransporter _stageIndexTransporter =  null!;
-        InputAction _toggleSelectStageCanvas = null!;    
+        InputAction _toggleSelectStageCanvas = null!;
+        LobbyPlayerContainer _lobbyPlayerContainer = null!;
         
         [Inject]
         public void Construct(
             MapKeyDataSelectorNet mapKeyDataSelectorNet,
-            StageIndexTransporter stageIndexTransporter
+            StageIndexTransporter stageIndexTransporter,
+            LobbyPlayerContainer lobbyPlayerContainer
             )
         {
             _mapKeyDataSelectorNet = mapKeyDataSelectorNet;
             _stageIndexTransporter = stageIndexTransporter;
+            _lobbyPlayerContainer = lobbyPlayerContainer;
         }
 
         public override void Spawned()
@@ -62,6 +66,14 @@ namespace Carry.UISystem.UI.LobbyScene
                 var index = i;
                 stageButton.AddListener(() =>
                 {
+                    //ゲームスタート前のアニメーション
+                    _lobbyPlayerContainer.PlayerControllers.ForEach(playerController =>
+                    {
+                        var playerTransform = playerController.transform;
+                        Debug.Log(playerTransform.position.ToString());
+                    });
+                    
+                    
                     _stageIndexTransporter.SetStageIndex(index);
                     lobbyInitializer.TransitionToGameScene();
                 });

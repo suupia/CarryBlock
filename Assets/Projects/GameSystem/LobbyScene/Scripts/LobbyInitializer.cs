@@ -11,6 +11,7 @@ using Carry.Utility.Scripts;
 using Carry.NetworkUtility.NetworkRunnerManager.Scripts;
 using Carry.GameSystem.Spawners.Scripts;
 using Carry.GameSystem.Scripts;
+using Projects.CarrySystem.Enemy;
 using UnityEngine;
 using VContainer;
 #nullable enable
@@ -50,7 +51,10 @@ namespace Carry.GameSystem.LobbyScene.Scripts
                 _playerCharacterTransporter.SetIndex(Runner.LocalPlayer);
                 _playerSpawner.RespawnAllPlayer();
             }
-            
+
+            //var enemySpawner = new EnemySpawner(Runner);
+            //enemySpawner.SpawnPrefab(Vector3.zero, Quaternion.identity);
+
 
         }
 
