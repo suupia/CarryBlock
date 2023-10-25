@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -20,8 +21,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     {
         [Inject] readonly NetworkRunner _runner = null!;
         IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
-        private bool _isRoutePresenterInit = false;
-
+         bool _isRoutePresenterInit;
+         
         [Inject]
         public SearchAccessibleAreaBuilder()
         {
@@ -77,7 +78,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                 // RoutePresenter用に書き直し
                 //routePresenter.SetPresenterActive(false);  // ToDo: 初期化の処理
             }
-
+            
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(map, waveletSearchExecutor);
             searchAccessibleAreaExecutor.RegisterRoutePresenters(routePresenters);

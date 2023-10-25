@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
@@ -22,6 +23,8 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly WaveletSearchExecutor _waveletSearchExecutor;
         readonly IGridMap _gridMap;
         readonly IRoutePresenter?[] _routePresenters;
+        readonly int _delayMilliSec = 5;
+        CancellationTokenSource?[]? _cancellationTokenSources;
         public SearchAccessibleAreaExecutor(IGridMap gridMap, WaveletSearchExecutor waveletSearchExecutor)
         {
             _waveletSearchExecutor = waveletSearchExecutor;
@@ -46,8 +49,9 @@ namespace Carry.CarrySystem.Map.Scripts
 
         
         public bool[] SearchAccessibleArea(Vector2Int startPos, Func<int, int, bool> isWall,
-            SearcherSize searcherSize = SearcherSize.SizeOne)
+             CancellationTokenSource[]? cancellationTokenSources, SearcherSize searcherSize = SearcherSize.SizeOne)
         {
+            _cancellationTokenSources = cancellationTokenSources;
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
             var accessibleAreaArray = CalcAccessibleArea(searchedMap, searcherSize);
     
@@ -162,13 +166,21 @@ namespace Carry.CarrySystem.Map.Scripts
         // 時間差でpresenterをupdateする
         void UpdatePresenter(NumericGridMap numericGridMap)
         {
+            if (_cancellationTokenSources == null)
+            {
+                Debug.LogError($"_cancellationTokenSources is null");
+                return;
+            }
             for (int i = 0; i < numericGridMap.Length; i++)
             {
-                DelayUpdate(_routePresenters[i], numericGridMap.GetValue(i)).Forget();
+                _cancellationTokenSources[i]?.Cancel();
+                _cancellationTokenSources[i] = new CancellationTokenSource();
+                if(_cancellationTokenSources[i] == null) return;
+                DelayUpdate(_cancellationTokenSources[i].Token, _routePresenters[i], numericGridMap.GetValue(i)).Forget();  // _cancellationTokenSources[i]でDereference of a possibly null referenceがでる　なぜ？
             }
         }
 
-        async UniTaskVoid DelayUpdate(IRoutePresenter? routePresenter, long value)
+        async UniTaskVoid DelayUpdate(CancellationToken cts, IRoutePresenter? routePresenter, long value)
         {
             if(routePresenter == null) return;
             if (value < 0)
@@ -178,10 +190,16 @@ namespace Carry.CarrySystem.Map.Scripts
             }
 
             if (routePresenter.IsActive) return;
-            
-            await UniTask.Delay((int)value * 5);
-            routePresenter.SetPresenterActive(true);
-        
+
+            try
+            {
+                await UniTask.Delay((int)value * _delayMilliSec, cancellationToken: cts);
+                routePresenter.SetPresenterActive(true);
+            }
+            catch (OperationCanceledException)
+            {
+                //Debug.Log("canceled");
+            }
         }
         
         public void DebugAccessibleArea(int height, int width,bool[] accessibleAreaArray )
