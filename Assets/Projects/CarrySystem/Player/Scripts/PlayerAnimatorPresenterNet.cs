@@ -81,7 +81,7 @@ namespace Carry.CarrySystem.Player.Scripts
             if(PresentDataRef.IsFainted)
             {
                 _animator.SetBool("IsFainted",true);
-                Debug.Log($"IsFainted: {PresentDataRef.IsFainted}");
+                //Debug.Log($"IsFainted: {PresentDataRef.IsFainted}");
             }
             else
             {
