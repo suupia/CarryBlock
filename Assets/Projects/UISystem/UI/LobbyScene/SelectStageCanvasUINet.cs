@@ -18,6 +18,7 @@ using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Cart.Scripts;
 
+
 #nullable enable
 
 namespace Carry.UISystem.UI.LobbyScene
@@ -34,7 +35,7 @@ namespace Carry.UISystem.UI.LobbyScene
         StageIndexTransporter _stageIndexTransporter =  null!;
         InputAction _toggleSelectStageCanvas = null!;
         LobbyPlayerContainer _lobbyPlayerContainer = null!;
-        IPlayerAnimatorPresenter _playerAnimatorPresenter;
+        IPlayerAnimatorPresenter? _playerAnimatorPresenter;
         
         //PlayerNearCartHandlerNet _playerNearCartHandler = null!;
         
