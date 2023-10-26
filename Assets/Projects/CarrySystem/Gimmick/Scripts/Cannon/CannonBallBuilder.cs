@@ -11,7 +11,6 @@ namespace Carry.CarrySystem.Gimmick.Scripts
 {
     public class CannonBallBuilder
     {
-        // ToDo: CannonBallControllerをインスタンス化する
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<CannonBallControllerNet> _canonBallControllerLoader;
 

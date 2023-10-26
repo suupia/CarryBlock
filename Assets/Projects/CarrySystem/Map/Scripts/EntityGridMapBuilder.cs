@@ -34,7 +34,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 AddEntityFromRecord<FragileBlock, FragileBlockRecord, FragileBlock.Kind>(gridMapData.fragileBlockRecords, () => gridMapData.fragileBlockRecords?.Length ?? 0, (record) => record.kinds, FragileBlock.Kind.None, map, i );
                 AddEntityFromRecord<CannonBlock, CannonBlockRecord, CannonBlock.Kind>(gridMapData.cannonBlockRecords, () => gridMapData.cannonBlockRecords?.Length ?? 0, (record) => record.kinds, CannonBlock.Kind.None, map, i );
                 AddEntityFromRecord<ConfusionBlock, ConfusionBlockRecord, ConfusionBlock.Kind>(gridMapData.confusionBlockRecords, () => gridMapData.confusionBlockRecords?.Length ?? 0, (record) => record.kinds, ConfusionBlock.Kind.None, map, i );
-                AddEntityFromRecord<Spike, SpikeGimmickRecord, Spike.Kind>(gridMapData.spikeGimmickRecords, () =>gridMapData.spikeGimmickRecords?.Length?? 0, (record) => record.kinds, Spike.Kind.None, map, i );
+                AddEntityFromRecord<SpikeGimmick, SpikeGimmickRecord, SpikeGimmick.Kind>(gridMapData.spikeGimmickRecords, () =>gridMapData.spikeGimmickRecords?.Length?? 0, (record) => record.kinds, SpikeGimmick.Kind.None, map, i );
 
                 // TreasureCoin
                 if (gridMapData.treasureCoinRecords != null)

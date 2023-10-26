@@ -66,7 +66,7 @@ namespace Carry.CarrySystem.Block.Scripts
              _highLightExecutor = new HighlightExecutor(_blockInfos);
         
              // 最初のStartGimmickの処理
-             foreach (var gimmick in _blocks.OfType<IGimmick>())
+             foreach (var gimmick in gimmicks)
              {
                  gimmick.StartGimmick(runner);
              }

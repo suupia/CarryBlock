@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -19,14 +20,14 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     {
         [SerializeField] Vector2Int startPos;
         [SerializeField] Vector2Int endPos;
-        WaveletSearchBuilder _waveletSearchBuilder = null!;
+        SearchAccessibleAreaBuilder _searchAccessibleAreaBuilder = null!;
         IMapUpdater _entityGridMapSwitcher = null!;
 
         [Inject]
         public void Construct(IMapUpdater entityGridMapSwitcher,
-            WaveletSearchBuilder waveletSearchBuilder)
+            SearchAccessibleAreaBuilder searchAccessibleAreaBuilder)
         {
-            _waveletSearchBuilder = waveletSearchBuilder;
+            _searchAccessibleAreaBuilder = searchAccessibleAreaBuilder;
             _entityGridMapSwitcher = entityGridMapSwitcher;
         }
 
@@ -45,8 +46,9 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             var map = _entityGridMapSwitcher.GetMap();
             Func<int, int, bool> isWall = (x, y) => map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
 
-            var waveletSearchExecutor = _waveletSearchBuilder.Build(_entityGridMapSwitcher.GetMap());
-            waveletSearchExecutor.SearchAccessibleArea(startPos, isWall);
+            var searchAccessibleAreaExecutor = _searchAccessibleAreaBuilder.Build(_entityGridMapSwitcher.GetMap());
+            var ctss = new CancellationTokenSource[map.Length];
+            searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall,ctss);
         }
     }
 }
