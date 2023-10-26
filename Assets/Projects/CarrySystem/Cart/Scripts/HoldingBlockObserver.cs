@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -17,21 +18,22 @@ namespace Carry.CarrySystem.Cart.Scripts
         public bool IsMapClear { get; private set; }
         readonly List<PlayerHoldingObjectContainer> _playerBlockContainers = new List<PlayerHoldingObjectContainer>();
         readonly IMapUpdater _mapUpdater;
-        readonly WaveletSearchBuilder _waveletSearchBuilder;
+        readonly SearchAccessibleAreaBuilder _searchAccessibleAreaBuilder;
         readonly CartMovementNotifierNet _cartMovementNotifierNet;
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
         IDisposable? _isHoldSubscription; // to hold the subscription to dispose it later if needed
         IDisposable? _mapSubscription; // to hold the subscription to dispose it later if needed
-
+        CancellationTokenSource[]? _ctss;
+        
         public HoldingBlockObserver(
             IMapUpdater entityGridMapSwitcher,
-            WaveletSearchBuilder waveletSearchBuilder,
+            SearchAccessibleAreaBuilder searchAccessibleAreaBuilder,
             CartMovementNotifierNet cartMovementNotifierNet,
             ReachRightEdgeChecker reachRightEdgeChecker
         )
         {
             _mapUpdater = entityGridMapSwitcher;
-            _waveletSearchBuilder = waveletSearchBuilder;
+            _searchAccessibleAreaBuilder = searchAccessibleAreaBuilder;
             _cartMovementNotifierNet = cartMovementNotifierNet;
             _reachRightEdgeChecker = reachRightEdgeChecker;
 
@@ -66,14 +68,19 @@ namespace Carry.CarrySystem.Cart.Scripts
             var map = _mapUpdater.GetMap();
             Func<int, int, bool> isWall = (x, y) =>
                 map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
-            var waveletSearchExecutor = _waveletSearchBuilder.Build(_mapUpdater.GetMap());
+            
+            if (_ctss == null || _ctss.Length != map.Length)
+            {
+                _ctss = new CancellationTokenSource[map.Length];
+            }
 
             var startPos = new Vector2Int(1, map.Height / 2);
             var endPos = new Vector2Int(map.Width - 2, map.Height / 2);
             var searcherSize = SearcherSize.SizeThree;
-            var accessibleArea = waveletSearchExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
+            var searchAccessibleAreaExecutor = _searchAccessibleAreaBuilder.Build(_mapUpdater.GetMap());
+            var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, _ctss,searcherSize);
 
-            // Show the result
+            // Show the result  
             if (_reachRightEdgeChecker.CanCartReachRightEdge(accessibleArea, map, searcherSize))
             {
                 if (AllPlayerIsNotHoldingBlock())

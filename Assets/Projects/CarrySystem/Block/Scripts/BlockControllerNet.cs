@@ -12,9 +12,9 @@ namespace Carry.CarrySystem.Block.Scripts
 {
     public class BlockControllerNet : NetworkBehaviour
     {
-        [FormerlySerializedAs("blockObj")] [SerializeField] GameObject blockViewObj = null!;  // ランタイムで生成しないので、SerializeFieldで受け取れる
+        [SerializeField] GameObject blockViewObj = null!;  // ランタイムで生成しないので、SerializeFieldで受け取れる
 
-        [FormerlySerializedAs("_info")] [SerializeField] BlockInfo info = null!;
+        [SerializeField] BlockInfo info = null!;
         public BlockInfo Info => info;
         
         public override void Spawned()

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
@@ -9,88 +10,99 @@ namespace Carry.CarrySystem.Player.Scripts
     public class MoveExecutorSwitcher : IMoveExecutorSwitcher
     {
         public  IMoveExecutor CurrentMoveExecutor => _currentMoveExecutor;
-        readonly IMoveExecutor _regularMoveExecutor;
-        readonly IMoveExecutor _slowMoveExecutor;
-        readonly IMoveExecutor _confusionMoveExecutor;
-        readonly IMoveExecutor _dashMoveExecutor;
-        readonly IMoveExecutor _faintedMoveExecutor;
-        IMoveExecutor _beforeMoveExecutor;
+        readonly IMoveExecutorLeaf _regularMoveLeaf;
+        readonly IMoveExecutorLeaf _confusionMoveLeaf;
+        
         IMoveExecutor _currentMoveExecutor;
+        IMoveExecutorLeaf _beforeMoveExecutorLeaf;
+        
+        PlayerInfo _info = null!;
+        IPlayerAnimatorPresenter _playerAnimatorPresenter = null!;
         
         public MoveExecutorSwitcher(
             )
         {
-            _regularMoveExecutor = new CorrectlyStopMoveExecutor();
-            _slowMoveExecutor = new SlowMoveExecutor();
-            _confusionMoveExecutor = new ConfusionMoveExecutor(_regularMoveExecutor);
-            _dashMoveExecutor = new DashMoveExecutor();
-            _faintedMoveExecutor = new FaintedMoveExecutor();
-            _currentMoveExecutor = _regularMoveExecutor;
-            _beforeMoveExecutor = _regularMoveExecutor;
+            var regularMoveExecutor = new RegularMoveExecutor(40, 5, 5);
+            _regularMoveLeaf = regularMoveExecutor;
+            _confusionMoveLeaf = new InverseInputMoveExecutorLeaf(regularMoveExecutor);
+            _beforeMoveExecutorLeaf = regularMoveExecutor;
+            _currentMoveExecutor = _regularMoveLeaf;
         }
 
         public void Setup(PlayerInfo info)
         {
-            _regularMoveExecutor.Setup(info);
-            _slowMoveExecutor.Setup(info);
-            _dashMoveExecutor.Setup(info);
-            _faintedMoveExecutor.Setup(info);
+            _regularMoveLeaf.Setup(info);
+            _info = info;
         }
         
         public void Move(Vector3 input)
         {
             _currentMoveExecutor.Move(input);
+            
+            // Debug.Log($"Move _currentMoveExecutor.GetType() : {_currentMoveExecutor.GetType()}");
+            // if(_currentMoveExecutor is IMoveExecutorLeaf leaf) Debug.Log($"Move _currentMoveExecutor.MaxVelocity : {leaf.MaxVelocity}");
+            //
         }
         
         public void SwitchToBeforeMoveExecutor()
         {
-            HoldBeforeMove();
-            _currentMoveExecutor =  _beforeMoveExecutor;
+            // Debug.Log($"_beforeMoveExecutorNew.GetType() : {_beforeMoveExecutorLeaf.GetType()}");
+            _currentMoveExecutor = _beforeMoveExecutorLeaf;
         }
         
         public void SwitchToRegularMove()
         {
-            HoldBeforeMove();
-            _currentMoveExecutor =  _regularMoveExecutor;
+            _currentMoveExecutor =  _regularMoveLeaf;
+            _beforeMoveExecutorLeaf = _regularMoveLeaf;
+        }
+        
+        public void SwitchToConfusionMove()
+        {
+            _currentMoveExecutor =  _confusionMoveLeaf;
+            _beforeMoveExecutorLeaf = _confusionMoveLeaf;
         }
         
         public void SwitchToDashMove()
         {
-            HoldBeforeMove();
-            _currentMoveExecutor =  _dashMoveExecutor;
+            if (_currentMoveExecutor is IMoveExecutorLeaf moveExecutorLeaf)
+            {
+                _beforeMoveExecutorLeaf = moveExecutorLeaf;
+            }
+            var nextMoveExe = new DashMoveExecutor(_beforeMoveExecutorLeaf);
+            nextMoveExe.Setup(_info);
+            nextMoveExe.SetPlayerAnimatorPresenter(_playerAnimatorPresenter);
+            _currentMoveExecutor = nextMoveExe;
         }
         public void SwitchToSlowMove()
         {
-            HoldBeforeMove();
-            _currentMoveExecutor =  _slowMoveExecutor;
+            if (_currentMoveExecutor is IMoveExecutorLeaf moveExecutorLeaf)
+            {
+                _beforeMoveExecutorLeaf = moveExecutorLeaf;
+            }
+            var nextMoveExe = new SlowMoveExecutor(_beforeMoveExecutorLeaf);
+            nextMoveExe.Setup(_info);
+            nextMoveExe.SetPlayerAnimatorPresenter(_playerAnimatorPresenter);
+            _currentMoveExecutor = nextMoveExe;
         }
-        public void SwitchToConfusionMove()
-        {
-            HoldBeforeMove();
-            _currentMoveExecutor =  _confusionMoveExecutor;
-        }
+
         public void SwitchToFaintedMove()
-        {           
-            HoldBeforeMove();
-            _currentMoveExecutor =  _faintedMoveExecutor;
+        {
+            if (_currentMoveExecutor is IMoveExecutorLeaf moveExecutorLeaf)
+            {
+                _beforeMoveExecutorLeaf = moveExecutorLeaf;
+            }
+            var nextMoveExe = new FaintedMoveExecutor(_beforeMoveExecutorLeaf);
+            nextMoveExe.Setup(_info);
+            nextMoveExe.SetPlayerAnimatorPresenter(_playerAnimatorPresenter);
+            _currentMoveExecutor = nextMoveExe;
         }
         
-        void HoldBeforeMove()
-        {
-            if (_currentMoveExecutor is CorrectlyStopMoveExecutor ||
-                _currentMoveExecutor is SlowMoveExecutor)
-            {
-                _beforeMoveExecutor = _currentMoveExecutor;
-            }
-        }
                 
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
-            _regularMoveExecutor.SetPlayerAnimatorPresenter(presenter);
-            _slowMoveExecutor.SetPlayerAnimatorPresenter(presenter);
-            _dashMoveExecutor.SetPlayerAnimatorPresenter(presenter);
-            _faintedMoveExecutor.SetPlayerAnimatorPresenter(presenter);
+            _regularMoveLeaf.SetPlayerAnimatorPresenter(presenter);
+            _playerAnimatorPresenter = presenter;
         }
     }
 }

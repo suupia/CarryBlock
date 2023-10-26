@@ -28,7 +28,7 @@ namespace Carry.CarrySystem.Map.Scripts
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
             
-            var (blockControllers, blockPresenterNets) = _carryBlockBuilder.Build(ref map);
+            var (blockControllers, blockPresenterNets) = _carryBlockBuilder.Build(map);
             
             // BlockPresenterをドメインのEntityGridMapに紐づける
             AttachTilePresenter(blockPresenterNets, map);
@@ -58,8 +58,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 var monoDelegate = map.GetSingleEntity<IBlockMonoDelegate>(i);
                 var blocks = monoDelegate.Blocks.Cast<IEntity>();
                 var items = monoDelegate.Items.Cast<IEntity>();
-                var placeableObject = blocks.Concat(items).ToList();
-                blockPresenterNet.SetInitAllEntityActiveData(placeableObject);
+                var gimmicks = monoDelegate.Gimmicks.Cast<IEntity>();
+                var entityList = blocks.Concat(items).Concat(gimmicks).Distinct(); // Distinct()は重複を削除する
+                blockPresenterNet.SetInitAllEntityActiveData(entityList);
 
                 // mapにTilePresenterを登録
                 map.RegisterTilePresenter(blockPresenterNet, i);

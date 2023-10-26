@@ -7,7 +7,9 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Carry.CarrySystem.Block.Info;
+using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Interfaces;
+using Projects.CarrySystem.Item.Scripts;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -24,11 +26,15 @@ namespace Carry.CarrySystem.Block.Scripts
          public IBlock? Block => _blocks.FirstOrDefault(); 
          public IList<IBlock> Blocks => _blocks;
          public IList<IItem> Items => _items;
+         public IList<IGimmick> Gimmicks => _gimmicks;
 
          readonly NetworkRunner _runner;
          readonly IList<IBlock> _blocks;
-         readonly IList<IItem> _items;
          readonly IList<BlockInfo> _blockInfos;
+         readonly IList<IItem> _items;
+         readonly IList<ItemInfo> _itemInfos;
+         readonly IList<IGimmick> _gimmicks;
+         readonly IList<GimmickInfo> _gimmickInfos;
          readonly IBlock? _block;
          readonly IEntityPresenter _entityPresenter;
 
@@ -36,19 +42,31 @@ namespace Carry.CarrySystem.Block.Scripts
 
          Vector2Int _gridPosition;
         
-         public BlockMonoDelegate(NetworkRunner runner, Vector2Int gridPos, IList<IBlock> blocks, IList<BlockInfo> blockInfos, IList<IItem> items, IEntityPresenter entityPresenter)
+         public BlockMonoDelegate(
+             NetworkRunner runner,
+             Vector2Int gridPos,
+             IList<IBlock> blocks,
+             IList<BlockInfo> blockInfos,
+             IList<IItem> items,
+             IList<ItemInfo> itemInfos,
+             IList<IGimmick> gimmicks,
+             IList<GimmickInfo> gimmickInfos,
+             IEntityPresenter entityPresenter)
          {
              _runner = runner;
              _gridPosition = gridPos;
              _blocks = blocks;
-             _items = items;
              _blockInfos = blockInfos;
+             _items = items;
+             _itemInfos = itemInfos;
+             _gimmicks = gimmicks;
+             _gimmickInfos = gimmickInfos;
              _entityPresenter = entityPresenter;
              
              _highLightExecutor = new HighlightExecutor(_blockInfos);
         
              // 最初のStartGimmickの処理
-             foreach (var gimmick in _blocks.OfType<IGimmick>())
+             foreach (var gimmick in gimmicks)
              {
                  gimmick.StartGimmick(runner);
              }

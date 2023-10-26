@@ -6,11 +6,12 @@ using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
-using Carry.CarrySystem.Spawners;
+using Carry.CarrySystem.Spawners.Scripts;
 using Carry.UISystem.UI.CarryScene;
 using Fusion;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
+using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -25,6 +26,11 @@ namespace Carry.ScopeSystem.Scripts
             var runner = FindObjectOfType<NetworkRunner>();
             Debug.Log($"NetworkRunner : {runner}");
             builder.RegisterComponent(runner);
+            
+            // MapKeyDataSelectorNet is DontDestroyOnLoad Object
+            var mapKeyDataSelectorNet = FindObjectOfType<MapKeyDataSelectorNet>();
+            Debug.Log($"MapKeyDataSelectorNet : {mapKeyDataSelectorNet}");
+            builder.RegisterComponent(mapKeyDataSelectorNet);
 
             // PrefabLoader 
             builder.Register<PrefabLoaderFromAddressable<CarryPlayerControllerNet>>(Lifetime.Scoped)
@@ -46,18 +52,21 @@ namespace Carry.ScopeSystem.Scripts
 
             // Map
             // JsonからEntityGridMapを生成する
-            builder.Register<EntityGridMapBuilder>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
+            builder.Register<EntityGridMapBuilder>(Lifetime.Scoped);
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<CarryBlockBuilder>(Lifetime.Scoped);
             builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<RegularWallPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<RegularGroundPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<CarryPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            builder.Register<RandomWallPresenterPlacerNet>(Lifetime.Scoped);
+            builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
+            builder.Register<LocalGroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<LocalWallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<RandomWallPresenterPlacerNet>(Lifetime.Scoped);
+            builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
+            builder.RegisterComponentInHierarchy<PresenterPlacerNet>();
             
-            // どのマップたちを使うかを決める
-            builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
             
             // IMapUpdater
             builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
@@ -66,9 +75,12 @@ namespace Carry.ScopeSystem.Scripts
             // Cart
             builder.Register<CartBuilder>(Lifetime.Scoped);
             builder.Register<CartShortestRouteMove>(Lifetime.Scoped);
-            builder.Register<WaveletSearchBuilder>(Lifetime.Scoped);
+            builder.Register<SearchAccessibleAreaBuilder>(Lifetime.Scoped);
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
             builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
+            
+            //Item
+            builder.Register<TreasureCoinCounter>(Lifetime.Scoped);
 
             // UI
             builder.RegisterComponentInHierarchy<FloorTimerNet>();
@@ -85,7 +97,6 @@ namespace Carry.ScopeSystem.Scripts
 
             // View
             builder.RegisterComponentInHierarchy<PlayingCanvasUINet>();
-            builder.RegisterComponentInHierarchy<ResultCanvasUINet>();
             
             // PostEffect
             builder.RegisterComponentInHierarchy<VignetteBlinker>();

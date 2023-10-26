@@ -4,63 +4,37 @@ using System.Linq;
 using System.Text;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
-using JetBrains.Annotations;
 using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
+using Cysharp.Threading.Tasks;
+using Fusion;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 #nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public enum SearcherSize
-    {
-        SizeOne = 1,
-        SizeThree = 3,
-    }
 
     /// <summary>
     /// このクラスはDIせずにnewする
     /// </summary>
     public class WaveletSearchExecutor
     {
+        public int InitValue => _initValue;
         public int WallValue => _wallValue;
+        public int EdgeValue => _edgeValue;
+        public int OutOfRangeValue => _outOfRangeValue;
+        
         NumericGridMap _map;
         readonly int _initValue = -10; // PlaceNumAroundで重複して数字を置かないようにするために必要
         readonly int _wallValue = -5; // wallのマス
-
-        IRoutePresenter?[] _routePresenters;
+        readonly int _edgeValue = -8;
+        readonly int _outOfRangeValue = -88;
 
 
         public WaveletSearchExecutor(IGridMap girdMap)
         {
-            _map = new NumericGridMap(girdMap.Width, girdMap.Height, _initValue, -8, -88);
-            _routePresenters = new IRoutePresenter[_map.Length];
-        }
-
-        public void RegisterRoutePresenters(IReadOnlyList<RoutePresenter_Net> routePresenters)
-        {
-            if (routePresenters.Count() != _map.Length)
-            {
-                Debug.LogError($"routePresentersの数がmapのマスの数と一致しません。" +
-                               $"routePresentersの数: {routePresenters.Count()} " +
-                               $"mapのマスの数: {_map.Length}");
-            }
-
-            for (int i = 0; i < routePresenters.Count(); i++)
-            {
-                _routePresenters[i] = routePresenters[i];
-            }
-        }
-
-        public bool[] SearchAccessibleArea(Vector2Int startPos, Func<int, int, bool> isWall,
-            SearcherSize searcherSize = SearcherSize.SizeOne)
-        {
-            var searchedMap = WaveletSearch(startPos, isWall, searcherSize);
-            var resultBoolArray = CalcAccessibleArea(searchedMap, searcherSize);
-
-            UpdatePresenter(resultBoolArray);
-
-            return resultBoolArray;
+            _map = new NumericGridMap(girdMap.Width, girdMap.Height, _initValue, _edgeValue, _outOfRangeValue);
         }
 
 
@@ -81,19 +55,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 return _map; // _initValueのみが入ったmap
             }
 
-
-            switch (searcherSize)
-            {
-                case SearcherSize.SizeOne:
-                    BasicSetWall(isWall);
-                    break;
-                case SearcherSize.SizeThree:
-                    SetWallSizeThree(isWall);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
-            }
-
+            ExpandVirtualWall(_map, isWall, searcherSize);
+            
+            
             //壁でないマスに数字を順番に振っていく
             // Debug.Log($"WaveletSearchを実行します startPos:{startPos}");
             WaveletSearch();
@@ -197,124 +161,40 @@ namespace Carry.CarrySystem.Map.Scripts
 
             return true;
         }
-
-
-        // 探索者の大きさが1*1の場合
-        void BasicSetWall(Func<int, int, bool> isWall)
+        
+        void ExpandVirtualWall(NumericGridMap map, Func<int , int, bool> isWall, SearcherSize searcherSize)
         {
-            //mapをコピーして、壁のマスを-1にする。
-            for (int y = 0; y < _map.Height; y++)
+            var searcherSizeInt = (int) searcherSize;
+            UnityEngine.Assertions.Assert.IsTrue(searcherSizeInt % 2 ==  1, "searcherSize must be odd number");
+            
+            var expandSize = (searcherSizeInt-1) / 2;
+            
+            for (int y = 0; y < map.Height; y++)
             {
-                for (int x = 0; x < _map.Width; x++)
+                for (int x = 0; x < map.Width; x++)
                 {
-                    if (isWall(x, y))
+                    // expand wall
+                    if (isWall(x, y)) 
                     {
-                        _map.SetValue(x, y, _wallValue);
+                        for (int j = -expandSize; j <= expandSize; j++)
+                        {
+                            for (int i = -expandSize; i <= expandSize; i++)
+                            {
+                                map.SetValue(x + i, y + j, _wallValue);
+                            }
+                        }
+                    }
+                    // expand edge
+                    else if (x <= -1 + expandSize
+                             || x >= map.Width - expandSize
+                             || y <= -1 + expandSize ||
+                             y >= map.Height - expandSize) 
+                    {
+                        map.SetValue(x, y, _wallValue);
                     }
                 }
             }
         }
-
-        // 探索者の大きさが3*3の場合
-        void SetWallSizeThree(Func<int, int, bool> isWall)
-        {
-            //mapをコピーして、壁のマスを-1にする。
-            for (int y = 0; y < _map.Height; y++)
-            {
-                for (int x = 0; x < _map.Width; x++)
-                {
-                    if (isWall(x, y))
-                    {
-                        // 壁を中心として3*3の範囲を壁にする
-                        for (int j = -1; j <= 1; j++)
-                        {
-                            for (int i = -1; i <= 1; i++)
-                            {
-                                _map.SetValue(x + i, y + j, _wallValue);
-                            }
-                        }
-                    }
-                    else if (x == 0 || x == _map.Width - 1 || y == 0 || y == _map.Height - 1)
-                    {
-                        // 壁の周りのマスを壁にする
-                        _map.SetValue(x, y, _wallValue);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 仮置きでおいた壁を戻すために数字のマスに接しているマスをtrueにする
-        /// </summary>
-        /// <param name="map"></param>
-        /// <param name="searcherSize"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        bool[] CalcAccessibleArea(NumericGridMap map, SearcherSize searcherSize)
-        {
-            var tmpBoolArray = new bool[map.Length];
-            var resultBoolArray = new bool[map.Length];
-            var waveletResult = map;
-            // 数字がある部分をtrueにする
-            for (int i = 0; i < tmpBoolArray.Length; i++)
-            {
-                tmpBoolArray[i] = waveletResult.GetValue(i) != _wallValue &&
-                                  waveletResult.GetValue(i) != _initValue;
-            }
-
-            switch (searcherSize)
-            {
-                case SearcherSize.SizeOne:
-                    resultBoolArray = tmpBoolArray;
-                    break;
-                case SearcherSize.SizeThree:
-                    // set true to the squares around ture
-                    for (int i = 0; i < tmpBoolArray.Length; i++)
-                    {
-                        if (tmpBoolArray[i])
-                        {
-                            for (int y = -1; y <= 1; y++)
-                            {
-                                for (int x = -1; x <= 1; x++)
-                                {
-                                    var pos = map.ToVector(i);
-                                    var newX = pos.x + x;
-                                    var newY = pos.y + y;
-                                    if (!map.IsInDataRangeArea(newX, newY)) continue;
-                                    resultBoolArray[map.ToSubscript(pos.x + x, pos.y + y)] = true;
-                                }
-                            }
-                        }
-                    }
-
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
-            }
-
-            // //デバッグ用
-            // StringBuilder debugCell = new StringBuilder();
-            // for (int y = 0; y < map.Height; y++)
-            // {
-            //     for (int x = 0; x < map.Width; x++)
-            //     {
-            //         bool value = resultBoolArray[x + (map.Height - y - 1) * map.Width];
-            //         debugCell.AppendFormat("{0,4},", value.ToString()); // 桁数をそろえるために0を追加していると思う
-            //     }
-            //
-            //     debugCell.AppendLine();
-            // }
-            // Debug.Log($"すべてのresultBoolArrayの結果は\n{debugCell}");
-
-            return resultBoolArray;
-        }
-
-        void UpdatePresenter(bool[] resultBoolArray)
-        {
-            for (int i = 0; i < resultBoolArray.Length; i++)
-            {
-                _routePresenters[i]?.SetPresenterActive(resultBoolArray[i]);
-            }
-        }
+        
     }
 }

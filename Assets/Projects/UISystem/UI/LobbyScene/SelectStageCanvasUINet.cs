@@ -25,12 +25,17 @@ namespace Carry.UISystem.UI.LobbyScene
 
         [Networked] protected NetworkButtons PreButtons { get; set; }
 
-        StageIndexTransporter _stageIndexTransporter;
-        InputAction _toggleSelectStageCanvas;
+        MapKeyDataSelectorNet  _mapKeyDataSelectorNet = null!;
+        StageIndexTransporter _stageIndexTransporter =  null!;
+        InputAction _toggleSelectStageCanvas = null!;    
         
         [Inject]
-        public void Construct(StageIndexTransporter stageIndexTransporter)
+        public void Construct(
+            MapKeyDataSelectorNet mapKeyDataSelectorNet,
+            StageIndexTransporter stageIndexTransporter
+            )
         {
+            _mapKeyDataSelectorNet = mapKeyDataSelectorNet;
             _stageIndexTransporter = stageIndexTransporter;
         }
 
@@ -40,7 +45,7 @@ namespace Carry.UISystem.UI.LobbyScene
 
             if (!HasStateAuthority)return;
 
-            var buttonCount = 5;
+            var buttonCount = _mapKeyDataSelectorNet.MapKeyDataNetListCount;
             var stageButtons = buttonParent.GetComponentsInChildren<CustomButton>().ToList();
             for (int i = 0; i < buttonCount; i++)
             {
@@ -82,8 +87,6 @@ namespace Carry.UISystem.UI.LobbyScene
                 viewObject.SetActive(!viewObject.activeSelf);
             }
         }
-        
     }
-
 }
 

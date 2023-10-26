@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -17,6 +18,7 @@ namespace Carry.CarrySystem.Cart.Scripts
 {
     public class CartShortestRouteMove
     {
+        public bool IsMoving { get; private set; } = false;
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
         EntityGridMap? _map; // このクラスはMapを登録して使用する (コンストラクタでIMapUpdaterを受け取らない)
         IMapUpdater? _mapUpdater;
@@ -88,7 +90,9 @@ namespace Carry.CarrySystem.Cart.Scripts
             var searchShortestRouteExecutor = new SearchShortestRouteExecutor(waveletSearchExecutor);
             var startPos = new Vector2Int(1, _map.Height % 2 == 1 ? (_map.Height - 1) / 2 : _map.Height / 2);
             Func<int, int, bool> isWall = (x, y) => _map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
-            var accessibleArea = waveletSearchExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
+            var ctss = new CancellationTokenSource[_map.Length]; // ここでは必要ないけど、渡す必要があるので適当に作る
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(_map, waveletSearchExecutor);
+            var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, ctss,searcherSize);
             var endPosY = _reachRightEdgeChecker.CalcCartReachRightEdge(accessibleArea, _map, searcherSize);
             var routeEndPos = new Vector2Int(_map.Width - 2, endPosY);
             
@@ -105,6 +109,7 @@ namespace Carry.CarrySystem.Cart.Scripts
 
         async UniTaskVoid Move(List<Vector2Int> routes)
         {
+            IsMoving = true;
             var beforeGridPos = routes.First();
             foreach (var route in routes)
             {
@@ -120,6 +125,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             if (_mapUpdater != null)
             {
                 _mapUpdater.UpdateMap(MapKey.Default, _mapUpdater.Index + 1);  // ToDo : 現時点では引数は使われていないので適当でよい
+                IsMoving = false;
             }
             else
             {

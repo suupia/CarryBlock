@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Audio.Scripts;
+using Carry.CarrySystem.CarryScene.Scripts;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
-using Carry.CarrySystem.Spawners;
+using Carry.CarrySystem.Spawners.Scripts;
 using Fusion;
 using Carry.GameSystem.LobbyScene.Scripts;
 using Carry.GameSystem.Scripts;
@@ -20,7 +22,8 @@ namespace  Carry.GameSystem.Scripts
         {
             builder.Register<PlayerCharacterTransporter>(Lifetime.Singleton);
             builder.Register<StageIndexTransporter>(Lifetime.Singleton);
-
+            builder.Register<CarryInitializersReady>(Lifetime.Singleton);
+            builder.Register<OptionSettingsTransporter>(Lifetime.Singleton);
         }
     }
 
