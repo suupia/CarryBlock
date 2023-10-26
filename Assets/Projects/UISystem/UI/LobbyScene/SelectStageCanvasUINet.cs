@@ -99,8 +99,10 @@ namespace Carry.UISystem.UI.LobbyScene
                         // _playerAnimatorPresenter.Dash();
                         playerController.GetCharacter.Dash();
                         // プレイヤーが移動方向に向く
-                        playerTransform.LookAt(PlayerCartPosition[nowPlayerPosition]);
-                        playerTransform.DOMove(PlayerCartPosition[nowPlayerPosition], 2f).OnComplete(() =>
+                        var PlayerNumPosition = PlayerCartPosition[nowPlayerPosition];
+                        nowPlayerPosition += 1;
+                        playerTransform.LookAt(PlayerNumPosition);
+                        playerTransform.DOMove(PlayerNumPosition, 2f).OnComplete(() =>
                         {
                             Debug.Log("finish move");
                             // _playerAnimatorPresenter.Idle();
