@@ -91,13 +91,12 @@ namespace Carry.UISystem.UI.LobbyScene
                             _playerAnimatorPresenter.Idle();
                             playerTransform.SetParent(cart.transform);
 
-                            var targetPosition = new Vector3(10f, 0, 0);
-                            cart.transform.DOMove(targetPosition, 4f).OnComplete(() =>
-                            {
-                                _stageIndexTransporter.SetStageIndex(index);
-                                lobbyInitializer.TransitionToGameScene();
-                            });
-
+                        });
+                        var targetPosition = new Vector3(10f, 0, 0);
+                        cart.transform.DOMove(targetPosition, 4f).OnComplete(() =>
+                        {
+                            _stageIndexTransporter.SetStageIndex(index);
+                            lobbyInitializer.TransitionToGameScene();
                         });
                     });
                     
