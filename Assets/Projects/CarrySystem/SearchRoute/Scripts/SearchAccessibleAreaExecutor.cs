@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly WaveletSearchExecutor _waveletSearchExecutor;
         readonly IGridMap _gridMap;
         readonly IRoutePresenter?[] _routePresenters;
-        readonly int _delayMilliSec = 5;
+        readonly int _delayMilliSec = 7;
         CancellationTokenSource?[]? _cancellationTokenSources;
         public SearchAccessibleAreaExecutor(IGridMap gridMap, WaveletSearchExecutor waveletSearchExecutor)
         {
