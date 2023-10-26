@@ -13,6 +13,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class LobbyPlayerControllerNet : AbstractNetworkPlayerController
     {
+        public PlayerInfo Info => info;
         [SerializeField] GameObject cameraPrefab= null!;
         
         PlayerCharacterTransporter _playerCharacterTransporter = null!;  // PlayerColorTypeを次のシーンに保持するために必要

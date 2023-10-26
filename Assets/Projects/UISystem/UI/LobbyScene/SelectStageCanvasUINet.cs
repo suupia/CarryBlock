@@ -85,11 +85,13 @@ namespace Carry.UISystem.UI.LobbyScene
                         var playerTransform = playerController.transform;
                         Debug.Log(playerTransform.position.ToString());
                         var cartPosition = new Vector3(0f, 0.5f, 0f);
-                        _playerAnimatorPresenter.Dash();
+                        // _playerAnimatorPresenter.Dash();
+                        playerController.GetCharacter.Dash();
                         playerTransform.DOMove(cartPosition, 3f).OnComplete(() =>
                         {
                             Debug.Log("finish move");
-                            _playerAnimatorPresenter.Idle();
+                            // _playerAnimatorPresenter.Idle();
+                            playerController.GetCharacter.SwitchToRegularMove();
                             playerTransform.SetParent(cart.transform);
 
                         });
