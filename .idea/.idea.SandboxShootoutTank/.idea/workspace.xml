@@ -6,12 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="cf13caa4-bdd2-49cf-b3d5-bec88d577648" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SandboxShootoutTank/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SandboxShootoutTank/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Projects/CarrySystem/FloorTimer/Scripts/FloorTimerNet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/CarrySystem/FloorTimer/Scripts/FloorTimerNet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Projects/CarrySystem/Map/Scripts/EntityGridMapSwitcher.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/CarrySystem/Map/Scripts/EntityGridMapSwitcher.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/MapKeyDataBySakai.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/MapKeyDataBySakai.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/MapKeyDataSelectorNet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/MapKeyDataSelectorNet.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Projects/UISystem/UI/CarryScene/ResultCanvasUINet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/UISystem/UI/CarryScene/ResultCanvasUINet.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Projects/UISystem/UI/Prefabs/ResultCanvas.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/UISystem/UI/Prefabs/ResultCanvas.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -66,7 +62,7 @@
 }</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../Desktop/InstantiateTankTest.app/Contents/MacOS/SandboxShootoutTank" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../SandboxShootoutTankBuild\SandboxShootoutTank.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../Desktop/InstantiateTankTest.app/Contents/MacOS" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -141,6 +137,7 @@
       <workItem from="1697231754549" duration="2255000" />
       <workItem from="1697328040230" duration="16487000" />
       <workItem from="1697542853419" duration="3048000" />
+      <workItem from="1698356340476" duration="805000" />
     </task>
     <servers />
   </component>
