@@ -52,8 +52,8 @@ namespace Carry.GameSystem.LobbyScene.Scripts
                 _playerSpawner.RespawnAllPlayer();
             }
 
-            //var enemySpawner = new EnemySpawner(Runner);
-            //enemySpawner.SpawnPrefab(Vector3.zero, Quaternion.identity);
+            var enemySpawner = new EnemySpawner(Runner);
+            enemySpawner.SpawnPrefab(Vector3.zero, Quaternion.identity);
 
 
         }
