@@ -50,6 +50,9 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             builder.Register<LobbyWallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LobbyGroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LobbyPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            builder.Register<PrefabLoaderFromAddressable<CartControllerNet>>(Lifetime.Scoped)
+                .As<IPrefabLoader<CartControllerNet>>()
+                .WithParameter("path", "Prefabs/Carts/CartLobbyControllerNet");
             
             builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
             

@@ -16,6 +16,7 @@ using Carry.CarrySystem.Player.Scripts;
 using DG.Tweening;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.Cart.Scripts;
 
 #nullable enable
 
@@ -74,6 +75,8 @@ namespace Carry.UISystem.UI.LobbyScene
                 var index = i;
                 stageButton.AddListener(() =>
                 {
+                    CartLobbyControllerNet cart = FindObjectOfType<CartLobbyControllerNet>();
+                    Debug.Log(cart.transform.position.ToString());
                     //ゲームスタート前のアニメーション
                     _lobbyPlayerContainer.PlayerControllers.ForEach(playerController =>
                     {
@@ -81,13 +84,20 @@ namespace Carry.UISystem.UI.LobbyScene
                         var playerTransform = playerController.transform;
                         Debug.Log(playerTransform.position.ToString());
                         var cartPosition = new Vector3(0f, 0.5f, 0f);
-                        _playerAnimatorPresenter?.Dash();
+                        _playerAnimatorPresenter.Dash();
                         playerTransform.DOMove(cartPosition, 3f).OnComplete(() =>
                         {
                             Debug.Log("finish move");
-                            _playerAnimatorPresenter?.Idle();
-                            _stageIndexTransporter.SetStageIndex(index);
-                            lobbyInitializer.TransitionToGameScene();
+                            _playerAnimatorPresenter.Idle();
+                            playerTransform.SetParent(cart.transform);
+
+                            var targetPosition = new Vector3(10f, 0, 0);
+                            cart.transform.DOMove(targetPosition, 4f).OnComplete(() =>
+                            {
+                                _stageIndexTransporter.SetStageIndex(index);
+                                lobbyInitializer.TransitionToGameScene();
+                            });
+
                         });
                     });
                     
