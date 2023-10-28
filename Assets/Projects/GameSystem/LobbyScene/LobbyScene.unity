@@ -566,7 +566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5580503282736364754, guid: 4ce507046ee004f719102ee39cba630d, type: 3}
       propertyPath: mapKeyDataNetList.Array.size
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5580503282736364754, guid: 4ce507046ee004f719102ee39cba630d, type: 3}
       propertyPath: mapKeyDataNetList.Array.data[4]
@@ -580,6 +580,10 @@ PrefabInstance:
       propertyPath: mapKeyDataNetList.Array.data[6]
       value: 
       objectReference: {fileID: 4083379182302277477, guid: 3c3a5134ead040047aee33847c393113, type: 3}
+    - target: {fileID: 5580503282736364754, guid: 4ce507046ee004f719102ee39cba630d, type: 3}
+      propertyPath: mapKeyDataNetList.Array.data[7]
+      value: 
+      objectReference: {fileID: 4083379182302277477, guid: 78c3723f5972f594790bf8d9817f7cd4, type: 3}
     - target: {fileID: 8729571036883059389, guid: 4ce507046ee004f719102ee39cba630d, type: 3}
       propertyPath: m_Name
       value: MapKeyDataSelectorNet
