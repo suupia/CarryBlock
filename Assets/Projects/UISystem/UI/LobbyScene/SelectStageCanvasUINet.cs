@@ -85,6 +85,7 @@ namespace Carry.UISystem.UI.LobbyScene
                 {
                     CartLobbyControllerNet cart = FindObjectOfType<CartLobbyControllerNet>();
                     EnemyControllerNet enemy = FindObjectOfType<EnemyControllerNet>();
+                    var enemyAnimatorPresenter = enemy.GetComponentInChildren<EnemyAnimatorPresenterNet>();
                     Debug.Log(cart.transform.position.ToString());
                     Debug.Log(enemy.transform.position.ToString());
                     Vector3[] PlayerCartPosition = new Vector3[]
@@ -119,12 +120,12 @@ namespace Carry.UISystem.UI.LobbyScene
                             if (nowPlayerNum >= _lobbyPlayerContainer.PlayerControllers.Count)
                             {
                                 //敵の歩くアニメーション
-                                
+                                enemyAnimatorPresenter.Chase();
                                 enemy.transform.LookAt(cart.transform.position);
                                 enemy.transform.DOMove(new Vector3(-6f, 0, 0f), 1.2f).OnComplete(() =>
                                 {
                                     //敵の威嚇アニメーション
-                                    
+                                    // enemyAnimatorPresenter.Threat();
                                     var targetPosition = new Vector3(45f, 0, 0);
                                     playerTransform.LookAt(targetPosition);
                                     //敵の歩くアニメーション

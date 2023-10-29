@@ -32,6 +32,16 @@ namespace Projects.CarrySystem.Enemy
         //     Debug.Log($"PlayerAnimatorPresenterNet Init");
         //     character.SetPlayerAnimatorPresenter(this);
         // }
+        
+        public  override void Spawned()
+        {
+            // ここで取得するのは怠慢かも
+            // PlayerはSpawn時にAnimatorを取得しているので、それに合わせたほうがよいかも
+            Debug.Log($"EnemyAnimatorPresenterNet Spawned");
+            
+            var animator = GetComponentInChildren<Animator>();
+            SetAnimator(animator);
+        }
 
         public void SetAnimator(Animator animator)
         {
@@ -60,11 +70,13 @@ namespace Projects.CarrySystem.Enemy
         
         public void Threat()
         {
+            Debug.Log($"Threat");
             PresentDataRef.AnimationState = AnimationState.Threat;
         }
         
         public void Chase()
         {
+            Debug.Log($"Chase");
             PresentDataRef.AnimationState = AnimationState.Chase;
         }
         
