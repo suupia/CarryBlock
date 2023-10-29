@@ -122,20 +122,23 @@ namespace Carry.UISystem.UI.LobbyScene
                                 //敵の歩くアニメーション
                                 enemyAnimatorPresenter.Chase();
                                 enemy.transform.LookAt(cart.transform.position);
-                                enemy.transform.DOMove(new Vector3(-6f, 0, 0f), 1.2f).OnComplete(() =>
+                                enemy.transform.DOMove(new Vector3(-6f, 0, 0f), 1.5f).OnComplete(() =>
                                 {
                                     //敵の威嚇アニメーション
-                                    // enemyAnimatorPresenter.Threat();
-                                    var targetPosition = new Vector3(45f, 0, 0);
-                                    playerTransform.LookAt(targetPosition);
-                                    //敵の歩くアニメーション
-                                    
-                                    enemy.transform.DOMove(new Vector3(15f, 0, 0f), 3.5f);
-                                    cart.transform.DOMove(targetPosition, 3.5f).OnComplete(() =>
+                                    enemyAnimatorPresenter.Threat();
+                                    enemy.transform.DOMove(new Vector3(-5.5f, 0, 0f), 1.5f).OnComplete(() =>
                                     {
-                                        _stageIndexTransporter.SetStageIndex(index);
-                                        lobbyInitializer.TransitionToGameScene();
-                                    }); 
+                                        var targetPosition = new Vector3(40f, 0, 0);
+                                        playerTransform.LookAt(targetPosition);
+                                        //敵の歩くアニメーション
+                                        enemyAnimatorPresenter.Chase();
+                                        enemy.transform.DOMove(new Vector3(15f, 0, 0f), 2.5f);
+                                        cart.transform.DOMove(targetPosition, 2.5f).OnComplete(() =>
+                                        {
+                                            _stageIndexTransporter.SetStageIndex(index);
+                                            lobbyInitializer.TransitionToGameScene();
+                                        });
+                                    });
                                 });
                                 
                             }

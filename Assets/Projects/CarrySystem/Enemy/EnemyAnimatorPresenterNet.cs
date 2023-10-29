@@ -62,8 +62,8 @@ namespace Projects.CarrySystem.Enemy
                     _animator.SetBool("isChase", false);
                     break;
                 case  AnimationState.Chase:
-                    _animator.SetBool("InWalk", false);
-                    _animator.SetBool("InDash", true);
+                    _animator.SetBool("isThreat", false);
+                    _animator.SetBool("isChase", true);
                     break;
             }
         }
