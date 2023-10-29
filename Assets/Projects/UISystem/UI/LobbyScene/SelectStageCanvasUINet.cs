@@ -56,6 +56,9 @@ namespace Carry.UISystem.UI.LobbyScene
 
         public override void Spawned()
         {
+
+            //var enemySpawner = new EnemySpawner(Runner);
+            //enemySpawner.SpawnPrefab(new Vector3(-12f,0f,0f), Quaternion.Euler(0f, 180f, 0f));
             viewObject.SetActive(false);
 
             if (!HasStateAuthority)return;
@@ -83,6 +86,7 @@ namespace Carry.UISystem.UI.LobbyScene
                     CartLobbyControllerNet cart = FindObjectOfType<CartLobbyControllerNet>();
                     EnemyControllerNet enemy = FindObjectOfType<EnemyControllerNet>();
                     Debug.Log(cart.transform.position.ToString());
+                    Debug.Log(enemy.transform.position.ToString());
                     Vector3[] PlayerCartPosition = new Vector3[]
                     {
                         cart.transform.position + new Vector3(0.7f, 0, 0.7f),
@@ -114,12 +118,17 @@ namespace Carry.UISystem.UI.LobbyScene
                             nowPlayerNum += 1;
                             if (nowPlayerNum >= _lobbyPlayerContainer.PlayerControllers.Count)
                             {
+                                //敵の歩くアニメーション
+                                
                                 enemy.transform.LookAt(cart.transform.position);
                                 enemy.transform.DOMove(new Vector3(-6f, 0, 0f), 1.2f).OnComplete(() =>
                                 {
-                                    //敵の威嚇アニメーションがあれば
+                                    //敵の威嚇アニメーション
+                                    
                                     var targetPosition = new Vector3(45f, 0, 0);
                                     playerTransform.LookAt(targetPosition);
+                                    //敵の歩くアニメーション
+                                    
                                     enemy.transform.DOMove(new Vector3(15f, 0, 0f), 3.5f);
                                     cart.transform.DOMove(targetPosition, 3.5f).OnComplete(() =>
                                     {

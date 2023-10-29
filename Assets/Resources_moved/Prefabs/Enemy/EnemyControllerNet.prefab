@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5570018869776157791}
   - component: {fileID: 2567959458239073197}
   - component: {fileID: -2573258821909087960}
+  - component: {fileID: 4285648318832024270}
   m_Layer: 0
   m_Name: EnemyControllerNet
   m_TagString: Untagged
@@ -71,6 +72,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 5570018869776157791}
+  - {fileID: 4285648318832024270}
   SimulationBehaviours: []
 --- !u!114 &-2573258821909087960
 MonoBehaviour:
@@ -84,6 +86,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a442da429622dff4bb850c99f595a222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4285648318832024270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2451364387616949262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb26f9ff57a548ee9aac570ba046d06b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
 --- !u!1 &6778410864101620988
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,3 +193,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 88d45907618c72a4994a5634eacf0454, type: 3}
   m_PrefabInstance: {fileID: 1285395787055351613}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2096370073676216940 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 88d45907618c72a4994a5634eacf0454, type: 3}
+  m_PrefabInstance: {fileID: 1285395787055351613}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1028376219972455047
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096370073676216940}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ed8dc02c7a9370141967cc49d59c6472, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
