@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -46,7 +47,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             Func<int, int, bool> isWall = (x, y) => map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
 
             var searchAccessibleAreaExecutor = _searchAccessibleAreaBuilder.Build(_entityGridMapSwitcher.GetMap());
-            searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall);
+            var ctss = new CancellationTokenSource[map.Length];
+            searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall,ctss);
         }
     }
 }

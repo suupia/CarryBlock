@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -22,7 +23,8 @@ namespace Carry.CarrySystem.Cart.Scripts
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
         IDisposable? _isHoldSubscription; // to hold the subscription to dispose it later if needed
         IDisposable? _mapSubscription; // to hold the subscription to dispose it later if needed
-
+        CancellationTokenSource[]? _ctss;
+        
         public HoldingBlockObserver(
             IMapUpdater entityGridMapSwitcher,
             SearchAccessibleAreaBuilder searchAccessibleAreaBuilder,
@@ -66,12 +68,17 @@ namespace Carry.CarrySystem.Cart.Scripts
             var map = _mapUpdater.GetMap();
             Func<int, int, bool> isWall = (x, y) =>
                 map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
+            
+            if (_ctss == null || _ctss.Length != map.Length)
+            {
+                _ctss = new CancellationTokenSource[map.Length];
+            }
 
             var startPos = new Vector2Int(1, map.Height / 2);
             var endPos = new Vector2Int(map.Width - 2, map.Height / 2);
             var searcherSize = SearcherSize.SizeThree;
             var searchAccessibleAreaExecutor = _searchAccessibleAreaBuilder.Build(_mapUpdater.GetMap());
-            var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
+            var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, _ctss,searcherSize);
 
             // Show the result  
             if (_reachRightEdgeChecker.CanCartReachRightEdge(accessibleArea, map, searcherSize))
