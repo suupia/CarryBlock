@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class PassBlockMoveExecutor : NetworkBehaviour
+    public class PassBlockMoveExecutorNet : NetworkBehaviour
     {
         public struct PassBlockMoveData : INetworkStruct
         {
@@ -34,11 +34,12 @@ namespace Carry.CarrySystem.Player.Scripts
             
         }
 
-        public void PassBlockMove(Transform playerTransform, Transform targetTransform)
+        public void PassBlockMove(ICarriableBlock block, Transform playerTransform, Transform targetTransform)
         {
             Debug.Log("PassBlockMove Start");
             var spawner = new EntityPresenterSpawner(Runner);
             var entityPresenter = spawner.SpawnPrefabNet(playerTransform.position, Quaternion.identity);
+            entityPresenter.SetEntityActiveData(block,count:1);
             Debug.Log("PassBlockMove Spawned");
             entityPresenter.Object.transform.DOJump(targetTransform.position, jumpPower: 3f, numJumps: 1, duration: 1f)
                 .OnComplete(() =>

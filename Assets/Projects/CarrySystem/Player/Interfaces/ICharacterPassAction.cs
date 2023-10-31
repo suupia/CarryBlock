@@ -21,6 +21,6 @@ namespace Carry.CarrySystem.Player.Interfaces
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter);
         
-        public void SetPassBlockMoveExecutor(PassBlockMoveExecutor passBlockMoveExecutor);
+        public void SetPassBlockMoveExecutor(PassBlockMoveExecutorNet passBlockMoveExecutorNet);
     }
 }

@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Player.Scripts
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
         PassRangeNet? _passRangeNet;
-        PassBlockMoveExecutor? _passBlockMoveExecutor;
+        PassBlockMoveExecutorNet? _passBlockMoveExecutor;
 
         public PassActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer,
@@ -62,7 +62,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 var block = canPass.CarriableBlock;
                 PassBlock(block);
                 _passWaitExecutor.WaitPassAction(targetPlayerController.GetCharacter, block);
-                _passBlockMoveExecutor?.PassBlockMove(_info.PlayerObj.transform, target.transform);
+               if(_passBlockMoveExecutor !=null)_passBlockMoveExecutor.PassBlockMove(block, _info.PlayerObj.transform, target.transform);
             }
         }
 
@@ -120,9 +120,9 @@ namespace Carry.CarrySystem.Player.Scripts
             _playerAnimatorPresenter = presenter;
         }
         
-        public void SetPassBlockMoveExecutor(PassBlockMoveExecutor passBlockMoveExecutor)
+        public void SetPassBlockMoveExecutor(PassBlockMoveExecutorNet passBlockMoveExecutorNet)
         {
-            _passBlockMoveExecutor = passBlockMoveExecutor;
+            _passBlockMoveExecutor = passBlockMoveExecutorNet;
         }
         
     }
