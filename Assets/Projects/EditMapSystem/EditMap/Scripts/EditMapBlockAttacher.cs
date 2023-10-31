@@ -13,7 +13,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     public class EditMapBlockAttacher
     {
 
-        public void AddPlaceable<T>(EntityGridMap map , Vector2Int gridPos, T addBlock) where T : IPlaceable
+        public void AddPlaceable(EntityGridMap map , Vector2Int gridPos, IPlaceable addBlock)
         {
             if (!map.IsInDataRangeArea(gridPos)) return ;
 
@@ -32,9 +32,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         }
 
 
-        public void RemovePlaceable<T>(EntityGridMap map, Vector2Int gridPos) where T : IPlaceable
+        public void RemovePlaceable(EntityGridMap map, Vector2Int gridPos)
         {
-            var entities = map.GetSingleEntityList<T>(gridPos);
+            var entities = map.GetSingleEntityList<IPlaceable>(gridPos);
             if (!entities.Any()) return ;
             var entity = entities.First();
             if (map.IsInDataRangeArea(gridPos)) map.RemoveEntity(gridPos, entity);
