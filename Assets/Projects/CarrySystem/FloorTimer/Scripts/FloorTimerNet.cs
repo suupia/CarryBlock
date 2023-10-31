@@ -41,7 +41,7 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
         public override void FixedUpdateNetwork()
         {
             FloorRemainingSeconds = TickTimer.RemainingTime(Runner).GetValueOrDefault();
-            IsExpired = TickTimer.ExpiredOrNotRunning(Runner);
+            IsExpired = TickTimer.Expired(Runner);
         }
 
         float CalcFloorLimitTime()
