@@ -29,6 +29,7 @@ namespace Carry.CarrySystem.Spawners.Scripts
         public EntityPresenterNet SpawnPrefabNet(Vector3 position, Quaternion rotation)
         {
             var tilePresenter = _tilePresenterPrefabSpawner.Load();
+            Debug.Log("SpawnPrefabNet");
             return _runner.Spawn(tilePresenter, position, rotation, PlayerRef.None);
         }
     }
