@@ -25,14 +25,7 @@ namespace Carry.UISystem.UI.CarryScene
         [SerializeField] GameObject viewGameObject = null!;
         [SerializeField] CustomButton reStartButton = null!;
         [SerializeField] CustomButton titleButton = null!;
-        
-        // previous Network Property
         [Networked] bool ViewActive { get; set; } = false;
-        NetworkString<_16> ResultText { get; set; }
-        NetworkString<_32> ClearedFloorText { get; set; } 
-        NetworkString<_32> ClearTimeText { get; set; } 
-        
-        // new Network Property
         NetworkBool IsClear { get; set; } = false;
         [Networked] int ClearedFloorNumber { get; set; } = 0;
         [Networked] int MaxFloorNumber { get; set; } = 0;
@@ -63,17 +56,7 @@ namespace Carry.UISystem.UI.CarryScene
                 .Where(isExpired => isExpired)
                 .Subscribe(_ =>
                 {
-                    // viewGameObject.SetActive(true);
                     ViewActive = true;
-                    
-                    // previous
-                    // ResultText = "GameOver";
-                    // FloorNumber = mapUpdater.Index + 1;
-                    // ClearedPercent = FloorNumber / _maxFloorNumber * 100;
-                    // ClearedFloorText = $"Cleared Floor Percent : {ClearedPercent} %";
-                    // ClearTimeText = "Time's up";
-                    
-                    // new
                     IsClear = false;
                     ClearedFloorNumber = mapUpdater.Index;
                     MaxFloorNumber =  mapKeyDataList.Count;
@@ -85,38 +68,20 @@ namespace Carry.UISystem.UI.CarryScene
                 .Where(isCleared => isCleared)
                 .Subscribe(_ =>
                 {
-                    // viewGameObject.SetActive(true);
                     ViewActive = true;
-                    
-                    // previous
-                    // ResultText = "GameClear!!";
-                    // FloorNumber = mapUpdater.Index + 1;
-                    // ClearedPercent = FloorNumber / _maxFloorNumber * 100;
-                    // ClearedFloorText = $"Cleared Floor Percent : {ClearedPercent} %";
-                    // float clearTime = (int)(floorTimerNet.FloorLimitSeconds * _maxFloorNumber) -
-                    //                 floorTimerNet.FloorRemainingSecondsSam;
-                    // int clearTimeMinutes = (int)clearTime / 60;
-                    // int clearTimeSeconds = (int)clearTime - clearTimeMinutes * 60;
-                    // if(clearTimeMinutes != 0)
-                    //     ClearTimeText = $"Clear Time : {clearTimeMinutes}'{clearTimeSeconds}";
-                    // else
-                    //     ClearTimeText = $"Clear Time : {clearTimeSeconds} s ";
-                    //floorTimerNet.IsCleared = false;
-                    
-                    // new
                     IsClear = true;
                     ClearedFloorNumber = mapUpdater.Index;
                     MaxFloorNumber =  mapKeyDataList.Count;
                     ClearTime = floorTimerNet.FloorLimitSeconds * _maxFloorNumber -
                                 floorTimerNet.FloorRemainingSecondsSam;
                 });
+            
         }
 
         void Start()
         {
                viewGameObject.SetActive(false);
-               
-                           
+
                reStartButton.AddListener(() =>
                {
                    Debug.Log("ReStartButton Clicked");
@@ -145,15 +110,6 @@ namespace Carry.UISystem.UI.CarryScene
         {
             if (_viewActiveLocal != ViewActive)
             {
-                // previous
-                // _viewActiveLocal = ViewActive;
-                // viewGameObject.SetActive(ViewActive);
-                // resultText.text = ResultText.ToString();
-                // clearedFloorText.text = ClearedFloorText.ToString();
-                // clearTimeText.text = ClearTimeText.ToString();
-                // Debug.Log(ClearedFloorText);
-                
-                // new 
                 _viewActiveLocal = ViewActive;
                 viewGameObject.SetActive(ViewActive);
                 resultText.text = IsClear ? $"GameClear!" : $"GameOver";
@@ -161,6 +117,7 @@ namespace Carry.UISystem.UI.CarryScene
                 clearTimeText.text = IsClear ? GetClearTimeText(ClearTime) : $"Time's up";
             }
         }
+        
         
         String GetClearTimeText(float clearTime)
         {
