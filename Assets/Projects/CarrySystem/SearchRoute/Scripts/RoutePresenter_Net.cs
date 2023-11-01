@@ -15,10 +15,12 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
         [SerializeField] GameObject routeHighlightObject = null!;
         
+        private readonly Vector3 _vertex = new Vector3(0, 0.4f, 0);
+        
         public override void Render()
         {
             routeHighlightObject.SetActive(IsActive);
-            StartAnimation();
+            RouteAnimation();
         }
         
         public void SetPresenterActive(bool isActive)
@@ -26,18 +28,28 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             IsActive = isActive;
         }
 
-        void StartAnimation()
+        void RouteAnimation()
         {
             if (!IsActive)
             {
                 IsAnimated = false;
                 return;
             }
-            
             if (IsAnimated) return;
 
+            var pos = routeHighlightObject.transform.position;
             routeHighlightObject.transform.localScale = Vector3.one * 0.001f;
-            routeHighlightObject.transform.DOScale(Vector3.one, 0.2f);
+
+            Sequence sequence = DOTween.Sequence().OnStart(() =>
+            {
+                routeHighlightObject.transform.DOScale(Vector3.one, 0.3f);
+            });
+            
+            sequence.Join(transform.DOMove(pos + _vertex, 0.1f))
+                    .Insert(0.1f,transform.DOMove(pos, 0.25f).SetEase(Ease.OutBounce))
+                    .SetLink(routeHighlightObject, LinkBehaviour.RewindOnDisable);
+
+            sequence.Play();
             IsAnimated = true;
         }
     }
