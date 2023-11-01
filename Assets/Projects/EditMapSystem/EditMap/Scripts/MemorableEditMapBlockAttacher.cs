@@ -52,7 +52,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             _redoStack = new Stack<OperationData>(capacity);
         }
         
-        public new void AddPlaceable(EntityGridMap map , Vector2Int gridPos, IPlaceable addBlock)
+        public void AddPlaceable(EntityGridMap map , Vector2Int gridPos, IPlaceable addBlock)
         {
             var op = new OperationData(Operation.Add, gridPos, addBlock);
             Do(map, op);
@@ -60,7 +60,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             _stack.Push(op);
         }
         
-        public new void RemovePlaceable(EntityGridMap map, Vector2Int gridPos)
+        public void RemovePlaceable(EntityGridMap map, Vector2Int gridPos)
         {
             var op = new OperationData(Operation.Add, gridPos);
             Do(map, op);
