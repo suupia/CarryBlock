@@ -62,7 +62,10 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
         
         public void RemovePlaceable(EntityGridMap map, Vector2Int gridPos)
         {
-            var op = new OperationData(Operation.Add, gridPos);
+            var obj = map.GetSingleEntity<IPlaceable>(gridPos);
+             
+            if (obj == null) return;
+            var op = new OperationData(Operation.Remove, gridPos, obj);
             Do(map, op);
             _redoStack.Clear();
             _stack.Push(op);
