@@ -101,6 +101,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void PassAction() => _passActionExecutor.PassAction();
         public bool CanReceivePass() => _passActionExecutor.CanReceivePass();
         public void ReceivePass(ICarriableBlock block) => _passActionExecutor.ReceivePass(block);
+        public void SetPassBlockMoveExecutor(PassBlockMoveExecutorNet presenter) => _passActionExecutor.SetPassBlockMoveExecutor(presenter);
         
         // IOnDamageExecutor
         public bool IsFainted => _onDamageExecutor.IsFainted;   

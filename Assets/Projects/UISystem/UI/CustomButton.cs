@@ -15,6 +15,7 @@ namespace Carry.UISystem.UI
         [SerializeField] AudioClip clickSound = null!;
         [SerializeField] TextMeshProUGUI? textMeshProUGUI;
         Button _button = null!;
+        Component[]? _childrenComponents;
         AudioSource? _audioSource;
 
         bool _isInitialized = false;
@@ -22,6 +23,7 @@ namespace Carry.UISystem.UI
         protected override void Awake()
         {
             Setup();
+            _childrenComponents = GetComponentsInChildren<Component>();
         }
         
         public void Init()
@@ -46,9 +48,22 @@ namespace Carry.UISystem.UI
         public bool Interactable
         {
             get => _button.interactable;
-            set => _button.interactable = value;
+            set
+            {
+                if (_childrenComponents != null)
+                {
+                    foreach (var child in _childrenComponents)
+                    {
+                        if (child is TextMeshProUGUI textMesh)
+                        {
+                            textMesh.alpha = value ? 1.0f : 0.5f;
+                        }
+                    }
+                }
+                _button.interactable = value;
+            }
         }
-        
+
         public void AddListener(UnityAction action)
         {
             _button.onClick.AddListener(() =>
