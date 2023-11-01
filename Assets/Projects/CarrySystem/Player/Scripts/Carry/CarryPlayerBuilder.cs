@@ -68,7 +68,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
-                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType,_mapUpdater, _playerNearCartHandler, _playerCharacterTransporter,_floorTimerNet);
+                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,character,character, character,character,character, colorType,_mapUpdater, _playerNearCartHandler, _playerCharacterTransporter,_floorTimerNet);
                     networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);

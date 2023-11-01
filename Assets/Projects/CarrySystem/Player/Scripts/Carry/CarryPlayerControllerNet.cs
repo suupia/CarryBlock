@@ -25,18 +25,28 @@ namespace Carry.CarrySystem.Player.Scripts
         PlayerNearCartHandlerNet _playerNearCartHandler = null!;
         PlayerCharacterTransporter _playerCharacterTransporter = null!;
         FloorTimerNet _floorTimerNet = null!;
-        
+
         public void Init(
-            ICharacter character,
+            ICharacter character, 
+            IMoveExecutorSwitcher moveExecutorSwitcher,
+            IHoldActionExecutor holdActionExecutor,
+            IPassActionExecutor passActionExecutor,
+            IDashExecutor dashExecutor,
+            IOnDamageExecutor onDamageExecutor,
             PlayerColorType colorType,
             IMapUpdater mapUpdater,
             PlayerNearCartHandlerNet playerNearCartHandler,
             PlayerCharacterTransporter playerCharacterTransporter,
             FloorTimerNet floorTimerNet
-            )
+        )
         {
             Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
             this.Character = character;
+            MoveExecutorSwitcher = moveExecutorSwitcher;
+            HoldActionExecutor = holdActionExecutor;
+            PassActionExecutor = passActionExecutor;
+            DashExecutor = dashExecutor;
+            OnDamageExecutor = onDamageExecutor!;
             ColorType = colorType;
             _mapUpdater = mapUpdater;
             _playerNearCartHandler = playerNearCartHandler;

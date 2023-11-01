@@ -26,6 +26,13 @@ namespace Carry.CarrySystem.Player.Interfaces
         public ICharacter GetCharacter => Character;
 
         protected ICharacter Character = null!; // サブクラスのInitでcharacterを受け取るようになっているのでnullになることはない
+        
+        // ICharacterリファクタリング
+        protected IMoveExecutorSwitcher MoveExecutorSwitcher = null!;
+        protected IHoldActionExecutor HoldActionExecutor = null!;
+        protected IPassActionExecutor PassActionExecutor = null!;
+        protected IDashExecutor DashExecutor = null!;
+        protected IOnDamageExecutor OnDamageExecutor = null!;
 
 
         public override void Spawned()
