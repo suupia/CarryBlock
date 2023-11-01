@@ -75,6 +75,10 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
             Debug.Log($"次のフロアに変更します nextIndex: {index}");
+            
+            //この呼び出しが_floorTimerNet.IsCleared = trueより後になるとクリアした最後のフロアの時間が加算されない
+            _floorTimerNet.SamRemainingTime();
+            
             if (index < 0)
             {
                 Debug.LogWarning($"index is under the min value");
@@ -84,6 +88,7 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 Debug.LogWarning($"index is over the max value");
                 index = mapKeyDataList.Count - 1; // 最大値を超えないようにする
+                _floorTimerNet.IsCleared = true;//次のフロアがないためクリアフラグをtrueにする
             }
             _currentIndex = index;
             var key = mapKeyDataList[_currentIndex].mapKey;
