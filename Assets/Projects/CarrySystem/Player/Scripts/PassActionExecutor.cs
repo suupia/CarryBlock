@@ -15,28 +15,23 @@ namespace Carry.CarrySystem.Player.Scripts
     public class PassActionExecutor : IPassActionExecutor
     {
         PlayerInfo _info = null!;
-        readonly HoldActionExecutor _holdActionExecutor;
-        readonly float _radius;
-        readonly int _layerMask;
-        readonly  Collider[] _targetBuffer = new Collider[10];
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
+        readonly PassWaitExecutor _passWaitExecutor;
         
         // Presenter
         IPlayerBlockPresenter? _playerBlockPresenter;
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
         PassRangeNet? _passRangeNet;
+        PassBlockMoveExecutorNet? _passBlockMoveExecutor;
 
         public PassActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer,
-            HoldActionExecutor holdActionExecutor, 
-            float radius,
-            int layerMask)
+            PassWaitExecutor passWaitExecutor)
         {
             _holdingObjectContainer = holdingObjectContainer;
-            _holdActionExecutor = holdActionExecutor;
-            _radius = radius;
-            _layerMask = layerMask; /*LayerMask.GetMask("Player");*/
+            _passWaitExecutor = passWaitExecutor;
+
         }
         public void Setup(PlayerInfo info)
         {
@@ -51,22 +46,24 @@ namespace Carry.CarrySystem.Player.Scripts
         public void PassAction()
         {
             if (_passRangeNet == null) _passRangeNet = _info.PlayerController.GetComponentInChildren<PassRangeNet>();
-
-            var targetPlayerController = _passRangeNet.DetectedTarget();
-            if (targetPlayerController == null)
+            if (_passRangeNet.DetectedTarget() is {} target)
             {
-                Debug.Log($"targetPlayerController is null");
-                return;
+                var targetPlayerController  = target.GetComponent<CarryPlayerControllerNet>();
+                if (targetPlayerController == null)
+                {
+                    Debug.LogError($"{target.name} には CarryPlayerControllerNet がアタッチされていません");
+                    return;
+                }
+                
+                Debug.Log($"{_info.PlayerController.Object.InputAuthority}から{targetPlayerController.Object.InputAuthority}に対してPassを試みます");
+                
+                var canPass = CanPass(targetPlayerController);
+                if(!canPass.CanPass) return;
+                var block = canPass.CarriableBlock;
+                PassBlock(block);
+                _passWaitExecutor.WaitPassAction(targetPlayerController.GetCharacter, block);
+               if(_passBlockMoveExecutor !=null)_passBlockMoveExecutor.PassBlockMove(block, _info.PlayerObj.transform, target.transform);
             }
-
-            Debug.Log(
-                $"{_info.PlayerController.Object.InputAuthority}から{targetPlayerController.Object.InputAuthority}に対してPassを試みます");
-
-            var canPass = CanPass(targetPlayerController);
-            if (!canPass.CanPass) return;
-            var block = canPass.CarriableBlock;
-            PassBlock(block);
-            targetPlayerController.GetCharacter.ReceivePass(block);
         }
 
         // public
@@ -121,6 +118,11 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
             _playerAnimatorPresenter = presenter;
+        }
+        
+        public void SetPassBlockMoveExecutor(PassBlockMoveExecutorNet passBlockMoveExecutorNet)
+        {
+            _passBlockMoveExecutor = passBlockMoveExecutorNet;
         }
         
     }
