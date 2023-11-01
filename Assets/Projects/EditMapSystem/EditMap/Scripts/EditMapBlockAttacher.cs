@@ -10,7 +10,13 @@ using UnityEngine;
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
-    public class EditMapBlockAttacher
+    public interface IEditMapBlockAttacher
+    {
+        void AddPlaceable(EntityGridMap map , Vector2Int gridPos, IPlaceable addBlock);
+        void RemovePlaceable(EntityGridMap map, Vector2Int gridPos);
+    }
+
+    public class EditMapBlockAttacher : IEditMapBlockAttacher
     {
 
         public void AddPlaceable(EntityGridMap map , Vector2Int gridPos, IPlaceable addBlock)

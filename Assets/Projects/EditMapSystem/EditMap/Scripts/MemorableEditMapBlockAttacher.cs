@@ -39,13 +39,15 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
         
     }
     
-    public class MemorableEditMapBlockAttacher: EditMapBlockAttacher
+    public class MemorableEditMapBlockAttacher: IEditMapBlockAttacher
     {
         private readonly Stack<OperationData> _stack;
         private readonly Stack<OperationData> _redoStack;
+        private IEditMapBlockAttacher _impl;
         
-        public MemorableEditMapBlockAttacher(int capacity = 100)
+        public MemorableEditMapBlockAttacher(IEditMapBlockAttacher impl, int capacity = 100)
         {
+            _impl = impl;
             _stack = new Stack<OperationData>(capacity);
             _redoStack = new Stack<OperationData>(capacity);
         }
@@ -105,11 +107,11 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             switch (data.Operation)
             {
                 case Operation.Add:
-                    base.AddPlaceable(map, data.Coords, data.Placeable);
+                    _impl.AddPlaceable(map, data.Coords, data.Placeable);
                     Debug.Log($"Add, {data.Coords}, {data.Placeable}");
                     break;
                 case Operation.Remove:
-                    base.RemovePlaceable(map, data.Coords);
+                    _impl.RemovePlaceable(map, data.Coords);
                     Debug.Log($"Remove, {data.Coords}, {data.Placeable}");
                     break;
                 default:
