@@ -32,6 +32,7 @@ namespace Carry.CarrySystem.Map.Scripts
             public int TreasureCoinCount;
             public Direction CannonDirection;
             public int SpikeCount;
+            public NetworkBool IsColliderActive;
         }
 
         [Networked] ref PresentData PresentDataRef => ref MakeRef<PresentData>();
@@ -50,9 +51,16 @@ namespace Carry.CarrySystem.Map.Scripts
         Direction _cannonDirectionLocal;
         [SerializeField] GameObject spikeView = null!;
 
+        Collider _viewCollider = null!;
         public void DestroyPresenter()
         {
            Runner.Despawn(this.Object);
+        }
+
+        public override void Spawned()
+        {
+            PresentDataRef.IsColliderActive = true;
+            _viewCollider = GetComponentInChildren<Collider>();
         }
 
         public override void Render()
@@ -145,6 +153,8 @@ namespace Carry.CarrySystem.Map.Scripts
                 1 => true,
                 _ => throw new InvalidOperationException($"SpikeCount : {PresentDataRef.SpikeCount}")
             });
+            
+            _viewCollider.enabled = PresentDataRef.IsColliderActive;
         }
 
 
@@ -213,6 +223,11 @@ namespace Carry.CarrySystem.Map.Scripts
                     PresentDataRef.SpikeCount = count;
                     break;
             }
+        }
+
+        public void SetColliderActive(bool isActive)
+        {
+            PresentDataRef.IsColliderActive = isActive;
         }
         
         float CalcRotationAmount(Direction direction)
