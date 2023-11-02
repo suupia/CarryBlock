@@ -78,8 +78,8 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _moveExecutorSwitcher.SetPlayerAnimatorPresenter(presenter);
             _holdActionExecutor.SetPlayerAnimatorPresenter(presenter);
-            _passActionExecutor.SetPlayerAnimatorPresenter(presenter);
             _onDamageExecutor.SetPlayerAnimatorPresenter(presenter);
+            _passActionExecutor.SetPlayerAnimatorPresenter(presenter);
         }
         
         public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)

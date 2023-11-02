@@ -76,12 +76,12 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
                     networkObj.GetComponent<CarryPlayerControllerNet>().Init(blockContainer, moveExecutorSwitcher,holdActionExecutor, onDamageExecutor,dashExecutor,passActionExecutor, colorType,_mapUpdater, _playerNearCartHandler, _playerCharacterTransporter,_floorTimerNet);
-                    networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character);
-                    networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
-                    networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
-                    networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
-                    networkObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(character);
-                    networkObj.GetComponentInChildren<PassBlockMoveExecutorNet>()?.Init(character);
+                    networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(holdActionExecutor,passActionExecutor);
+                    networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(holdActionExecutor);
+                    networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(moveExecutorSwitcher,holdActionExecutor,onDamageExecutor,passActionExecutor);
+                    networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(dashExecutor);
+                    networkObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(onDamageExecutor);
+                    networkObj.GetComponentInChildren<PassBlockMoveExecutorNet>()?.Init(passActionExecutor);
                     
                 });
             var info = playerControllerObj.Info;
