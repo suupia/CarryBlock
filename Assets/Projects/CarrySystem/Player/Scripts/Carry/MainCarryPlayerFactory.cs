@@ -67,7 +67,7 @@ namespace Carry.CarrySystem.Player.Scripts
             return new HoldActionExecutor(blockContainer,_playerNearCartHandler, _mapUpdater);
         } 
                 
-        public IOnDamageExecutor OnDamageExecutor(IMoveExecutorSwitcher moveExecutorSwitcher)
+        public IOnDamageExecutor CreateOnDamageExecutor(IMoveExecutorSwitcher moveExecutorSwitcher)
         {
             return new OnDamageExecutor(moveExecutorSwitcher, _playerCharacterTransporter);
         }

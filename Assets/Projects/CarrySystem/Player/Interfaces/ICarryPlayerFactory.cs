@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Interfaces
 
         public IHoldActionExecutor CreateHoldActionExecutor(PlayerHoldingObjectContainer blockContainer);
 
-        public IOnDamageExecutor OnDamageExecutor(IMoveExecutorSwitcher moveExecutorSwitcher);
+        public IOnDamageExecutor CreateOnDamageExecutor(IMoveExecutorSwitcher moveExecutorSwitcher);
 
         public IDashExecutor CreateDashExecutor(IMoveExecutorSwitcher moveExecutorSwitcher,
             IOnDamageExecutor onDamageExecutor);

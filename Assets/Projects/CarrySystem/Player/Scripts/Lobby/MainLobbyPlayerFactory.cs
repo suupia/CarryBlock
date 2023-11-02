@@ -35,7 +35,7 @@ namespace Carry.CarrySystem.Player.Scripts
             return new EmptyHoldActionExecutor();
         }
 
-        public IOnDamageExecutor OnDamageExecutor(IMoveExecutorSwitcher moveExecutorSwitcher)
+        public IOnDamageExecutor CreateOnDamageExecutor(IMoveExecutorSwitcher moveExecutorSwitcher)
         {
             return  new OnDamageExecutor(moveExecutorSwitcher, _playerCharacterTransporter);
         }
