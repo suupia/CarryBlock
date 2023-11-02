@@ -20,20 +20,20 @@ namespace Carry.CarrySystem.Player.Scripts
         //public bool IsPassing { get; private set; }
         CancellationTokenSource? _cts;
         
-        public void WaitPassAction(ICharacter character, ICarriableBlock block)
+        public void WaitPassAction(IPassActionExecutor passActionExecutor, ICarriableBlock block)
         {
             _cts?.Cancel();
             _cts = new CancellationTokenSource();
-            AsyncPassed(character, block , _cts.Token).Forget();
+            AsyncPassed(passActionExecutor, block , _cts.Token).Forget();
         }
 
-        async UniTaskVoid AsyncPassed(ICharacter character, ICarriableBlock block, CancellationToken cts)
+        async UniTaskVoid AsyncPassed(IPassActionExecutor passActionExecutor, ICarriableBlock block, CancellationToken cts)
         {
             try
             {
                 //Debug.Log($"PassBlockMoveExecutor.AsyncPassed()");
                 await UniTask.Delay(1000, cancellationToken: cts);
-                character.ReceivePass(block);
+                passActionExecutor.ReceivePass(block);
             }
             catch (OperationCanceledException)
             {

@@ -21,14 +21,14 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Init(ICharacter character, PlayerColorType colorType, PlayerCharacterTransporter playerCharacterTransporter)
         {
             Debug.Log($"LobbyPlayerControllerNet.Init(), character = {character}");
-            this.Character = character;
+            // this.Character = character;
             ColorType = colorType;
             _playerCharacterTransporter = playerCharacterTransporter;
         }
 
         public override void Spawned()
         {
-            Debug.Log($"LobbyPlayerController_Net.Spawned(), _character = {Character}");    
+            // Debug.Log($"LobbyPlayerController_Net.Spawned(), _character = {Character}");    
 
             // Set camera
             if (Object.HasInputAuthority)

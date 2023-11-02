@@ -61,7 +61,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 if(!canPass.CanPass) return;
                 var block = canPass.CarriableBlock;
                 PassBlock(block);
-                _passWaitExecutor.WaitPassAction(targetPlayerController.GetCharacter, block);
+                _passWaitExecutor.WaitPassAction(targetPlayerController.GetPassActionExecutor, block);
                if(_passBlockMoveExecutor !=null)_passBlockMoveExecutor.PassBlockMove(block, _info.PlayerObj.transform, target.transform);
             }
         }
@@ -74,7 +74,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void ReceivePass(ICarriableBlock block)
         {
             Debug.Log("Receive Pass");
-            block.PickUp(_info.PlayerController.GetCharacter);
+            block.PickUp(_info.PlayerController.GetMoveExecutorSwitcher, _info.PlayerController.GetPlayerHoldingObjectContainer,_info.PlayerController.GetHoldActionExecutor);
             _holdingObjectContainer.SetBlock(block);
             _playerBlockPresenter?.ReceiveBlock(block);
             _playerAnimatorPresenter?.ReceiveBlock(block);
@@ -84,7 +84,7 @@ namespace Carry.CarrySystem.Player.Scripts
         void PassBlock(ICarriableBlock block)
         {
             Debug.Log($"Pass Block");
-            block.PutDown(_info.PlayerController.GetCharacter);
+            block.PutDown(_info.PlayerController.GetMoveExecutorSwitcher);
             _playerBlockPresenter?.PassBlock();
             _playerAnimatorPresenter?.PassBlock();
         }
@@ -96,7 +96,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 Debug.Log($"{_info.PlayerController.Object.InputAuthority} isn't holding a block. So, can't pass block");
                 return (false, null!);
             }
-            if (!targetPlayerController.GetCharacter.CanReceivePass())
+            if (!targetPlayerController.GetPassActionExecutor.CanReceivePass())
             {
                 Debug.Log($"{targetPlayerController.Object.InputAuthority} is holding a block.So, can't receive pass");
                 return (false, null!);

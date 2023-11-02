@@ -7,6 +7,7 @@ using Carry.CarrySystem.CarriableBlock.Interfaces;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.Player.Scripts;
 using UnityEngine;
 #nullable  enable
 
@@ -42,7 +43,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return false;  // 常に持ち上げられない
         }
 
-        public void  PickUp(ICharacter character)
+        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, PlayerHoldingObjectContainer blockContainer, IHoldActionExecutor holdActionExecutor)
         {
             // 特になし
         }
@@ -52,7 +53,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return false; // 常に置けない
         }
         
-        public void PutDown(ICharacter character)
+        public void PutDown(IMoveExecutorSwitcher moveExecutorSwitcher)
         {
             // 特になし
         }
