@@ -36,21 +36,16 @@ namespace Carry.CarrySystem.Player.Scripts
             
             // ドメインスクリプトをnew
             var colorType = _playerCharacterTransporter.GetPlayerColorType(playerRef);
-            var blockContainer = _carryPlayerFactory.CreatePlayerHoldingObjectContainer();
-            var moveExecutorSwitcher = _carryPlayerFactory.CreateMoveExecutorSwitcher();
-            var holdActionExecutor = _carryPlayerFactory.CreateHoldActionExecutor(blockContainer);
-            var onDamageExecutor = _carryPlayerFactory.CreateOnDamageExecutor(moveExecutorSwitcher);
-            var dashExecutor = _carryPlayerFactory.CreateDashExecutor(moveExecutorSwitcher, onDamageExecutor);
-            var passActionExecutor = _carryPlayerFactory.CreatePassActionExecutor(blockContainer);
+            var character = _carryPlayerFactory.CreateCharacter();
             
             // プレハブをスポーン
             var playerControllerObj = _runner.Spawn(playerController,position, rotation, playerRef,
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
-                    networkObj.GetComponent<LobbyPlayerControllerNet>().Init(blockContainer, moveExecutorSwitcher,holdActionExecutor, onDamageExecutor,dashExecutor,passActionExecutor,colorType,_playerCharacterTransporter);
-                    networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(moveExecutorSwitcher, holdActionExecutor, onDamageExecutor,passActionExecutor);
-                    networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(dashExecutor);
+                    networkObj.GetComponent<LobbyPlayerControllerNet>().Init(character.PlayerHoldingObjectContainer, character,character, character,character,character,colorType,_playerCharacterTransporter);
+                    networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character, character, character,character);
+                    networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
 
                 });
             

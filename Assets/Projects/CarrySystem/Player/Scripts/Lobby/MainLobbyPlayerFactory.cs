@@ -13,30 +13,34 @@ namespace Carry.CarrySystem.Player.Scripts
         {
         }
 
-        public IMoveExecutorSwitcher CreateMoveExecutorSwitcher()
+        public  Character CreateCharacter()
         {
-            return new MoveExecutorSwitcher();
-        }
-
-        public IHoldActionExecutor CreateHoldActionExecutor(PlayerHoldingObjectContainer blockContainer)
-        {
-            return new EmptyHoldActionExecutor();
-        }
-
-        public IOnDamageExecutor CreateOnDamageExecutor(IMoveExecutorSwitcher moveExecutorSwitcher)
-        {
-            return  new OnDamageExecutor(moveExecutorSwitcher, _playerCharacterTransporter);
-        }
-
-        public IDashExecutor CreateDashExecutor(IMoveExecutorSwitcher moveExecutorSwitcher,
-            IOnDamageExecutor onDamageExecutor)
-        {
-            return  new DashExecutor(moveExecutorSwitcher, onDamageExecutor);
-        }
-
-        public IPassActionExecutor CreatePassActionExecutor(PlayerHoldingObjectContainer blockContainer)
-        {
-            return new EmptyPassActionExecutor();
+            // PlayerHolderObjectContainer
+            var blockContainer = new PlayerHoldingObjectContainer();
+            
+            // IMoveExecutorSwitcher
+            var moveExecutorSwitcher = new MoveExecutorSwitcher();
+            
+            // IHoldActionExecutor
+            var holdActionExecutor =new EmptyHoldActionExecutor();
+            
+            // IOnDamageExecutor
+            var onDamageExecutor = new OnDamageExecutor(moveExecutorSwitcher, _playerCharacterTransporter);
+            var dashExecutor = new DashExecutor(moveExecutorSwitcher, onDamageExecutor);
+            
+            // IPassActionExecutor
+            var passActionExecutor = new EmptyPassActionExecutor(); 
+            
+            var character = new Character(
+                moveExecutorSwitcher,
+                holdActionExecutor,
+                dashExecutor,
+                passActionExecutor,
+                onDamageExecutor,
+                blockContainer
+            );
+            
+            return character;
         }
     }
 }

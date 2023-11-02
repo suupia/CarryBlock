@@ -13,6 +13,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly HoldingBlockObserver  _holdingBlockObserver;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         readonly PlayerCharacterTransporter _playerCharacterTransporter;
+        
         [Inject]
         public MainCarryPlayerFactory(
             IMapUpdater mapUpdater ,
@@ -26,39 +27,38 @@ namespace Carry.CarrySystem.Player.Scripts
             _playerNearCartHandler = playerNearCartHandler;
             _playerCharacterTransporter = playerCharacterTransporter;
         }
-
-        public PlayerHoldingObjectContainer CreatePlayerHoldingObjectContainer()
-        {
-            return new PlayerHoldingObjectContainer();
-        }
-
-        public IMoveExecutorSwitcher CreateMoveExecutorSwitcher()
-        {
-            return new MoveExecutorSwitcher();
-        }
         
-        public IHoldActionExecutor CreateHoldActionExecutor(PlayerHoldingObjectContainer blockContainer)
+        public  Character CreateCharacter()
         {
+            // PlayerHolderObjectContainer
+            var blockContainer = new PlayerHoldingObjectContainer();
+            
+            // IMoveExecutorSwitcher
+            var moveExecutorSwitcher = new MoveExecutorSwitcher();
+            
+            // IHoldActionExecutor
             _holdingBlockObserver.RegisterHoldAction(blockContainer);
-            return new HoldActionExecutor(blockContainer,_playerNearCartHandler, _mapUpdater);
-        } 
-                
-        public IOnDamageExecutor CreateOnDamageExecutor(IMoveExecutorSwitcher moveExecutorSwitcher)
-        {
-            return new OnDamageExecutor(moveExecutorSwitcher, _playerCharacterTransporter);
-        }
-        
-        public IDashExecutor CreateDashExecutor(IMoveExecutorSwitcher moveExecutorSwitcher, IOnDamageExecutor onDamageExecutor)
-        {
-            return new DashExecutor(moveExecutorSwitcher, onDamageExecutor);
-        }
-        
-        public IPassActionExecutor CreatePassActionExecutor(PlayerHoldingObjectContainer blockContainer)
-        {
+            var holdActionExecutor =new HoldActionExecutor(blockContainer,_playerNearCartHandler, _mapUpdater);
+            
+            // IOnDamageExecutor
+            var onDamageExecutor = new OnDamageExecutor(moveExecutorSwitcher, _playerCharacterTransporter);
+            var dashExecutor = new DashExecutor(moveExecutorSwitcher, onDamageExecutor);
+            
+            // IPassActionExecutor
             var passBlockMoveExe = new PassWaitExecutor();
-            return new PassActionExecutor(blockContainer, passBlockMoveExe);
+            var passActionExecutor = new PassActionExecutor(blockContainer, passBlockMoveExe); 
+            
+            var character = new Character(
+                moveExecutorSwitcher,
+                holdActionExecutor,
+                dashExecutor,
+                passActionExecutor,
+                onDamageExecutor,
+                blockContainer
+            );
+            
+            return character;
         }
-
 
     }
 }

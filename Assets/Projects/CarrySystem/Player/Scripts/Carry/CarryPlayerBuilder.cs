@@ -62,25 +62,20 @@ namespace Carry.CarrySystem.Player.Scripts
             
             // ドメインスクリプトをnew
             var colorType = _playerCharacterTransporter.GetPlayerColorType(playerRef);
-            var blockContainer = _carryPlayerFactory.CreatePlayerHoldingObjectContainer();
-            var moveExecutorSwitcher = _carryPlayerFactory.CreateMoveExecutorSwitcher();
-            var holdActionExecutor = _carryPlayerFactory.CreateHoldActionExecutor(blockContainer);
-            var onDamageExecutor = _carryPlayerFactory.CreateOnDamageExecutor(moveExecutorSwitcher);
-            var dashExecutor = _carryPlayerFactory.CreateDashExecutor(moveExecutorSwitcher, onDamageExecutor);
-            var passActionExecutor = _carryPlayerFactory.CreatePassActionExecutor(blockContainer);
+            var character = _carryPlayerFactory.CreateCharacter();
             
             // プレハブをスポーン
             var playerControllerObj = _runner.Spawn(playerController,position, rotation, playerRef,
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
-                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(blockContainer, moveExecutorSwitcher,holdActionExecutor, onDamageExecutor,dashExecutor,passActionExecutor, colorType,_mapUpdater, _playerNearCartHandler, _playerCharacterTransporter,_floorTimerNet);
-                    networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(holdActionExecutor,passActionExecutor);
-                    networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(holdActionExecutor);
-                    networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(moveExecutorSwitcher,holdActionExecutor,onDamageExecutor,passActionExecutor);
-                    networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(dashExecutor);
-                    networkObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(onDamageExecutor);
-                    networkObj.GetComponentInChildren<PassBlockMoveExecutorNet>()?.Init(passActionExecutor);
+                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character.PlayerHoldingObjectContainer, character,character,character,character,character, colorType,_mapUpdater, _playerNearCartHandler, _playerCharacterTransporter,_floorTimerNet);
+                    networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character,character);
+                    networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
+                    networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character,character,character,character);
+                    networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
+                    networkObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(character);
+                    networkObj.GetComponentInChildren<PassBlockMoveExecutorNet>()?.Init(character);
                     
                 });
             var info = playerControllerObj.Info;
