@@ -49,7 +49,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
-                    networkObj.GetComponent<LobbyPlayerControllerNet>().Init(character,blockContainer, moveExecutorSwitcher,holdActionExecutor, onDamageExecutor,dashExecutor,passActionExecutor,colorType,_playerCharacterTransporter);
+                    networkObj.GetComponent<LobbyPlayerControllerNet>().Init(blockContainer, moveExecutorSwitcher,holdActionExecutor, onDamageExecutor,dashExecutor,passActionExecutor,colorType,_playerCharacterTransporter);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
                     networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
 

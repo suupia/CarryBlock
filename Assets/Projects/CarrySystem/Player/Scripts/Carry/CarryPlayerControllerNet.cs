@@ -27,7 +27,6 @@ namespace Carry.CarrySystem.Player.Scripts
         FloorTimerNet _floorTimerNet = null!;
 
         public void Init(
-            ICharacter character, 
             PlayerHoldingObjectContainer blockContainer,
             IMoveExecutorSwitcher moveExecutorSwitcher,
             IHoldActionExecutor holdActionExecutor,
@@ -41,7 +40,6 @@ namespace Carry.CarrySystem.Player.Scripts
             FloorTimerNet floorTimerNet
         )
         {
-            Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
             BlockContainer = blockContainer;
             MoveExecutorSwitcher = moveExecutorSwitcher;
             HoldActionExecutor = holdActionExecutor;

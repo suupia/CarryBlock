@@ -18,7 +18,7 @@ namespace Carry.CarrySystem.Player.Scripts
         PlayerCharacterTransporter _playerCharacterTransporter = null!;  // PlayerColorTypeを次のシーンに保持するために必要
         
         
-        public void Init(ICharacter character,
+        public void Init(
             PlayerHoldingObjectContainer blockContainer,
             IMoveExecutorSwitcher moveExecutorSwitcher,
             IHoldActionExecutor holdActionExecutor,
@@ -28,8 +28,6 @@ namespace Carry.CarrySystem.Player.Scripts
             PlayerColorType colorType,
             PlayerCharacterTransporter playerCharacterTransporter)
         {
-            Debug.Log($"LobbyPlayerControllerNet.Init(), character = {character}");
-            // this.Character = character;
             BlockContainer = blockContainer;
             MoveExecutorSwitcher = moveExecutorSwitcher;
             HoldActionExecutor = holdActionExecutor;
