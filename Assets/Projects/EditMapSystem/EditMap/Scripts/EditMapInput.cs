@@ -7,6 +7,7 @@ using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
+using Carry.EditMapSystem.EditMapForPlayer.Scripts;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 using TMPro;
@@ -28,7 +29,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         
         Direction _direction = Direction.Up; 
 
-        EditMapBlockAttacher _editMapBlockAttacher = null!;
+        MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
         IMapUpdater _editMapUpdater = null!;
 
         CUIState _cuiState = CUIState.Idle;
@@ -46,7 +47,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
 
         [Inject]
-        public void Construct(EditMapBlockAttacher editMapBlockAttacher, IMapUpdater editMapUpdater)
+        public void Construct(MemorableEditMapBlockAttacher editMapBlockAttacher, IMapUpdater editMapUpdater)
         {
             _editMapBlockAttacher = editMapBlockAttacher;
             _editMapUpdater = editMapUpdater;
@@ -158,14 +159,14 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 
             (_blockType.Name switch
             {
-                nameof(BasicBlock) => () => _editMapBlockAttacher.RemovePlaceable<BasicBlock>(map, mouseGridPosOnGround),
-                nameof(UnmovableBlock) => () => _editMapBlockAttacher.RemovePlaceable<UnmovableBlock>(map, mouseGridPosOnGround),
-                nameof(HeavyBlock) => () => _editMapBlockAttacher.RemovePlaceable<HeavyBlock>(map, mouseGridPosOnGround),
-                nameof(FragileBlock) => () => _editMapBlockAttacher.RemovePlaceable<FragileBlock>(map, mouseGridPosOnGround),
-                nameof(ConfusionBlock) => () => _editMapBlockAttacher.RemovePlaceable<ConfusionBlock>(map, mouseGridPosOnGround),
-                nameof(CannonBlock) => () => _editMapBlockAttacher.RemovePlaceable<CannonBlock>(map, mouseGridPosOnGround),
-                nameof(TreasureCoin) => () => _editMapBlockAttacher.RemovePlaceable<TreasureCoin>(map, mouseGridPosOnGround),
-                nameof(SpikeGimmick) => () => _editMapBlockAttacher.RemovePlaceable<SpikeGimmick>(map, mouseGridPosOnGround),
+                nameof(BasicBlock) => () => _editMapBlockAttacher.RemovePlaceable(map, mouseGridPosOnGround),
+                nameof(UnmovableBlock) => () => _editMapBlockAttacher.RemovePlaceable(map, mouseGridPosOnGround),
+                nameof(HeavyBlock) => () => _editMapBlockAttacher.RemovePlaceable(map, mouseGridPosOnGround),
+                nameof(FragileBlock) => () => _editMapBlockAttacher.RemovePlaceable(map, mouseGridPosOnGround),
+                nameof(ConfusionBlock) => () => _editMapBlockAttacher.RemovePlaceable(map, mouseGridPosOnGround),
+                nameof(CannonBlock) => () => _editMapBlockAttacher.RemovePlaceable(map, mouseGridPosOnGround),
+                nameof(TreasureCoin) => () => _editMapBlockAttacher.RemovePlaceable(map, mouseGridPosOnGround),
+                nameof(SpikeGimmick) => () => _editMapBlockAttacher.RemovePlaceable(map, mouseGridPosOnGround),
                 _ => (Action)(() => Debug.LogError($"Unknown block type. _blockType.Name: {_blockType.Name}") ),
             })();
         }

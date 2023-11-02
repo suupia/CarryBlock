@@ -27,7 +27,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
         public string DirectionString => _direction.ToString();
         Direction _direction = Direction.Up;
 
-        EditMapBlockAttacher _editMapBlockAttacher = null!;
+        MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
         IMapUpdater _editMapUpdater = null!;
 
         CuiState _cuiState = CuiState.Idle;
@@ -58,7 +58,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
 
 
         [Inject]
-        public void Construct(EditMapBlockAttacher editMapBlockAttacher, IMapUpdater editMapUpdater)
+        public void Construct(MemorableEditMapBlockAttacher editMapBlockAttacher, IMapUpdater editMapUpdater)
         {
             _editMapBlockAttacher = editMapBlockAttacher;
             _editMapUpdater = editMapUpdater;
@@ -127,7 +127,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
                     var map = _editMapUpdater.GetMap();
 
                     // この書き方で問題なく動作するけど，この書き方で大丈夫なのだろうか？
-                    _editMapBlockAttacher.RemovePlaceable<IPlaceable>(map, mouseGridPosOnGround);
+                    _editMapBlockAttacher.RemovePlaceable(map, mouseGridPosOnGround);
                 }
             }
 
@@ -222,6 +222,19 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             {
                 _blockType = typeof(SpikeGimmick);
             }
+            
+            // Undo
+            if (Input.GetKeyDown(KeyCode.N))
+            {
+                _editMapBlockAttacher.Undo(_editMapUpdater.GetMap());
+            }
+
+            // Redo
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                _editMapBlockAttacher.Redo(_editMapUpdater.GetMap());
+            }
+
 
             // 方向を切り替える
             if (Input.GetKeyDown(KeyCode.UpArrow))

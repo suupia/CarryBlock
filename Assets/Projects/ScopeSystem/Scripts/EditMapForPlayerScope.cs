@@ -33,7 +33,8 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             builder.Register<EditMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
             
             // Input
-            builder.Register<EditMapBlockAttacher>(Lifetime.Scoped);
+            builder.Register<EditMapBlockAttacher>(Lifetime.Scoped).As<IEditMapBlockAttacher>();
+            builder.Register<MemorableEditMapBlockAttacher>(Lifetime.Scoped).WithParameter("capacity", 100);
             builder.Register<CUIHandleNumber>(Lifetime.Scoped);
             builder.Register<AutoSaveManager>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<EditMapForPlayerInput>();

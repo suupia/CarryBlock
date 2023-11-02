@@ -3,6 +3,7 @@ using UnityEngine.Assertions;
 using VContainer;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
+using Carry.EditMapSystem.EditMap.Scripts;
 using Carry.EditMapSystem.EditMapForPlayer.Scripts;
 
 #nullable enable
@@ -15,11 +16,13 @@ namespace Carry.UISystem.UI.EditMap
         [SerializeField] CustomButton buttonPrefab;
 
         IMapUpdater _editMapUpdater = null!;
+        MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
 
         [Inject]
-        public void Construct(IMapUpdater editMapUpdater)
+        public void Construct(IMapUpdater editMapUpdater, MemorableEditMapBlockAttacher memorableEditMapBlockAttacher)
         {
             _editMapUpdater = editMapUpdater;
+            _editMapBlockAttacher = memorableEditMapBlockAttacher;
         }
 
         void Start()
@@ -42,16 +45,17 @@ namespace Carry.UISystem.UI.EditMap
             customButton = Instantiate(buttonPrefab, buttonParent);
             customButton.Init();
             customButton.SetText("Redo");
-            customButton.AddListener(() => ClearMap());
-
+            customButton.AddListener(() => _editMapBlockAttacher.Redo(_editMapUpdater.GetMap()));
+            
             customButton = Instantiate(buttonPrefab, buttonParent);
             customButton.Init();
             customButton.SetText("Undo");
-            customButton.AddListener(() => ClearMap());
+            customButton.AddListener(() => _editMapBlockAttacher.Undo(_editMapUpdater.GetMap()));
         }
 
         void ClearMap()
         {
+            _editMapBlockAttacher.Reset();
             var map = _editMapUpdater.GetMap();
 
             //mapの全要素にRemoveEntityを適用する
