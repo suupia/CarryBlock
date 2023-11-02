@@ -37,13 +37,19 @@ namespace Carry.CarrySystem.Player.Scripts
             // ドメインスクリプトをnew
             var colorType = _playerCharacterTransporter.GetPlayerColorType(playerRef);
             var character = _carryPlayerFactory.Create(colorType);
+            var blockContainer = _carryPlayerFactory.CreatePlayerHoldingObjectContainer();
+            var moveExecutorSwitcher = _carryPlayerFactory.CreateMoveExecutorSwitcher();
+            var holdActionExecutor = _carryPlayerFactory.CreateHoldActionExecutor(blockContainer);
+            var onDamageExecutor = _carryPlayerFactory.CreateOnDamageExecutor(moveExecutorSwitcher);
+            var dashExecutor = _carryPlayerFactory.CreateDashExecutor(moveExecutorSwitcher, onDamageExecutor);
+            var passActionExecutor = _carryPlayerFactory.CreatePassActionExecutor(blockContainer);
             
             // プレハブをスポーン
             var playerControllerObj = _runner.Spawn(playerController,position, rotation, playerRef,
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
-                    networkObj.GetComponent<LobbyPlayerControllerNet>().Init(character,colorType,_playerCharacterTransporter);
+                    networkObj.GetComponent<LobbyPlayerControllerNet>().Init(character,blockContainer, moveExecutorSwitcher,holdActionExecutor, onDamageExecutor,dashExecutor,passActionExecutor,colorType,_playerCharacterTransporter);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
                     networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
 

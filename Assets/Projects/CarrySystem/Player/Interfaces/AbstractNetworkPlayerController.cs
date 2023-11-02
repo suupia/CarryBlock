@@ -23,8 +23,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         [Networked] protected PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
 
         protected GameObject CharacterObj= null!;
-        // public ICharacter GetCharacter => Character;
-        
+
         public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
         public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
         public IHoldActionExecutor GetHoldActionExecutor => HoldActionExecutor;
