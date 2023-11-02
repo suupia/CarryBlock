@@ -9,7 +9,12 @@ using Carry.CarrySystem.Player.Info;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class Character : ICharacter
+    public class Character :      
+        IMoveExecutorSwitcher, 
+        IHoldActionExecutor, 
+        IOnDamageExecutor,
+        IDashExecutor,
+        IPassActionExecutor
     {
         public PlayerHoldingObjectContainer PlayerHoldingObjectContainer { get; }
 

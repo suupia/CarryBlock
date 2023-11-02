@@ -26,31 +26,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _playerNearCartHandler = playerNearCartHandler;
             _playerCharacterTransporter = playerCharacterTransporter;
         }
-        
-        public ICharacter Create(PlayerColorType colorType)
-        {
-            // IMoveExecutorSwitcher
-            var moveExeSwitcher = new MoveExecutorSwitcher();
-            
-            // IHoldActionExecutor
-            var blockContainer = new PlayerHoldingObjectContainer();
-            _holdingBlockObserver.RegisterHoldAction(blockContainer);
-            var holdExe = new HoldActionExecutor(blockContainer,_playerNearCartHandler, _mapUpdater);
-            
-            // IOnDamageExecutor
-            var onDamageExe = new OnDamageExecutor(moveExeSwitcher, _playerCharacterTransporter);
 
-            // IDashActionExecutor
-            var dashExe = new DashExecutor(moveExeSwitcher, onDamageExe);
-
-            // IPassActionExecutor
-            var passBlockMoveExe = new PassWaitExecutor();
-            var passExe = new PassActionExecutor(blockContainer, passBlockMoveExe);
-            
-            var character = new Character(moveExeSwitcher, holdExe,dashExe, passExe, onDamageExe, blockContainer);
-            return character;
-        }
-        
         public PlayerHoldingObjectContainer CreatePlayerHoldingObjectContainer()
         {
             return new PlayerHoldingObjectContainer();
