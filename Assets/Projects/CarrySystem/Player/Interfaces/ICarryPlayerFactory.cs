@@ -8,8 +8,6 @@ namespace Carry.CarrySystem.Player.Interfaces
     /// </summary>
     public interface ICarryPlayerFactory
     {
-        ICharacter Create(PlayerColorType colorType);
-        
         // Since it is just "new" in the concrete class, leave it as the default implementation for now.
         public PlayerHoldingObjectContainer CreatePlayerHoldingObjectContainer()
         {

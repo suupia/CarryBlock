@@ -62,7 +62,6 @@ namespace Carry.CarrySystem.Player.Scripts
             
             // ドメインスクリプトをnew
             var colorType = _playerCharacterTransporter.GetPlayerColorType(playerRef);
-            var character = _carryPlayerFactory.Create(colorType);
             var blockContainer = _carryPlayerFactory.CreatePlayerHoldingObjectContainer();
             var moveExecutorSwitcher = _carryPlayerFactory.CreateMoveExecutorSwitcher();
             var holdActionExecutor = _carryPlayerFactory.CreateHoldActionExecutor(blockContainer);
