@@ -24,5 +24,31 @@ namespace Carry.CarrySystem.Player.Scripts
             var character = new Character(moveExeSwitcher, holdExe,dashExe, passExe,onDamageExe, blockContainer);
             return character;
         }
+        
+        public IMoveExecutorSwitcher CreateMoveExecutorSwitcher()
+        {
+            return new MoveExecutorSwitcher();
+        }
+
+        public IHoldActionExecutor CreateHoldActionExecutor(PlayerHoldingObjectContainer blockContainer)
+        {
+            return new EmptyHoldActionExecutor();
+        }
+
+        public IOnDamageExecutor OnDamageExecutor(IMoveExecutorSwitcher moveExecutorSwitcher)
+        {
+            return  new OnDamageExecutor(moveExecutorSwitcher, _playerCharacterTransporter);
+        }
+
+        public IDashExecutor CreateDashExecutor(IMoveExecutorSwitcher moveExecutorSwitcher,
+            IOnDamageExecutor onDamageExecutor)
+        {
+            return  new DashExecutor(moveExecutorSwitcher, onDamageExecutor);
+        }
+
+        public IPassActionExecutor CreatePassActionExecutor(PlayerHoldingObjectContainer blockContainer)
+        {
+            return new EmptyPassActionExecutor();
+        }
     }
 }

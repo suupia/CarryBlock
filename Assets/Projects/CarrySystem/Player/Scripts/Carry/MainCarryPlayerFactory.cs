@@ -51,14 +51,18 @@ namespace Carry.CarrySystem.Player.Scripts
             return character;
         }
         
+        public PlayerHoldingObjectContainer CreatePlayerHoldingObjectContainer()
+        {
+            return new PlayerHoldingObjectContainer();
+        }
+
         public IMoveExecutorSwitcher CreateMoveExecutorSwitcher()
         {
             return new MoveExecutorSwitcher();
         }
         
-        public IHoldActionExecutor CreateHoldActionExecutor()
+        public IHoldActionExecutor CreateHoldActionExecutor(PlayerHoldingObjectContainer blockContainer)
         {
-            var blockContainer = new PlayerHoldingObjectContainer();
             _holdingBlockObserver.RegisterHoldAction(blockContainer);
             return new HoldActionExecutor(blockContainer,_playerNearCartHandler, _mapUpdater);
         } 

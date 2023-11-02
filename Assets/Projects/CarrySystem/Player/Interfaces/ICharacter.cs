@@ -5,9 +5,9 @@ namespace Carry.CarrySystem.Player.Interfaces
     public interface ICharacter:
         IMoveExecutorSwitcher, 
         IHoldActionExecutor, 
-        IPassActionExecutor, 
+        IOnDamageExecutor,
         IDashExecutor,
-        IOnDamageExecutor
+        IPassActionExecutor
     {
        new void Setup(PlayerInfo info);
        
