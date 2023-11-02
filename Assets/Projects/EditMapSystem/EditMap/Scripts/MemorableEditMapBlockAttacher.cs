@@ -41,13 +41,13 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
     
     public class MemorableEditMapBlockAttacher: IEditMapBlockAttacher
     {
-        private readonly Stack<OperationData> _stack;
-        private readonly Stack<OperationData> _redoStack;
-        private IEditMapBlockAttacher _impl;
+        readonly Stack<OperationData> _stack;
+        readonly Stack<OperationData> _redoStack; 
+        readonly IEditMapBlockAttacher _editMapBlockAttacher;
         
-        public MemorableEditMapBlockAttacher(IEditMapBlockAttacher impl, int capacity = 100)
+        public MemorableEditMapBlockAttacher(IEditMapBlockAttacher editMapBlockAttacher, int capacity = 100)
         {
-            _impl = impl;
+            _editMapBlockAttacher = editMapBlockAttacher;
             _stack = new Stack<OperationData>(capacity);
             _redoStack = new Stack<OperationData>(capacity);
         }
@@ -105,16 +105,16 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             _redoStack.Clear();
         }
 
-        private void Do(EntityGridMap map, OperationData data)
+        void Do(EntityGridMap map, OperationData data)
         {
             switch (data.Operation)
             {
                 case Operation.Add:
-                    _impl.AddPlaceable(map, data.Coords, data.Placeable);
+                    _editMapBlockAttacher.AddPlaceable(map, data.Coords, data.Placeable);
                     Debug.Log($"Add, {data.Coords}, {data.Placeable}");
                     break;
                 case Operation.Remove:
-                    _impl.RemovePlaceable(map, data.Coords);
+                    _editMapBlockAttacher.RemovePlaceable(map, data.Coords);
                     Debug.Log($"Remove, {data.Coords}, {data.Placeable}");
                     break;
                 default:
