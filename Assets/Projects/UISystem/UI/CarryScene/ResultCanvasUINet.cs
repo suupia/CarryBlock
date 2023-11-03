@@ -110,7 +110,6 @@ namespace Carry.UISystem.UI.CarryScene
         {
             if (_viewActiveLocal != ViewActive)
             {
-                //if (ClearedFloorNumber / MaxFloorNumber == 1) IsClear = true;
                 _viewActiveLocal = ViewActive;
                 viewGameObject.SetActive(ViewActive);
                 resultText.text = IsClear ? $"GameClear!" : $"GameOver";
