@@ -57,8 +57,10 @@ namespace Carry.CarrySystem.Gimmick.Scripts
            {
                Debug.Log($"Playerに衝突");
                var playerController = other.GetComponent<AbstractNetworkPlayerController>();
-               var character = playerController.GetCharacter;
-               character.OnDamage();
+               // var character = playerController.GetCharacter;
+               // character.OnDamage();
+               var onDamageExecutor = playerController.GetOnDamageExecutor;
+                onDamageExecutor.OnDamage();
                Runner.Despawn(Object);
            }
 

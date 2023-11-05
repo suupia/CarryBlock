@@ -25,10 +25,10 @@ namespace Carry.CarrySystem.Player.Scripts
         
         bool _holdingAidKitLocal = false;
         
-        public void Init(ICharacter character)
+        public void Init(IHoldActionExecutor holdActionExecutor)
         {
             // tie presenter to domain
-            character.SetPlayerAidKitPresenter(this);
+            holdActionExecutor.SetPlayerAidKitPresenter(this);
         }
 
         void Awake()

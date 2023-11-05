@@ -24,9 +24,9 @@ namespace Carry.CarrySystem.Player.Scripts
             public bool IsPassing;
         }
         [Networked] ref PassBlockMoveData Data => ref MakeRef<PassBlockMoveData>();
-        public void Init(ICharacter character)
+        public void Init(IPassActionExecutor passActionExecutor)
         {
-             character.SetPassBlockMoveExecutor(this);
+            passActionExecutor.SetPassBlockMoveExecutor(this);
         }
 
         public override void Render()

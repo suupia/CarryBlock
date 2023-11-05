@@ -10,9 +10,10 @@ namespace Carry.CarrySystem.Player.Scripts
     public class MainCarryPlayerFactory : ICarryPlayerFactory
     {
         readonly IMapUpdater _mapUpdater;
-        readonly  HoldingBlockObserver  _holdingBlockObserver;
+        readonly HoldingBlockObserver  _holdingBlockObserver;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         readonly PlayerCharacterTransporter _playerCharacterTransporter;
+        
         [Inject]
         public MainCarryPlayerFactory(
             IMapUpdater mapUpdater ,
@@ -27,18 +28,37 @@ namespace Carry.CarrySystem.Player.Scripts
             _playerCharacterTransporter = playerCharacterTransporter;
         }
         
-        public ICharacter Create(PlayerColorType colorType)
+        public  Character CreateCharacter()
         {
-            var moveExeSwitcher = new MoveExecutorSwitcher();
+            // PlayerHolderObjectContainer
             var blockContainer = new PlayerHoldingObjectContainer();
-            var holdExe = new HoldActionExecutor(blockContainer,_playerNearCartHandler, _mapUpdater);
+            
+            // IMoveExecutorSwitcher
+            var moveExecutorSwitcher = new MoveExecutorSwitcher();
+            
+            // IHoldActionExecutor
             _holdingBlockObserver.RegisterHoldAction(blockContainer);
+            var holdActionExecutor =new HoldActionExecutor(blockContainer,_playerNearCartHandler, _mapUpdater);
+            
+            // IOnDamageExecutor
+            var onDamageExecutor = new OnDamageExecutor(moveExecutorSwitcher, _playerCharacterTransporter);
+            var dashExecutor = new DashExecutor(moveExecutorSwitcher, onDamageExecutor);
+            
+            // IPassActionExecutor
             var passBlockMoveExe = new PassWaitExecutor();
-            var passExe = new PassActionExecutor(blockContainer, passBlockMoveExe);
-            var onDamageExe = new OnDamageExecutor(moveExeSwitcher, _playerCharacterTransporter);
-            var dashExe = new DashExecutor(moveExeSwitcher, onDamageExe);
-            var character = new Character(moveExeSwitcher, holdExe,dashExe, passExe,onDamageExe, blockContainer);
+            var passActionExecutor = new PassActionExecutor(blockContainer, passBlockMoveExe); 
+            
+            var character = new Character(
+                moveExecutorSwitcher,
+                holdActionExecutor,
+                dashExecutor,
+                passActionExecutor,
+                onDamageExecutor,
+                blockContainer
+            );
+            
             return character;
         }
+
     }
 }

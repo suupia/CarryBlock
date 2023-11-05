@@ -7,6 +7,7 @@ using Carry.CarrySystem.CarriableBlock.Interfaces;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.Player.Scripts;
 using UnityEngine;
 #nullable  enable
 
@@ -42,10 +43,10 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;  // basicが持ち上げられない状況はない
         }
 
-        public void  PickUp(ICharacter character)
+        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, PlayerHoldingObjectContainer blockContainer, IHoldActionExecutor holdActionExecutor)
         {
             // 移動速度を遅くする
-            character.SwitchToSlowMove();
+            moveExecutorSwitcher.SwitchToSlowMove();
         }
 
         public bool CanPutDown(IList<ICarriableBlock> placedBlocks)
@@ -63,10 +64,10 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;
         }
         
-        public void PutDown(ICharacter character) 
+        public void PutDown(IMoveExecutorSwitcher moveExecutorSwitcher) 
         {
             // 移動速度を元に戻す
-            character.SwitchToRegularMove();
+            moveExecutorSwitcher.SwitchToRegularMove();
         }
     }
 }

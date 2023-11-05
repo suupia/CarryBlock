@@ -4,6 +4,7 @@ using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.CarriableBlock.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.Player.Scripts;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 
@@ -39,9 +40,9 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;  // FragileBlockが持ち上げられない状況はない
         }
 
-        public void  PickUp(ICharacter character)
+        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, PlayerHoldingObjectContainer blockContainer, IHoldActionExecutor holdActionExecutor)
         {
-            var _ = BreakBlock(character);
+            var _ = BreakBlock(blockContainer, holdActionExecutor);
         }
 
         public bool CanPutDown(IList<ICarriableBlock> placedBlocks)
@@ -59,18 +60,18 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;
         }
         
-        public void PutDown(ICharacter character) 
+        public void PutDown(IMoveExecutorSwitcher moveExecutorSwitcher) 
         {
             
         }
 
-        async UniTaskVoid BreakBlock(ICharacter character)
+        async UniTaskVoid BreakBlock(PlayerHoldingObjectContainer blockContainer, IHoldActionExecutor holdActionExecutor)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(0.25f));
             Debug.Log("BreakBlockを実行");
             
-            var _ = character.PlayerHoldingObjectContainer.PopBlock();
-            character.PutDownBlock();
+            var _ = blockContainer.PopBlock();
+            holdActionExecutor.PutDownBlock();
         }  
     }
 }

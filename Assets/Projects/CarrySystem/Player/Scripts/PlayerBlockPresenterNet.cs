@@ -51,10 +51,11 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField] GameObject heavyBlockView= null!;
         [SerializeField] GameObject fragileBlockView = null!;
         [SerializeField] GameObject ConfusionBlockView = null!;
-        public void Init(ICharacter character)
+        public void Init(IHoldActionExecutor holdActionExecutor, IPassActionExecutor passActionExecutor)
         {
             Debug.Log($"PlayerBlockPresenterNet.Init()");
-            character.SetPlayerBlockPresenter(this);
+            holdActionExecutor.SetPlayerBlockPresenter(this);
+            passActionExecutor.SetPlayerBlockPresenter(this);
             PresentDataRef.HoldingBlockType = BlockType.None;
         }
 
