@@ -40,6 +40,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var spawner = new EntityPresenterSpawner(Runner);
             var entityPresenter = spawner.SpawnPrefabNet(playerTransform.position, Quaternion.identity);
             entityPresenter.SetEntityActiveData(block,count:1);
+            entityPresenter.SetColliderActive(false);
             Debug.Log("PassBlockMove Spawned");
             entityPresenter.Object.transform.DOJump(targetTransform.position, jumpPower: 3f, numJumps: 1, duration: 1f)
                 .OnComplete(() =>
