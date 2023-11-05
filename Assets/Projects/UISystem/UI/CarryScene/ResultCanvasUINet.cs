@@ -26,7 +26,7 @@ namespace Carry.UISystem.UI.CarryScene
         [SerializeField] CustomButton reStartButton = null!;
         [SerializeField] CustomButton titleButton = null!;
         [Networked] bool ViewActive { get; set; } = false;
-        NetworkBool IsClear { get; set; } = false;
+        [Networked] NetworkBool IsClear { get; set; } = false;
         [Networked] int ClearedFloorNumber { get; set; } = 0;
         [Networked] int MaxFloorNumber { get; set; } = 0;
         [Networked] float ClearTime { get; set; } = 0;
@@ -70,7 +70,7 @@ namespace Carry.UISystem.UI.CarryScene
                 {
                     ViewActive = true;
                     IsClear = true;
-                    ClearedFloorNumber = mapUpdater.Index;
+                    ClearedFloorNumber = mapUpdater.Index + 1;
                     MaxFloorNumber =  mapKeyDataList.Count;
                     ClearTime = floorTimerNet.FloorLimitSeconds * _maxFloorNumber -
                                 floorTimerNet.FloorRemainingSecondsSam;
