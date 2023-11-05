@@ -21,6 +21,6 @@ public class EditStageUIManager : MonoBehaviour
         
         stageButtons.ForEach(stage => stage.onClick.AddListener(() => detailPanel.SetActive(true)));
         
-        mapButtons.ForEach(map => map.onClick.AddListener(() => SceneManager.LoadScene("LocalEditMapScene")));
+        mapButtons.ForEach(map => map.onClick.AddListener(() => SceneManager.LoadScene("EditMapForPlayerScene")));
     }
 }
