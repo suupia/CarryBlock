@@ -29,7 +29,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         
         Direction _direction = Direction.Up; 
 
-        MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
+        EditMapBlockAttacher _editMapBlockAttacher = null!;
         IMapUpdater _editMapUpdater = null!;
 
         CUIState _cuiState = CUIState.Idle;
@@ -47,7 +47,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
 
         [Inject]
-        public void Construct(MemorableEditMapBlockAttacher editMapBlockAttacher, IMapUpdater editMapUpdater)
+        public void Construct(EditMapBlockAttacher editMapBlockAttacher, IMapUpdater editMapUpdater)
         {
             _editMapBlockAttacher = editMapBlockAttacher;
             _editMapUpdater = editMapUpdater;
