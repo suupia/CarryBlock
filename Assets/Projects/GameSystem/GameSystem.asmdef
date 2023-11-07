@@ -10,7 +10,8 @@
         "GUID:6ffa9e38294648c4fb6b8c2748395d16",
         "GUID:10970a7f94ae9cf46b09a998c771e2aa",
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:6546d7765b4165b40850b3667f981c26"
+        "GUID:6546d7765b4165b40850b3667f981c26",
+        "GUID:e0d0e5cb5de3a124f9f56542c6a3f490"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -20,7 +21,8 @@
         "Fusion.Common.dll",
         "Fusion.Realtime.dll",
         "Fusion.Runtime.dll",
-        "Fusion.Sockets.dll"
+        "Fusion.Sockets.dll",
+        "DOTween.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [],
