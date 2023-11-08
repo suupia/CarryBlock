@@ -79,8 +79,6 @@ namespace Carry.UISystem.UI.LobbyScene
                 var stageButton = stageButtons[i];
                 stageButton.SetText($"Stage {i + 1}");
                 var index = i;
-                var nowPlayerNum = 0;
-                var nowPlayerPosition=0;
                 stageButton.AddListener(() =>
                 {
                     CartLobbyControllerNet cart = FindObjectOfType<CartLobbyControllerNet>();
@@ -96,18 +94,17 @@ namespace Carry.UISystem.UI.LobbyScene
                         cart.transform.position + new Vector3(-0.7f, 0, -0.7f),
                     };
                     //ゲームスタート前のアニメーション
-                    _lobbyPlayerContainer.PlayerControllers.ForEach(playerController =>
+                    viewObject.SetActive(false);
+                    for (int playerIndex = 0;
+                         playerIndex < _lobbyPlayerContainer.PlayerControllers.Count;
+                         playerIndex++)
                     {
-                        viewObject.SetActive(false);
+                        var playerController = _lobbyPlayerContainer.PlayerControllers[playerIndex];
                         var playerTransform = playerController.transform;
-                        Debug.Log(playerTransform.position.ToString());
-                        // _playerAnimatorPresenter.Dash();
                         playerController.GetCharacter.Dash();
                         // プレイヤーが移動方向に向く
-                        var PlayerNumPosition = PlayerCartPosition[nowPlayerPosition];
-                        nowPlayerPosition += 1;
-                        playerTransform.LookAt(PlayerNumPosition);
-                        playerTransform.DOMove(PlayerNumPosition, 2f).OnComplete(() =>
+                        playerTransform.LookAt(PlayerCartPosition[playerIndex]);
+                        playerTransform.DOMove(PlayerCartPosition[playerIndex], 2f).OnComplete(() =>
                         {
                             Debug.Log("finish move");
                             // _playerAnimatorPresenter.Idle();
@@ -116,34 +113,31 @@ namespace Carry.UISystem.UI.LobbyScene
                                 playerTransform.position.z);
                             playerTransform.position = changePosition;
                             playerTransform.SetParent(cart.transform);
-                            nowPlayerNum += 1;
-                            if (nowPlayerNum >= _lobbyPlayerContainer.PlayerControllers.Count)
+
+                            //敵の歩くアニメーション
+                            enemyAnimatorPresenter.Chase();
+                            enemy.transform.LookAt(cart.transform.position);
+                            enemy.transform.DOMove(new Vector3(-6f, 0, 0f), 1.5f).OnComplete(() =>
                             {
-                                //敵の歩くアニメーション
-                                enemyAnimatorPresenter.Chase();
-                                enemy.transform.LookAt(cart.transform.position);
-                                enemy.transform.DOMove(new Vector3(-6f, 0, 0f), 1.5f).OnComplete(() =>
+                                //敵の威嚇アニメーション
+                                enemyAnimatorPresenter.Threat();
+                                enemy.transform.DOMove(new Vector3(-5.5f, 0, 0f), 1.5f).OnComplete(() =>
                                 {
-                                    //敵の威嚇アニメーション
-                                    enemyAnimatorPresenter.Threat();
-                                    enemy.transform.DOMove(new Vector3(-5.5f, 0, 0f), 1.5f).OnComplete(() =>
+                                    var targetPosition = new Vector3(40f, 0, 0);
+                                    playerTransform.LookAt(targetPosition);
+                                    //敵の歩くアニメーション
+                                    enemyAnimatorPresenter.Chase();
+                                    enemy.transform.DOMove(new Vector3(15f, 0, 0f), 2.5f);
+                                    cart.transform.DOMove(targetPosition, 2.5f).OnComplete(() =>
                                     {
-                                        var targetPosition = new Vector3(40f, 0, 0);
-                                        playerTransform.LookAt(targetPosition);
-                                        //敵の歩くアニメーション
-                                        enemyAnimatorPresenter.Chase();
-                                        enemy.transform.DOMove(new Vector3(15f, 0, 0f), 2.5f);
-                                        cart.transform.DOMove(targetPosition, 2.5f).OnComplete(() =>
-                                        {
-                                            _stageIndexTransporter.SetStageIndex(index);
-                                            lobbyInitializer.TransitionToGameScene();
-                                        });
+                                        _stageIndexTransporter.SetStageIndex(index);
+                                        lobbyInitializer.TransitionToGameScene();
                                     });
                                 });
-                                
-                            }
+                            });
                         });
-                    });
+                        
+                    }
                     
                     
                     
@@ -152,8 +146,69 @@ namespace Carry.UISystem.UI.LobbyScene
             
             SetupToggleSelectStageCanvas();
         }
-        
-        
+
+        // void StartAnimationBeforeGameStart()
+        // {
+        //     var cart = FindObjectOfType<CartLobbyControllerNet>();
+        //     var enemy = FindObjectOfType<EnemyControllerNet>();
+        //     var enemyAnimatorPresenter = enemy.GetComponentInChildren<EnemyAnimatorPresenterNet>();
+        //     Vector3[] PlayerCartPosition = new Vector3[]
+        //     {
+        //         cart.transform.position + new Vector3(0.7f, 0, 0.7f),
+        //         cart.transform.position + new Vector3(0.7f, 0, -0.7f),
+        //         cart.transform.position + new Vector3(-0.7f, 0, 0.7f),
+        //         cart.transform.position + new Vector3(-0.7f, 0, -0.7f),
+        //     };
+        //     //ゲームスタート前のアニメーション
+        //     _lobbyPlayerContainer.PlayerControllers.ForEach(playerController =>
+        //     {
+        //         viewObject.SetActive(false);
+        //         var playerTransform = playerController.transform;
+        //         Debug.Log(playerTransform.position.ToString());
+        //         playerController.GetCharacter.Dash();
+        //         // プレイヤーが移動方向に向く
+        //         var PlayerNumPosition = PlayerCartPosition[nowPlayerPosition];
+        //         nowPlayerPosition += 1;
+        //         playerTransform.LookAt(PlayerNumPosition);
+        //         playerTransform.DOMove(PlayerNumPosition, 2f).OnComplete(() =>
+        //         {
+        //             Debug.Log("finish move");
+        //             // _playerAnimatorPresenter.Idle();
+        //             playerController.GetCharacter.SwitchToRegularMove();
+        //             var changePosition = new Vector3(playerTransform.position.x, 1.0f,
+        //                 playerTransform.position.z);
+        //             playerTransform.position = changePosition;
+        //             playerTransform.SetParent(cart.transform);
+        //             nowPlayerNum += 1;
+        //             if (nowPlayerNum >= _lobbyPlayerContainer.PlayerControllers.Count)
+        //             {
+        //                 //敵の歩くアニメーション
+        //                 enemyAnimatorPresenter.Chase();
+        //                 enemy.transform.LookAt(cart.transform.position);
+        //                 enemy.transform.DOMove(new Vector3(-6f, 0, 0f), 1.5f).OnComplete(() =>
+        //                 {
+        //                     //敵の威嚇アニメーション
+        //                     enemyAnimatorPresenter.Threat();
+        //                     enemy.transform.DOMove(new Vector3(-5.5f, 0, 0f), 1.5f).OnComplete(() =>
+        //                     {
+        //                         var targetPosition = new Vector3(40f, 0, 0);
+        //                         playerTransform.LookAt(targetPosition);
+        //                         //敵の歩くアニメーション
+        //                         enemyAnimatorPresenter.Chase();
+        //                         enemy.transform.DOMove(new Vector3(15f, 0, 0f), 2.5f);
+        //                         cart.transform.DOMove(targetPosition, 2.5f).OnComplete(() =>
+        //                         {
+        //                             _stageIndexTransporter.SetStageIndex(index);
+        //                             lobbyInitializer.TransitionToGameScene();
+        //                         });
+        //                     });
+        //                 });
+        //             }
+        //         });
+        //     });
+        // }
+
+
         // 以下の処理はInputAction系を初期化するところに移動させた方がよいかもしれない
         void SetupToggleSelectStageCanvas()
         {
