@@ -56,9 +56,6 @@ namespace Carry.UISystem.UI.LobbyScene
 
         public override void Spawned()
         {
-
-            //var enemySpawner = new EnemySpawner(Runner);
-            //enemySpawner.SpawnPrefab(new Vector3(-12f,0f,0f), Quaternion.Euler(0f, 180f, 0f));
             viewObject.SetActive(false);
 
             if (!HasStateAuthority)return;
@@ -81,10 +78,11 @@ namespace Carry.UISystem.UI.LobbyScene
                 var index = i;
                 stageButton.AddListener(() =>
                 {
+                    viewObject.SetActive(false);
+                    
                     CartLobbyControllerNet cart = FindObjectOfType<CartLobbyControllerNet>();
                     EnemyControllerNet enemy = FindObjectOfType<EnemyControllerNet>();
                     var enemyAnimatorPresenter = enemy.GetComponentInChildren<EnemyAnimatorPresenterNet>();
-                    viewObject.SetActive(false);
                     
                     var animationSequence = DOTween.Sequence();
 
