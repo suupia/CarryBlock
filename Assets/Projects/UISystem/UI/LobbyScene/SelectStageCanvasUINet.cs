@@ -35,30 +35,26 @@ namespace Carry.UISystem.UI.LobbyScene
         MapKeyDataSelectorNet  _mapKeyDataSelectorNet = null!;
         StageIndexTransporter _stageIndexTransporter =  null!;
         InputAction _toggleSelectStageCanvas = null!;
-        LobbyPlayerContainer _lobbyPlayerContainer = null!;
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
         
-        //PlayerNearCartHandlerNet _playerNearCartHandler = null!;
+        LobbyStartGameTheater _lobbyStartGameTheater = null!;
+        
         
         [Inject]
         public void Construct(
             MapKeyDataSelectorNet mapKeyDataSelectorNet,
             StageIndexTransporter stageIndexTransporter,
-            LobbyPlayerContainer lobbyPlayerContainer
-            //IPlayerAnimatorPresenter? _playerAnimatorPresenter
+            LobbyStartGameTheater lobbyStartGameTheater
             )
         {
             
             _mapKeyDataSelectorNet = mapKeyDataSelectorNet;
             _stageIndexTransporter = stageIndexTransporter;
-            _lobbyPlayerContainer = lobbyPlayerContainer;
+            _lobbyStartGameTheater = lobbyStartGameTheater;
         }
 
         public override void Spawned()
         {
-
-            //var enemySpawner = new EnemySpawner(Runner);
-            //enemySpawner.SpawnPrefab(new Vector3(-12f,0f,0f), Quaternion.Euler(0f, 180f, 0f));
             viewObject.SetActive(false);
 
             if (!HasStateAuthority)return;
@@ -73,87 +69,28 @@ namespace Carry.UISystem.UI.LobbyScene
             }
             
             var lobbyInitializer = FindObjectOfType<LobbyInitializer>();
-            
+
             for(int i = 0; i< stageButtons.Count; i++)
             {
                 var stageButton = stageButtons[i];
                 stageButton.SetText($"Stage {i + 1}");
                 var index = i;
-                var nowPlayerNum = 0;
-                var nowPlayerPosition=0;
                 stageButton.AddListener(() =>
                 {
-                    CartLobbyControllerNet cart = FindObjectOfType<CartLobbyControllerNet>();
-                    EnemyControllerNet enemy = FindObjectOfType<EnemyControllerNet>();
-                    var enemyAnimatorPresenter = enemy.GetComponentInChildren<EnemyAnimatorPresenterNet>();
-                    Debug.Log(cart.transform.position.ToString());
-                    Debug.Log(enemy.transform.position.ToString());
-                    Vector3[] PlayerCartPosition = new Vector3[]
+                    viewObject.SetActive(false);
+
+                    _lobbyStartGameTheater.PlayLobbyTheater(() =>
                     {
-                        cart.transform.position + new Vector3(0.7f, 0, 0.7f),
-                        cart.transform.position + new Vector3(0.7f, 0, -0.7f),
-                        cart.transform.position + new Vector3(-0.7f, 0, 0.7f),
-                        cart.transform.position + new Vector3(-0.7f, 0, -0.7f),
-                    };
-                    //ゲームスタート前のアニメーション
-                    _lobbyPlayerContainer.PlayerControllers.ForEach(playerController =>
-                    {
-                        viewObject.SetActive(false);
-                        var playerTransform = playerController.transform;
-                        Debug.Log(playerTransform.position.ToString());
-                        // _playerAnimatorPresenter.Dash();
-                        playerController.GetCharacter.Dash();
-                        // プレイヤーが移動方向に向く
-                        var PlayerNumPosition = PlayerCartPosition[nowPlayerPosition];
-                        nowPlayerPosition += 1;
-                        playerTransform.LookAt(PlayerNumPosition);
-                        playerTransform.DOMove(PlayerNumPosition, 2f).OnComplete(() =>
-                        {
-                            Debug.Log("finish move");
-                            // _playerAnimatorPresenter.Idle();
-                            playerController.GetCharacter.SwitchToRegularMove();
-                            var changePosition = new Vector3(playerTransform.position.x, 1.0f,
-                                playerTransform.position.z);
-                            playerTransform.position = changePosition;
-                            playerTransform.SetParent(cart.transform);
-                            nowPlayerNum += 1;
-                            if (nowPlayerNum >= _lobbyPlayerContainer.PlayerControllers.Count)
-                            {
-                                //敵の歩くアニメーション
-                                enemyAnimatorPresenter.Chase();
-                                enemy.transform.LookAt(cart.transform.position);
-                                enemy.transform.DOMove(new Vector3(-6f, 0, 0f), 1.5f).OnComplete(() =>
-                                {
-                                    //敵の威嚇アニメーション
-                                    enemyAnimatorPresenter.Threat();
-                                    enemy.transform.DOMove(new Vector3(-5.5f, 0, 0f), 1.5f).OnComplete(() =>
-                                    {
-                                        var targetPosition = new Vector3(40f, 0, 0);
-                                        playerTransform.LookAt(targetPosition);
-                                        //敵の歩くアニメーション
-                                        enemyAnimatorPresenter.Chase();
-                                        enemy.transform.DOMove(new Vector3(15f, 0, 0f), 2.5f);
-                                        cart.transform.DOMove(targetPosition, 2.5f).OnComplete(() =>
-                                        {
-                                            _stageIndexTransporter.SetStageIndex(index);
-                                            lobbyInitializer.TransitionToGameScene();
-                                        });
-                                    });
-                                });
-                                
-                            }
-                        });
+                        _stageIndexTransporter.SetStageIndex(index);
+                        lobbyInitializer.TransitionToGameScene();
                     });
-                    
-                    
-                    
                 });
             }
             
             SetupToggleSelectStageCanvas();
         }
         
-        
+
         // 以下の処理はInputAction系を初期化するところに移動させた方がよいかもしれない
         void SetupToggleSelectStageCanvas()
         {

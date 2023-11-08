@@ -64,6 +64,8 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             
             // UI
             builder.RegisterComponentInHierarchy<SelectStageCanvasUINet>();
+
+            builder.Register<LobbyStartGameTheater>(Lifetime.Scoped);
             
             builder.RegisterComponentInHierarchy<LobbyInitializer>();
             
