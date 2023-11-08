@@ -12,20 +12,35 @@ namespace Carry.UISystem.UI.LobbyScene
 {
     public class LobbyStartGameTheater
     {
-        readonly CartLobbyControllerNet _cart;
-        readonly EnemyControllerNet _enemy;
-        readonly LobbyPlayerContainer _lobbyPlayerContainer = null!;
-
+        readonly LobbyPlayerContainer _lobbyPlayerContainer;
+        
+        CartLobbyControllerNet? _cart;
+        EnemyControllerNet? _enemy;
 
         [Inject]
-        public LobbyStartGameTheater(CartLobbyControllerNet cart, EnemyControllerNet enemy)
+        public LobbyStartGameTheater(LobbyPlayerContainer lobbyPlayerContainer)
         {
-            _cart = cart;
-            _enemy = enemy;
+            _lobbyPlayerContainer = lobbyPlayerContainer;
+        }
+        
+        void SetUp()
+        {
+            _cart = UnityEngine.Object.FindObjectOfType<CartLobbyControllerNet>();
+            _enemy =UnityEngine.Object.FindObjectOfType<EnemyControllerNet>();
+            if (_cart == null)
+            {
+                Debug.LogError($"_cart is null");
+            }
+            else if (_enemy == null)
+            {
+                Debug.LogError($"_enemy is null");
+            }
         }
 
         public void PlayLobbyTheater(Action onCompleteAction)
         {
+            SetUp();
+            
             var enemyAnimatorPresenter = _enemy.GetComponentInChildren<EnemyAnimatorPresenterNet>();
 
             var animationSequence = DOTween.Sequence();
