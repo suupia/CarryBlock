@@ -85,14 +85,7 @@ namespace Carry.UISystem.UI.LobbyScene
                     CartLobbyControllerNet cart = FindObjectOfType<CartLobbyControllerNet>();
                     EnemyControllerNet enemy = FindObjectOfType<EnemyControllerNet>();
                     var enemyAnimatorPresenter = enemy.GetComponentInChildren<EnemyAnimatorPresenterNet>();
-                    Vector3[] PlayerCartPosition = new Vector3[]
-                    {
-                        cart.transform.position + new Vector3(0.7f, 0, 0.7f),
-                        cart.transform.position + new Vector3(0.7f, 0, -0.7f),
-                        cart.transform.position + new Vector3(-0.7f, 0, 0.7f),
-                        cart.transform.position + new Vector3(-0.7f, 0, -0.7f),
-                    };
-                    
+
                     //ゲームスタート前のアニメーション
                     viewObject.SetActive(false);
                     for (int playerIndex = 0;
@@ -103,9 +96,9 @@ namespace Carry.UISystem.UI.LobbyScene
                         var playerTransform = playerController.transform;
                         
                         DOTween.Sequence()
-                            .Append(playerTransform.DOLookAt(PlayerCartPosition[playerIndex], 0))
+                            .Append(playerTransform.DOLookAt(CalcPlayerPositionInCart(playerIndex, cart.transform.position), 0))
                             .AppendCallback(() => playerController.GetCharacter.Dash())
-                            .Append(playerTransform.DOMove(PlayerCartPosition[playerIndex], 2f))
+                            .Append(playerTransform.DOMove(CalcPlayerPositionInCart(playerIndex, cart.transform.position), 2f))
                             .AppendCallback(() =>
                             {
                                 playerController.GetCharacter.SwitchToRegularMove();
@@ -136,6 +129,18 @@ namespace Carry.UISystem.UI.LobbyScene
             }
             
             SetupToggleSelectStageCanvas();
+        }
+
+        Vector3 CalcPlayerPositionInCart(int playerIndex, Vector3 cartPosition)
+        {
+            return playerIndex switch 
+            {
+                0 => cartPosition + new Vector3(0.7f, 0, 0.7f),
+                1 => cartPosition + new Vector3(0.7f, 0, -0.7f),
+                2 => cartPosition + new Vector3(-0.7f, 0, 0.7f),
+                3 => cartPosition + new Vector3(-0.7f, 0, -0.7f),
+                _ => throw new System.ArgumentOutOfRangeException()
+            };
         }
 
 
