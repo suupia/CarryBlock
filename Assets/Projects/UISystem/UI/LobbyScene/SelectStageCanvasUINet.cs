@@ -17,7 +17,6 @@ using DG.Tweening;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Cart.Scripts;
-using log4net.Appender;
 using Projects.CarrySystem.Enemy;
 
 
@@ -85,8 +84,10 @@ namespace Carry.UISystem.UI.LobbyScene
                     CartLobbyControllerNet cart = FindObjectOfType<CartLobbyControllerNet>();
                     EnemyControllerNet enemy = FindObjectOfType<EnemyControllerNet>();
                     var enemyAnimatorPresenter = enemy.GetComponentInChildren<EnemyAnimatorPresenterNet>();
+                    
+                    var animationSequence = DOTween.Sequence();
 
-                    //ゲームスタート前のアニメーション
+                    // プレイヤーがカートに乗るアニメーション
                     viewObject.SetActive(false);
                     for (int playerIndex = 0;
                          playerIndex < _lobbyPlayerContainer.PlayerControllers.Count;
@@ -94,11 +95,13 @@ namespace Carry.UISystem.UI.LobbyScene
                     {
                         var playerController = _lobbyPlayerContainer.PlayerControllers[playerIndex];
                         var playerTransform = playerController.transform;
-                        
-                        DOTween.Sequence()
-                            .Append(playerTransform.DOLookAt(CalcPlayerPositionInCart(playerIndex, cart.transform.position), 0))
+
+                        animationSequence
+                            .Append(playerTransform.DOLookAt(
+                                CalcPlayerPositionInCart(playerIndex, cart.transform.position), 0))
                             .AppendCallback(() => playerController.GetCharacter.Dash())
-                            .Append(playerTransform.DOMove(CalcPlayerPositionInCart(playerIndex, cart.transform.position), 2f))
+                            .Append(playerTransform.DOMove(
+                                CalcPlayerPositionInCart(playerIndex, cart.transform.position), 2f))
                             .AppendCallback(() =>
                             {
                                 playerController.GetCharacter.SwitchToRegularMove();
@@ -106,23 +109,35 @@ namespace Carry.UISystem.UI.LobbyScene
                                     playerTransform.position.z);
                                 playerTransform.position = changePosition;
                                 playerTransform.SetParent(cart.transform);
-                            })
-                            .Append(enemy.transform.DOLookAt(cart.transform.position, 0))
-                            .AppendCallback(() => enemyAnimatorPresenter.Chase())
-                            .Append(enemy.transform.DOMove(new Vector3(-6f, 0, 0f), 1.5f))
-                            .AppendCallback(() =>   enemyAnimatorPresenter.Threat())
-                            .Append(enemy.transform.DOMove(new Vector3(-5.5f, 0, 0f), 1.5f))
-                            .Append(playerTransform.DOLookAt(new Vector3(40f, 0, 0), 0)) // var targetPosition = new Vector3(40f, 0, 0);
-                            .AppendCallback(() => enemyAnimatorPresenter.Chase())
-                            .Append(enemy.transform.DOMove(new Vector3(15f, 0, 0f), 2.5f))
-                            .Join(cart.transform.DOMove(new Vector3(40f, 0, 0), 2.5f))
-                            .OnComplete(() =>
-                            {
-                                _stageIndexTransporter.SetStageIndex(index);
-                                lobbyInitializer.TransitionToGameScene();
-                            }).Play();
+                            });
+
 
                     }
+
+                    // enemy Animation
+                    animationSequence
+                        .Append(enemy.transform.DOLookAt(cart.transform.position, 0))
+                        .AppendCallback(() => enemyAnimatorPresenter.Chase())
+                        .Append(enemy.transform.DOMove(new Vector3(-6f, 0, 0f), 1.5f))
+                        .AppendCallback(() => enemyAnimatorPresenter.Threat())
+                        .Append(enemy.transform.DOMove(new Vector3(-5.5f, 0, 0f), 1.5f));
+                    
+                    // player LookAt
+                    foreach (var playerController in _lobbyPlayerContainer.PlayerControllers)
+                    {
+                        animationSequence.Append(playerController.transform.DOLookAt(new Vector3(40f, 0, 0), 0));
+                    }
+
+                    // enemy chase and cart move
+                    animationSequence
+                        .AppendCallback(() => enemyAnimatorPresenter.Chase())
+                        .Append(enemy.transform.DOMove(new Vector3(15f, 0, 0f), 2.5f))
+                        .Join(cart.transform.DOMove(new Vector3(40f, 0, 0), 2.5f))
+                        .OnComplete(() =>
+                        {
+                            _stageIndexTransporter.SetStageIndex(index);
+                            lobbyInitializer.TransitionToGameScene();
+                        }).Play();
                     
                     
                 });
