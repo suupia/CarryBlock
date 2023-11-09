@@ -21,7 +21,6 @@ namespace Carry.CarrySystem.Map.Scripts
     public class SearchAccessibleAreaExecutor
     {
         readonly WaveletSearchExecutor _waveletSearchExecutor;
-        CancellationTokenSource?[]? _cancellationTokenSources;
         public SearchAccessibleAreaExecutor(WaveletSearchExecutor waveletSearchExecutor)
         {
             _waveletSearchExecutor = waveletSearchExecutor;
@@ -37,17 +36,10 @@ namespace Carry.CarrySystem.Map.Scripts
         }
         
         
-        /// <summary>
-        /// 仮置きでおいた壁を戻すために数字のマスに接しているマスをtrueにする
-        /// </summary>
-        /// <param name="map"></param>
-        /// <param name="searcherSize"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        //　数字があるマスをtrueにし、WaveletSearchExecutorのExpandVirtualWall()で拡大した分を戻す
         bool[] CalcAccessibleArea(NumericGridMap map, SearcherSize searcherSize)
         {
             var routeArray = new bool[map.Length];
-            var resultBoolArray = new bool[map.Length];
             var waveletResult = map;
             // 数字がある部分をtrueにする
             for (int i = 0; i < routeArray.Length; i++)
@@ -56,34 +48,34 @@ namespace Carry.CarrySystem.Map.Scripts
                                   waveletResult.GetValue(i) != _waveletSearchExecutor.InitValue;
             }
 
-            switch (searcherSize)
+            return ExpandAccessibleArea(map, searcherSize, routeArray);
+        }
+        
+        
+        // WaveletSearchExecutorのExpandVirtualWall()と対をなすようにする
+        bool[] ExpandAccessibleArea(NumericGridMap map, SearcherSize searcherSize, bool[] routeArray)
+        {
+            var resultBoolArray = new bool[map.Length];
+            var searcherSizeInt = (int) searcherSize;
+            UnityEngine.Assertions.Assert.IsTrue(searcherSizeInt % 2 ==  1, "searcherSize must be odd number");
+            
+            var expandSize = (searcherSizeInt-1) / 2;
+            for (int i = 0; i < routeArray.Length; i++)
             {
-                case SearcherSize.SizeOne:
-                    resultBoolArray = routeArray;
-                    break;
-                case SearcherSize.SizeThree:
-                    // set true to the squares around ture
-                    for (int i = 0; i < routeArray.Length; i++)
+                if (routeArray[i])
+                {
+                    for (int y = -expandSize; y <= expandSize; y++)
                     {
-                        if (routeArray[i])
+                        for (int x = -expandSize; x <= expandSize; x++)
                         {
-                            for (int y = -1; y <= 1; y++)
-                            {
-                                for (int x = -1; x <= 1; x++)
-                                {
-                                    var pos = map.ToVector(i);
-                                    var newX = pos.x + x;
-                                    var newY = pos.y + y;
-                                    if (!map.IsInDataRangeArea(newX, newY)) continue;
-                                    resultBoolArray[map.ToSubscript(pos.x + x, pos.y + y)] = true;
-                                }
-                            }
+                            var pos = map.ToVector(i);
+                            var newX = pos.x + x;
+                            var newY = pos.y + y;
+                            if (!map.IsInDataRangeArea(newX, newY)) continue;
+                            resultBoolArray[map.ToSubscript(newX, newY)] = true;
                         }
                     }
-
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
+                }
             }
 
             return resultBoolArray;
