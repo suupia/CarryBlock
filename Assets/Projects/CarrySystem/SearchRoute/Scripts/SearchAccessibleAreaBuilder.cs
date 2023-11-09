@@ -20,8 +20,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     public class SearchAccessibleAreaBuilder
     {
         [Inject] readonly NetworkRunner _runner = null!;
-        IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
-         bool _isRoutePresenterInit;
+        IEnumerable<RoutePresenterNet> _routePresenters =  new List<RoutePresenterNet>();
+         bool _isRoutePresentersInitialized;
          
         [Inject]
         public SearchAccessibleAreaBuilder()
@@ -32,9 +32,9 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         public SearchAccessibleAreaExecutor Build(SquareGridMap map)
         {
             var routePresenterSpawner = new RoutePresenterSpawner(_runner);
-            var routePresenters = new List<RoutePresenter_Net>();
+            var routePresenters = new List<RoutePresenterNet>();
             
-            if (!_isRoutePresenterInit) //最初にすべてスポーン
+            if (!_isRoutePresentersInitialized) //最初にすべてスポーン
             {
                 // 以前のTilePresenterを削除
                 DestroyRoutePresenter();
@@ -48,14 +48,18 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                     routePresenters.Add(routePresenter);
                 }
                 _routePresenters = routePresenters;
-                _isRoutePresenterInit = true;
+                _isRoutePresentersInitialized = true;
             }
             else
             {
                 routePresenters = _routePresenters.ToList();
             }
 
-            return  AttachRoutePresenter(routePresenters, map);
+            var waveletSearchExecutor = new WaveletSearchExecutor(map);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(map, waveletSearchExecutor);
+            searchAccessibleAreaExecutor.RegisterRoutePresenters(routePresenters);
+            return searchAccessibleAreaExecutor;
+            
         }
         
         void DestroyRoutePresenter()
@@ -67,22 +71,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             {
                 _runner.Despawn(routePresenter.Object);
             }
-            _routePresenters = new List<RoutePresenter_Net>();
+            _routePresenters = new List<RoutePresenterNet>();
         }
 
-        SearchAccessibleAreaExecutor AttachRoutePresenter(IReadOnlyList<RoutePresenter_Net> routePresenters , IGridMap map)
-        {
-            for (int i = 0; i < routePresenters.Count(); i++)
-            {
-                var routePresenter = routePresenters.ElementAt(i);
-                // RoutePresenter用に書き直し
-                //routePresenter.SetPresenterActive(false);  // ToDo: 初期化の処理
-            }
-            
-            var waveletSearchExecutor = new WaveletSearchExecutor(map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(map, waveletSearchExecutor);
-            searchAccessibleAreaExecutor.RegisterRoutePresenters(routePresenters);
-            return searchAccessibleAreaExecutor;
-        }
     }
 }

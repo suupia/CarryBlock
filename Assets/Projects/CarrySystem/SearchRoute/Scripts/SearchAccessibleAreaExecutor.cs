@@ -32,7 +32,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _routePresenters = new IRoutePresenter[gridMap.Length];
         }
         
-        public void RegisterRoutePresenters(IReadOnlyList<RoutePresenter_Net> routePresenters)
+        public void RegisterRoutePresenters(IReadOnlyList<RoutePresenterNet> routePresenters)
         {
             if (routePresenters.Count() != _gridMap.Length)
             {

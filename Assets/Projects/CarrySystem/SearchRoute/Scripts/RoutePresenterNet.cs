@@ -8,7 +8,7 @@ using DG.Tweening;
 
 namespace Carry.CarrySystem.SearchRoute.Scripts
 {
-    public class RoutePresenter_Net : NetworkBehaviour, IRoutePresenter
+    public class RoutePresenterNet : NetworkBehaviour, IRoutePresenter
     {
         [Networked] public NetworkBool IsActive { get; set; }
         [Networked] private NetworkBool IsAnimated { get; set; }
