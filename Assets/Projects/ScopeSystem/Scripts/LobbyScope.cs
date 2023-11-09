@@ -39,6 +39,7 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             builder.Register<MainLobbyPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
             builder.Register<LobbyPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
+            builder.Register<LobbyPlayerContainer>(Lifetime.Scoped);
 
             // Map
             // JsonとEntityGridMapに関する処理
@@ -49,6 +50,9 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             builder.Register<LobbyWallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LobbyGroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LobbyPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            builder.Register<PrefabLoaderFromAddressable<CartControllerNet>>(Lifetime.Scoped)
+                .As<IPrefabLoader<CartControllerNet>>()
+                .WithParameter("path", "Prefabs/Carts/CartLobbyControllerNet");
             
             builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
             
@@ -60,6 +64,8 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             
             // UI
             builder.RegisterComponentInHierarchy<SelectStageCanvasUINet>();
+
+            builder.Register<LobbyStartGameTheater>(Lifetime.Scoped);
             
             builder.RegisterComponentInHierarchy<LobbyInitializer>();
             

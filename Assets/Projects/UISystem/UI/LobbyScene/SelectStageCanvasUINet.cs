@@ -12,6 +12,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
+using Carry.CarrySystem.Player.Scripts;
+using DG.Tweening;
+using Carry.CarrySystem.Player.Info;
+using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.Cart.Scripts;
+using Projects.CarrySystem.Enemy;
+
 
 #nullable enable
 
@@ -27,16 +34,23 @@ namespace Carry.UISystem.UI.LobbyScene
 
         MapKeyDataSelectorNet  _mapKeyDataSelectorNet = null!;
         StageIndexTransporter _stageIndexTransporter =  null!;
-        InputAction _toggleSelectStageCanvas = null!;    
+        InputAction _toggleSelectStageCanvas = null!;
+        IPlayerAnimatorPresenter? _playerAnimatorPresenter;
+        
+        LobbyStartGameTheater _lobbyStartGameTheater = null!;
+        
         
         [Inject]
         public void Construct(
             MapKeyDataSelectorNet mapKeyDataSelectorNet,
-            StageIndexTransporter stageIndexTransporter
+            StageIndexTransporter stageIndexTransporter,
+            LobbyStartGameTheater lobbyStartGameTheater
             )
         {
+            
             _mapKeyDataSelectorNet = mapKeyDataSelectorNet;
             _stageIndexTransporter = stageIndexTransporter;
+            _lobbyStartGameTheater = lobbyStartGameTheater;
         }
 
         public override void Spawned()
@@ -55,6 +69,7 @@ namespace Carry.UISystem.UI.LobbyScene
             }
             
             var lobbyInitializer = FindObjectOfType<LobbyInitializer>();
+
             for(int i = 0; i< stageButtons.Count; i++)
             {
                 var stageButton = stageButtons[i];
@@ -62,15 +77,20 @@ namespace Carry.UISystem.UI.LobbyScene
                 var index = i;
                 stageButton.AddListener(() =>
                 {
-                    _stageIndexTransporter.SetStageIndex(index);
-                    lobbyInitializer.TransitionToGameScene();
+                    viewObject.SetActive(false);
+
+                    _lobbyStartGameTheater.PlayLobbyTheater(() =>
+                    {
+                        _stageIndexTransporter.SetStageIndex(index);
+                        lobbyInitializer.TransitionToGameScene();
+                    });
                 });
             }
             
             SetupToggleSelectStageCanvas();
         }
         
-        
+
         // 以下の処理はInputAction系を初期化するところに移動させた方がよいかもしれない
         void SetupToggleSelectStageCanvas()
         {

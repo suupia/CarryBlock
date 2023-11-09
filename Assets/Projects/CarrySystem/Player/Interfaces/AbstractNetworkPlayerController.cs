@@ -28,6 +28,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
         public IHoldActionExecutor GetHoldActionExecutor => HoldActionExecutor;
         public IOnDamageExecutor GetOnDamageExecutor => OnDamageExecutor;
+        public IDashExecutor GetDashExecutor => DashExecutor;
         public IPassActionExecutor GetPassActionExecutor => PassActionExecutor;
         
         

@@ -14,19 +14,22 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly ICarryPlayerFactory _carryPlayerFactory;
         // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などが想定される
         readonly PlayerCharacterTransporter _playerCharacterTransporter;
+        readonly LobbyPlayerContainer _lobbyPlayerContainer;
 
         [Inject]
         public LobbyPlayerBuilder(
             NetworkRunner runner ,
             IPrefabLoader<LobbyPlayerControllerNet> carryPlayerControllerLoader, 
             ICarryPlayerFactory carryPlayerFactory,
-            PlayerCharacterTransporter playerCharacterTransporter
+            PlayerCharacterTransporter playerCharacterTransporter,
+            LobbyPlayerContainer lobbyPlayerContainer
             )
         {
             _runner = runner;
             _carryPlayerControllerLoader = carryPlayerControllerLoader;
             _carryPlayerFactory = carryPlayerFactory;
             _playerCharacterTransporter  = playerCharacterTransporter;
+            _lobbyPlayerContainer = lobbyPlayerContainer;
         }
 
         public AbstractNetworkPlayerController Build( Vector3 position, Quaternion rotation, PlayerRef playerRef)
@@ -56,7 +59,7 @@ namespace Carry.CarrySystem.Player.Scripts
             
             // Factoryの差し替えが簡単にできるので、_resolver.InjectGameObjectを使う必要はない
             // BuilderとPlayerControllerが蜜結合なのは問題ないはず
-
+            _lobbyPlayerContainer.AddPlayer(playerRef, playerControllerObj);
             return playerControllerObj;
         }
 
