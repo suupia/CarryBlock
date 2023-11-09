@@ -66,21 +66,15 @@ namespace Carry.CarrySystem.Cart.Scripts
         void ResetAccessibleArea()
         {
             var map = _mapUpdater.GetMap();
-            Func<int, int, bool> isWall = (x, y) =>
-                map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
             
             if (_ctss == null || _ctss.Length != map.Length)
             {
                 _ctss = new CancellationTokenSource[map.Length];
             }
 
-            var startPos = new Vector2Int(1, map.Height / 2);
-            var searcherSize = SearcherSize.SizeThree;
             _searchAccessibleAreaPresenter = _searchAccessibleAreaBuilder.BuildPresenter(_mapUpdater.GetMap());
-            var accessibleArea = _searchAccessibleAreaPresenter.SearchAccessibleAreaWithUpdate(startPos, isWall, _ctss,searcherSize);
-
-            ShowResultText(accessibleArea, map, searcherSize);
-
+            
+            ShowAccessibleArea();
         }
 
 
