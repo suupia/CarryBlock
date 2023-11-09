@@ -6,6 +6,7 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
+using Projects.CarrySystem.SearchRoute.Scripts;
 using UniRx;
 using UnityEngine;
 
@@ -77,7 +78,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             var startPos = new Vector2Int(1, map.Height / 2);
             var endPos = new Vector2Int(map.Width - 2, map.Height / 2);
             var searcherSize = SearcherSize.SizeThree;
-            var searchAccessibleAreaExecutor = _searchAccessibleAreaBuilder.Build(_mapUpdater.GetMap());
+            var searchAccessibleAreaExecutor = _searchAccessibleAreaBuilder.BuildPresenter(_mapUpdater.GetMap());
             var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(startPos, isWall, _ctss,searcherSize);
 
             // Show the result  

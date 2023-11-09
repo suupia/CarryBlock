@@ -43,8 +43,7 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
             }
         }
 
-        public bool[] SearchAccessibleAreaWithUpdate(Vector2Int startPos, Func<int, int, bool> isWall,
-             CancellationTokenSource[]? cancellationTokenSources, SearcherSize searcherSize = SearcherSize.SizeOne)
+        public bool[] SearchAccessibleAreaWithUpdate(Vector2Int startPos, Func<int, int, bool> isWall,CancellationTokenSource[]? cancellationTokenSources,SearcherSize searcherSize = SearcherSize.SizeOne)
         {
             _cancellationTokenSources = cancellationTokenSources;
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);

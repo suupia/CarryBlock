@@ -8,6 +8,7 @@ using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners.Scripts;
 using Fusion;
 using JetBrains.Annotations;
+using Projects.CarrySystem.SearchRoute.Scripts;
 using UnityEngine;
 using VContainer;
 #nullable  enable
@@ -57,6 +58,39 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(map, waveletSearchExecutor);
+            searchAccessibleAreaExecutor.RegisterRoutePresenters(routePresenters);
+            return searchAccessibleAreaExecutor;
+            
+        }
+        
+        public SearchAccessibleAreaPresenter BuildPresenter(SquareGridMap map)
+        {
+            var routePresenterSpawner = new RoutePresenterSpawner(_runner);
+            var routePresenters = new List<RoutePresenterNet>();
+            
+            if (!_isRoutePresentersInitialized) //最初にすべてスポーン
+            {
+                // 以前のTilePresenterを削除
+                DestroyRoutePresenter();
+
+                // RoutePresenterをスポーンさせる
+                for (int i = 0; i < map.Length; i++)
+                {
+                    var girdPos = map.ToVector(i);
+                    var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
+                    var routePresenter = routePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                    routePresenters.Add(routePresenter);
+                }
+                _routePresenters = routePresenters;
+                _isRoutePresentersInitialized = true;
+            }
+            else
+            {
+                routePresenters = _routePresenters.ToList();
+            }
+
+            var waveletSearchExecutor = new WaveletSearchExecutor(map);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaPresenter(map, waveletSearchExecutor);
             searchAccessibleAreaExecutor.RegisterRoutePresenters(routePresenters);
             return searchAccessibleAreaExecutor;
             
