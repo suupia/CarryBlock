@@ -6,12 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="cf13caa4-bdd2-49cf-b3d5-bec88d577648" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SandboxShootoutTank/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SandboxShootoutTank/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Projects/CarrySystem/Block/Info/BlockInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/CarrySystem/Block/Info/BlockInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Projects/CarrySystem/Player/Scripts/PlayerBlockPresenterNet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/CarrySystem/Player/Scripts/PlayerBlockPresenterNet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/MapKeyDataSelectorNet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/EditMapSystem/EditMap/MapKeyDataSelectorNet.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources_moved/Prefabs/Map/ConfusionBlock.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources_moved/Prefabs/Map/ConfusionBlock.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources_moved/Prefabs/Players/CarryPlayerControllerNet.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources_moved/Prefabs/Players/CarryPlayerControllerNet.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/JsonFiles/MapData/MapData_Sakai_0.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/JsonFiles/MapData/MapData_Sakai_0.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AddressableAssetsData/Windows/addressables_content_state.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AddressableAssetsData/Windows/addressables_content_state.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Projects/CarrySystem/FloorTimer/Scripts/FloorTimerNet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/CarrySystem/FloorTimer/Scripts/FloorTimerNet.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Projects/ScopeSystem/Scripts/CarryScope.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/ScopeSystem/Scripts/CarryScope.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Projects/UISystem/UI/CarryScene/ResultCanvasUINet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Projects/UISystem/UI/CarryScene/ResultCanvasUINet.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +64,7 @@
 }</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../Desktop/InstantiateTankTest.app/Contents/MacOS/SandboxShootoutTank" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../SandboxShootoutTankBuild\CarryBlock.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../Desktop/InstantiateTankTest.app/Contents/MacOS" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -136,7 +135,14 @@
       <workItem from="1696334910059" duration="666000" />
       <workItem from="1696412601946" duration="2558000" />
       <workItem from="1696433865558" duration="1403000" />
-      <workItem from="1696657094383" duration="3900000" />
+      <workItem from="1696657094383" duration="5015000" />
+      <workItem from="1697231754549" duration="2255000" />
+      <workItem from="1697328040230" duration="16487000" />
+      <workItem from="1697542853419" duration="3048000" />
+      <workItem from="1698356340476" duration="805000" />
+      <workItem from="1698591692395" duration="6981000" />
+      <workItem from="1698691037066" duration="1429000" />
+      <workItem from="1698750283840" duration="2714000" />
     </task>
     <servers />
   </component>

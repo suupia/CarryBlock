@@ -21,9 +21,9 @@ namespace Carry.CarrySystem.Player.Scripts
         
         bool _isDashingLocal;
         VisualEffect _dashEffect;
-        public void Init(ICharacter character)
+        public void Init(IDashExecutor dashExecutor)
         {
-            character.SetDashEffectPresenter(this);
+            dashExecutor.SetDashEffectPresenter(this);
             
         }
 

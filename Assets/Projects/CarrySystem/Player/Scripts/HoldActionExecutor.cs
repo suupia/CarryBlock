@@ -115,7 +115,7 @@ namespace Carry.CarrySystem.Player.Scripts
                         Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれないはず
                         return;
                     }
-                    block.PutDown(_info.PlayerController.GetCharacter);
+                    block.PutDown(_info.PlayerController.GetMoveExecutorSwitcher);
                     // _map.AddEntity(forwardGridPos, block);
                     _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.AddBlock(block);
                     _playerBlockPresenter?.PutDownBlock();
@@ -144,11 +144,11 @@ namespace Carry.CarrySystem.Player.Scripts
                         Debug.LogError($"{target.name} には CarryPlayerControllerNet がアタッチされていません");
                         return;
                     }
-                    if (!targetPlayerController.GetCharacter.IsFainted) return;
+                    if (!targetPlayerController.GetOnDamageExecutor.IsFainted) return;
                     Debug.Log($"Use AidKit");
                     _holdingObjectContainer.PopAidKit();
                     if(_playerAidKitPresenter != null) _playerAidKitPresenter.UseAidKit();
-                    targetPlayerController.GetCharacter.OnRevive();
+                    targetPlayerController.GetOnDamageExecutor.OnRevive();
                 }
                 else
                 {
@@ -189,7 +189,7 @@ namespace Carry.CarrySystem.Player.Scripts
             if (carriableBlock.CanPickUp())
             {
                 Debug.Log($"remove currentBlockMonos");
-                carriableBlock.PickUp(_info.PlayerController.GetCharacter);
+                carriableBlock.PickUp(_info.PlayerController.GetMoveExecutorSwitcher, _info.PlayerController.GetPlayerHoldingObjectContainer,_info.PlayerController.GetHoldActionExecutor);
                 // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
                 _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
                 _playerBlockPresenter?.PickUpBlock(block);

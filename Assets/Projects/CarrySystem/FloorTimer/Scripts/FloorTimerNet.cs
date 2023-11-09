@@ -13,8 +13,10 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
         public float FloorLimitSeconds =>  CalcFloorLimitTime();
         public float FloorRemainingSeconds { get; set; }
         public float FloorRemainingTimeRatio => FloorRemainingSeconds / FloorLimitSeconds;
+        public float FloorRemainingSecondsSam { get; set; }
 
         public bool IsExpired { get; set; } 
+        public bool IsCleared { get; set; } 
         [Networked] TickTimer TickTimer { get; set; }
 
         PlayerCharacterTransporter _playerCharacterTransporter = null!;
@@ -31,10 +33,15 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
             Debug.Log($"PlayerCount:{_playerCharacterTransporter.PlayerCount}"); 
         }
 
+        public void SamRemainingTime()
+        {
+            FloorRemainingSecondsSam += Mathf.Floor(FloorRemainingSeconds);
+        }
+
         public override void FixedUpdateNetwork()
         {
             FloorRemainingSeconds = TickTimer.RemainingTime(Runner).GetValueOrDefault();
-            IsExpired = TickTimer.ExpiredOrNotRunning(Runner);
+            IsExpired = TickTimer.Expired(Runner);
         }
 
         float CalcFloorLimitTime()

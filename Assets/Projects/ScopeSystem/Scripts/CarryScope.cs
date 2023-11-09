@@ -84,6 +84,7 @@ namespace Carry.ScopeSystem.Scripts
 
             // UI
             builder.RegisterComponentInHierarchy<FloorTimerNet>();
+            builder.RegisterComponentInHierarchy<ResultCanvasUINet>();
 
             // Notifier
             builder.RegisterComponentInHierarchy<CartMovementNotifierNet>();

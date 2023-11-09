@@ -9,7 +9,12 @@ using Carry.CarrySystem.Player.Info;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class Character : ICharacter
+    public class Character :      
+        IMoveExecutorSwitcher, 
+        IHoldActionExecutor, 
+        IOnDamageExecutor,
+        IDashExecutor,
+        IPassActionExecutor
     {
         public PlayerHoldingObjectContainer PlayerHoldingObjectContainer { get; }
 
@@ -78,8 +83,8 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _moveExecutorSwitcher.SetPlayerAnimatorPresenter(presenter);
             _holdActionExecutor.SetPlayerAnimatorPresenter(presenter);
-            _passActionExecutor.SetPlayerAnimatorPresenter(presenter);
             _onDamageExecutor.SetPlayerAnimatorPresenter(presenter);
+            _passActionExecutor.SetPlayerAnimatorPresenter(presenter);
         }
         
         public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
@@ -101,6 +106,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void PassAction() => _passActionExecutor.PassAction();
         public bool CanReceivePass() => _passActionExecutor.CanReceivePass();
         public void ReceivePass(ICarriableBlock block) => _passActionExecutor.ReceivePass(block);
+        public void SetPassBlockMoveExecutor(PassBlockMoveExecutorNet presenter) => _passActionExecutor.SetPassBlockMoveExecutor(presenter);
         
         // IOnDamageExecutor
         public bool IsFainted => _onDamageExecutor.IsFainted;   

@@ -5,6 +5,7 @@ using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
+using TMPro;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -61,19 +62,20 @@ namespace Carry.CarrySystem.Player.Scripts
             
             // ドメインスクリプトをnew
             var colorType = _playerCharacterTransporter.GetPlayerColorType(playerRef);
-            var character = _carryPlayerFactory.Create(colorType);
+            var character = _carryPlayerFactory.CreateCharacter();
             
             // プレハブをスポーン
             var playerControllerObj = _runner.Spawn(playerController,position, rotation, playerRef,
                 (runner, networkObj) =>
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
-                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character,colorType,_mapUpdater, _playerNearCartHandler, _playerCharacterTransporter,_floorTimerNet);
-                    networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character);
+                    networkObj.GetComponent<CarryPlayerControllerNet>().Init(character.PlayerHoldingObjectContainer, character,character,character,character,character, colorType,_mapUpdater, _playerNearCartHandler, _playerCharacterTransporter,_floorTimerNet);
+                    networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character,character);
                     networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
-                    networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character);
+                    networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character,character,character,character);
                     networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
                     networkObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(character);
+                    networkObj.GetComponentInChildren<PassBlockMoveExecutorNet>()?.Init(character);
                     
                 });
             var info = playerControllerObj.Info;

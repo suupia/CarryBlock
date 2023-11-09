@@ -39,8 +39,10 @@ namespace Projects.CarrySystem.Gimmick.Scripts
             {
                 Debug.Log($"痛ったぁぁぁぁい");
                 var playerController = other.GetComponent<AbstractNetworkPlayerController>();
-                var character = playerController.GetCharacter;
-                character.OnDamage();
+                // var character = playerController.GetCharacter;
+                // character.OnDamage();
+                var onDamageExecutor = playerController.GetOnDamageExecutor;
+                onDamageExecutor.OnDamage();
             }
         }
     }

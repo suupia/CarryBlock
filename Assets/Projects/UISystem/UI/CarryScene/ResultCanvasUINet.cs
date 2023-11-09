@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Fusion;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,30 +19,61 @@ namespace Carry.UISystem.UI.CarryScene
 {
     public class ResultCanvasUINet : NetworkBehaviour
     {
+        [SerializeField] TextMeshProUGUI resultText = null!;
         [SerializeField] TextMeshProUGUI clearedFloorText = null!;
+        [SerializeField] TextMeshProUGUI clearTimeText = null!;
         [SerializeField] GameObject viewGameObject = null!;
         [SerializeField] CustomButton reStartButton = null!;
         [SerializeField] CustomButton titleButton = null!;
-        
         [Networked] bool ViewActive { get; set; } = false;
-        [Networked] int FloorNumber { get; set; }
-        
+        [Networked] NetworkBool IsClear { get; set; } = false;
+        [Networked] int ClearedFloorNumber { get; set; } = 0;
+        [Networked] int MaxFloorNumber { get; set; } = 0;
+        [Networked] float ClearTime { get; set; } = 0;
+
+        MapKeyDataSelectorNet _mapKeyDataSelectorNet;
+        StageIndexTransporter _stageIndexTransporter;
+        int _maxFloorNumber;
+        int FloorNumber { get; set; }
+        [Networked] int ClearedPercent { get; set; } 
         bool _viewActiveLocal = false;
+        
 
         [Inject]
         public void Construct(
             FloorTimerNet floorTimerNet,
-            IMapUpdater mapUpdater
+            IMapUpdater mapUpdater,
+            MapKeyDataSelectorNet mapKeyDataSelectorNet,
+            StageIndexTransporter stageIndexTransporter
         )
         {
-
+            _mapKeyDataSelectorNet = mapKeyDataSelectorNet;
+            _stageIndexTransporter = stageIndexTransporter;
+            var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
+            _maxFloorNumber = mapKeyDataList.Count;
+            //ゲームオーバーの時のリザルト
             this.ObserveEveryValueChanged(_ => floorTimerNet.IsExpired)
                 .Where(isExpired => isExpired)
                 .Subscribe(_ =>
                 {
-                    viewGameObject.SetActive(true);
                     ViewActive = true;
-                    FloorNumber = mapUpdater.Index + 1;
+                    IsClear = false;
+                    ClearedFloorNumber = mapUpdater.Index;
+                    MaxFloorNumber =  mapKeyDataList.Count;
+                    ClearTime = floorTimerNet.FloorLimitSeconds * _maxFloorNumber -
+                                floorTimerNet.FloorRemainingSecondsSam;
+                });
+            //ゲームクリアの時のリザルト
+            this.ObserveEveryValueChanged(_ => floorTimerNet.IsCleared)
+                .Where(isCleared => isCleared)
+                .Subscribe(_ =>
+                {
+                    ViewActive = true;
+                    IsClear = true;
+                    ClearedFloorNumber = mapUpdater.Index + 1;
+                    MaxFloorNumber =  mapKeyDataList.Count;
+                    ClearTime = floorTimerNet.FloorLimitSeconds * _maxFloorNumber -
+                                floorTimerNet.FloorRemainingSecondsSam;
                 });
             
         }
@@ -49,8 +81,7 @@ namespace Carry.UISystem.UI.CarryScene
         void Start()
         {
                viewGameObject.SetActive(false);
-               
-                           
+
                reStartButton.AddListener(() =>
                {
                    Debug.Log("ReStartButton Clicked");
@@ -81,8 +112,21 @@ namespace Carry.UISystem.UI.CarryScene
             {
                 _viewActiveLocal = ViewActive;
                 viewGameObject.SetActive(ViewActive);
-                clearedFloorText.text = $"Cleared Floor : {FloorNumber} F";
+                resultText.text = IsClear ? $"GameClear!" : $"GameOver";
+                clearedFloorText.text = $"Clear Rate : {(int)((float)ClearedFloorNumber/MaxFloorNumber * 100)} % ({ClearedFloorNumber} / {MaxFloorNumber})";
+                clearTimeText.text = IsClear ? GetClearTimeText(ClearTime) : $"Time's up";
             }
+        }
+        
+        
+        String GetClearTimeText(float clearTime)
+        {
+            int clearTimeMinutes = (int)clearTime / 60;
+            int clearTimeSeconds = (int)clearTime - clearTimeMinutes * 60;
+            if(clearTimeMinutes != 0)
+                return $"Clear Time : {clearTimeMinutes}'{clearTimeSeconds}";
+            else
+                return $"Clear Time : {clearTimeSeconds} s ";
         }
     }
 }

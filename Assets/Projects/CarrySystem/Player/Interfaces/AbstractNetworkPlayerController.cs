@@ -23,14 +23,26 @@ namespace Carry.CarrySystem.Player.Interfaces
         [Networked] protected PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
 
         protected GameObject CharacterObj= null!;
-        public ICharacter GetCharacter => Character;
 
-        protected ICharacter Character = null!; // サブクラスのInitでcharacterを受け取るようになっているのでnullになることはない
+        public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
+        public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
+        public IHoldActionExecutor GetHoldActionExecutor => HoldActionExecutor;
+        public IOnDamageExecutor GetOnDamageExecutor => OnDamageExecutor;
+        public IPassActionExecutor GetPassActionExecutor => PassActionExecutor;
+        
+        
+        // ICharacterリファクタリング
+        protected PlayerHoldingObjectContainer BlockContainer = null!;
+        protected IMoveExecutorSwitcher MoveExecutorSwitcher = null!;
+        protected IHoldActionExecutor HoldActionExecutor = null!;
+        protected IOnDamageExecutor OnDamageExecutor = null!;
+        protected IDashExecutor DashExecutor = null!;
+        protected IPassActionExecutor PassActionExecutor = null!;
 
 
         public override void Spawned()
         {
-            Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
+            // Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
 
             // init info
             info.Init(gameObject, this, Object.InputAuthority);
@@ -57,20 +69,20 @@ namespace Carry.CarrySystem.Player.Interfaces
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
-                    Character.HoldAction();
+                    HoldActionExecutor.HoldAction();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
                 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
                 {
-                    Character.Dash();
+                    DashExecutor.Dash();
                 }
 
 
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
                 // Debug.Log($"_character = {_character}");
-                Character.Move( direction);
+                MoveExecutorSwitcher.Move( direction);
                  
                 
                 GetInputProcess(input); // 子クラスで処理を追加するためのメソッド
@@ -89,7 +101,8 @@ namespace Carry.CarrySystem.Player.Interfaces
             var prefab = playerUnitPrefabs[(int)ColorType];
             CharacterObj = Instantiate(prefab, unitObjectParent);
             
-            Character?.Setup(info);
+            // Character?.Setup(info);
+            Setup(info);
             CharacterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
             var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
             animatorPresenter.SetAnimator(CharacterObj.GetComponentInChildren<Animator>());
@@ -97,5 +110,15 @@ namespace Carry.CarrySystem.Player.Interfaces
             // Play spawn animation
             // _decorationDetector.OnSpawned();
         }
+        
+        protected void Setup(PlayerInfo info)
+        {
+            MoveExecutorSwitcher.Setup(info);
+            HoldActionExecutor. Setup(info);
+            PassActionExecutor.Setup(info);
+            OnDamageExecutor.Setup(info);
+            info.PlayerRb.useGravity = true;
+        }
+
     }
 }
