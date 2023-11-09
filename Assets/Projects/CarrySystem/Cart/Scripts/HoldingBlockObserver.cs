@@ -78,7 +78,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             var endPos = new Vector2Int(map.Width - 2, map.Height / 2);
             var searcherSize = SearcherSize.SizeThree;
             var searchAccessibleAreaExecutor = _searchAccessibleAreaBuilder.Build(_mapUpdater.GetMap());
-            var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, _ctss,searcherSize);
+            var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(startPos, isWall, _ctss,searcherSize);
 
             // Show the result  
             if (_reachRightEdgeChecker.CanCartReachRightEdge(accessibleArea, map, searcherSize))

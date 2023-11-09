@@ -46,9 +46,17 @@ namespace Carry.CarrySystem.Map.Scripts
                 _routePresenters[i] = routePresenters[i];
             }
         }
+        
+                
+        public bool[] SearchAccessibleAreaWithNotUpdate(Vector2Int startPos, Func<int, int, bool> isWall,SearcherSize searcherSize = SearcherSize.SizeOne)
+        {
+            var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
+            var accessibleAreaArray = CalcAccessibleArea(searchedMap, searcherSize);
+            return accessibleAreaArray;
+        }
 
         
-        public bool[] SearchAccessibleArea(Vector2Int startPos, Func<int, int, bool> isWall,
+        public bool[] SearchAccessibleAreaWithUpdate(Vector2Int startPos, Func<int, int, bool> isWall,
              CancellationTokenSource[]? cancellationTokenSources, SearcherSize searcherSize = SearcherSize.SizeOne)
         {
             _cancellationTokenSources = cancellationTokenSources;
@@ -56,8 +64,6 @@ namespace Carry.CarrySystem.Map.Scripts
             var accessibleAreaArray = CalcAccessibleArea(searchedMap, searcherSize);
     
             var extendedMap =  ExtendToAccessibleNumericMap(searchedMap, searcherSize);
-            
-            
             UpdatePresenter(extendedMap);
     
             return accessibleAreaArray;
