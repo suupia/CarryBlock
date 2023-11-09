@@ -16,17 +16,19 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
         public class SearchAccessibleAreaPresenter
     {
         readonly WaveletSearchExecutor _waveletSearchExecutor;
+        readonly SearchAccessibleAreaExecutor _searchAccessibleAreaExecutor;
         readonly IRoutePresenter?[] _routePresenters;
         readonly int _delayMilliSec = 7;
         CancellationTokenSource?[]? _cancellationTokenSources;
         
-        public SearchAccessibleAreaPresenter( WaveletSearchExecutor waveletSearchExecutor)
+        public SearchAccessibleAreaPresenter(WaveletSearchExecutor waveletSearchExecutor, SearchAccessibleAreaExecutor searchAccessibleAreaExecutor)
         {
             _waveletSearchExecutor = waveletSearchExecutor;
+            _searchAccessibleAreaExecutor = searchAccessibleAreaExecutor;
             var mapLength = waveletSearchExecutor.Map.Length;
             _routePresenters = new IRoutePresenter[mapLength];
         }
-        
+
         public void RegisterRoutePresenters(IReadOnlyList<RoutePresenterNet> routePresenters)
         {
             var mapLength = _waveletSearchExecutor.Map.Length;
@@ -47,67 +49,14 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
         {
             _cancellationTokenSources = cancellationTokenSources;
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
-            var accessibleAreaArray = CalcAccessibleArea(searchedMap, searcherSize);
+            var accessibleAreaArray =_searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(startPos, isWall, searcherSize);
     
             var extendedMap =  ExtendToAccessibleNumericMap(searchedMap, searcherSize);
             UpdatePresenter(extendedMap);
     
             return accessibleAreaArray;
         }
-        
-        
-        /// <summary>
-        /// 仮置きでおいた壁を戻すために数字のマスに接しているマスをtrueにする
-        /// </summary>
-        /// <param name="map"></param>
-        /// <param name="searcherSize"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        bool[] CalcAccessibleArea(NumericGridMap map, SearcherSize searcherSize)
-        {
-            var routeArray = new bool[map.Length];
-            var resultBoolArray = new bool[map.Length];
-            var waveletResult = map;
-            // 数字がある部分をtrueにする
-            for (int i = 0; i < routeArray.Length; i++)
-            {
-                routeArray[i] = waveletResult.GetValue(i) != _waveletSearchExecutor.WallValue &&
-                                  waveletResult.GetValue(i) != _waveletSearchExecutor.InitValue;
-            }
 
-            switch (searcherSize)
-            {
-                case SearcherSize.SizeOne:
-                    resultBoolArray = routeArray;
-                    break;
-                case SearcherSize.SizeThree:
-                    // set true to the squares around ture
-                    for (int i = 0; i < routeArray.Length; i++)
-                    {
-                        if (routeArray[i])
-                        {
-                            for (int y = -1; y <= 1; y++)
-                            {
-                                for (int x = -1; x <= 1; x++)
-                                {
-                                    var pos = map.ToVector(i);
-                                    var newX = pos.x + x;
-                                    var newY = pos.y + y;
-                                    if (!map.IsInDataRangeArea(newX, newY)) continue;
-                                    resultBoolArray[map.ToSubscript(pos.x + x, pos.y + y)] = true;
-                                }
-                            }
-                        }
-                    }
-
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
-            }
-
-            return resultBoolArray;
-        }
-        
         NumericGridMap ExtendToAccessibleNumericMap(NumericGridMap map, SearcherSize searcherSize)
         {
             var extendedMap = new NumericGridMap(map.Width, map.Height, _waveletSearchExecutor.InitValue, _waveletSearchExecutor.EdgeValue, _waveletSearchExecutor.OutOfRangeValue);
