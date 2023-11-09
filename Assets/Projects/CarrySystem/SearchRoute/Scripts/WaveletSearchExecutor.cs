@@ -20,6 +20,7 @@ namespace Carry.CarrySystem.Map.Scripts
     /// </summary>
     public class WaveletSearchExecutor
     {
+        public NumericGridMap Map => _map;
         public int InitValue => _initValue;
         public int WallValue => _wallValue;
         public int EdgeValue => _edgeValue;

@@ -10,16 +10,16 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     public class RoutePresenterSpawner
     {
         readonly NetworkRunner _runner;
-        readonly IPrefabLoader<RoutePresenter_Net> _routePresenterPrefabSpawner;
+        readonly IPrefabLoader<RoutePresenterNet> _routePresenterPrefabSpawner;
 
         public RoutePresenterSpawner(NetworkRunner runner)
         {
             _runner = runner;
             _routePresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<RoutePresenter_Net>("Prefabs/Map/RoutePresenter");
+                new PrefabLoaderFromAddressable<RoutePresenterNet>("Prefabs/Map/RoutePresenter");
         }
 
-        public RoutePresenter_Net SpawnPrefab(Vector3 position, Quaternion rotation)
+        public RoutePresenterNet SpawnPrefab(Vector3 position, Quaternion rotation)
         {
             var tilePresenter = _routePresenterPrefabSpawner.Load();
             return _runner.Spawn(tilePresenter, position, rotation, PlayerRef.None);
