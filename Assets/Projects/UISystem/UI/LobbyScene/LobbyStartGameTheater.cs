@@ -83,12 +83,12 @@ namespace Carry.UISystem.UI.LobbyScene
                 sequence
                     .Append(playerTransform.DOLookAt(
                         CalcPlayerPositionInCart(playerIndex, _cart.transform.position), 0))
-                    .AppendCallback(() => playerController.GetCharacter.Dash())
+                    .AppendCallback(() => playerController.GetDashExecutor.Dash())
                     .Append(playerTransform.DOMove(
                         CalcPlayerPositionInCart(playerIndex, _cart.transform.position), 2f))
                     .AppendCallback(() =>
                     {
-                        playerController.GetCharacter.SwitchToRegularMove();
+                        playerController.GetMoveExecutorSwitcher.SwitchToRegularMove();
                         var changePosition = new Vector3(playerTransform.position.x, 1.0f, playerTransform.position.z);
                         playerTransform.position = changePosition;
                         playerTransform.SetParent(_cart.transform);
