@@ -16,7 +16,6 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var ctss = new CancellationTokenSource[mapData.Map.Length];
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
@@ -37,14 +36,14 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
 
             // walls
             var resultBoolArray =
-                searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(mapData.StartPos,
-                    (x, y) => mapData.Walls.Contains((x, y)),ctss);
+                searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(mapData.StartPos,
+                    (x, y) => mapData.Walls.Contains((x, y)));
             Assert.AreEqual(expectedBoolArray, resultBoolArray);
 
             // wallsIncludeStart
             resultBoolArray =
-                searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(mapData.StartPos,
-                    (x, y) => mapData.WallsIncludeStart.Contains((x, y)),ctss);
+                searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(mapData.StartPos,
+                    (x, y) => mapData.WallsIncludeStart.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
 
         }
@@ -54,7 +53,6 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7B();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var ctss = new CancellationTokenSource[mapData.Map.Length];
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
@@ -75,14 +73,14 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
 
             // walls
             var resultBoolArray =
-                searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(mapData.StartPos,
-                    (x, y) => mapData.Walls.Contains((x, y)),ctss);
+                searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(mapData.StartPos,
+                    (x, y) => mapData.Walls.Contains((x, y)));
             Assert.AreEqual(expectedBoolArray, resultBoolArray);
 
             // wallsIncludeStart
             resultBoolArray =
-                searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(mapData.StartPos,
-                    (x, y) => mapData.WallsIncludeStart.Contains((x, y)),ctss);
+                searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(mapData.StartPos,
+                    (x, y) => mapData.WallsIncludeStart.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
             
         }
@@ -92,7 +90,6 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map10X8A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var ctss = new CancellationTokenSource[mapData.Map.Length];
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
@@ -116,8 +113,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
 
             // walls
             var resultBoolArray =
-                searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(mapData.StartPos,
-                    (x, y) => mapData.Walls.Contains((x, y)),ctss);
+                searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(mapData.StartPos,
+                    (x, y) => mapData.Walls.Contains((x, y)));
             for (int i = 0; i < resultBoolArray.Length; i++)
             {
                 if (expectedBoolArray[i] != resultBoolArray[i])
@@ -131,8 +128,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
 
             // wallsIncludeStart
             resultBoolArray =
-                searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(mapData.StartPos,
-                    (x, y) => mapData.WallsIncludeStart.Contains((x, y)),ctss);
+                searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(mapData.StartPos,
+                    (x, y) => mapData.WallsIncludeStart.Contains((x, y)));
             Assert.AreEqual(allFalseArray, resultBoolArray);
         }
 
@@ -141,7 +138,6 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var ctss = new CancellationTokenSource[mapData.Map.Length];
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
@@ -162,13 +158,13 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
 
             // walls
             var resultBoolArray =
-                searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(mapData.StartPos,
-                    (x, y) => mapData.Walls.Contains((x, y)),ctss, SearcherSize.SizeThree);
+                searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(mapData.StartPos,
+                    (x, y) => mapData.Walls.Contains((x, y)), SearcherSize.SizeThree);
             Assert.AreEqual(expectedBoolArray, resultBoolArray);
 
             // wallsIncludeStart
-            resultBoolArray = searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(mapData.StartPos,
-                (x, y) => mapData.WallsIncludeStart.Contains((x, y)),ctss, SearcherSize.SizeThree);
+            resultBoolArray = searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(mapData.StartPos,
+                (x, y) => mapData.WallsIncludeStart.Contains((x, y)), SearcherSize.SizeThree);
             Assert.AreEqual(allFalseArray, resultBoolArray);
 
         }
@@ -178,7 +174,6 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7B();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var ctss = new CancellationTokenSource[mapData.Map.Length];
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
@@ -199,13 +194,13 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
 
             // walls
             var resultBoolArray =
-                searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(mapData.StartPos,
-                    (x, y) => mapData.Walls.Contains((x, y)), ctss,SearcherSize.SizeThree);
+                searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(mapData.StartPos,
+                    (x, y) => mapData.Walls.Contains((x, y)),SearcherSize.SizeThree);
             Assert.AreEqual(expectedBoolArray, resultBoolArray);
 
             // wallsIncludeStart
-            resultBoolArray = searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(mapData.StartPos,
-                (x, y) => mapData.WallsIncludeStart.Contains((x, y)), ctss,SearcherSize.SizeThree);
+            resultBoolArray = searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(mapData.StartPos,
+                (x, y) => mapData.WallsIncludeStart.Contains((x, y)),SearcherSize.SizeThree);
             Assert.AreEqual(allFalseArray, resultBoolArray);
 
         }
@@ -215,7 +210,6 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map10X8A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var ctss = new CancellationTokenSource[mapData.Map.Length];
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(mapData.Map, newSearchShortestRoute);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
@@ -237,8 +231,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
 
             // walls
             var resultBoolArray =
-                searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(mapData.StartPos,
-                    (x, y) => mapData.Walls.Contains((x, y)), ctss,SearcherSize.SizeThree);
+                searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(mapData.StartPos,
+                    (x, y) => mapData.Walls.Contains((x, y)),SearcherSize.SizeThree);
             for (int i = 0; i < resultBoolArray.Length; i++)
             {
                 if (expectedBoolArray[i] != resultBoolArray[i])
@@ -251,8 +245,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
             Assert.AreEqual(expectedBoolArray, resultBoolArray);
 
             // wallsIncludeStart
-            resultBoolArray = searchAccessibleAreaExecutor.SearchAccessibleAreaWithUpdate(mapData.StartPos,
-                (x, y) => mapData.WallsIncludeStart.Contains((x, y)), ctss,SearcherSize.SizeThree);
+            resultBoolArray = searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(mapData.StartPos,
+                (x, y) => mapData.WallsIncludeStart.Contains((x, y)),SearcherSize.SizeThree);
             Assert.AreEqual(allFalseArray, resultBoolArray);
             
         }

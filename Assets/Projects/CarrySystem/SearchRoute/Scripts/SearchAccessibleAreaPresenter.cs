@@ -4,28 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 #nullable enable
 
-namespace Carry.CarrySystem.Map.Scripts
+namespace Projects.CarrySystem.SearchRoute.Scripts
 {
-    public enum SearcherSize
-    {
-        SizeOne = 1,
-        SizeThree = 3,
-    }
-
-    public class SearchAccessibleAreaExecutor
+        public class SearchAccessibleAreaPresenter
     {
         readonly WaveletSearchExecutor _waveletSearchExecutor;
         readonly IGridMap _gridMap;
         readonly IRoutePresenter?[] _routePresenters;
         readonly int _delayMilliSec = 7;
         CancellationTokenSource?[]? _cancellationTokenSources;
-        public SearchAccessibleAreaExecutor(IGridMap gridMap, WaveletSearchExecutor waveletSearchExecutor)
+        
+        public SearchAccessibleAreaPresenter(IGridMap gridMap, WaveletSearchExecutor waveletSearchExecutor)
         {
             _waveletSearchExecutor = waveletSearchExecutor;
             _gridMap = gridMap;
@@ -46,9 +42,9 @@ namespace Carry.CarrySystem.Map.Scripts
                 _routePresenters[i] = routePresenters[i];
             }
         }
-        
-                
-        public bool[] SearchAccessibleAreaWithUpdate(Vector2Int startPos, Func<int, int, bool> isWall,CancellationTokenSource[]? cancellationTokenSources,SearcherSize searcherSize = SearcherSize.SizeOne)
+
+        public bool[] SearchAccessibleAreaWithUpdate(Vector2Int startPos, Func<int, int, bool> isWall,
+             CancellationTokenSource[]? cancellationTokenSources, SearcherSize searcherSize = SearcherSize.SizeOne)
         {
             _cancellationTokenSources = cancellationTokenSources;
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
@@ -56,16 +52,6 @@ namespace Carry.CarrySystem.Map.Scripts
     
             var extendedMap =  ExtendToAccessibleNumericMap(searchedMap, searcherSize);
             UpdatePresenter(extendedMap);
-    
-            return accessibleAreaArray;
-        }
-
-        
-        public bool[] SearchAccessibleAreaWithNotUpdate(Vector2Int startPos, Func<int, int, bool> isWall,
-              SearcherSize searcherSize = SearcherSize.SizeOne)
-        {
-            var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
-            var accessibleAreaArray = CalcAccessibleArea(searchedMap, searcherSize);
     
             return accessibleAreaArray;
         }
