@@ -95,6 +95,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             return extendedMap;
         } 
         
+        // WaveletSearchのExpandVirtualWall()をこのクラスに持ってきたい気もするが、WaveletSearchExecutorがこのクラスに依存するようになるのはなんか変な気がする
+        // とりあえず、放っておく
         
         bool[] CalcRouteArray(NumericGridMap map)
         {
