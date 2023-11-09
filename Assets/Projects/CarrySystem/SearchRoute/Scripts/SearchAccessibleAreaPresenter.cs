@@ -16,25 +16,25 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
         public class SearchAccessibleAreaPresenter
     {
         readonly WaveletSearchExecutor _waveletSearchExecutor;
-        readonly IGridMap _gridMap;
         readonly IRoutePresenter?[] _routePresenters;
         readonly int _delayMilliSec = 7;
         CancellationTokenSource?[]? _cancellationTokenSources;
         
-        public SearchAccessibleAreaPresenter(IGridMap gridMap, WaveletSearchExecutor waveletSearchExecutor)
+        public SearchAccessibleAreaPresenter( WaveletSearchExecutor waveletSearchExecutor)
         {
             _waveletSearchExecutor = waveletSearchExecutor;
-            _gridMap = gridMap;
-            _routePresenters = new IRoutePresenter[gridMap.Length];
+            var mapLength = waveletSearchExecutor.Map.Length;
+            _routePresenters = new IRoutePresenter[mapLength];
         }
         
         public void RegisterRoutePresenters(IReadOnlyList<RoutePresenterNet> routePresenters)
         {
-            if (routePresenters.Count() != _gridMap.Length)
+            var mapLength = _waveletSearchExecutor.Map.Length;
+            if (routePresenters.Count() != mapLength)
             {
                 Debug.LogError($"routePresentersの数がmapのマスの数と一致しません。" +
                                $"routePresentersの数: {routePresenters.Count()} " +
-                               $"mapのマスの数: {_gridMap.Length}");
+                               $"mapのマスの数: {mapLength}");
             }
 
             for (int i = 0; i < routePresenters.Count(); i++)
