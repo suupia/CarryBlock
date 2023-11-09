@@ -20,6 +20,8 @@ namespace Carry.CarrySystem.Cart.Scripts
     {
         public bool IsMoving { get; private set; } = false;
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
+        readonly SearchAccessibleAreaBuilder _searchAccessibleAreaBuilder;
+        
         EntityGridMap? _map; // このクラスはMapを登録して使用する (コンストラクタでIMapUpdaterを受け取らない)
         IMapUpdater? _mapUpdater;
         CartInfo? _info ;
@@ -39,10 +41,12 @@ namespace Carry.CarrySystem.Cart.Scripts
 
         [Inject]
         public CartShortestRouteMove(
-            ReachRightEdgeChecker reachRightEdgeChecker
+            ReachRightEdgeChecker reachRightEdgeChecker,
+            SearchAccessibleAreaBuilder searchAccessibleAreaBuilder
         )
         {
             _reachRightEdgeChecker = reachRightEdgeChecker;
+            _searchAccessibleAreaBuilder = searchAccessibleAreaBuilder;
         }
 
         public void Setup(CartInfo info)
@@ -91,7 +95,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             var startPos = new Vector2Int(1, _map.Height % 2 == 1 ? (_map.Height - 1) / 2 : _map.Height / 2);
             Func<int, int, bool> isWall = (x, y) => _map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
             var ctss = new CancellationTokenSource[_map.Length]; // ここでは必要ないけど、渡す必要があるので適当に作る
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(_map, waveletSearchExecutor);
+            var searchAccessibleAreaExecutor = _searchAccessibleAreaBuilder.Build(_map);
             var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, ctss,searcherSize);
             var endPosY = _reachRightEdgeChecker.CalcCartReachRightEdge(accessibleArea, _map, searcherSize);
             var routeEndPos = new Vector2Int(_map.Width - 2, endPosY);
