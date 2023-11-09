@@ -51,15 +51,14 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
             var accessibleAreaArray =_searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(startPos, isWall, searcherSize);
     
-            var extendedMap =  ExtendToAccessibleNumericMap(searchedMap, searcherSize);
+            var extendedMap =  ExpandSearchedMap(searchedMap, searcherSize, CalcRouteArray(searchedMap));
             UpdatePresenter(extendedMap);
     
             return accessibleAreaArray;
         }
 
-        NumericGridMap ExtendToAccessibleNumericMap(NumericGridMap map, SearcherSize searcherSize)
+        bool[] CalcRouteArray(NumericGridMap map)
         {
-            var extendedMap = new NumericGridMap(map.Width, map.Height, _waveletSearchExecutor.InitValue, _waveletSearchExecutor.EdgeValue, _waveletSearchExecutor.OutOfRangeValue);
             var routeArray = new bool[map.Length];
             // 数字がある部分をtrueにする
             for (int i = 0; i < routeArray.Length; i++)
@@ -68,6 +67,17 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
                                 map.GetValue(i) != _waveletSearchExecutor.InitValue;
             }
 
+            return routeArray;
+        }
+
+        NumericGridMap ExpandSearchedMap(NumericGridMap map, SearcherSize searcherSize, bool[] routeArray)
+        {
+            var extendedMap = new NumericGridMap(map.Width, map.Height, _waveletSearchExecutor.InitValue, _waveletSearchExecutor.EdgeValue, _waveletSearchExecutor.OutOfRangeValue);
+            var searcherSizeInt = (int) searcherSize;
+            UnityEngine.Assertions.Assert.IsTrue(searcherSizeInt % 2 ==  1, "searcherSize must be odd number");
+
+            // 一般化するには、map.GetValue(i) + 1 の部分を変える必要があり、少し面倒
+            // 少なくともテストコードが必要そう
             switch (searcherSize)
             {
                 case SearcherSize.SizeOne:
@@ -102,7 +112,7 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
             }
 
             return extendedMap;
-        }
+        } 
         
         // 時間差でpresenterをupdateする
         void UpdatePresenter(NumericGridMap numericGridMap)
