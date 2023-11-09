@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Carry.CarrySystem.Map.Scripts;
+using Carry.CarrySystem.SearchRoute.Scripts;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using BitStream = Fusion.Protocol.BitStream;

@@ -6,7 +6,6 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
-using Projects.CarrySystem.SearchRoute.Scripts;
 using UniRx;
 using UnityEngine;
 
