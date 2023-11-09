@@ -19,9 +19,9 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         readonly SearchAccessibleAreaExecutor _searchAccessibleAreaExecutor;
         readonly SearchedMapExpander _searchedMapExpander;
         readonly IRoutePresenter?[] _routePresenters;
-        readonly long[]? _beforeValues;  // 要素数を確保したいため配列にした
-        readonly int _delayMilliSec = 70;
+        readonly int _delayMilliSec = 30;
         CancellationTokenSource?[]? _cancellationTokenSources;
+        long _beforeMaxValue = 0;
 
 
         public SearchAccessibleAreaPresenter(
@@ -34,7 +34,6 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             _searchedMapExpander = searchedMapExpander;
             var mapLength = waveletSearchExecutor.Map.Length;
             _routePresenters = new IRoutePresenter[mapLength];
-            _beforeValues = new long[mapLength];
         }
 
         public void RegisterRoutePresenters(IReadOnlyList<RoutePresenterNet> routePresenters)
@@ -74,6 +73,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                 Debug.LogError($"_cancellationTokenSources is null");
                 return;
             }
+            
+            long nextMaxValue = 0;
             for (int i = 0; i < numericGridMap.Length; i++)
             {
                 _cancellationTokenSources[i]?.Cancel();
@@ -84,15 +85,20 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                    && numericGridMap.GetValue(i) != _waveletSearchExecutor.WallValue
                    && numericGridMap.GetValue(i) != _waveletSearchExecutor.EdgeValue
                    && numericGridMap.GetValue(i) != _waveletSearchExecutor.OutOfRangeValue)
-                _beforeValues[i] = numericGridMap.GetValue(i);
-                    
+                    nextMaxValue = Math.Max(nextMaxValue, numericGridMap.GetValue(i));
             }
+
+            _beforeMaxValue = nextMaxValue;
         }
 
         async UniTaskVoid DelayUpdate(CancellationToken cts, IRoutePresenter? routePresenter, long value, int i)
         {
             if(routePresenter == null) return;
-            if (value < 0)
+            
+            if(value == _waveletSearchExecutor.InitValue
+               || value == _waveletSearchExecutor.WallValue
+               || value == _waveletSearchExecutor.EdgeValue
+               || value == _waveletSearchExecutor.OutOfRangeValue)
             {
                 routePresenter.SetPresenterActive(false);
                 return;
@@ -102,13 +108,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
             try
             {
-                if (_beforeValues == null)
-                {
-                    Debug.LogError($"_beforeValues is null");
-                    return;
-                }
-                var delayValue = Math.Max((int)(value - _beforeValues[i]), 0);
-                Debug.Log($"value:{value} _beforeValues[i]:{_beforeValues[i]} delayValue:{delayValue}");
+                var delayValue = Math.Max((int)(value - _beforeMaxValue),0);
+                // Debug.Log($"value:{value} _beforeMaxValue:{_beforeMaxValue} delayValue:{delayValue}");
                 await UniTask.Delay(delayValue * _delayMilliSec, cancellationToken: cts);
                 routePresenter.SetPresenterActive(true);
             }
