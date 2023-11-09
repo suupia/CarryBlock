@@ -14,6 +14,10 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     {
         readonly WaveletSearchExecutor _waveletSearchExecutor;
 
+        public SearchedMapExpander(WaveletSearchExecutor waveletSearchExecutor)
+        {
+            _waveletSearchExecutor = waveletSearchExecutor;
+        }
         
         // WaveletSearchExecutorのExpandVirtualWall()と対をなすようにする
         public  bool[] ExpandAccessibleArea(NumericGridMap map, SearcherSize searcherSize, bool[] routeArray)
@@ -47,13 +51,13 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         
         // 一般化するには、map.GetValue(i) + 1 の部分を変える必要があり、少し面倒
         // 少なくともテストコードが必要そう
-        public NumericGridMap ExpandSearchedMap(NumericGridMap map, SearcherSize searcherSize, bool[] routeArray)
+        public NumericGridMap ExpandSearchedMap(NumericGridMap map, SearcherSize searcherSize)
         {
             var extendedMap = new NumericGridMap(map.Width, map.Height, _waveletSearchExecutor.InitValue, _waveletSearchExecutor.EdgeValue, _waveletSearchExecutor.OutOfRangeValue);
             var searcherSizeInt = (int) searcherSize;
             UnityEngine.Assertions.Assert.IsTrue(searcherSizeInt % 2 ==  1, "searcherSize must be odd number");
 
-       
+            var routeArray = CalcRouteArray(map);
             switch (searcherSize)
             {
                 case SearcherSize.SizeOne:

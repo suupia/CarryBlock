@@ -41,7 +41,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             var routePresenters = SetUpPresenter(map);
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor);
-            var searchAccessibleAreaPresenter = new SearchAccessibleAreaPresenter(waveletSearchExecutor,searchAccessibleAreaExecutor);
+            var searchedMapExpander = new SearchedMapExpander(waveletSearchExecutor);
+            var searchAccessibleAreaPresenter = new SearchAccessibleAreaPresenter(waveletSearchExecutor,searchAccessibleAreaExecutor,searchedMapExpander);
             searchAccessibleAreaPresenter.RegisterRoutePresenters(routePresenters);
             return searchAccessibleAreaPresenter;
             

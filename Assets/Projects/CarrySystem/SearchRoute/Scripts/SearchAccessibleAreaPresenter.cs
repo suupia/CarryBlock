@@ -17,14 +17,19 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     {
         readonly WaveletSearchExecutor _waveletSearchExecutor;
         readonly SearchAccessibleAreaExecutor _searchAccessibleAreaExecutor;
+        readonly SearchedMapExpander _searchedMapExpander;
         readonly IRoutePresenter?[] _routePresenters;
         readonly int _delayMilliSec = 7;
         CancellationTokenSource?[]? _cancellationTokenSources;
         
-        public SearchAccessibleAreaPresenter(WaveletSearchExecutor waveletSearchExecutor, SearchAccessibleAreaExecutor searchAccessibleAreaExecutor)
+        public SearchAccessibleAreaPresenter(
+            WaveletSearchExecutor waveletSearchExecutor, 
+            SearchAccessibleAreaExecutor searchAccessibleAreaExecutor,
+            SearchedMapExpander searchedMapExpander)
         {
             _waveletSearchExecutor = waveletSearchExecutor;
             _searchAccessibleAreaExecutor = searchAccessibleAreaExecutor;
+            _searchedMapExpander = searchedMapExpander;
             var mapLength = waveletSearchExecutor.Map.Length;
             _routePresenters = new IRoutePresenter[mapLength];
         }
@@ -51,69 +56,12 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
             var accessibleAreaArray =_searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(startPos, isWall, searcherSize);
     
-            var extendedMap =  ExpandSearchedMap(searchedMap, searcherSize, CalcRouteArray(searchedMap));
-            UpdatePresenter(extendedMap);
+            var expandedMap = _searchedMapExpander.ExpandSearchedMap(searchedMap, searcherSize);
+            UpdatePresenter(expandedMap);
     
-            return accessibleAreaArray;
+            return accessibleAreaArray; 
         }
 
-        bool[] CalcRouteArray(NumericGridMap map)
-        {
-            var routeArray = new bool[map.Length];
-            // 数字がある部分をtrueにする
-            for (int i = 0; i < routeArray.Length; i++)
-            {
-                routeArray[i] = map.GetValue(i) != _waveletSearchExecutor.WallValue &&
-                                map.GetValue(i) != _waveletSearchExecutor.InitValue;
-            }
-
-            return routeArray;
-        }
-
-        NumericGridMap ExpandSearchedMap(NumericGridMap map, SearcherSize searcherSize, bool[] routeArray)
-        {
-            var extendedMap = new NumericGridMap(map.Width, map.Height, _waveletSearchExecutor.InitValue, _waveletSearchExecutor.EdgeValue, _waveletSearchExecutor.OutOfRangeValue);
-            var searcherSizeInt = (int) searcherSize;
-            UnityEngine.Assertions.Assert.IsTrue(searcherSizeInt % 2 ==  1, "searcherSize must be odd number");
-
-            // 一般化するには、map.GetValue(i) + 1 の部分を変える必要があり、少し面倒
-            // 少なくともテストコードが必要そう
-            switch (searcherSize)
-            {
-                case SearcherSize.SizeOne:
-                    for (int i = 0; i < routeArray.Length; i++)
-                    {
-                        extendedMap.SetValue(i, map.GetValue(i));
-                    }
-                    break;
-                case SearcherSize.SizeThree:
-                    // set true to the squares around ture
-                    for (int i = 0; i < routeArray.Length; i++)
-                    {
-                        if (routeArray[i])
-                        {
-                            for (int y = -1; y <= 1; y++)
-                            {
-                                for (int x = -1; x <= 1; x++)
-                                {
-                                    var pos = map.ToVector(i);
-                                    var newX = pos.x + x;
-                                    var newY = pos.y + y;
-                                    if (!map.IsInDataRangeArea(newX, newY)) continue;
-                                    extendedMap.SetValue(newX,newY, map.GetValue(i) + 1);
-                                }
-                            }
-                        }
-                    }
-
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(searcherSize), searcherSize, null);
-            }
-
-            return extendedMap;
-        } 
-        
         // 時間差でpresenterをupdateする
         void UpdatePresenter(NumericGridMap numericGridMap)
         {
