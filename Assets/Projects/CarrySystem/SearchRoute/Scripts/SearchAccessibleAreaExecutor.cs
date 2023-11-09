@@ -35,16 +35,20 @@ namespace Carry.CarrySystem.Map.Scripts
         //　数字があるマスをtrueにし、WaveletSearchExecutorのExpandVirtualWall()で拡大した分を戻す
         bool[] CalcAccessibleArea(NumericGridMap map, SearcherSize searcherSize)
         {
+            return ExpandAccessibleArea(map, searcherSize,  CalcRouteArray(map));
+        }
+        
+        bool[] CalcRouteArray(NumericGridMap map)
+        {
             var routeArray = new bool[map.Length];
-            var waveletResult = map;
             // 数字がある部分をtrueにする
             for (int i = 0; i < routeArray.Length; i++)
             {
-                routeArray[i] = waveletResult.GetValue(i) != _waveletSearchExecutor.WallValue &&
-                                  waveletResult.GetValue(i) != _waveletSearchExecutor.InitValue;
+                routeArray[i] = map.GetValue(i) != _waveletSearchExecutor.WallValue &&
+                                map.GetValue(i) != _waveletSearchExecutor.InitValue;
             }
 
-            return ExpandAccessibleArea(map, searcherSize, routeArray);
+            return routeArray;
         }
         
         
