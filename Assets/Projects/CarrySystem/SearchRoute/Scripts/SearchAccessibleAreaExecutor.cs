@@ -11,75 +11,28 @@ using UnityEngine;
 #nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
-{
-
-
+{ 
     public class SearchAccessibleAreaExecutor
     {
         readonly WaveletSearchExecutor _waveletSearchExecutor;
-        public SearchAccessibleAreaExecutor(WaveletSearchExecutor waveletSearchExecutor)
+        readonly SearchedMapExpander _searchedMapExpander;
+        public SearchAccessibleAreaExecutor(
+            WaveletSearchExecutor waveletSearchExecutor,
+            SearchedMapExpander searchedMapExpander)
         {
             _waveletSearchExecutor = waveletSearchExecutor;
+            _searchedMapExpander = searchedMapExpander ;
         }
 
         public bool[] SearchAccessibleAreaWithNotUpdate(Vector2Int startPos, Func<int, int, bool> isWall,
               SearcherSize searcherSize = SearcherSize.SizeOne)
         {
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
-            var accessibleAreaArray = CalcAccessibleArea(searchedMap, searcherSize);
+            var accessibleAreaArray = _searchedMapExpander.ExpandAccessibleArea(searchedMap, searcherSize);
     
             return accessibleAreaArray;
         }
         
-        
-        //　数字があるマスをtrueにし、WaveletSearchExecutorのExpandVirtualWall()で拡大した分を戻す
-        bool[] CalcAccessibleArea(NumericGridMap map, SearcherSize searcherSize)
-        {
-            return ExpandAccessibleArea(map, searcherSize,  CalcRouteArray(map));
-        }
-        
-        bool[] CalcRouteArray(NumericGridMap map)
-        {
-            var routeArray = new bool[map.Length];
-            // 数字がある部分をtrueにする
-            for (int i = 0; i < routeArray.Length; i++)
-            {
-                routeArray[i] = map.GetValue(i) != _waveletSearchExecutor.WallValue &&
-                                map.GetValue(i) != _waveletSearchExecutor.InitValue;
-            }
-
-            return routeArray;
-        }
-        
-        
-        // WaveletSearchExecutorのExpandVirtualWall()と対をなすようにする
-        bool[] ExpandAccessibleArea(NumericGridMap map, SearcherSize searcherSize, bool[] routeArray)
-        {
-            var resultBoolArray = new bool[map.Length];
-            var searcherSizeInt = (int) searcherSize;
-            UnityEngine.Assertions.Assert.IsTrue(searcherSizeInt % 2 ==  1, "searcherSize must be odd number");
-            
-            var expandSize = (searcherSizeInt-1) / 2;
-            for (int i = 0; i < routeArray.Length; i++)
-            {
-                if (routeArray[i])
-                {
-                    for (int y = -expandSize; y <= expandSize; y++)
-                    {
-                        for (int x = -expandSize; x <= expandSize; x++)
-                        {
-                            var pos = map.ToVector(i);
-                            var newX = pos.x + x;
-                            var newY = pos.y + y;
-                            if (!map.IsInDataRangeArea(newX, newY)) continue;
-                            resultBoolArray[map.ToSubscript(newX, newY)] = true;
-                        }
-                    }
-                }
-            }
-
-            return resultBoolArray;
-        }
 
 
     }

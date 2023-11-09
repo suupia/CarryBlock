@@ -31,7 +31,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         public SearchAccessibleAreaExecutor Build(SquareGridMap map)
         {
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor);
+            var searchedMapExpander = new SearchedMapExpander(waveletSearchExecutor);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor, searchedMapExpander);
             return searchAccessibleAreaExecutor;
             
         }
@@ -40,8 +41,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         {
             var routePresenters = SetUpPresenter(map);
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor);
             var searchedMapExpander = new SearchedMapExpander(waveletSearchExecutor);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor,searchedMapExpander);
             var searchAccessibleAreaPresenter = new SearchAccessibleAreaPresenter(waveletSearchExecutor,searchAccessibleAreaExecutor,searchedMapExpander);
             searchAccessibleAreaPresenter.RegisterRoutePresenters(routePresenters);
             return searchAccessibleAreaPresenter;

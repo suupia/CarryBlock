@@ -20,13 +20,14 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         }
         
         // WaveletSearchExecutorのExpandVirtualWall()と対をなすようにする
-        public  bool[] ExpandAccessibleArea(NumericGridMap map, SearcherSize searcherSize, bool[] routeArray)
+        public  bool[] ExpandAccessibleArea(NumericGridMap map, SearcherSize searcherSize)
         {
             var resultBoolArray = new bool[map.Length];
             var searcherSizeInt = (int) searcherSize;
             UnityEngine.Assertions.Assert.IsTrue(searcherSizeInt % 2 ==  1, "searcherSize must be odd number");
             
             var expandSize = (searcherSizeInt-1) / 2;
+            var routeArray = CalcRouteArray(map);
             for (int i = 0; i < routeArray.Length; i++)
             {
                 if (routeArray[i])

@@ -16,7 +16,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(newSearchShortestRoute);
+            var searchedMapExpander = new SearchedMapExpander(newSearchShortestRoute);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(newSearchShortestRoute,searchedMapExpander);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
 
@@ -53,7 +54,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7B();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(newSearchShortestRoute);
+            var searchedMapExpander = new SearchedMapExpander(newSearchShortestRoute);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(newSearchShortestRoute,searchedMapExpander);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
 
@@ -90,7 +92,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map10X8A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(newSearchShortestRoute);
+            var searchedMapExpander = new SearchedMapExpander(newSearchShortestRoute);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(newSearchShortestRoute,searchedMapExpander);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
 
@@ -138,7 +141,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(newSearchShortestRoute);
+            var searchedMapExpander = new SearchedMapExpander(newSearchShortestRoute);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(newSearchShortestRoute,searchedMapExpander);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
 
@@ -174,7 +178,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map7X7B();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(newSearchShortestRoute);
+            var searchedMapExpander = new SearchedMapExpander(newSearchShortestRoute);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(newSearchShortestRoute,searchedMapExpander);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
 
@@ -210,7 +215,8 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Tests
         {
             var mapData = new Map10X8A();
             var newSearchShortestRoute = new WaveletSearchExecutor(mapData.Map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(newSearchShortestRoute);
+            var searchedMapExpander = new SearchedMapExpander(newSearchShortestRoute);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(newSearchShortestRoute,searchedMapExpander);
             var expectedBoolArray = new bool[mapData.Map.Length];
             var allFalseArray = new bool[mapData.Map.Length];
 
