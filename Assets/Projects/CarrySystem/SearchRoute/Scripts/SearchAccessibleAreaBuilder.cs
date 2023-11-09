@@ -57,8 +57,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             }
 
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(map, waveletSearchExecutor);
-            searchAccessibleAreaExecutor.RegisterRoutePresenters(routePresenters);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor);
             return searchAccessibleAreaExecutor;
             
         }
