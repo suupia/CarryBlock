@@ -19,9 +19,11 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         readonly SearchAccessibleAreaExecutor _searchAccessibleAreaExecutor;
         readonly SearchedMapExpander _searchedMapExpander;
         readonly IRoutePresenter?[] _routePresenters;
-        readonly int _delayMilliSec = 7;
+        readonly long[]? _beforeValues;  // 要素数を確保したいため配列にした
+        readonly int _delayMilliSec = 70;
         CancellationTokenSource?[]? _cancellationTokenSources;
-        
+
+
         public SearchAccessibleAreaPresenter(
             WaveletSearchExecutor waveletSearchExecutor, 
             SearchAccessibleAreaExecutor searchAccessibleAreaExecutor,
@@ -32,6 +34,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             _searchedMapExpander = searchedMapExpander;
             var mapLength = waveletSearchExecutor.Map.Length;
             _routePresenters = new IRoutePresenter[mapLength];
+            _beforeValues = new long[mapLength];
         }
 
         public void RegisterRoutePresenters(IReadOnlyList<RoutePresenterNet> routePresenters)
@@ -57,6 +60,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             var accessibleAreaArray =_searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(startPos, isWall, searcherSize);
     
             var expandedMap = _searchedMapExpander.ExpandSearchedMap(searchedMap, searcherSize);
+
             UpdatePresenter(expandedMap);
     
             return accessibleAreaArray; 
@@ -75,11 +79,17 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                 _cancellationTokenSources[i]?.Cancel();
                 _cancellationTokenSources[i] = new CancellationTokenSource();
                 if(_cancellationTokenSources[i] == null) return;
-                DelayUpdate(_cancellationTokenSources[i].Token, _routePresenters[i], numericGridMap.GetValue(i)).Forget();  // _cancellationTokenSources[i]でDereference of a possibly null referenceがでる　なぜ？
+                DelayUpdate(_cancellationTokenSources[i].Token, _routePresenters[i], numericGridMap.GetValue(i),i).Forget();  // _cancellationTokenSources[i]でDereference of a possibly null referenceがでる　なぜ？
+                if(numericGridMap.GetValue(i) != _waveletSearchExecutor.InitValue
+                   && numericGridMap.GetValue(i) != _waveletSearchExecutor.WallValue
+                   && numericGridMap.GetValue(i) != _waveletSearchExecutor.EdgeValue
+                   && numericGridMap.GetValue(i) != _waveletSearchExecutor.OutOfRangeValue)
+                _beforeValues[i] = numericGridMap.GetValue(i);
+                    
             }
         }
 
-        async UniTaskVoid DelayUpdate(CancellationToken cts, IRoutePresenter? routePresenter, long value)
+        async UniTaskVoid DelayUpdate(CancellationToken cts, IRoutePresenter? routePresenter, long value, int i)
         {
             if(routePresenter == null) return;
             if (value < 0)
@@ -92,7 +102,14 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
             try
             {
-                await UniTask.Delay((int)value * _delayMilliSec, cancellationToken: cts);
+                if (_beforeValues == null)
+                {
+                    Debug.LogError($"_beforeValues is null");
+                    return;
+                }
+                var delayValue = Math.Max((int)(value - _beforeValues[i]), 0);
+                Debug.Log($"value:{value} _beforeValues[i]:{_beforeValues[i]} delayValue:{delayValue}");
+                await UniTask.Delay(delayValue * _delayMilliSec, cancellationToken: cts);
                 routePresenter.SetPresenterActive(true);
             }
             catch (OperationCanceledException)

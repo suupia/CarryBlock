@@ -46,12 +46,6 @@ namespace Carry.CarrySystem.Cart.Scripts
             });
         }
 
-        public void StopObserve()
-        {
-            _isHoldSubscription?.Dispose();
-            _mapSubscription?.Dispose();
-        }
-
         public void RegisterHoldAction(PlayerHoldingObjectContainer holdActionExecutor)
         {
             Debug.Log($"Register HoldAction {holdActionExecutor}");
