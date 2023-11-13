@@ -10,14 +10,14 @@ namespace Carry.CarrySystem.Spawners.Scripts
     public class PlayerSpawner
     {
         readonly NetworkRunner _runner;
-        readonly IPlayerBuilder _playerBuilder;
+        readonly IPlayerControllerNetBuilder _playerControllerNetBuilder;
         readonly List<AbstractNetworkPlayerController> _playerControllers = new();
 
         [Inject]
-        public PlayerSpawner(NetworkRunner runner, IPlayerBuilder playerBuilder)
+        public PlayerSpawner(NetworkRunner runner, IPlayerControllerNetBuilder playerControllerNetBuilder)
         {
             _runner = runner;
-            _playerBuilder = playerBuilder;
+            _playerControllerNetBuilder = playerControllerNetBuilder;
         }
         public void RespawnAllPlayer()
         {
@@ -32,7 +32,7 @@ namespace Carry.CarrySystem.Spawners.Scripts
         {
             Debug.Log("Spawning Player");
             var spawnPosition = new Vector3(0, 5, 0);
-            var playerController = _playerBuilder.Build(spawnPosition, Quaternion.identity, player);
+            var playerController = _playerControllerNetBuilder.Build(spawnPosition, Quaternion.identity, player);
             _runner.SetPlayerObject(player, playerController.Object);
             _playerControllers.Add(playerController);
         }

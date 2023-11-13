@@ -21,7 +21,7 @@ namespace Carry.CarrySystem.Player.Scripts
         Yellow
     }
 
-    public class CarryPlayerBuilder : IPlayerBuilder
+    public class CarryPlayerControllerNetBuilder : IPlayerControllerNetBuilder
     {
         readonly NetworkRunner _runner;
         readonly IMapUpdater _mapUpdater;
@@ -34,7 +34,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly FloorTimerNet _floorTimerNet;
 
         [Inject]
-        public CarryPlayerBuilder(
+        public CarryPlayerControllerNetBuilder(
             NetworkRunner runner,
             IMapUpdater  mapUpdater ,
             IPrefabLoader<CarryPlayerControllerNet> carryPlayerControllerLoader,

@@ -7,7 +7,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class LobbyPlayerBuilder : IPlayerBuilder
+    public class LobbyPlayerControllerNetBuilder : IPlayerControllerNetBuilder
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<LobbyPlayerControllerNet> _carryPlayerControllerLoader;
@@ -17,7 +17,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly LobbyPlayerContainer _lobbyPlayerContainer;
 
         [Inject]
-        public LobbyPlayerBuilder(
+        public LobbyPlayerControllerNetBuilder(
             NetworkRunner runner ,
             IPrefabLoader<LobbyPlayerControllerNet> carryPlayerControllerLoader, 
             ICarryPlayerFactory carryPlayerFactory,

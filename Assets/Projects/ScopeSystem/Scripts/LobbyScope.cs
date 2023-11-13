@@ -37,7 +37,7 @@ namespace Carry.GameSystem.LobbyScene.Scripts
 
             // Player
             builder.Register<MainLobbyPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
-            builder.Register<LobbyPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
+            builder.Register<LobbyPlayerControllerNetBuilder>(Lifetime.Scoped).As<IPlayerControllerNetBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
             builder.Register<LobbyPlayerContainer>(Lifetime.Scoped);
 
