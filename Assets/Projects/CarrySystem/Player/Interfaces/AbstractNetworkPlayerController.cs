@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.Player.Interfaces
 
         [SerializeField] protected GameObject[] playerUnitPrefabs= null!;
 
-        [SerializeField] protected PlayerInfo info= null!;
+        protected PlayerInfo info = null!;
 
         [Networked] protected NetworkButtons PreButtons { get; set; }
         [Networked] public NetworkBool IsReady { get; set; }
@@ -46,7 +46,8 @@ namespace Carry.CarrySystem.Player.Interfaces
             // Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
 
             // init info
-            info.Init(gameObject, this, Object.InputAuthority);
+            info = new PlayerInfo();
+            info.Init( this, Object.InputAuthority);
 
             // Instantiate the character.
             InstantiateCharacter();
