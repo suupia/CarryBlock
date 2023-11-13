@@ -3,6 +3,7 @@
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.harumak.addler": "https://github.com/Haruma-K/Addler.git?path=/Assets/Addler",
     "com.neuecc.unirx": "https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts",
+    "com.unity.2d.sprite": "1.0.0",
     "com.unity.addressables": "1.19.19",
     "com.unity.collab-proxy": "2.0.0",
     "com.unity.feature.development": "1.0.1",
