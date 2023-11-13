@@ -10,17 +10,18 @@ namespace Carry.CarrySystem.Player.Info
     public record PlayerInfo
     {
         // Property
-        public GameObject PlayerObj = null!;
-        public Rigidbody PlayerRb = null!;
-        public AbstractNetworkPlayerController PlayerController = null!;
-        public PlayerRef PlayerRef;
+        public GameObject PlayerObj { get; private set; }
+        public Rigidbody PlayerRb { get; private set; }
+        public AbstractNetworkPlayerController PlayerController { get; private set; } 
+        public PlayerRef PlayerRef { get; private set; }
 
-        public void Init(AbstractNetworkPlayerController playerController,PlayerRef playerRef)
+        public PlayerInfo(AbstractNetworkPlayerController playerController,PlayerRef playerRef)
         {
             PlayerObj = playerController.gameObject;
             PlayerController = playerController;
             PlayerRef = playerRef;
             PlayerRb = playerController.GetComponent<Rigidbody>();
-        }
+        }    
+
     }
 }

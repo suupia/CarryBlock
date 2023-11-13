@@ -46,8 +46,7 @@ namespace Carry.CarrySystem.Player.Interfaces
             // Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
 
             // init info
-            info = new PlayerInfo();
-            info.Init( this, Object.InputAuthority);
+            info = new PlayerInfo(this, Object.InputAuthority);
 
             // Instantiate the character.
             InstantiateCharacter();
