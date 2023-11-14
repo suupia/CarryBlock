@@ -4,7 +4,7 @@ namespace Carry.CarrySystem.RoutingAlgorithm.Interfaces
 {
     public interface IRoutePresenter
     {
-         [Networked] public NetworkBool IsActive { get; set; }
+         public bool IsActive { get; }
          void SetPresenterActive(bool isActive);
     }
 }
