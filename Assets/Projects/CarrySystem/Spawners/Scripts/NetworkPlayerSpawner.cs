@@ -7,14 +7,14 @@ using VContainer;
 
 namespace Carry.CarrySystem.Spawners.Scripts
 {
-    public class PlayerSpawner
+    public class NetworkPlayerSpawner
     {
         readonly NetworkRunner _runner;
         readonly IPlayerControllerNetBuilder _playerControllerNetBuilder;
         readonly List<AbstractNetworkPlayerController> _playerControllers = new();
 
         [Inject]
-        public PlayerSpawner(NetworkRunner runner, IPlayerControllerNetBuilder playerControllerNetBuilder)
+        public NetworkPlayerSpawner(NetworkRunner runner, IPlayerControllerNetBuilder playerControllerNetBuilder)
         {
             _runner = runner;
             _playerControllerNetBuilder = playerControllerNetBuilder;

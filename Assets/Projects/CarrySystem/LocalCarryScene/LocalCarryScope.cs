@@ -4,6 +4,7 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
+using Carry.CarrySystem.Player.Scripts.Local;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
@@ -39,8 +40,8 @@ namespace Carry.ScopeSystem.Scripts
             
             // Player
             builder.Register<MainCarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
-            builder.Register<CarryPlayerControllerNetBuilder>(Lifetime.Scoped).As<IPlayerControllerNetBuilder>();
-            builder.Register<PlayerSpawner>(Lifetime.Scoped);
+            builder.Register<CarryPlayerControllerLocalBuilder>(Lifetime.Scoped);
+            builder.Register<LocalPlayerSpawner>(Lifetime.Scoped);
             builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
             
             // Initializer
