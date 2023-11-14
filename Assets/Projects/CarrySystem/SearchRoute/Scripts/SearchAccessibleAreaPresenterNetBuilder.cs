@@ -16,14 +16,14 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     /// <summary>
     /// ドメインスクリプトSearchAccessibleAreaExecutorにRoutePresenterを紐づけるクラス
     /// </summary>
-    public class SearchAccessibleAreaPresenterBuilder : ISearchAccessibleAreaPresenterBuilder
+    public class SearchAccessibleAreaPresenterNetBuilder : ISearchAccessibleAreaPresenterBuilder
     {
         [Inject] readonly NetworkRunner _runner = null!;
         IReadOnlyList<RoutePresenterNet> _routePresenters =  new List<RoutePresenterNet>();
          bool _isRoutePresentersInitialized;
          
         [Inject]
-        public SearchAccessibleAreaPresenterBuilder()
+        public SearchAccessibleAreaPresenterNetBuilder()
         {
             
         }

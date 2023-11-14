@@ -5,6 +5,7 @@ using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
+using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using Projects.CarrySystem.Cart.Interfaces;
 using UniRx;
@@ -19,7 +20,7 @@ namespace Carry.CarrySystem.Cart.Scripts
         public bool IsMapClear { get; private set; }
         readonly List<PlayerHoldingObjectContainer> _playerBlockContainers = new List<PlayerHoldingObjectContainer>();
         readonly IMapUpdater _mapUpdater;
-        readonly SearchAccessibleAreaPresenterBuilder _searchAccessibleAreaPresenterBuilder;
+        readonly ISearchAccessibleAreaPresenterBuilder _searchAccessibleAreaPresenterBuilder;
         readonly IHoldingBlockNotifier _holdingBlockNotifier;
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
         
@@ -30,7 +31,7 @@ namespace Carry.CarrySystem.Cart.Scripts
         
         public HoldingBlockObserver(
             IMapUpdater entityGridMapSwitcher,
-            SearchAccessibleAreaPresenterBuilder searchAccessibleAreaPresenterBuilder,
+            ISearchAccessibleAreaPresenterBuilder searchAccessibleAreaPresenterBuilder,
             IHoldingBlockNotifier holdingBlockNotifier,
             ReachRightEdgeChecker reachRightEdgeChecker
         )

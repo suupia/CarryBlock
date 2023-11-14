@@ -10,6 +10,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using JetBrains.Annotations;
 using Carry.CarrySystem.Cart.Info;
+using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using UnityEngine;
 using VContainer;
 
@@ -20,7 +21,6 @@ namespace Carry.CarrySystem.Cart.Scripts
     {
         public bool IsMoving { get; private set; } = false;
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
-        readonly SearchAccessibleAreaPresenterBuilder _searchAccessibleAreaPresenterBuilder;
         
         EntityGridMap? _map; // このクラスはMapを登録して使用する (コンストラクタでIMapUpdaterを受け取らない)
         IMapUpdater? _mapUpdater;
@@ -41,12 +41,10 @@ namespace Carry.CarrySystem.Cart.Scripts
 
         [Inject]
         public CartShortestRouteMove(
-            ReachRightEdgeChecker reachRightEdgeChecker,
-            SearchAccessibleAreaPresenterBuilder searchAccessibleAreaPresenterBuilder
+            ReachRightEdgeChecker reachRightEdgeChecker
         )
         {
             _reachRightEdgeChecker = reachRightEdgeChecker;
-            _searchAccessibleAreaPresenterBuilder = searchAccessibleAreaPresenterBuilder;
         }
 
         public void Setup(CartInfo info)

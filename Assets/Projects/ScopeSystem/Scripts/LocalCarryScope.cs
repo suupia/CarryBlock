@@ -5,6 +5,7 @@ using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.Player.Scripts.Local;
+using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
@@ -14,6 +15,7 @@ using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
 using Projects.CarrySystem.Cart.Interfaces;
 using Projects.CarrySystem.Item.Scripts;
+using Projects.CarrySystem.SearchRoute.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -63,7 +65,7 @@ namespace Carry.ScopeSystem.Scripts
             // todo : ここら辺のスクリプトはモックに切り替えられるかどうか考える
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<PlayerNearCartHandlerNet>();
-            builder.Register<SearchAccessibleAreaPresenterBuilder>(Lifetime.Scoped);
+            builder.Register<SearchAccessibleAreaPresenterLocalBuilder>(Lifetime.Scoped).As<ISearchAccessibleAreaPresenterBuilder>();
             builder.RegisterComponentInHierarchy<HoldingBlockNotifierLogger>().As<IHoldingBlockNotifier>();
 
 

@@ -5,6 +5,7 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
+using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners.Scripts;
 using Carry.UISystem.UI.CarryScene;
@@ -80,7 +81,7 @@ namespace Carry.ScopeSystem.Scripts
             // Cart
             builder.Register<CartBuilder>(Lifetime.Scoped);
             builder.Register<CartShortestRouteMove>(Lifetime.Scoped);
-            builder.Register<SearchAccessibleAreaPresenterBuilder>(Lifetime.Scoped);
+            builder.Register<SearchAccessibleAreaPresenterNetBuilder>(Lifetime.Scoped).As<ISearchAccessibleAreaPresenterBuilder>();
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
             builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
             
