@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Cart.Scripts
     {
         public bool IsMoving { get; private set; } = false;
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
-        readonly SearchAccessibleAreaBuilder _searchAccessibleAreaBuilder;
+        readonly SearchAccessibleAreaPresenterBuilder _searchAccessibleAreaPresenterBuilder;
         
         EntityGridMap? _map; // このクラスはMapを登録して使用する (コンストラクタでIMapUpdaterを受け取らない)
         IMapUpdater? _mapUpdater;
@@ -42,11 +42,11 @@ namespace Carry.CarrySystem.Cart.Scripts
         [Inject]
         public CartShortestRouteMove(
             ReachRightEdgeChecker reachRightEdgeChecker,
-            SearchAccessibleAreaBuilder searchAccessibleAreaBuilder
+            SearchAccessibleAreaPresenterBuilder searchAccessibleAreaPresenterBuilder
         )
         {
             _reachRightEdgeChecker = reachRightEdgeChecker;
-            _searchAccessibleAreaBuilder = searchAccessibleAreaBuilder;
+            _searchAccessibleAreaPresenterBuilder = searchAccessibleAreaPresenterBuilder;
         }
 
         public void Setup(CartInfo info)

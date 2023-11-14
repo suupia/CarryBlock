@@ -19,7 +19,7 @@ namespace Carry.CarrySystem.Cart.Scripts
         public bool IsMapClear { get; private set; }
         readonly List<PlayerHoldingObjectContainer> _playerBlockContainers = new List<PlayerHoldingObjectContainer>();
         readonly IMapUpdater _mapUpdater;
-        readonly SearchAccessibleAreaBuilder _searchAccessibleAreaBuilder;
+        readonly SearchAccessibleAreaPresenterBuilder _searchAccessibleAreaPresenterBuilder;
         readonly IHoldingBlockNotifier _holdingBlockNotifier;
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
         
@@ -30,13 +30,13 @@ namespace Carry.CarrySystem.Cart.Scripts
         
         public HoldingBlockObserver(
             IMapUpdater entityGridMapSwitcher,
-            SearchAccessibleAreaBuilder searchAccessibleAreaBuilder,
+            SearchAccessibleAreaPresenterBuilder searchAccessibleAreaPresenterBuilder,
             IHoldingBlockNotifier holdingBlockNotifier,
             ReachRightEdgeChecker reachRightEdgeChecker
         )
         {
             _mapUpdater = entityGridMapSwitcher;
-            _searchAccessibleAreaBuilder = searchAccessibleAreaBuilder;
+            _searchAccessibleAreaPresenterBuilder = searchAccessibleAreaPresenterBuilder;
             _holdingBlockNotifier = holdingBlockNotifier;
             _reachRightEdgeChecker = reachRightEdgeChecker;
 
@@ -67,7 +67,7 @@ namespace Carry.CarrySystem.Cart.Scripts
                 _ctss = new CancellationTokenSource[map.Length];
             }
 
-            _searchAccessibleAreaPresenter = _searchAccessibleAreaBuilder.BuildPresenter(_mapUpdater.GetMap());
+            _searchAccessibleAreaPresenter = _searchAccessibleAreaPresenterBuilder.BuildPresenter(_mapUpdater.GetMap());
             
             ShowAccessibleArea();
         }
