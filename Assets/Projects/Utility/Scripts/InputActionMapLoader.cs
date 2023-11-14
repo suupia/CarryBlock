@@ -1,5 +1,6 @@
 ﻿using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 #nullable enable
 
 namespace Carry.Utility.Scripts
@@ -8,20 +9,26 @@ namespace Carry.Utility.Scripts
     {
         // NetworkRunnerManagerにDIするのがよいが、NetworkRunnerManagerがVContainerに依存するのがいやなので、
         // InputActionMapLoaderの方をstaticにして、別のところでも使用できるようにする
-        public static InputActionMap GetInputActionMap()
+        public static InputActionMap GetInputActionMap(ActionMapName actionMapName)
         {
-            if (_inputActionMap == null)
+            if (!_inputActionMap.ContainsKey(actionMapName) || _inputActionMap[actionMapName] == null)
             {
-                Load();
+                Load(actionMapName);
             }
             
-            return _inputActionMap;  
+            return _inputActionMap[actionMapName];  
         }
-
-        static InputActionMap? _inputActionMap;
+        
+        public enum ActionMapName
+        {
+            Default,
+            UI
+        }
+        
+        static readonly Dictionary<ActionMapName,InputActionMap?> _inputActionMap = new ();
         
 
-        static void Load()
+        static void Load(ActionMapName actionMapName)
         {
             var loader =
                 new ScriptableObjectLoaderFromAddressable<InputActionAsset>("InputActionAssets/PlayerInputAction");
@@ -29,8 +36,8 @@ namespace Carry.Utility.Scripts
             (var inputActionAsset ,var handler) = loader.Load();
             Assert.IsNotNull(inputActionAsset, "InputActionを設定してください。Pathが間違っている可能性があります");
 
-            _inputActionMap = inputActionAsset.FindActionMap("Default");
-            Assert.IsNotNull(_inputActionMap, "FindActionMap()の引数が間違っている可能性があります");
+            _inputActionMap.Add(actionMapName, inputActionAsset.FindActionMap(actionMapName.ToString()));
+            Assert.IsNotNull(_inputActionMap[actionMapName], "FindActionMap()の引数が間違っている可能性があります");
 
             loader.Release(handler);
         }

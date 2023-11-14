@@ -94,7 +94,7 @@ namespace Carry.UISystem.UI.LobbyScene
         // 以下の処理はInputAction系を初期化するところに移動させた方がよいかもしれない
         void SetupToggleSelectStageCanvas()
         {
-            var inputActionMap = InputActionMapLoader.GetInputActionMap();
+            var inputActionMap = InputActionMapLoader.GetInputActionMap(InputActionMapLoader.ActionMapName.Default);
             _toggleSelectStageCanvas = inputActionMap.FindAction("ToggleSelectStageCanvas");
             _toggleSelectStageCanvas.performed += OnToggleSelectStageCanvas;
         }
