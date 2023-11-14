@@ -98,12 +98,6 @@ namespace Carry.CarrySystem.Cart.Scripts
             var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(startPos, isWall,searcherSize);
             var endPosY = _reachRightEdgeChecker.CalcCartReachRightEdge(accessibleArea, _map, searcherSize);
             var routeEndPos = new Vector2Int(_map.Width - 2, endPosY);
-            
-            Debug.Log($"startPos : {startPos}");
-            Debug.Log($"startPos is Wall ? : {isWall(startPos.x, startPos.y)}");
-            Debug.Log($"routeEndPos : {routeEndPos}");
-            Debug.Log($"_map : {_map}");
-
             var routes = searchShortestRouteExecutor.DiagonalSearchShortestRoute(startPos, routeEndPos,
                 OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, isWall, searcherSize);
 
