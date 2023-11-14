@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4718657467805471533}
   - component: {fileID: 968699393322124414}
   m_Layer: 0
-  m_Name: RoutePresenter
+  m_Name: RoutePresenterNet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

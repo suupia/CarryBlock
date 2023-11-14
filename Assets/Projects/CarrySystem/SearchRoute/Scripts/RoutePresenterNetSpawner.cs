@@ -7,16 +7,16 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.SearchRoute.Scripts
 {
-    public class RoutePresenterSpawner
+    public class RoutePresenterNetSpawner
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<RoutePresenterNet> _routePresenterPrefabSpawner;
 
-        public RoutePresenterSpawner(NetworkRunner runner)
+        public RoutePresenterNetSpawner(NetworkRunner runner)
         {
             _runner = runner;
             _routePresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<RoutePresenterNet>("Prefabs/Map/RoutePresenter");
+                new PrefabLoaderFromAddressable<RoutePresenterNet>("Prefabs/Map/RoutePresenterNet");
         }
 
         public RoutePresenterNet SpawnPrefab(Vector3 position, Quaternion rotation)

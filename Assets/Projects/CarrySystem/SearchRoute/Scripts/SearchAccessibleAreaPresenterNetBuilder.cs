@@ -53,7 +53,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                 _routePresenters = new List<RoutePresenterNet>();
 
                 // spawn new routePresenters
-                var routePresenterSpawner = new RoutePresenterSpawner(_runner);
+                var routePresenterSpawner = new RoutePresenterNetSpawner(_runner);
                 var routePresenters = new List<RoutePresenterNet>();
                 for (int i = 0; i < map.Length; i++)
                 {
