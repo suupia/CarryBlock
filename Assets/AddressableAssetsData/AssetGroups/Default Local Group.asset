@@ -50,7 +50,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: fea61a30c2cb6b54089e64595ad57330
-    m_Address: Prefabs/Map/RoutePresenter
+    m_Address: Prefabs/Map/RoutePresenterNet
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 019d130d8399e1b4099bb743f283390d
@@ -147,6 +147,10 @@ MonoBehaviour:
     m_SerializedLabels: []
   - m_GUID: 33f1b0804a41aab4d8a84bd8d764df89
     m_Address: Prefabs/Enemy/EnemyControllerNet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ec450c9cfde14a746a408c54467d433e
+    m_Address: Prefabs/Map/RoutePresenterLocal
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
