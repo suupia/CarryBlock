@@ -51,4 +51,5 @@ crashlytics-build.properties
 UserSettings/
 
 # 大澤が追加 ステージは現状個人で扱っているので、gitで管理しない
-Assets/StreamingAssets/JsonFiles/Stages/
+Assets/StreamingAssets/JsonFiles/Stages/*.json
+Assets/StreamingAssets/JsonFiles/Stages/*.json.meta
