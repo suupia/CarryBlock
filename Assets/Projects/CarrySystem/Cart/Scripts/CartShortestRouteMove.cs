@@ -90,11 +90,11 @@ namespace Carry.CarrySystem.Cart.Scripts
                 return new List<Vector2Int>();
             }
 
-            var waveletSearchExecutor = new WaveletSearchExecutor(_map); // RoutePresenterをかませる必要がないから直接new
-            var searchShortestRouteExecutor = new SearchShortestRouteExecutor(waveletSearchExecutor);
             var startPos = new Vector2Int(1, _map.Height % 2 == 1 ? (_map.Height - 1) / 2 : _map.Height / 2);
             Func<int, int, bool> isWall = (x, y) => _map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
-            var searchAccessibleAreaExecutor = _searchAccessibleAreaBuilder.Build(_map);
+            var waveletSearchExecutor = new WaveletSearchExecutor(_map); // RoutePresenterをかませる必要がないから直接new
+            var searchShortestRouteExecutor = new SearchShortestRouteExecutor(waveletSearchExecutor);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor,new SearchedMapExpander(waveletSearchExecutor));
             var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(startPos, isWall,searcherSize);
             var endPosY = _reachRightEdgeChecker.CalcCartReachRightEdge(accessibleArea, _map, searcherSize);
             var routeEndPos = new Vector2Int(_map.Width - 2, endPosY);
