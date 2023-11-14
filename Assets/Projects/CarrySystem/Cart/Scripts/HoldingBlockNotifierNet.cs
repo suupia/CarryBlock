@@ -1,10 +1,11 @@
 ﻿using Fusion;
+using Projects.CarrySystem.Cart.Interfaces;
 using TMPro;
 using UnityEngine;
 #nullable enable
 namespace Carry.CarrySystem.Cart.Scripts
 {
-    public class CartMovementNotifierNet : NetworkBehaviour
+    public class HoldingBlockNotifierNet : NetworkBehaviour, IHoldingBlockNotifier  
     {
         // UIに特化させる
         // このクラスにドメインに関係する処理を足してはいけない。

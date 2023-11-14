@@ -5,7 +5,9 @@ using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Scripts;
+using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
+using Projects.CarrySystem.Cart.Interfaces;
 using UniRx;
 using UnityEngine;
 
@@ -18,8 +20,8 @@ namespace Carry.CarrySystem.Cart.Scripts
         public bool IsMapClear { get; private set; }
         readonly List<PlayerHoldingObjectContainer> _playerBlockContainers = new List<PlayerHoldingObjectContainer>();
         readonly IMapUpdater _mapUpdater;
-        readonly SearchAccessibleAreaBuilder _searchAccessibleAreaBuilder;
-        readonly CartMovementNotifierNet _cartMovementNotifierNet;
+        readonly ISearchAccessibleAreaPresenterBuilder _searchAccessibleAreaPresenterBuilder;
+        readonly IHoldingBlockNotifier _holdingBlockNotifier;
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
         
         SearchAccessibleAreaPresenter? _searchAccessibleAreaPresenter;
@@ -29,14 +31,14 @@ namespace Carry.CarrySystem.Cart.Scripts
         
         public HoldingBlockObserver(
             IMapUpdater entityGridMapSwitcher,
-            SearchAccessibleAreaBuilder searchAccessibleAreaBuilder,
-            CartMovementNotifierNet cartMovementNotifierNet,
+            ISearchAccessibleAreaPresenterBuilder searchAccessibleAreaPresenterBuilder,
+            IHoldingBlockNotifier holdingBlockNotifier,
             ReachRightEdgeChecker reachRightEdgeChecker
         )
         {
             _mapUpdater = entityGridMapSwitcher;
-            _searchAccessibleAreaBuilder = searchAccessibleAreaBuilder;
-            _cartMovementNotifierNet = cartMovementNotifierNet;
+            _searchAccessibleAreaPresenterBuilder = searchAccessibleAreaPresenterBuilder;
+            _holdingBlockNotifier = holdingBlockNotifier;
             _reachRightEdgeChecker = reachRightEdgeChecker;
 
             entityGridMapSwitcher.RegisterResetAction(() =>
@@ -66,7 +68,7 @@ namespace Carry.CarrySystem.Cart.Scripts
                 _ctss = new CancellationTokenSource[map.Length];
             }
 
-            _searchAccessibleAreaPresenter = _searchAccessibleAreaBuilder.BuildPresenter(_mapUpdater.GetMap());
+            _searchAccessibleAreaPresenter = _searchAccessibleAreaPresenterBuilder.BuildPresenter(_mapUpdater.GetMap());
             
             ShowAccessibleArea();
         }
@@ -92,21 +94,21 @@ namespace Carry.CarrySystem.Cart.Scripts
             {
                 if (AllPlayerIsNotHoldingBlock())
                 {
-                    _cartMovementNotifierNet.ShowReachableText();
-                    _cartMovementNotifierNet.ShowMoveToCartText();
+                    _holdingBlockNotifier.ShowReachableText();
+                    _holdingBlockNotifier.ShowMoveToCartText();
                     IsMapClear = true;
                 }
                 else
                 {
-                    _cartMovementNotifierNet.ShowReachableText();
-                    _cartMovementNotifierNet.HideMoveToCartText();
+                    _holdingBlockNotifier.ShowReachableText();
+                    _holdingBlockNotifier.HideMoveToCartText();
                     IsMapClear = false;
                 }
             }
             else
             {
-                _cartMovementNotifierNet.HideReachableText();
-                _cartMovementNotifierNet.HideMoveToCartText();
+                _holdingBlockNotifier.HideReachableText();
+                _holdingBlockNotifier.HideMoveToCartText();
                 IsMapClear = false;
             }
         }

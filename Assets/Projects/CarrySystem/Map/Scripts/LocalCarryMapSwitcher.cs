@@ -1,5 +1,6 @@
 ﻿using System;
 using Carry.CarrySystem.Map.Interfaces;
+using UnityEngine;
 using VContainer;
 #nullable enable
 
@@ -39,6 +40,8 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             _map = _gridMapLoader.LoadEntityGridMap(mapKey, index);
             _allPresenterPlacer.Place(_map);
+            
+            _resetAction();
         }
 
         public void UpdateMap(MapKey mapKey, int index)

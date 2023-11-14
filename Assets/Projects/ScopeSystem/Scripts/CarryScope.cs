@@ -5,12 +5,14 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
+using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners.Scripts;
 using Carry.UISystem.UI.CarryScene;
 using Fusion;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
+using Projects.CarrySystem.Cart.Interfaces;
 using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 using VContainer;
@@ -44,9 +46,9 @@ namespace Carry.ScopeSystem.Scripts
             // NetworkRunnerに依存するスクリプト
 
             // Player
-            builder.Register<MainCarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
+            builder.Register<CarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
             builder.Register<CarryPlayerControllerNetBuilder>(Lifetime.Scoped).As<IPlayerControllerNetBuilder>();
-            builder.Register<PlayerSpawner>(Lifetime.Scoped);
+            builder.Register<NetworkPlayerSpawner>(Lifetime.Scoped);
             builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
 
 
@@ -79,7 +81,7 @@ namespace Carry.ScopeSystem.Scripts
             // Cart
             builder.Register<CartBuilder>(Lifetime.Scoped);
             builder.Register<CartShortestRouteMove>(Lifetime.Scoped);
-            builder.Register<SearchAccessibleAreaBuilder>(Lifetime.Scoped);
+            builder.Register<SearchAccessibleAreaPresenterNetBuilder>(Lifetime.Scoped).As<ISearchAccessibleAreaPresenterBuilder>();
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
             builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
             
@@ -91,7 +93,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.RegisterComponentInHierarchy<ResultCanvasUINet>();
 
             // Notifier
-            builder.RegisterComponentInHierarchy<CartMovementNotifierNet>();
+            builder.RegisterComponentInHierarchy<HoldingBlockNotifierNet>().As<IHoldingBlockNotifier>();
 
             // Handler
             builder.Register<PlayerFollowMovingCart>(Lifetime.Scoped);

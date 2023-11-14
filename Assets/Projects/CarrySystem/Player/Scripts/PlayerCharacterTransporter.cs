@@ -12,9 +12,9 @@ namespace Carry.CarrySystem.Player.Scripts
     /// </summary>
     public class PlayerCharacterTransporter
     {
-        public  int PlayerCount => _playerIndexDictionary.Count;
+        public  int PlayerCount => _playerNumberDictionary.Count;
         readonly Dictionary<PlayerRef, PlayerColorType> _colorDictionary = new Dictionary<PlayerRef, PlayerColorType>();
-        readonly Dictionary<PlayerRef, int> _playerIndexDictionary = new Dictionary<PlayerRef, int>();
+        readonly Dictionary<PlayerRef, int> _playerNumberDictionary = new Dictionary<PlayerRef, int>();
         
         public PlayerColorType GetPlayerColorType(PlayerRef playerRef)
         {
@@ -33,10 +33,10 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public int GetPlayerIndex(PlayerRef playerRef)
         {
-            if (_playerIndexDictionary.TryGetValue(playerRef, out int index))
+            if (_playerNumberDictionary.TryGetValue(playerRef, out int number))
             {
-                // Debug.Log($"GetPlayerIndex playerRef:{playerRef} is {index+1}P");
-                return index;
+                // Debug.Log($"GetPlayerIndex playerRef:{playerRef} is {number}P");
+                return number;
             }
             else
             {
@@ -44,10 +44,10 @@ namespace Carry.CarrySystem.Player.Scripts
                 return -1;
             }
         }
-        public void SetIndex(PlayerRef playerRef)
+        public void SetPlayerNumber(PlayerRef playerRef)
         {
-            Debug.Log($"Registering playerRef:{playerRef} as {_playerIndexDictionary.Count+1}P");
-            _playerIndexDictionary[playerRef] = _playerIndexDictionary.Count+1;
+            Debug.Log($"Registering playerRef:{playerRef} as {_playerNumberDictionary.Count+1}P");
+            _playerNumberDictionary[playerRef] = _playerNumberDictionary.Count+1;
             // Debug.Log($"PlayerIndexDictionary.Count:{_playerIndexDictionary.Count}");
         }
     }

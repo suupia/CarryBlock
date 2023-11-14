@@ -4,7 +4,7 @@ using Carry.CarrySystem.SearchRoute.Scripts;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using BitStream = Fusion.Protocol.BitStream;
-
+#nullable enable
 namespace Carry.CarrySystem.Cart.Scripts
 {
     public class ReachRightEdgeChecker

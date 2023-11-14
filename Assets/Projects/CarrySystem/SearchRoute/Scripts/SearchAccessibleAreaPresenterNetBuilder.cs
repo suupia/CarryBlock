@@ -5,7 +5,7 @@ using System.Threading;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
-using Carry.CarrySystem.Spawners.Scripts;
+using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Fusion;
 using UnityEngine;
 using VContainer;
@@ -16,40 +16,32 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     /// <summary>
     /// ドメインスクリプトSearchAccessibleAreaExecutorにRoutePresenterを紐づけるクラス
     /// </summary>
-    public class SearchAccessibleAreaBuilder
+    public class SearchAccessibleAreaPresenterNetBuilder : ISearchAccessibleAreaPresenterBuilder
     {
         [Inject] readonly NetworkRunner _runner = null!;
         IReadOnlyList<RoutePresenterNet> _routePresenters =  new List<RoutePresenterNet>();
          bool _isRoutePresentersInitialized;
          
         [Inject]
-        public SearchAccessibleAreaBuilder()
+        public SearchAccessibleAreaPresenterNetBuilder()
         {
-            
-        }
-
-        public SearchAccessibleAreaExecutor Build(SquareGridMap map)
-        {
-            var waveletSearchExecutor = new WaveletSearchExecutor(map);
-            var searchedMapExpander = new SearchedMapExpander(waveletSearchExecutor);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor, searchedMapExpander);
-            return searchAccessibleAreaExecutor;
             
         }
         
-        public SearchAccessibleAreaPresenter BuildPresenter(SquareGridMap map)
+        public SearchAccessibleAreaPresenter BuildPresenter(IGridMap map)
         {
-            var routePresenters = SetUpPresenter(map);
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
             var searchedMapExpander = new SearchedMapExpander(waveletSearchExecutor);
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor,searchedMapExpander);
+            
+            var routePresenters = SetUpPresenter(map);
             var searchAccessibleAreaPresenter = new SearchAccessibleAreaPresenter(waveletSearchExecutor,searchAccessibleAreaExecutor,searchedMapExpander);
             searchAccessibleAreaPresenter.RegisterRoutePresenters(routePresenters);
             return searchAccessibleAreaPresenter;
             
         }
 
-        IReadOnlyList<RoutePresenterNet> SetUpPresenter(SquareGridMap map)
+        IReadOnlyList<RoutePresenterNet> SetUpPresenter(IGridMap map)
         {
             if (!_isRoutePresentersInitialized) //最初にすべてスポーン
             {
