@@ -15,6 +15,7 @@ using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
 using Projects.CarrySystem.Cart.Interfaces;
 using Projects.CarrySystem.Item.Scripts;
+using Projects.CarrySystem.Player.Scripts.Local;
 using Projects.CarrySystem.SearchRoute.Scripts;
 using UnityEngine;
 using VContainer;
@@ -43,7 +44,7 @@ namespace Carry.ScopeSystem.Scripts
             
             
             // Player
-            builder.Register<MainCarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
+            builder.Register<LocalCarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
             builder.Register<CarryPlayerControllerLocalBuilder>(Lifetime.Scoped);
             builder.Register<LocalPlayerSpawner>(Lifetime.Scoped);
             builder.Register<CarryPlayerContainer>(Lifetime.Scoped);

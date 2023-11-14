@@ -4,12 +4,12 @@ using VContainer;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class MainLobbyPlayerFactory : ICarryPlayerFactory
+    public class LobbyPlayerFactory : ICarryPlayerFactory
     {
         readonly PlayerCharacterTransporter _playerCharacterTransporter;
 
         [Inject]
-        public MainLobbyPlayerFactory()
+        public LobbyPlayerFactory()
         {
         }
 

@@ -1,31 +1,25 @@
-using Carry.CarrySystem.Cart.Scripts;
+﻿using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
-using UnityEngine;
+using Carry.CarrySystem.Player.Scripts;
 using VContainer;
 #nullable enable
 
-namespace Carry.CarrySystem.Player.Scripts
+namespace Projects.CarrySystem.Player.Scripts.Local
 {
-    public class MainCarryPlayerFactory : ICarryPlayerFactory
+    public class LocalCarryPlayerFactory : ICarryPlayerFactory
     {
         readonly IMapUpdater _mapUpdater;
         readonly HoldingBlockObserver  _holdingBlockObserver;
-        readonly PlayerNearCartHandlerNet _playerNearCartHandler;
-        readonly PlayerCharacterTransporter _playerCharacterTransporter;
-        
+
         [Inject]
-        public MainCarryPlayerFactory(
+        public LocalCarryPlayerFactory(
             IMapUpdater mapUpdater ,
-            HoldingBlockObserver holdingBlockObserver,
-            PlayerNearCartHandlerNet playerNearCartHandler,
-            PlayerCharacterTransporter playerCharacterTransporter
-            )
+            HoldingBlockObserver holdingBlockObserver
+        )
         {
             _mapUpdater = mapUpdater;
             _holdingBlockObserver = holdingBlockObserver;
-            _playerNearCartHandler = playerNearCartHandler;
-            _playerCharacterTransporter = playerCharacterTransporter;
         }
         
         public  Character CreateCharacter()
@@ -38,10 +32,10 @@ namespace Carry.CarrySystem.Player.Scripts
             
             // IHoldActionExecutor
             _holdingBlockObserver.RegisterHoldAction(blockContainer);
-            var holdActionExecutor =new HoldActionExecutor(blockContainer,_playerNearCartHandler, _mapUpdater);
+            var holdActionExecutor =new HoldActionExecutor(blockContainer,new PlayerNearCartHandlerNet(), _mapUpdater);  // new はエラー回避のため一時的に使用
             
             // IOnDamageExecutor
-            var onDamageExecutor = new OnDamageExecutor(moveExecutorSwitcher, _playerCharacterTransporter);
+            var onDamageExecutor = new OnDamageExecutor(moveExecutorSwitcher, new PlayerCharacterTransporter());  // new はエラー回避のため一時的に使用
             var dashExecutor = new DashExecutor(moveExecutorSwitcher, onDamageExecutor);
             
             // IPassActionExecutor
@@ -59,6 +53,5 @@ namespace Carry.CarrySystem.Player.Scripts
             
             return character;
         }
-
     }
 }

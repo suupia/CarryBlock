@@ -46,7 +46,7 @@ namespace Carry.ScopeSystem.Scripts
             // NetworkRunnerに依存するスクリプト
 
             // Player
-            builder.Register<MainCarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
+            builder.Register<CarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
             builder.Register<CarryPlayerControllerNetBuilder>(Lifetime.Scoped).As<IPlayerControllerNetBuilder>();
             builder.Register<NetworkPlayerSpawner>(Lifetime.Scoped);
             builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
