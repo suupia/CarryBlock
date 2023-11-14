@@ -21,6 +21,10 @@ namespace Carry.ScopeSystem.Scripts
     {
         protected override void Configure(IContainerBuilder builder)
         {
+            // asmdefが分割されているため、Mapの生成や編集はLocalEditScopeで行う
+            // もし、LocalEditMapを変更したくなった場合は新しいクラスを作るべき
+            // なぜなら、LocalEditMapはには単体で動くシーンが用意されていて、動作確認済みであるため
+            
             // todo : とりあえず、playerをスポーンさせる
             
             // PrefabLoader 
@@ -103,46 +107,6 @@ namespace Carry.ScopeSystem.Scripts
             // builder.RegisterComponentInHierarchy<PlayerNearCartHandlerNet>();
             
             
-            // 以下はLocalEditMapScopeからコピー
-            
-            // Map
-            // JsonとEntityGridMapに関する処理
-            builder.Register<EntityGridMapBuilderLeaf>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
-            builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
-            builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
-            
-            // 対応するプレハブをEntityGridMapを元に生成する
-            builder.Register<LocalEntityPresenterSpawner>(Lifetime.Scoped).As<IEntityPresenterSpawner>();
-            builder.Register<EditMapBlockBuilder>(Lifetime.Scoped);
-            builder.Register<RandomWallPresenterPlacerLocal>(Lifetime.Scoped);
-            builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
-            builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<LocalEditMapPresenterPlacerComponent>(Lifetime.Scoped).As<IPresenterPlacer>();
-            
-
-            // IMapUpdater
-            builder.Register<LocalCarryMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
-            
-            // // Input
-            // builder.Register<EditMapBlockAttacher>(Lifetime.Scoped);
-            // builder.Register<CUIHandleNumber>(Lifetime.Scoped);
-            // builder.Register<AutoSaveManager>(Lifetime.Scoped);
-            // builder.RegisterComponentInHierarchy<EditMapInput>();
-            // builder.RegisterComponentInHierarchy<EditMapCUISave>();
-            // builder.RegisterComponentInHierarchy<EditMapCUILoad>();
-            //
-            //             
-            // //Item
-            // builder.Register<TreasureCoinCounter>(Lifetime.Scoped);
-            //
-            // // Presenter
-            // builder.RegisterComponentInHierarchy<LoadedFilePresenter>();
-            //
-            // // MapKey
-            // builder.RegisterComponentInHierarchy<MapKeyContainer>();
-            //
-            // // Initializer
-            // builder.RegisterComponentInHierarchy<LocalEditMapInitializer>();
 
         }
     }
