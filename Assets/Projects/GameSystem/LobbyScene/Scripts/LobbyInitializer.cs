@@ -48,7 +48,7 @@ namespace Carry.GameSystem.LobbyScene.Scripts
 
             if (Runner.IsServer)
             {
-                _playerCharacterTransporter.SetIndex(Runner.LocalPlayer);
+                _playerCharacterTransporter.SetPlayerNumber(Runner.LocalPlayer);
                 _networkPlayerSpawner.RespawnAllPlayer();
             }
 
@@ -63,7 +63,7 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             if (Runner.IsServer) _networkPlayerSpawner.SpawnPlayer(player );
             
             Debug.Log($"PlayerJoined");
-            _playerCharacterTransporter.SetIndex(player);
+            _playerCharacterTransporter.SetPlayerNumber(player);
             _carryInitializersReady = FindObjectOfType<CarryInitializersReady>();
             if (_carryInitializersReady == null)
             {
