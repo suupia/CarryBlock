@@ -11,6 +11,7 @@ using Carry.UISystem.UI.CarryScene;
 using Fusion;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
+using Projects.CarrySystem.Cart.Interfaces;
 using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 using VContainer;
@@ -91,7 +92,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.RegisterComponentInHierarchy<ResultCanvasUINet>();
 
             // Notifier
-            builder.RegisterComponentInHierarchy<CartMovementNotifierNet>();
+            builder.RegisterComponentInHierarchy<HoldingBlockNotifierNet>().As<IHoldingBlockNotifier>();
 
             // Handler
             builder.Register<PlayerFollowMovingCart>(Lifetime.Scoped);
