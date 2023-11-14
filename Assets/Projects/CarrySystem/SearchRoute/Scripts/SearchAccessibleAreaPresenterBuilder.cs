@@ -16,14 +16,13 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     /// <summary>
     /// ドメインスクリプトSearchAccessibleAreaExecutorにRoutePresenterを紐づけるクラス
     /// </summary>
-    public class SearchAccessibleAreaPresenterNetBuilder : ISearchAccessibleAreaPresenterBuilder
+    public class SearchAccessibleAreaPresenterBuilder
     {
-        [Inject] readonly NetworkRunner _runner = null!;
-         
+        readonly IRoutePresenterSpawner _routePresenterSpawner;
         [Inject]
-        public SearchAccessibleAreaPresenterNetBuilder()
+        public SearchAccessibleAreaPresenterBuilder(IRoutePresenterSpawner routePresenterSpawner)
         {
-            
+            _routePresenterSpawner = routePresenterSpawner;
         }
         
         public SearchAccessibleAreaPresenter BuildPresenter(IGridMap map)
@@ -44,13 +43,12 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             // foreachでの削除の処理が必要ないため、フィールドとして保持する必要がなく、さらに直接List<IRoutePresenter>に代入してよい
             
             // spawn new routePresenters
-            var routePresenterSpawner = new RoutePresenterNetSpawner(_runner);
             var routePresenters = new List<IRoutePresenter>();
             for (int i = 0; i < map.Length; i++)
             {
                 var girdPos = map.ToVector(i);
                 var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
-                var routePresenter = routePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                var routePresenter = _routePresenterSpawner.SpawnIRoutePresenter(worldPos, Quaternion.identity);
                 routePresenters.Add(routePresenter);
             }
 

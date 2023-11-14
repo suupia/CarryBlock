@@ -1,4 +1,5 @@
-﻿using Carry.Utility.Interfaces;
+﻿using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
+using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace Projects.CarrySystem.SearchRoute.Scripts
 {
-    public class RoutePresenterLocalSpawner
+    public class RoutePresenterLocalSpawner : IRoutePresenterSpawner
     {
         readonly IPrefabLoader<RoutePresenterLocal> _routePresenterPrefabSpawner;
 
@@ -20,6 +21,11 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
         {
             var tilePresenter = _routePresenterPrefabSpawner.Load();
             return Object.Instantiate(tilePresenter, position, rotation);
+        }
+        
+        public IRoutePresenter SpawnIRoutePresenter(Vector3 position, Quaternion rotation)
+        {
+            return SpawnPrefab(position, rotation);
         }
     }
 }

@@ -66,7 +66,8 @@ namespace Carry.ScopeSystem.Scripts
             // todo : ここら辺のスクリプトはモックに切り替えられるかどうか考える
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
             builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
-            builder.Register<SearchAccessibleAreaPresenterLocalBuilder>(Lifetime.Scoped).As<ISearchAccessibleAreaPresenterBuilder>();
+            builder.Register<RoutePresenterLocalSpawner>(Lifetime.Scoped).As<IRoutePresenterSpawner>();
+            builder.Register<SearchAccessibleAreaPresenterBuilder>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<HoldingBlockNotifierLogger>().As<IHoldingBlockNotifier>();
 
 

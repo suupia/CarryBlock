@@ -81,7 +81,8 @@ namespace Carry.ScopeSystem.Scripts
             // Cart
             builder.Register<CartBuilder>(Lifetime.Scoped);
             builder.Register<CartShortestRouteMove>(Lifetime.Scoped);
-            builder.Register<SearchAccessibleAreaPresenterNetBuilder>(Lifetime.Scoped).As<ISearchAccessibleAreaPresenterBuilder>();
+            builder.Register<RoutePresenterNetSpawner>(Lifetime.Scoped).As<IRoutePresenterSpawner>();
+            builder.Register<SearchAccessibleAreaPresenterBuilder>(Lifetime.Scoped);
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
             builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
             

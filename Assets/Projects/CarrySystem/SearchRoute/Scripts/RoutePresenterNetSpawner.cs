@@ -1,4 +1,5 @@
 ﻿using Carry.CarrySystem.Map.Scripts;
+using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Fusion;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.SearchRoute.Scripts
 {
-    public class RoutePresenterNetSpawner
+    public class RoutePresenterNetSpawner :IRoutePresenterSpawner
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<RoutePresenterNet> _routePresenterPrefabSpawner;
@@ -23,6 +24,11 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         {
             var tilePresenter = _routePresenterPrefabSpawner.Load();
             return _runner.Spawn(tilePresenter, position, rotation, PlayerRef.None);
+        }
+        
+        public IRoutePresenter SpawnIRoutePresenter(Vector3 position, Quaternion rotation)
+        {
+            return SpawnPrefab(position, rotation);
         }
     }
 }
