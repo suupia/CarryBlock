@@ -50,11 +50,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.RegisterComponentInHierarchy<EditMapInput>();
             builder.RegisterComponentInHierarchy<EditMapCUISave>();
             builder.RegisterComponentInHierarchy<EditMapCUILoad>();
-            
-                        
-            //Item
-            builder.Register<TreasureCoinCounter>(Lifetime.Scoped);
-            
+
             // Presenter
             builder.RegisterComponentInHierarchy<LoadedFilePresenter>();
             
