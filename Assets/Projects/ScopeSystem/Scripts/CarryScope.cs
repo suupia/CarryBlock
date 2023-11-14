@@ -45,14 +45,18 @@ namespace Carry.ScopeSystem.Scripts
 
             // Player
             builder.Register<MainCarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
-            builder.Register<CarryPlayerBuilder>(Lifetime.Scoped).As<IPlayerBuilder>();
+            builder.Register<CarryPlayerControllerNetBuilder>(Lifetime.Scoped).As<IPlayerControllerNetBuilder>();
             builder.Register<PlayerSpawner>(Lifetime.Scoped);
             builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
 
 
             // Map
             // JsonからEntityGridMapを生成する
-            builder.Register<EntityGridMapBuilder>(Lifetime.Scoped);
+            builder.Register<IEntityGridMapBuilder>(container =>
+            {
+                var treasureCoinCounter = container.Resolve<TreasureCoinCounter>();
+                return new EntityGridMapBuilderWithTreasureCoin(new EntityGridMapBuilderLeaf(),treasureCoinCounter);
+            }, Lifetime.Scoped);
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する

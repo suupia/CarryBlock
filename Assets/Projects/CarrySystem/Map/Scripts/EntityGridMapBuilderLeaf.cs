@@ -14,13 +14,10 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EntityGridMapBuilder
-    {
-        readonly TreasureCoinCounter _treasureCoinCounter;
-        [Inject]
-        public EntityGridMapBuilder(TreasureCoinCounter treasureCoinCounter)
+    public class EntityGridMapBuilderLeaf : IEntityGridMapBuilder
+    { 
+        public EntityGridMapBuilderLeaf()
         {
-            _treasureCoinCounter = treasureCoinCounter;
         }
         public EntityGridMap BuildEntityGridMap(EntityGridMapData gridMapData)
         {
@@ -36,20 +33,6 @@ namespace Carry.CarrySystem.Map.Scripts
                 AddEntityFromRecord<ConfusionBlock, ConfusionBlockRecord, ConfusionBlock.Kind>(gridMapData.confusionBlockRecords, () => gridMapData.confusionBlockRecords?.Length ?? 0, (record) => record.kinds, ConfusionBlock.Kind.None, map, i );
                 AddEntityFromRecord<SpikeGimmick, SpikeGimmickRecord, SpikeGimmick.Kind>(gridMapData.spikeGimmickRecords, () =>gridMapData.spikeGimmickRecords?.Length?? 0, (record) => record.kinds, SpikeGimmick.Kind.None, map, i );
 
-                // TreasureCoin
-                if (gridMapData.treasureCoinRecords != null)
-                {
-                    var kinds = gridMapData.treasureCoinRecords[i].kinds;
-                    foreach (var kind in kinds)
-                    {
-                        if (!kind.Equals(TreasureCoin.Kind.None))
-                        {
-                            // This will create a new entity
-                            var item = new TreasureCoin(kind, map.ToVector(i),map,_treasureCoinCounter);
-                            map.AddEntity(i, item);
-                        }
-                    }
-                }
             }
 
             return map;

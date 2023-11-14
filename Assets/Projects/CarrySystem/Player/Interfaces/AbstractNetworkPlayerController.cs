@@ -9,13 +9,23 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Interfaces
 {
-    public abstract class AbstractNetworkPlayerController : NetworkBehaviour
+    [RequireComponent(typeof(Rigidbody))]
+    public abstract class AbstractNetworkPlayerController : NetworkBehaviour, IPlayerController
     {
+        public GameObject GameObject => gameObject;
+        public Rigidbody Rigidbody { get; private set; } = null!;
+        public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
+        public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
+        public IHoldActionExecutor GetHoldActionExecutor => HoldActionExecutor;
+        public IOnDamageExecutor GetOnDamageExecutor => OnDamageExecutor;
+        public IDashExecutor GetDashExecutor => DashExecutor;
+        public IPassActionExecutor GetPassActionExecutor => PassActionExecutor;
+        
         [SerializeField] protected Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
 
         [SerializeField] protected GameObject[] playerUnitPrefabs= null!;
 
-        [SerializeField] protected PlayerInfo info= null!;
+        protected PlayerInfo info = null!;
 
         [Networked] protected NetworkButtons PreButtons { get; set; }
         [Networked] public NetworkBool IsReady { get; set; }
@@ -24,12 +34,6 @@ namespace Carry.CarrySystem.Player.Interfaces
 
         protected GameObject CharacterObj= null!;
 
-        public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
-        public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
-        public IHoldActionExecutor GetHoldActionExecutor => HoldActionExecutor;
-        public IOnDamageExecutor GetOnDamageExecutor => OnDamageExecutor;
-        public IDashExecutor GetDashExecutor => DashExecutor;
-        public IPassActionExecutor GetPassActionExecutor => PassActionExecutor;
         
         
         // ICharacterリファクタリング
@@ -46,7 +50,8 @@ namespace Carry.CarrySystem.Player.Interfaces
             // Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
 
             // init info
-            info.Init(gameObject, this, Object.InputAuthority);
+            Rigidbody = GetComponent<Rigidbody>();  // not null because of RequireComponent
+            info = new PlayerInfo(this, Object.InputAuthority);
 
             // Instantiate the character.
             InstantiateCharacter();
