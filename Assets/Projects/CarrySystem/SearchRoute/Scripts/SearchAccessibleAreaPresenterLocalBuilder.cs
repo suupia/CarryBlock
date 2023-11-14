@@ -4,6 +4,7 @@ using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using VContainer;
+#nullable enable
 
 namespace Projects.CarrySystem.SearchRoute.Scripts
 {

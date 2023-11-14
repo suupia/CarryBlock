@@ -87,7 +87,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<LocalEditMapPresenterPlacerComponent>(Lifetime.Scoped).As<IPresenterPlacer>();
 
             // IMapUpdater
-            builder.Register<EditMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
+            builder.Register<LocalCarryMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
             
             // Input
             builder.Register<EditMapBlockAttacher>(Lifetime.Scoped);
