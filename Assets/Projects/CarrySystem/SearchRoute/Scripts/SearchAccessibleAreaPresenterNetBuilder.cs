@@ -19,8 +19,6 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     public class SearchAccessibleAreaPresenterNetBuilder : ISearchAccessibleAreaPresenterBuilder
     {
         [Inject] readonly NetworkRunner _runner = null!;
-        IReadOnlyList<RoutePresenterNet> _routePresenters =  new List<RoutePresenterNet>();
-         bool _isRoutePresentersInitialized;
          
         [Inject]
         public SearchAccessibleAreaPresenterNetBuilder()
@@ -41,33 +39,22 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             
         }
 
-        IReadOnlyList<RoutePresenterNet> SetUpPresenter(IGridMap map)
+        IReadOnlyList<IRoutePresenter> SetUpPresenter(IGridMap map)
         {
-            if (!_isRoutePresentersInitialized) //最初にすべてスポーン
+            // foreachでの削除の処理が必要ないため、フィールドとして保持する必要がなく、さらに直接List<IRoutePresenter>に代入してよい
+            
+            // spawn new routePresenters
+            var routePresenterSpawner = new RoutePresenterNetSpawner(_runner);
+            var routePresenters = new List<IRoutePresenter>();
+            for (int i = 0; i < map.Length; i++)
             {
-                // Delete previous routePresenters
-                foreach (var routePresenter in _routePresenters)
-                {
-                    _runner.Despawn(routePresenter.Object);
-                }
-                _routePresenters = new List<RoutePresenterNet>();
-
-                // spawn new routePresenters
-                var routePresenterSpawner = new RoutePresenterNetSpawner(_runner);
-                var routePresenters = new List<RoutePresenterNet>();
-                for (int i = 0; i < map.Length; i++)
-                {
-                    var girdPos = map.ToVector(i);
-                    var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
-                    var routePresenter = routePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
-                    routePresenters.Add(routePresenter);
-                }
-
-                _routePresenters = routePresenters;
-                _isRoutePresentersInitialized = true;
+                var girdPos = map.ToVector(i);
+                var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
+                var routePresenter = routePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                routePresenters.Add(routePresenter);
             }
 
-            return _routePresenters;
+            return routePresenters;
         }
         
     }

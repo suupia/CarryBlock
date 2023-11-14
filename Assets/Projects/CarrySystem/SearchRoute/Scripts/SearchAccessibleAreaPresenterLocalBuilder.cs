@@ -35,8 +35,6 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
 
         IReadOnlyList<RoutePresenterLocal> SetUpPresenter(IGridMap map)
         {
-            // todo : 実装する
-            
             if (!_isRoutePresentersInitialized) //最初にすべてスポーン
             {
                 // Delete previous routePresenters
