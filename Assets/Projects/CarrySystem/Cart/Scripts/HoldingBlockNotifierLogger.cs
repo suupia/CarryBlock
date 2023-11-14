@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Cart.Scripts
 {
-    public class HoldingBlockNotifierLogger : IHoldingBlockNotifier
+    // todo: クラス名を実装に合わせて適切なものに変更する
+    public class HoldingBlockNotifierLogger : MonoBehaviour, IHoldingBlockNotifier
     {
         public void ShowReachableText()
         {

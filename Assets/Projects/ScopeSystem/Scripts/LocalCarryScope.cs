@@ -64,6 +64,7 @@ namespace Carry.ScopeSystem.Scripts
             // Cart
             // todo : ここら辺のスクリプトはモックに切り替えられるかどうか考える
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
+            builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<PlayerNearCartHandlerNet>();
             builder.Register<SearchAccessibleAreaPresenterLocalBuilder>(Lifetime.Scoped).As<ISearchAccessibleAreaPresenterBuilder>();
             builder.RegisterComponentInHierarchy<HoldingBlockNotifierLogger>().As<IHoldingBlockNotifier>();
