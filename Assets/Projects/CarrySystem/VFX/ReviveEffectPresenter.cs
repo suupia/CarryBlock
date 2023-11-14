@@ -21,9 +21,9 @@ namespace Carry.CarrySystem.Player.Scripts
         
         bool _isRevivedLocal;
         VisualEffect _reviveEffect;
-        public void Init(ICharacter character)
+        public void Init(IOnDamageExecutor onDamageExecutor)
         {
-            character.SetReviveEffectPresenter(this);
+            onDamageExecutor.SetReviveEffectPresenter(this);
             
         }
         

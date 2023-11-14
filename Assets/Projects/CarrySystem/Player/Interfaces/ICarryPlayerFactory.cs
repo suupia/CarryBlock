@@ -8,6 +8,6 @@ namespace Carry.CarrySystem.Player.Interfaces
     /// </summary>
     public interface ICarryPlayerFactory
     {
-        ICharacter Create(PlayerColorType colorType);
+        public Character CreateCharacter();
     }
 }

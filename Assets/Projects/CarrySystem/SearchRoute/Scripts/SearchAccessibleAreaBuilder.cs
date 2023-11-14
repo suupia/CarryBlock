@@ -7,7 +7,6 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners.Scripts;
 using Fusion;
-using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;
 #nullable  enable
@@ -20,8 +19,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     public class SearchAccessibleAreaBuilder
     {
         [Inject] readonly NetworkRunner _runner = null!;
-        IEnumerable<RoutePresenter_Net> _routePresenters =  new List<RoutePresenter_Net>();
-         bool _isRoutePresenterInit;
+        IReadOnlyList<RoutePresenterNet> _routePresenters =  new List<RoutePresenterNet>();
+         bool _isRoutePresentersInitialized;
          
         [Inject]
         public SearchAccessibleAreaBuilder()
@@ -31,15 +30,39 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
         public SearchAccessibleAreaExecutor Build(SquareGridMap map)
         {
-            var routePresenterSpawner = new RoutePresenterSpawner(_runner);
-            var routePresenters = new List<RoutePresenter_Net>();
+            var waveletSearchExecutor = new WaveletSearchExecutor(map);
+            var searchedMapExpander = new SearchedMapExpander(waveletSearchExecutor);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor, searchedMapExpander);
+            return searchAccessibleAreaExecutor;
             
-            if (!_isRoutePresenterInit) //最初にすべてスポーン
-            {
-                // 以前のTilePresenterを削除
-                DestroyRoutePresenter();
+        }
+        
+        public SearchAccessibleAreaPresenter BuildPresenter(SquareGridMap map)
+        {
+            var routePresenters = SetUpPresenter(map);
+            var waveletSearchExecutor = new WaveletSearchExecutor(map);
+            var searchedMapExpander = new SearchedMapExpander(waveletSearchExecutor);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor,searchedMapExpander);
+            var searchAccessibleAreaPresenter = new SearchAccessibleAreaPresenter(waveletSearchExecutor,searchAccessibleAreaExecutor,searchedMapExpander);
+            searchAccessibleAreaPresenter.RegisterRoutePresenters(routePresenters);
+            return searchAccessibleAreaPresenter;
+            
+        }
 
-                // RoutePresenterをスポーンさせる
+        IReadOnlyList<RoutePresenterNet> SetUpPresenter(SquareGridMap map)
+        {
+            if (!_isRoutePresentersInitialized) //最初にすべてスポーン
+            {
+                // Delete previous routePresenters
+                foreach (var routePresenter in _routePresenters)
+                {
+                    _runner.Despawn(routePresenter.Object);
+                }
+                _routePresenters = new List<RoutePresenterNet>();
+
+                // spawn new routePresenters
+                var routePresenterSpawner = new RoutePresenterSpawner(_runner);
+                var routePresenters = new List<RoutePresenterNet>();
                 for (int i = 0; i < map.Length; i++)
                 {
                     var girdPos = map.ToVector(i);
@@ -47,42 +70,13 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                     var routePresenter = routePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                     routePresenters.Add(routePresenter);
                 }
+
                 _routePresenters = routePresenters;
-                _isRoutePresenterInit = true;
-            }
-            else
-            {
-                routePresenters = _routePresenters.ToList();
+                _isRoutePresentersInitialized = true;
             }
 
-            return  AttachRoutePresenter(routePresenters, map);
+            return _routePresenters;
         }
         
-        void DestroyRoutePresenter()
-        {
-            // マップの大きさが変わっても対応できるようにDestroyが必要
-            // ToDo: マップの大きさを変えてテストをする 
-            
-            foreach (var routePresenter in _routePresenters)
-            {
-                _runner.Despawn(routePresenter.Object);
-            }
-            _routePresenters = new List<RoutePresenter_Net>();
-        }
-
-        SearchAccessibleAreaExecutor AttachRoutePresenter(IReadOnlyList<RoutePresenter_Net> routePresenters , IGridMap map)
-        {
-            for (int i = 0; i < routePresenters.Count(); i++)
-            {
-                var routePresenter = routePresenters.ElementAt(i);
-                // RoutePresenter用に書き直し
-                //routePresenter.SetPresenterActive(false);  // ToDo: 初期化の処理
-            }
-            
-            var waveletSearchExecutor = new WaveletSearchExecutor(map);
-            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(map, waveletSearchExecutor);
-            searchAccessibleAreaExecutor.RegisterRoutePresenters(routePresenters);
-            return searchAccessibleAreaExecutor;
-        }
     }
 }

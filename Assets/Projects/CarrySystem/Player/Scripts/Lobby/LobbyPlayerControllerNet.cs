@@ -13,22 +13,35 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class LobbyPlayerControllerNet : AbstractNetworkPlayerController
     {
+        public PlayerInfo Info => info;
         [SerializeField] GameObject cameraPrefab= null!;
         
         PlayerCharacterTransporter _playerCharacterTransporter = null!;  // PlayerColorTypeを次のシーンに保持するために必要
         
         
-        public void Init(ICharacter character, PlayerColorType colorType, PlayerCharacterTransporter playerCharacterTransporter)
+        public void Init(
+            PlayerHoldingObjectContainer blockContainer,
+            IMoveExecutorSwitcher moveExecutorSwitcher,
+            IHoldActionExecutor holdActionExecutor,
+            IOnDamageExecutor onDamageExecutor,
+            IDashExecutor dashExecutor,
+            IPassActionExecutor passActionExecutor,
+            PlayerColorType colorType,
+            PlayerCharacterTransporter playerCharacterTransporter)
         {
-            Debug.Log($"LobbyPlayerControllerNet.Init(), character = {character}");
-            this.Character = character;
+            BlockContainer = blockContainer;
+            MoveExecutorSwitcher = moveExecutorSwitcher;
+            HoldActionExecutor = holdActionExecutor;
+            OnDamageExecutor = onDamageExecutor!;
+            DashExecutor = dashExecutor;
+            PassActionExecutor = passActionExecutor;
             ColorType = colorType;
             _playerCharacterTransporter = playerCharacterTransporter;
         }
 
         public override void Spawned()
         {
-            Debug.Log($"LobbyPlayerController_Net.Spawned(), _character = {Character}");    
+            // Debug.Log($"LobbyPlayerController_Net.Spawned(), _character = {Character}");    
 
             // Set camera
             if (Object.HasInputAuthority)

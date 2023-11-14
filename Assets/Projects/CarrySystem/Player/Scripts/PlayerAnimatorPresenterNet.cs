@@ -36,10 +36,13 @@ namespace Carry.CarrySystem.Player.Scripts
 
         Animator? _animator;
         
-        public void Init(ICharacter character)
+        public void Init(IMoveExecutorSwitcher moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor, IOnDamageExecutor onDamageExecutor, IPassActionExecutor passActionExecutor)
         {
             Debug.Log($"PlayerAnimatorPresenterNet Init");
-            character.SetPlayerAnimatorPresenter(this);
+            moveExecutorSwitcher.SetPlayerAnimatorPresenter(this);
+            holdActionExecutor.SetPlayerAnimatorPresenter(this);
+            onDamageExecutor.SetPlayerAnimatorPresenter(this);
+            passActionExecutor.SetPlayerAnimatorPresenter(this);
         }
 
         public void SetAnimator(Animator animator)

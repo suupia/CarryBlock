@@ -5,6 +5,7 @@ using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.CarriableBlock.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.Player.Scripts;
 using UnityEngine;
 
 namespace Carry.CarrySystem.CarriableBlock.Scripts
@@ -37,10 +38,10 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;  // basicが持ち上げられない状況はない
         }
 
-        public void  PickUp(ICharacter character)
+        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, PlayerHoldingObjectContainer blockContainer, IHoldActionExecutor holdActionExecutor)
         {
             // 上下左右を入れ替えた混乱の動きに切り替える
-            character.SwitchToConfusionMove();
+            moveExecutorSwitcher.SwitchToConfusionMove();
         }
 
         public bool CanPutDown(IList<ICarriableBlock> placedBlocks)
@@ -58,10 +59,10 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;
         }
         
-        public void PutDown(ICharacter character) 
+        public void PutDown(IMoveExecutorSwitcher moveExecutorSwitcher) 
         {
             // 混乱状態をもとに戻す
-            character.SwitchToRegularMove();
+            moveExecutorSwitcher.SwitchToRegularMove();
         }
     }
 }

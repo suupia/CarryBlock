@@ -7,21 +7,21 @@ using UnityEngine.Serialization;
 
 namespace Carry.CarrySystem.Player.Info
 {
-    [Serializable]
     public record PlayerInfo
     {
         // Property
-        [NonSerialized] public GameObject PlayerObj = null!;
-        [NonSerialized] public Rigidbody PlayerRb = null!;
-        [NonSerialized] public AbstractNetworkPlayerController PlayerController = null!;
-        [NonSerialized] public PlayerRef PlayerRef;
+        public GameObject PlayerObj { get; private set; }  // This is controller's gameObject and not interpolated gameObject by NetworkRigidbody
+        public Rigidbody PlayerRb { get; private set; }
+        public IPlayerController PlayerController { get; private set; } 
+        public PlayerRef PlayerRef { get; private set; }
 
-        public void Init(GameObject playerObj, AbstractNetworkPlayerController playerController,PlayerRef playerRef)
+        public PlayerInfo(IPlayerController playerController,PlayerRef playerRef)
         {
-            this.PlayerObj = playerObj;
-            this.PlayerController = playerController;
-            this.PlayerRef = playerRef;
-            PlayerRb = playerObj.GetComponent<Rigidbody>();
-        }
+            PlayerObj = playerController.GameObject;
+            PlayerController = playerController;
+            PlayerRef = playerRef;
+            PlayerRb = playerController.Rigidbody;
+        }    
+
     }
 }

@@ -13,15 +13,33 @@ namespace Carry.CarrySystem.Player.Scripts
         {
         }
 
-        public ICharacter Create(PlayerColorType colorType)
+        public  Character CreateCharacter()
         {
-            var moveExeSwitcher = new MoveExecutorSwitcher();
+            // PlayerHolderObjectContainer
             var blockContainer = new PlayerHoldingObjectContainer();
-            var holdExe = new EmptyHoldActionExecutor();
-            var passExe = new EmptyPassActionExecutor();
-            var onDamageExe = new OnDamageExecutor(moveExeSwitcher, _playerCharacterTransporter);
-            var dashExe = new DashExecutor(moveExeSwitcher, onDamageExe);
-            var character = new Character(moveExeSwitcher, holdExe,dashExe, passExe,onDamageExe, blockContainer);
+            
+            // IMoveExecutorSwitcher
+            var moveExecutorSwitcher = new MoveExecutorSwitcher();
+            
+            // IHoldActionExecutor
+            var holdActionExecutor =new EmptyHoldActionExecutor();
+            
+            // IOnDamageExecutor
+            var onDamageExecutor = new OnDamageExecutor(moveExecutorSwitcher, _playerCharacterTransporter);
+            var dashExecutor = new DashExecutor(moveExecutorSwitcher, onDamageExecutor);
+            
+            // IPassActionExecutor
+            var passActionExecutor = new EmptyPassActionExecutor(); 
+            
+            var character = new Character(
+                moveExecutorSwitcher,
+                holdActionExecutor,
+                dashExecutor,
+                passActionExecutor,
+                onDamageExecutor,
+                blockContainer
+            );
+            
             return character;
         }
     }

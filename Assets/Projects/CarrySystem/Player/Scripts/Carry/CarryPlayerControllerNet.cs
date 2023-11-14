@@ -25,18 +25,27 @@ namespace Carry.CarrySystem.Player.Scripts
         PlayerNearCartHandlerNet _playerNearCartHandler = null!;
         PlayerCharacterTransporter _playerCharacterTransporter = null!;
         FloorTimerNet _floorTimerNet = null!;
-        
+
         public void Init(
-            ICharacter character,
+            PlayerHoldingObjectContainer blockContainer,
+            IMoveExecutorSwitcher moveExecutorSwitcher,
+            IHoldActionExecutor holdActionExecutor,
+            IOnDamageExecutor onDamageExecutor,
+            IDashExecutor dashExecutor,
+            IPassActionExecutor passActionExecutor,
             PlayerColorType colorType,
             IMapUpdater mapUpdater,
             PlayerNearCartHandlerNet playerNearCartHandler,
             PlayerCharacterTransporter playerCharacterTransporter,
             FloorTimerNet floorTimerNet
-            )
+        )
         {
-            Debug.Log($"CarryPlayerController_Net.Init(), character = {character}");
-            this.Character = character;
+            BlockContainer = blockContainer;
+            MoveExecutorSwitcher = moveExecutorSwitcher;
+            HoldActionExecutor = holdActionExecutor;
+            PassActionExecutor = passActionExecutor;
+            DashExecutor = dashExecutor;
+            OnDamageExecutor = onDamageExecutor!;
             ColorType = colorType;
             _mapUpdater = mapUpdater;
             _playerNearCartHandler = playerNearCartHandler;
@@ -48,7 +57,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public override void Spawned()
         {
-            Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {Character}");
+            // Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {Character}");
             base.Spawned();
 
             if (HasStateAuthority)
@@ -80,7 +89,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Pass))
             {
-                Character.PassAction();
+                PassActionExecutor.PassAction();
             }
 
         }
@@ -93,7 +102,9 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Reset(EntityGridMap map)
         {
             // フロア移動の際に呼ばれる
-            Character?.Reset();
+            // Character?.Reset();
+            HoldActionExecutor.Reset();
+            PassActionExecutor.Reset();
             ToSpawnPosition(map);
         }
 

@@ -9,13 +9,23 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Interfaces
 {
-    public abstract class AbstractNetworkPlayerController : NetworkBehaviour
+    [RequireComponent(typeof(Rigidbody))]
+    public abstract class AbstractNetworkPlayerController : NetworkBehaviour, IPlayerController
     {
+        public GameObject GameObject => gameObject;
+        public Rigidbody Rigidbody { get; private set; } = null!;
+        public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
+        public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
+        public IHoldActionExecutor GetHoldActionExecutor => HoldActionExecutor;
+        public IOnDamageExecutor GetOnDamageExecutor => OnDamageExecutor;
+        public IDashExecutor GetDashExecutor => DashExecutor;
+        public IPassActionExecutor GetPassActionExecutor => PassActionExecutor;
+        
         [SerializeField] protected Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
 
         [SerializeField] protected GameObject[] playerUnitPrefabs= null!;
 
-        [SerializeField] protected PlayerInfo info= null!;
+        protected PlayerInfo info = null!;
 
         [Networked] protected NetworkButtons PreButtons { get; set; }
         [Networked] public NetworkBool IsReady { get; set; }
@@ -23,17 +33,25 @@ namespace Carry.CarrySystem.Player.Interfaces
         [Networked] protected PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
 
         protected GameObject CharacterObj= null!;
-        public ICharacter GetCharacter => Character;
 
-        protected ICharacter Character = null!; // サブクラスのInitでcharacterを受け取るようになっているのでnullになることはない
+        
+        
+        // ICharacterリファクタリング
+        protected PlayerHoldingObjectContainer BlockContainer = null!;
+        protected IMoveExecutorSwitcher MoveExecutorSwitcher = null!;
+        protected IHoldActionExecutor HoldActionExecutor = null!;
+        protected IOnDamageExecutor OnDamageExecutor = null!;
+        protected IDashExecutor DashExecutor = null!;
+        protected IPassActionExecutor PassActionExecutor = null!;
 
 
         public override void Spawned()
         {
-            Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
+            // Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
 
             // init info
-            info.Init(gameObject, this, Object.InputAuthority);
+            Rigidbody = GetComponent<Rigidbody>();  // not null because of RequireComponent
+            info = new PlayerInfo(this, Object.InputAuthority);
 
             // Instantiate the character.
             InstantiateCharacter();
@@ -57,20 +75,20 @@ namespace Carry.CarrySystem.Player.Interfaces
 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
                 {
-                    Character.HoldAction();
+                    HoldActionExecutor.HoldAction();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
                 
                 if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
                 {
-                    Character.Dash();
+                    DashExecutor.Dash();
                 }
 
 
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
 
                 // Debug.Log($"_character = {_character}");
-                Character.Move( direction);
+                MoveExecutorSwitcher.Move( direction);
                  
                 
                 GetInputProcess(input); // 子クラスで処理を追加するためのメソッド
@@ -89,7 +107,8 @@ namespace Carry.CarrySystem.Player.Interfaces
             var prefab = playerUnitPrefabs[(int)ColorType];
             CharacterObj = Instantiate(prefab, unitObjectParent);
             
-            Character?.Setup(info);
+            // Character?.Setup(info);
+            Setup(info);
             CharacterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
             var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
             animatorPresenter.SetAnimator(CharacterObj.GetComponentInChildren<Animator>());
@@ -97,5 +116,15 @@ namespace Carry.CarrySystem.Player.Interfaces
             // Play spawn animation
             // _decorationDetector.OnSpawned();
         }
+        
+        protected void Setup(PlayerInfo info)
+        {
+            MoveExecutorSwitcher.Setup(info);
+            HoldActionExecutor. Setup(info);
+            PassActionExecutor.Setup(info);
+            OnDamageExecutor.Setup(info);
+            info.PlayerRb.useGravity = true;
+        }
+
     }
 }

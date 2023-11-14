@@ -53,5 +53,10 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             
         }
+        
+        public void SetPassBlockMoveExecutor(PassBlockMoveExecutorNet passBlockMoveExecutorNet)
+        {
+            
+        }
     }
 }
