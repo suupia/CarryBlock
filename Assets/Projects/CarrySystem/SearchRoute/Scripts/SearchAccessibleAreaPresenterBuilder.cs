@@ -5,7 +5,7 @@ using System.Threading;
 using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
-using Carry.CarrySystem.Spawners.Scripts;
+using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Fusion;
 using UnityEngine;
 using VContainer;
@@ -16,7 +16,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     /// <summary>
     /// ドメインスクリプトSearchAccessibleAreaExecutorにRoutePresenterを紐づけるクラス
     /// </summary>
-    public class SearchAccessibleAreaPresenterBuilder
+    public class SearchAccessibleAreaPresenterBuilder : ISearchAccessibleAreaPresenterBuilder
     {
         [Inject] readonly NetworkRunner _runner = null!;
         IReadOnlyList<RoutePresenterNet> _routePresenters =  new List<RoutePresenterNet>();
@@ -28,7 +28,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             
         }
         
-        public SearchAccessibleAreaPresenter BuildPresenter(SquareGridMap map)
+        public SearchAccessibleAreaPresenter BuildPresenter(IGridMap map)
         {
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
             var searchedMapExpander = new SearchedMapExpander(waveletSearchExecutor);
@@ -41,7 +41,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             
         }
 
-        IReadOnlyList<RoutePresenterNet> SetUpPresenter(SquareGridMap map)
+        IReadOnlyList<RoutePresenterNet> SetUpPresenter(IGridMap map)
         {
             if (!_isRoutePresentersInitialized) //最初にすべてスポーン
             {
