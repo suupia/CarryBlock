@@ -21,7 +21,16 @@ namespace Carry.CarrySystem.Player.Info
             PlayerController = playerController;
             PlayerRef = playerRef;
             PlayerRb = playerController.Rigidbody;
-        }    
+        }
+        
+        public PlayerInfo(IPlayerController playerController)
+        {
+            PlayerObj = playerController.GameObject;
+            PlayerController = playerController;
+            PlayerRef = PlayerRef.None;
+            PlayerRb = playerController.Rigidbody;
+        }
+        
 
     }
 }

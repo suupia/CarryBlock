@@ -32,10 +32,10 @@ namespace Projects.CarrySystem.Player.Scripts.Local
             
             // IHoldActionExecutor
             _holdingBlockObserver.RegisterHoldAction(blockContainer);
-            var holdActionExecutor =new HoldActionExecutor(blockContainer,new PlayerNearCartHandlerNet(), _mapUpdater);  // new はエラー回避のため一時的に使用
+            var holdActionExecutor =new HoldActionExecutor(blockContainer,new PlayerNearCartHandlerNet(), _mapUpdater);  //todo: new はエラー回避のため一時的に使用
             
             // IOnDamageExecutor
-            var onDamageExecutor = new OnDamageExecutor(moveExecutorSwitcher, new PlayerCharacterTransporter());  // new はエラー回避のため一時的に使用
+            var onDamageExecutor = new OnDamageExecutor(moveExecutorSwitcher, new PlayerCharacterTransporter());  //todo: new はエラー回避のため一時的に使用
             var dashExecutor = new DashExecutor(moveExecutorSwitcher, onDamageExecutor);
             
             // IPassActionExecutor

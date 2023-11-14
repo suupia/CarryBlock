@@ -15,30 +15,18 @@ namespace Carry.CarrySystem.Player.Scripts.Local
         readonly IMapUpdater _mapUpdater;
         readonly IPrefabLoader<CarryPlayerControllerLocal> _carryPlayerControllerLoader;
         readonly ICarryPlayerFactory _carryPlayerFactory;
-        // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などが想定される
-        readonly PlayerCharacterTransporter _playerCharacterTransporter;
-        readonly PlayerNearCartHandlerNet _playerNearCartHandler;
-        readonly CarryPlayerContainer _carryPlayerContainer;
-        readonly FloorTimerNet _floorTimerNet;
 
         [Inject]
         public CarryPlayerControllerLocalBuilder(
             IMapUpdater  mapUpdater ,
             IPrefabLoader<CarryPlayerControllerLocal> carryPlayerControllerLoader,
-            ICarryPlayerFactory carryPlayerFactory,
-            PlayerCharacterTransporter playerCharacterTransporter,
-            PlayerNearCartHandlerNet playerNearCartHandler,
-            CarryPlayerContainer carryPlayerContainer,
-            FloorTimerNet floorTimerNet
-            )
+            ICarryPlayerFactory carryPlayerFactory
+        )
         {
             _mapUpdater = mapUpdater;
             _carryPlayerControllerLoader = carryPlayerControllerLoader;
             _carryPlayerFactory = carryPlayerFactory;
-            _playerCharacterTransporter  = playerCharacterTransporter;
-            _playerNearCartHandler = playerNearCartHandler;
-            _carryPlayerContainer = carryPlayerContainer;
-            _floorTimerNet = floorTimerNet;
+
         }
 
         public CarryPlayerControllerLocal Build(Vector3 position, Quaternion rotation)
@@ -51,11 +39,13 @@ namespace Carry.CarrySystem.Player.Scripts.Local
             var character = _carryPlayerFactory.CreateCharacter();
             
             // プレハブをスポーン
-            var playerControllerObj = UnityEngine.Object.Instantiate(playerController,position, rotation);
-            playerControllerObj.GetComponent<CarryPlayerControllerLocal>().Init(character.PlayerHoldingObjectContainer, character,character,character,character,character, colorType,_mapUpdater, _playerNearCartHandler, _playerCharacterTransporter,_floorTimerNet);
-            playerControllerObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character,character);
+            var playerControllerObj = Object.Instantiate(playerController, position, rotation);
+            playerControllerObj.GetComponent<CarryPlayerControllerLocal>().Init(character.PlayerHoldingObjectContainer,
+                character, character, character, character, character, colorType, _mapUpdater);
+            playerControllerObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character, character);
             playerControllerObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
-            playerControllerObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character,character,character,character);
+            playerControllerObj.GetComponent<PlayerAnimatorPresenterNet>()
+                ?.Init(character, character, character, character);
             playerControllerObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
             playerControllerObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(character);
             playerControllerObj.GetComponentInChildren<PassBlockMoveExecutorNet>()?.Init(character);
