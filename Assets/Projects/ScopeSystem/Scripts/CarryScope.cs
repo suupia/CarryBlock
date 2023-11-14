@@ -52,7 +52,7 @@ namespace Carry.ScopeSystem.Scripts
 
             // Map
             // JsonからEntityGridMapを生成する
-            builder.Register<EntityGridMapBuilder>(Lifetime.Scoped);
+            builder.Register<EntityGridMapBuilderLeaf>(Lifetime.Scoped);
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する

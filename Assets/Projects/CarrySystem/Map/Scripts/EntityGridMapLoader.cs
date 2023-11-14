@@ -17,23 +17,23 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EntityGridMapLoader
     {
-        readonly EntityGridMapBuilder _entityGridMapBuilder;
+        readonly EntityGridMapBuilderLeaf _entityGridMapBuilderLeaf;
         
-        public EntityGridMapLoader(EntityGridMapBuilder entityGridMapBuilder)
+        public EntityGridMapLoader(EntityGridMapBuilderLeaf entityGridMapBuilderLeaf)
         {
-            _entityGridMapBuilder = entityGridMapBuilder;
+            _entityGridMapBuilderLeaf = entityGridMapBuilderLeaf;
         }
         
         public EntityGridMap LoadEntityGridMap(MapKey key, int mapDataIndex)
         {
             var gridMapData = Load(key, mapDataIndex);
-            return _entityGridMapBuilder.BuildEntityGridMap(gridMapData);
+            return _entityGridMapBuilderLeaf.BuildEntityGridMap(gridMapData);
         }
 
         public EntityGridMap LoadDefaultEntityGridMap()
         {
             var defaultGridMapData = LoadDefault();
-            return _entityGridMapBuilder.BuildEntityGridMap(defaultGridMapData);
+            return _entityGridMapBuilderLeaf.BuildEntityGridMap(defaultGridMapData);
         }
 
         EntityGridMapData LoadDefault()
