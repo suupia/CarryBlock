@@ -12,7 +12,7 @@ using VContainer;
 
 namespace Carry.EditMapSystem.EditMap.Scripts
 {
-    public class EditMapSwitcher : IMapSwitcher , IMapGetter
+    public class EditMapSwitcher : IMapSwitcherWithSetter , IMapGetter
     {
         public MapKey MapKey => _mapKey;
         public int Index => _index;
