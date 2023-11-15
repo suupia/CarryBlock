@@ -193,7 +193,7 @@ namespace Carry.CarrySystem.Player.Scripts
             Setup(_info);
             _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
             var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
-            animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
+            if(animatorPresenter != null) animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
             
             // Play spawn animation
             // _decorationDetector.OnSpawned();

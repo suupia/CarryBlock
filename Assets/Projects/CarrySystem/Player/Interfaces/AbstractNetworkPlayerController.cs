@@ -122,7 +122,7 @@ namespace Carry.CarrySystem.Player.Interfaces
             Setup(Info);
             CharacterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
             var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
-            animatorPresenter.SetAnimator(CharacterObj.GetComponentInChildren<Animator>());
+            if(animatorPresenter != null) animatorPresenter.SetAnimator(CharacterObj.GetComponentInChildren<Animator>());
             
             // Play spawn animation
             // _decorationDetector.OnSpawned();
