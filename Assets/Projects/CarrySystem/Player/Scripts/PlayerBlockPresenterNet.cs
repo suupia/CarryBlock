@@ -26,9 +26,9 @@ namespace Carry.CarrySystem.Player.Scripts
         
         /// <summary>
         /// switch文ではなるべく使用しないようにする。代わりにパターンマッチングを使う
-        /// HoldingBlockTypeのためにpublicにしているがほかのクラスでは使用しないようにする
+        /// HoldingBlockTypeのためにinternalにしているが他のクラスでは使用しないようにする
         /// </summary>
-        public enum BlockType
+        internal enum BlockType
         {
             None,
             BasicBlock,
@@ -39,7 +39,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         public struct PresentData : INetworkStruct
         {
-            public BlockType HoldingBlockType { get; set; } // enumは共有できない(?)ので、int16で送る
+            internal BlockType HoldingBlockType { get; set; } // enumは共有できない(?)ので、int16で送る
         }
         Dictionary<BlockType, GameObject> blockTypeToGameObjectMap = new Dictionary<BlockType, GameObject>();
 
