@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
+using Carry.EditMapSystem.EditMapForPlayer.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using VContainer;
 
 public class EditStageUIManager : MonoBehaviour
 {
@@ -16,6 +19,15 @@ public class EditStageUIManager : MonoBehaviour
     [SerializeField] GameObject detailPanel;
 
     [SerializeField] Button detailPanelBackButton;
+
+    EditingMapTransporter _editingMapTransporter;
+    
+    [Inject]
+    public void Construct(EditingMapTransporter editingMapTransporter)
+    {
+        _editingMapTransporter = editingMapTransporter;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +41,7 @@ public class EditStageUIManager : MonoBehaviour
 
     void SetUpStageButtons()
     {
-        var stages = StageIOSystem.GetStages();
+        var stages = StageFileUtility.GetStages();
 
         Assert.AreEqual(
             stages.Count, stageButtons.Count, 
@@ -58,7 +70,14 @@ public class EditStageUIManager : MonoBehaviour
                     Assert.IsNotNull(mapButtonText);
 
                     mapButtonText.text = mapInfo.name;
-                    mapButton.onClick.AddListener(() => SceneManager.LoadScene("EditMapForPlayerScene"));
+                    var index = j;
+
+                    mapButton.onClick.AddListener(() =>
+                    {
+                        //シーン間で共有するデータは既存のコードにならってRootScopeで管理する
+                        _editingMapTransporter.SetEditingMap(stage.id, index);
+                        SceneManager.LoadScene("EditMapForPlayerScene");
+                    });
                 }
 
                 detailPanel.SetActive(true);

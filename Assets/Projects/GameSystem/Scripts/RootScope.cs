@@ -24,6 +24,7 @@ namespace  Carry.GameSystem.Scripts
             builder.Register<StageIndexTransporter>(Lifetime.Singleton);
             builder.Register<CarryInitializersReady>(Lifetime.Singleton);
             builder.Register<OptionSettingsTransporter>(Lifetime.Singleton);
+            builder.Register<EditingMapTransporter>(Lifetime.Singleton);
         }
     }
 

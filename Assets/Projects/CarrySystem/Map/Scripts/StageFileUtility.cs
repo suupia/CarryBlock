@@ -50,7 +50,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public List<string> stageIds;
     }
 
-    public static class StageIOSystem
+    public static class StageFileUtility
     {
         static string GetPath(string stageId) => Path.Combine(
             Application.streamingAssetsPath, "JsonFiles", "Stages", $"{stageId}.json");
