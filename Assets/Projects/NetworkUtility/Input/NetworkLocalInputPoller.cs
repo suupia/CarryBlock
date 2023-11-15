@@ -11,7 +11,7 @@ using Assert = UnityEngine.Assertions.Assert;
 namespace Carry.NetworkUtility.Inputs.Scripts
 {
     
-    public class LocalInputPoller : INetworkRunnerCallbacks
+    public class NetworkLocalInputPoller : INetworkRunnerCallbacks
     {
         NetworkInputData _localInput;
 
@@ -22,7 +22,7 @@ namespace Carry.NetworkUtility.Inputs.Scripts
         readonly InputAction _pass;
         readonly InputAction _changeUnit;
 
-        public LocalInputPoller(InputActionMap inputActionMap)
+        public NetworkLocalInputPoller(InputActionMap inputActionMap)
         {
             inputActionMap.Enable();
             
