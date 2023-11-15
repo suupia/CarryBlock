@@ -18,6 +18,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class CarryPlayerControllerLocal : MonoBehaviour , IPlayerController
     {
         public GameObject GameObjectValue => gameObject;
+
         public Rigidbody RigidbodyValue
         {
             get
@@ -27,18 +28,8 @@ namespace Carry.CarrySystem.Player.Scripts
                 return _rigidbody;
             }
         }
-    
+
         Rigidbody? _rigidbody;
-
-        [SerializeField] Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
-
-        [SerializeField] GameObject[] playerUnitPrefabs= null!;
-
-        [SerializeField] PlayerInfo info= null!;
-        
-        PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
-
-        GameObject CharacterObj= null!;
 
         public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
         public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
@@ -46,21 +37,32 @@ namespace Carry.CarrySystem.Player.Scripts
         public IOnDamageExecutor GetOnDamageExecutor => OnDamageExecutor;
         public IDashExecutor GetDashExecutor => DashExecutor;
         public IPassActionExecutor GetPassActionExecutor => PassActionExecutor;
-        
-        
-        // ICharacterリファクタリング
-         PlayerHoldingObjectContainer BlockContainer = null!;
-         IMoveExecutorSwitcher MoveExecutorSwitcher = null!;
-         IHoldActionExecutor HoldActionExecutor = null!;
-         IOnDamageExecutor OnDamageExecutor = null!;
-         IDashExecutor DashExecutor = null!;
-         IPassActionExecutor PassActionExecutor = null!;
 
-         LocalLocalInputPoller _localLocalInputPoller;
+        [SerializeField]
+        Transform unitObjectParent = null!; // The NetworkCharacterControllerPrototype interpolates this transform.
 
-        public PlayerInfo Info => info;
-        
+        [SerializeField] GameObject[] playerUnitPrefabs = null!;
+
+        PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
+
+        public PlayerInfo Info => _info;
+        PlayerInfo _info = null!;
+
+        GameObject _characterObj = null!;
+
+        // Character
+        PlayerHoldingObjectContainer BlockContainer = null!;
+        IMoveExecutorSwitcher MoveExecutorSwitcher = null!;
+        IHoldActionExecutor HoldActionExecutor = null!;
+        IOnDamageExecutor OnDamageExecutor = null!;
+        IDashExecutor DashExecutor = null!;
+        IPassActionExecutor PassActionExecutor = null!;
+
+        // InputAction
+        LocalLocalInputPoller _localLocalInputPoller;
+
         IMapUpdater? _mapUpdater;
+        
 
         public void Init(
             PlayerHoldingObjectContainer blockContainer,
@@ -93,7 +95,7 @@ namespace Carry.CarrySystem.Player.Scripts
             // Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {Character}");
 
             // init info
-            info = new PlayerInfo(this);
+            _info = new PlayerInfo(this);
 
             // Instantiate the character.
             InstantiateCharacter();
@@ -180,8 +182,8 @@ namespace Carry.CarrySystem.Player.Scripts
             var spawnGridPos = new Vector2Int(1, map.Height / 2);
             var spawnWorldPos = GridConverter.GridPositionToWorldPosition(spawnGridPos);
             var height = 0.5f;  // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
-            info.PlayerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
-            info.PlayerRb.velocity = Vector3.zero;
+            _info.PlayerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
+            _info.PlayerRb.velocity = Vector3.zero;
             
         }
         
@@ -189,13 +191,13 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             // Instantiate the unit.
             var prefab = playerUnitPrefabs[(int)ColorType];
-            CharacterObj = Instantiate(prefab, unitObjectParent);
+            _characterObj = Instantiate(prefab, unitObjectParent);
             
             // Character?.Setup(info);
-            Setup(info);
-            CharacterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
+            Setup(_info);
+            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
             var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
-            animatorPresenter.SetAnimator(CharacterObj.GetComponentInChildren<Animator>());
+            animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
             
             // Play spawn animation
             // _decorationDetector.OnSpawned();
