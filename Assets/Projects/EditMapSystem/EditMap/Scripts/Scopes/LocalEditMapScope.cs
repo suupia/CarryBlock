@@ -41,7 +41,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<LocalEditMapPresenterPlacerComponent>(Lifetime.Scoped).As<IPresenterPlacer>();
 
             // EditMapSwitcher
-            builder.Register<EditMapSwitcher>(Lifetime.Scoped).As<IMapSwitcher>().As<IMapGetter>().AsSelf();
+            builder.Register<EditMapSwitcher>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
             
             // Input
             builder.Register<EditMapBlockAttacher>(Lifetime.Scoped);
