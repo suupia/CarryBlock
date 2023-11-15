@@ -44,7 +44,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             _index = index;
         }
-        public void InitUpdateMap()
+        public void InitSwitchMap()
         {
             var mapKey = MapKey.Default;
             var index = -1;
@@ -52,7 +52,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _allPresenterPlacer.Place(_map);
         }
 
-        public void UpdateMap()
+        public void SwitchMap()
         {
             _map = _gridMapLoader.LoadEntityGridMap(_mapKey, _index);
             _allPresenterPlacer.Place(_map);

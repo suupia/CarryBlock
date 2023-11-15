@@ -4,8 +4,8 @@ namespace Carry.CarrySystem.Map.Interfaces
 {
     public interface IMapSwitcher
     {
-        void InitUpdateMap();
-        void UpdateMap();
+        void InitSwitchMap();
+        void SwitchMap();
         void RegisterResetAction(System.Action action);
     }
 }

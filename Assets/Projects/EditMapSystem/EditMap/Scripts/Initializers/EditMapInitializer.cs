@@ -32,7 +32,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             if(runner == null) Debug.LogError($"NetworkRunner is not found.");
             await UniTask.WaitUntil(() => runner.SceneManager.IsReady(runner));
             
-            _editMapSwitcher.InitUpdateMap();
+            _editMapSwitcher.InitSwitchMap();
 
             // 準備シーンからMapKeyを受け取る
             var mapKeyContainer = FindObjectOfType<MapKeyContainer>();

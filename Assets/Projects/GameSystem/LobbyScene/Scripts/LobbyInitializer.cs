@@ -44,7 +44,7 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner));
             
-            _lobbyMapSwitcher.InitUpdateMap();
+            _lobbyMapSwitcher.InitSwitchMap();
 
             if (Runner.IsServer)
             {

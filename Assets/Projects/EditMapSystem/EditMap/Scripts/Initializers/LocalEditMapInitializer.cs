@@ -24,7 +24,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         void Awake()
         {
-            _editMapSwitcher.InitUpdateMap();
+            _editMapSwitcher.InitSwitchMap();
             
         }
     }
