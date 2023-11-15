@@ -17,9 +17,19 @@ namespace Carry.CarrySystem.Player.Scripts
     [RequireComponent(typeof(Rigidbody))]
     public class CarryPlayerControllerLocal : MonoBehaviour , IPlayerController
     {
-        public GameObject GameObject => gameObject;
-        public Rigidbody Rigidbody { get; private set; } = null!;
-        
+        public GameObject GameObjectValue => gameObject;
+        public Rigidbody RigidbodyValue
+        {
+            get
+            {
+                if (_rigidbody != null) return _rigidbody;
+                _rigidbody = GetComponent<Rigidbody>();
+                return _rigidbody;
+            }
+        }
+    
+        Rigidbody? _rigidbody;
+
         [SerializeField] Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
 
         [SerializeField] GameObject[] playerUnitPrefabs= null!;

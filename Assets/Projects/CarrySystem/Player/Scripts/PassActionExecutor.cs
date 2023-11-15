@@ -45,7 +45,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void PassAction()
         {
-            if (_passRangeNet == null) _passRangeNet = _info.PlayerController.GameObject.GetComponentInChildren<PassRangeNet>();
+            if (_passRangeNet == null) _passRangeNet = _info.PlayerController.GameObjectValue.GetComponentInChildren<PassRangeNet>();
             if (_passRangeNet.DetectedTarget() is {} target)
             {
                 var targetPlayerController  = target.GetComponent<CarryPlayerControllerNet>();

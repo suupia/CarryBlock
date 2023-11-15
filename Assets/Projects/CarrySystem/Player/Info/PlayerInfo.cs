@@ -17,18 +17,18 @@ namespace Carry.CarrySystem.Player.Info
 
         public PlayerInfo(IPlayerController playerController,PlayerRef playerRef)
         {
-            PlayerObj = playerController.GameObject;
+            PlayerObj = playerController.GameObjectValue;
             PlayerController = playerController;
             PlayerRef = playerRef;
-            PlayerRb = playerController.Rigidbody;
+            PlayerRb = playerController.RigidbodyValue;
         }
         
         public PlayerInfo(IPlayerController playerController)
         {
-            PlayerObj = playerController.GameObject;
+            PlayerObj = playerController.GameObjectValue;
             PlayerController = playerController;
             PlayerRef = PlayerRef.None;
-            PlayerRb = playerController.Rigidbody;
+            PlayerRb = playerController.RigidbodyValue;
         }
         
 

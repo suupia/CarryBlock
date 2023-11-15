@@ -54,6 +54,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _holdActionExecutor. Setup(info);
             _passActionExecutor.Setup(info);
             _onDamageExecutor.Setup(info);
+            if(info.PlayerRb == null ) Debug.LogError("info.PlayerRb == null");
             info.PlayerRb.useGravity = true;
         }
 
