@@ -16,13 +16,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     public class EditMapInitializer : MonoBehaviour
     {
         [SerializeField] TextMeshProUGUI mapKeyText;
-        IMapGetter _editMapGetter;
+        IMapSwitcher _editMapSwitcher;
         
         [Inject]
         public void Construct(
-            IMapGetter editMapGetter)
+            IMapSwitcher editMapSwitcher)
         {
-            _editMapGetter = editMapGetter;
+            _editMapSwitcher = editMapSwitcher;
 
         }
 
@@ -32,7 +32,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             if(runner == null) Debug.LogError($"NetworkRunner is not found.");
             await UniTask.WaitUntil(() => runner.SceneManager.IsReady(runner));
             
-            _editMapGetter.InitUpdateMap(MapKey.Default,-1); // -1が初期マップ
+            _editMapSwitcher.InitUpdateMap(MapKey.Default,-1); // -1が初期マップ
 
             // 準備シーンからMapKeyを受け取る
             var mapKeyContainer = FindObjectOfType<MapKeyContainer>();

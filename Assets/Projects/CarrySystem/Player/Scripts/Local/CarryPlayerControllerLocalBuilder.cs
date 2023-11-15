@@ -12,18 +12,18 @@ namespace Carry.CarrySystem.Player.Scripts.Local
 {
     public class CarryPlayerControllerLocalBuilder
     {
-        readonly IMapGetter _mapGetter;
+        readonly IMapSwitcher _mapSwitcher;
         readonly IPrefabLoader<CarryPlayerControllerLocal> _carryPlayerControllerLoader;
         readonly ICarryPlayerFactory _carryPlayerFactory;
 
         [Inject]
         public CarryPlayerControllerLocalBuilder(
-            IMapGetter  mapGetter ,
+            IMapSwitcher  mapSwitcher ,
             IPrefabLoader<CarryPlayerControllerLocal> carryPlayerControllerLoader,
             ICarryPlayerFactory carryPlayerFactory
         )
         {
-            _mapGetter = mapGetter;
+            _mapSwitcher = mapSwitcher;
             _carryPlayerControllerLoader = carryPlayerControllerLoader;
             _carryPlayerFactory = carryPlayerFactory;
 
@@ -41,7 +41,7 @@ namespace Carry.CarrySystem.Player.Scripts.Local
             // プレハブをスポーン
             var playerControllerObj = Object.Instantiate(playerController, position, rotation);
             playerControllerObj.GetComponent<CarryPlayerControllerLocal>().Init(character.PlayerHoldingObjectContainer,
-                character, character, character, character, character, colorType, _mapGetter);
+                character, character, character, character, character, colorType, _mapSwitcher);
             playerControllerObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character, character);
             playerControllerObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
             playerControllerObj.GetComponent<PlayerAnimatorPresenterNet>()

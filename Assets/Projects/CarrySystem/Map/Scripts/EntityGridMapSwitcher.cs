@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Map.Scripts
     /// <summary>
     ///     フロアごとに別のマップを生成し、返すクラス
     /// </summary>
-    public class EntityGridMapSwitcher : IMapGetter
+    public class EntityGridMapSwitcher: IMapSwitcher , IMapGetter
     {
         public int Index => _currentIndex; 
         

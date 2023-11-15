@@ -24,7 +24,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class CarryPlayerControllerNetBuilder : IPlayerControllerNetBuilder
     {
         readonly NetworkRunner _runner;
-        readonly IMapGetter _mapGetter;
+        readonly IMapSwitcher _mapSwitcher;
         readonly IPrefabLoader<CarryPlayerControllerNet> _carryPlayerControllerLoader;
         readonly ICarryPlayerFactory _carryPlayerFactory;
         // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などが想定される
@@ -36,7 +36,7 @@ namespace Carry.CarrySystem.Player.Scripts
         [Inject]
         public CarryPlayerControllerNetBuilder(
             NetworkRunner runner,
-            IMapGetter  mapGetter ,
+            IMapSwitcher  mapSwitcher ,
             IPrefabLoader<CarryPlayerControllerNet> carryPlayerControllerLoader,
             ICarryPlayerFactory carryPlayerFactory,
             PlayerCharacterTransporter playerCharacterTransporter,
@@ -46,7 +46,7 @@ namespace Carry.CarrySystem.Player.Scripts
             )
         {
             _runner = runner;
-            _mapGetter = mapGetter;
+            _mapSwitcher = mapSwitcher;
             _carryPlayerControllerLoader = carryPlayerControllerLoader;
             _carryPlayerFactory = carryPlayerFactory;
             _playerCharacterTransporter  = playerCharacterTransporter;
@@ -70,7 +70,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
                     networkObj.GetComponent<CarryPlayerControllerNet>().Init(character.PlayerHoldingObjectContainer,
-                        character, character, character, character, character, colorType, _mapGetter,
+                        character, character, character, character, character, colorType, _mapSwitcher,
                         _playerNearCartHandler, _playerCharacterTransporter, _floorTimerNet);
                     networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character, character);
                     networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);

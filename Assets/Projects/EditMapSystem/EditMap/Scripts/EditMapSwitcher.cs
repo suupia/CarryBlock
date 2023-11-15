@@ -1,14 +1,23 @@
 ﻿using System;
+using System.Linq;
+using System.Numerics;
+using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
+using TMPro;
+using UnityEngine;
 using VContainer;
 
-namespace Carry.CarrySystem.Map.Scripts
+#nullable enable
+
+namespace Carry.EditMapSystem.EditMap.Scripts
 {
-    public class LobbyMapGetter : IMapGetter
+    public class EditMapSwitcher : IMapSwitcher , IMapGetter
     {
         public MapKey MapKey => _mapKey;
         public int Index => _index;
 
+        readonly LoadedFilePresenter _loadedFilePresenter;
         readonly EntityGridMapLoader _gridMapLoader;
         readonly IPresenterPlacer _allPresenterPlacer;
         EntityGridMap _map;
@@ -18,11 +27,13 @@ namespace Carry.CarrySystem.Map.Scripts
         Action _resetAction = () => { };
 
         [Inject]
-        public LobbyMapGetter(
+        public EditMapSwitcher(
+            LoadedFilePresenter loadedFilePresenter,
             EntityGridMapLoader entityGridMapLoader,
             IPresenterPlacer allPresenterPlacer
-        )
+            )
         {
+            _loadedFilePresenter = loadedFilePresenter;
             _gridMapLoader = entityGridMapLoader;
             _allPresenterPlacer = allPresenterPlacer;
             _mapKey = MapKey.Default;
@@ -39,6 +50,9 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             _map = _gridMapLoader.LoadEntityGridMap(mapKey, index);
             _allPresenterPlacer.Place(_map);
+            _loadedFilePresenter.FormatLoadedFileText(_mapKey,_index);
+            
+            _resetAction();
         }
 
         public void UpdateMap(MapKey mapKey, int index)
@@ -47,6 +61,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _allPresenterPlacer.Place(_map);
             _mapKey = mapKey;
             _index = index;
+            _loadedFilePresenter.FormatLoadedFileText(_mapKey,_index);
             
             _resetAction();
         }
@@ -55,5 +70,6 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             _resetAction += action;
         }
+        
     }
 }

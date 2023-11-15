@@ -12,19 +12,19 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     public class LocalEditMapInitializer : MonoBehaviour
     {
         [SerializeField] TextMeshProUGUI mapKeyText;
-        IMapGetter _editMapGetter;
+        IMapSwitcher _editMapSwitcher;
         
         [Inject]
         public void Construct(
-            IMapGetter editMapGetter)
+            IMapSwitcher editMapSwitcher)
         {
-            _editMapGetter = editMapGetter;
+            _editMapSwitcher = editMapSwitcher;
 
         }
 
         void Awake()
         {
-            _editMapGetter.InitUpdateMap(MapKey.Morita,-1); // -1が初期マップ
+            _editMapSwitcher.InitUpdateMap(MapKey.Morita,-1); // -1が初期マップ
             
         }
     }

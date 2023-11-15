@@ -15,13 +15,13 @@ namespace Carry.UISystem.UI.EditMap
         [SerializeField] Transform buttonParent = null!;
         [SerializeField] CustomButton buttonPrefab;
 
-        IMapGetter _editMapGetter = null!;
+        IMapSwitcher _editMapSwitcher = null!;
         MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
 
         [Inject]
-        public void Construct(IMapGetter editMapGetter, MemorableEditMapBlockAttacher memorableEditMapBlockAttacher)
+        public void Construct(IMapSwitcher editMapSwitcher, MemorableEditMapBlockAttacher memorableEditMapBlockAttacher)
         {
-            _editMapGetter = editMapGetter;
+            _editMapSwitcher = editMapSwitcher;
             _editMapBlockAttacher = memorableEditMapBlockAttacher;
         }
 
@@ -45,18 +45,18 @@ namespace Carry.UISystem.UI.EditMap
             customButton = Instantiate(buttonPrefab, buttonParent);
             customButton.Init();
             customButton.SetText("Redo");
-            customButton.AddListener(() => _editMapBlockAttacher.Redo(_editMapGetter.GetMap()));
+            customButton.AddListener(() => _editMapBlockAttacher.Redo(_editMapSwitcher.GetMap()));
             
             customButton = Instantiate(buttonPrefab, buttonParent);
             customButton.Init();
             customButton.SetText("Undo");
-            customButton.AddListener(() => _editMapBlockAttacher.Undo(_editMapGetter.GetMap()));
+            customButton.AddListener(() => _editMapBlockAttacher.Undo(_editMapSwitcher.GetMap()));
         }
 
         void ClearMap()
         {
             _editMapBlockAttacher.Reset();
-            var map = _editMapGetter.GetMap();
+            var map = _editMapSwitcher.GetMap();
 
             //mapの全要素にRemoveEntityを適用する
             for (int i = 0; i < map.Length; i++)

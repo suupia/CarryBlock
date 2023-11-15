@@ -9,16 +9,16 @@ namespace Projects.CarrySystem.Player.Scripts.Local
 {
     public class LocalCarryPlayerFactory : ICarryPlayerFactory
     {
-        readonly IMapGetter _mapGetter;
+        readonly IMapSwitcher _mapSwitcher;
         readonly HoldingBlockObserver  _holdingBlockObserver;
 
         [Inject]
         public LocalCarryPlayerFactory(
-            IMapGetter mapGetter ,
+            IMapSwitcher mapSwitcher ,
             HoldingBlockObserver holdingBlockObserver
         )
         {
-            _mapGetter = mapGetter;
+            _mapSwitcher = mapSwitcher;
             _holdingBlockObserver = holdingBlockObserver;
         }
         
@@ -32,7 +32,7 @@ namespace Projects.CarrySystem.Player.Scripts.Local
             
             // IHoldActionExecutor
             _holdingBlockObserver.RegisterHoldAction(blockContainer);
-            var holdActionExecutor =new HoldActionExecutor(blockContainer,new PlayerNearCartHandlerNet(), _mapGetter);  //todo: new はエラー回避のため一時的に使用
+            var holdActionExecutor =new HoldActionExecutor(blockContainer,new PlayerNearCartHandlerNet(), _mapSwitcher);  //todo: new はエラー回避のため一時的に使用
             
             // IOnDamageExecutor
             var onDamageExecutor = new OnDamageExecutor(moveExecutorSwitcher, new PlayerCharacterTransporter());  //todo: new はエラー回避のため一時的に使用

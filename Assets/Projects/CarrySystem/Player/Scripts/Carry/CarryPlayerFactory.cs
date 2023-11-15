@@ -9,20 +9,20 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class CarryPlayerFactory : ICarryPlayerFactory
     {
-        readonly IMapGetter _mapGetter;
+        readonly IMapSwitcher _mapSwitcher;
         readonly HoldingBlockObserver  _holdingBlockObserver;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         readonly PlayerCharacterTransporter _playerCharacterTransporter;
         
         [Inject]
         public CarryPlayerFactory(
-            IMapGetter mapGetter ,
+            IMapSwitcher mapSwitcher ,
             HoldingBlockObserver holdingBlockObserver,
             PlayerNearCartHandlerNet playerNearCartHandler,
             PlayerCharacterTransporter playerCharacterTransporter
             )
         {
-            _mapGetter = mapGetter;
+            _mapSwitcher = mapSwitcher;
             _holdingBlockObserver = holdingBlockObserver;
             _playerNearCartHandler = playerNearCartHandler;
             _playerCharacterTransporter = playerCharacterTransporter;
@@ -38,7 +38,7 @@ namespace Carry.CarrySystem.Player.Scripts
             
             // IHoldActionExecutor
             _holdingBlockObserver.RegisterHoldAction(blockContainer);
-            var holdActionExecutor =new HoldActionExecutor(blockContainer,_playerNearCartHandler, _mapGetter);
+            var holdActionExecutor =new HoldActionExecutor(blockContainer,_playerNearCartHandler, _mapSwitcher);
             
             // IOnDamageExecutor
             var onDamageExecutor = new OnDamageExecutor(moveExecutorSwitcher, _playerCharacterTransporter);

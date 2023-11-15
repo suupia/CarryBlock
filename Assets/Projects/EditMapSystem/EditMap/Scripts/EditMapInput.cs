@@ -30,7 +30,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         Direction _direction = Direction.Up; 
 
         EditMapBlockAttacher _editMapBlockAttacher = null!;
-        IMapGetter _editMapGetter = null!;
+        IMapSwitcher _editMapSwitcher = null!;
 
         CUIState _cuiState = CUIState.Idle;
         Type _blockType = null!;
@@ -47,10 +47,10 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
 
         [Inject]
-        public void Construct(EditMapBlockAttacher editMapBlockAttacher, IMapGetter editMapGetter)
+        public void Construct(EditMapBlockAttacher editMapBlockAttacher, IMapSwitcher editMapSwitcher)
         {
             _editMapBlockAttacher = editMapBlockAttacher;
-            _editMapGetter = editMapGetter;
+            _editMapSwitcher = editMapSwitcher;
         }
 
         void Start()
@@ -118,7 +118,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 return;
             }
             
-            var map = _editMapGetter.GetMap();
+            var map = _editMapSwitcher.GetMap();
             IPlaceable placeable = _blockType.Name switch
             {
                 nameof(BasicBlock) => new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround),
@@ -155,7 +155,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         void TryToRemovePlaceable(Vector2Int mouseGridPosOnGround)
         {
-            var map = _editMapGetter.GetMap();
+            var map = _editMapSwitcher.GetMap();
                 
             (_blockType.Name switch
             {

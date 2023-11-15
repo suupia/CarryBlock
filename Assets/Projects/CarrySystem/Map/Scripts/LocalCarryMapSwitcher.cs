@@ -6,7 +6,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 { 
-    public class LocalCarryMapSwitcher : IMapGetter
+    public class LocalCarryMapSwitcher : IMapSwitcher , IMapGetter
     {
         public int Index => _index;
 

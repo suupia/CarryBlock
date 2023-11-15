@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Cart.Scripts
         HoldingBlockObserver _holdingBlockObserver =null!;
         CarryPlayerContainer _carryPlayerContainer = null!; 
         PlayerFollowMovingCart _playerFollowMovingCart = null!;
-        IMapGetter _mapGetter = null!;
+        IMapSwitcher _mapSwitcher = null!;
         
         bool _isCartStarted = false;
         
@@ -29,13 +29,13 @@ namespace Carry.CarrySystem.Cart.Scripts
             HoldingBlockObserver holdingBlockObserver,
             CarryPlayerContainer carryPlayerContainer,
             PlayerFollowMovingCart playerFollowMovingCart,
-            IMapGetter mapGetter
+            IMapSwitcher mapSwitcher
             )
         {
             _holdingBlockObserver = holdingBlockObserver;
             _carryPlayerContainer = carryPlayerContainer;
             _playerFollowMovingCart = playerFollowMovingCart;
-            _mapGetter = mapGetter;
+            _mapSwitcher = mapSwitcher;
             
             
             this.UpdateAsObservable()
@@ -53,7 +53,7 @@ namespace Carry.CarrySystem.Cart.Scripts
                     }
                 });
             
-            _mapGetter.RegisterResetAction(() =>
+            _mapSwitcher.RegisterResetAction(() =>
             {
                 _isCartStarted = false;
             });

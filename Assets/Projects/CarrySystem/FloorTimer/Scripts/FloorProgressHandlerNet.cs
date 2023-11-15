@@ -15,12 +15,12 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
         // ToDo: 仮置きクラス　ドメインの設計やコンテナの関係をしっかり考えれば、NetworkBehaviourである必要がないかも
         // float _updateTime = 7;
 
-        IMapGetter _mapSwitcher = null!;
+        IMapSwitcher _mapSwitcher = null!;
         public void Start()
         {
             // 仮クラスのため、コンテナには登録していない
             var resolver = FindObjectOfType<LifetimeScope>().Container;
-            _mapSwitcher = resolver.Resolve<IMapGetter>();
+            _mapSwitcher = resolver.Resolve<IMapSwitcher>();
         }
         
  # if UNITY_EDITOR
