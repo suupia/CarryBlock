@@ -46,6 +46,16 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             return _map;
         }
 
+        public void SetMapKey(MapKey mapKey)
+        {
+            _mapKey = mapKey;
+        }
+        
+        public void SetIndex(int index)
+        {
+            _index = index;
+        }
+
         public void InitUpdateMap()
         {
             _map = _gridMapLoader.LoadEntityGridMap(_mapKey, _index);
@@ -54,16 +64,20 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             _resetAction();
         }
-
-        public void UpdateMap(MapKey mapKey, int index)
+        
+        public void UpdateMap()
         {
-            _map = _gridMapLoader.LoadEntityGridMap(mapKey, index);
+            _map = _gridMapLoader.LoadEntityGridMap(_mapKey, _index);
             _allPresenterPlacer.Place(_map);
-            _mapKey = mapKey;
-            _index = index;
             _loadedFilePresenter.FormatLoadedFileText(_mapKey,_index);
             
             _resetAction();
+        }
+
+        // todo : 後で消す
+        public void UpdateMap(MapKey mapKey, int index)
+        {
+            UpdateMap();
         }
 
         public void RegisterResetAction(System.Action action)

@@ -16,7 +16,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         
         public bool IsOpened => _isOpened;
 
-        IMapSwitcher _editMapSwitcher;
+        EditMapSwitcher _editMapSwitcher;
         CUIHandleNumber _handleNumber;
         CUIInputState _inputState;
         AutoSaveManager _autoSaveManager;
@@ -41,7 +41,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         
         [Inject]
         public void Construct(
-            IMapSwitcher editMapSwitcher,
+            EditMapSwitcher editMapSwitcher,
             CUIHandleNumber handleNumber,
             AutoSaveManager autoSaveManager,
             MapKeyContainer mapKeyContainer
@@ -123,7 +123,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             if(_isLoading) return;
             messageText.text = "Loaded.";
-            _editMapSwitcher.UpdateMap(_key,_index); // 何回も呼ばれていたUniRxを使った方が間違えがなかったかも
+            _editMapSwitcher.SetMapKey(_key);
+            _editMapSwitcher.SetIndex(_index);
+            _editMapSwitcher.UpdateMap();
             _isLoading = true;
             _autoSaveManager.CanAutoSave = false;
             await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));

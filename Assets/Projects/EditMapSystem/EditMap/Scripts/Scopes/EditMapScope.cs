@@ -43,8 +43,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
             builder.Register<EditMapPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
 
-            // IMapUpdater
-            builder.Register<EditMapSwitcher>(Lifetime.Scoped).As<IMapSwitcher>();
+            // EditMapSwitcher
+            builder.Register<EditMapSwitcher>(Lifetime.Scoped).As<IMapSwitcher>().As<IMapGetter>().AsSelf();
             
             // Input
             builder.Register<EditMapBlockAttacher>(Lifetime.Scoped);
