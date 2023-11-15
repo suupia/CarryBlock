@@ -25,6 +25,9 @@ namespace Carry.CarrySystem.Player.Interfaces
             }
         }
         
+        // PlayerInfo
+        public PlayerInfo GetInfo => Info;
+        
         // class of Character 
         public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
         public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
@@ -41,7 +44,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         [Networked] protected NetworkButtons PreButtons { get; set; }
         [Networked] protected PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
         protected GameObject CharacterObj= null!;
-        protected PlayerInfo info = null!;
+        protected PlayerInfo Info = null!;
 
         protected PlayerHoldingObjectContainer BlockContainer = null!;
         protected IMoveExecutorSwitcher MoveExecutorSwitcher = null!;
@@ -53,8 +56,6 @@ namespace Carry.CarrySystem.Player.Interfaces
         // private fields
         Rigidbody? _rigidbody;
         [Networked] NetworkBool IsReady { get; set; }
-        
-        
 
 
         public override void Spawned()
@@ -62,7 +63,7 @@ namespace Carry.CarrySystem.Player.Interfaces
             // Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
 
             // init info
-            info = new PlayerInfo(this, Object.InputAuthority);
+            Info = new PlayerInfo(this, Object.InputAuthority);
 
             // Instantiate the character.
             InstantiateCharacter();
@@ -118,7 +119,7 @@ namespace Carry.CarrySystem.Player.Interfaces
             CharacterObj = Instantiate(prefab, unitObjectParent);
             
             // Character?.Setup(info);
-            Setup(info);
+            Setup(Info);
             CharacterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
             var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
             animatorPresenter.SetAnimator(CharacterObj.GetComponentInChildren<Animator>());
