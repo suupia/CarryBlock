@@ -54,7 +54,7 @@ namespace Carry.UISystem.UI.LobbyScene
             //
             // animationSequence = AppendEnemyAndCartMoveAnimation(animationSequence, enemyAnimatorPresenter);
             //
-            // animationSequence.OnComplete(() => onCompleteAction());
+            animationSequence.OnComplete(() => onCompleteAction());
 
             animationSequence.Play();
         }

@@ -72,37 +72,9 @@ namespace Carry.CarrySystem.Map.Scripts
 
         }
 
-        public void UpdateMap(MapKey mapKey, int index)
+        public void UpdateMap()
         {
-            var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
-            Debug.Log($"次のフロアに変更します nextIndex: {index}");
-            
-            //この呼び出しが_floorTimerNet.IsCleared = trueより後になるとクリアした最後のフロアの時間が加算されない
-            _floorTimerNet.SamRemainingTime();
-            
-            if (index < 0)
-            {
-                Debug.LogWarning($"index is under the min value");
-                index = 0; // 0未満にならないようにする
-            }
-            if (index > mapKeyDataList.Count - 1)
-            {
-                Debug.LogWarning($"index is over the max value");
-                index = mapKeyDataList.Count - 1; // 最大値を超えないようにする
-                _floorTimerNet.IsCleared = true;//次のフロアがないためクリアフラグをtrueにする
-            }
-            _currentIndex = index;
-            var key = mapKeyDataList[_currentIndex].mapKey;
-            var mapIndex = mapKeyDataList[_currentIndex].index;
-            var nextMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
-            _currentMap = nextMap;
-            _presenterPlacerNet.Place(_currentMap);
-            _cartBuilder.Build(_currentMap, this);
-
-            _floorTimerNet.StartTimer();
-            
-            
-            _resetAction();
+            PrivateUpdateMap(_currentIndex + 1);
         }
 
         public void SwitchToNextMap()

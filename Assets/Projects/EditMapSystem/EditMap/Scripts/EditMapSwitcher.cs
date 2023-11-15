@@ -73,12 +73,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             
             _resetAction();
         }
-
-        // todo : 後で消す
-        public void UpdateMap(MapKey mapKey, int index)
-        {
-            UpdateMap();
-        }
+        
 
         public void RegisterResetAction(System.Action action)
         {

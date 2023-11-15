@@ -35,6 +35,15 @@ namespace Carry.CarrySystem.Map.Scripts
             return _map;
         }
 
+        public void SetMapKey(MapKey mapKey)
+        {
+            _mapKey = mapKey;
+        }
+        
+        public void SetIndex(int index)
+        {
+            _index = index;
+        }
         public void InitUpdateMap()
         {
             var mapKey = MapKey.Default;
@@ -43,13 +52,11 @@ namespace Carry.CarrySystem.Map.Scripts
             _allPresenterPlacer.Place(_map);
         }
 
-        public void UpdateMap(MapKey mapKey, int index)
+        public void UpdateMap()
         {
-            _map = _gridMapLoader.LoadEntityGridMap(mapKey, index);
+            _map = _gridMapLoader.LoadEntityGridMap(_mapKey, _index);
             _allPresenterPlacer.Place(_map);
-            _mapKey = mapKey;
-            _index = index;
-            
+
             _resetAction();
         }
 

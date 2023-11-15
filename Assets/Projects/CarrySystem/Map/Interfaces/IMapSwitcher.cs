@@ -7,7 +7,7 @@ namespace Carry.CarrySystem.Map.Interfaces
         EntityGridMap GetMap();
         int Index { get; }
         void InitUpdateMap();
-        void UpdateMap(MapKey mapKey, int index = 0);
+        void UpdateMap();
         
         void RegisterResetAction(System.Action action);
     }
