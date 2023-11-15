@@ -36,7 +36,7 @@ namespace Carry.ScopeSystem.Scripts
             // PrefabLoader 
             builder.Register<PrefabLoaderFromAddressable<CarryPlayerControllerLocal>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CarryPlayerControllerLocal>>()
-                .WithParameter("path", "Prefabs/Players/CarryPlayerControllerNet");
+                .WithParameter("path", "Prefabs/Players/CarryPlayerControllerLocal");
             
             builder.Register<PrefabLoaderFromAddressable<CartControllerNet>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CartControllerNet>>()
@@ -66,7 +66,8 @@ namespace Carry.ScopeSystem.Scripts
             // todo : ここら辺のスクリプトはモックに切り替えられるかどうか考える
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
             builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
-            builder.Register<SearchAccessibleAreaPresenterLocalBuilder>(Lifetime.Scoped).As<ISearchAccessibleAreaPresenterBuilder>();
+            builder.Register<RoutePresenterLocalSpawner>(Lifetime.Scoped).As<IRoutePresenterSpawner>();
+            builder.Register<SearchAccessibleAreaPresenterBuilder>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<HoldingBlockNotifierLogger>().As<IHoldingBlockNotifier>();
 
 

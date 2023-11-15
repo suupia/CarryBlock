@@ -11,6 +11,7 @@ using Fusion;
 using Carry.NetworkUtility.Inputs.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Info;
+using Projects.Utility.Scripts;
 using VContainer;
 #nullable enable
 
@@ -19,8 +20,6 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class CarryPlayerControllerNet : AbstractNetworkPlayerController
     {
-        public PlayerInfo Info => info;
-        
         IMapUpdater? _mapUpdater;
         PlayerNearCartHandlerNet _playerNearCartHandler = null!;
         PlayerCharacterTransporter _playerCharacterTransporter = null!;
@@ -83,7 +82,7 @@ namespace Carry.CarrySystem.Player.Scripts
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
             {
                 // AidKit
-                var isNear =  _playerNearCartHandler.IsNearCart(info.PlayerObj);
+                var isNear =  _playerNearCartHandler.IsNearCart(Info.PlayerObj);
                 // Debug.Log($"isNear = {isNear}");
             }
 
@@ -112,11 +111,11 @@ namespace Carry.CarrySystem.Player.Scripts
 
         void ToSpawnPosition(EntityGridMap map)
         {
-            var spawnGridPos = new Vector2Int(1, map.Height / 2 + _playerCharacterTransporter.GetPlayerIndex(info.PlayerRef) -1);
+            var spawnGridPos = new Vector2Int(1, map.Height / 2 + _playerCharacterTransporter.GetPlayerIndex(Info.PlayerRef) -1);
             var spawnWorldPos = GridConverter.GridPositionToWorldPosition(spawnGridPos);
             var height = 0.5f;  // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
-            info.PlayerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
-            info.PlayerRb.velocity = Vector3.zero;
+            Info.PlayerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
+            Info.PlayerRb.velocity = Vector3.zero;
             
         }
 

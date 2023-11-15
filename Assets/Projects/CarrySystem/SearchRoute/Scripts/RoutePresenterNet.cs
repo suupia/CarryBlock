@@ -12,6 +12,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 {
     public class RoutePresenterNet : NetworkBehaviour, IRoutePresenter
     {
+        public GameObject GameObject => gameObject;
         public bool IsActive => IsActiveNet;
         [Networked]  NetworkBool IsActiveNet { get; set; }
         [Networked]  NetworkBool IsAnimated { get; set; }

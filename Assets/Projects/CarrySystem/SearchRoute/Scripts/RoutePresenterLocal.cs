@@ -7,6 +7,7 @@ namespace Projects.CarrySystem.SearchRoute.Scripts
 {
     public class RoutePresenterLocal : MonoBehaviour, IRoutePresenter
     {
+        public GameObject GameObject => gameObject;
         public bool IsActive { get; private set; }
         bool IsAnimated { get; set; }
         

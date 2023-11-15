@@ -1,15 +1,11 @@
-﻿#nullable enable
-
-using System;
-using Carry.CarrySystem.Cart.Scripts;
-using Carry.CarrySystem.CG.Tsukinowa;
-using Carry.CarrySystem.FloorTimer.Scripts;
+﻿using Carry.CarrySystem.CG.Tsukinowa;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
-using Carry.NetworkUtility.Inputs.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
+#nullable enable
 
 
 namespace Carry.CarrySystem.Player.Scripts
@@ -17,38 +13,53 @@ namespace Carry.CarrySystem.Player.Scripts
     [RequireComponent(typeof(Rigidbody))]
     public class CarryPlayerControllerLocal : MonoBehaviour , IPlayerController
     {
-        public GameObject GameObject => gameObject;
-        public Rigidbody Rigidbody { get; private set; } = null!;
-        
-        [SerializeField] protected Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
+        // IPlayerController implementation
+        public GameObject GameObjectValue => gameObject;
 
-        [SerializeField] protected GameObject[] playerUnitPrefabs= null!;
-
-        [SerializeField] protected PlayerInfo info= null!;
+        public Rigidbody RigidbodyValue
+        {
+            get
+            {
+                if (_rigidbody != null) return _rigidbody;
+                _rigidbody = GetComponent<Rigidbody>();  // not null because of RequireComponent
+                return _rigidbody;
+            }
+        }
         
-        protected PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
+        // PlayerInfo
+        public PlayerInfo Info => _info;
 
-        protected GameObject CharacterObj= null!;
+        // class of Character 
+        public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => _blockContainer;
+        public IMoveExecutorSwitcher GetMoveExecutorSwitcher => _moveExecutorSwitcher;
+        public IHoldActionExecutor GetHoldActionExecutor => _holdActionExecutor;
+        public IOnDamageExecutor GetOnDamageExecutor => _onDamageExecutor;
+        public IDashExecutor GetDashExecutor => _dashExecutor;
+        public IPassActionExecutor GetPassActionExecutor => _passActionExecutor;
 
-        public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
-        public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
-        public IHoldActionExecutor GetHoldActionExecutor => HoldActionExecutor;
-        public IOnDamageExecutor GetOnDamageExecutor => OnDamageExecutor;
-        public IDashExecutor GetDashExecutor => DashExecutor;
-        public IPassActionExecutor GetPassActionExecutor => PassActionExecutor;
-        
-        
-        // ICharacterリファクタリング
-         PlayerHoldingObjectContainer BlockContainer = null!;
-         IMoveExecutorSwitcher MoveExecutorSwitcher = null!;
-         IHoldActionExecutor HoldActionExecutor = null!;
-         IOnDamageExecutor OnDamageExecutor = null!;
-         IDashExecutor DashExecutor = null!;
-         IPassActionExecutor PassActionExecutor = null!;
+        // Serialize Field 
+        [SerializeField]
+        Transform unitObjectParent = null!; // The NetworkCharacterControllerPrototype interpolates this transform.
+        [SerializeField] GameObject[] playerUnitPrefabs = null!;
 
-        public PlayerInfo Info => info;
+        // private fields 
+        PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
+        GameObject _characterObj = null!;
         
+        Rigidbody? _rigidbody;
+        
+        PlayerInfo _info = null!;
+        
+        PlayerHoldingObjectContainer _blockContainer = null!;
+        IMoveExecutorSwitcher _moveExecutorSwitcher = null!;
+        IHoldActionExecutor _holdActionExecutor = null!;
+        IOnDamageExecutor _onDamageExecutor = null!;
+        IDashExecutor _dashExecutor = null!;
+        IPassActionExecutor _passActionExecutor = null!;
+        
+        LocalLocalInputPoller _localLocalInputPoller;
         IMapUpdater? _mapUpdater;
+        LocalButtons _preButtons;
 
         public void Init(
             PlayerHoldingObjectContainer blockContainer,
@@ -61,71 +72,76 @@ namespace Carry.CarrySystem.Player.Scripts
             IMapUpdater mapUpdater
         )
         {
-            BlockContainer = blockContainer;
-            MoveExecutorSwitcher = moveExecutorSwitcher;
-            HoldActionExecutor = holdActionExecutor;
-            PassActionExecutor = passActionExecutor;
-            DashExecutor = dashExecutor;
-            OnDamageExecutor = onDamageExecutor!;
+            _blockContainer = blockContainer;
+            _moveExecutorSwitcher = moveExecutorSwitcher;
+            _holdActionExecutor = holdActionExecutor;
+            _passActionExecutor = passActionExecutor;
+            _dashExecutor = dashExecutor;
+            _onDamageExecutor = onDamageExecutor!;
             ColorType = colorType;
             _mapUpdater = mapUpdater;
 
             // _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
+            
+            Spawned();
         }
-        
-        
-        public  void Spawned()
+
+
+        void Spawned()
         {
             // Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {Character}");
-            
+
             // init info
-            info = new PlayerInfo(this);
-        
+            _info = new PlayerInfo(this);
+
             // Instantiate the character.
             InstantiateCharacter();
-        
-        
-                if (_mapUpdater != null)
-                    ToSpawnPosition(_mapUpdater.GetMap());  // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
-                else
-                    Debug.LogError($"_mapUpdater is null");
 
-        
+
+            if (_mapUpdater != null)
+                ToSpawnPosition(_mapUpdater.GetMap()); // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
+            else
+                Debug.LogError($"_mapUpdater is null");
+            
+            _localLocalInputPoller = new LocalLocalInputPoller();
         }
-        
+
         public void FixedUpdate()
         {
+        
+            if (_localLocalInputPoller.GetInput(out LocalInputData input))
+            {
 
-            // if (GetInput(out NetworkInputData input))
-            // {
-            //     if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Ready))
-            //     {
-            //         IsReady = !IsReady;
-            //         Debug.Log($"Toggled Ready -> {IsReady}");
-            //     }
-            //
-            //     if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
-            //     {
-            //         HoldActionExecutor.HoldAction();
-            //         // _decorationDetector.OnMainAction(ref DecorationDataRef);
-            //     }
-            //     
-            //     if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
-            //     {
-            //         DashExecutor.Dash();
-            //     }
-            //
-            //
-            //     var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
-            //
-            //     // Debug.Log($"_character = {_character}");
-            //     MoveExecutorSwitcher.Move( direction);
-            //      
-            //     
-            //     GetInputProcess(input); // 子クラスで処理を追加するためのメソッド
-            //
-            //     PreButtons = input.Buttons;
-            // }
+                if (input.Buttons.WasPressed(_preButtons,PlayerOperation.MainAction))
+                {
+                    _holdActionExecutor.HoldAction();
+                    // _decorationDetector.OnMainAction(ref DecorationDataRef);
+                }
+                
+                if (input.Buttons.WasPressed(_preButtons,PlayerOperation.Dash))
+                {
+                    _dashExecutor.Dash();
+                }
+            
+            
+                var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
+            
+                // Debug.Log($"_character = {_character}");
+                _moveExecutorSwitcher.Move( direction);
+                
+                if (input.Buttons.WasPressed(_preButtons,PlayerOperation.MainAction))
+                {
+                    // AidKit
+                    // var isNear =  _playerNearCartHandler.IsNearCart(info.PlayerObj);  todo : _playerNearCartHandlerを追加すべきかどうか考える
+                    // Debug.Log($"isNear = {isNear}");
+                }
+
+                if (input.Buttons.WasPressed(_preButtons,PlayerOperation.Pass))
+                {
+                    _passActionExecutor.PassAction();
+                }
+                
+            }
         }
         
         
@@ -150,8 +166,8 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             // フロア移動の際に呼ばれる
             // Character?.Reset();
-            HoldActionExecutor.Reset();
-            PassActionExecutor.Reset();
+            _holdActionExecutor.Reset();
+            _passActionExecutor.Reset();
             ToSpawnPosition(map);
         }
         
@@ -163,8 +179,8 @@ namespace Carry.CarrySystem.Player.Scripts
             var spawnGridPos = new Vector2Int(1, map.Height / 2);
             var spawnWorldPos = GridConverter.GridPositionToWorldPosition(spawnGridPos);
             var height = 0.5f;  // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
-            info.PlayerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
-            info.PlayerRb.velocity = Vector3.zero;
+            _info.PlayerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
+            _info.PlayerRb.velocity = Vector3.zero;
             
         }
         
@@ -172,13 +188,13 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             // Instantiate the unit.
             var prefab = playerUnitPrefabs[(int)ColorType];
-            CharacterObj = Instantiate(prefab, unitObjectParent);
+            _characterObj = Instantiate(prefab, unitObjectParent);
             
             // Character?.Setup(info);
-            Setup(info);
-            CharacterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
+            Setup(_info);
+            _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
             var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
-            animatorPresenter.SetAnimator(CharacterObj.GetComponentInChildren<Animator>());
+            if(animatorPresenter != null) animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
             
             // Play spawn animation
             // _decorationDetector.OnSpawned();
@@ -186,10 +202,10 @@ namespace Carry.CarrySystem.Player.Scripts
         
         protected void Setup(PlayerInfo info)
         {
-            MoveExecutorSwitcher.Setup(info);
-            HoldActionExecutor. Setup(info);
-            PassActionExecutor.Setup(info);
-            OnDamageExecutor.Setup(info);
+            _moveExecutorSwitcher.Setup(info);
+            _holdActionExecutor. Setup(info);
+            _passActionExecutor.Setup(info);
+            _onDamageExecutor.Setup(info);
             info.PlayerRb.useGravity = true;
         }
         

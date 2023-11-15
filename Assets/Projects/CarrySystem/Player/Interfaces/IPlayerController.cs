@@ -1,12 +1,13 @@
 ﻿using Carry.CarrySystem.Player.Scripts;
 using UnityEngine;
+#nullable enable
 
 namespace Carry.CarrySystem.Player.Interfaces
 {
     public interface IPlayerController
     {
-        public GameObject GameObject { get; }
-        public Rigidbody Rigidbody { get; }
+        public GameObject GameObjectValue { get; }
+        public Rigidbody RigidbodyValue { get; }
         public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer { get; }
         public IMoveExecutorSwitcher GetMoveExecutorSwitcher { get; }
         public IHoldActionExecutor GetHoldActionExecutor { get; }

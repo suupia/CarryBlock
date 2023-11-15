@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Cart.Scripts
         public bool IsMapClear { get; private set; }
         readonly List<PlayerHoldingObjectContainer> _playerBlockContainers = new List<PlayerHoldingObjectContainer>();
         readonly IMapUpdater _mapUpdater;
-        readonly ISearchAccessibleAreaPresenterBuilder _searchAccessibleAreaPresenterBuilder;
+        readonly SearchAccessibleAreaPresenterBuilder _searchAccessibleAreaPresenterBuilder;
         readonly IHoldingBlockNotifier _holdingBlockNotifier;
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
         
@@ -31,7 +31,7 @@ namespace Carry.CarrySystem.Cart.Scripts
         
         public HoldingBlockObserver(
             IMapUpdater entityGridMapSwitcher,
-            ISearchAccessibleAreaPresenterBuilder searchAccessibleAreaPresenterBuilder,
+            SearchAccessibleAreaPresenterBuilder searchAccessibleAreaPresenterBuilder,
             IHoldingBlockNotifier holdingBlockNotifier,
             ReachRightEdgeChecker reachRightEdgeChecker
         )

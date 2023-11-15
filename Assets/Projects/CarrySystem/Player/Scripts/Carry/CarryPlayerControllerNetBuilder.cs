@@ -80,7 +80,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     networkObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(character);
                     networkObj.GetComponentInChildren<PassBlockMoveExecutorNet>()?.Init(character);
                 });
-            var info = playerControllerObj.Info;
+            var info = playerControllerObj.GetInfo;
             playerControllerObj.GetComponentInChildren<PassRangeNet>().Init(info,LayerMask.GetMask("Player"));
             playerControllerObj.GetComponentInChildren<AidKitRangeNet>().Init(info,LayerMask.GetMask("Player"));
             
