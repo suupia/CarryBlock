@@ -153,6 +153,10 @@ MonoBehaviour:
     m_Address: Prefabs/Map/RoutePresenterLocal
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 175c71b4458730f40a60ddfd52785f9e
+    m_Address: Prefabs/Players/CarryPlayerControllerLocal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 405937dcad4604950956d0fac118dce9, type: 2}
   m_SchemaSet:
