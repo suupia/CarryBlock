@@ -17,6 +17,7 @@ namespace Carry.CarrySystem.Player.Scripts
     [RequireComponent(typeof(Rigidbody))]
     public class CarryPlayerControllerLocal : MonoBehaviour , IPlayerController
     {
+        // IPlayerController implementation
         public GameObject GameObjectValue => gameObject;
 
         public Rigidbody RigidbodyValue
@@ -24,45 +25,44 @@ namespace Carry.CarrySystem.Player.Scripts
             get
             {
                 if (_rigidbody != null) return _rigidbody;
-                _rigidbody = GetComponent<Rigidbody>();
+                _rigidbody = GetComponent<Rigidbody>();  // not null because of RequireComponent
                 return _rigidbody;
             }
         }
+        
+        // PlayerInfo
+        public PlayerInfo Info => _info;
 
-        Rigidbody? _rigidbody;
+        // class of Character 
+        public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => _blockContainer;
+        public IMoveExecutorSwitcher GetMoveExecutorSwitcher => _moveExecutorSwitcher;
+        public IHoldActionExecutor GetHoldActionExecutor => _holdActionExecutor;
+        public IOnDamageExecutor GetOnDamageExecutor => _onDamageExecutor;
+        public IDashExecutor GetDashExecutor => _dashExecutor;
+        public IPassActionExecutor GetPassActionExecutor => _passActionExecutor;
 
-        public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
-        public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
-        public IHoldActionExecutor GetHoldActionExecutor => HoldActionExecutor;
-        public IOnDamageExecutor GetOnDamageExecutor => OnDamageExecutor;
-        public IDashExecutor GetDashExecutor => DashExecutor;
-        public IPassActionExecutor GetPassActionExecutor => PassActionExecutor;
-
+        // Serialize Field 
         [SerializeField]
         Transform unitObjectParent = null!; // The NetworkCharacterControllerPrototype interpolates this transform.
-
         [SerializeField] GameObject[] playerUnitPrefabs = null!;
 
+        // private fields 
         PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
-
-        public PlayerInfo Info => _info;
-        PlayerInfo _info = null!;
-
         GameObject _characterObj = null!;
-
-        // Character
-        PlayerHoldingObjectContainer BlockContainer = null!;
-        IMoveExecutorSwitcher MoveExecutorSwitcher = null!;
-        IHoldActionExecutor HoldActionExecutor = null!;
-        IOnDamageExecutor OnDamageExecutor = null!;
-        IDashExecutor DashExecutor = null!;
-        IPassActionExecutor PassActionExecutor = null!;
-
-        // InputAction
-        LocalLocalInputPoller _localLocalInputPoller;
-
-        IMapUpdater? _mapUpdater;
         
+        Rigidbody? _rigidbody;
+        
+        PlayerInfo _info = null!;
+        
+        PlayerHoldingObjectContainer _blockContainer = null!;
+        IMoveExecutorSwitcher _moveExecutorSwitcher = null!;
+        IHoldActionExecutor _holdActionExecutor = null!;
+        IOnDamageExecutor _onDamageExecutor = null!;
+        IDashExecutor _dashExecutor = null!;
+        IPassActionExecutor _passActionExecutor = null!;
+        
+        LocalLocalInputPoller _localLocalInputPoller;
+        IMapUpdater? _mapUpdater;
 
         public void Init(
             PlayerHoldingObjectContainer blockContainer,
@@ -75,12 +75,12 @@ namespace Carry.CarrySystem.Player.Scripts
             IMapUpdater mapUpdater
         )
         {
-            BlockContainer = blockContainer;
-            MoveExecutorSwitcher = moveExecutorSwitcher;
-            HoldActionExecutor = holdActionExecutor;
-            PassActionExecutor = passActionExecutor;
-            DashExecutor = dashExecutor;
-            OnDamageExecutor = onDamageExecutor!;
+            _blockContainer = blockContainer;
+            _moveExecutorSwitcher = moveExecutorSwitcher;
+            _holdActionExecutor = holdActionExecutor;
+            _passActionExecutor = passActionExecutor;
+            _dashExecutor = dashExecutor;
+            _onDamageExecutor = onDamageExecutor!;
             ColorType = colorType;
             _mapUpdater = mapUpdater;
 
@@ -117,20 +117,20 @@ namespace Carry.CarrySystem.Player.Scripts
 
                 if (input.Buttons.IsPressed(PlayerOperation.MainAction))
                 {
-                    HoldActionExecutor.HoldAction();
+                    _holdActionExecutor.HoldAction();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
                 
                 if (input.Buttons.IsPressed(PlayerOperation.Dash))
                 {
-                    DashExecutor.Dash();
+                    _dashExecutor.Dash();
                 }
             
             
                 var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
             
                 // Debug.Log($"_character = {_character}");
-                MoveExecutorSwitcher.Move( direction);
+                _moveExecutorSwitcher.Move( direction);
                 
                 if (input.Buttons.IsPressed(PlayerOperation.MainAction))
                 {
@@ -141,7 +141,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
                 if (input.Buttons.IsPressed( PlayerOperation.Pass))
                 {
-                    PassActionExecutor.PassAction();
+                    _passActionExecutor.PassAction();
                 }
                 
             }
@@ -169,8 +169,8 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             // フロア移動の際に呼ばれる
             // Character?.Reset();
-            HoldActionExecutor.Reset();
-            PassActionExecutor.Reset();
+            _holdActionExecutor.Reset();
+            _passActionExecutor.Reset();
             ToSpawnPosition(map);
         }
         
@@ -205,10 +205,10 @@ namespace Carry.CarrySystem.Player.Scripts
         
         protected void Setup(PlayerInfo info)
         {
-            MoveExecutorSwitcher.Setup(info);
-            HoldActionExecutor. Setup(info);
-            PassActionExecutor.Setup(info);
-            OnDamageExecutor.Setup(info);
+            _moveExecutorSwitcher.Setup(info);
+            _holdActionExecutor. Setup(info);
+            _passActionExecutor.Setup(info);
+            _onDamageExecutor.Setup(info);
             info.PlayerRb.useGravity = true;
         }
         

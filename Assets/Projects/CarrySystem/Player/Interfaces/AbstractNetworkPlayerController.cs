@@ -14,7 +14,16 @@ namespace Carry.CarrySystem.Player.Interfaces
     public abstract class AbstractNetworkPlayerController : NetworkBehaviour, IPlayerController
     {
         public GameObject GameObjectValue => gameObject;
-        public Rigidbody RigidbodyValue { get; private set; } = null!;
+        public Rigidbody RigidbodyValue
+        {
+            get
+            {
+                if (_rigidbody != null) return _rigidbody;
+                _rigidbody = GetComponent<Rigidbody>();  // not null because of RequireComponent
+                return _rigidbody;
+            }
+        }
+        Rigidbody? _rigidbody;
         public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
         public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
         public IHoldActionExecutor GetHoldActionExecutor => HoldActionExecutor;
@@ -51,7 +60,6 @@ namespace Carry.CarrySystem.Player.Interfaces
             // Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
 
             // init info
-            RigidbodyValue = GetComponent<Rigidbody>();  // not null because of RequireComponent
             info = new PlayerInfo(this, Object.InputAuthority);
 
             // Instantiate the character.
