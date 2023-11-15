@@ -26,14 +26,14 @@ namespace Carry.CarrySystem.CarryScene.Scripts
     {    
         [SerializeField] FloorTimerNet floorTimerNet;
         NetworkPlayerSpawner _networkPlayerSpawner;
-        IMapUpdater _entityGridMapSwitcher;
+        IMapSwitcher _entityGridMapSwitcher;
         CarryInitializersReady? _carryInitializersReady;
         public bool IsInitialized { get; private set; }
         
         [Inject]
         public void Construct(
             NetworkPlayerSpawner networkPlayerSpawner,
-            IMapUpdater entityGridMapSwitcher
+            IMapSwitcher entityGridMapSwitcher
         )
         {
             _networkPlayerSpawner = networkPlayerSpawner;
@@ -68,7 +68,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             // Generate map
             if (Runner.IsServer)
             {
-                _entityGridMapSwitcher.InitUpdateMap(MapKey.Default, 0);
+                _entityGridMapSwitcher.InitUpdateMap();
             }
             
 

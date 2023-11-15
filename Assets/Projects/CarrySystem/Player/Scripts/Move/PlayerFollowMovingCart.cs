@@ -19,21 +19,21 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly CarryPlayerContainer _carryPlayerContainer;
 
         IDisposable? _cancellationDisposable;
-        readonly IMapUpdater _mapUpdater;
+        readonly IMapGetter _mapGetter;
 
         [Inject]
         public PlayerFollowMovingCart(
             CarryPlayerContainer carryPlayerContainer,
-            IMapUpdater mapUpdater
+            IMapGetter mapGetter
         )
         {
             _carryPlayerContainer = carryPlayerContainer;
-            _mapUpdater = mapUpdater;
+            _mapGetter = mapGetter;
         }
 
         public void FollowMovingCart()
         {
-            int mapNumberSaver = _mapUpdater.Index;
+            int mapNumberSaver = _mapGetter.Index;
             
             _cancellationDisposable = Observable.EveryUpdate()
                 .Subscribe(_ =>
@@ -52,7 +52,7 @@ namespace Carry.CarrySystem.Player.Scripts
                         //_mapNumberSaverはカートに乗った瞬間の_mapUpdater.Indexが代入される
                         //_mapUpdater.Indexはマップが切り替わったら1増える
                         //マップが切り替わったらプレイヤーはカートから解放される
-                        if (mapNumberSaver != _mapUpdater.Index) 
+                        if (mapNumberSaver != _mapGetter.Index) 
                         {
                             CancelFollowMovingCart();
                         }

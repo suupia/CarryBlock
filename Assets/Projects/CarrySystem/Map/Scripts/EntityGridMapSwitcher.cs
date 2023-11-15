@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Map.Scripts
     /// <summary>
     ///     フロアごとに別のマップを生成し、返すクラス
     /// </summary>
-    public class EntityGridMapSwitcher : IMapUpdater
+    public class EntityGridMapSwitcher: IMapSwitcher , IMapGetter
     {
         public int Index => _currentIndex; 
         
@@ -57,12 +57,13 @@ namespace Carry.CarrySystem.Map.Scripts
             return _currentMap;
         }
 
-        public void InitUpdateMap(MapKey mapKey, int index = 0)
+        public void InitUpdateMap()
         {
+            var firstIndex = 0;
             Debug.Log($"StageIndex : {_stageIndexTransporter.StageIndex}");
             var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
-            var key =mapKeyDataList[index].mapKey;
-            var mapIndex =  mapKeyDataList[index].index;
+            var key =mapKeyDataList[firstIndex].mapKey;
+            var mapIndex =  mapKeyDataList[firstIndex].index;
             _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _presenterPlacerNet.Place(_currentMap);
             _cartBuilder.Build(_currentMap, this);
@@ -71,13 +72,27 @@ namespace Carry.CarrySystem.Map.Scripts
 
         }
 
-        public void UpdateMap(MapKey mapKey, int index)
+        public void UpdateMap()
+        {
+            SwitchToNextMap();
+        }
+
+        public void SwitchToNextMap()
+        {
+            PrivateUpdateMap(_currentIndex + 1);
+        }
+        public void SwitchToPreviousMap()
+        {
+            PrivateUpdateMap(_currentIndex - 1);
+        }
+        
+        void PrivateUpdateMap(int index)
         {
             var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
             Debug.Log($"次のフロアに変更します nextIndex: {index}");
             
             //この呼び出しが_floorTimerNet.IsCleared = trueより後になるとクリアした最後のフロアの時間が加算されない
-            _floorTimerNet.SamRemainingTime();
+            _floorTimerNet.SumRemainingTime();
             
             if (index < 0)
             {

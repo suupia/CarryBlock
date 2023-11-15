@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Linq;
-using System.Numerics;
-using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
-using Carry.CarrySystem.Map.Scripts;
-using TMPro;
-using UnityEngine;
 using VContainer;
 
-#nullable enable
-
-namespace Carry.EditMapSystem.EditMap.Scripts
+namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EditMapUpdater : IMapUpdater
+    public class LobbyMapSwitcher : IMapSwitcher , IMapGetter
     {
         public MapKey MapKey => _mapKey;
         public int Index => _index;
 
-        readonly LoadedFilePresenter _loadedFilePresenter;
         readonly EntityGridMapLoader _gridMapLoader;
         readonly IPresenterPlacer _allPresenterPlacer;
         EntityGridMap _map;
@@ -27,13 +18,11 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         Action _resetAction = () => { };
 
         [Inject]
-        public EditMapUpdater(
-            LoadedFilePresenter loadedFilePresenter,
+        public LobbyMapSwitcher(
             EntityGridMapLoader entityGridMapLoader,
             IPresenterPlacer allPresenterPlacer
-            )
+        )
         {
-            _loadedFilePresenter = loadedFilePresenter;
             _gridMapLoader = entityGridMapLoader;
             _allPresenterPlacer = allPresenterPlacer;
             _mapKey = MapKey.Default;
@@ -46,21 +35,28 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             return _map;
         }
 
-        public void InitUpdateMap(MapKey mapKey, int index)
+        public void SetMapKey(MapKey mapKey)
         {
+            _mapKey = mapKey;
+        }
+        
+        public void SetIndex(int index)
+        {
+            _index = index;
+        }
+        public void InitUpdateMap()
+        {
+            var mapKey = MapKey.Default;
+            var index = -1;
             _map = _gridMapLoader.LoadEntityGridMap(mapKey, index);
             _allPresenterPlacer.Place(_map);
-            _loadedFilePresenter.FormatLoadedFileText(_mapKey,_index);
         }
 
-        public void UpdateMap(MapKey mapKey, int index)
+        public void UpdateMap()
         {
-            _map = _gridMapLoader.LoadEntityGridMap(mapKey, index);
+            _map = _gridMapLoader.LoadEntityGridMap(_mapKey, _index);
             _allPresenterPlacer.Place(_map);
-            _mapKey = mapKey;
-            _index = index;
-            _loadedFilePresenter.FormatLoadedFileText(_mapKey,_index);
-            
+
             _resetAction();
         }
 
@@ -68,6 +64,5 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             _resetAction += action;
         }
-        
     }
 }

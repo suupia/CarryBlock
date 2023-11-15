@@ -10,21 +10,21 @@ using VContainer;
 public class LocalCarryInitializer : MonoBehaviour
 {
     LocalPlayerSpawner _localPlayerSpawner;
-    IMapUpdater _editMapUpdater;
+    IMapSwitcher _editMapSwitcher;
 
     
     [Inject]
     public void Construct(
-        IMapUpdater editMapUpdater,
+        IMapSwitcher editMapSwitcher,
         LocalPlayerSpawner localPlayerSpawner)
     {
-        _editMapUpdater = editMapUpdater;
+        _editMapSwitcher = editMapSwitcher;
         _localPlayerSpawner = localPlayerSpawner;
     }
 
     void Awake()
     {
-        _editMapUpdater.InitUpdateMap(MapKey.Default,-1); // -1が初期マップ
+        _editMapSwitcher.InitUpdateMap(); // -1が初期マップ
             
     }
 

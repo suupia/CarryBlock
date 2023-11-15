@@ -58,7 +58,7 @@ namespace Carry.CarrySystem.Player.Scripts
         IPassActionExecutor _passActionExecutor = null!;
         
         LocalLocalInputPoller _localLocalInputPoller;
-        IMapUpdater? _mapUpdater;
+        IMapGetter _mapGetter;
         LocalButtons _preButtons;
 
         public void Init(
@@ -69,7 +69,7 @@ namespace Carry.CarrySystem.Player.Scripts
             IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,
             PlayerColorType colorType,
-            IMapUpdater mapUpdater
+            IMapGetter mapGetter
         )
         {
             _blockContainer = blockContainer;
@@ -79,7 +79,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _dashExecutor = dashExecutor;
             _onDamageExecutor = onDamageExecutor!;
             ColorType = colorType;
-            _mapUpdater = mapUpdater;
+            _mapGetter = mapGetter;
 
             // _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
             
@@ -98,8 +98,8 @@ namespace Carry.CarrySystem.Player.Scripts
             InstantiateCharacter();
 
 
-            if (_mapUpdater != null)
-                ToSpawnPosition(_mapUpdater.GetMap()); // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
+            if (_mapGetter != null)
+                ToSpawnPosition(_mapGetter.GetMap()); // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
             else
                 Debug.LogError($"_mapUpdater is null");
             

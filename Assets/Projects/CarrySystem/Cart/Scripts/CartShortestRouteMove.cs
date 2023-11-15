@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Cart.Scripts
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
         
         EntityGridMap? _map; // このクラスはMapを登録して使用する (コンストラクタでIMapUpdaterを受け取らない)
-        IMapUpdater? _mapUpdater;
+        IMapSwitcher? _mapUpdater;
         CartInfo? _info ;
         Direction _direction = Direction.Right;
 
@@ -57,9 +57,9 @@ namespace Carry.CarrySystem.Cart.Scripts
             _map = map;
         }
         
-        public void RegisterIMapUpdater(IMapUpdater mapUpdater)
+        public void RegisterIMapUpdater(IMapSwitcher mapSwitcher)
         {
-            _mapUpdater = mapUpdater;
+            _mapUpdater = mapSwitcher;
         }
 
         public void MoveAlongWithShortestRoute()
@@ -119,7 +119,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             // 次のマップへ移動
             if (_mapUpdater != null)
             {
-                _mapUpdater.UpdateMap(MapKey.Default, _mapUpdater.Index + 1);  // ToDo : 現時点では引数は使われていないので適当でよい
+                _mapUpdater.UpdateMap();
                 IsMoving = false;
             }
             else

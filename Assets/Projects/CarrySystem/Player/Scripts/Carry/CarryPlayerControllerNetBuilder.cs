@@ -24,10 +24,10 @@ namespace Carry.CarrySystem.Player.Scripts
     public class CarryPlayerControllerNetBuilder : IPlayerControllerNetBuilder
     {
         readonly NetworkRunner _runner;
-        readonly IMapUpdater _mapUpdater;
+        readonly IMapSwitcher _mapSwitcher;
+        readonly IMapGetter _mapGetter;
         readonly IPrefabLoader<CarryPlayerControllerNet> _carryPlayerControllerLoader;
         readonly ICarryPlayerFactory _carryPlayerFactory;
-        // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などが想定される
         readonly PlayerCharacterTransporter _playerCharacterTransporter;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         readonly CarryPlayerContainer _carryPlayerContainer;
@@ -36,7 +36,8 @@ namespace Carry.CarrySystem.Player.Scripts
         [Inject]
         public CarryPlayerControllerNetBuilder(
             NetworkRunner runner,
-            IMapUpdater  mapUpdater ,
+            IMapSwitcher  mapSwitcher ,
+            IMapGetter mapGetter,
             IPrefabLoader<CarryPlayerControllerNet> carryPlayerControllerLoader,
             ICarryPlayerFactory carryPlayerFactory,
             PlayerCharacterTransporter playerCharacterTransporter,
@@ -46,7 +47,8 @@ namespace Carry.CarrySystem.Player.Scripts
             )
         {
             _runner = runner;
-            _mapUpdater = mapUpdater;
+            _mapSwitcher = mapSwitcher;
+            _mapGetter = mapGetter;
             _carryPlayerControllerLoader = carryPlayerControllerLoader;
             _carryPlayerFactory = carryPlayerFactory;
             _playerCharacterTransporter  = playerCharacterTransporter;
@@ -70,7 +72,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
                     networkObj.GetComponent<CarryPlayerControllerNet>().Init(character.PlayerHoldingObjectContainer,
-                        character, character, character, character, character, colorType, _mapUpdater,
+                        character, character, character, character, character, colorType, _mapSwitcher, _mapGetter,
                         _playerNearCartHandler, _playerCharacterTransporter, _floorTimerNet);
                     networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character, character);
                     networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
