@@ -4,6 +4,7 @@ using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Carry.GameSystem.Player.Scripts;
 using Carry.NetworkUtility.Inputs.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 using AbstractNetworkPlayerController = Carry.CarrySystem.Player.Interfaces.AbstractNetworkPlayerController;
 using PlayerInfo = Carry.CarrySystem.Player.Info.PlayerInfo;

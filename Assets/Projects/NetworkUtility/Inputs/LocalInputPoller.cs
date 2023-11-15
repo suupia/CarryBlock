@@ -3,26 +3,14 @@ using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
 using Carry.Utility.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Assert = UnityEngine.Assertions.Assert;
 
 namespace Carry.NetworkUtility.Inputs.Scripts
 {
-    public enum PlayerOperation
-    {
-        MainAction = 0,
-        Ready,
-        ToggleSelectStageCanvas,
-        ChangeUnit,
-        Dash,
-        Pass,
-        Debug1,
-        Debug2,
-        Debug3
-    }
-
-
+    
     public class LocalInputPoller : INetworkRunnerCallbacks
     {
         NetworkInputData _localInput;

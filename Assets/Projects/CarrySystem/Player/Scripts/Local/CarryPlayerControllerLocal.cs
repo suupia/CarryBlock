@@ -8,7 +8,7 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
-using Carry.NetworkUtility.Inputs.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 
 
@@ -20,15 +20,15 @@ namespace Carry.CarrySystem.Player.Scripts
         public GameObject GameObject => gameObject;
         public Rigidbody Rigidbody { get; private set; } = null!;
         
-        [SerializeField] protected Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
+        [SerializeField] Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
 
-        [SerializeField] protected GameObject[] playerUnitPrefabs= null!;
+        [SerializeField] GameObject[] playerUnitPrefabs= null!;
 
-        [SerializeField] protected PlayerInfo info= null!;
+        [SerializeField] PlayerInfo info= null!;
         
-        protected PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
+        PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
 
-        protected GameObject CharacterObj= null!;
+        GameObject CharacterObj= null!;
 
         public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
         public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
@@ -45,6 +45,8 @@ namespace Carry.CarrySystem.Player.Scripts
          IOnDamageExecutor OnDamageExecutor = null!;
          IDashExecutor DashExecutor = null!;
          IPassActionExecutor PassActionExecutor = null!;
+
+         LocalLocalInputPoller _localLocalInputPoller;
 
         public PlayerInfo Info => info;
         
@@ -71,61 +73,66 @@ namespace Carry.CarrySystem.Player.Scripts
             _mapUpdater = mapUpdater;
 
             // _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
+            
+            Spawned();
         }
-        
-        
-        public  void Spawned()
+
+
+        void Spawned()
         {
             // Debug.Log($"CarryPlayerController_Net.Spawned(), _character = {Character}");
-            
+
             // init info
             info = new PlayerInfo(this);
-        
+
             // Instantiate the character.
             InstantiateCharacter();
-        
-        
-                if (_mapUpdater != null)
-                    ToSpawnPosition(_mapUpdater.GetMap());  // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
-                else
-                    Debug.LogError($"_mapUpdater is null");
 
-        
+
+            if (_mapUpdater != null)
+                ToSpawnPosition(_mapUpdater.GetMap()); // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
+            else
+                Debug.LogError($"_mapUpdater is null");
+            
+            _localLocalInputPoller = new LocalLocalInputPoller();
         }
-        
+
         public void FixedUpdate()
         {
+        
+            if (_localLocalInputPoller.GetInput(out LocalInputData input))
+            {
 
-            // if (GetInput(out NetworkInputData input))
-            // {
-            //     if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Ready))
-            //     {
-            //         IsReady = !IsReady;
-            //         Debug.Log($"Toggled Ready -> {IsReady}");
-            //     }
-            //
-            //     if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
-            //     {
-            //         HoldActionExecutor.HoldAction();
-            //         // _decorationDetector.OnMainAction(ref DecorationDataRef);
-            //     }
-            //     
-            //     if (input.Buttons.WasPressed(PreButtons, PlayerOperation.Dash))
-            //     {
-            //         DashExecutor.Dash();
-            //     }
-            //
-            //
-            //     var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
-            //
-            //     // Debug.Log($"_character = {_character}");
-            //     MoveExecutorSwitcher.Move( direction);
-            //      
-            //     
-            //     GetInputProcess(input); // 子クラスで処理を追加するためのメソッド
-            //
-            //     PreButtons = input.Buttons;
-            // }
+                if (input.Buttons.IsPressed(PlayerOperation.MainAction))
+                {
+                    HoldActionExecutor.HoldAction();
+                    // _decorationDetector.OnMainAction(ref DecorationDataRef);
+                }
+                
+                if (input.Buttons.IsPressed(PlayerOperation.Dash))
+                {
+                    DashExecutor.Dash();
+                }
+            
+            
+                var direction = new Vector3(input.Horizontal, 0, input.Vertical).normalized;
+            
+                // Debug.Log($"_character = {_character}");
+                MoveExecutorSwitcher.Move( direction);
+                
+                if (input.Buttons.IsPressed(PlayerOperation.MainAction))
+                {
+                    // AidKit
+                    // var isNear =  _playerNearCartHandler.IsNearCart(info.PlayerObj);  todo : _playerNearCartHandlerを追加すべきかどうか考える
+                    // Debug.Log($"isNear = {isNear}");
+                }
+
+                if (input.Buttons.IsPressed( PlayerOperation.Pass))
+                {
+                    PassActionExecutor.PassAction();
+                }
+                
+            }
         }
         
         
