@@ -36,8 +36,10 @@ namespace Carry.CarrySystem.Map.Scripts
             return _map;
         }
 
-        public void InitUpdateMap(MapKey mapKey, int index)
+        public void InitUpdateMap()
         {
+            var mapKey = MapKey.Default;
+            var index = -1; // -1は白紙のマップ
             _map = _gridMapLoader.LoadEntityGridMap(mapKey, index);
             _allPresenterPlacer.Place(_map);
             

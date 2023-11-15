@@ -24,7 +24,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         void Awake()
         {
-            _editMapSwitcher.InitUpdateMap(MapKey.Morita,-1); // -1が初期マップ
+            _editMapSwitcher.InitUpdateMap();
             
         }
     }

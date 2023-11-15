@@ -46,9 +46,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             return _map;
         }
 
-        public void InitUpdateMap(MapKey mapKey, int index)
+        public void InitUpdateMap()
         {
-            _map = _gridMapLoader.LoadEntityGridMap(mapKey, index);
+            _map = _gridMapLoader.LoadEntityGridMap(_mapKey, _index);
             _allPresenterPlacer.Place(_map);
             _loadedFilePresenter.FormatLoadedFileText(_mapKey,_index);
             

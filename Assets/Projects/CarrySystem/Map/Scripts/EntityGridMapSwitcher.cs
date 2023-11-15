@@ -57,12 +57,13 @@ namespace Carry.CarrySystem.Map.Scripts
             return _currentMap;
         }
 
-        public void InitUpdateMap(MapKey mapKey, int index = 0)
+        public void InitUpdateMap()
         {
+            var firstIndex = 0;
             Debug.Log($"StageIndex : {_stageIndexTransporter.StageIndex}");
             var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
-            var key =mapKeyDataList[index].mapKey;
-            var mapIndex =  mapKeyDataList[index].index;
+            var key =mapKeyDataList[firstIndex].mapKey;
+            var mapIndex =  mapKeyDataList[firstIndex].index;
             _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _presenterPlacerNet.Place(_currentMap);
             _cartBuilder.Build(_currentMap, this);
