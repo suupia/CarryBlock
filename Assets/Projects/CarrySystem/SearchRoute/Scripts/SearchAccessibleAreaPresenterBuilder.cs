@@ -19,6 +19,8 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     public class SearchAccessibleAreaPresenterBuilder
     {
         readonly IRoutePresenterSpawner _routePresenterSpawner;
+        IReadOnlyList<IRoutePresenter>? _routePresenters;
+
         [Inject]
         public SearchAccessibleAreaPresenterBuilder(IRoutePresenterSpawner routePresenterSpawner)
         {
@@ -30,29 +32,31 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
             var searchedMapExpander = new SearchedMapExpander(waveletSearchExecutor);
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor,searchedMapExpander);
-            
-            var routePresenters = SetUpPresenter(map);
+            SetUpPresenter(map);
             var searchAccessibleAreaPresenter = new SearchAccessibleAreaPresenter(waveletSearchExecutor,searchAccessibleAreaExecutor,searchedMapExpander);
-            searchAccessibleAreaPresenter.RegisterRoutePresenters(routePresenters);
+            if(_routePresenters == null) throw new NullReferenceException("_routePresenters is null");
+            searchAccessibleAreaPresenter.RegisterRoutePresenters(_routePresenters);
             return searchAccessibleAreaPresenter;
             
         }
 
-        IReadOnlyList<IRoutePresenter> SetUpPresenter(IGridMap map)
+        void SetUpPresenter(IGridMap map)
         {
             // foreachでの削除の処理が必要ないため、フィールドとして保持する必要がなく、さらに直接List<IRoutePresenter>に代入してよい
-            
-            // spawn new routePresenters
-            var routePresenters = new List<IRoutePresenter>();
-            for (int i = 0; i < map.Length; i++)
-            {
-                var girdPos = map.ToVector(i);
-                var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
-                var routePresenter = _routePresenterSpawner.SpawnIRoutePresenter(worldPos, Quaternion.identity);
-                routePresenters.Add(routePresenter);
-            }
 
-            return routePresenters;
+            if (_routePresenters == null)
+            {
+                // spawn new routePresenters
+                var routePresenters = new List<IRoutePresenter>();
+                for (int i = 0; i < map.Length; i++)
+                {
+                    var girdPos = map.ToVector(i);
+                    var worldPos = GridConverter.GridPositionToWorldPosition(girdPos);
+                    var routePresenter = _routePresenterSpawner.SpawnIRoutePresenter(worldPos, Quaternion.identity);
+                    routePresenters.Add(routePresenter);
+                }
+                _routePresenters = routePresenters;
+            }
         }
         
     }
