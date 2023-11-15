@@ -59,6 +59,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         LocalLocalInputPoller _localLocalInputPoller;
         IMapUpdater? _mapUpdater;
+        LocalButtons _preButtons;
 
         public void Init(
             PlayerHoldingObjectContainer blockContainer,
@@ -111,13 +112,13 @@ namespace Carry.CarrySystem.Player.Scripts
             if (_localLocalInputPoller.GetInput(out LocalInputData input))
             {
 
-                if (input.Buttons.IsPressed(PlayerOperation.MainAction))
+                if (input.Buttons.WasPressed(_preButtons,PlayerOperation.MainAction))
                 {
                     _holdActionExecutor.HoldAction();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }
                 
-                if (input.Buttons.IsPressed(PlayerOperation.Dash))
+                if (input.Buttons.WasPressed(_preButtons,PlayerOperation.Dash))
                 {
                     _dashExecutor.Dash();
                 }
@@ -128,14 +129,14 @@ namespace Carry.CarrySystem.Player.Scripts
                 // Debug.Log($"_character = {_character}");
                 _moveExecutorSwitcher.Move( direction);
                 
-                if (input.Buttons.IsPressed(PlayerOperation.MainAction))
+                if (input.Buttons.WasPressed(_preButtons,PlayerOperation.MainAction))
                 {
                     // AidKit
                     // var isNear =  _playerNearCartHandler.IsNearCart(info.PlayerObj);  todo : _playerNearCartHandlerを追加すべきかどうか考える
                     // Debug.Log($"isNear = {isNear}");
                 }
 
-                if (input.Buttons.IsPressed( PlayerOperation.Pass))
+                if (input.Buttons.WasPressed(_preButtons,PlayerOperation.Pass))
                 {
                     _passActionExecutor.PassAction();
                 }

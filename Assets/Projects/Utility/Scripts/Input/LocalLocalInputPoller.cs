@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Carry.Utility.Scripts;
 using Unity.Collections.LowLevel.Unsafe;
@@ -49,7 +51,7 @@ namespace Projects.Utility.Scripts
             input.Buttons.Set(PlayerOperation.Pass, passValue != 0);
             input.Buttons.Set(PlayerOperation.ChangeUnit, changeUnitValue != 0);
 
-            return input.Buttons.IsSet();
+            return input != default;
         }
         
         
@@ -60,27 +62,35 @@ namespace Projects.Utility.Scripts
         public float Horizontal { get; set; }
         public float Vertical { get; set; }
         public LocalButtons Buttons;
-
-
-    }
-    
-    public class LocalButtons
-    {
-
-        public bool IsSet()
+        public override bool Equals(object obj)
         {
-            // inputがあったかどうかを公開する
+            if (obj is LocalInputData other)
+            {
+                // LocalInputData の比較ロジック
+                return this.Horizontal == other.Horizontal &&
+                       this.Vertical == other.Vertical &&
+                       this.Buttons.Equals(other.Buttons);
+            }
             return false;
         }
-        public void Set(PlayerOperation operation, bool value)
+
+        // public override int GetHashCode()
+        // {
+        //     // ハッシュコードの生成
+        // }
+
+        public static bool operator ==(LocalInputData lhs, LocalInputData rhs)
         {
-            
+            return lhs.Equals(rhs);
         }
-        
-        public bool IsPressed(PlayerOperation operation)
+
+        public static bool operator !=(LocalInputData lhs, LocalInputData rhs)
         {
-            return false;
+            return !lhs.Equals(rhs);
         }
+
     }
+
+
     
 }
