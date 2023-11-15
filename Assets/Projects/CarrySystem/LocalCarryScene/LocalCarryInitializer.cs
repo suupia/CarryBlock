@@ -24,7 +24,7 @@ public class LocalCarryInitializer : MonoBehaviour
 
     void Awake()
     {
-        _editMapSwitcher.InitUpdateMap(); // -1が初期マップ
+        _editMapSwitcher.InitSwitchMap(); // -1が初期マップ
             
     }
 

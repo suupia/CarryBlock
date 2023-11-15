@@ -68,7 +68,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             // Generate map
             if (Runner.IsServer)
             {
-                _entityGridMapSwitcher.InitUpdateMap();
+                _entityGridMapSwitcher.InitSwitchMap();
             }
             
 

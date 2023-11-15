@@ -119,7 +119,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             // 次のマップへ移動
             if (_mapUpdater != null)
             {
-                _mapUpdater.UpdateMap();
+                _mapUpdater.SwitchMap();
                 IsMoving = false;
             }
             else

@@ -56,7 +56,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             _index = index;
         }
 
-        public void InitUpdateMap()
+        public void InitSwitchMap()
         {
             _map = _gridMapLoader.LoadEntityGridMap(_mapKey, _index);
             _allPresenterPlacer.Place(_map);
@@ -65,7 +65,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             _resetAction();
         }
         
-        public void UpdateMap()
+        public void SwitchMap()
         {
             _map = _gridMapLoader.LoadEntityGridMap(_mapKey, _index);
             _allPresenterPlacer.Place(_map);

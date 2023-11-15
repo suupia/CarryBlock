@@ -125,7 +125,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             messageText.text = "Loaded.";
             _editMapSwitcher.SetMapKey(_key);
             _editMapSwitcher.SetIndex(_index);
-            _editMapSwitcher.UpdateMap();
+            _editMapSwitcher.SwitchMap();
             _isLoading = true;
             _autoSaveManager.CanAutoSave = false;
             await UniTask.Delay(TimeSpan.FromSeconds(_displayTime));

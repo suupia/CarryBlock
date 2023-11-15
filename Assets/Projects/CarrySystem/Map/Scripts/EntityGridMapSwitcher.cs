@@ -57,7 +57,7 @@ namespace Carry.CarrySystem.Map.Scripts
             return _currentMap;
         }
 
-        public void InitUpdateMap()
+        public void InitSwitchMap()
         {
             var firstIndex = 0;
             Debug.Log($"StageIndex : {_stageIndexTransporter.StageIndex}");
@@ -72,7 +72,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         }
 
-        public void UpdateMap()
+        public void SwitchMap()
         {
             SwitchToNextMap();
         }
