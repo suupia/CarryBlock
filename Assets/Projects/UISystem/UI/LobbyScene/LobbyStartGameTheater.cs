@@ -45,15 +45,16 @@ namespace Carry.UISystem.UI.LobbyScene
 
             var animationSequence = DOTween.Sequence();
 
-            animationSequence = AppendPlayerGetIntoCartAnimation(animationSequence);
-
-            animationSequence = AppendEnemyApproachAnimation(animationSequence, enemyAnimatorPresenter);
-
-            animationSequence = AppendPlayerLookAtEnemyAnimation(animationSequence);
-
-            animationSequence = AppendEnemyAndCartMoveAnimation(animationSequence, enemyAnimatorPresenter);
-
-            animationSequence.OnComplete(() => onCompleteAction());
+            // todo : デバッグ用にいったんコメントアウト
+            // animationSequence = AppendPlayerGetIntoCartAnimation(animationSequence);
+            //
+            // animationSequence = AppendEnemyApproachAnimation(animationSequence, enemyAnimatorPresenter);
+            //
+            // animationSequence = AppendPlayerLookAtEnemyAnimation(animationSequence);
+            //
+            // animationSequence = AppendEnemyAndCartMoveAnimation(animationSequence, enemyAnimatorPresenter);
+            //
+            // animationSequence.OnComplete(() => onCompleteAction());
 
             animationSequence.Play();
         }
