@@ -1,11 +1,11 @@
-﻿
+﻿using Carry.CarrySystem.Map.Scripts;
 #nullable enable
-using Carry.CarrySystem.Map.Scripts;
-
 namespace Carry.CarrySystem.Map.Interfaces
 {
-    public interface IMapUpdater
+    public interface IMapGetter
     {
+        EntityGridMap GetMap();
+        int Index { get; }
         void InitUpdateMap(MapKey mapKey, int index);
         void UpdateMap(MapKey mapKey, int index = 0);
         

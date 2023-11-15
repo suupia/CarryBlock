@@ -75,7 +75,7 @@ namespace Carry.ScopeSystem.Scripts
             
             
             // IMapUpdater
-            builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapUpdater>();
+            builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapGetter>();
 
 
             // Cart

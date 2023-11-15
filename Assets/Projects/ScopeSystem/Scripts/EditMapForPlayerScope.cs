@@ -30,7 +30,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             builder.Register<LocalEditMapPresenterPlacerComponent>(Lifetime.Scoped).As<IPresenterPlacer>();
 
             // IMapUpdater
-            builder.Register<EditMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
+            builder.Register<EditMapGetter>(Lifetime.Scoped).As<IMapGetter>();
             
             // Input
             builder.Register<EditMapBlockAttacher>(Lifetime.Scoped).As<IEditMapBlockAttacher>();

@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Linq;
-using System.Numerics;
-using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
-using Carry.CarrySystem.Map.Scripts;
-using TMPro;
-using UnityEngine;
 using VContainer;
 
-#nullable enable
-
-namespace Carry.EditMapSystem.EditMap.Scripts
+namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EditMapUpdater : IMapUpdater
+    public class LobbyMapGetter : IMapGetter
     {
         public MapKey MapKey => _mapKey;
         public int Index => _index;
 
-        readonly LoadedFilePresenter _loadedFilePresenter;
         readonly EntityGridMapLoader _gridMapLoader;
         readonly IPresenterPlacer _allPresenterPlacer;
         EntityGridMap _map;
@@ -27,13 +18,11 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         Action _resetAction = () => { };
 
         [Inject]
-        public EditMapUpdater(
-            LoadedFilePresenter loadedFilePresenter,
+        public LobbyMapGetter(
             EntityGridMapLoader entityGridMapLoader,
             IPresenterPlacer allPresenterPlacer
-            )
+        )
         {
-            _loadedFilePresenter = loadedFilePresenter;
             _gridMapLoader = entityGridMapLoader;
             _allPresenterPlacer = allPresenterPlacer;
             _mapKey = MapKey.Default;
@@ -50,7 +39,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             _map = _gridMapLoader.LoadEntityGridMap(mapKey, index);
             _allPresenterPlacer.Place(_map);
-            _loadedFilePresenter.FormatLoadedFileText(_mapKey,_index);
         }
 
         public void UpdateMap(MapKey mapKey, int index)
@@ -59,7 +47,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             _allPresenterPlacer.Place(_map);
             _mapKey = mapKey;
             _index = index;
-            _loadedFilePresenter.FormatLoadedFileText(_mapKey,_index);
             
             _resetAction();
         }
@@ -68,6 +55,5 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             _resetAction += action;
         }
-        
     }
 }

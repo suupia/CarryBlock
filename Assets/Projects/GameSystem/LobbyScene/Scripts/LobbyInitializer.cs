@@ -23,19 +23,19 @@ namespace Carry.GameSystem.LobbyScene.Scripts
     {
         NetworkPlayerSpawner _networkPlayerSpawner = null!;
         PlayerCharacterTransporter _playerCharacterTransporter = null!;
-        IMapUpdater _lobbyMapUpdater = null!;
+        IMapGetter _lobbyMapGetter = null!;
         CarryInitializersReady _carryInitializersReady = null!;
 
         [Inject]
         public void Construct(
             NetworkPlayerSpawner networkPlayerSpawner ,
             PlayerCharacterTransporter playerCharacterTransporter,
-            IMapUpdater lobbyMapUpdater
+            IMapGetter lobbyMapGetter
         )
         {
             _networkPlayerSpawner = networkPlayerSpawner;
             _playerCharacterTransporter = playerCharacterTransporter;
-            _lobbyMapUpdater = lobbyMapUpdater;
+            _lobbyMapGetter = lobbyMapGetter;
         }
 
         async void Start()
@@ -44,7 +44,7 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner));
             
-            _lobbyMapUpdater.InitUpdateMap(MapKey.Default,-1); // -1が初期マップ
+            _lobbyMapGetter.InitUpdateMap(MapKey.Default,-1); // -1が初期マップ
 
             if (Runner.IsServer)
             {

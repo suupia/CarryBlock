@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class CarryPlayerControllerNet : AbstractNetworkPlayerController
     {
-        IMapUpdater? _mapUpdater;
+        IMapGetter? _mapUpdater;
         PlayerNearCartHandlerNet _playerNearCartHandler = null!;
         PlayerCharacterTransporter _playerCharacterTransporter = null!;
         FloorTimerNet _floorTimerNet = null!;
@@ -33,7 +33,7 @@ namespace Carry.CarrySystem.Player.Scripts
             IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,
             PlayerColorType colorType,
-            IMapUpdater mapUpdater,
+            IMapGetter mapGetter,
             PlayerNearCartHandlerNet playerNearCartHandler,
             PlayerCharacterTransporter playerCharacterTransporter,
             FloorTimerNet floorTimerNet
@@ -46,7 +46,7 @@ namespace Carry.CarrySystem.Player.Scripts
             DashExecutor = dashExecutor;
             OnDamageExecutor = onDamageExecutor!;
             ColorType = colorType;
-            _mapUpdater = mapUpdater;
+            _mapUpdater = mapGetter;
             _playerNearCartHandler = playerNearCartHandler;
             _playerCharacterTransporter = playerCharacterTransporter;
             _floorTimerNet = floorTimerNet;

@@ -60,7 +60,7 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             builder.Register<TreasureCoinCounter>(Lifetime.Scoped);
             
             // IMapUpdater
-            builder.Register<LobbyMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
+            builder.Register<LobbyMapGetter>(Lifetime.Scoped).As<IMapGetter>();
             
             // UI
             builder.RegisterComponentInHierarchy<SelectStageCanvasUINet>();

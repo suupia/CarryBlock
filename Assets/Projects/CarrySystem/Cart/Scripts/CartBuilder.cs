@@ -31,7 +31,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             _cartShortestRouteMove = cartShortestRouteShortestRouteMove;
         }
 
-        public CartControllerNet Build(EntityGridMap map, IMapUpdater mapUpdater)
+        public CartControllerNet Build(EntityGridMap map, IMapGetter mapGetter)
         {
             Debug.Log($"CartBuilder.Build");
             
@@ -50,7 +50,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             
             // CartShortestRouteMoveにRegiste
             _cartShortestRouteMove.RegisterMap(map);
-            _cartShortestRouteMove.RegisterIMapUpdater(mapUpdater); // ToDo: これはまずそう　何とかする
+            _cartShortestRouteMove.RegisterIMapUpdater(mapGetter); // ToDo: これはまずそう　何とかする
             
             // プレハブをスポーン
             var position = GridConverter.GridPositionToWorldPosition(startPos);

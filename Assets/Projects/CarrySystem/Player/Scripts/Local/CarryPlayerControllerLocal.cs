@@ -58,7 +58,7 @@ namespace Carry.CarrySystem.Player.Scripts
         IPassActionExecutor _passActionExecutor = null!;
         
         LocalLocalInputPoller _localLocalInputPoller;
-        IMapUpdater? _mapUpdater;
+        IMapGetter? _mapUpdater;
         LocalButtons _preButtons;
 
         public void Init(
@@ -69,7 +69,7 @@ namespace Carry.CarrySystem.Player.Scripts
             IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,
             PlayerColorType colorType,
-            IMapUpdater mapUpdater
+            IMapGetter mapGetter
         )
         {
             _blockContainer = blockContainer;
@@ -79,7 +79,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _dashExecutor = dashExecutor;
             _onDamageExecutor = onDamageExecutor!;
             ColorType = colorType;
-            _mapUpdater = mapUpdater;
+            _mapUpdater = mapGetter;
 
             // _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
             
