@@ -12,15 +12,14 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
 {
     public class FloorProgressHandlerNet : NetworkBehaviour
     {
-        // ToDo: 仮置きクラス　ドメインの設計やコンテナの関係をしっかり考えれば、NetworkBehaviourである必要がないかも
-        // float _updateTime = 7;
+        // ToDo: デバッグ用のクラス
 
-        IMapSwitcher _mapSwitcher = null!;
+        EntityGridMapSwitcher _mapSwitcher = null!;
         public void Start()
         {
-            // 仮クラスのため、コンテナには登録していない
+            // デバッグ用のクラスのため、コンテナには登録していない
             var resolver = FindObjectOfType<LifetimeScope>().Container;
-            _mapSwitcher = resolver.Resolve<IMapSwitcher>();
+            _mapSwitcher = resolver.Resolve<EntityGridMapSwitcher>();
         }
         
  # if UNITY_EDITOR
@@ -29,12 +28,12 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
             if(Runner == null) return;
             if(Runner.IsServer && Input.GetKeyDown(KeyCode.N))
             {
-                _mapSwitcher.UpdateMap(MapKey.Default, _mapSwitcher.Index + 1);
+                _mapSwitcher.SwitchToNextMap();
             }
 
             if (Runner.IsServer && Input.GetKeyDown(KeyCode.B))
             {
-                _mapSwitcher.UpdateMap(MapKey.Default, _mapSwitcher.Index - 1);
+                _mapSwitcher.SwitchToPreviousMap();
             }
             
         }

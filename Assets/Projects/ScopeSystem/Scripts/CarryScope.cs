@@ -75,7 +75,7 @@ namespace Carry.ScopeSystem.Scripts
             
             
             // IMapUpdater
-            builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapSwitcher>();
+            builder.Register<EntityGridMapSwitcher>(Lifetime.Scoped).As<IMapSwitcher>().AsSelf();
 
 
             // Cart
@@ -86,7 +86,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
             builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
             
-            //Item
+            // Item
             builder.Register<TreasureCoinCounter>(Lifetime.Scoped);
 
             // UI
