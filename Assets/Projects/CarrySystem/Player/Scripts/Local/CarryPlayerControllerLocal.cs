@@ -1,15 +1,11 @@
-﻿#nullable enable
-
-using System;
-using Carry.CarrySystem.Cart.Scripts;
-using Carry.CarrySystem.CG.Tsukinowa;
-using Carry.CarrySystem.FloorTimer.Scripts;
+﻿using Carry.CarrySystem.CG.Tsukinowa;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using Projects.Utility.Scripts;
 using UnityEngine;
+#nullable enable
 
 
 namespace Carry.CarrySystem.Player.Scripts
