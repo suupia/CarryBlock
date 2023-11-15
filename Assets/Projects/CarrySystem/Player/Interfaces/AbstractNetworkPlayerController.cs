@@ -13,6 +13,7 @@ namespace Carry.CarrySystem.Player.Interfaces
     [RequireComponent(typeof(Rigidbody))]
     public abstract class AbstractNetworkPlayerController : NetworkBehaviour, IPlayerController
     {
+        // IPlayerController implementation
         public GameObject GameObjectValue => gameObject;
         public Rigidbody RigidbodyValue
         {
@@ -23,7 +24,8 @@ namespace Carry.CarrySystem.Player.Interfaces
                 return _rigidbody;
             }
         }
-        Rigidbody? _rigidbody;
+        
+        // class of Character 
         public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
         public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
         public IHoldActionExecutor GetHoldActionExecutor => HoldActionExecutor;
@@ -31,28 +33,28 @@ namespace Carry.CarrySystem.Player.Interfaces
         public IDashExecutor GetDashExecutor => DashExecutor;
         public IPassActionExecutor GetPassActionExecutor => PassActionExecutor;
         
+        // Serialize Field
         [SerializeField] protected Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
-
         [SerializeField] protected GameObject[] playerUnitPrefabs= null!;
-
+        
+        // protected fields
+        [Networked] protected NetworkButtons PreButtons { get; set; }
+        [Networked] protected PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
+        protected GameObject CharacterObj= null!;
         protected PlayerInfo info = null!;
 
-        [Networked] protected NetworkButtons PreButtons { get; set; }
-        [Networked] public NetworkBool IsReady { get; set; }
-
-        [Networked] protected PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
-
-        protected GameObject CharacterObj= null!;
-
-        
-        
-        // ICharacterリファクタリング
         protected PlayerHoldingObjectContainer BlockContainer = null!;
         protected IMoveExecutorSwitcher MoveExecutorSwitcher = null!;
         protected IHoldActionExecutor HoldActionExecutor = null!;
         protected IOnDamageExecutor OnDamageExecutor = null!;
         protected IDashExecutor DashExecutor = null!;
         protected IPassActionExecutor PassActionExecutor = null!;
+        
+        // private fields
+        Rigidbody? _rigidbody;
+        [Networked] NetworkBool IsReady { get; set; }
+        
+        
 
 
         public override void Spawned()
@@ -65,7 +67,6 @@ namespace Carry.CarrySystem.Player.Interfaces
             // Instantiate the character.
             InstantiateCharacter();
             
-
             
         }
         
