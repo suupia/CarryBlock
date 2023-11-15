@@ -28,7 +28,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
         Direction _direction = Direction.Up;
 
         MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
-        IMapSwitcher _editMapSwitcher = null!;
+        IMapGetter _mapGetter = null!;
 
         CuiState _cuiState = CuiState.Idle;
         Type _blockType = null!;
@@ -58,10 +58,10 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
 
 
         [Inject]
-        public void Construct(MemorableEditMapBlockAttacher editMapBlockAttacher, IMapSwitcher editMapSwitcher)
+        public void Construct(MemorableEditMapBlockAttacher editMapBlockAttacher, IMapGetter mapGetter)
         {
             _editMapBlockAttacher = editMapBlockAttacher;
-            _editMapSwitcher = editMapSwitcher;
+            _mapGetter = mapGetter;
         }
 
         public void ToggleEraseMode()
@@ -124,7 +124,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
                     var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
                     Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
 
-                    var map = _editMapSwitcher.GetMap();
+                    var map = _mapGetter.GetMap();
 
                     // この書き方で問題なく動作するけど，この書き方で大丈夫なのだろうか？
                     _editMapBlockAttacher.RemovePlaceable(map, mouseGridPosOnGround);
@@ -142,7 +142,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
                 return;
             }
 
-            var map = _editMapSwitcher.GetMap();
+            var map = _mapGetter.GetMap();
             IPlaceable placeable = _blockType.Name switch
             {
                 nameof(BasicBlock) => new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround),
@@ -226,13 +226,13 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             // Undo
             if (Input.GetKeyDown(KeyCode.N))
             {
-                _editMapBlockAttacher.Undo(_editMapSwitcher.GetMap());
+                _editMapBlockAttacher.Undo(_mapGetter.GetMap());
             }
 
             // Redo
             if (Input.GetKeyDown(KeyCode.M))
             {
-                _editMapBlockAttacher.Redo(_editMapSwitcher.GetMap());
+                _editMapBlockAttacher.Redo(_mapGetter.GetMap());
             }
 
 

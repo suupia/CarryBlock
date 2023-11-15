@@ -22,7 +22,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class HoldActionExecutor : IHoldActionExecutor
     {
-        readonly IMapSwitcher _mapSwitcher;
+        readonly IMapGetter _mapGetter;
         PlayerInfo _info = null!;
         EntityGridMap _map = null!;
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
@@ -43,17 +43,17 @@ namespace Carry.CarrySystem.Player.Scripts
         public HoldActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer, 
             PlayerNearCartHandlerNet playerNearCartHandler,
-            IMapSwitcher mapSwitcher)
+            IMapGetter mapGetter)
         {
             _holdingObjectContainer = holdingObjectContainer;
             _playerNearCartHandler = playerNearCartHandler;
-            _mapSwitcher = mapSwitcher;
+            _mapGetter = mapGetter;
         }
 
         public void Setup(PlayerInfo info)
         {
             _info = info;
-            _map = _mapSwitcher.GetMap();
+            _map = _mapGetter.GetMap();
 
             _searchBlockDisposable?.Dispose();
             _searchBlockDisposable = Observable.EveryUpdate().Subscribe(_ =>
@@ -73,7 +73,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _holdingObjectContainer.PopAidKit();
             if (_playerAidKitPresenter != null) _playerAidKitPresenter.DisableAidKit();
             
-            _map = _mapSwitcher.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
+            _map = _mapGetter.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
 
         /// <summary>

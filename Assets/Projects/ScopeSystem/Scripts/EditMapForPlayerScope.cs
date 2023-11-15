@@ -29,8 +29,8 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LocalEditMapPresenterPlacerComponent>(Lifetime.Scoped).As<IPresenterPlacer>();
 
-            // IMapUpdater
-            builder.Register<EditMapSwitcher>(Lifetime.Scoped).As<IMapSwitcher>();
+            // EditMapSwitcher
+            builder.Register<EditMapSwitcher>(Lifetime.Scoped).As<IMapSwitcher>().As<IMapGetter>().AsSelf();
             
             // Input
             builder.Register<EditMapBlockAttacher>(Lifetime.Scoped).As<IEditMapBlockAttacher>();

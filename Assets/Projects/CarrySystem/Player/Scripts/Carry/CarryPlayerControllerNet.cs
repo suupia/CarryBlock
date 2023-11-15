@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class CarryPlayerControllerNet : AbstractNetworkPlayerController
     {
-        IMapSwitcher? _mapUpdater;
+        IMapGetter? _mapGetter;
         PlayerNearCartHandlerNet _playerNearCartHandler = null!;
         PlayerCharacterTransporter _playerCharacterTransporter = null!;
         FloorTimerNet _floorTimerNet = null!;
@@ -34,6 +34,7 @@ namespace Carry.CarrySystem.Player.Scripts
             IPassActionExecutor passActionExecutor,
             PlayerColorType colorType,
             IMapSwitcher mapSwitcher,
+            IMapGetter mapGetter,
             PlayerNearCartHandlerNet playerNearCartHandler,
             PlayerCharacterTransporter playerCharacterTransporter,
             FloorTimerNet floorTimerNet
@@ -46,12 +47,12 @@ namespace Carry.CarrySystem.Player.Scripts
             DashExecutor = dashExecutor;
             OnDamageExecutor = onDamageExecutor!;
             ColorType = colorType;
-            _mapUpdater = mapSwitcher;
+            _mapGetter = mapGetter;
             _playerNearCartHandler = playerNearCartHandler;
             _playerCharacterTransporter = playerCharacterTransporter;
             _floorTimerNet = floorTimerNet;
 
-            _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
+            mapSwitcher.RegisterResetAction(() => Reset(mapGetter.GetMap()));
         }
 
         public override void Spawned()
@@ -61,10 +62,10 @@ namespace Carry.CarrySystem.Player.Scripts
 
             if (HasStateAuthority)
             {
-                if (_mapUpdater != null)
-                    ToSpawnPosition(_mapUpdater.GetMap());  // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
+                if (_mapGetter != null)
+                    ToSpawnPosition(_mapGetter.GetMap());  // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
                 else
-                    Debug.LogError($"_mapUpdater is null");
+                    Debug.LogError($"_mapGetter is null");
             }
 
         }

@@ -23,19 +23,19 @@ namespace Carry.UISystem.UI.CarryScene
         [Networked] int FloorNumber { get; set; }
         [Networked] int CoinTotal { get; set; }
         
-        IMapSwitcher _mapSwitcher = null!;
+        IMapGetter _mapGetter = null!;
         FloorTimerNet _floorTimerNet = null!;
         TreasureCoinCounter _treasureCoinCounter = null!;
 
 
         [Inject]
         public void Construct(
-            IMapSwitcher mapSwitcher,
+            IMapGetter mapGetter,
             FloorTimerNet floorTimerNet,
             TreasureCoinCounter treasureCoinCounter
             )
         {
-            _mapSwitcher = mapSwitcher;
+            _mapGetter = mapGetter;
             _floorTimerNet = floorTimerNet;
             _treasureCoinCounter = treasureCoinCounter;
         }
@@ -43,7 +43,7 @@ namespace Carry.UISystem.UI.CarryScene
         public override void FixedUpdateNetwork()
         {
             if (!HasStateAuthority) return;
-            FloorNumber = _mapSwitcher.Index + 1;
+            FloorNumber = _mapGetter.Index + 1;
             CoinTotal = _treasureCoinCounter.Count;
         }
 

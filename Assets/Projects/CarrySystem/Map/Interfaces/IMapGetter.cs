@@ -1,6 +1,5 @@
-﻿
+﻿using Carry.CarrySystem.Map.Scripts;
 #nullable enable
-using Carry.CarrySystem.Map.Scripts;
 
 namespace Carry.CarrySystem.Map.Interfaces
 {
