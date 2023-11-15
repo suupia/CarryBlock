@@ -28,7 +28,7 @@ namespace Carry.CarrySystem.Player.Scripts
         /// switch文ではなるべく使用しないようにする。代わりにパターンマッチングを使う
         /// HoldingBlockTypeのためにinternalにしているが他のクラスでは使用しないようにする
         /// </summary>
-        internal enum BlockType
+        enum BlockType
         {
             None,
             BasicBlock,
@@ -37,13 +37,13 @@ namespace Carry.CarrySystem.Player.Scripts
             FragileBlock,
             ConfusionBlock
         }
-        public struct PresentData : INetworkStruct
+        struct PresentData : INetworkStruct
         {
             internal BlockType HoldingBlockType { get; set; }
         }
         Dictionary<BlockType, GameObject> blockTypeToGameObjectMap = new Dictionary<BlockType, GameObject>();
 
-        [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
+        [Networked] ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
         [SerializeField] GameObject basicBlockView= null!;
