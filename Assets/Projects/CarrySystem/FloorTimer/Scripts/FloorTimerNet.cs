@@ -33,7 +33,7 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
             Debug.Log($"PlayerCount:{_playerCharacterTransporter.PlayerCount}"); 
         }
 
-        public void SamRemainingTime()
+        public void SumRemainingTime()
         {
             FloorRemainingSecondsSam += Mathf.Floor(FloorRemainingSeconds);
         }

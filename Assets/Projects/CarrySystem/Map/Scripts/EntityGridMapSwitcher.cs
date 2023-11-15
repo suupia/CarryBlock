@@ -74,7 +74,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void UpdateMap()
         {
-            PrivateUpdateMap(_currentIndex + 1);
+            SwitchToNextMap();
         }
 
         public void SwitchToNextMap()
@@ -92,7 +92,7 @@ namespace Carry.CarrySystem.Map.Scripts
             Debug.Log($"次のフロアに変更します nextIndex: {index}");
             
             //この呼び出しが_floorTimerNet.IsCleared = trueより後になるとクリアした最後のフロアの時間が加算されない
-            _floorTimerNet.SamRemainingTime();
+            _floorTimerNet.SumRemainingTime();
             
             if (index < 0)
             {
