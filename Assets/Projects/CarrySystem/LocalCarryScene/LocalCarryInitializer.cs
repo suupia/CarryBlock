@@ -30,7 +30,7 @@ public class LocalCarryInitializer : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log($"CarryPlayerControllerLocalをスポーンします");
             _localPlayerSpawner.SpawnPlayer();
