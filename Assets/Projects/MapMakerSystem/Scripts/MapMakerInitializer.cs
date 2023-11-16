@@ -7,7 +7,7 @@ using Carry.CarrySystem.Spawners.Scripts;
 using UnityEngine;
 using VContainer;
 
-public class LocalCarryInitializer : MonoBehaviour
+public class MapMakerInitializer : MonoBehaviour
 {
     LocalPlayerSpawner _localPlayerSpawner;
     IMapSwitcher _editMapSwitcher;
