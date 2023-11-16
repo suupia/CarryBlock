@@ -65,15 +65,25 @@ namespace Carry.CarrySystem.Player.Scripts
         public void Reset()
         {
             // reset holding block
+            ResetHoldingBlock();
+            
+            // reset holding aid kit
+            ResetHoldingAidKit();   
+            
+            _map = _mapGetter.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
+        }
+
+        void ResetHoldingBlock()
+        {
             var _ =  _holdingObjectContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
             _playerBlockPresenter?.PutDownBlock();
             _playerAnimatorPresenter?.PutDownBlock();
-            
-            // reset holding aid kit
+        }
+        
+        void ResetHoldingAidKit()
+        {
             _holdingObjectContainer.PopAidKit();
             if (_playerAidKitPresenter != null) _playerAidKitPresenter.DisableAidKit();
-            
-            _map = _mapGetter.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
 
         /// <summary>
