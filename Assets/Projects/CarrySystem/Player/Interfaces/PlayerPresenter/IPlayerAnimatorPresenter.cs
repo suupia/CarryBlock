@@ -5,6 +5,8 @@ namespace Carry.CarrySystem.Player.Interfaces
 {
     public interface IPlayerAnimatorPresenter
     {
+
+        public void SetAnimator(Animator animator);
         void PickUpBlock(IBlock block);
         void PutDownBlock();
         void ReceiveBlock(IBlock block);
