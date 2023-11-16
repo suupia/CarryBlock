@@ -71,7 +71,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             Debug.Log("BreakBlockを実行");
             
             var _ = blockContainer.PopBlock();
-            holdActionExecutor.PutDownBlock();
+            holdActionExecutor.ResetHoldingBlock();
         }  
     }
 }

@@ -73,7 +73,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _map = _mapGetter.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
 
-        void ResetHoldingBlock()
+        public void ResetHoldingBlock()
         {
             var _ =  _holdingObjectContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
             _playerBlockPresenter?.PutDownBlock();
@@ -85,15 +85,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _holdingObjectContainer.PopAidKit();
             if (_playerAidKitPresenter != null) _playerAidKitPresenter.DisableAidKit();
         }
-
-        /// <summary>
-        /// This method is called when the other class wants to put down a block.
-        /// </summary>
-        public void PutDownBlock()
-        {
-            _playerBlockPresenter?.PutDownBlock();
-            _playerAnimatorPresenter?.PutDownBlock();
-        }
+        
         public void HoldAction()
         {
             var transform = _info.PlayerObj.transform;

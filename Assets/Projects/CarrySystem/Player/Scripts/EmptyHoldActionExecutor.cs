@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
             
         }
 
-        public void PutDownBlock()
+        public void ResetHoldingBlock()
         {
             
         }
