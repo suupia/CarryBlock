@@ -97,33 +97,8 @@ namespace Carry.CarrySystem.Player.Scripts
             if (_holdingObjectContainer.IsHoldingBlock)
             {
                 // trying to put down a block
-                // マップの内部かどうかを判定
-                if(!_map.IsInDataRangeArea(forwardGridPos))return;
-                
-                // if there is a non carriable block in front of a player, do nothing
-                if (_searchedBlocks.Any(x => !(x is ICarriableBlock)))
-                {
-                    Debug.Log($"There is a non carriable block in front of a player");
-                    return;
-                }
-                var carriableBlocks = _searchedBlocks.OfType<ICarriableBlock>().ToList();
-                
-                Debug.Log($"CanPutDown : {_holdingObjectContainer.CanPutDown(carriableBlocks)}");
-                if (_holdingObjectContainer.CanPutDown(carriableBlocks))
-                {
-                    var block = _holdingObjectContainer.PopBlock();
-                    if (block == null)
-                    {
-                        Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれないはず
-                        return;
-                    }
-                    block.PutDown(_info.PlayerController.GetMoveExecutorSwitcher);
-                    // _map.AddEntity(forwardGridPos, block);
-                    _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.AddBlock(block);
-                    _playerBlockPresenter?.PutDownBlock();
-                    _playerAnimatorPresenter?.PutDownBlock();
-                }
-                
+                if(TryToPutDownBlock(forwardGridPos)) return;
+
             } else if (_holdingObjectContainer.IsHoldingAidKit)  // IsHoldingAidKit
             {
                 // trying to use an aid kit
@@ -131,31 +106,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 // Even if character has an AidKit, player can overwrite with the block.
                 if(TryToPickUpBlock(forwardGridPos)) return;
 
-                // もし倒れているキャラが近くにいれば、AidKitを使う
-                // 1. PlayerControllerを取得
-                // 2. ICharacterを取得
-                // 3. IsFaintedで判定
-                
-                if(_aidKitRangeNet == null) _aidKitRangeNet = _info.PlayerObj.GetComponentInChildren<AidKitRangeNet>();
-                
-                if(_aidKitRangeNet.DetectedTarget() is {} target)
-                {
-                    var targetPlayerController = target.GetComponent<CarryPlayerControllerNet>();
-                    if (targetPlayerController == null)
-                    {
-                        Debug.LogError($"{target.name} には CarryPlayerControllerNet がアタッチされていません");
-                        return;
-                    }
-                    if (!targetPlayerController.GetOnDamageExecutor.IsFainted) return;
-                    Debug.Log($"Use AidKit");
-                    _holdingObjectContainer.PopAidKit();
-                    if(_playerAidKitPresenter != null) _playerAidKitPresenter.UseAidKit();
-                    targetPlayerController.GetOnDamageExecutor.OnRevive();
-                }
-                else
-                {
-                    // Do nothing
-                }
+                if(TryToUseAidKit()) return;
 
             }
             else
@@ -171,6 +122,69 @@ namespace Carry.CarrySystem.Player.Scripts
 
             }
             
+        }
+
+        bool TryToPutDownBlock(Vector2Int targetPos)
+        {
+            // マップの内部かどうかを判定
+            if(!_map.IsInDataRangeArea(targetPos))return false;
+                
+            // if there is a non carriable block in front of a player, do nothing
+            if (_searchedBlocks.Any(x => !(x is ICarriableBlock)))
+            {
+                Debug.Log($"There is a non carriable block in front of a player");
+                return false;
+            }
+            var carriableBlocks = _searchedBlocks.OfType<ICarriableBlock>().ToList();
+                
+            Debug.Log($"CanPutDown : {_holdingObjectContainer.CanPutDown(carriableBlocks)}");
+            if (_holdingObjectContainer.CanPutDown(carriableBlocks))
+            {
+                var block = _holdingObjectContainer.PopBlock();
+                if (block == null)
+                {
+                    Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれないはず
+                    return false;
+                }
+                block.PutDown(_info.PlayerController.GetMoveExecutorSwitcher);
+                // _map.AddEntity(forwardGridPos, block);
+                _map.GetSingleEntity<IBlockMonoDelegate>(targetPos)?.AddBlock(block);
+                _playerBlockPresenter?.PutDownBlock();
+                _playerAnimatorPresenter?.PutDownBlock();
+            }
+
+            return true;
+        }
+
+        bool TryToUseAidKit()
+        {
+            // もし倒れているキャラが近くにいれば、AidKitを使う
+            // 1. PlayerControllerを取得
+            // 2. ICharacterを取得
+            // 3. IsFaintedで判定
+                
+            if(_aidKitRangeNet == null) _aidKitRangeNet = _info.PlayerObj.GetComponentInChildren<AidKitRangeNet>();
+                
+            if(_aidKitRangeNet.DetectedTarget() is {} target)
+            {
+                var targetPlayerController = target.GetComponent<CarryPlayerControllerNet>();
+                if (targetPlayerController == null)
+                {
+                    Debug.LogError($"{target.name} には CarryPlayerControllerNet がアタッチされていません");
+                    return false;
+                }
+                if (!targetPlayerController.GetOnDamageExecutor.IsFainted) return false;
+                Debug.Log($"Use AidKit");
+                _holdingObjectContainer.PopAidKit();
+                if(_playerAidKitPresenter != null) _playerAidKitPresenter.UseAidKit();
+                targetPlayerController.GetOnDamageExecutor.OnRevive();
+            }
+            else
+            {
+                // Do nothing
+            }
+
+            return true;
         }
         
 
