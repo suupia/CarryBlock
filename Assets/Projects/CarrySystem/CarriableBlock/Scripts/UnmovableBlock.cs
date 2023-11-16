@@ -43,7 +43,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return false;  // 常に持ち上げられない
         }
 
-        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, PlayerHoldingObjectContainer blockContainer, IHoldActionExecutor holdActionExecutor)
+        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
         {
             // 特になし
         }

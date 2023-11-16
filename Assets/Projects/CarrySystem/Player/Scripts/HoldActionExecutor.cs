@@ -191,7 +191,7 @@ namespace Carry.CarrySystem.Player.Scripts
             if (carriableBlock.CanPickUp())
             {
                 Debug.Log($"remove currentBlockMonos");
-                carriableBlock.PickUp(_info.PlayerController.GetMoveExecutorSwitcher, _info.PlayerController.GetPlayerHoldingObjectContainer,_info.PlayerController.GetHoldActionExecutor);
+                carriableBlock.PickUp(_info.PlayerController.GetMoveExecutorSwitcher,_info.PlayerController.GetHoldActionExecutor);
                 // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
                 _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
                 _playerBlockPresenter?.PickUpBlock(block);

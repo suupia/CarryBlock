@@ -73,7 +73,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void ReceivePass(ICarriableBlock block)
         {
             Debug.Log("Receive Pass");
-            block.PickUp(_info.PlayerController.GetMoveExecutorSwitcher, _info.PlayerController.GetPlayerHoldingObjectContainer,_info.PlayerController.GetHoldActionExecutor);
+            block.PickUp(_info.PlayerController.GetMoveExecutorSwitcher, _info.PlayerController.GetHoldActionExecutor);
             _holdingObjectContainer.SetBlock(block);
             _playerBlockPresenter?.ReceiveBlock(block);
             _playerAnimatorPresenter?.ReceiveBlock(block);

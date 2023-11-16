@@ -40,9 +40,9 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;  // FragileBlockが持ち上げられない状況はない
         }
 
-        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, PlayerHoldingObjectContainer blockContainer, IHoldActionExecutor holdActionExecutor)
+        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
         {
-            var _ = BreakBlock(blockContainer, holdActionExecutor);
+            var _ = BreakBlock(holdActionExecutor);
         }
 
         public bool CanPutDown(IList<ICarriableBlock> placedBlocks)
@@ -65,12 +65,11 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             
         }
 
-        async UniTaskVoid BreakBlock(PlayerHoldingObjectContainer blockContainer, IHoldActionExecutor holdActionExecutor)
+        async UniTaskVoid BreakBlock(IHoldActionExecutor holdActionExecutor)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(0.25f));
             Debug.Log("BreakBlockを実行");
             
-            var _ = blockContainer.PopBlock();
             holdActionExecutor.ResetHoldingBlock();
         }  
     }
