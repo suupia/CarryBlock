@@ -30,7 +30,7 @@ public class MapMakerInitializer : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.F1) )
         {
             Debug.Log($"CarryPlayerControllerLocalをスポーンします");
             _localPlayerSpawner.SpawnPlayer();
