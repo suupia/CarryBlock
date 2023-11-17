@@ -88,7 +88,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void ResetHoldingBlock()
         {
             var _ =  _holdingObjectContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
-            _playerBlockPresenter?.PutDownBlock();
+            _playerBlockPresenter?.DisableHoldableView();
             _playerAnimatorPresenter?.PutDownBlock();
         }
         
@@ -160,7 +160,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 block.PutDown(_info.PlayerController.GetMoveExecutorSwitcher);
                 // _map.AddEntity(forwardGridPos, block);
                 _map.GetSingleEntity<IBlockMonoDelegate>(targetPos)?.AddBlock(block);
-                _playerBlockPresenter?.PutDownBlock();
+                _playerBlockPresenter?.DisableHoldableView();
                 _playerAnimatorPresenter?.PutDownBlock();
             }
 
@@ -193,7 +193,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 carriableBlock.PickUp(_info.PlayerController.GetMoveExecutorSwitcher,_info.PlayerController.GetHoldActionExecutor);
                 // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
                 _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
-                _playerBlockPresenter?.PickUpBlock(block);
+                _playerBlockPresenter?.EnableHoldableView(block);
                 _playerAnimatorPresenter?.PickUpBlock(block);
                 _holdingObjectContainer.SetBlock(carriableBlock);
             }

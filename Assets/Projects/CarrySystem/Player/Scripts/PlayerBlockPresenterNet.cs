@@ -94,26 +94,16 @@ namespace Carry.CarrySystem.Player.Scripts
 
         // ホストのみで呼ばれることに注意
         // 以下の処理はアニメーション、音、エフェクトの再生を行いたくなったら、それぞれのクラスの対応するメソッドを呼ぶようにするかも
-        public void PickUpBlock(IBlock block)
+        public void EnableHoldableView(IBlock block)
         {
             Debug.Log($"PlayerBlockPresenterNet.PickUpBlock()");
             PresentDataRef.HoldingBlockType = DecideBlockType(block);
         }
 
-        public void PutDownBlock()
+        public void DisableHoldableView()
         {
             PresentDataRef.HoldingBlockType = BlockType.None;
         }
-        public void ReceiveBlock(IBlock block)
-        {
-            PresentDataRef.HoldingBlockType =  DecideBlockType(block);
-        }
-        
-        
-        public void PassBlock()
-        {
-            PresentDataRef.HoldingBlockType = BlockType.None;
-        } 
         
 
         BlockType DecideBlockType(IBlock block)

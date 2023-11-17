@@ -75,7 +75,7 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log("Receive Pass");
             block.PickUp(_info.PlayerController.GetMoveExecutorSwitcher, _info.PlayerController.GetHoldActionExecutor);
             _holdingObjectContainer.SetBlock(block);
-            _playerBlockPresenter?.ReceiveBlock(block);
+            _playerBlockPresenter?.EnableHoldableView(block);
             _playerAnimatorPresenter?.ReceiveBlock(block);
         }
         
@@ -84,7 +84,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"Pass Block");
             block.PutDown(_info.PlayerController.GetMoveExecutorSwitcher);
-            _playerBlockPresenter?.PassBlock();
+            _playerBlockPresenter?.DisableHoldableView();
             _playerAnimatorPresenter?.PassBlock();
         }
         
