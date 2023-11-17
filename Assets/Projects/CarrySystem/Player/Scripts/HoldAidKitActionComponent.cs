@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class HoldAidKitComponent : IHoldableComponent
+    public class HoldAidKitActionComponent : IHoldableActionComponent
     {
         PlayerInfo _info = null!;
 
@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;  // 今は使用しない。なぜなら、AidKit取得に関係するアニメーションがないから
 
 
-        public HoldAidKitComponent(
+        public HoldAidKitActionComponent(
             PlayerHoldingObjectContainer holdingObjectContainer,
             PlayerNearCartHandlerNet playerNearCartHandler)
         {
