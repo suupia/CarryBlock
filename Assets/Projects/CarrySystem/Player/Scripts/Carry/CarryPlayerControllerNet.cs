@@ -51,6 +51,8 @@ namespace Carry.CarrySystem.Player.Scripts
             _playerNearCartHandler = playerNearCartHandler;
             _playerCharacterTransporter = playerCharacterTransporter;
             _floorTimerNet = floorTimerNet;
+            
+            SetUp();
 
             mapSwitcher.RegisterResetAction(() => Reset(mapGetter.GetMap()));
         }

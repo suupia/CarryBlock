@@ -62,8 +62,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         {
             // Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
 
-            // init info
-            Info = new PlayerInfo(this, Object.InputAuthority);
+
 
             // Instantiate the character.
             InstantiateCharacter();
@@ -119,7 +118,6 @@ namespace Carry.CarrySystem.Player.Interfaces
             CharacterObj = Instantiate(prefab, unitObjectParent);
             
             // Character?.Setup(info);
-            Setup(Info);
             CharacterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
             var animatorPresenter = GetComponent<IPlayerAnimatorPresenter>();
             if(animatorPresenter != null) animatorPresenter.SetAnimator(CharacterObj.GetComponentInChildren<Animator>());
@@ -128,13 +126,16 @@ namespace Carry.CarrySystem.Player.Interfaces
             // _decorationDetector.OnSpawned();
         }
         
-        protected void Setup(PlayerInfo info)
+        protected void SetUp()
         {
+            // init info
+            var info = new PlayerInfo(this, Object.InputAuthority);
             MoveExecutorSwitcher.Setup(info);
             HoldActionExecutor. Setup(info);
             PassActionExecutor.Setup(info);
             OnDamageExecutor.Setup(info);
             info.PlayerRb.useGravity = true;
+            Info = info;
         }
 
     }

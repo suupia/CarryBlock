@@ -82,6 +82,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _mapGetter = mapGetter;
 
             // _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
+            Setup(_info);
             
             Spawned();
         }
@@ -191,7 +192,6 @@ namespace Carry.CarrySystem.Player.Scripts
             _characterObj = Instantiate(prefab, unitObjectParent);
             
             // Character?.Setup(info);
-            Setup(_info);
             _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
             var animatorPresenter = GetComponent<IPlayerAnimatorPresenter>();
             if(animatorPresenter != null) animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());

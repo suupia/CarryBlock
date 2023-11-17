@@ -35,6 +35,8 @@ namespace Carry.CarrySystem.Player.Scripts
             PassActionExecutor = passActionExecutor;
             ColorType = colorType;
             _playerCharacterTransporter = playerCharacterTransporter;
+            
+            SetUp();
         }
 
         public override void Spawned()
