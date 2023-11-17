@@ -60,15 +60,11 @@ namespace Carry.CarrySystem.Player.Scripts
             
             _map = _mapGetter.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
-
+        
         public bool TryToPickUpHoldable()
-        {
-            return false;
-        }
-
-        // todo :　引数を消す
-        public bool TryToPickUpHoldable(Vector2Int forwardGridPos)
-        {
+        { 
+            var transform = _info.PlayerObj.transform;
+            var forwardGridPos = GetForwardGridPos(transform);
             var blockMonoDelegate = _searchedBlockMonoDelegate;  // フレームごとに判定しているためここでキャッシュする
             if(blockMonoDelegate?.Block == null)
             {
@@ -110,16 +106,14 @@ namespace Carry.CarrySystem.Player.Scripts
             return true; // done picking up
         }
 
+
         public bool TryToUseHoldable()
         {
-            return false;
-        }
-        
-        // todo :　引数を消す
-        public bool TryToUseHoldable(Vector2Int targetPos)
-        {
+            var transform = _info.PlayerObj.transform;
+            var forwardGridPos = GetForwardGridPos(transform);
+            
             // マップの内部かどうかを判定
-            if(!_map.IsInDataRangeArea(targetPos))return false;
+            if(!_map.IsInDataRangeArea(forwardGridPos))return false;
                 
             // if there is a non carriable block in front of a player, do nothing
             if (_searchedBlocks.Any(x => !(x is ICarriableBlock)))
@@ -140,7 +134,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 }
                 block.PutDown(_info.PlayerController.GetMoveExecutorSwitcher);
                 // _map.AddEntity(forwardGridPos, block);
-                _map.GetSingleEntity<IBlockMonoDelegate>(targetPos)?.AddBlock(block);
+                _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.AddBlock(block);
                 _playerBlockPresenter?.DisableHoldableView();
                 _playerAnimatorPresenter?.PutDownBlock();
             }

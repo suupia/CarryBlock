@@ -35,7 +35,7 @@ namespace Projects.CarrySystem.Player.Scripts.Local
             var playerNearCartHandler = new PlayerNearCartHandlerNet();  // todo:この依存を消したい。とりあえず、newでエラーを回避
             var holdBlockExe = new HoldBlockComponent(blockContainer,_mapGetter);
             var holdAidKitExe = new HoldAidKitComponent(blockContainer, playerNearCartHandler);
-            var holdActionExecutor =new HoldActionExecutor(blockContainer,holdBlockExe, holdAidKitExe, playerNearCartHandler, _mapGetter);  //todo: new はエラー回避のため一時的に使用
+            var holdActionExecutor =new HoldActionExecutor(blockContainer,holdBlockExe, holdAidKitExe );  //todo: new はエラー回避のため一時的に使用
             
             // IOnDamageExecutor
             var onDamageExecutor = new OnDamageExecutor(moveExecutorSwitcher, new PlayerCharacterTransporter());  //todo: new はエラー回避のため一時的に使用
