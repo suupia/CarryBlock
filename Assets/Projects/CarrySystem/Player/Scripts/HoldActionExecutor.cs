@@ -64,6 +64,8 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _info = info;
             _map = _mapGetter.GetMap();
+            
+            _holdAidKitExecutorComponent.Setup(info);
 
             _searchBlockDisposable?.Dispose();
             _searchBlockDisposable = Observable.EveryUpdate().Subscribe(_ =>
@@ -92,8 +94,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         void ResetHoldingAidKit()
         {
-            _holdingObjectContainer.PopAidKit();
-            if (_playerAidKitPresenter != null) _playerAidKitPresenter.DisableAidKit();
+            _holdAidKitExecutorComponent.ResetHoldingAidKit();
         }
         
         public void HoldAction()
@@ -168,33 +169,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         bool TryToUseAidKit()
         {
-            // もし倒れているキャラが近くにいれば、AidKitを使う
-            // 1. PlayerControllerを取得
-            // 2. ICharacterを取得
-            // 3. IsFaintedで判定
-                
-            if(_aidKitRangeNet == null) _aidKitRangeNet = _info.PlayerObj.GetComponentInChildren<AidKitRangeNet>();
-                
-            if(_aidKitRangeNet.DetectedTarget() is {} target)
-            {
-                var targetPlayerController = target.GetComponent<CarryPlayerControllerNet>();
-                if (targetPlayerController == null)
-                {
-                    Debug.LogError($"{target.name} には CarryPlayerControllerNet がアタッチされていません");
-                    return false;
-                }
-                if (!targetPlayerController.GetOnDamageExecutor.IsFainted) return false;
-                Debug.Log($"Use AidKit");
-                _holdingObjectContainer.PopAidKit();
-                if(_playerAidKitPresenter != null) _playerAidKitPresenter.UseAidKit();
-                targetPlayerController.GetOnDamageExecutor.OnRevive();
-            }
-            else
-            {
-                // Do nothing
-            }
-
-            return true;
+            return _holdAidKitExecutorComponent.TryToUseAidKit();
         }
         
 
@@ -237,17 +212,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         bool TryToPickUpAidKit()
         {
-            // もしカートの近くにいれば、AidKitを拾う
-            if (_playerNearCartHandler.IsNearCart(_info.PlayerObj))
-            {
-                if(_holdingObjectContainer.IsHoldingAidKit) return false;
-                
-                // 拾う処理
-                Debug.Log($"PickUpAidKit");
-                _holdingObjectContainer.SetAidKit();
-                if(_playerAidKitPresenter != null) _playerAidKitPresenter.PickUpAidKit();
-            }
-            return false;
+            return _holdAidKitExecutorComponent.TryToPickUp();
 
         }
 
@@ -304,10 +269,13 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
         {
             _playerAidKitPresenter = presenter;
+            _holdAidKitExecutorComponent.SetPlayerAidKitPresenter(presenter);
+
         }
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
             _playerAnimatorPresenter = presenter;
+            _holdAidKitExecutorComponent.SetPlayerAnimatorPresenter(presenter);
         }
         
     }

@@ -31,7 +31,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _info = info;
         }
         
-        void ResetHoldingAidKit()
+        public void ResetHoldingAidKit()
         {
             _holdingObjectContainer.PopAidKit();
             if (_playerAidKitPresenter != null) _playerAidKitPresenter.DisableAidKit();
