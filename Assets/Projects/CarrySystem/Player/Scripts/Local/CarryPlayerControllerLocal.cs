@@ -82,7 +82,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _mapGetter = mapGetter;
 
             // _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
-            Setup(_info);
+            SetUp();
             
             Spawned();
         }
@@ -200,13 +200,16 @@ namespace Carry.CarrySystem.Player.Scripts
             // _decorationDetector.OnSpawned();
         }
         
-        protected void Setup(PlayerInfo info)
+        void SetUp()
         {
+            // init info
+            var info = new PlayerInfo(this);
             _moveExecutorSwitcher.Setup(info);
             _holdActionExecutor. Setup(info);
             _passActionExecutor.Setup(info);
             _onDamageExecutor.Setup(info);
             info.PlayerRb.useGravity = true;
+            _info = info;
         }
         
 
