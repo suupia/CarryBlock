@@ -82,6 +82,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _mapGetter = mapGetter;
 
             // _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
+            SetUp();
             
             Spawned();
         }
@@ -191,7 +192,6 @@ namespace Carry.CarrySystem.Player.Scripts
             _characterObj = Instantiate(prefab, unitObjectParent);
             
             // Character?.Setup(info);
-            Setup(_info);
             _characterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
             var animatorPresenter = GetComponent<IPlayerAnimatorPresenter>();
             if(animatorPresenter != null) animatorPresenter.SetAnimator(_characterObj.GetComponentInChildren<Animator>());
@@ -200,13 +200,16 @@ namespace Carry.CarrySystem.Player.Scripts
             // _decorationDetector.OnSpawned();
         }
         
-        protected void Setup(PlayerInfo info)
+        void SetUp()
         {
+            // init info
+            var info = new PlayerInfo(this);
             _moveExecutorSwitcher.Setup(info);
             _holdActionExecutor. Setup(info);
             _passActionExecutor.Setup(info);
             _onDamageExecutor.Setup(info);
             info.PlayerRb.useGravity = true;
+            _info = info;
         }
         
 
