@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class PlayerAidKitPresenterNet : NetworkBehaviour
+    public class PlayerAidKitPresenterNet : NetworkBehaviour , IPlayerHoldablePresenter
     {
         struct PresentData : INetworkStruct
         {
@@ -46,20 +46,15 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         
 
-        public void PickUpAidKit()
+        public void EnableHoldableView(IHoldable _)
         {
             PresentDataRef.HoldingAidKit = true;
         }
         
-        public void UseAidKit()
+        public void DisableHoldableView()
         {
             PresentDataRef.HoldingAidKit = false;
         }
 
-        public void DisableAidKit()
-        {
-            PresentDataRef.HoldingAidKit = false;
-        }
-         
     }
 }

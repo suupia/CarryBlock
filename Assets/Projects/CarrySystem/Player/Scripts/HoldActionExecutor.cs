@@ -210,7 +210,7 @@ namespace Carry.CarrySystem.Player.Scripts
             if (_holdingObjectContainer.IsHoldingAidKit)
             {
                 _holdingObjectContainer.PopAidKit();
-                if(_playerAidKitPresenter != null) _playerAidKitPresenter.DisableAidKit();
+                if(_playerAidKitPresenter != null) _playerAidKitPresenter.DisableHoldableView();
             }
 
             return true; // done picking up
