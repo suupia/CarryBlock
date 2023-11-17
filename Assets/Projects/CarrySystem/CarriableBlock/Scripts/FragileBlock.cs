@@ -17,7 +17,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         public FragileBlock.Kind[] kinds = new FragileBlock.Kind[10];
     }
 
-    public class FragileBlock : ICarriableBlock
+    public class FragileBlock : ICarriableBlock, IHoldable
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 1;

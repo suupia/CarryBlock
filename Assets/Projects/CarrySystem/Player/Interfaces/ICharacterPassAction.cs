@@ -16,7 +16,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         void ReceivePass(ICarriableBlock block);
         
         // View
-        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter);
+        public void SetPlayerBlockPresenter(IPlayerHoldablePresenter presenter);
         
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter);

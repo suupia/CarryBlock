@@ -1,18 +1,29 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
-using Carry.CarrySystem.Player.Interfaces;
-using Carry.CarrySystem.Player.Scripts;
-using Fusion;
+using Carry.CarrySystem.Entity.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using UnityEngine;
+using Fusion;
+using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Player.Interfaces;
+using UnityEngine.Serialization;
+using VContainer;
 #nullable enable
 
-namespace Projects.CarrySystem.Player.Scripts.Local
+
+namespace Carry.CarrySystem.Player.Scripts
 {
-    [RequireComponent(typeof(CarryPlayerControllerLocal))]
-    public class PlayerBlockPresenterLocal : MonoBehaviour, IPlayerBlockPresenter
+    [RequireComponent(typeof(CarryPlayerControllerNet))]
+    public class PlayerHoldablePresenterNet : NetworkBehaviour, IPlayerHoldablePresenter
     {
+        // Presenter系のクラスはホストとクライアントで状態を一致させるためにNetworkedプロパティを持つので、
+        // ドメインの情報を持ってはいけない
+        
         /// <summary>
         /// switch文ではなるべく使用しないようにする。代わりにパターンマッチングを使う
         /// HoldingBlockTypeのためにinternalにしているが他のクラスでは使用しないようにする
@@ -26,13 +37,13 @@ namespace Projects.CarrySystem.Player.Scripts.Local
             FragileBlock,
             ConfusionBlock
         }
-        struct PresentData
+        struct PresentData : INetworkStruct
         {
-           internal BlockType HoldingBlockType { get; set; }
+            internal BlockType HoldingBlockType { get; set; }
         }
         Dictionary<BlockType, GameObject> blockTypeToGameObjectMap = new Dictionary<BlockType, GameObject>();
 
-        PresentData _presentData = new PresentData();
+        [Networked] ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
         [SerializeField] GameObject basicBlockView= null!;
@@ -45,7 +56,7 @@ namespace Projects.CarrySystem.Player.Scripts.Local
             Debug.Log($"PlayerBlockPresenterNet.Init()");
             holdActionExecutor.SetPlayerBlockPresenter(this);
             passActionExecutor.SetPlayerBlockPresenter(this);
-            _presentData.HoldingBlockType = BlockType.None;
+            PresentDataRef.HoldingBlockType = BlockType.None;
         }
 
         public void Awake()
@@ -65,9 +76,9 @@ namespace Projects.CarrySystem.Player.Scripts.Local
             ConfusionBlockView.GetComponent<Collider>().enabled = false;
         }
 
-        void Update() 
+        public override void Render()
         {
-            BlockType currentBlockType = _presentData.HoldingBlockType;
+            BlockType currentBlockType = PresentDataRef.HoldingBlockType;
 
             foreach (var blockType in blockTypeToGameObjectMap.Keys)
             {
@@ -83,38 +94,28 @@ namespace Projects.CarrySystem.Player.Scripts.Local
 
         // ホストのみで呼ばれることに注意
         // 以下の処理はアニメーション、音、エフェクトの再生を行いたくなったら、それぞれのクラスの対応するメソッドを呼ぶようにするかも
-        public void PickUpBlock(IBlock block)
+        public void EnableHoldableView(IHoldable holdable)
         {
             Debug.Log($"PlayerBlockPresenterNet.PickUpBlock()");
-            _presentData.HoldingBlockType = DecideBlockType(block);
+            PresentDataRef.HoldingBlockType = DecideBlockType(holdable);
         }
 
-        public void PutDownBlock()
+        public void DisableHoldableView()
         {
-            _presentData.HoldingBlockType = BlockType.None;
+            PresentDataRef.HoldingBlockType = BlockType.None;
         }
-        public void ReceiveBlock(IBlock block)
-        {
-            _presentData.HoldingBlockType =  DecideBlockType(block);
-        }
-        
-        
-        public void PassBlock()
-        {
-            _presentData.HoldingBlockType = BlockType.None;
-        } 
         
 
-        BlockType DecideBlockType(IBlock block)
+        BlockType DecideBlockType(IHoldable holdable)
         {
-            var blockType  = block switch
+            var blockType  = holdable switch
             {
                 BasicBlock _ => BlockType.BasicBlock,
                 UnmovableBlock _ => BlockType.UnmovableBlock,
                 HeavyBlock _ => BlockType.HeavyBlock,
                 FragileBlock _ => BlockType.FragileBlock,
                 ConfusionBlock _ => BlockType.ConfusionBlock,
-                _ => throw new ArgumentOutOfRangeException(nameof(block), block, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(holdable), holdable, null)
             };
             return blockType;
         }

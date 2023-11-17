@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         public HeavyBlock.Kind[] kinds = new HeavyBlock.Kind[10];
     }
 
-    public class HeavyBlock : ICarriableBlock
+    public class HeavyBlock : ICarriableBlock , IHoldable
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 2;

@@ -26,7 +26,7 @@ namespace Carry.CarrySystem.Player.Scripts
             return false;
         }
         // View
-        public void SetPlayerHoldablePresenter(PlayerAidKitPresenterNet presenter)
+        public void SetPlayerHoldablePresenter(IPlayerHoldablePresenter presenter)
         {
             
         }

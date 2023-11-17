@@ -6,7 +6,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class EmptyHoldActionExecutor : IHoldActionExecutor
     {
-        public void SetHoldPresenter(IPlayerBlockPresenter presenter)
+        public void SetHoldPresenter(IPlayerHoldablePresenter presenter)
         {
             
         }
@@ -30,7 +30,7 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log($"EmptyHoldAction: Action");
         }
         
-        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
+        public void SetPlayerBlockPresenter(IPlayerHoldablePresenter presenter)
         {
             
         }

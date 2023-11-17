@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         
-        PlayerAidKitPresenterNet? _playerAidKitPresenter;
+        IPlayerHoldablePresenter? _playerAidKitPresenter;
         AidKitRangeNet? _aidKitRangeNet;
         
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;  // 今は使用しない。なぜなら、AidKit取得に関係するアニメーションがないから
@@ -36,7 +36,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void ResetHoldable()
         {
             _holdingObjectContainer.PopAidKit();
-            if (_playerAidKitPresenter != null) _playerAidKitPresenter.DisableAidKit();
+            if (_playerAidKitPresenter != null) _playerAidKitPresenter.DisableHoldableView();
         }
         public bool TryToPickUpHoldable()
         {
@@ -48,7 +48,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 // 拾う処理
                 Debug.Log($"PickUpAidKit");
                 _holdingObjectContainer.SetAidKit();
-                if(_playerAidKitPresenter != null) _playerAidKitPresenter.PickUpAidKit();
+                if(_playerAidKitPresenter != null) _playerAidKitPresenter.EnableHoldableView(new EmptyHoldable());
             }
             return false;
         }
@@ -73,7 +73,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 if (!targetPlayerController.GetOnDamageExecutor.IsFainted) return false;
                 Debug.Log($"Use AidKit");
                 _holdingObjectContainer.PopAidKit();
-                if(_playerAidKitPresenter != null) _playerAidKitPresenter.UseAidKit();
+                if(_playerAidKitPresenter != null) _playerAidKitPresenter.DisableHoldableView();
                 targetPlayerController.GetOnDamageExecutor.OnRevive();
             }
             else
@@ -85,7 +85,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         
         // View
-        public void SetPlayerHoldablePresenter(PlayerAidKitPresenterNet presenter)
+        public void SetPlayerHoldablePresenter(IPlayerHoldablePresenter presenter)
         {
             _playerAidKitPresenter = presenter;
         }

@@ -11,7 +11,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         public bool TryToPickUpHoldable();
         public bool TryToUseHoldable();
         // View
-        public void SetPlayerHoldablePresenter(PlayerAidKitPresenterNet presenter);
+        public void SetPlayerHoldablePresenter(IPlayerHoldablePresenter presenter);
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter);
     }

@@ -42,7 +42,7 @@ namespace Carry.CarrySystem.Player.Scripts.Local
             var playerControllerObj = Object.Instantiate(playerController, position, rotation);
             playerControllerObj.GetComponent<CarryPlayerControllerLocal>().Init(character.PlayerHoldingObjectContainer,
                 character, character, character, character, character, colorType, _mapGetter);
-            playerControllerObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character, character);
+            playerControllerObj.GetComponent<PlayerHoldablePresenterNet>()?.Init(character, character);
             playerControllerObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
             playerControllerObj.GetComponent<PlayerAnimatorPresenterNet>()
                 ?.Init(character, character, character, character);

@@ -8,7 +8,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class EmptyPassActionExecutor : IPassActionExecutor
     {
-        public void SetHoldPresenter(IPlayerBlockPresenter presenter)
+        public void SetHoldPresenter(IPlayerHoldablePresenter presenter)
         {
             
         }
@@ -43,7 +43,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         
         // Presenter
-        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
+        public void SetPlayerBlockPresenter(IPlayerHoldablePresenter presenter)
         {
             
         }

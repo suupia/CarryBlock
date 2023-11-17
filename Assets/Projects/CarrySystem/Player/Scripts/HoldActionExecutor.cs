@@ -33,7 +33,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly HoldAidKitComponent _holdAidKitComponent;
         
         // Presenter
-        IPlayerBlockPresenter? _playerBlockPresenter;
+        IPlayerHoldablePresenter? _playerBlockPresenter;
         PlayerAidKitPresenterNet? _playerAidKitPresenter;
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
@@ -88,7 +88,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void ResetHoldingBlock()
         {
             var _ =  _holdingObjectContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
-            _playerBlockPresenter?.PutDownBlock();
+            _playerBlockPresenter?.DisableHoldableView();
             _playerAnimatorPresenter?.PutDownBlock();
         }
         
@@ -160,7 +160,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 block.PutDown(_info.PlayerController.GetMoveExecutorSwitcher);
                 // _map.AddEntity(forwardGridPos, block);
                 _map.GetSingleEntity<IBlockMonoDelegate>(targetPos)?.AddBlock(block);
-                _playerBlockPresenter?.PutDownBlock();
+                _playerBlockPresenter?.DisableHoldableView();
                 _playerAnimatorPresenter?.PutDownBlock();
             }
 
@@ -193,7 +193,14 @@ namespace Carry.CarrySystem.Player.Scripts
                 carriableBlock.PickUp(_info.PlayerController.GetMoveExecutorSwitcher,_info.PlayerController.GetHoldActionExecutor);
                 // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
                 _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
-                _playerBlockPresenter?.PickUpBlock(block);
+                if (carriableBlock is IHoldable holdable)
+                {
+                    _playerBlockPresenter?.EnableHoldableView(holdable);
+                }
+                else
+                {
+                    Debug.LogError($"carriableBlock is not IHoldable. carriableBlock : {carriableBlock}");
+                }
                 _playerAnimatorPresenter?.PickUpBlock(block);
                 _holdingObjectContainer.SetBlock(carriableBlock);
             }
@@ -203,7 +210,7 @@ namespace Carry.CarrySystem.Player.Scripts
             if (_holdingObjectContainer.IsHoldingAidKit)
             {
                 _holdingObjectContainer.PopAidKit();
-                if(_playerAidKitPresenter != null) _playerAidKitPresenter.DisableAidKit();
+                if(_playerAidKitPresenter != null) _playerAidKitPresenter.DisableHoldableView();
             }
 
             return true; // done picking up
@@ -260,7 +267,7 @@ namespace Carry.CarrySystem.Player.Scripts
             return gridPos + gridDirection;
         }
         
-        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
+        public void SetPlayerBlockPresenter(IPlayerHoldablePresenter presenter)
         {
             _playerBlockPresenter = presenter;
             Debug.Log($"_playerBlockPresenter : {presenter}");
