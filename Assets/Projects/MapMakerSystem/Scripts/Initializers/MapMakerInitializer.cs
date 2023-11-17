@@ -7,7 +7,7 @@ using Carry.CarrySystem.Spawners.Scripts;
 using UnityEngine;
 using VContainer;
 
-public class LocalCarryInitializer : MonoBehaviour
+public class MapMakerInitializer : MonoBehaviour
 {
     LocalPlayerSpawner _localPlayerSpawner;
     IMapSwitcher _editMapSwitcher;
@@ -30,7 +30,7 @@ public class LocalCarryInitializer : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.F1) )
         {
             Debug.Log($"CarryPlayerControllerLocalをスポーンします");
             _localPlayerSpawner.SpawnPlayer();

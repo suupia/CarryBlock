@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6111510551564807700}
   - component: {fileID: 3941324550163488809}
+  - component: {fileID: 4407346208256944053}
   m_Layer: 0
   m_Name: RoutePresenterLocal
   m_TagString: Untagged
@@ -46,6 +47,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   routeHighlightObject: {fileID: 2440805246477216562}
+--- !u!114 &4407346208256944053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471483195079549261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a442da429622dff4bb850c99f595a222, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2440805246477216562
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Scripts;
+#nullable enable
 
 namespace Carry.CarrySystem.Player.Interfaces
 {
@@ -10,7 +11,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         void Reset();
         void HoldAction();
 
-        public void PutDownBlock();
+        public void ResetHoldingBlock();
 
         // View
         public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter);

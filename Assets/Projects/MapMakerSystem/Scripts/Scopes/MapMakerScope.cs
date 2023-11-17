@@ -23,7 +23,7 @@ using VContainer.Unity;
 
 namespace Carry.ScopeSystem.Scripts
 {
-    public sealed class LocalCarryScope : LifetimeScope
+    public sealed class MapMakerScope : LifetimeScope
     {
         protected override void Configure(IContainerBuilder builder)
         {
@@ -50,7 +50,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
             
             // Initializer
-            builder.RegisterComponentInHierarchy<LocalCarryInitializer>();
+            builder.RegisterComponentInHierarchy<MapMakerInitializer>();
 
 
             // PrefabLoader 

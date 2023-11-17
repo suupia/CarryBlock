@@ -113,6 +113,8 @@ GameObject:
   - component: {fileID: 7061470108438375560}
   - component: {fileID: 7079931866435706535}
   - component: {fileID: 2231118965384139159}
+  - component: {fileID: -6805646373839638290}
+  - component: {fileID: 4332060113080605969}
   m_Layer: 6
   m_Name: CarryPlayerControllerLocal
   m_TagString: Player
@@ -205,6 +207,30 @@ MonoBehaviour:
   heavyBlockView: {fileID: 2913778499092219122}
   fragileBlockView: {fileID: 2262121077034716302}
   ConfusionBlockView: {fileID: 5287671346004568305}
+--- !u!114 &-6805646373839638290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4021678394862295774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a442da429622dff4bb850c99f595a222, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4332060113080605969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4021678394862295774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 355724ef55c04ad5a6e698d1ff46d89a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4631661150525023738
 GameObject:
   m_ObjectHideFlags: 0
