@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
         
-        PlayerAidKitPresenterNet? _playerAidKitPresenter;
+        IPlayerHoldablePresenter? _playerAidKitPresenter;
         AidKitRangeNet? _aidKitRangeNet;
         
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;  // 今は使用しない。なぜなら、AidKit取得に関係するアニメーションがないから
@@ -85,7 +85,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         
         // View
-        public void SetPlayerHoldablePresenter(PlayerAidKitPresenterNet presenter)
+        public void SetPlayerHoldablePresenter(IPlayerHoldablePresenter presenter)
         {
             _playerAidKitPresenter = presenter;
         }
