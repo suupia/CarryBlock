@@ -22,22 +22,11 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class HoldActionExecutor : IHoldActionExecutor
     {
-        EntityGridMap _map = null!;
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
 
         // Executor Component
         readonly HoldBlockComponent _holdBlockComponent;
         readonly HoldAidKitComponent _holdAidKitComponent;
-        
-
-        IDisposable? _searchBlockDisposable;
-
-        IBlockMonoDelegate? _searchedBlockMonoDelegate;
-        IList<IBlock > _searchedBlocks = new List<IBlock>();
-
-        AidKitRangeNet? _aidKitRangeNet;
-        
-
 
         public HoldActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer, 
