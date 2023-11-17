@@ -29,7 +29,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
 
         // Executor Component
-        readonly HoldBlockExecutorComponent _holdBlockExecutorComponent;
+        readonly HoldBlockComponent _holdBlockComponent;
         readonly HoldAidKitComponent _holdAidKitComponent;
         
         // Presenter
@@ -48,13 +48,13 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public HoldActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer, 
-            HoldBlockExecutorComponent holdBlockExecutorComponent,
+            HoldBlockComponent holdBlockComponent,
             HoldAidKitComponent holdAidKitComponent,
             PlayerNearCartHandlerNet playerNearCartHandler,  // todo: 後で消す
             IMapGetter mapGetter)
         {
             _holdingObjectContainer = holdingObjectContainer;
-            _holdBlockExecutorComponent = holdBlockExecutorComponent;
+            _holdBlockComponent = holdBlockComponent;
             _holdAidKitComponent = holdAidKitComponent;
             _playerNearCartHandler = playerNearCartHandler;
             _mapGetter = mapGetter;

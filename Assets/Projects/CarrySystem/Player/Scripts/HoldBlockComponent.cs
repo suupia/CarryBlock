@@ -1,0 +1,142 @@
+using System.Collections.Generic;
+using System.Linq;
+using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.CarriableBlock.Interfaces;
+using Carry.CarrySystem.Map.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
+using Carry.CarrySystem.Player.Info;
+using Carry.CarrySystem.Player.Interfaces;
+using UnityEngine;
+
+#nullable enable
+
+namespace Carry.CarrySystem.Player.Scripts
+{
+    public class HoldBlockComponent : IHoldableComponent
+    {       
+        PlayerInfo _info = null!;
+        readonly IMapGetter _mapGetter;
+        EntityGridMap _map = null!;
+        readonly PlayerHoldingObjectContainer _holdingObjectContainer;
+        
+        IBlockMonoDelegate? _searchedBlockMonoDelegate;
+        
+        IList<IBlock > _searchedBlocks = new List<IBlock>();
+
+
+        IPlayerHoldablePresenter? _playerBlockPresenter;
+        IPlayerHoldablePresenter? _playerAidKitPresenter;  // todo : この依存どうにかなる？
+        AidKitRangeNet? _aidKitRangeNet;
+        IPlayerAnimatorPresenter? _playerAnimatorPresenter;
+        
+        public void Setup(PlayerInfo info)
+        {
+            _info = info;
+        }
+
+        public void ResetHoldable()
+        {
+            var _ =  _holdingObjectContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
+            _playerBlockPresenter?.DisableHoldableView();
+            _playerAnimatorPresenter?.PutDownBlock();
+        }
+
+        public bool TryToPickUpHoldable()
+        {
+            return false;
+        }
+
+        // todo :　引数を消す
+        public bool TryToPickUpHoldable(Vector2Int forwardGridPos)
+        {
+            var blockMonoDelegate = _searchedBlockMonoDelegate;  // フレームごとに判定しているためここでキャッシュする
+            if(blockMonoDelegate?.Block == null)
+            {
+                Debug.Log($"blockMonoDelegate.Block : null");
+                return false;
+            }
+                
+            // Debug
+            Debug.Log($"before currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
+
+            var block = blockMonoDelegate.Block;
+            if(!( block is ICarriableBlock carriableBlock)) return false;
+            if (carriableBlock.CanPickUp())
+            {
+                Debug.Log($"remove currentBlockMonos");
+                carriableBlock.PickUp(_info.PlayerController.GetMoveExecutorSwitcher,_info.PlayerController.GetHoldActionExecutor);
+                // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
+                _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
+                if (carriableBlock is IHoldable holdable)
+                {
+                    _playerBlockPresenter?.EnableHoldableView(holdable);
+                }
+                else
+                {
+                    Debug.LogError($"carriableBlock is not IHoldable. carriableBlock : {carriableBlock}");
+                }
+                _playerAnimatorPresenter?.PickUpBlock(block);
+                _holdingObjectContainer.SetBlock(carriableBlock);
+            }
+            Debug.Log($"after currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
+            
+            // もしAidKitを持っていたらブロックで上書きする
+            if (_holdingObjectContainer.IsHoldingAidKit)
+            {
+                _holdingObjectContainer.PopAidKit();
+                if(_playerAidKitPresenter != null) _playerAidKitPresenter.DisableHoldableView();
+            }
+
+            return true; // done picking up
+        }
+
+        public bool TryToUseHoldable()
+        {
+            return false;
+        }
+        
+        // todo :　引数を消す
+        public bool TryToUseHoldable(Vector2Int targetPos)
+        {
+            // マップの内部かどうかを判定
+            if(!_map.IsInDataRangeArea(targetPos))return false;
+                
+            // if there is a non carriable block in front of a player, do nothing
+            if (_searchedBlocks.Any(x => !(x is ICarriableBlock)))
+            {
+                Debug.Log($"There is a non carriable block in front of a player");
+                return false;
+            }
+            var carriableBlocks = _searchedBlocks.OfType<ICarriableBlock>().ToList();
+                
+            Debug.Log($"CanPutDown : {_holdingObjectContainer.CanPutDown(carriableBlocks)}");
+            if (_holdingObjectContainer.CanPutDown(carriableBlocks))
+            {
+                var block = _holdingObjectContainer.PopBlock();
+                if (block == null)
+                {
+                    Debug.LogError($" _blockContainer.PopBlock() : null"); // IsHoldingBlockがtrueのときはnullにならないから呼ばれないはず
+                    return false;
+                }
+                block.PutDown(_info.PlayerController.GetMoveExecutorSwitcher);
+                // _map.AddEntity(forwardGridPos, block);
+                _map.GetSingleEntity<IBlockMonoDelegate>(targetPos)?.AddBlock(block);
+                _playerBlockPresenter?.DisableHoldableView();
+                _playerAnimatorPresenter?.PutDownBlock();
+            }
+
+            return true;
+        }
+        // View
+        public void SetPlayerHoldablePresenter(IPlayerHoldablePresenter presenter)
+        {
+            
+        }
+        // Animator
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
+        {
+            
+        }
+
+    }
+}
