@@ -193,7 +193,14 @@ namespace Carry.CarrySystem.Player.Scripts
                 carriableBlock.PickUp(_info.PlayerController.GetMoveExecutorSwitcher,_info.PlayerController.GetHoldActionExecutor);
                 // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
                 _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
-                _playerBlockPresenter?.EnableHoldableView(block);
+                if (carriableBlock is IHoldable holdable)
+                {
+                    _playerBlockPresenter?.EnableHoldableView(holdable);
+                }
+                else
+                {
+                    Debug.LogError($"carriableBlock is not IHoldable. carriableBlock : {carriableBlock}");
+                }
                 _playerAnimatorPresenter?.PickUpBlock(block);
                 _holdingObjectContainer.SetBlock(carriableBlock);
             }

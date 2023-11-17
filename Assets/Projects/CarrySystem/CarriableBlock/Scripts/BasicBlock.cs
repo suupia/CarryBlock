@@ -18,7 +18,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         public BasicBlock.Kind[] kinds = new BasicBlock.Kind[10];
     }
 
-    public class BasicBlock : ICarriableBlock
+    public class BasicBlock : ICarriableBlock, IHoldable
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 2;

@@ -75,7 +75,14 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log("Receive Pass");
             block.PickUp(_info.PlayerController.GetMoveExecutorSwitcher, _info.PlayerController.GetHoldActionExecutor);
             _holdingObjectContainer.SetBlock(block);
-            _playerBlockPresenter?.EnableHoldableView(block);
+            if (block is IHoldable holdable)
+            {
+                _playerBlockPresenter?.EnableHoldableView(holdable);
+            }
+            else
+            {
+                Debug.LogError($"block is not IHoldable. block : {block}");
+            }
             _playerAnimatorPresenter?.ReceiveBlock(block);
         }
         

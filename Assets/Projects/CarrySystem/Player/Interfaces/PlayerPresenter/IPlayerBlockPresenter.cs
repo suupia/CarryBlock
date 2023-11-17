@@ -4,7 +4,7 @@ namespace Carry.CarrySystem.Player.Interfaces
 {
     public interface IPlayerBlockPresenter
     {
-        public void EnableHoldableView(IBlock block);
+        public void EnableHoldableView(IHoldable holdable);
         public void DisableHoldableView();
 
     }

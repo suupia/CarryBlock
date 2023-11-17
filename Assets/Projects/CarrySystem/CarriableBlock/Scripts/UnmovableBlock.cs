@@ -19,7 +19,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         public UnmovableBlock.Kind[] kinds =new UnmovableBlock.Kind[5];
     }
     
-    public class UnmovableBlock : ICarriableBlock
+    public class UnmovableBlock : ICarriableBlock, IHoldable
     {
         public Vector2Int GridPosition { get; set; }
         public　int MaxPlacedBlockCount { get; } = 1;

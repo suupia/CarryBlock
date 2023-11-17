@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
     {
         public ConfusionBlock.Kind[] kinds = new ConfusionBlock.Kind[10];
     }
-    public class ConfusionBlock : ICarriableBlock
+    public class ConfusionBlock : ICarriableBlock , IHoldable
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 1;

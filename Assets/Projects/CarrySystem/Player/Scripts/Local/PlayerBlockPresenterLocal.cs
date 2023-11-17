@@ -83,10 +83,9 @@ namespace Projects.CarrySystem.Player.Scripts.Local
 
         // ホストのみで呼ばれることに注意
         // 以下の処理はアニメーション、音、エフェクトの再生を行いたくなったら、それぞれのクラスの対応するメソッドを呼ぶようにするかも
-        public void EnableHoldableView(IBlock block)
+        public void EnableHoldableView(IHoldable holdable)
         {
-            Debug.Log($"PlayerBlockPresenterNet.PickUpBlock()");
-            _presentData.HoldingBlockType = DecideBlockType(block);
+            _presentData.HoldingBlockType = DecideBlockType(holdable);
         }
 
         public void DisableHoldableView()
@@ -94,16 +93,16 @@ namespace Projects.CarrySystem.Player.Scripts.Local
             _presentData.HoldingBlockType = BlockType.None;
         }
 
-        BlockType DecideBlockType(IBlock block)
+        BlockType DecideBlockType(IHoldable holdable)
         {
-            var blockType  = block switch
+            var blockType  = holdable switch
             {
                 BasicBlock _ => BlockType.BasicBlock,
                 UnmovableBlock _ => BlockType.UnmovableBlock,
                 HeavyBlock _ => BlockType.HeavyBlock,
                 FragileBlock _ => BlockType.FragileBlock,
                 ConfusionBlock _ => BlockType.ConfusionBlock,
-                _ => throw new ArgumentOutOfRangeException(nameof(block), block, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(holdable), holdable, null)
             };
             return blockType;
         }
