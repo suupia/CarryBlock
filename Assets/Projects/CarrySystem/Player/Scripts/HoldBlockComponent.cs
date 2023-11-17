@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
@@ -6,6 +7,7 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
+using UniRx;
 using UnityEngine;
 
 #nullable enable
@@ -15,23 +17,39 @@ namespace Carry.CarrySystem.Player.Scripts
     public class HoldBlockComponent : IHoldableComponent
     {       
         PlayerInfo _info = null!;
-        readonly IMapGetter _mapGetter;
         EntityGridMap _map = null!;
-        readonly PlayerHoldingObjectContainer _holdingObjectContainer;
-        
+        AidKitRangeNet? _aidKitRangeNet;
         IBlockMonoDelegate? _searchedBlockMonoDelegate;
-        
         IList<IBlock > _searchedBlocks = new List<IBlock>();
+        IDisposable? _searchBlockDisposable;
 
+        
+        readonly IMapGetter _mapGetter;
+        readonly PlayerHoldingObjectContainer _holdingObjectContainer;
 
+        // Presenter
         IPlayerHoldablePresenter? _playerBlockPresenter;
         IPlayerHoldablePresenter? _playerAidKitPresenter;  // todo : この依存どうにかなる？
-        AidKitRangeNet? _aidKitRangeNet;
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
+
+        public HoldBlockComponent(
+            PlayerHoldingObjectContainer holdingObjectContainer,
+            IMapGetter mapGetter)
+        {
+            _holdingObjectContainer = holdingObjectContainer;
+            _mapGetter = mapGetter;
+        }
         
         public void Setup(PlayerInfo info)
         {
             _info = info;
+            _map = _mapGetter.GetMap();
+            
+            _searchBlockDisposable?.Dispose();
+            _searchBlockDisposable = Observable.EveryUpdate().Subscribe(_ =>
+            {
+                SearchBlocks();
+            });
         }
 
         public void ResetHoldable()
@@ -39,6 +57,8 @@ namespace Carry.CarrySystem.Player.Scripts
             var _ =  _holdingObjectContainer.PopBlock(); // Hold中のBlockがあれば取り出して削除
             _playerBlockPresenter?.DisableHoldableView();
             _playerAnimatorPresenter?.PutDownBlock();
+            
+            _map = _mapGetter.GetMap(); // Resetが呼ばれる時点でMapが切り替わっている可能性があるため、再取得
         }
 
         public bool TryToPickUpHoldable()
@@ -127,15 +147,61 @@ namespace Carry.CarrySystem.Player.Scripts
 
             return true;
         }
+        
+        void SearchBlocks()
+        {
+            if (_info.PlayerObj == null) return; // EveryUpdateで呼ぶため、playerObjが破棄された後にも呼ばれる可能性がある
+            var transform = _info.PlayerObj.transform;
+            var forwardGridPos = GetForwardGridPos(transform);
+
+            // 前方のMonoBlockDelegateを取得
+            var blockMonoDelegate = _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos);
+
+            _searchedBlockMonoDelegate = blockMonoDelegate;
+            
+            if (blockMonoDelegate == null) return;
+
+            // Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
+
+            // _searchedBlockを更新
+            _searchedBlocks = blockMonoDelegate.Blocks.OfType<IBlock>().ToList();
+
+            // ハイライトの処理
+            var block = blockMonoDelegate?.Block;
+            if( block is not ICarriableBlock carriableBlock) return;
+            if (_holdingObjectContainer.IsHoldingBlock)
+            {
+                var carriableBlocks = _searchedBlocks.OfType<ICarriableBlock>().ToList();
+                if (!carriableBlock.CanPutDown(carriableBlocks)) return;
+            }
+            else
+            {
+                if(!carriableBlock.CanPickUp())return;
+            }
+            blockMonoDelegate?.Highlight(blockMonoDelegate.Block, _info.PlayerRef); // ハイライトの処理
+
+        }
+        
+        Vector2Int GetForwardGridPos(Transform transform)
+        {
+            var gridPos = GridConverter.WorldPositionToGridPosition(transform.position);
+            var forward = transform.forward;
+            var direction = new Vector2(forward.x, forward.z);
+            var gridDirection = GridConverter.WorldDirectionToGridDirection(direction);
+            return gridPos + gridDirection;
+        }
+        
         // View
         public void SetPlayerHoldablePresenter(IPlayerHoldablePresenter presenter)
         {
-            
+            _playerBlockPresenter = presenter;
         }
+        
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
-            
+            _playerAnimatorPresenter = presenter;
+
         }
 
     }
