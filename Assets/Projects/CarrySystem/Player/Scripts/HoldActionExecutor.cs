@@ -33,7 +33,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly HoldAidKitComponent _holdAidKitComponent;
         
         // Presenter
-        IPlayerBlockPresenter? _playerBlockPresenter;
+        IPlayerHoldablePresenter? _playerBlockPresenter;
         PlayerAidKitPresenterNet? _playerAidKitPresenter;
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
@@ -267,7 +267,7 @@ namespace Carry.CarrySystem.Player.Scripts
             return gridPos + gridDirection;
         }
         
-        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
+        public void SetPlayerBlockPresenter(IPlayerHoldablePresenter presenter)
         {
             _playerBlockPresenter = presenter;
             Debug.Log($"_playerBlockPresenter : {presenter}");

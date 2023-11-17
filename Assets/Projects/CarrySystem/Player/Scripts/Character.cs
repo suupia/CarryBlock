@@ -74,7 +74,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         // HoldActionExecutor
         public void ResetHoldingBlock() => _holdActionExecutor.ResetHoldingBlock();
-        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
+        public void SetPlayerBlockPresenter(IPlayerHoldablePresenter presenter)
         {
             _holdActionExecutor.SetPlayerBlockPresenter(presenter);
             _passActionExecutor.SetPlayerBlockPresenter(presenter);

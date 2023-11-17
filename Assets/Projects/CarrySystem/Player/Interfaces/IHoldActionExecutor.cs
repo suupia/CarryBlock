@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         public void ResetHoldingBlock();
 
         // View
-        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter);
+        public void SetPlayerBlockPresenter(IPlayerHoldablePresenter presenter);
         public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter);
         
         // Animator

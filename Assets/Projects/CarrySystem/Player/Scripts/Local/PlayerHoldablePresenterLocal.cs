@@ -1,29 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Block.Interfaces;
-using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
-using Carry.CarrySystem.Entity.Interfaces;
-using Carry.CarrySystem.Map.Scripts;
-using UnityEngine;
-using Fusion;
-using Carry.CarrySystem.Map.Interfaces;
-using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
-using UnityEngine.Serialization;
-using VContainer;
+using Carry.CarrySystem.Player.Scripts;
+using Fusion;
+using UnityEngine;
 #nullable enable
 
-
-namespace Carry.CarrySystem.Player.Scripts
+namespace Projects.CarrySystem.Player.Scripts.Local
 {
-    [RequireComponent(typeof(CarryPlayerControllerNet))]
-    public class PlayerBlockPresenterNet : NetworkBehaviour, IPlayerBlockPresenter
+    [RequireComponent(typeof(CarryPlayerControllerLocal))]
+    public class PlayerHoldablePresenterLocal : MonoBehaviour, IPlayerHoldablePresenter
     {
-        // Presenter系のクラスはホストとクライアントで状態を一致させるためにNetworkedプロパティを持つので、
-        // ドメインの情報を持ってはいけない
-        
         /// <summary>
         /// switch文ではなるべく使用しないようにする。代わりにパターンマッチングを使う
         /// HoldingBlockTypeのためにinternalにしているが他のクラスでは使用しないようにする
@@ -37,13 +26,13 @@ namespace Carry.CarrySystem.Player.Scripts
             FragileBlock,
             ConfusionBlock
         }
-        struct PresentData : INetworkStruct
+        struct PresentData
         {
-            internal BlockType HoldingBlockType { get; set; }
+           internal BlockType HoldingBlockType { get; set; }
         }
         Dictionary<BlockType, GameObject> blockTypeToGameObjectMap = new Dictionary<BlockType, GameObject>();
 
-        [Networked] ref PresentData PresentDataRef => ref MakeRef<PresentData>();
+        PresentData _presentData = new PresentData();
 
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
         [SerializeField] GameObject basicBlockView= null!;
@@ -56,7 +45,7 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log($"PlayerBlockPresenterNet.Init()");
             holdActionExecutor.SetPlayerBlockPresenter(this);
             passActionExecutor.SetPlayerBlockPresenter(this);
-            PresentDataRef.HoldingBlockType = BlockType.None;
+            _presentData.HoldingBlockType = BlockType.None;
         }
 
         public void Awake()
@@ -76,9 +65,9 @@ namespace Carry.CarrySystem.Player.Scripts
             ConfusionBlockView.GetComponent<Collider>().enabled = false;
         }
 
-        public override void Render()
+        void Update() 
         {
-            BlockType currentBlockType = PresentDataRef.HoldingBlockType;
+            BlockType currentBlockType = _presentData.HoldingBlockType;
 
             foreach (var blockType in blockTypeToGameObjectMap.Keys)
             {
@@ -96,15 +85,13 @@ namespace Carry.CarrySystem.Player.Scripts
         // 以下の処理はアニメーション、音、エフェクトの再生を行いたくなったら、それぞれのクラスの対応するメソッドを呼ぶようにするかも
         public void EnableHoldableView(IHoldable holdable)
         {
-            Debug.Log($"PlayerBlockPresenterNet.PickUpBlock()");
-            PresentDataRef.HoldingBlockType = DecideBlockType(holdable);
+            _presentData.HoldingBlockType = DecideBlockType(holdable);
         }
 
         public void DisableHoldableView()
         {
-            PresentDataRef.HoldingBlockType = BlockType.None;
+            _presentData.HoldingBlockType = BlockType.None;
         }
-        
 
         BlockType DecideBlockType(IHoldable holdable)
         {

@@ -74,7 +74,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     networkObj.GetComponent<CarryPlayerControllerNet>().Init(character.PlayerHoldingObjectContainer,
                         character, character, character, character, character, colorType, _mapSwitcher, _mapGetter,
                         _playerNearCartHandler, _playerCharacterTransporter, _floorTimerNet);
-                    networkObj.GetComponent<PlayerBlockPresenterNet>()?.Init(character, character);
+                    networkObj.GetComponent<PlayerHoldablePresenterNet>()?.Init(character, character);
                     networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()
                         ?.Init(character, character, character, character);

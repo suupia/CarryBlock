@@ -19,7 +19,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PassWaitExecutor _passWaitExecutor;
         
         // Presenter
-        IPlayerBlockPresenter? _playerBlockPresenter;
+        IPlayerHoldablePresenter? _playerBlockPresenter;
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
         PassRangeNet? _passRangeNet;
@@ -116,7 +116,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         
         // Presenter
-        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
+        public void SetPlayerBlockPresenter(IPlayerHoldablePresenter presenter)
         {
             _playerBlockPresenter = presenter;
         }
