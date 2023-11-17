@@ -30,7 +30,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         // Executor Component
         readonly HoldBlockExecutorComponent _holdBlockExecutorComponent;
-        readonly HoldAidKitExecutorComponent _holdAidKitExecutorComponent;
+        readonly HoldAidKitComponent _holdAidKitComponent;
         
         // Presenter
         IPlayerBlockPresenter? _playerBlockPresenter;
@@ -49,13 +49,13 @@ namespace Carry.CarrySystem.Player.Scripts
         public HoldActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer, 
             HoldBlockExecutorComponent holdBlockExecutorComponent,
-            HoldAidKitExecutorComponent holdAidKitExecutorComponent,
+            HoldAidKitComponent holdAidKitComponent,
             PlayerNearCartHandlerNet playerNearCartHandler,  // todo: 後で消す
             IMapGetter mapGetter)
         {
             _holdingObjectContainer = holdingObjectContainer;
             _holdBlockExecutorComponent = holdBlockExecutorComponent;
-            _holdAidKitExecutorComponent = holdAidKitExecutorComponent;
+            _holdAidKitComponent = holdAidKitComponent;
             _playerNearCartHandler = playerNearCartHandler;
             _mapGetter = mapGetter;
         }
@@ -65,7 +65,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _info = info;
             _map = _mapGetter.GetMap();
             
-            _holdAidKitExecutorComponent.Setup(info);
+            _holdAidKitComponent.Setup(info);
 
             _searchBlockDisposable?.Dispose();
             _searchBlockDisposable = Observable.EveryUpdate().Subscribe(_ =>
@@ -94,7 +94,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         void ResetHoldingAidKit()
         {
-            _holdAidKitExecutorComponent.ResetHoldingAidKit();
+            _holdAidKitComponent.ResetHoldable();
         }
         
         public void HoldAction()
@@ -169,7 +169,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         bool TryToUseAidKit()
         {
-            return _holdAidKitExecutorComponent.TryToUseAidKit();
+            return _holdAidKitComponent.TryToUseHoldable();
         }
         
 
@@ -212,7 +212,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         bool TryToPickUpAidKit()
         {
-            return _holdAidKitExecutorComponent.TryToPickUp();
+            return _holdAidKitComponent.TryToPickUpHoldable();
 
         }
 
@@ -269,13 +269,13 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
         {
             _playerAidKitPresenter = presenter;
-            _holdAidKitExecutorComponent.SetPlayerAidKitPresenter(presenter);
+            _holdAidKitComponent.SetPlayerHoldablePresenter(presenter);
 
         }
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
             _playerAnimatorPresenter = presenter;
-            _holdAidKitExecutorComponent.SetPlayerAnimatorPresenter(presenter);
+            _holdAidKitComponent.SetPlayerAnimatorPresenter(presenter);
         }
         
     }

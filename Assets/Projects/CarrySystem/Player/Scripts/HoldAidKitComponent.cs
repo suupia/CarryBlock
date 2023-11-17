@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class HoldAidKitExecutorComponent
+    public class HoldAidKitComponent : IHoldableComponent
     {
         PlayerInfo _info = null!;
 
@@ -16,9 +16,11 @@ namespace Carry.CarrySystem.Player.Scripts
         
         PlayerAidKitPresenterNet? _playerAidKitPresenter;
         AidKitRangeNet? _aidKitRangeNet;
+        
+        IPlayerAnimatorPresenter? _playerAnimatorPresenter;  // 今は使用しない。なぜなら、AidKit取得に関係するアニメーションがないから
 
 
-        public HoldAidKitExecutorComponent(
+        public HoldAidKitComponent(
             PlayerHoldingObjectContainer holdingObjectContainer,
             PlayerNearCartHandlerNet playerNearCartHandler)
         {
@@ -31,12 +33,12 @@ namespace Carry.CarrySystem.Player.Scripts
             _info = info;
         }
         
-        public void ResetHoldingAidKit()
+        public void ResetHoldable()
         {
             _holdingObjectContainer.PopAidKit();
             if (_playerAidKitPresenter != null) _playerAidKitPresenter.DisableAidKit();
         }
-        public bool TryToPickUp()
+        public bool TryToPickUpHoldable()
         {
             // もしカートの近くにいれば、AidKitを拾う
             if (_playerNearCartHandler.IsNearCart(_info.PlayerObj))
@@ -51,7 +53,7 @@ namespace Carry.CarrySystem.Player.Scripts
             return false;
         }
 
-        public bool TryToUseAidKit()
+        public bool TryToUseHoldable()
         {
             // もし倒れているキャラが近くにいれば、AidKitを使う
             // 1. PlayerControllerを取得
@@ -83,7 +85,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         
         // View
-        public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
+        public void SetPlayerHoldablePresenter(PlayerAidKitPresenterNet presenter)
         {
             _playerAidKitPresenter = presenter;
         }
@@ -91,7 +93,7 @@ namespace Carry.CarrySystem.Player.Scripts
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
-            
+            _playerAnimatorPresenter = presenter;
         }
     }
 }
