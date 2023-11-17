@@ -28,7 +28,6 @@ namespace Carry.CarrySystem.Block.Scripts
          public IList<IItem> Items => _items;
          public IList<IGimmick> Gimmicks => _gimmicks;
 
-         readonly NetworkRunner _runner;
          readonly IList<IBlock> _blocks;
          readonly IList<BlockInfo> _blockInfos;
          readonly IList<IItem> _items;
@@ -43,7 +42,6 @@ namespace Carry.CarrySystem.Block.Scripts
          Vector2Int _gridPosition;
         
          public BlockMonoDelegate(
-             NetworkRunner runner,
              Vector2Int gridPos,
              IList<IBlock> blocks,
              IList<BlockInfo> blockInfos,
@@ -53,7 +51,6 @@ namespace Carry.CarrySystem.Block.Scripts
              IList<GimmickInfo> gimmickInfos,
              IEntityPresenter entityPresenter)
          {
-             _runner = runner;
              _gridPosition = gridPos;
              _blocks = blocks;
              _blockInfos = blockInfos;
@@ -68,7 +65,7 @@ namespace Carry.CarrySystem.Block.Scripts
              // 最初のStartGimmickの処理
              foreach (var gimmick in gimmicks)
              {
-                 gimmick.StartGimmick(runner);
+                 gimmick.StartGimmick();
              }
              
              // 代表として最初のBlockControllerの親に対してOnDestroyAsObservableを登録
@@ -77,7 +74,7 @@ namespace Carry.CarrySystem.Block.Scripts
              {
                  foreach (var gimmick in _blocks.OfType<IGimmick>())
                  {
-                     gimmick.EndGimmick(runner);
+                     gimmick.EndGimmick();
                  }
              });
              
@@ -87,14 +84,14 @@ namespace Carry.CarrySystem.Block.Scripts
 
          public void AddBlock(IBlock block)
          {
-             if(block is IGimmick gimmickBlock) gimmickBlock.StartGimmick(_runner);
+             if(block is IGimmick gimmickBlock) gimmickBlock.StartGimmick();
              _blocks.Add(block);
             _entityPresenter.SetEntityActiveData(block, _blocks.Count);
 
          }
          public void RemoveBlock(IBlock block)
          {
-             if(block is IGimmick gimmickBlock) gimmickBlock.EndGimmick(_runner);
+             if(block is IGimmick gimmickBlock) gimmickBlock.EndGimmick();
              _blocks.Remove(block);
              _entityPresenter.SetEntityActiveData(block, _blocks.Count);
 

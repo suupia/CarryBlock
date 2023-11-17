@@ -78,7 +78,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 
                 var blockMonoDelegate =
                     new BlockMonoDelegate(
-                        _runner, gridPos, 
+                            gridPos, 
                         checkedBlocks, blockInfos,
                         items, itemInfos,
                         gimmicks, gimmickInfos,
