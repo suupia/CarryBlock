@@ -25,24 +25,24 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
 
         // Executor Component
-        readonly HoldBlockComponent _holdBlockComponent;
-        readonly HoldAidKitComponent _holdAidKitComponent;
+        readonly HoldBlockActionComponent _holdBlockActionComponent;
+        readonly HoldAidKitActionComponent _holdAidKitActionComponent;
 
         public HoldActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer, 
-            HoldBlockComponent holdBlockComponent,
-            HoldAidKitComponent holdAidKitComponent
+            HoldBlockActionComponent holdBlockActionComponent,
+            HoldAidKitActionComponent holdAidKitActionComponent
             )
         {
             _holdingObjectContainer = holdingObjectContainer;
-            _holdBlockComponent = holdBlockComponent;
-            _holdAidKitComponent = holdAidKitComponent;
+            _holdBlockActionComponent = holdBlockActionComponent;
+            _holdAidKitActionComponent = holdAidKitActionComponent;
         }
 
         public void Setup(PlayerInfo info)
         {
-            _holdBlockComponent.Setup(info);
-            _holdAidKitComponent.Setup(info);
+            _holdBlockActionComponent.Setup(info);
+            _holdAidKitActionComponent.Setup(info);
             
         }
 
@@ -58,12 +58,12 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void ResetHoldingBlock()
         {
-           _holdBlockComponent.ResetHoldable();
+           _holdBlockActionComponent.ResetHoldable();
         }
         
         void ResetHoldingAidKit()
         {
-            _holdAidKitComponent.ResetHoldable();
+            _holdAidKitActionComponent.ResetHoldable();
         }
         
         public void HoldAction()
@@ -102,42 +102,42 @@ namespace Carry.CarrySystem.Player.Scripts
 
         bool TryToPutDownBlock( )
         {
-           return _holdBlockComponent.TryToUseHoldable();
+           return _holdBlockActionComponent.TryToUseHoldable();
         }
 
         bool TryToUseAidKit()
         {
-            return _holdAidKitComponent.TryToUseHoldable();
+            return _holdAidKitActionComponent.TryToUseHoldable();
         }
         
 
         bool TryToPickUpBlock( )
         {
-            return _holdBlockComponent.TryToPickUpHoldable();
+            return _holdBlockActionComponent.TryToPickUpHoldable();
 
         }
         
         bool TryToPickUpAidKit()
         {
-            return _holdAidKitComponent.TryToPickUpHoldable();
+            return _holdAidKitActionComponent.TryToPickUpHoldable();
         }
         
         // Presenter
 
         public void SetPlayerBlockPresenter(IPlayerHoldablePresenter presenter)
         {
-             _holdBlockComponent.SetPlayerHoldablePresenter(presenter);
+             _holdBlockActionComponent.SetPlayerHoldablePresenter(presenter);
         }
 
         public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
         {
-            _holdAidKitComponent.SetPlayerHoldablePresenter(presenter);
+            _holdAidKitActionComponent.SetPlayerHoldablePresenter(presenter);
 
         }
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
-            _holdBlockComponent.SetPlayerAnimatorPresenter(presenter);
-            _holdAidKitComponent.SetPlayerAnimatorPresenter(presenter);
+            _holdBlockActionComponent.SetPlayerAnimatorPresenter(presenter);
+            _holdAidKitActionComponent.SetPlayerAnimatorPresenter(presenter);
         }
         
     }

@@ -33,8 +33,8 @@ namespace Projects.CarrySystem.Player.Scripts.Local
             // IHoldActionExecutor
             _holdingBlockObserver.RegisterHoldAction(blockContainer);
             var playerNearCartHandler = new PlayerNearCartHandlerNet();  // todo:この依存を消したい。とりあえず、newでエラーを回避
-            var holdBlockExe = new HoldBlockComponent(blockContainer,_mapGetter);
-            var holdAidKitExe = new HoldAidKitComponent(blockContainer, playerNearCartHandler);
+            var holdBlockExe = new HoldBlockActionComponent(blockContainer,_mapGetter);
+            var holdAidKitExe = new HoldAidKitActionComponent(blockContainer, playerNearCartHandler);
             var holdActionExecutor =new HoldActionExecutor(blockContainer,holdBlockExe, holdAidKitExe );  //todo: new はエラー回避のため一時的に使用
             
             // IOnDamageExecutor

@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class HoldBlockComponent : IHoldableComponent
+    public class HoldBlockActionComponent : IHoldableActionComponent
     {       
         PlayerInfo _info = null!;
         EntityGridMap _map = null!;
@@ -32,7 +32,7 @@ namespace Carry.CarrySystem.Player.Scripts
         IPlayerHoldablePresenter? _playerAidKitPresenter;  // todo : この依存どうにかなる？
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
-        public HoldBlockComponent(
+        public HoldBlockActionComponent(
             PlayerHoldingObjectContainer holdingObjectContainer,
             IMapGetter mapGetter)
         {
