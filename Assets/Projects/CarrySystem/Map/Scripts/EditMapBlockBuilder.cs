@@ -27,7 +27,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
 
         // CarryBuilderと対応させてある。
-        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList<IEntityPresenter>) Build (ref EntityGridMap map)
+        public (IReadOnlyList< BlockControllerNet>,IReadOnlyList<IEntityPresenter>) Build (EntityGridMap map)
         {
             var blockControllers = new List<BlockControllerNet>();
             var blockPresenters = new List<IEntityPresenter>();
