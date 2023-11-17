@@ -40,7 +40,9 @@ namespace Carry.CarrySystem.Player.Scripts
             _holdingBlockObserver.RegisterHoldAction(blockContainer);
             var holdBlockExe = new HoldBlockActionComponent(blockContainer, _mapGetter);
             var holdAidKitExe = new HoldAidKitActionComponent(blockContainer, _playerNearCartHandler);
-            var holdActionExecutor =new HoldActionExecutor(blockContainer,holdBlockExe, holdAidKitExe);
+            var holdActionExecutor =new HoldActionExecutor(blockContainer);
+            holdActionExecutor.RegisterHoldBlockActionComponent(holdBlockExe);
+            holdActionExecutor.RegisterHoldAidKitActionComponent(holdAidKitExe);
             
             // IOnDamageExecutor
             var onDamageExecutor = new OnDamageExecutor(moveExecutorSwitcher, _playerCharacterTransporter);

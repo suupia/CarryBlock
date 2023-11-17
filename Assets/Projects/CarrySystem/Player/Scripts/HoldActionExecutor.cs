@@ -25,24 +25,31 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
 
         // Executor Component
-        readonly HoldBlockActionComponent _holdBlockActionComponent;
-        readonly HoldAidKitActionComponent _holdAidKitActionComponent;
-
+        IHoldableActionComponent _holdBlockActionComponent = null!;  // 今のゲームのシステムだとブロックを持たないプレイヤーはない
+        IHoldableActionComponent?  _holdAidKitActionComponent; 
+        // 本当はリストで保持して、foreachで回したいが、IHoldableとIHoldableActionComponentの具象クラスを紐づけるのが手間なため、とりあえずnullableで乗り切る
+        
         public HoldActionExecutor(
-            PlayerHoldingObjectContainer holdingObjectContainer, 
-            HoldBlockActionComponent holdBlockActionComponent,
-            HoldAidKitActionComponent holdAidKitActionComponent
-            )
+            PlayerHoldingObjectContainer holdingObjectContainer
+        )
         {
             _holdingObjectContainer = holdingObjectContainer;
-            _holdBlockActionComponent = holdBlockActionComponent;
-            _holdAidKitActionComponent = holdAidKitActionComponent;
+        }
+
+        public void RegisterHoldBlockActionComponent(IHoldableActionComponent holdableActionComponent)
+        {
+            _holdBlockActionComponent = holdableActionComponent;
+        }
+        
+        public void RegisterHoldAidKitActionComponent(IHoldableActionComponent holdableActionComponent)
+        {
+            _holdAidKitActionComponent = holdableActionComponent;
         }
 
         public void Setup(PlayerInfo info)
         {
             _holdBlockActionComponent.Setup(info);
-            _holdAidKitActionComponent.Setup(info);
+            _holdAidKitActionComponent?.Setup(info);
             
         }
 
@@ -63,7 +70,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         void ResetHoldingAidKit()
         {
-            _holdAidKitActionComponent.ResetHoldable();
+            _holdAidKitActionComponent?.ResetHoldable();
         }
         
         public void HoldAction()
@@ -107,7 +114,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         bool TryToUseAidKit()
         {
-            return _holdAidKitActionComponent.TryToUseHoldable();
+            return _holdAidKitActionComponent?.TryToUseHoldable() ?? false; 
         }
         
 
@@ -119,7 +126,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         bool TryToPickUpAidKit()
         {
-            return _holdAidKitActionComponent.TryToPickUpHoldable();
+            return _holdAidKitActionComponent?.TryToPickUpHoldable() ?? false;
         }
         
         // Presenter
@@ -131,13 +138,13 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void SetPlayerAidKitPresenter(PlayerAidKitPresenterNet presenter)
         {
-            _holdAidKitActionComponent.SetPlayerHoldablePresenter(presenter);
+            _holdAidKitActionComponent?.SetPlayerHoldablePresenter(presenter);
 
         }
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
             _holdBlockActionComponent.SetPlayerAnimatorPresenter(presenter);
-            _holdAidKitActionComponent.SetPlayerAnimatorPresenter(presenter);
+            _holdAidKitActionComponent?.SetPlayerAnimatorPresenter(presenter);
         }
         
     }
