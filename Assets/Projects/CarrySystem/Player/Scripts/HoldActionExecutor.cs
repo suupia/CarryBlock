@@ -27,6 +27,10 @@ namespace Carry.CarrySystem.Player.Scripts
         EntityGridMap _map = null!;
         readonly PlayerHoldingObjectContainer _holdingObjectContainer;
         readonly PlayerNearCartHandlerNet _playerNearCartHandler;
+
+        // Executor Component
+        readonly HoldBlockExecutorComponent _holdBlockExecutorComponent;
+        readonly HoldAidKitExecutorComponent _holdAidKitExecutorComponent;
         
         // Presenter
         IPlayerBlockPresenter? _playerBlockPresenter;
@@ -39,13 +43,19 @@ namespace Carry.CarrySystem.Player.Scripts
         IList<IBlock > _searchedBlocks = new List<IBlock>();
 
         AidKitRangeNet? _aidKitRangeNet;
+        
+
 
         public HoldActionExecutor(
             PlayerHoldingObjectContainer holdingObjectContainer, 
-            PlayerNearCartHandlerNet playerNearCartHandler,
+            HoldBlockExecutorComponent holdBlockExecutorComponent,
+            HoldAidKitExecutorComponent holdAidKitExecutorComponent,
+            PlayerNearCartHandlerNet playerNearCartHandler,  // todo: 後で消す
             IMapGetter mapGetter)
         {
             _holdingObjectContainer = holdingObjectContainer;
+            _holdBlockExecutorComponent = holdBlockExecutorComponent;
+            _holdAidKitExecutorComponent = holdAidKitExecutorComponent;
             _playerNearCartHandler = playerNearCartHandler;
             _mapGetter = mapGetter;
         }
@@ -238,6 +248,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 if(_playerAidKitPresenter != null) _playerAidKitPresenter.PickUpAidKit();
             }
             return false;
+
         }
 
         void SearchBlocks()
