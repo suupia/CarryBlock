@@ -21,6 +21,7 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EntityPresenterLocal : MonoBehaviour, IEntityPresenter
     {
+        public MonoBehaviour GetMonoBehaviour => this; 
         [SerializeField] GameObject basicBlockView = null!;
         [SerializeField] GameObject doubleBasicBlockView = null!;
         [SerializeField] GameObject unmovableBlockView = null!;

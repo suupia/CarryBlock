@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
+using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
@@ -149,7 +150,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var forwardGridPos = GetForwardGridPos(transform);
 
             // 前方のMonoBlockDelegateを取得
-            var blockMonoDelegate = _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos);
+            var blockMonoDelegate = _map.GetSingleEntity<BlockMonoDelegate>(forwardGridPos);
 
             _searchedBlockMonoDelegate = blockMonoDelegate;
             

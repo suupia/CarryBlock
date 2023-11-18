@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using Carry.CarrySystem.Block.Info;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Cysharp.Threading.Tasks;
 using Fusion;
@@ -12,7 +13,7 @@ using UniRx;
 namespace Carry.CarrySystem.Block
 {
     [RequireComponent(typeof(BlockControllerNet))]
-    public class BlockMaterialSetter : NetworkBehaviour
+    public class BlockMaterialSetterNet : NetworkBehaviour , IBlockMaterialSetter
     {
         public struct BlockMaterialSetterData : INetworkStruct
         {
@@ -49,7 +50,7 @@ namespace Carry.CarrySystem.Block
 
         }
 
-        public void OnDestroy()
+        void OnDestroy()
         {
             _cts.Cancel();
         }

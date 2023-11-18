@@ -43,11 +43,11 @@ namespace Projects.CarrySystem.Gimmick.Scripts
         }
         
         
-        public void StartGimmick(NetworkRunner runner)
+        public void StartGimmick()
         {
             Debug.Log("StartGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
             
-            var spikeBodyBuilder = new SpikeBodyBuilder(runner);
+            var spikeBodyBuilder = new SpikeBodyBuilder();
             
             // 10秒ごとに実行（Intervalの場合、Subscribe後に待機時間を待機してから1回目の処理が実行される）
             _gimmickDisposable =  Observable.Interval(System.TimeSpan.FromSeconds(_appearInterval))
@@ -61,7 +61,7 @@ namespace Projects.CarrySystem.Gimmick.Scripts
                 );
         }
         
-        public void EndGimmick(NetworkRunner runner)
+        public void EndGimmick()
         {
             Debug.Log("EndGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
             _gimmickDisposable?.Dispose();

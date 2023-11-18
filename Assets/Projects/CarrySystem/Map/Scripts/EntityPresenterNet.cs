@@ -21,6 +21,7 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EntityPresenterNet : NetworkBehaviour, IEntityPresenter
     {
+        public MonoBehaviour GetMonoBehaviour => this;
         struct PresentData : INetworkStruct
         {
             public int BasicBlockCount;
