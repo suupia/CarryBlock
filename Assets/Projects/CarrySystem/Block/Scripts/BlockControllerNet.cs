@@ -10,7 +10,7 @@ using UnityEngine.Serialization;
 
 namespace Carry.CarrySystem.Block.Scripts
 {
-    public class BlockControllerNet : NetworkBehaviour
+    public class BlockControllerNet : NetworkBehaviour,IBlockController
     {
         [SerializeField] GameObject blockViewObj = null!;  // ランタイムで生成しないので、SerializeFieldで受け取れる
 
