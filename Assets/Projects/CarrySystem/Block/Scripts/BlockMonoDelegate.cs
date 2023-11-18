@@ -70,7 +70,7 @@ namespace Carry.CarrySystem.Block.Scripts
              }
              
              // 代表として最初のBlockControllerの親に対してOnDestroyAsObservableを登録
-             var blockControllerParent = _blockInfos.First().BlockController.transform.parent;
+             var blockControllerParent = _blockInfos.First().BlockController.GetMonoBehaviour.transform.parent;
              blockControllerParent.gameObject.OnDestroyAsObservable().Subscribe(_ =>
              {
                  foreach (var gimmick in _blocks.OfType<IGimmick>())

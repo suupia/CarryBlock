@@ -1,4 +1,5 @@
 ﻿using System;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
 using UnityEngine;
@@ -14,14 +15,14 @@ namespace Carry.CarrySystem.Block.Info
         [SerializeField] BlockTypeEnum blockType;
         [NonSerialized] public BlockMaterialSetter BlockMaterialSetter = null!;
         [NonSerialized] public GameObject BlockViewObj = null!;
-        [NonSerialized] public BlockControllerNet BlockController = null!;
+        [NonSerialized] public IBlockController BlockController = null!;
         public Type BlockType => DecideBlockType();
 
-        public void Init(GameObject blockViewObj, BlockControllerNet blockController)
+        public void Init(GameObject blockViewObj, IBlockController blockController)
         {
-            this.BlockViewObj = blockViewObj;
-            this.BlockController = blockController;
-            BlockMaterialSetter = blockController.GetComponent<BlockMaterialSetter>();  // BlockControllerNetと同じオブジェクトにアタッチしている
+            BlockViewObj = blockViewObj;
+            BlockController = blockController;
+            BlockMaterialSetter = blockController.GetMonoBehaviour.GetComponent<BlockMaterialSetter>();  // BlockControllerNetと同じオブジェクトにアタッチしている
             BlockMaterialSetter.Init(this);
         }
 
