@@ -66,6 +66,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 
                 var blockMonoDelegate =
                     new BlockMonoDelegate(
+                        map,
                         gridPos, 
                         checkedBlocks, blockInfos,
                         items, itemInfos,

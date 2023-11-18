@@ -8,6 +8,7 @@ using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Carry.CarrySystem.Block.Info;
 using Carry.CarrySystem.Entity.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Interfaces;
 using Projects.CarrySystem.Item.Scripts;
@@ -28,13 +29,11 @@ namespace Carry.CarrySystem.Block.Scripts
          public IList<IBlock> Blocks => _blocks;
          public IList<IItem> Items => _items;
          public IList<IGimmick> Gimmicks => _gimmicks;
-
+         
+         readonly EntityGridMap _map;
          readonly IList<IBlock> _blocks;
-         readonly IList<BlockInfo> _blockInfos;
          readonly IList<IItem> _items;
-         readonly IList<ItemInfo> _itemInfos;
          readonly IList<IGimmick> _gimmicks;
-         readonly IList<GimmickInfo> _gimmickInfos;
          readonly IBlock? _block;
          readonly IEntityPresenter _entityPresenter;
 
@@ -43,6 +42,7 @@ namespace Carry.CarrySystem.Block.Scripts
          Vector2Int _gridPosition;
         
          public BlockMonoDelegate(
+             EntityGridMap map,
              Vector2Int gridPos,
              IList<IBlock> blocks,
              IList<BlockInfo> blockInfos,
@@ -52,16 +52,14 @@ namespace Carry.CarrySystem.Block.Scripts
              IList<GimmickInfo> gimmickInfos,
              IEntityPresenter entityPresenter)
          {
+             _map = map;
              _gridPosition = gridPos;
              _blocks = blocks;
-             _blockInfos = blockInfos;
              _items = items;
-             _itemInfos = itemInfos;
              _gimmicks = gimmicks;
-             _gimmickInfos = gimmickInfos;
              _entityPresenter = entityPresenter;
              
-             _highLightExecutor = new HighlightExecutor(_blockInfos);
+             _highLightExecutor = new HighlightExecutor(blockInfos);
         
              // 最初のStartGimmickの処理
              foreach (var gimmick in gimmicks)
@@ -70,7 +68,7 @@ namespace Carry.CarrySystem.Block.Scripts
              }
              
              // 代表として最初のBlockControllerの親に対してOnDestroyAsObservableを登録
-             var blockControllerParent = _blockInfos.First().BlockController.GetMonoBehaviour.transform.parent;
+             var blockControllerParent = blockInfos.First().BlockController.GetMonoBehaviour.transform.parent;
              blockControllerParent.gameObject.OnDestroyAsObservable().Subscribe(_ =>
              {
                  foreach (var gimmick in _blocks.OfType<IGimmick>())
