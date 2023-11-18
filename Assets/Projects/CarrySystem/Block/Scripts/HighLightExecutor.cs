@@ -24,7 +24,7 @@ namespace Carry.CarrySystem.Block.Scripts
             DecideMaterialSetter(block).ChangeWhite(playerRef);
         }
 
-        BlockMaterialSetterNet DecideMaterialSetter(IBlock block)
+        IBlockMaterialSetter DecideMaterialSetter(IBlock block)
         {
             var type = block.GetType();
             var materialSetter =  _blockInfos.Where(info=> info.BlockType == type).Select(info => info.BlockMaterialSetterNet).First();

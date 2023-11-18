@@ -13,7 +13,7 @@ namespace Carry.CarrySystem.Block.Info
     public class BlockInfo
     {
         [SerializeField] BlockTypeEnum blockType;
-        [NonSerialized] public BlockMaterialSetterNet BlockMaterialSetterNet = null!;
+        [NonSerialized] public IBlockMaterialSetter BlockMaterialSetterNet = null!;
         [NonSerialized] public GameObject BlockViewObj = null!;
         [NonSerialized] public IBlockController BlockController = null!;
         public Type BlockType => DecideBlockType();
@@ -22,7 +22,7 @@ namespace Carry.CarrySystem.Block.Info
         {
             BlockViewObj = blockViewObj;
             BlockController = blockController;
-            BlockMaterialSetterNet = blockController.GetMonoBehaviour.GetComponent<BlockMaterialSetterNet>();  // BlockControllerNetと同じオブジェクトにアタッチしている
+            BlockMaterialSetterNet = blockController.GetMonoBehaviour.GetComponent<IBlockMaterialSetter>();  // BlockControllerNetと同じオブジェクトにアタッチしている
             BlockMaterialSetterNet.Init(this);
         }
 
