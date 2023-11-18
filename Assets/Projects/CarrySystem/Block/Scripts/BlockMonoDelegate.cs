@@ -7,6 +7,7 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Carry.CarrySystem.Block.Info;
+using Carry.CarrySystem.Entity.Interfaces;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Interfaces;
 using Projects.CarrySystem.Item.Scripts;
@@ -21,7 +22,7 @@ namespace Carry.CarrySystem.Block.Scripts
     /// IBlock(ドメインの情報)とBlockInfo(NetworkBehaviourの情報)を持つクラス
     /// ドメインの処理はこのクラスにアクセスして行う
     /// </summary>
-    public class BlockMonoDelegate : IBlockMonoDelegate
+    public class BlockMonoDelegate : IBlockMonoDelegate , IHighlightExecutor
     {
          public IBlock? Block => _blocks.FirstOrDefault(); 
          public IList<IBlock> Blocks => _blocks;
