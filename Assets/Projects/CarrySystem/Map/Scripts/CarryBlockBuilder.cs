@@ -48,12 +48,11 @@ namespace Carry.CarrySystem.Map.Scripts
                 var worldPos = GridConverter.GridPositionToWorldPosition(gridPos);
 
                 // Presenterの生成
-                var tmpMap = map;
                 var entityPresenter = _runner.Spawn(blockPresenterPrefab, worldPos, Quaternion.identity, PlayerRef.None,
                     (runner, networkObj) =>
                     {
                         var itemControllers = networkObj.GetComponentsInChildren<ItemControllerNet>();
-                        var items = tmpMap.GetSingleEntityList<IItem>(gridPos);
+                        var items = map.GetSingleEntityList<IItem>(gridPos);
                         foreach (var itemController in itemControllers)
                         {
                             itemController.Init(items);
@@ -88,6 +87,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 blockPresenters.Add(entityPresenter);
             }
 
+            // MonoDelegateをmapに追加していることに注意
             for (int i = 0; i < map.Length; i++)
             {
                 map.AddEntity(i, blockMonoDelegates[i]);
