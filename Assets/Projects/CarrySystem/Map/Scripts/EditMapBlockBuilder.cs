@@ -55,7 +55,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 var gimmicks = map.GetSingleEntityList<IGimmick>(i);
 
                 // get blockInfos from blockController
-                var blockControllerComponents = entityPresenter.GetMonoBehaviour.GetComponentsInChildren<BlockControllerNet>();
+                var blockControllerComponents = entityPresenter.GetMonoBehaviour.GetComponentsInChildren<IBlockController>();
                 var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
                 // get itemInfos from itemController
                 var itemControllerComponents = entityPresenter.GetMonoBehaviour.GetComponentsInChildren<ItemControllerNet>();
