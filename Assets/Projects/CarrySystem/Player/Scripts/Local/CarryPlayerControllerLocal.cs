@@ -141,7 +141,8 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     _passActionExecutor.PassAction();
                 }
-                
+
+                _preButtons = input.Buttons;
             }
         }
         
