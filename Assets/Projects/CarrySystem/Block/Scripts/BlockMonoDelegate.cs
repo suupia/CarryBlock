@@ -32,12 +32,7 @@ namespace Carry.CarrySystem.Block.Scripts
          public IList<IGimmick> Gimmicks => GetGimmicks();
          
          readonly EntityGridMap _map;
-         readonly IList<IBlock> _blocks;
-         readonly IList<IItem> _items;
-         readonly IList<IGimmick> _gimmicks;
-         readonly IBlock? _block;
          readonly IEntityPresenter _entityPresenter;
-
          readonly IHighlightExecutor _highLightExecutor;
 
          Vector2Int _gridPosition;
@@ -46,19 +41,17 @@ namespace Carry.CarrySystem.Block.Scripts
              EntityGridMap map,
              Vector2Int gridPos,
              IList<IBlock> blocks,
-             IList<BlockInfo> blockInfos,
              IList<IItem> items,
-             IList<ItemInfo> itemInfos,
              IList<IGimmick> gimmicks,
-             IList<GimmickInfo> gimmickInfos,
              IEntityPresenter entityPresenter)
          {
              _map = map;
              _gridPosition = gridPos;
-             _blocks = blocks;
-             _items = items;
-             _gimmicks = gimmicks;
              _entityPresenter = entityPresenter;
+             
+             // get blockInfos from blockController
+             var blockControllerComponents = entityPresenter.GetMonoBehaviour.GetComponentsInChildren<IBlockController>();
+             var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
              
              _highLightExecutor = new HighlightExecutor(blockInfos);
         
@@ -81,19 +74,19 @@ namespace Carry.CarrySystem.Block.Scripts
 
          }
 
-         public IList<IBlock> GetBlocks()
+         IList<IBlock> GetBlocks()
          {
              var blocks = _map.GetSingleEntityList<IBlock>(_gridPosition);
              CheckAllBlockTypesAreSame(blocks);
              return blocks;
          }
 
-         public IList<IItem> GetItems()
+         IList<IItem> GetItems()
          {
              return _map.GetSingleEntityList<IItem>(_gridPosition);
          }
          
-         public IList<IGimmick> GetGimmicks()
+         IList<IGimmick> GetGimmicks()
          {
              return _map.GetSingleEntityList<IGimmick>(_gridPosition);
          }
