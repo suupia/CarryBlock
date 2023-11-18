@@ -73,6 +73,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5965080741896850020}
   - component: {fileID: 8904153714471678937}
+  - component: {fileID: 8610577067270898745}
   m_Layer: 0
   m_Name: CannonBlockLocal
   m_TagString: Untagged
@@ -111,6 +112,18 @@ MonoBehaviour:
   blockViewObj: {fileID: 2478132344785946946}
   info:
     blockType: 6
+--- !u!114 &8610577067270898745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756840550022308548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 571cc7c973094e2ba0b24aa1403bffe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &521171457639447913
 PrefabInstance:
   m_ObjectHideFlags: 0
