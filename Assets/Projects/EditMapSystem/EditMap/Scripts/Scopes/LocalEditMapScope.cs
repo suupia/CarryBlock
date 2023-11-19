@@ -29,6 +29,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             // Map
             // JsonとEntityGridMapに関する処理
             builder.Register<EntityGridMapBuilderLeaf>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
+            builder.Register<EntityGridMapDataBuilder>(Lifetime.Scoped).As<IEntityGridMapDataBuilder>();
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
             

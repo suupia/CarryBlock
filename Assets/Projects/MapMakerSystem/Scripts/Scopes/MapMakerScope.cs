@@ -10,6 +10,7 @@ using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
 using Carry.EditMapSystem.EditMap.Scripts;
+using Carry.EditMapSystem.EditMapForPlayer.Scripts;
 using Fusion;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
@@ -17,6 +18,7 @@ using Projects.CarrySystem.Cart.Interfaces;
 using Projects.CarrySystem.Item.Scripts;
 using Projects.CarrySystem.Player.Scripts.Local;
 using Projects.CarrySystem.SearchRoute.Scripts;
+using Projects.MapMakerSystem.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -76,6 +78,7 @@ namespace Carry.ScopeSystem.Scripts
             // Map
             // JsonとEntityGridMapに関する処理
             builder.Register<EntityGridMapBuilderLeaf>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
+            builder.Register<EntityGridMapDataBuilder>(Lifetime.Scoped).As<IEntityGridMapDataBuilder>();
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
             
@@ -88,15 +91,17 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<LocalEditMapPresenterPlacerComponent>(Lifetime.Scoped).As<IPresenterPlacer>();
 
             // IMapUpdater
-            builder.Register<LocalCarryMapSwitcher>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
+            // builder.Register<LocalCarryMapSwitcher>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
+            builder.Register<StageMapSwitcher>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
             
             // Input
-            builder.Register<EditMapBlockAttacher>(Lifetime.Scoped);
+            builder.Register<EditMapBlockAttacher>(Lifetime.Scoped).As<IEditMapBlockAttacher>();
+            builder.Register<MemorableEditMapBlockAttacher>(Lifetime.Scoped).WithParameter("capacity", 100);
             builder.Register<CUIHandleNumber>(Lifetime.Scoped);
             builder.Register<AutoSaveManager>(Lifetime.Scoped);
-            builder.RegisterComponentInHierarchy<EditMapInput>();
-            builder.RegisterComponentInHierarchy<EditMapCUISave>();
-            builder.RegisterComponentInHierarchy<EditMapCUILoad>();
+            builder.RegisterComponentInHierarchy<MapMakerEditMapInput>();
+            // builder.RegisterComponentInHierarchy<EditMapCUISave>();
+            // builder.RegisterComponentInHierarchy<EditMapCUILoad>();
 
             // Presenter
             builder.RegisterComponentInHierarchy<LoadedFilePresenter>();

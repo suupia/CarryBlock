@@ -5,6 +5,7 @@ using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.EditMapSystem.EditMap.Scripts;
+using Carry.EditMapSystem.EditMapForPlayer.Scripts;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 using UniRx;
@@ -22,8 +23,10 @@ namespace Projects.MapMakerSystem.Scripts
         
         Direction _direction = Direction.Up; 
 
-        EditMapBlockAttacher _editMapBlockAttacher = null!;
+        MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
+        EditingMapTransporter _editingMapTransporter = null!;
         IMapGetter _mapGetter = null!;
+        IEntityGridMapDataBuilder _dataBuilder = null!;
 
         CUIState _cuiState = CUIState.Idle;
         Type _blockType = null!;
@@ -40,9 +43,15 @@ namespace Projects.MapMakerSystem.Scripts
 
 
         [Inject]
-        public void Construct(EditMapBlockAttacher editMapBlockAttacher, IMapGetter mapGetter)
+        public void Construct(
+            MemorableEditMapBlockAttacher editMapBlockAttacher, 
+            EditingMapTransporter editingMapTransporter,
+            IEntityGridMapDataBuilder dataBuilder,
+            IMapGetter mapGetter)
         {
             _editMapBlockAttacher = editMapBlockAttacher;
+            _editingMapTransporter = editingMapTransporter;
+            _dataBuilder = dataBuilder;
             _mapGetter = mapGetter;
         }
 
@@ -205,7 +214,42 @@ namespace Projects.MapMakerSystem.Scripts
                 _direction = Direction.Right;
             }
 
+            
+            // デバッグ用
+            if (Input.GetKeyDown(KeyCode.N))
+            {
+                _editMapBlockAttacher.Undo(_mapGetter.GetMap());
+            }
+            if(Input.GetKeyDown(KeyCode.M))
+            {
+                _editMapBlockAttacher.Redo(_mapGetter.GetMap());
+            }
+            if(Input.GetKeyDown(KeyCode.S))
+            {
+                var stage = StageFileUtility.Load(_editingMapTransporter.StageId);
 
+                if (stage != null)
+                {
+                    var data = _dataBuilder.BuildEntityGridMapData(_mapGetter.GetMap());
+                    var info = stage.mapInfos[_editingMapTransporter.Index];
+                    stage.mapInfos[_editingMapTransporter.Index] = info with
+                    {
+                       data = data
+                    };
+                    var newStage = stage with
+                    {
+                        mapInfos = stage.mapInfos
+                    };
+                    StageFileUtility.Save(newStage);
+                    
+                    Debug.Log("マップを更新したステージを保存しました");
+                }
+                else
+                {
+                    Debug.LogError("Stageが読み込めません");
+                }
+                
+            }
         }
 
         enum Direction

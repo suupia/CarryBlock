@@ -5,6 +5,7 @@ using System.Linq;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
@@ -14,14 +15,14 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EntityGridMapSaver
+    public class EntityGridMapDataBuilder : IEntityGridMapDataBuilder
     {
-
-        public EntityGridMapSaver()
+        public EntityGridMapDataBuilder()
         {
+            
         }
 
-        public void SaveMap(EntityGridMap map,MapKey key, int mapDataIndex)
+        public EntityGridMapData BuildEntityGridMapData(EntityGridMap map)
         {
             var mapLength = map.Length;
             var groundRecords = new GroundRecord[mapLength];
@@ -90,6 +91,23 @@ namespace Carry.CarrySystem.Map.Scripts
             entityGridMapData.cannonBlockRecords = cannonBlockRecords;
             entityGridMapData.treasureCoinRecords = treasureCoinRecords;
             entityGridMapData.spikeGimmickRecords = spikeGimmickRecords;
+
+            return entityGridMapData;
+        }
+    }
+    
+    public class EntityGridMapSaver
+    {
+
+        readonly IEntityGridMapDataBuilder _dataBuilder;
+        public EntityGridMapSaver(IEntityGridMapDataBuilder dataBuilder)
+        {
+            _dataBuilder = dataBuilder;
+        }
+
+        public void SaveMap(EntityGridMap map,MapKey key, int mapDataIndex)
+        {
+            var entityGridMapData = _dataBuilder.BuildEntityGridMapData(map);
 
             Save(entityGridMapData,key, mapDataIndex);
         }

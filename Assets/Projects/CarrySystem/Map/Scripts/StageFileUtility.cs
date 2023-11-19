@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Carry.CarrySystem.Map.Scripts
 {
     [Serializable]
-    public struct Stage
+    public record Stage
     {
                 
         // public string version;
@@ -34,7 +34,7 @@ namespace Carry.CarrySystem.Map.Scripts
     }
 
     [Serializable]
-    public struct MapInfo
+    public record MapInfo
     {
         public string name;
         public EntityGridMapData data;
@@ -99,10 +99,10 @@ namespace Carry.CarrySystem.Map.Scripts
                 if (stage == null)
                 {
                     stage = new Stage($"Stage{i}");
-                    world.stageIds[i] = stage.Value.id;
+                    world.stageIds[i] = stage.id;
                     needsRefreshWorld = true;
                 }
-                stages.Add(stage.Value);
+                stages.Add(stage);
             }
 
             if (needsRefreshWorld)
@@ -132,7 +132,7 @@ namespace Carry.CarrySystem.Map.Scripts
             return stages;
         }
 
-        static void Save(Stage stage)
+        public static void Save(Stage stage)
         {
             var path = GetPath(stage.id);
 
@@ -144,7 +144,7 @@ namespace Carry.CarrySystem.Map.Scripts
             streamWriter.Flush();
         }
         
-        static Stage? Load(string stageId)
+        public static Stage? Load(string stageId)
          {
              var path = GetPath(stageId);
 

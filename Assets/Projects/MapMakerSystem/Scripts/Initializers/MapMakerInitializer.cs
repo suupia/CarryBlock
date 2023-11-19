@@ -1,31 +1,41 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners.Scripts;
+using Projects.MapMakerSystem.Scripts;
 using UnityEngine;
+using UnityEngine.Assertions;
 using VContainer;
 
 public class MapMakerInitializer : MonoBehaviour
 {
     LocalPlayerSpawner _localPlayerSpawner;
-    IMapSwitcher _editMapSwitcher;
-
-    
+    StageMapSwitcher _stageMapSwitcher;
+    EditingMapTransporter _editingMapTransporter;
+        
     [Inject]
     public void Construct(
-        IMapSwitcher editMapSwitcher,
-        LocalPlayerSpawner localPlayerSpawner)
+        LocalPlayerSpawner localPlayerSpawner,
+        StageMapSwitcher stageMapSwitcher,
+        EditingMapTransporter editingMapTransporter)
     {
-        _editMapSwitcher = editMapSwitcher;
+        _stageMapSwitcher = stageMapSwitcher;
         _localPlayerSpawner = localPlayerSpawner;
+        _editingMapTransporter = editingMapTransporter;
     }
 
     void Awake()
     {
-        _editMapSwitcher.InitSwitchMap(); // -1が初期マップ
-            
+        var stage = StageFileUtility.Load(_editingMapTransporter.StageId);
+        if (stage != null)
+        {
+            _stageMapSwitcher.SetStage(stage);
+        }
+        else
+        {
+            Debug.LogError("該当するStageがLoadできませんでした。ファイルの存在を確認してください");
+        }
+        _stageMapSwitcher.InitSwitchMap(); // -1が初期マップ
+        // Debug.Log($"stage id: {_editingMapTransporter.StageId}, map index: {_editingMapTransporter.Index}");
+        
     }
 
     void Update()
