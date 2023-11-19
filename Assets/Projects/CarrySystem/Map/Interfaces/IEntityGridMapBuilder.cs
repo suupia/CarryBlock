@@ -7,9 +7,4 @@ namespace Carry.CarrySystem.Map.Interfaces
     {
         public EntityGridMap BuildEntityGridMap(EntityGridMapData gridMapData);
     }
-    
-    public interface IEntityGridMapDataBuilder
-    {
-        public EntityGridMapData BuildEntityGridMapData(EntityGridMap map);
-    }
 }

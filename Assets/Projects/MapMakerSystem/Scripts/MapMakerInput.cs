@@ -16,7 +16,7 @@ using VContainer;
 
 namespace Projects.MapMakerSystem.Scripts
 {
-    public class MapMakerEditMapInput : MonoBehaviour
+    public class MapMakerInput : MonoBehaviour
     {
         public  string BlockTypeString => _blockType?.Name ?? "(None)";
         public string DirectionString => _direction.ToString();
@@ -24,9 +24,8 @@ namespace Projects.MapMakerSystem.Scripts
         Direction _direction = Direction.Up; 
 
         MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
-        EditingMapTransporter _editingMapTransporter = null!;
+        StageMapSaver _stageMapSaver = null!;
         IMapGetter _mapGetter = null!;
-        IEntityGridMapDataBuilder _dataBuilder = null!;
 
         CUIState _cuiState = CUIState.Idle;
         Type _blockType = null!;
@@ -44,15 +43,13 @@ namespace Projects.MapMakerSystem.Scripts
 
         [Inject]
         public void Construct(
-            MemorableEditMapBlockAttacher editMapBlockAttacher, 
-            EditingMapTransporter editingMapTransporter,
-            IEntityGridMapDataBuilder dataBuilder,
+            MemorableEditMapBlockAttacher editMapBlockAttacher,
+            StageMapSaver stageMapSaver,
             IMapGetter mapGetter)
         {
             _editMapBlockAttacher = editMapBlockAttacher;
-            _editingMapTransporter = editingMapTransporter;
-            _dataBuilder = dataBuilder;
             _mapGetter = mapGetter;
+            _stageMapSaver = stageMapSaver;
         }
 
         void Start()
@@ -226,29 +223,7 @@ namespace Projects.MapMakerSystem.Scripts
             }
             if(Input.GetKeyDown(KeyCode.S))
             {
-                var stage = StageFileUtility.Load(_editingMapTransporter.StageId);
-
-                if (stage != null)
-                {
-                    var data = _dataBuilder.BuildEntityGridMapData(_mapGetter.GetMap());
-                    var info = stage.mapInfos[_editingMapTransporter.Index];
-                    stage.mapInfos[_editingMapTransporter.Index] = info with
-                    {
-                       data = data
-                    };
-                    var newStage = stage with
-                    {
-                        mapInfos = stage.mapInfos
-                    };
-                    StageFileUtility.Save(newStage);
-                    
-                    Debug.Log("マップを更新したステージを保存しました");
-                }
-                else
-                {
-                    Debug.LogError("Stageが読み込めません");
-                }
-                
+                _stageMapSaver.Save(_mapGetter.GetMap());
             }
         }
 

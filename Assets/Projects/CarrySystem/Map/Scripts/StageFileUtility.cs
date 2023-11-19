@@ -59,33 +59,32 @@ namespace Carry.CarrySystem.Map.Scripts
     public static class StageFileUtility
     {
         
+        public static void Save(Stage stage)
+        {
+            var path = GetPath(stage.id);
+
+            var jsonData = JsonUtility.ToJson(stage);
+
+            // JSONデータをファイルに書き込む
+            using var streamWriter = new StreamWriter(path);
+            streamWriter.Write(jsonData);
+            streamWriter.Flush();
+        }
         
-        static string GetPath(string stageId) => Path.Combine(
-            Application.streamingAssetsPath, "JsonFiles", "Stages", $"{stageId}.json");
-
-        static void SaveWorld(World world)
+        public static Stage? Load(string stageId)
         {
-            PlayerPrefs.SetString("world",JsonUtility.ToJson(world));
-            PlayerPrefs.Save();
-        }
+            var path = GetPath(stageId);
 
-        static World LoadWorld()
-        {
-            if (PlayerPrefs.HasKey("world"))
+            if (File.Exists(path))
             {
-                return JsonUtility.FromJson<World>(PlayerPrefs.GetString("world"));
+                string jsonData = File.ReadAllText(path);
+                return JsonUtility.FromJson<Stage>(jsonData);
             }
-
-            var stages = SaveInitStages();
-            var world = new World
-            {
-                stageIds = stages.Select(s => s.id).ToList()
-            };
-            SaveWorld(world);
-
-            return world;
+            Debug.LogError("File not found.");
+            return null;
         }
-
+        
+        
         public static IReadOnlyList<Stage> GetStages()
         {
             var world = LoadWorld();
@@ -112,7 +111,33 @@ namespace Carry.CarrySystem.Map.Scripts
             
             return stages;
         }
+        
+        static string GetPath(string stageId) => Path.Combine(
+            Application.streamingAssetsPath, "JsonFiles", "Stages", $"{stageId}.json");
 
+        static void SaveWorld(World world)
+        {
+            PlayerPrefs.SetString("world",JsonUtility.ToJson(world));
+            PlayerPrefs.Save();
+        }
+
+        static World LoadWorld()
+        {
+            if (PlayerPrefs.HasKey("world"))
+            {
+                return JsonUtility.FromJson<World>(PlayerPrefs.GetString("world"));
+            }
+
+            var stages = SaveInitStages();
+            var world = new World
+            {
+                stageIds = stages.Select(s => s.id).ToList()
+            };
+            SaveWorld(world);
+
+            return world;
+        }
+        
         static IEnumerable<Stage> SaveInitStages()
         {
             var stages = new List<Stage>
@@ -132,29 +157,5 @@ namespace Carry.CarrySystem.Map.Scripts
             return stages;
         }
 
-        public static void Save(Stage stage)
-        {
-            var path = GetPath(stage.id);
-
-            var jsonData = JsonUtility.ToJson(stage);
-
-            // JSONデータをファイルに書き込む
-            using var streamWriter = new StreamWriter(path);
-            streamWriter.Write(jsonData);
-            streamWriter.Flush();
-        }
-        
-        public static Stage? Load(string stageId)
-         {
-             var path = GetPath(stageId);
-
-             if (File.Exists(path))
-             {
-                 string jsonData = File.ReadAllText(path);
-                 return JsonUtility.FromJson<Stage>(jsonData);
-             }
-             Debug.LogError("File not found.");
-             return null;
-         }
     }
 }

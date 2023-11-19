@@ -78,9 +78,10 @@ namespace Carry.ScopeSystem.Scripts
             // Map
             // JsonとEntityGridMapに関する処理
             builder.Register<EntityGridMapBuilderLeaf>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
-            builder.Register<EntityGridMapDataBuilder>(Lifetime.Scoped).As<IEntityGridMapDataBuilder>();
+            builder.Register<EntityGridMapDataConverter>(Lifetime.Scoped);
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
+            builder.Register<StageMapSaver>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<LocalEntityPresenterSpawner>(Lifetime.Scoped).As<IEntityPresenterSpawner>();
@@ -99,7 +100,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<MemorableEditMapBlockAttacher>(Lifetime.Scoped).WithParameter("capacity", 100);
             builder.Register<CUIHandleNumber>(Lifetime.Scoped);
             builder.Register<AutoSaveManager>(Lifetime.Scoped);
-            builder.RegisterComponentInHierarchy<MapMakerEditMapInput>();
+            builder.RegisterComponentInHierarchy<MapMakerInput>();
             // builder.RegisterComponentInHierarchy<EditMapCUISave>();
             // builder.RegisterComponentInHierarchy<EditMapCUILoad>();
 
