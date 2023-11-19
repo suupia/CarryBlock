@@ -7,7 +7,7 @@ using Projects.CarrySystem.Item.Interfaces;
 
 namespace Carry.CarrySystem.Block.Interfaces
 {
-    public interface IBlockMonoDelegate : IEntity , IHighlightExecutor
+    public interface IBlockMonoDelegate : IEntity
     {
         IBlock? Block { get; }
         IList<IBlock> Blocks { get; }

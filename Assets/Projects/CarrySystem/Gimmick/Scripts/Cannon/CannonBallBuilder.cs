@@ -11,19 +11,21 @@ namespace Carry.CarrySystem.Gimmick.Scripts
 {
     public class CannonBallBuilder
     {
-        readonly NetworkRunner _runner;
         readonly IPrefabLoader<CannonBallControllerNet> _canonBallControllerLoader;
+        NetworkRunner? _runner;
 
         [Inject]
-        public CannonBallBuilder(NetworkRunner runner)
+        public CannonBallBuilder()
         {
-            _runner = runner;
             // LoaderはDIしなくてもよいのではと思った
             _canonBallControllerLoader = new PrefabLoaderFromAddressable<CannonBallControllerNet>("Prefabs/Gimmick/Cannon/CannonBallNet");
         }
         
         public CannonBallControllerNet Build(CannonBlock.Kind kind, Vector3 position, Quaternion rotation, PlayerRef playerRef)
         {
+            _runner ??= GameObject.FindWithTag("NetworkRunner").GetComponent<NetworkRunner>();
+            if(_runner == null) Debug.LogError("NetworkRunner is not found");
+            
             // Load prefab
             var cannonBallController = _canonBallControllerLoader.Load();
             

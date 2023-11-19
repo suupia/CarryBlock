@@ -19,7 +19,7 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly PassWaitExecutor _passWaitExecutor;
         
         // Presenter
-        IPlayerBlockPresenter? _playerBlockPresenter;
+        IPlayerHoldablePresenter? _playerBlockPresenter;
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
         PassRangeNet? _passRangeNet;
@@ -45,7 +45,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void PassAction()
         {
-            if (_passRangeNet == null) _passRangeNet = _info.PlayerController.GameObject.GetComponentInChildren<PassRangeNet>();
+            if (_passRangeNet == null) _passRangeNet = _info.PlayerController.GameObjectValue.GetComponentInChildren<PassRangeNet>();
             if (_passRangeNet.DetectedTarget() is {} target)
             {
                 var targetPlayerController  = target.GetComponent<CarryPlayerControllerNet>();
@@ -73,9 +73,16 @@ namespace Carry.CarrySystem.Player.Scripts
         public void ReceivePass(ICarriableBlock block)
         {
             Debug.Log("Receive Pass");
-            block.PickUp(_info.PlayerController.GetMoveExecutorSwitcher, _info.PlayerController.GetPlayerHoldingObjectContainer,_info.PlayerController.GetHoldActionExecutor);
+            block.PickUp(_info.PlayerController.GetMoveExecutorSwitcher, _info.PlayerController.GetHoldActionExecutor);
             _holdingObjectContainer.SetBlock(block);
-            _playerBlockPresenter?.ReceiveBlock(block);
+            if (block is IHoldable holdable)
+            {
+                _playerBlockPresenter?.EnableHoldableView(holdable);
+            }
+            else
+            {
+                Debug.LogError($"block is not IHoldable. block : {block}");
+            }
             _playerAnimatorPresenter?.ReceiveBlock(block);
         }
         
@@ -84,7 +91,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"Pass Block");
             block.PutDown(_info.PlayerController.GetMoveExecutorSwitcher);
-            _playerBlockPresenter?.PassBlock();
+            _playerBlockPresenter?.DisableHoldableView();
             _playerAnimatorPresenter?.PassBlock();
         }
         
@@ -109,7 +116,7 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         
         // Presenter
-        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
+        public void SetPlayerBlockPresenter(IPlayerHoldablePresenter presenter)
         {
             _playerBlockPresenter = presenter;
         }

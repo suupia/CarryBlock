@@ -21,21 +21,21 @@ namespace Carry.GameSystem.LobbyScene.Scripts
     [DisallowMultipleComponent]
     public class LobbyInitializer : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     {
-        PlayerSpawner _playerSpawner = null!;
+        NetworkPlayerSpawner _networkPlayerSpawner = null!;
         PlayerCharacterTransporter _playerCharacterTransporter = null!;
-        IMapUpdater _lobbyMapUpdater = null!;
+        IMapSwitcher _lobbyMapSwitcher = null!;
         CarryInitializersReady _carryInitializersReady = null!;
 
         [Inject]
         public void Construct(
-            PlayerSpawner playerSpawner ,
+            NetworkPlayerSpawner networkPlayerSpawner ,
             PlayerCharacterTransporter playerCharacterTransporter,
-            IMapUpdater lobbyMapUpdater
+            IMapSwitcher lobbyMapSwitcher
         )
         {
-            _playerSpawner = playerSpawner;
+            _networkPlayerSpawner = networkPlayerSpawner;
             _playerCharacterTransporter = playerCharacterTransporter;
-            _lobbyMapUpdater = lobbyMapUpdater;
+            _lobbyMapSwitcher = lobbyMapSwitcher;
         }
 
         async void Start()
@@ -44,12 +44,12 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             runner.AddSimulationBehaviour(this); // Register this class with the runner
             await UniTask.WaitUntil(() => Runner.SceneManager.IsReady(Runner));
             
-            _lobbyMapUpdater.InitUpdateMap(MapKey.Default,-1); // -1が初期マップ
+            _lobbyMapSwitcher.InitSwitchMap();
 
             if (Runner.IsServer)
             {
-                _playerCharacterTransporter.SetIndex(Runner.LocalPlayer);
-                _playerSpawner.RespawnAllPlayer();
+                _playerCharacterTransporter.SetPlayerNumber(Runner.LocalPlayer);
+                _networkPlayerSpawner.RespawnAllPlayer();
             }
 
             var enemySpawner = new EnemySpawner(Runner);
@@ -60,10 +60,10 @@ namespace Carry.GameSystem.LobbyScene.Scripts
 
         void IPlayerJoined.PlayerJoined(PlayerRef player)
         {
-            if (Runner.IsServer) _playerSpawner.SpawnPlayer(player );
+            if (Runner.IsServer) _networkPlayerSpawner.SpawnPlayer(player );
             
             Debug.Log($"PlayerJoined");
-            _playerCharacterTransporter.SetIndex(player);
+            _playerCharacterTransporter.SetPlayerNumber(player);
             _carryInitializersReady = FindObjectOfType<CarryInitializersReady>();
             if (_carryInitializersReady == null)
             {
@@ -79,7 +79,7 @@ namespace Carry.GameSystem.LobbyScene.Scripts
 
         void IPlayerLeft.PlayerLeft(PlayerRef player)
         {
-            if (Runner.IsServer) _playerSpawner.DespawnPlayer(player);
+            if (Runner.IsServer) _networkPlayerSpawner.DespawnPlayer(player);
         }
 
         // ボタンから呼び出す

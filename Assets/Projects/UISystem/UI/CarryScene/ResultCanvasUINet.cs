@@ -42,7 +42,7 @@ namespace Carry.UISystem.UI.CarryScene
         [Inject]
         public void Construct(
             FloorTimerNet floorTimerNet,
-            IMapUpdater mapUpdater,
+            IMapGetter mapGetter,
             MapKeyDataSelectorNet mapKeyDataSelectorNet,
             StageIndexTransporter stageIndexTransporter
         )
@@ -58,7 +58,7 @@ namespace Carry.UISystem.UI.CarryScene
                 {
                     ViewActive = true;
                     IsClear = false;
-                    ClearedFloorNumber = mapUpdater.Index;
+                    ClearedFloorNumber = mapGetter.Index;
                     MaxFloorNumber =  mapKeyDataList.Count;
                     ClearTime = floorTimerNet.FloorLimitSeconds * _maxFloorNumber -
                                 floorTimerNet.FloorRemainingSecondsSam;
@@ -70,7 +70,7 @@ namespace Carry.UISystem.UI.CarryScene
                 {
                     ViewActive = true;
                     IsClear = true;
-                    ClearedFloorNumber = mapUpdater.Index + 1;
+                    ClearedFloorNumber = mapGetter.Index + 1;
                     MaxFloorNumber =  mapKeyDataList.Count;
                     ClearTime = floorTimerNet.FloorLimitSeconds * _maxFloorNumber -
                                 floorTimerNet.FloorRemainingSecondsSam;

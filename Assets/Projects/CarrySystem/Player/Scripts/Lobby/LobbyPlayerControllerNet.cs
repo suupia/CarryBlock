@@ -4,16 +4,14 @@ using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Carry.GameSystem.Player.Scripts;
 using Carry.NetworkUtility.Inputs.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
-using AbstractNetworkPlayerController = Carry.CarrySystem.Player.Interfaces.AbstractNetworkPlayerController;
-using PlayerInfo = Carry.CarrySystem.Player.Info.PlayerInfo;
 #nullable  enable
 
 namespace Carry.CarrySystem.Player.Scripts
 {
     public class LobbyPlayerControllerNet : AbstractNetworkPlayerController
     {
-        public PlayerInfo Info => info;
         [SerializeField] GameObject cameraPrefab= null!;
         
         PlayerCharacterTransporter _playerCharacterTransporter = null!;  // PlayerColorTypeを次のシーンに保持するために必要
@@ -37,6 +35,8 @@ namespace Carry.CarrySystem.Player.Scripts
             PassActionExecutor = passActionExecutor;
             ColorType = colorType;
             _playerCharacterTransporter = playerCharacterTransporter;
+            
+            SetUp();
         }
 
         public override void Spawned()
@@ -98,8 +98,8 @@ namespace Carry.CarrySystem.Player.Scripts
         void SetToOrigin()
         {
             // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
-            info.PlayerObj.transform.position = new Vector3(0, 5, 0);
-            info.PlayerRb.velocity = Vector3.zero;
+            Info.PlayerObj.transform.position = new Vector3(0, 5, 0);
+            Info.PlayerRb.velocity = Vector3.zero;
         }
 
       

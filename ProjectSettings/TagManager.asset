@@ -20,6 +20,7 @@ TagManager:
   - Wall
   - CannonBlock
   - Item
+  - NetworkRunner
   layers:
   - Default
   - TransparentFX

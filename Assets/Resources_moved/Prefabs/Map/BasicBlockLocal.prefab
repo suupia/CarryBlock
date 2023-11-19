@@ -70,6 +70,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5965080741896850020}
+  - component: {fileID: 4320898924079217832}
+  - component: {fileID: 4124200875467699819}
   m_Layer: 0
   m_Name: BasicBlockLocal
   m_TagString: Untagged
@@ -93,6 +95,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4320898924079217832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756840550022308548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93960f98cc43433a80c06ea27b12529e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockViewObj: {fileID: 2478132344785946946}
+  info:
+    blockType: 1
+--- !u!114 &4124200875467699819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756840550022308548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 571cc7c973094e2ba0b24aa1403bffe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1269400379306112995
 PrefabInstance:
   m_ObjectHideFlags: 0

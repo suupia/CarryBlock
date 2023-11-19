@@ -3,6 +3,7 @@ using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Scripts;
 using Fusion;
 using Carry.NetworkUtility.Inputs.Scripts;
+using Projects.Utility.Scripts;
 using UnityEngine;
 
 #nullable enable
@@ -12,8 +13,22 @@ namespace Carry.CarrySystem.Player.Interfaces
     [RequireComponent(typeof(Rigidbody))]
     public abstract class AbstractNetworkPlayerController : NetworkBehaviour, IPlayerController
     {
-        public GameObject GameObject => gameObject;
-        public Rigidbody Rigidbody { get; private set; } = null!;
+        // IPlayerController implementation
+        public GameObject GameObjectValue => gameObject;
+        public Rigidbody RigidbodyValue
+        {
+            get
+            {
+                if (_rigidbody != null) return _rigidbody;
+                _rigidbody = GetComponent<Rigidbody>();  // not null because of RequireComponent
+                return _rigidbody;
+            }
+        }
+        
+        // PlayerInfo
+        public PlayerInfo GetInfo => Info;
+        
+        // class of Character 
         public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
         public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
         public IHoldActionExecutor GetHoldActionExecutor => HoldActionExecutor;
@@ -21,42 +36,37 @@ namespace Carry.CarrySystem.Player.Interfaces
         public IDashExecutor GetDashExecutor => DashExecutor;
         public IPassActionExecutor GetPassActionExecutor => PassActionExecutor;
         
+        // Serialize Field
         [SerializeField] protected Transform unitObjectParent= null!; // The NetworkCharacterControllerPrototype interpolates this transform.
-
         [SerializeField] protected GameObject[] playerUnitPrefabs= null!;
-
-        protected PlayerInfo info = null!;
-
+        
+        // protected fields
         [Networked] protected NetworkButtons PreButtons { get; set; }
-        [Networked] public NetworkBool IsReady { get; set; }
-
         [Networked] protected PlayerColorType ColorType { get; set; } // ローカルに反映させるために必要
-
         protected GameObject CharacterObj= null!;
+        protected PlayerInfo Info = null!;
 
-        
-        
-        // ICharacterリファクタリング
         protected PlayerHoldingObjectContainer BlockContainer = null!;
         protected IMoveExecutorSwitcher MoveExecutorSwitcher = null!;
         protected IHoldActionExecutor HoldActionExecutor = null!;
         protected IOnDamageExecutor OnDamageExecutor = null!;
         protected IDashExecutor DashExecutor = null!;
         protected IPassActionExecutor PassActionExecutor = null!;
+        
+        // private fields
+        Rigidbody? _rigidbody;
+        [Networked] NetworkBool IsReady { get; set; }
 
 
         public override void Spawned()
         {
             // Debug.Log($"AbstractNetworkPlayerController.Spawned(), _character = {Character}");
 
-            // init info
-            Rigidbody = GetComponent<Rigidbody>();  // not null because of RequireComponent
-            info = new PlayerInfo(this, Object.InputAuthority);
+
 
             // Instantiate the character.
             InstantiateCharacter();
             
-
             
         }
         
@@ -108,22 +118,24 @@ namespace Carry.CarrySystem.Player.Interfaces
             CharacterObj = Instantiate(prefab, unitObjectParent);
             
             // Character?.Setup(info);
-            Setup(info);
             CharacterObj.GetComponent<TsukinowaMaterialSetter>().SetClothMaterial(ColorType);
-            var animatorPresenter = GetComponent<PlayerAnimatorPresenterNet>();
-            animatorPresenter.SetAnimator(CharacterObj.GetComponentInChildren<Animator>());
+            var animatorPresenter = GetComponent<IPlayerAnimatorPresenter>();
+            if(animatorPresenter != null) animatorPresenter.SetAnimator(CharacterObj.GetComponentInChildren<Animator>());
             
             // Play spawn animation
             // _decorationDetector.OnSpawned();
         }
         
-        protected void Setup(PlayerInfo info)
+        protected void SetUp()
         {
+            // init info
+            var info = new PlayerInfo(this, Object.InputAuthority);
             MoveExecutorSwitcher.Setup(info);
             HoldActionExecutor. Setup(info);
             PassActionExecutor.Setup(info);
             OnDamageExecutor.Setup(info);
             info.PlayerRb.useGravity = true;
+            Info = info;
         }
 
     }

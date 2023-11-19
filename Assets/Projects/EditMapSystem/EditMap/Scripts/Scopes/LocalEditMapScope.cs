@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
@@ -40,8 +40,8 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LocalEditMapPresenterPlacerComponent>(Lifetime.Scoped).As<IPresenterPlacer>();
 
-            // IMapUpdater
-            builder.Register<EditMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
+            // EditMapSwitcher
+            builder.Register<EditMapSwitcher>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
             
             // Input
             builder.Register<EditMapBlockAttacher>(Lifetime.Scoped);

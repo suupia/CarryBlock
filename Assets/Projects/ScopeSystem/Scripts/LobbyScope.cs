@@ -36,9 +36,9 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             // NetworkRunnerに依存するスクリプト
 
             // Player
-            builder.Register<MainLobbyPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
+            builder.Register<LobbyPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
             builder.Register<LobbyPlayerControllerNetBuilder>(Lifetime.Scoped).As<IPlayerControllerNetBuilder>();
-            builder.Register<PlayerSpawner>(Lifetime.Scoped);
+            builder.Register<NetworkPlayerSpawner>(Lifetime.Scoped);
             builder.Register<LobbyPlayerContainer>(Lifetime.Scoped);
 
             // Map
@@ -60,7 +60,7 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             builder.Register<TreasureCoinCounter>(Lifetime.Scoped);
             
             // IMapUpdater
-            builder.Register<LobbyMapUpdater>(Lifetime.Scoped).As<IMapUpdater>();
+            builder.Register<LobbyMapSwitcher>(Lifetime.Scoped).As<IMapSwitcher>();
             
             // UI
             builder.RegisterComponentInHierarchy<SelectStageCanvasUINet>();

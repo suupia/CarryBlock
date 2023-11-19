@@ -24,10 +24,10 @@ namespace Carry.CarrySystem.Block.Scripts
             DecideMaterialSetter(block).ChangeWhite(playerRef);
         }
 
-        BlockMaterialSetter DecideMaterialSetter(IBlock block)
+        IBlockMaterialSetter DecideMaterialSetter(IBlock block)
         {
             var type = block.GetType();
-            var materialSetter =  _blockInfos.Where(info=> info.BlockType == type).Select(info => info.BlockMaterialSetter).First();
+            var materialSetter =  _blockInfos.Where(info=> info.BlockType == type).Select(info => info.BlockMaterialSetterNet).First();
             if (materialSetter != null)
             {
                 return materialSetter;

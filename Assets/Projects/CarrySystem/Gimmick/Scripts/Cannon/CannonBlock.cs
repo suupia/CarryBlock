@@ -22,7 +22,7 @@ namespace Carry.CarrySystem.Block.Scripts
     {
         public CannonBlock.Kind[] kinds = new CannonBlock.Kind[10];
     }
-    public class CannonBlock : IBlock, IGimmick
+    public class CannonBlock : IBlock, IGimmick, IHoldable
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 1;
@@ -32,6 +32,7 @@ namespace Carry.CarrySystem.Block.Scripts
         readonly float _fireInterval = 4.0f;
         readonly float _spawnHeight = 0.8f;
         IDisposable? _gimmickDisposable = null;
+        NetworkRunner? _runner;
         
 
         public enum Kind
@@ -49,11 +50,11 @@ namespace Carry.CarrySystem.Block.Scripts
             GridPosition = gridPosition;
         }
         
-        public void StartGimmick(NetworkRunner runner)
+        public void StartGimmick()
         {
             Debug.Log("StartGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
 
-            var cannonBallBuilder = new CannonBallBuilder(runner);
+            var cannonBallBuilder = new CannonBallBuilder();
             
             // 10秒ごとに実行（Intervalの場合、Subscribe後に待機時間を待機してから1回目の処理が実行される）
             _gimmickDisposable =  Observable.Interval(System.TimeSpan.FromSeconds(_fireInterval))
@@ -67,7 +68,7 @@ namespace Carry.CarrySystem.Block.Scripts
                 );
         }
         
-        public void EndGimmick(NetworkRunner runner)
+        public void EndGimmick()
         {
             Debug.Log("EndGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
             _gimmickDisposable?.Dispose();

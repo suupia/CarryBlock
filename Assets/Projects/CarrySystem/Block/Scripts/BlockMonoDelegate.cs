@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Gimmick.Interfaces;
@@ -7,6 +8,8 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using Carry.CarrySystem.Block.Info;
+using Carry.CarrySystem.Entity.Interfaces;
+using Carry.CarrySystem.Map.Scripts;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Interfaces;
 using Projects.CarrySystem.Item.Scripts;
@@ -21,82 +24,88 @@ namespace Carry.CarrySystem.Block.Scripts
     /// IBlock(ドメインの情報)とBlockInfo(NetworkBehaviourの情報)を持つクラス
     /// ドメインの処理はこのクラスにアクセスして行う
     /// </summary>
-    public class BlockMonoDelegate : IBlockMonoDelegate
+    public class BlockMonoDelegate : IBlockMonoDelegate , IHighlightExecutor
     {
-         public IBlock? Block => _blocks.FirstOrDefault(); 
-         public IList<IBlock> Blocks => _blocks;
-         public IList<IItem> Items => _items;
-         public IList<IGimmick> Gimmicks => _gimmicks;
-
-         readonly NetworkRunner _runner;
-         readonly IList<IBlock> _blocks;
-         readonly IList<BlockInfo> _blockInfos;
-         readonly IList<IItem> _items;
-         readonly IList<ItemInfo> _itemInfos;
-         readonly IList<IGimmick> _gimmicks;
-         readonly IList<GimmickInfo> _gimmickInfos;
-         readonly IBlock? _block;
+         public IBlock? Block =>  GetBlocks().FirstOrDefault(); 
+         public IList<IBlock> Blocks => GetBlocks();
+         public IList<IItem> Items => GetItems();
+         public IList<IGimmick> Gimmicks => GetGimmicks();
+         
+         readonly EntityGridMap _map;
          readonly IEntityPresenter _entityPresenter;
-
          readonly IHighlightExecutor _highLightExecutor;
 
          Vector2Int _gridPosition;
         
          public BlockMonoDelegate(
-             NetworkRunner runner,
+             EntityGridMap map,
              Vector2Int gridPos,
              IList<IBlock> blocks,
-             IList<BlockInfo> blockInfos,
              IList<IItem> items,
-             IList<ItemInfo> itemInfos,
              IList<IGimmick> gimmicks,
-             IList<GimmickInfo> gimmickInfos,
              IEntityPresenter entityPresenter)
          {
-             _runner = runner;
+             _map = map;
              _gridPosition = gridPos;
-             _blocks = blocks;
-             _blockInfos = blockInfos;
-             _items = items;
-             _itemInfos = itemInfos;
-             _gimmicks = gimmicks;
-             _gimmickInfos = gimmickInfos;
              _entityPresenter = entityPresenter;
              
-             _highLightExecutor = new HighlightExecutor(_blockInfos);
+             // get blockInfos from blockController
+             var blockControllerComponents = entityPresenter.GetMonoBehaviour.GetComponentsInChildren<IBlockController>();
+             var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
+             
+             _highLightExecutor = new HighlightExecutor(blockInfos);
         
              // 最初のStartGimmickの処理
              foreach (var gimmick in gimmicks)
              {
-                 gimmick.StartGimmick(runner);
+                 gimmick.StartGimmick();
              }
              
              // 代表として最初のBlockControllerの親に対してOnDestroyAsObservableを登録
-             var blockControllerParent = _blockInfos.First().BlockController.transform.parent;
+             var blockControllerParent = blockInfos.First().BlockController.GetMonoBehaviour.transform.parent;
              blockControllerParent.gameObject.OnDestroyAsObservable().Subscribe(_ =>
              {
-                 foreach (var gimmick in _blocks.OfType<IGimmick>())
+                 foreach (var gimmick in blocks.OfType<IGimmick>())
                  {
-                     gimmick.EndGimmick(runner);
+                     gimmick.EndGimmick();
                  }
              });
              
 
          }
+
+         IList<IBlock> GetBlocks()
+         {
+             var blocks = _map.GetSingleEntityList<IBlock>(_gridPosition);
+             CheckAllBlockTypesAreSame(blocks);
+             return blocks;
+         }
+
+         IList<IItem> GetItems()
+         {
+             return _map.GetSingleEntityList<IItem>(_gridPosition);
+         }
          
+         IList<IGimmick> GetGimmicks()
+         {
+             return _map.GetSingleEntityList<IGimmick>(_gridPosition);
+         }
+
 
          public void AddBlock(IBlock block)
          {
-             if(block is IGimmick gimmickBlock) gimmickBlock.StartGimmick(_runner);
-             _blocks.Add(block);
-            _entityPresenter.SetEntityActiveData(block, _blocks.Count);
+             if(block is IGimmick gimmickBlock) gimmickBlock.StartGimmick();
+             // _blocks.Add(block);
+             _map.AddEntity(_gridPosition, block);
+            _entityPresenter.SetEntityActiveData(block, GetBlocks().Count);
 
          }
          public void RemoveBlock(IBlock block)
          {
-             if(block is IGimmick gimmickBlock) gimmickBlock.EndGimmick(_runner);
-             _blocks.Remove(block);
-             _entityPresenter.SetEntityActiveData(block, _blocks.Count);
+             if(block is IGimmick gimmickBlock) gimmickBlock.EndGimmick();
+             // _blocks.Remove(block);
+             _map.RemoveEntity(_gridPosition, block);
+             _entityPresenter.SetEntityActiveData(block, GetBlocks().Count);
 
          }
          
@@ -108,6 +117,25 @@ namespace Carry.CarrySystem.Block.Scripts
          // IBlock implementation
          public Vector2Int GridPosition { get => _gridPosition; set => _gridPosition = value; }
 
+         
+         // Check if the blocks are the same type.
+         void CheckAllBlockTypesAreSame(List<IBlock> blocks)
+         {
+             if (!blocks.Any())
+             {
+                 // Debug.Log($"IBlockが存在しません。{string.Join(",", blocks)}");
+                 return;
+             }
+
+             var firstBlock = blocks.First();
+
+             if (blocks.Any(block => block.GetType() != firstBlock.GetType()))
+             {
+                 Debug.LogError(
+                     $"異なる種類のブロックが含まれています。　firstBlock.GetType() : {firstBlock.GetType()} {string.Join(",", blocks)}");
+             }
+             
+         }
          
     }
 }

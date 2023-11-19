@@ -54,6 +54,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _holdActionExecutor. Setup(info);
             _passActionExecutor.Setup(info);
             _onDamageExecutor.Setup(info);
+            if(info.PlayerRb == null ) Debug.LogError("info.PlayerRb == null");
             info.PlayerRb.useGravity = true;
         }
 
@@ -72,8 +73,8 @@ namespace Carry.CarrySystem.Player.Scripts
         public void OnDamage() => _onDamageExecutor.OnDamage();
 
         // HoldActionExecutor
-        public void PutDownBlock() => _holdActionExecutor.PutDownBlock();
-        public void SetPlayerBlockPresenter(IPlayerBlockPresenter presenter)
+        public void ResetHoldingBlock() => _holdActionExecutor.ResetHoldingBlock();
+        public void SetPlayerBlockPresenter(IPlayerHoldablePresenter presenter)
         {
             _holdActionExecutor.SetPlayerBlockPresenter(presenter);
             _passActionExecutor.SetPlayerBlockPresenter(presenter);

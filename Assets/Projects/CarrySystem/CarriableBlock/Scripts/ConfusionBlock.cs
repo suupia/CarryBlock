@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
     {
         public ConfusionBlock.Kind[] kinds = new ConfusionBlock.Kind[10];
     }
-    public class ConfusionBlock : ICarriableBlock
+    public class ConfusionBlock : ICarriableBlock , IHoldable
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 1;
@@ -38,7 +38,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;  // basicが持ち上げられない状況はない
         }
 
-        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, PlayerHoldingObjectContainer blockContainer, IHoldActionExecutor holdActionExecutor)
+        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
         {
             // 上下左右を入れ替えた混乱の動きに切り替える
             moveExecutorSwitcher.SwitchToConfusionMove();

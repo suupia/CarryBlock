@@ -11,6 +11,7 @@ using Fusion;
 using Carry.NetworkUtility.Inputs.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Info;
+using Projects.Utility.Scripts;
 using VContainer;
 #nullable enable
 
@@ -19,9 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class CarryPlayerControllerNet : AbstractNetworkPlayerController
     {
-        public PlayerInfo Info => info;
-        
-        IMapUpdater? _mapUpdater;
+        IMapGetter? _mapGetter;
         PlayerNearCartHandlerNet _playerNearCartHandler = null!;
         PlayerCharacterTransporter _playerCharacterTransporter = null!;
         FloorTimerNet _floorTimerNet = null!;
@@ -34,7 +33,8 @@ namespace Carry.CarrySystem.Player.Scripts
             IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,
             PlayerColorType colorType,
-            IMapUpdater mapUpdater,
+            IMapSwitcher mapSwitcher,
+            IMapGetter mapGetter,
             PlayerNearCartHandlerNet playerNearCartHandler,
             PlayerCharacterTransporter playerCharacterTransporter,
             FloorTimerNet floorTimerNet
@@ -47,12 +47,14 @@ namespace Carry.CarrySystem.Player.Scripts
             DashExecutor = dashExecutor;
             OnDamageExecutor = onDamageExecutor!;
             ColorType = colorType;
-            _mapUpdater = mapUpdater;
+            _mapGetter = mapGetter;
             _playerNearCartHandler = playerNearCartHandler;
             _playerCharacterTransporter = playerCharacterTransporter;
             _floorTimerNet = floorTimerNet;
+            
+            SetUp();
 
-            _mapUpdater.RegisterResetAction(() => Reset(_mapUpdater.GetMap()));
+            mapSwitcher.RegisterResetAction(() => Reset(mapGetter.GetMap()));
         }
 
         public override void Spawned()
@@ -62,10 +64,10 @@ namespace Carry.CarrySystem.Player.Scripts
 
             if (HasStateAuthority)
             {
-                if (_mapUpdater != null)
-                    ToSpawnPosition(_mapUpdater.GetMap());  // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
+                if (_mapGetter != null)
+                    ToSpawnPosition(_mapGetter.GetMap());  // Init()がOnBeforeSpawned()よりも先に呼ばれるため、_mapUpdaterは受け取れているはず
                 else
-                    Debug.LogError($"_mapUpdater is null");
+                    Debug.LogError($"_mapGetter is null");
             }
 
         }
@@ -83,7 +85,7 @@ namespace Carry.CarrySystem.Player.Scripts
             if (input.Buttons.WasPressed(PreButtons, PlayerOperation.MainAction))
             {
                 // AidKit
-                var isNear =  _playerNearCartHandler.IsNearCart(info.PlayerObj);
+                var isNear =  _playerNearCartHandler.IsNearCart(Info.PlayerObj);
                 // Debug.Log($"isNear = {isNear}");
             }
 
@@ -112,11 +114,11 @@ namespace Carry.CarrySystem.Player.Scripts
 
         void ToSpawnPosition(EntityGridMap map)
         {
-            var spawnGridPos = new Vector2Int(1, map.Height / 2 + _playerCharacterTransporter.GetPlayerIndex(info.PlayerRef) -1);
+            var spawnGridPos = new Vector2Int(1, map.Height / 2 + _playerCharacterTransporter.GetPlayerIndex(Info.PlayerRef) -1);
             var spawnWorldPos = GridConverter.GridPositionToWorldPosition(spawnGridPos);
             var height = 0.5f;  // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
-            info.PlayerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
-            info.PlayerRb.velocity = Vector3.zero;
+            Info.PlayerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
+            Info.PlayerRb.velocity = Vector3.zero;
             
         }
 

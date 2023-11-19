@@ -10,6 +10,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using JetBrains.Annotations;
 using Carry.CarrySystem.Cart.Info;
+using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using UnityEngine;
 using VContainer;
 
@@ -20,10 +21,9 @@ namespace Carry.CarrySystem.Cart.Scripts
     {
         public bool IsMoving { get; private set; } = false;
         readonly ReachRightEdgeChecker _reachRightEdgeChecker;
-        readonly SearchAccessibleAreaBuilder _searchAccessibleAreaBuilder;
         
         EntityGridMap? _map; // このクラスはMapを登録して使用する (コンストラクタでIMapUpdaterを受け取らない)
-        IMapUpdater? _mapUpdater;
+        IMapSwitcher? _mapUpdater;
         CartInfo? _info ;
         Direction _direction = Direction.Right;
 
@@ -41,12 +41,10 @@ namespace Carry.CarrySystem.Cart.Scripts
 
         [Inject]
         public CartShortestRouteMove(
-            ReachRightEdgeChecker reachRightEdgeChecker,
-            SearchAccessibleAreaBuilder searchAccessibleAreaBuilder
+            ReachRightEdgeChecker reachRightEdgeChecker
         )
         {
             _reachRightEdgeChecker = reachRightEdgeChecker;
-            _searchAccessibleAreaBuilder = searchAccessibleAreaBuilder;
         }
 
         public void Setup(CartInfo info)
@@ -59,9 +57,9 @@ namespace Carry.CarrySystem.Cart.Scripts
             _map = map;
         }
         
-        public void RegisterIMapUpdater(IMapUpdater mapUpdater)
+        public void RegisterIMapUpdater(IMapSwitcher mapSwitcher)
         {
-            _mapUpdater = mapUpdater;
+            _mapUpdater = mapSwitcher;
         }
 
         public void MoveAlongWithShortestRoute()
@@ -90,20 +88,14 @@ namespace Carry.CarrySystem.Cart.Scripts
                 return new List<Vector2Int>();
             }
 
-            var waveletSearchExecutor = new WaveletSearchExecutor(_map); // RoutePresenterをかませる必要がないから直接new
-            var searchShortestRouteExecutor = new SearchShortestRouteExecutor(waveletSearchExecutor);
             var startPos = new Vector2Int(1, _map.Height % 2 == 1 ? (_map.Height - 1) / 2 : _map.Height / 2);
             Func<int, int, bool> isWall = (x, y) => _map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
-            var searchAccessibleAreaExecutor = _searchAccessibleAreaBuilder.Build(_map);
+            var waveletSearchExecutor = new WaveletSearchExecutor(_map); // RoutePresenterをかませる必要がないから直接new
+            var searchShortestRouteExecutor = new SearchShortestRouteExecutor(waveletSearchExecutor);
+            var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor,new SearchedMapExpander(waveletSearchExecutor));
             var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(startPos, isWall,searcherSize);
             var endPosY = _reachRightEdgeChecker.CalcCartReachRightEdge(accessibleArea, _map, searcherSize);
             var routeEndPos = new Vector2Int(_map.Width - 2, endPosY);
-            
-            Debug.Log($"startPos : {startPos}");
-            Debug.Log($"startPos is Wall ? : {isWall(startPos.x, startPos.y)}");
-            Debug.Log($"routeEndPos : {routeEndPos}");
-            Debug.Log($"_map : {_map}");
-
             var routes = searchShortestRouteExecutor.DiagonalSearchShortestRoute(startPos, routeEndPos,
                 OrderInDirectionArrayContainer.CounterClockwiseStartingRightDirections, isWall, searcherSize);
 
@@ -127,7 +119,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             // 次のマップへ移動
             if (_mapUpdater != null)
             {
-                _mapUpdater.UpdateMap(MapKey.Default, _mapUpdater.Index + 1);  // ToDo : 現時点では引数は使われていないので適当でよい
+                _mapUpdater.SwitchMap();
                 IsMoving = false;
             }
             else

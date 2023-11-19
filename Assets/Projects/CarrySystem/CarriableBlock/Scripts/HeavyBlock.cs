@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         public HeavyBlock.Kind[] kinds = new HeavyBlock.Kind[10];
     }
 
-    public class HeavyBlock : ICarriableBlock
+    public class HeavyBlock : ICarriableBlock , IHoldable
     {
         public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 2;
@@ -43,7 +43,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;  // basicが持ち上げられない状況はない
         }
 
-        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, PlayerHoldingObjectContainer blockContainer, IHoldActionExecutor holdActionExecutor)
+        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
         {
             // 移動速度を遅くする
             moveExecutorSwitcher.SwitchToSlowMove();

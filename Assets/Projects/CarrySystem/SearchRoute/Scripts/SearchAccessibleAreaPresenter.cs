@@ -36,7 +36,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             _routePresenters = new IRoutePresenter[mapLength];
         }
 
-        public void RegisterRoutePresenters(IReadOnlyList<RoutePresenterNet> routePresenters)
+        public void RegisterRoutePresenters(IReadOnlyList<IRoutePresenter> routePresenters)
         {
             var mapLength = _waveletSearchExecutor.Map.Length;
             if (routePresenters.Count() != mapLength)
