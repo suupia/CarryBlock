@@ -2,13 +2,11 @@
 using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.VFX.Scripts;
 using Fusion;
 using Carry.Utility.Interfaces;
-using Carry.Utility.Scripts;
-using TMPro;
 using UnityEngine;
 using VContainer;
-using VContainer.Unity;
 #nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
@@ -78,7 +76,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character, character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()
                         ?.Init(character, character, character, character);
-                    networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
+                    networkObj.GetComponentInChildren<DashEffectPresenterNet>()?.Init(character);
                     networkObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(character);
                     networkObj.GetComponentInChildren<PassBlockMoveExecutorNet>()?.Init(character);
                 });

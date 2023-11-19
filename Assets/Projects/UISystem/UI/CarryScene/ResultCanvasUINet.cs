@@ -47,6 +47,8 @@ namespace Carry.UISystem.UI.CarryScene
             StageIndexTransporter stageIndexTransporter
         )
         {
+            if(!HasStateAuthority) return;
+            
             _mapKeyDataSelectorNet = mapKeyDataSelectorNet;
             _stageIndexTransporter = stageIndexTransporter;
             var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);

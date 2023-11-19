@@ -60,7 +60,8 @@ namespace Carry.GameSystem.LobbyScene.Scripts
 
         void IPlayerJoined.PlayerJoined(PlayerRef player)
         {
-            if (Runner.IsServer) _networkPlayerSpawner.SpawnPlayer(player );
+            if(Runner.IsClient) return;
+            _networkPlayerSpawner.SpawnPlayer(player );
             
             Debug.Log($"PlayerJoined");
             _playerCharacterTransporter.SetPlayerNumber(player);
@@ -79,27 +80,27 @@ namespace Carry.GameSystem.LobbyScene.Scripts
 
         void IPlayerLeft.PlayerLeft(PlayerRef player)
         {
-            if (Runner.IsServer) _networkPlayerSpawner.DespawnPlayer(player);
+            if(Runner.IsClient) return;
+             _networkPlayerSpawner.DespawnPlayer(player);
         }
 
         // ボタンから呼び出す
         public void TransitionToGameScene()
         {
-            if (Runner.IsServer)
-            {
-                Debug.Log("全員が準備完了かどうかを無視し、ゲームを開始します");
-                SceneTransition.TransitioningScene(Runner, SceneName.CarryScene);
-                
-                // if (_lobbyNetworkPlayerContainer.IsAllReady)
-                // {
-                //     _enemySpawner.CancelSpawning();
-                //     SceneTransition.TransitioningScene(Runner, SceneName.CarryScene);
-                // }
-                // else
-                // {
-                //     Debug.Log("Not All Ready");
-                // }
-            }
+            if (Runner.IsClient) return;
+
+            Debug.Log("全員が準備完了かどうかを無視し、ゲームを開始します");
+            SceneTransition.TransitioningScene(Runner, SceneName.CarryScene);
+
+            // if (_lobbyNetworkPlayerContainer.IsAllReady)
+            // {
+            //     _enemySpawner.CancelSpawning();
+            //     SceneTransition.TransitioningScene(Runner, SceneName.CarryScene);
+            // }
+            // else
+            // {
+            //     Debug.Log("Not All Ready");
+            // }
         }
     }
 }

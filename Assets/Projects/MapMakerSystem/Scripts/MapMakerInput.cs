@@ -5,6 +5,7 @@ using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.EditMapSystem.EditMap.Scripts;
+using Carry.EditMapSystem.EditMapForPlayer.Scripts;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 using UniRx;
@@ -15,14 +16,15 @@ using VContainer;
 
 namespace Projects.MapMakerSystem.Scripts
 {
-    public class MapMakerEditMapInput : MonoBehaviour
+    public class MapMakerInput : MonoBehaviour
     {
         public  string BlockTypeString => _blockType?.Name ?? "(None)";
         public string DirectionString => _direction.ToString();
         
         Direction _direction = Direction.Up; 
 
-        EditMapBlockAttacher _editMapBlockAttacher = null!;
+        MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
+        StageMapSaver _stageMapSaver = null!;
         IMapGetter _mapGetter = null!;
 
         CUIState _cuiState = CUIState.Idle;
@@ -40,10 +42,14 @@ namespace Projects.MapMakerSystem.Scripts
 
 
         [Inject]
-        public void Construct(EditMapBlockAttacher editMapBlockAttacher, IMapGetter mapGetter)
+        public void Construct(
+            MemorableEditMapBlockAttacher editMapBlockAttacher,
+            StageMapSaver stageMapSaver,
+            IMapGetter mapGetter)
         {
             _editMapBlockAttacher = editMapBlockAttacher;
             _mapGetter = mapGetter;
+            _stageMapSaver = stageMapSaver;
         }
 
         void Start()
@@ -205,7 +211,20 @@ namespace Projects.MapMakerSystem.Scripts
                 _direction = Direction.Right;
             }
 
-
+            
+            // デバッグ用
+            if (Input.GetKeyDown(KeyCode.N))
+            {
+                _editMapBlockAttacher.Undo(_mapGetter.GetMap());
+            }
+            if(Input.GetKeyDown(KeyCode.M))
+            {
+                _editMapBlockAttacher.Redo(_mapGetter.GetMap());
+            }
+            if(Input.GetKeyDown(KeyCode.S))
+            {
+                _stageMapSaver.Save(_mapGetter.GetMap());
+            }
         }
 
         enum Direction

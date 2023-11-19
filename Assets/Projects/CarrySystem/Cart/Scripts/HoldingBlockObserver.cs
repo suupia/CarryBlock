@@ -27,7 +27,6 @@ namespace Carry.CarrySystem.Cart.Scripts
         SearchAccessibleAreaPresenter? _searchAccessibleAreaPresenter;
         IDisposable? _isHoldSubscription; // to hold the subscription to dispose it later if needed
         IDisposable? _mapSubscription; // to hold the subscription to dispose it later if needed
-        CancellationTokenSource[]? _ctss;
         
         public HoldingBlockObserver(
             IMapSwitcher mapSwitcher,
@@ -59,17 +58,11 @@ namespace Carry.CarrySystem.Cart.Scripts
                 .SelectMany(holdAction => holdAction.ObserveEveryValueChanged(h => h.IsHoldingBlock))
                 .Subscribe(_ => ShowAccessibleArea());
         }
+        
 
         void ResetAccessibleArea()
         {
-            var map = _mapGetter.GetMap();
-            
-            if (_ctss == null || _ctss.Length != map.Length)
-            {
-                _ctss = new CancellationTokenSource[map.Length];
-            }
-
-            _searchAccessibleAreaPresenter = _searchAccessibleAreaPresenterBuilder.BuildPresenter(_mapGetter.GetMap());
+            _searchAccessibleAreaPresenter = _searchAccessibleAreaPresenterBuilder.BuildPresenter();
             
             ShowAccessibleArea();
         }
@@ -78,19 +71,15 @@ namespace Carry.CarrySystem.Cart.Scripts
         void ShowAccessibleArea()
         {
             Debug.Log("ShowAccessibleArea");
-            var map = _mapGetter.GetMap();
-            var startPos = new Vector2Int(1, map.Height / 2);
-            Func<int, int, bool> isWall = (x, y) =>
-                map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
-            var searcherSize = SearcherSize.SizeThree;
+            var accessibleArea = _searchAccessibleAreaPresenter?.SearchAccessibleAreaWithUpdatePresenter();
 
-            var accessibleArea = _searchAccessibleAreaPresenter?.SearchAccessibleAreaWithUpdate(startPos, isWall, _ctss,searcherSize);
-
-            ShowResultText(accessibleArea, map, searcherSize);
+            ShowResultText(accessibleArea);
         }
 
-        void ShowResultText(bool[] accessibleArea,EntityGridMap map,SearcherSize searcherSize  )
+        void ShowResultText(bool[] accessibleArea)
         {
+            var map = _mapGetter.GetMap();
+            var searcherSize = SearcherSize.SizeThree; 
             if (_reachRightEdgeChecker.CanCartReachRightEdge(accessibleArea, map, searcherSize))
             {
                 if (AllPlayerIsNotHoldingBlock())

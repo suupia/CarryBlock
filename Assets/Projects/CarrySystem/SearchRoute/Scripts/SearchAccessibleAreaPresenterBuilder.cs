@@ -18,22 +18,28 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
     /// </summary>
     public class SearchAccessibleAreaPresenterBuilder
     {
+        readonly IMapGetter _mapGetter;
         readonly IRoutePresenterSpawner _routePresenterSpawner;
         IReadOnlyList<IRoutePresenter>? _routePresenters;
 
         [Inject]
-        public SearchAccessibleAreaPresenterBuilder(IRoutePresenterSpawner routePresenterSpawner)
+        public SearchAccessibleAreaPresenterBuilder(
+            IMapGetter mapGetter,
+            IRoutePresenterSpawner routePresenterSpawner
+            )
         {
+            _mapGetter = mapGetter;
             _routePresenterSpawner = routePresenterSpawner;
         }
         
-        public SearchAccessibleAreaPresenter BuildPresenter(IGridMap map)
+        public SearchAccessibleAreaPresenter BuildPresenter()
         {
+            var map = _mapGetter.GetMap();
             var waveletSearchExecutor = new WaveletSearchExecutor(map);
             var searchedMapExpander = new SearchedMapExpander(waveletSearchExecutor);
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor,searchedMapExpander);
             SetUpPresenter(map);
-            var searchAccessibleAreaPresenter = new SearchAccessibleAreaPresenter(waveletSearchExecutor,searchAccessibleAreaExecutor,searchedMapExpander);
+            var searchAccessibleAreaPresenter = new SearchAccessibleAreaPresenter(_mapGetter, waveletSearchExecutor,searchAccessibleAreaExecutor,searchedMapExpander);
             if(_routePresenters == null) throw new NullReferenceException("_routePresenters is null");
             searchAccessibleAreaPresenter.RegisterRoutePresenters(_routePresenters);
             return searchAccessibleAreaPresenter;

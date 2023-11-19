@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -973,28 +973,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 437767491}
-  - component: {fileID: 437767490}
+  - component: {fileID: 437767492}
   m_Layer: 0
-  m_Name: EditMapInput
+  m_Name: MapMakerEditMapInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &437767490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 437767489}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dee5dc0438134dbebeb97c2d57b22fb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editMapCuiSave: {fileID: 2012967954}
-  editMapCUILoad: {fileID: 1202258729}
 --- !u!4 &437767491
 Transform:
   m_ObjectHideFlags: 0
@@ -1010,6 +996,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &437767492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437767489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 652eda6e821a4f81a0e464cde4156d29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &472289521
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1659,7 +1657,8 @@ MonoBehaviour:
   parentReference:
     TypeName: 
   autoRun: 1
-  autoInjectGameObjects: []
+  autoInjectGameObjects:
+  - {fileID: 1717441963}
 --- !u!1 &705923248
 GameObject:
   m_ObjectHideFlags: 0
@@ -3966,7 +3965,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1960377189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3979,7 +3978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7ce5359851154bb99713284b9db9703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editMapInput: {fileID: 437767490}
+  editMapInput: {fileID: 0}
   blockTypeText: {fileID: 307413494}
   directionText: {fileID: 602646672}
 --- !u!4 &1960377190

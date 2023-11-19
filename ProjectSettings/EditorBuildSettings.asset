@@ -35,5 +35,8 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Projects/EditMapSystem/EditMapForPlayerScene.unity
     guid: f35588a5e5d1f4e43bf7bd3c743891e3
+  - enabled: 1
+    path: Assets/Projects/MapMakerSystem/MapMakerScene.unity
+    guid: 9086556fe97f53f4cb5462f169e78b83
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 4afda750428cb4e1b90d22637877caae, type: 2}

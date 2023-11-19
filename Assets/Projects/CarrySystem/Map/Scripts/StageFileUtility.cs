@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Carry.CarrySystem.Map.Scripts
 {
     [Serializable]
-    public struct Stage
+    public record Stage
     {
                 
         // public string version;
@@ -34,7 +34,7 @@ namespace Carry.CarrySystem.Map.Scripts
     }
 
     [Serializable]
-    public struct MapInfo
+    public record MapInfo
     {
         public string name;
         public EntityGridMapData data;
@@ -59,6 +59,58 @@ namespace Carry.CarrySystem.Map.Scripts
     public static class StageFileUtility
     {
         
+        public static void Save(Stage stage)
+        {
+            var path = GetPath(stage.id);
+
+            var jsonData = JsonUtility.ToJson(stage);
+
+            // JSONデータをファイルに書き込む
+            using var streamWriter = new StreamWriter(path);
+            streamWriter.Write(jsonData);
+            streamWriter.Flush();
+        }
+        
+        public static Stage? Load(string stageId)
+        {
+            var path = GetPath(stageId);
+
+            if (File.Exists(path))
+            {
+                string jsonData = File.ReadAllText(path);
+                return JsonUtility.FromJson<Stage>(jsonData);
+            }
+            Debug.LogError("File not found.");
+            return null;
+        }
+        
+        
+        public static IReadOnlyList<Stage> GetStages()
+        {
+            var world = LoadWorld();
+            var stageIds = world.stageIds;
+            var needsRefreshWorld = false;
+            var stages = new List<Stage>();
+
+            for (var i = 0; i < stageIds.Count; i++)
+            {
+                var stage = Load(stageIds[i]);
+                if (stage == null)
+                {
+                    stage = new Stage($"Stage{i}");
+                    world.stageIds[i] = stage.id;
+                    needsRefreshWorld = true;
+                }
+                stages.Add(stage);
+            }
+
+            if (needsRefreshWorld)
+            {
+                SaveWorld(world);
+            }
+            
+            return stages;
+        }
         
         static string GetPath(string stageId) => Path.Combine(
             Application.streamingAssetsPath, "JsonFiles", "Stages", $"{stageId}.json");
@@ -85,34 +137,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
             return world;
         }
-
-        public static IReadOnlyList<Stage> GetStages()
-        {
-            var world = LoadWorld();
-            var stageIds = world.stageIds;
-            var needsRefreshWorld = false;
-            var stages = new List<Stage>();
-
-            for (var i = 0; i < stageIds.Count; i++)
-            {
-                var stage = Load(stageIds[i]);
-                if (stage == null)
-                {
-                    stage = new Stage($"Stage{i}");
-                    world.stageIds[i] = stage.Value.id;
-                    needsRefreshWorld = true;
-                }
-                stages.Add(stage.Value);
-            }
-
-            if (needsRefreshWorld)
-            {
-                SaveWorld(world);
-            }
-            
-            return stages;
-        }
-
+        
         static IEnumerable<Stage> SaveInitStages()
         {
             var stages = new List<Stage>
@@ -132,29 +157,5 @@ namespace Carry.CarrySystem.Map.Scripts
             return stages;
         }
 
-        static void Save(Stage stage)
-        {
-            var path = GetPath(stage.id);
-
-            var jsonData = JsonUtility.ToJson(stage);
-
-            // JSONデータをファイルに書き込む
-            using var streamWriter = new StreamWriter(path);
-            streamWriter.Write(jsonData);
-            streamWriter.Flush();
-        }
-        
-        static Stage? Load(string stageId)
-         {
-             var path = GetPath(stageId);
-
-             if (File.Exists(path))
-             {
-                 string jsonData = File.ReadAllText(path);
-                 return JsonUtility.FromJson<Stage>(jsonData);
-             }
-             Debug.LogError("File not found.");
-             return null;
-         }
     }
 }

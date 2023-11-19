@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 #nullable enable
@@ -21,6 +22,8 @@ namespace Carry.UISystem.UI.CarryScene
 
         void Update()
         {
+            if(float.IsNaN(fillImage.fillAmount) ) return;
+            
             edgeTransform.localPosition = new Vector3(
                 _width * fillImage.fillAmount - _width / 2,
                 edgeTransform.localPosition.y,
