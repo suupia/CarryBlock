@@ -75,7 +75,7 @@ namespace Carry.CarrySystem.Player.Scripts
                         character, character, character, character, character, colorType, _mapSwitcher, _mapGetter,
                         _playerNearCartHandler, _playerCharacterTransporter, _floorTimerNet);
                     networkObj.GetComponent<PlayerHoldablePresenterNet>()?.Init(character, character);
-                    networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
+                    networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character, character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()
                         ?.Init(character, character, character, character);
                     networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
