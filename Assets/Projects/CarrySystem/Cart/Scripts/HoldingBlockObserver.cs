@@ -70,16 +70,15 @@ namespace Carry.CarrySystem.Cart.Scripts
         void ShowAccessibleArea()
         {
             Debug.Log("ShowAccessibleArea");
-            var map = _mapGetter.GetMap();
-            var searcherSize = SearcherSize.SizeThree;
-
             var accessibleArea = _searchAccessibleAreaPresenter?.SearchAccessibleAreaWithUpdatePresenter();
 
-            ShowResultText(accessibleArea, map, searcherSize);
+            ShowResultText(accessibleArea);
         }
 
-        void ShowResultText(bool[] accessibleArea,EntityGridMap map,SearcherSize searcherSize  )
+        void ShowResultText(bool[] accessibleArea)
         {
+            var map = _mapGetter.GetMap();
+            var searcherSize = SearcherSize.SizeThree; 
             if (_reachRightEdgeChecker.CanCartReachRightEdge(accessibleArea, map, searcherSize))
             {
                 if (AllPlayerIsNotHoldingBlock())
