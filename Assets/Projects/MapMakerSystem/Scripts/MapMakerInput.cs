@@ -225,7 +225,7 @@ namespace Projects.MapMakerSystem.Scripts
             {
                 _editMapBlockAttacher.Redo(_mapGetter.GetMap());
             }
-            if(Input.GetKeyDown(KeyCode.S))
+            if(Input.GetKeyDown(KeyCode.F2))
             {
                 _stageMapSaver.Save(_mapGetter.GetMap());
             }

@@ -5,7 +5,7 @@ namespace Projects.MapMakerSystem.Scripts
 {
     public class FloorTimerLocal: MonoBehaviour
     {
-        bool _isActive = false;
+        public bool IsActive { get; private set; }
         public float FloorLimitSeconds { get; }
         public float FloorRemainingSeconds { get; private set;  }
         public float FloorRemainingTimeRatio => FloorRemainingSeconds / FloorLimitSeconds;
@@ -18,17 +18,17 @@ namespace Projects.MapMakerSystem.Scripts
         public void StartTimer()
         {
             FloorRemainingSeconds = FloorLimitSeconds;
-            _isActive = true;
+            IsActive = true;
         }
 
         void Update()
         {
-            if (!_isActive) return;
+            if (!IsActive) return;
             
             FloorRemainingSeconds -= Time.deltaTime;
             if (FloorRemainingSeconds <= 0)
             {
-                _isActive = false;
+                IsActive = false;
             }
         }
     }

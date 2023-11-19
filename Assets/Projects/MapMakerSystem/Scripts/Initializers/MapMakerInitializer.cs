@@ -46,7 +46,7 @@ public class MapMakerInitializer : MonoBehaviour
         }
         else
         {
-            Debug.LogError("該当するStageがLoadできませんでした。ファイルの存在を確認してください");
+            Debug.LogError("該当するStageがLoadできませんでした。TestStageを読み込みます");
         }
         _stageMapSwitcher.InitSwitchMap(); // -1が初期マップ
     }

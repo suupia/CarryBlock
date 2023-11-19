@@ -29,17 +29,13 @@ namespace Carry.UISystem.UI.MapMaker
         {
             _floorTimerLocal = floorTimerLocal;
             floorNumberText.text = $"{mapGetter.Index + 1} F";
-            Debug.Log($"floorNumberText: {floorNumberText}");
-            Debug.Log($"_floorTimerLocal: {floorTimerLocal}");
         }
 
         void Update()
         {
-            // Debug.Log($"floorNumberText: {floorNumberText}");
-            // Debug.Log($"_floorTimerLocal: {_floorTimerLocal}");
-            floorTimerText.text = $"Time : {Mathf.Floor(_floorTimerLocal.FloorRemainingSeconds)}";
-            // coinTotalText.text = $"Coin : {_treasureCoinCounter.Count}";
+            if (!_floorTimerLocal.IsActive) return;
 
+            floorTimerText.text = $"Time : {Mathf.Floor(_floorTimerLocal.FloorRemainingSeconds)}";
             floorTimerImage.fillAmount = _floorTimerLocal.FloorRemainingTimeRatio;
         }
     }

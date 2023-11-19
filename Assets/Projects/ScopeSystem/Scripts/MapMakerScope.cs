@@ -11,6 +11,7 @@ using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
 using Carry.EditMapSystem.EditMap.Scripts;
 using Carry.EditMapSystem.EditMapForPlayer.Scripts;
+using Carry.UISystem.UI.MapMaker;
 using Fusion;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
@@ -111,6 +112,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.RegisterComponentInHierarchy<MapKeyContainer>();
             
             // FloorTimer
+            builder.RegisterComponentInHierarchy<PlayingCanvasUILocal>();
             builder.RegisterComponentInHierarchy<FloorTimerLocal>();
         }
     }
