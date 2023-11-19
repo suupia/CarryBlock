@@ -112,9 +112,11 @@ namespace Carry.CarrySystem.Player.Scripts
         
             if (_localLocalInputPoller.GetInput(out LocalInputData input))
             {
+                Debug.Log($"GEtInput!");
 
                 if (input.Buttons.WasPressed(_preButtons,PlayerOperation.MainAction))
                 {
+                    Debug.Log($"Start HoldAction!");
                     _holdActionExecutor.HoldAction();
                     // _decorationDetector.OnMainAction(ref DecorationDataRef);
                 }

@@ -51,7 +51,7 @@ namespace Projects.Utility.Scripts
             input.Buttons.Set(PlayerOperation.Pass, passValue != 0);
             input.Buttons.Set(PlayerOperation.ChangeUnit, changeUnitValue != 0);
 
-            return input != default;
+            return true;  // 本来のFusionのGetInput()の動作を正しく理解していないが、とりあえずtrueを返して毎回判定するようにすればオッケー
         }
         
         

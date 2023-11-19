@@ -461,8 +461,7 @@ GameObject:
   - component: {fileID: 4248234749509437363}
   - component: {fileID: 4206174430240941964}
   - component: {fileID: 8442106847936652538}
-  - component: {fileID: 8330914155940968561}
-  - component: {fileID: 1272183460225244455}
+  - component: {fileID: 4565631261070024936}
   m_Layer: 6
   m_Name: DashVFX
   m_TagString: Untagged
@@ -562,7 +561,7 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &8330914155940968561
+--- !u!114 &4565631261070024936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -571,34 +570,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 9154517758857064098}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc26e3dd3d44bd94a93acc1b05b99934, type: 3}
+  m_Script: {fileID: 11500000, guid: dd46d2d9ec0a46e4a79a00323b8475e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
---- !u!114 &1272183460225244455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9154517758857064098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectInterest: 1
-  DefaultInterestGroups: []
-  DestroyWhenStateAuthorityLeaves: 0
-  AllowStateAuthorityOverride: 1
-  AoiPositionSource: {fileID: 0}
-  Flags: 3073
-  NetworkGuid:
-    RawGuidValue: 00000000000000000000000000000000
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 8330914155940968561}
-  SimulationBehaviours: []
 --- !u!1001 &723894436354805168
 PrefabInstance:
   m_ObjectHideFlags: 0
