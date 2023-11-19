@@ -52,7 +52,7 @@ namespace Carry.CarrySystem.Map.Scripts
         Direction _cannonDirectionLocal;
         [SerializeField] GameObject spikeView = null!;
 
-        Collider _viewCollider = null!;
+        Collider?[] _viewColliders;
         public void DestroyPresenter()
         {
            Runner.Despawn(this.Object);
@@ -61,7 +61,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public override void Spawned()
         {
             PresentDataRef.IsColliderActive = true;
-            _viewCollider = GetComponentInChildren<Collider>();
+            _viewColliders = GetComponentsInChildren<Collider>();
         }
 
         public override void Render()
@@ -154,8 +154,11 @@ namespace Carry.CarrySystem.Map.Scripts
                 1 => true,
                 _ => throw new InvalidOperationException($"SpikeCount : {PresentDataRef.SpikeCount}")
             });
-            
-            _viewCollider.enabled = PresentDataRef.IsColliderActive;
+
+            foreach (var viewCollider in _viewColliders)
+            {
+                if(viewCollider != null) viewCollider.enabled = PresentDataRef.IsColliderActive;
+            }
         }
 
 
