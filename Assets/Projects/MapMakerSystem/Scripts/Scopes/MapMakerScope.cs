@@ -109,9 +109,9 @@ namespace Carry.ScopeSystem.Scripts
             
             // MapKey
             builder.RegisterComponentInHierarchy<MapKeyContainer>();
-
-
-
+            
+            // FloorTimer
+            builder.RegisterComponentInHierarchy<FloorTimerLocal>();
         }
     }
 }

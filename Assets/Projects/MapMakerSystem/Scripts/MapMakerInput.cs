@@ -4,6 +4,7 @@ using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
+using Carry.CarrySystem.Spawners.Scripts;
 using Carry.EditMapSystem.EditMap.Scripts;
 using Carry.EditMapSystem.EditMapForPlayer.Scripts;
 using Projects.CarrySystem.Gimmick.Scripts;
@@ -21,11 +22,12 @@ namespace Projects.MapMakerSystem.Scripts
         public  string BlockTypeString => _blockType?.Name ?? "(None)";
         public string DirectionString => _direction.ToString();
         
-        Direction _direction = Direction.Up; 
+        Direction _direction = Direction.Up;
 
         MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
         StageMapSaver _stageMapSaver = null!;
         IMapGetter _mapGetter = null!;
+        MapMakerInitializer _initializer;
 
         CUIState _cuiState = CUIState.Idle;
         Type _blockType = null!;
@@ -45,11 +47,13 @@ namespace Projects.MapMakerSystem.Scripts
         public void Construct(
             MemorableEditMapBlockAttacher editMapBlockAttacher,
             StageMapSaver stageMapSaver,
-            IMapGetter mapGetter)
+            IMapGetter mapGetter, 
+            MapMakerInitializer initializer)
         {
             _editMapBlockAttacher = editMapBlockAttacher;
             _mapGetter = mapGetter;
             _stageMapSaver = stageMapSaver;
+            _initializer = initializer;
         }
 
         void Start()
@@ -224,6 +228,10 @@ namespace Projects.MapMakerSystem.Scripts
             if(Input.GetKeyDown(KeyCode.S))
             {
                 _stageMapSaver.Save(_mapGetter.GetMap());
+            }
+            if (Input.GetKeyDown(KeyCode.F1) )
+            {
+                _initializer.StartTestPlay();
             }
         }
 

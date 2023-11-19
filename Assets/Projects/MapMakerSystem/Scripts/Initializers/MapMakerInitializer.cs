@@ -9,22 +9,34 @@ using VContainer;
 
 public class MapMakerInitializer : MonoBehaviour
 {
+    [SerializeField] GameObject playingCanvas;
+    
     LocalPlayerSpawner _localPlayerSpawner;
     StageMapSwitcher _stageMapSwitcher;
     EditingMapTransporter _editingMapTransporter;
+    FloorTimerLocal _floorTimerLocal;
         
     [Inject]
     public void Construct(
         LocalPlayerSpawner localPlayerSpawner,
         StageMapSwitcher stageMapSwitcher,
+        FloorTimerLocal floorTimerLocal,
         EditingMapTransporter editingMapTransporter)
     {
         _stageMapSwitcher = stageMapSwitcher;
         _localPlayerSpawner = localPlayerSpawner;
         _editingMapTransporter = editingMapTransporter;
+        _floorTimerLocal = floorTimerLocal;
     }
 
-    void Awake()
+    void Start()
+    {
+        Load();
+        
+        // playingCanvas.SetActive(false);
+    }
+
+    void Load()
     {
         var stage = StageFileUtility.Load(_editingMapTransporter.StageId);
         if (stage != null)
@@ -37,16 +49,13 @@ public class MapMakerInitializer : MonoBehaviour
             Debug.LogError("該当するStageがLoadできませんでした。ファイルの存在を確認してください");
         }
         _stageMapSwitcher.InitSwitchMap(); // -1が初期マップ
-        // Debug.Log($"stage id: {_editingMapTransporter.StageId}, map index: {_editingMapTransporter.Index}");
-        
     }
 
-    void Update()
+    public void StartTestPlay()
     {
-        if (Input.GetKeyDown(KeyCode.F1) )
-        {
-            Debug.Log($"CarryPlayerControllerLocalをスポーンします");
-            _localPlayerSpawner.SpawnPlayer();
-        }
+        Debug.Log($"CarryPlayerControllerLocalをスポーンします");
+        _localPlayerSpawner.SpawnPlayer();
+        playingCanvas.SetActive(true);
+        _floorTimerLocal.StartTimer();
     }
 }
