@@ -42,7 +42,7 @@ namespace Projects.CarrySystem.Player.Scripts.Local
         [SerializeField] GameObject ConfusionBlockView = null!;
         public void Init(IHoldActionExecutor holdActionExecutor, IPassActionExecutor passActionExecutor)
         {
-            Debug.Log($"PlayerBlockPresenterNet.Init()");
+            Debug.Log($"PlayerBlockPresenterLocal.Init()");
             holdActionExecutor.SetPlayerBlockPresenter(this);
             passActionExecutor.SetPlayerBlockPresenter(this);
             _presentData.HoldingBlockType = BlockType.None;

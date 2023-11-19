@@ -42,9 +42,9 @@ namespace Carry.CarrySystem.Player.Scripts.Local
             var playerControllerObj = Object.Instantiate(playerController, position, rotation);
             playerControllerObj.GetComponent<CarryPlayerControllerLocal>().Init(character.PlayerHoldingObjectContainer,
                 character, character, character, character, character, colorType, _mapGetter);
-            playerControllerObj.GetComponent<PlayerHoldablePresenterNet>()?.Init(character, character);
-            playerControllerObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character);
-            playerControllerObj.GetComponent<PlayerAnimatorPresenterNet>()
+            playerControllerObj.GetComponent<IPlayerHoldablePresenter>()?.Init(character, character);
+            playerControllerObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character, character);
+            playerControllerObj.GetComponent<IPlayerAnimatorPresenter>()
                 ?.Init(character, character, character, character);
             playerControllerObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
             playerControllerObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(character);

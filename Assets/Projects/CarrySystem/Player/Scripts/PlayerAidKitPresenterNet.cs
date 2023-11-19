@@ -25,7 +25,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         bool _holdingAidKitLocal = false;
         
-        public void Init(IHoldActionExecutor holdActionExecutor)
+        public void Init(IHoldActionExecutor holdActionExecutor , IPassActionExecutor _)
         {
             // tie presenter to domain
             holdActionExecutor.SetPlayerAidKitPresenter(this);
