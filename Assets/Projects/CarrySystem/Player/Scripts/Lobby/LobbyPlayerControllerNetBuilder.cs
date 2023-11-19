@@ -1,4 +1,5 @@
 ﻿using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.VFX.Scripts;
 using Fusion;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;

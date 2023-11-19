@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
 
-namespace Carry.CarrySystem.Player.Scripts
+namespace Carry.CarrySystem.VFX.Scripts
 {
     [RequireComponent(typeof(VisualEffect))]
     public class DashEffectPresenterNet : NetworkBehaviour

@@ -4,6 +4,7 @@ using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.VFX.Scripts;
 using Carry.Utility.Interfaces;
 using UnityEngine;
 using VContainer;

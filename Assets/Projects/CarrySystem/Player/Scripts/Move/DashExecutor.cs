@@ -2,6 +2,7 @@
 using System.Threading;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.VFX.Scripts;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 

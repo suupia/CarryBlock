@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 using UnityEngine.VFX;
 #nullable enable
 
-namespace Carry.CarrySystem.Player.Scripts
+namespace Carry.CarrySystem.VFX.Scripts
 {
     [RequireComponent(typeof(VisualEffect))]
     public class DashEffectPresenterLocal : MonoBehaviour

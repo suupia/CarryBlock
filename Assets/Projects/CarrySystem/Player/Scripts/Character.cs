@@ -4,6 +4,7 @@ using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using UnityEngine;
 using Carry.CarrySystem.Player.Info;
+using Carry.CarrySystem.VFX.Scripts;
 
 #nullable enable
 

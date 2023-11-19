@@ -2,6 +2,7 @@
 
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Scripts;
+using Carry.CarrySystem.VFX.Scripts;
 
 namespace Carry.CarrySystem.Player.Interfaces
 {

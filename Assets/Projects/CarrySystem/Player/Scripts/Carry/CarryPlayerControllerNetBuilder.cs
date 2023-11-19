@@ -2,13 +2,11 @@
 using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.VFX.Scripts;
 using Fusion;
 using Carry.Utility.Interfaces;
-using Carry.Utility.Scripts;
-using TMPro;
 using UnityEngine;
 using VContainer;
-using VContainer.Unity;
 #nullable enable
 
 namespace Carry.CarrySystem.Player.Scripts
