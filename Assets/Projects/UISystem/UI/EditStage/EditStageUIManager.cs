@@ -76,7 +76,7 @@ public class EditStageUIManager : MonoBehaviour
                     {
                         //シーン間で共有するデータは既存のコードにならってRootScopeで管理する
                         _editingMapTransporter.SetEditingMap(stage.id, index);
-                        SceneManager.LoadScene("EditMapForPlayerScene");
+                        SceneManager.LoadScene("MapMakerScene");
                     });
                 }
 
