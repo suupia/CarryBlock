@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
@@ -15,20 +16,23 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 {
         public class SearchAccessibleAreaPresenter
     {
+        readonly IMapGetter _mapGetter;
         readonly WaveletSearchExecutor _waveletSearchExecutor;
         readonly SearchAccessibleAreaExecutor _searchAccessibleAreaExecutor;
         readonly SearchedMapExpander _searchedMapExpander;
         readonly IRoutePresenter?[] _routePresenters;
         readonly int _delayMilliSec = 30;
-        CancellationTokenSource?[]? _cancellationTokenSources;
+        CancellationTokenSource?[]? _ctss;
         long _beforeMaxValue = 0;
 
 
         public SearchAccessibleAreaPresenter(
+            IMapGetter mapGetter,
             WaveletSearchExecutor waveletSearchExecutor, 
             SearchAccessibleAreaExecutor searchAccessibleAreaExecutor,
             SearchedMapExpander searchedMapExpander)
         {
+            _mapGetter = mapGetter;
             _waveletSearchExecutor = waveletSearchExecutor;
             _searchAccessibleAreaExecutor = searchAccessibleAreaExecutor;
             _searchedMapExpander = searchedMapExpander;
@@ -50,13 +54,23 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             {
                 _routePresenters[i] = routePresenters[i];
             }
+            
+            if (_ctss == null || _ctss.Length != mapLength)
+            {
+                _ctss = new CancellationTokenSource[mapLength];
+            }
         }
 
-        public bool[] SearchAccessibleAreaWithUpdate(Vector2Int startPos, Func<int, int, bool> isWall,CancellationTokenSource[]? cancellationTokenSources,SearcherSize searcherSize = SearcherSize.SizeOne)
+        public bool[] SearchAccessibleAreaWithUpdatePresenter()
         {
-            _cancellationTokenSources = cancellationTokenSources;
+            var map = _mapGetter.GetMap();
+            var startPos = new Vector2Int(1, map.Height / 2);
+            Func<int, int, bool> isWall = (x, y) =>
+                map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
+            var searcherSize = SearcherSize.SizeThree;
+
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
-            var accessibleAreaArray =_searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(startPos, isWall, searcherSize);
+            var accessibleAreaArray =_searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
     
             var expandedMap = _searchedMapExpander.ExpandSearchedMap(searchedMap, searcherSize);
 
@@ -68,7 +82,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         // 時間差でpresenterをupdateする
         void UpdatePresenter(NumericGridMap numericGridMap)
         {
-            if (_cancellationTokenSources == null)
+            if (_ctss == null)
             {
                 Debug.LogError($"_cancellationTokenSources is null");
                 return;
@@ -77,10 +91,10 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             long nextMaxValue = 0;
             for (int i = 0; i < numericGridMap.Length; i++)
             {
-                _cancellationTokenSources[i]?.Cancel();
-                _cancellationTokenSources[i] = new CancellationTokenSource();
-                if(_cancellationTokenSources[i] == null) return;
-                DelayUpdate(_cancellationTokenSources[i].Token, _routePresenters[i], numericGridMap.GetValue(i),i).Forget();  // _cancellationTokenSources[i]でDereference of a possibly null referenceがでる　なぜ？
+                _ctss[i]?.Cancel();
+                _ctss[i] = new CancellationTokenSource();
+                if(_ctss[i] == null) return;
+                DelayUpdate(_ctss[i].Token, _routePresenters[i], numericGridMap.GetValue(i),i).Forget();  // _cancellationTokenSources[i]でDereference of a possibly null referenceがでる　なぜ？
                 if(numericGridMap.GetValue(i) != _waveletSearchExecutor.InitValue
                    && numericGridMap.GetValue(i) != _waveletSearchExecutor.WallValue
                    && numericGridMap.GetValue(i) != _waveletSearchExecutor.EdgeValue
