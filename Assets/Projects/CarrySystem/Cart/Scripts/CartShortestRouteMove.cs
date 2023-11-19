@@ -93,7 +93,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             var waveletSearchExecutor = new WaveletSearchExecutor(_map); // RoutePresenterをかませる必要がないから直接new
             var searchShortestRouteExecutor = new SearchShortestRouteExecutor(waveletSearchExecutor);
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor,new SearchedMapExpander(waveletSearchExecutor));
-            var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleAreaWithNotUpdate(startPos, isWall,searcherSize);
+            var accessibleArea = searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall,searcherSize);
             var endPosY = _reachRightEdgeChecker.CalcCartReachRightEdge(accessibleArea, _map, searcherSize);
             var routeEndPos = new Vector2Int(_map.Width - 2, endPosY);
             var routes = searchShortestRouteExecutor.DiagonalSearchShortestRoute(startPos, routeEndPos,
