@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.VFX.Interfaces;
 using Fusion;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -11,7 +12,7 @@ using UnityEngine.VFX;
 namespace Carry.CarrySystem.VFX.Scripts
 {
     [RequireComponent(typeof(VisualEffect))]
-    public class DashEffectPresenterNet : NetworkBehaviour
+    public class DashEffectPresenterNet : NetworkBehaviour, IDashEffectPresenter
     {
         public  struct DashEffectData : INetworkStruct
         {

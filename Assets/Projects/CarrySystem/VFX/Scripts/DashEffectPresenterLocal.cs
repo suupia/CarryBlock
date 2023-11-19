@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Carry.CarrySystem.VFX.Interfaces;
 using Fusion;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -12,57 +13,57 @@ using UnityEngine.VFX;
 namespace Carry.CarrySystem.VFX.Scripts
 {
     [RequireComponent(typeof(VisualEffect))]
-    public class DashEffectPresenterLocal : MonoBehaviour
+    public class DashEffectPresenterLocal : MonoBehaviour ,IDashEffectPresenter
     {
-        // struct DashEffectData
-        // {
-        //     public bool IsDashing;
-        // }
-        //
-        // DashEffectData _data;
-        //
-        // bool _isDashingLocal;
-        // VisualEffect _dashEffect = null!;
-        //
-        // public void Init(IDashExecutor dashExecutor)
-        // {
-        //     dashExecutor.SetDashEffectPresenter(this);
-        // }
-        //
-        // void Awake()
-        // {
-        //     _dashEffect = GetComponent<VisualEffect>();
-        //     _dashEffect.SendEvent("Stop");
-        // }
-        //
-        //
-        // public void Update()
-        // {
-        //     if (_isDashingLocal != _data.IsDashing)
-        //     {
-        //         if (_data.IsDashing)
-        //         {
-        //             // Debug.Log($"SendEvent Start Dash");
-        //             _dashEffect.SendEvent("Start");
-        //             _isDashingLocal = _data.IsDashing;
-        //         }
-        //         else
-        //         {
-        //             // Debug.Log($"SendEvent Stop Dash");
-        //             _dashEffect.SendEvent("Stop");
-        //             _isDashingLocal = _data.IsDashing;
-        //         }
-        //     }
-        // }
-        //
-        // public void StartDash()
-        // {
-        //     _data.IsDashing = true;
-        // }
-        //
-        // public void StopDash()
-        // {
-        //     _data.IsDashing = false;
-        // }
+        struct DashEffectData
+        {
+            public bool IsDashing;
+        }
+        
+        DashEffectData _data;
+        
+        bool _isDashingLocal;
+        VisualEffect _dashEffect = null!;
+        
+        public void Init(IDashExecutor dashExecutor)
+        {
+            dashExecutor.SetDashEffectPresenter(this);
+        }
+        
+        void Awake()
+        {
+            _dashEffect = GetComponent<VisualEffect>();
+            _dashEffect.SendEvent("Stop");
+        }
+        
+        
+        public void Update()
+        {
+            if (_isDashingLocal != _data.IsDashing)
+            {
+                if (_data.IsDashing)
+                {
+                    // Debug.Log($"SendEvent Start Dash");
+                    _dashEffect.SendEvent("Start");
+                    _isDashingLocal = _data.IsDashing;
+                }
+                else
+                {
+                    // Debug.Log($"SendEvent Stop Dash");
+                    _dashEffect.SendEvent("Stop");
+                    _isDashingLocal = _data.IsDashing;
+                }
+            }
+        }
+        
+        public void StartDash()
+        {
+            _data.IsDashing = true;
+        }
+        
+        public void StopDash()
+        {
+            _data.IsDashing = false;
+        }
     }
 }

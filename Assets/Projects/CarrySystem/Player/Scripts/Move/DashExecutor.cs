@@ -2,6 +2,7 @@
 using System.Threading;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.VFX.Interfaces;
 using Carry.CarrySystem.VFX.Scripts;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace Carry.CarrySystem.Player.Scripts
         PlayerInfo _info = null!;
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         readonly IOnDamageExecutor _onDamageExecutor;
-        DashEffectPresenterNet? _dashEffectPresenter;
+        IDashEffectPresenter? _dashEffectPresenter;
         readonly float _dashTime = 0.6f;
         readonly float _dashCoolTime = 1f;
         bool _isDashing;
@@ -78,9 +79,9 @@ namespace Carry.CarrySystem.Player.Scripts
             _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
         }
         
-        public void SetDashEffectPresenter(DashEffectPresenterNet presenterNet)
+        public void SetDashEffectPresenter(IDashEffectPresenter presenter)
         {
-            _dashEffectPresenter = presenterNet;
+            _dashEffectPresenter = presenter;
         }
     }
 } 
