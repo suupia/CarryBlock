@@ -53,7 +53,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             builder.RegisterComponentInHierarchy<MapKeyContainer>();
             
             // Initializer
-            builder.RegisterComponentInHierarchy<LocalEditMapInitializer>();
+            builder.RegisterComponentInHierarchy<EditMapForPlayerInitializer>();
         }
 
     }

@@ -1,8 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using Carry.CarrySystem.CarriableBlock.Scripts;
+using Projects.CarrySystem.Gimmick.Scripts;
+using Carry.CarrySystem.Block.Scripts;
+using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
+using Carry.EditMapSystem.EditMapForPlayer.Scripts;
 
 namespace Carry.UISystem.UI.EditMap
 {
@@ -14,13 +17,18 @@ namespace Carry.UISystem.UI.EditMap
         void Start()
         {
             Assert.IsNotNull(buttonParent);
-            
-            InstantiateBlockSelectButton("Basic", () => Debug.Log("Basic"));
-            InstantiateBlockSelectButton("Wall", () => Debug.Log("Wall"));
-            InstantiateBlockSelectButton("Floor", () => Debug.Log("Floor"));
-            InstantiateBlockSelectButton("Door", () => Debug.Log("Door"));
-            InstantiateBlockSelectButton("Stairs", () => Debug.Log("Stairs"));
-            InstantiateBlockSelectButton("Trap", () => Debug.Log("Trap"));
+
+            //EditMapForPlayerInputを探す
+            var editMapForPlayerInput = FindObjectOfType<EditMapForPlayerInput>();
+
+            InstantiateBlockSelectButton("Basic", () => editMapForPlayerInput.SetBlockType(typeof(BasicBlock)));
+            InstantiateBlockSelectButton("UnmovableBlock", () => editMapForPlayerInput.SetBlockType(typeof(UnmovableBlock)));
+            InstantiateBlockSelectButton("HeavyBlock", () => editMapForPlayerInput.SetBlockType(typeof(HeavyBlock)));
+            InstantiateBlockSelectButton("FragileBlock", () => editMapForPlayerInput.SetBlockType(typeof(FragileBlock)));
+            InstantiateBlockSelectButton("SpikeGimmick", () => editMapForPlayerInput.SetBlockType(typeof(SpikeGimmick)));
+            InstantiateBlockSelectButton("ConfusionBlock", () => editMapForPlayerInput.SetBlockType(typeof(ConfusionBlock)));
+            InstantiateBlockSelectButton("CannonBlock", () => editMapForPlayerInput.SetBlockType(typeof(CannonBlock)));
+            InstantiateBlockSelectButton("TreasureCoin", () => editMapForPlayerInput.SetBlockType(typeof(TreasureCoin)));
         }
 
         

@@ -16,15 +16,17 @@ namespace Carry.UISystem.UI.Prefabs
 
         readonly string _mouseScheme = "Mouse";
         readonly string _otherScheme = "Other";
-        readonly float _cursorSpeed = 500.0f;
-        readonly float _padding = 50.0f;
+        readonly float _cursorSpeed = 1000.0f;
+        readonly float _padding = 25.0f;
         
         Mouse? _virtualMouse;
         Mouse _currentMouse = null!;
         Camera _mainCamera = null!;
         InputAction _cursorAction = null!;
-        InputAction _selectAction = null!;
-        bool _previousMouseIsPressed = false;
+        InputAction _leftClickAction = null!;
+        InputAction _rightClickAction = null!;
+        bool _previousLeftButtonIsPressed = false; 
+        bool _previousRightButtonIsPressed = false;
         string _previousControlScheme = "Mouse";
         
         
@@ -56,8 +58,9 @@ namespace Carry.UISystem.UI.Prefabs
 
             // InputActionを取得する
             InputActionMap inputActionMap = InputActionMapLoader.GetInputActionMap(InputActionMapLoader.ActionMapName.UI);
-            _cursorAction = inputActionMap.FindAction("MoveCursor");
-            _selectAction = inputActionMap.FindAction("Select");
+            _cursorAction = inputActionMap.FindAction("MoveCursor_Virtual");
+            _leftClickAction = inputActionMap.FindAction("LeftClick_Virtual");
+            _rightClickAction = inputActionMap.FindAction("RightClick_Virtual");
 
             Debug.Log("OnEnable");
         }
@@ -96,13 +99,23 @@ namespace Carry.UISystem.UI.Prefabs
             cursorTransform.transform.position = newPos;
 
             // 仮想マウスのボタン(クリック)の状態を更新する
-            bool isPressed = _selectAction.IsPressed();
-            if (_previousMouseIsPressed != isPressed)
+            bool isPressed = _leftClickAction.IsPressed();
+            if (_previousLeftButtonIsPressed != isPressed)
             {
                 _virtualMouse.CopyState<MouseState>(out var mouseState);
                 mouseState.WithButton(MouseButton.Left, isPressed);
                 InputState.Change(_virtualMouse, mouseState);
-                _previousMouseIsPressed = isPressed;
+                _previousLeftButtonIsPressed = isPressed;
+            }
+            
+            //べた書きだけど，右クリックも同様に更新する
+            isPressed = _rightClickAction.IsPressed();
+            if (_previousRightButtonIsPressed != isPressed)
+            {
+                _virtualMouse.CopyState<MouseState>(out var mouseState);
+                mouseState.WithButton(MouseButton.Right, isPressed);
+                InputState.Change(_virtualMouse, mouseState);
+                _previousRightButtonIsPressed = isPressed;
             }
         }
 

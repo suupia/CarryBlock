@@ -33,12 +33,11 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
         CuiState _cuiState = CuiState.Idle;
         Type _blockType = null!;
 
-        bool _eraseMode = false;
-        
         Vector2Int _respawnAreaOrigin = new Vector2Int(0, 4);
         readonly int _respawnSize = 3;
 
-        InputAction _clickAction = null!;
+        InputAction _leftClickAction = null!;
+        InputAction _rightClickAction = null!;
         InputAction _moveAction = null!;
 
         enum CuiState
@@ -64,11 +63,11 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             _mapGetter = mapGetter;
         }
 
-        public void ToggleEraseMode()
+        public void SetBlockType(Type blockType)
         {
-            _eraseMode = !_eraseMode;
+            _blockType = blockType;
         }
-
+        
         void Start()
         {
             this.ObserveEveryValueChanged(_ => editMapCuiSave.IsOpened).Subscribe(isOpened =>
@@ -99,7 +98,8 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             InputActionMap inputActionMap =
                 InputActionMapLoader.GetInputActionMap(InputActionMapLoader.ActionMapName.UI);
             
-            _clickAction = inputActionMap.FindAction("Click");
+            _leftClickAction = inputActionMap.FindAction("LeftClick");
+            _rightClickAction = inputActionMap.FindAction("RightClick");
             _moveAction = inputActionMap.FindAction("Point");
         }
 
@@ -107,28 +107,25 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
         {
             var mouseXYPos = _moveAction.ReadValue<Vector2>(); // xy座標であることに注意
             var cameraHeight = Camera.main.transform.position.y;
-            var mousePosOnGround =
+            Vector3 mousePosOnGround =
                 Camera.main.ScreenToWorldPoint(new Vector3(mouseXYPos.x, mouseXYPos.y, cameraHeight));
+            Vector2Int mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
 
-            if (_clickAction.WasPressedThisFrame())
+            if (_leftClickAction.WasPressedThisFrame())
             {
-                if (!_eraseMode)
-                {
-                    var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
-                    Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
+                Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
 
-                    TryToAddPlaceable(mouseGridPosOnGround);
-                }
-                else
-                {
-                    var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
-                    Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
+                TryToAddPlaceable(mouseGridPosOnGround);
+            }
 
-                    var map = _mapGetter.GetMap();
+            if (_rightClickAction.WasPerformedThisFrame())
+            {
+                //上とまとめる
+                Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
 
-                    // この書き方で問題なく動作するけど，この書き方で大丈夫なのだろうか？
-                    _editMapBlockAttacher.RemovePlaceable(map, mouseGridPosOnGround);
-                }
+                var map = _mapGetter.GetMap();
+
+                _editMapBlockAttacher.RemovePlaceable(map, mouseGridPosOnGround);
             }
 
             GetInput();
@@ -182,60 +179,6 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
         // ToDo: Input.~~は使用せずにInputActionを使用するようにする
         void GetInput()
         {
-            // 置くブロックを切り替える
-            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
-            {
-                _blockType = typeof(BasicBlock);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
-            {
-                _blockType = typeof(UnmovableBlock);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
-            {
-                _blockType = typeof(HeavyBlock);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
-            {
-                _blockType = typeof(FragileBlock);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
-            {
-                _blockType = typeof(ConfusionBlock);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
-            {
-                _blockType = typeof(TreasureCoin);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
-            {
-                _blockType = typeof(CannonBlock);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
-            {
-                _blockType = typeof(SpikeGimmick);
-            }
-            
-            // Undo
-            if (Input.GetKeyDown(KeyCode.N))
-            {
-                _editMapBlockAttacher.Undo(_mapGetter.GetMap());
-            }
-
-            // Redo
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                _editMapBlockAttacher.Redo(_mapGetter.GetMap());
-            }
-
-
             // 方向を切り替える
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
