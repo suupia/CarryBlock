@@ -4,11 +4,19 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
+#nullable enable
+
 namespace Carry.CarrySystem.Map.Scripts
 {
     [Serializable]
     public struct Stage
     {
+                
+        // public string version;
+        public string name;
+        public string id;
+        public List<MapInfo> mapInfos;
+        
         public Stage(string name)
         {
             this.name = name;
@@ -22,16 +30,15 @@ namespace Carry.CarrySystem.Map.Scripts
                 new("map5"),
             };
         } 
-        
-        // public string version;
-        public string name;
-        public string id;
-        public List<MapInfo> mapInfos;
+
     }
 
     [Serializable]
     public struct MapInfo
     {
+        public string name;
+        public EntityGridMapData data;
+        
         public MapInfo(string name)
         {
             this.name = name;
@@ -40,8 +47,7 @@ namespace Carry.CarrySystem.Map.Scripts
             streamReader.Close();
             data = JsonUtility.FromJson<EntityGridMapData>(stringData);
         }
-        public string name;
-        public EntityGridMapData data;
+
     }
 
     [Serializable]
@@ -52,10 +58,18 @@ namespace Carry.CarrySystem.Map.Scripts
 
     public static class StageFileUtility
     {
+        
+        
         static string GetPath(string stageId) => Path.Combine(
             Application.streamingAssetsPath, "JsonFiles", "Stages", $"{stageId}.json");
 
-        static World GetWorld()
+        static void SaveWorld(World world)
+        {
+            PlayerPrefs.SetString("world",JsonUtility.ToJson(world));
+            PlayerPrefs.Save();
+        }
+
+        static World LoadWorld()
         {
             if (PlayerPrefs.HasKey("world"))
             {
@@ -67,17 +81,16 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 stageIds = stages.Select(s => s.id).ToList()
             };
-            PlayerPrefs.SetString("world",JsonUtility.ToJson(world));
-            PlayerPrefs.Save();
+            SaveWorld(world);
 
             return world;
         }
 
         public static IReadOnlyList<Stage> GetStages()
         {
-            var world = GetWorld();
+            var world = LoadWorld();
             var stageIds = world.stageIds;
-            var requireRefreshWorld = false;
+            var needsRefreshWorld = false;
             var stages = new List<Stage>();
 
             for (var i = 0; i < stageIds.Count; i++)
@@ -87,15 +100,14 @@ namespace Carry.CarrySystem.Map.Scripts
                 {
                     stage = new Stage($"Stage{i}");
                     world.stageIds[i] = stage.Value.id;
-                    requireRefreshWorld = true;
+                    needsRefreshWorld = true;
                 }
                 stages.Add(stage.Value);
             }
 
-            if (requireRefreshWorld)
+            if (needsRefreshWorld)
             {
-                PlayerPrefs.SetString("world",JsonUtility.ToJson(world));
-                PlayerPrefs.Save();
+                SaveWorld(world);
             }
             
             return stages;
