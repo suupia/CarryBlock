@@ -32,6 +32,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 AddEntityFromRecord<CannonBlock, CannonBlockRecord, CannonBlock.Kind>(gridMapData.cannonBlockRecords, () => gridMapData.cannonBlockRecords?.Length ?? 0, (record) => record.kinds, CannonBlock.Kind.None, map, i );
                 AddEntityFromRecord<ConfusionBlock, ConfusionBlockRecord, ConfusionBlock.Kind>(gridMapData.confusionBlockRecords, () => gridMapData.confusionBlockRecords?.Length ?? 0, (record) => record.kinds, ConfusionBlock.Kind.None, map, i );
                 AddEntityFromRecord<SpikeGimmick, SpikeGimmickRecord, SpikeGimmick.Kind>(gridMapData.spikeGimmickRecords, () =>gridMapData.spikeGimmickRecords?.Length?? 0, (record) => record.kinds, SpikeGimmick.Kind.None, map, i );
+                // todo : EmptyTreasureCoinを生成したいけど、プレゼンターの判定がうまくできなくなる。。。
 
             }
 
