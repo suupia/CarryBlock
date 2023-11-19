@@ -71,12 +71,9 @@ namespace Carry.CarrySystem.Cart.Scripts
         {
             Debug.Log("ShowAccessibleArea");
             var map = _mapGetter.GetMap();
-            var startPos = new Vector2Int(1, map.Height / 2);
-            Func<int, int, bool> isWall = (x, y) =>
-                map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
             var searcherSize = SearcherSize.SizeThree;
 
-            var accessibleArea = _searchAccessibleAreaPresenter?.SearchAccessibleAreaWithUpdatePresenter(startPos, isWall,searcherSize);
+            var accessibleArea = _searchAccessibleAreaPresenter?.SearchAccessibleAreaWithUpdatePresenter();
 
             ShowResultText(accessibleArea, map, searcherSize);
         }

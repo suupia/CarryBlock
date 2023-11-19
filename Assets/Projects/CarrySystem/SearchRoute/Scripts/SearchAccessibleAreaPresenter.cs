@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
@@ -15,6 +16,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 {
         public class SearchAccessibleAreaPresenter
     {
+        readonly IMapGetter _mapGetter;
         readonly WaveletSearchExecutor _waveletSearchExecutor;
         readonly SearchAccessibleAreaExecutor _searchAccessibleAreaExecutor;
         readonly SearchedMapExpander _searchedMapExpander;
@@ -25,10 +27,12 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
 
 
         public SearchAccessibleAreaPresenter(
+            IMapGetter mapGetter,
             WaveletSearchExecutor waveletSearchExecutor, 
             SearchAccessibleAreaExecutor searchAccessibleAreaExecutor,
             SearchedMapExpander searchedMapExpander)
         {
+            _mapGetter = mapGetter;
             _waveletSearchExecutor = waveletSearchExecutor;
             _searchAccessibleAreaExecutor = searchAccessibleAreaExecutor;
             _searchedMapExpander = searchedMapExpander;
@@ -57,8 +61,14 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             }
         }
 
-        public bool[] SearchAccessibleAreaWithUpdatePresenter(Vector2Int startPos, Func<int, int, bool> isWall,SearcherSize searcherSize = SearcherSize.SizeOne)
+        public bool[] SearchAccessibleAreaWithUpdatePresenter()
         {
+            var map = _mapGetter.GetMap();
+            var startPos = new Vector2Int(1, map.Height / 2);
+            Func<int, int, bool> isWall = (x, y) =>
+                map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
+            var searcherSize = SearcherSize.SizeThree;
+
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
             var accessibleAreaArray =_searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
     

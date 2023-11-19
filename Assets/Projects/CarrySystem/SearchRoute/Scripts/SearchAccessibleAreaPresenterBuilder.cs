@@ -39,7 +39,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             var searchedMapExpander = new SearchedMapExpander(waveletSearchExecutor);
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor,searchedMapExpander);
             SetUpPresenter(map);
-            var searchAccessibleAreaPresenter = new SearchAccessibleAreaPresenter(waveletSearchExecutor,searchAccessibleAreaExecutor,searchedMapExpander);
+            var searchAccessibleAreaPresenter = new SearchAccessibleAreaPresenter(_mapGetter, waveletSearchExecutor,searchAccessibleAreaExecutor,searchedMapExpander);
             if(_routePresenters == null) throw new NullReferenceException("_routePresenters is null");
             searchAccessibleAreaPresenter.RegisterRoutePresenters(_routePresenters);
             return searchAccessibleAreaPresenter;
