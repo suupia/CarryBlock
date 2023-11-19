@@ -46,6 +46,8 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
 
         float CalcFloorLimitTime()
         {
+            if (!HasStateAuthority) return 0;
+            
             float limitTime = _playerCharacterTransporter.PlayerCount switch
             {
                 1 => 120,
