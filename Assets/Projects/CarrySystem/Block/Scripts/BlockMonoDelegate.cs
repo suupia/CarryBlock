@@ -53,6 +53,14 @@ namespace Carry.CarrySystem.Block.Scripts
              var blockControllerComponents = entityPresenter.GetMonoBehaviour.GetComponentsInChildren<IBlockController>();
              var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
              
+             // // get itemInfos from itemController
+             // var itemControllerComponents = entityPresenter.GetComponentsInChildren<ItemControllerNet>();
+             // var itemInfos = itemControllerComponents.Select(c => c.Info).ToList();
+             
+             // // get gimmickInfos from gimmickController
+             // var gimmickControllerComponents = entityPresenter.GetComponentsInChildren<GimmickControllerNet>();
+             // var gimmickInfos = gimmickControllerComponents.Select(c => c.Info).ToList(); 
+             
              _highLightExecutor = new HighlightExecutor(blockInfos);
         
              // 最初のStartGimmickの処理
