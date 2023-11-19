@@ -27,6 +27,7 @@ public class MapMakerInitializer : MonoBehaviour
         var stage = StageFileUtility.Load(_editingMapTransporter.StageId);
         if (stage != null)
         {
+            _stageMapSwitcher.Index = _editingMapTransporter.Index;
             _stageMapSwitcher.SetStage(stage);
         }
         else
