@@ -84,7 +84,7 @@ namespace Carry.CarrySystem.Cart.Scripts
                 map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
             var searcherSize = SearcherSize.SizeThree;
 
-            var accessibleArea = _searchAccessibleAreaPresenter?.SearchAccessibleAreaWithUpdate(startPos, isWall, _ctss,searcherSize);
+            var accessibleArea = _searchAccessibleAreaPresenter?.SearchAccessibleAreaWithUpdatePresenter(startPos, isWall, _ctss,searcherSize);
 
             ShowResultText(accessibleArea, map, searcherSize);
         }

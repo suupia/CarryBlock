@@ -24,7 +24,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _searchedMapExpander = searchedMapExpander ;
         }
 
-        public bool[] SearchAccessibleAreaWithNotUpdate(Vector2Int startPos, Func<int, int, bool> isWall,
+        public bool[] SearchAccessibleArea(Vector2Int startPos, Func<int, int, bool> isWall,
               SearcherSize searcherSize = SearcherSize.SizeOne)
         {
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
