@@ -19,6 +19,8 @@ namespace Projects.MapMakerSystem.Scripts
 {
     public class MapMakerInput : MonoBehaviour
     {
+        [SerializeField] GameObject playingCanvas;
+        
         public  string BlockTypeString => _blockType?.Name ?? "(None)";
         public string DirectionString => _direction.ToString();
         
@@ -27,7 +29,7 @@ namespace Projects.MapMakerSystem.Scripts
         MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
         StageMapSaver _stageMapSaver = null!;
         IMapGetter _mapGetter = null!;
-        MapMakerInitializer _initializer;
+        MapValidator _mapValidator = null!;
 
         CUIState _cuiState = CUIState.Idle;
         Type _blockType = null!;
@@ -48,18 +50,20 @@ namespace Projects.MapMakerSystem.Scripts
             MemorableEditMapBlockAttacher editMapBlockAttacher,
             StageMapSaver stageMapSaver,
             IMapGetter mapGetter, 
-            MapMakerInitializer initializer)
+            MapValidator mapValidator)
         {
             _editMapBlockAttacher = editMapBlockAttacher;
             _mapGetter = mapGetter;
             _stageMapSaver = stageMapSaver;
-            _initializer = initializer;
+            _mapValidator = mapValidator;
         }
 
         void Start()
         {
 
             _blockType = typeof(BasicBlock);
+            
+            playingCanvas.SetActive(false);
             
         }
 
@@ -231,7 +235,15 @@ namespace Projects.MapMakerSystem.Scripts
             }
             if (Input.GetKeyDown(KeyCode.F1) )
             {
-                _initializer.StartTestPlay();
+               　var canPlay = _mapValidator.StartTestPlay();
+                if (canPlay)
+                {
+                    playingCanvas.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogWarning("ブロックが適切に置かれていないためプレイできません");
+                }
             }
         }
 

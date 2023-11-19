@@ -1,3 +1,4 @@
+using Projects.MapMakerSystem.Scripts;
 using UnityEngine;
 
 #nullable enable
@@ -8,14 +9,19 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         readonly EditingMapTransporter _editingMapTransporter;
         readonly EntityGridMapDataConverter _mapDataConverter;
+        readonly MapValidator _mapValidator;
         
-        public StageMapSaver(EditingMapTransporter editingMapTransporter, EntityGridMapDataConverter mapDataConverter)
+        public StageMapSaver(EditingMapTransporter editingMapTransporter, EntityGridMapDataConverter mapDataConverter, MapValidator mapValidator)
         {
             _editingMapTransporter = editingMapTransporter;
             _mapDataConverter = mapDataConverter;
+            _mapValidator = mapValidator;
         }
 
-        public void Save(EntityGridMap map){
+        public bool Save(EntityGridMap map)
+        {
+            if (!_mapValidator.CanSave) return false;
+            
             var stage = StageFileUtility.Load(_editingMapTransporter.StageId);
 
             if (stage != null)
@@ -38,6 +44,8 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 Debug.LogError("Stageが読み込めません");
             }
+
+            return true;
         }
     }
 }

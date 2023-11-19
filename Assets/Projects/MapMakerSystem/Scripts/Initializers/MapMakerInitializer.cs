@@ -9,31 +9,21 @@ using VContainer;
 
 public class MapMakerInitializer : MonoBehaviour
 {
-    [SerializeField] GameObject playingCanvas;
-    
-    LocalPlayerSpawner _localPlayerSpawner;
-    StageMapSwitcher _stageMapSwitcher;
-    EditingMapTransporter _editingMapTransporter;
-    FloorTimerLocal _floorTimerLocal;
+    StageMapSwitcher _stageMapSwitcher = null!;
+    EditingMapTransporter _editingMapTransporter = null!;
         
     [Inject]
     public void Construct(
-        LocalPlayerSpawner localPlayerSpawner,
         StageMapSwitcher stageMapSwitcher,
-        FloorTimerLocal floorTimerLocal,
         EditingMapTransporter editingMapTransporter)
     {
         _stageMapSwitcher = stageMapSwitcher;
-        _localPlayerSpawner = localPlayerSpawner;
         _editingMapTransporter = editingMapTransporter;
-        _floorTimerLocal = floorTimerLocal;
     }
 
     void Start()
     {
         Load();
-        
-        // playingCanvas.SetActive(false);
     }
 
     void Load()
@@ -49,13 +39,5 @@ public class MapMakerInitializer : MonoBehaviour
             Debug.LogError("該当するStageがLoadできませんでした。TestStageを読み込みます");
         }
         _stageMapSwitcher.InitSwitchMap(); // -1が初期マップ
-    }
-
-    public void StartTestPlay()
-    {
-        Debug.Log($"CarryPlayerControllerLocalをスポーンします");
-        _localPlayerSpawner.SpawnPlayer();
-        playingCanvas.SetActive(true);
-        _floorTimerLocal.StartTimer();
     }
 }

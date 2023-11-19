@@ -83,6 +83,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
             builder.Register<StageMapSaver>(Lifetime.Scoped);
+            builder.Register<MapValidator>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<LocalEntityPresenterSpawner>(Lifetime.Scoped).As<IEntityPresenterSpawner>();

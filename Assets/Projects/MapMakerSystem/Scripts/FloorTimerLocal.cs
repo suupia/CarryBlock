@@ -1,23 +1,22 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Projects.MapMakerSystem.Scripts
 {
     public class FloorTimerLocal: MonoBehaviour
     {
-        public bool IsActive { get; private set; }
-        public float FloorLimitSeconds { get; }
-        public float FloorRemainingSeconds { get; private set;  }
-        public float FloorRemainingTimeRatio => FloorRemainingSeconds / FloorLimitSeconds;
+        const float FLOOR_LIMIT_SECONDS = 120;
 
-        public FloorTimerLocal(float limitSecond)
-        {
-            FloorLimitSeconds = limitSecond;
-        }
         
+        public bool IsActive { get; private set; }
+        public float FloorRemainingSeconds { get; private set;  }
+        public float FloorRemainingTimeRatio => FloorRemainingSeconds / FLOOR_LIMIT_SECONDS;
+
+
         public void StartTimer()
         {
-            FloorRemainingSeconds = FloorLimitSeconds;
+            FloorRemainingSeconds = FLOOR_LIMIT_SECONDS;
             IsActive = true;
         }
 
