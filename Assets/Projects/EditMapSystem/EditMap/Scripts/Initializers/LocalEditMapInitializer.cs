@@ -12,20 +12,20 @@ namespace Carry.EditMapSystem.EditMap.Scripts
     public class LocalEditMapInitializer : MonoBehaviour
     {
         [SerializeField] TextMeshProUGUI mapKeyText;
-        IMapSwitcher _editMapSwitcher;
+        EditingMapTransporter _editingMapTransporter;
         
         [Inject]
         public void Construct(
-            IMapSwitcher editMapSwitcher)
+            EditingMapTransporter editingMapTransporter)
         {
-            _editMapSwitcher = editMapSwitcher;
+            _editingMapTransporter = editingMapTransporter;
 
         }
 
         void Awake()
         {
-            _editMapSwitcher.InitSwitchMap();
-            
+            //将来的にロードする関数に置き換える
+            Debug.Log($"stage id: {_editingMapTransporter.StageId}, map index: {_editingMapTransporter.Index}");
         }
     }
 }
