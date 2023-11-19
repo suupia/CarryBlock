@@ -9,7 +9,6 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EntityGridMapDataConverter
     {
-        
         public EntityGridMapData Convert(EntityGridMap map)
         {
             var mapLength = map.Length;

@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using VContainer;
 
+#nullable enable
+
 public class MapMakerInitializer : MonoBehaviour
 {
     LocalPlayerSpawner _localPlayerSpawner;
@@ -45,7 +47,6 @@ public class MapMakerInitializer : MonoBehaviour
         {
             Debug.Log($"CarryPlayerControllerLocalをスポーンします");
             _localPlayerSpawner.SpawnPlayer();
-            
         }
     }
 }

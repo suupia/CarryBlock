@@ -1,14 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Carry.CarrySystem.Block.Scripts;
-using Carry.CarrySystem.CarriableBlock.Scripts;
-using Carry.CarrySystem.Entity.Scripts;
-using Carry.CarrySystem.Map.Interfaces;
-using Carry.CarrySystem.Spawners.Scripts;
-using Projects.CarrySystem.Gimmick.Scripts;
-using Projects.CarrySystem.Item.Scripts;
+﻿using System.IO;
 using UnityEngine;
 
 #nullable enable
@@ -18,15 +8,15 @@ namespace Carry.CarrySystem.Map.Scripts
     public class EntityGridMapSaver
     {
 
-        readonly EntityGridMapDataConverter _dataBuilder;
-        public EntityGridMapSaver(EntityGridMapDataConverter dataBuilder)
+        readonly EntityGridMapDataConverter _mapDataConverter;
+        public EntityGridMapSaver(EntityGridMapDataConverter mapDataConverter)
         {
-            _dataBuilder = dataBuilder;
+            _mapDataConverter = mapDataConverter;
         }
 
         public void SaveMap(EntityGridMap map,MapKey key, int mapDataIndex)
         {
-            var entityGridMapData = _dataBuilder.Convert(map);
+            var entityGridMapData = _mapDataConverter.Convert(map);
 
             Save(entityGridMapData,key, mapDataIndex);
         }
