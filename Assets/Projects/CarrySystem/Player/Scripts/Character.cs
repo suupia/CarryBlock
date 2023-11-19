@@ -101,7 +101,7 @@ namespace Carry.CarrySystem.Player.Scripts
         // DashExecutor
         public void Dash() => _dashExecutor.Dash();
         
-        public void SetDashEffectPresenter(DashEffectPresenter presenter) => _dashExecutor.SetDashEffectPresenter(presenter);
+        public void SetDashEffectPresenter(DashEffectPresenterNet presenterNet) => _dashExecutor.SetDashEffectPresenter(presenterNet);
 
         // PassActionExecutor
         public void PassAction() => _passActionExecutor.PassAction();

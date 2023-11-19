@@ -78,7 +78,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     networkObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character, character);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()
                         ?.Init(character, character, character, character);
-                    networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
+                    networkObj.GetComponentInChildren<DashEffectPresenterNet>()?.Init(character);
                     networkObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(character);
                     networkObj.GetComponentInChildren<PassBlockMoveExecutorNet>()?.Init(character);
                 });

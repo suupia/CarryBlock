@@ -12,7 +12,6 @@ namespace Carry.CarrySystem.Player.Scripts
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<LobbyPlayerControllerNet> _carryPlayerControllerLoader;
         readonly ICarryPlayerFactory _carryPlayerFactory;
-        // ほかにも _carryPlayerModelLoader とか _carryPlayerViewLoader などが想定される
         readonly PlayerCharacterTransporter _playerCharacterTransporter;
         readonly LobbyPlayerContainer _lobbyPlayerContainer;
 
@@ -48,7 +47,7 @@ namespace Carry.CarrySystem.Player.Scripts
                     Debug.Log($"OnBeforeSpawn: {networkObj}, carryPlayerControllerObj");
                     networkObj.GetComponent<LobbyPlayerControllerNet>().Init(character.PlayerHoldingObjectContainer, character,character, character,character,character,colorType,_playerCharacterTransporter);
                     networkObj.GetComponent<PlayerAnimatorPresenterNet>()?.Init(character, character, character,character);
-                    networkObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
+                    networkObj.GetComponentInChildren<DashEffectPresenterNet>()?.Init(character);
 
                 });
             

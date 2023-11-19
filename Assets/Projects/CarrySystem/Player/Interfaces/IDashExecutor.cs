@@ -8,7 +8,7 @@ namespace Carry.CarrySystem.Player.Interfaces
     {
         void Setup(PlayerInfo info);
         void Dash();
-        public void SetDashEffectPresenter(DashEffectPresenter presenter);
+        public void SetDashEffectPresenter(DashEffectPresenterNet presenterNet);
 
     }
 }

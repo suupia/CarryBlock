@@ -46,7 +46,7 @@ namespace Carry.CarrySystem.Player.Scripts.Local
             playerControllerObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character, character);
             playerControllerObj.GetComponent<IPlayerAnimatorPresenter>()
                 ?.Init(character, character, character, character);
-            playerControllerObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
+            playerControllerObj.GetComponentInChildren<DashEffectPresenterNet>()?.Init(character);
             playerControllerObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(character);
             playerControllerObj.GetComponentInChildren<PassBlockMoveExecutorNet>()?.Init(character);
       

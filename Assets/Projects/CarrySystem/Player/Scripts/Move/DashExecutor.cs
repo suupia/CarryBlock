@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Player.Scripts
         PlayerInfo _info = null!;
         readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         readonly IOnDamageExecutor _onDamageExecutor;
-        DashEffectPresenter? _dashEffectPresenter;
+        DashEffectPresenterNet? _dashEffectPresenter;
         readonly float _dashTime = 0.6f;
         readonly float _dashCoolTime = 1f;
         bool _isDashing;
@@ -77,9 +77,9 @@ namespace Carry.CarrySystem.Player.Scripts
             _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
         }
         
-        public void SetDashEffectPresenter(DashEffectPresenter presenter)
+        public void SetDashEffectPresenter(DashEffectPresenterNet presenterNet)
         {
-            _dashEffectPresenter = presenter;
+            _dashEffectPresenter = presenterNet;
         }
     }
 } 

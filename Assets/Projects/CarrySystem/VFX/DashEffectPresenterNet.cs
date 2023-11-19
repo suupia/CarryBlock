@@ -11,7 +11,7 @@ using UnityEngine.VFX;
 namespace Carry.CarrySystem.Player.Scripts
 {
     [RequireComponent(typeof(VisualEffect))]
-    public class DashEffectPresenter : NetworkBehaviour
+    public class DashEffectPresenterNet : NetworkBehaviour
     {
         public  struct DashEffectData : INetworkStruct
         {
