@@ -61,7 +61,7 @@ namespace Carry.CarrySystem.Cart.Scripts
 
         void ResetAccessibleArea()
         {
-            _searchAccessibleAreaPresenter = _searchAccessibleAreaPresenterBuilder.BuildPresenter(_mapGetter.GetMap());
+            _searchAccessibleAreaPresenter = _searchAccessibleAreaPresenterBuilder.BuildPresenter();
             
             ShowAccessibleArea();
         }
