@@ -4,6 +4,8 @@ using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Interfaces;
+using Carry.CarrySystem.VFX.Interfaces;
+using Carry.CarrySystem.VFX.Scripts;
 using Carry.Utility.Interfaces;
 using UnityEngine;
 using VContainer;
@@ -46,7 +48,7 @@ namespace Carry.CarrySystem.Player.Scripts.Local
             playerControllerObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character, character);
             playerControllerObj.GetComponent<IPlayerAnimatorPresenter>()
                 ?.Init(character, character, character, character);
-            playerControllerObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
+            playerControllerObj.GetComponentInChildren<IDashEffectPresenter>()?.Init(character);
             playerControllerObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(character);
             playerControllerObj.GetComponentInChildren<PassBlockMoveExecutorNet>()?.Init(character);
       

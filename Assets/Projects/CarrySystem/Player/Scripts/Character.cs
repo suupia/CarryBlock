@@ -4,6 +4,8 @@ using Carry.CarrySystem.Player.Interfaces;
 using Fusion;
 using UnityEngine;
 using Carry.CarrySystem.Player.Info;
+using Carry.CarrySystem.VFX.Interfaces;
+using Carry.CarrySystem.VFX.Scripts;
 
 #nullable enable
 
@@ -101,7 +103,7 @@ namespace Carry.CarrySystem.Player.Scripts
         // DashExecutor
         public void Dash() => _dashExecutor.Dash();
         
-        public void SetDashEffectPresenter(DashEffectPresenter presenter) => _dashExecutor.SetDashEffectPresenter(presenter);
+        public void SetDashEffectPresenter(IDashEffectPresenter presenter) => _dashExecutor.SetDashEffectPresenter(presenter);
 
         // PassActionExecutor
         public void PassAction() => _passActionExecutor.PassAction();
