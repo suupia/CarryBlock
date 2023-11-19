@@ -32,6 +32,8 @@ namespace Carry.UISystem.UI.CarryScene
         [Inject]
         public void Construct(FloorTimerNet floorTimerNet)
         {
+            if(!floorTimerNet.Object.HasStateAuthority) return;
+            
             this.ObserveEveryValueChanged(_ => floorTimerNet.FloorRemainingTimeRatio)
                 .Subscribe(_ =>
                 {

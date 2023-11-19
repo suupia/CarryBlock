@@ -58,6 +58,7 @@ namespace Carry.CarrySystem.Cart.Scripts
                 .SelectMany(holdAction => holdAction.ObserveEveryValueChanged(h => h.IsHoldingBlock))
                 .Subscribe(_ => ShowAccessibleArea());
         }
+        
 
         void ResetAccessibleArea()
         {

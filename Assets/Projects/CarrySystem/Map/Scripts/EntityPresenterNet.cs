@@ -155,6 +155,10 @@ namespace Carry.CarrySystem.Map.Scripts
                 _ => throw new InvalidOperationException($"SpikeCount : {PresentDataRef.SpikeCount}")
             });
             
+            Debug.Log($"_viewCollider : {_viewCollider}");
+            Debug.Log($"_viewCollider.enabled : {_viewCollider.enabled}");
+            Debug.Log($"PresentDataRef : {PresentDataRef}");
+            Debug.Log($"PresentDataRef.IsColliderActive : {PresentDataRef.IsColliderActive}");
             _viewCollider.enabled = PresentDataRef.IsColliderActive;
         }
 
