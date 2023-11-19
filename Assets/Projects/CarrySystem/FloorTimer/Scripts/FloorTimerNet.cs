@@ -46,10 +46,10 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
 
         float CalcFloorLimitTime()
         {
-            if (!HasStateAuthority) return 0;
             
             float limitTime = _playerCharacterTransporter.PlayerCount switch
             {
+                0 => 1000, // シーン読み込み時は0なので、ここでエラーを投げたくないので適当な値を入れておく
                 1 => 120,
                 2 => 90,
                 3 => 70,
