@@ -44,7 +44,7 @@ namespace Carry.CarrySystem.Player.Scripts.Local
                 character, character, character, character, character, colorType, _mapGetter);
             playerControllerObj.GetComponent<IPlayerHoldablePresenter>()?.Init(character, character);
             playerControllerObj.GetComponent<PlayerAidKitPresenterNet>()?.Init(character, character);
-            playerControllerObj.GetComponent<PlayerAnimatorPresenterNet>()
+            playerControllerObj.GetComponent<IPlayerAnimatorPresenter>()
                 ?.Init(character, character, character, character);
             playerControllerObj.GetComponentInChildren<DashEffectPresenter>()?.Init(character);
             playerControllerObj.GetComponentInChildren<ReviveEffectPresenter>()?.Init(character);
