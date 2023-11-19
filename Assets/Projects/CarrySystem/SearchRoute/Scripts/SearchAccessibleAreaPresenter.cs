@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         readonly SearchedMapExpander _searchedMapExpander;
         readonly IRoutePresenter?[] _routePresenters;
         readonly int _delayMilliSec = 30;
-        CancellationTokenSource?[]? _cancellationTokenSources;
+        CancellationTokenSource?[]? _ctss;
         long _beforeMaxValue = 0;
 
 
@@ -50,11 +50,15 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             {
                 _routePresenters[i] = routePresenters[i];
             }
+            
+            if (_ctss == null || _ctss.Length != mapLength)
+            {
+                _ctss = new CancellationTokenSource[mapLength];
+            }
         }
 
-        public bool[] SearchAccessibleAreaWithUpdatePresenter(Vector2Int startPos, Func<int, int, bool> isWall,CancellationTokenSource[]? cancellationTokenSources,SearcherSize searcherSize = SearcherSize.SizeOne)
+        public bool[] SearchAccessibleAreaWithUpdatePresenter(Vector2Int startPos, Func<int, int, bool> isWall,SearcherSize searcherSize = SearcherSize.SizeOne)
         {
-            _cancellationTokenSources = cancellationTokenSources;
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);
             var accessibleAreaArray =_searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
     
@@ -68,7 +72,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
         // 時間差でpresenterをupdateする
         void UpdatePresenter(NumericGridMap numericGridMap)
         {
-            if (_cancellationTokenSources == null)
+            if (_ctss == null)
             {
                 Debug.LogError($"_cancellationTokenSources is null");
                 return;
@@ -77,10 +81,10 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             long nextMaxValue = 0;
             for (int i = 0; i < numericGridMap.Length; i++)
             {
-                _cancellationTokenSources[i]?.Cancel();
-                _cancellationTokenSources[i] = new CancellationTokenSource();
-                if(_cancellationTokenSources[i] == null) return;
-                DelayUpdate(_cancellationTokenSources[i].Token, _routePresenters[i], numericGridMap.GetValue(i),i).Forget();  // _cancellationTokenSources[i]でDereference of a possibly null referenceがでる　なぜ？
+                _ctss[i]?.Cancel();
+                _ctss[i] = new CancellationTokenSource();
+                if(_ctss[i] == null) return;
+                DelayUpdate(_ctss[i].Token, _routePresenters[i], numericGridMap.GetValue(i),i).Forget();  // _cancellationTokenSources[i]でDereference of a possibly null referenceがでる　なぜ？
                 if(numericGridMap.GetValue(i) != _waveletSearchExecutor.InitValue
                    && numericGridMap.GetValue(i) != _waveletSearchExecutor.WallValue
                    && numericGridMap.GetValue(i) != _waveletSearchExecutor.EdgeValue

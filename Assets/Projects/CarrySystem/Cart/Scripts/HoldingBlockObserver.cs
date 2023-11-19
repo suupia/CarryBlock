@@ -27,7 +27,6 @@ namespace Carry.CarrySystem.Cart.Scripts
         SearchAccessibleAreaPresenter? _searchAccessibleAreaPresenter;
         IDisposable? _isHoldSubscription; // to hold the subscription to dispose it later if needed
         IDisposable? _mapSubscription; // to hold the subscription to dispose it later if needed
-        CancellationTokenSource[]? _ctss;
         
         public HoldingBlockObserver(
             IMapSwitcher mapSwitcher,
@@ -62,13 +61,6 @@ namespace Carry.CarrySystem.Cart.Scripts
 
         void ResetAccessibleArea()
         {
-            var map = _mapGetter.GetMap();
-            
-            if (_ctss == null || _ctss.Length != map.Length)
-            {
-                _ctss = new CancellationTokenSource[map.Length];
-            }
-
             _searchAccessibleAreaPresenter = _searchAccessibleAreaPresenterBuilder.BuildPresenter(_mapGetter.GetMap());
             
             ShowAccessibleArea();
@@ -84,7 +76,7 @@ namespace Carry.CarrySystem.Cart.Scripts
                 map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
             var searcherSize = SearcherSize.SizeThree;
 
-            var accessibleArea = _searchAccessibleAreaPresenter?.SearchAccessibleAreaWithUpdatePresenter(startPos, isWall, _ctss,searcherSize);
+            var accessibleArea = _searchAccessibleAreaPresenter?.SearchAccessibleAreaWithUpdatePresenter(startPos, isWall,searcherSize);
 
             ShowResultText(accessibleArea, map, searcherSize);
         }
