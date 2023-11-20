@@ -24,10 +24,8 @@ namespace Carry.CarrySystem.Block.Scripts
     /// IBlock(ドメインの情報)とBlockInfo(NetworkBehaviourの情報)を持つクラス
     /// ドメインの処理はこのクラスにアクセスして行う
     /// </summary>
-    public class BlockMonoDelegate : IBlockMonoDelegate , IHighlightExecutor
+    public class BlockMonoDelegate : IHighlightExecutor , IEntity
     {
-         public IBlock? Block =>  GetBlocks().FirstOrDefault();
-
          readonly EntityGridMap _map;
          readonly IEntityPresenter _entityPresenter;
          readonly IHighlightExecutor _highLightExecutor;
@@ -59,8 +57,7 @@ namespace Carry.CarrySystem.Block.Scripts
              
 
          }
-
-
+        
 
          public void AddBlock(IBlock block)
          {
@@ -70,6 +67,7 @@ namespace Carry.CarrySystem.Block.Scripts
             _entityPresenter.SetEntityActiveData(block, GetBlocks().Count);
 
          }
+         
          public void RemoveBlock(IBlock block)
          {
              if(block is IGimmick gimmickBlock) gimmickBlock.EndGimmick();

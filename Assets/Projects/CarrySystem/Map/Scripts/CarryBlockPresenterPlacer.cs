@@ -56,7 +56,6 @@ namespace Carry.CarrySystem.Map.Scripts
                 var blockPresenterNet = blockPresenterNets.ElementAt(i);
 
                 // IBlockMonoDelegateが入っているので、そこからIBlockとIItemを取得して渡す
-                var monoDelegate = map.GetSingleEntity<IBlockMonoDelegate>(i);
                 var blocks = map.GetSingleEntityList<IBlock>(i).Cast<IEntity>();
                 var items = map.GetSingleEntityList<IItem>(i).Cast<IEntity>();
                 var gimmicks = map.GetSingleEntityList<IGimmick>(i).Cast<IEntity>();

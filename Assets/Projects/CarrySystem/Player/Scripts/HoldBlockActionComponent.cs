@@ -77,7 +77,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 Debug.Log($"remove currentBlockMonos");
                 carriableBlock.PickUp(_info.PlayerController.GetMoveExecutorSwitcher,_info.PlayerController.GetHoldActionExecutor);
                 // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
-                _mapGetter.GetMap().GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(searchedBlock);
+                _mapGetter.GetMap().GetSingleEntity<BlockMonoDelegate>(forwardGridPos)?.RemoveBlock(searchedBlock);
                 if (carriableBlock is IHoldable holdable)
                 {
                     _playerBlockPresenter?.EnableHoldableView(holdable);
@@ -129,7 +129,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 }
                 block.PutDown(_info.PlayerController.GetMoveExecutorSwitcher);
                 // _map.AddEntity(forwardGridPos, block);
-                _mapGetter.GetMap().GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.AddBlock(block);
+                _mapGetter.GetMap().GetSingleEntity<BlockMonoDelegate>(forwardGridPos)?.AddBlock(block);
                 _playerBlockPresenter?.DisableHoldableView();
                 _playerAnimatorPresenter?.PutDownBlock();
             }
