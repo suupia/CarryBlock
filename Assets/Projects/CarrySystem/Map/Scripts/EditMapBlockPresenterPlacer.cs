@@ -9,11 +9,11 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EditMapBlockPresenterPlacer : IPresenterPlacer
     {
-        readonly EditMapBlockBuilder _editMapBlockBuilder;
+        readonly EntityPresenterBuilder _editMapBlockBuilder;
         IEnumerable<IEntityPresenter> _entityPresenters =  new List<IEntityPresenter>();
         
         [Inject]
-        public EditMapBlockPresenterPlacer(EditMapBlockBuilder editMapBlockBuilder)
+        public EditMapBlockPresenterPlacer(EntityPresenterBuilder editMapBlockBuilder)
         {
             _editMapBlockBuilder = editMapBlockBuilder;
         }

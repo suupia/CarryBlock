@@ -10,12 +10,12 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class CarryBlockBuilder
+    public class EntityPresenterBuilder
     {
         readonly IEntityPresenterSpawner _entityPresenterSpawner;
 
         [Inject]
-        public CarryBlockBuilder(
+        public EntityPresenterBuilder(
             IEntityPresenterSpawner entityPresenterSpawner
         )
         {
