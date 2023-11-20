@@ -24,7 +24,10 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         readonly IEntityPresenterSpawner _entityPresenterSpawner;
 
-        public EditMapBlockBuilder(IEntityPresenterSpawner entityPresenterSpawner)
+        [Inject]
+        public EditMapBlockBuilder(
+            IEntityPresenterSpawner entityPresenterSpawner
+            )
         {
             _entityPresenterSpawner = entityPresenterSpawner;
         }

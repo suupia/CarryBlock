@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.FloorTimer.Scripts;
+using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using UnityEngine;
@@ -44,7 +45,8 @@ namespace Carry.CarrySystem.Map.Scripts
             _floorTimerNet = floorTimerNet;
             _mapKeyDataSelectorNet = mapKeyDataSelectorNet;
             _stageIndexTransporter = stageIndexTransporter;
-            _presenterPlacerNet = presenterPlacerNet;
+            _presenterPlacerNet = presenterPlacerNet;   
+
         }
 
         public EntityGridMap GetMap()
@@ -66,6 +68,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var mapIndex =  mapKeyDataList[firstIndex].index;
             _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             _presenterPlacerNet.Place(_currentMap);
+            StartGimmicks();
             _cartBuilder.Build(_currentMap, this);
 
             _resetAction();
@@ -109,8 +112,10 @@ namespace Carry.CarrySystem.Map.Scripts
             var key = mapKeyDataList[_currentIndex].mapKey;
             var mapIndex = mapKeyDataList[_currentIndex].index;
             var nextMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
+            EndGimmicks();  // EntityGridMapを更新する前にGimmickを終了させることに注意
             _currentMap = nextMap;
             _presenterPlacerNet.Place(_currentMap);
+            StartGimmicks();
             _cartBuilder.Build(_currentMap, this);
 
             _floorTimerNet.StartTimer();
@@ -123,6 +128,36 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             _resetAction += action;
         }
+
+        void StartGimmicks()
+        {
+            for (int i = 0; i < GetMap().Length; i++)
+            {
+                var gimmicks = GetMap().GetSingleEntityList<IGimmick>(i);
+
+                foreach (var gimmick in gimmicks)
+                {
+                    gimmick.StartGimmick();
+                }
+                
+            }
+        }
+        
+        void EndGimmicks()
+        {
+            for (int i = 0; i < GetMap().Length; i++)
+            {
+                var gimmicks = GetMap().GetSingleEntityList<IGimmick>(i);
+
+                foreach (var gimmick in gimmicks)
+                {
+                    gimmick.EndGimmick();
+                }
+                
+            }
+        }
+
+        
     }
 
 }

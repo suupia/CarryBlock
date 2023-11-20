@@ -30,7 +30,7 @@ namespace Carry.CarrySystem.Block.Scripts
          public IList<IBlock> Blocks => GetBlocks();
          public IList<IItem> Items => GetItems();
          public IList<IGimmick> Gimmicks => GetGimmicks();
-         
+
          readonly EntityGridMap _map;
          readonly IEntityPresenter _entityPresenter;
          readonly IHighlightExecutor _highLightExecutor;
@@ -59,22 +59,6 @@ namespace Carry.CarrySystem.Block.Scripts
              // var gimmickInfos = gimmickControllerComponents.Select(c => c.Info).ToList(); 
              
              _highLightExecutor = new HighlightExecutor(blockInfos);
-        
-             // 最初のStartGimmickの処理
-             foreach (var gimmick in GetGimmicks())
-             {
-                 gimmick.StartGimmick();
-             }
-             
-             // 代表として最初のBlockControllerの親に対してOnDestroyAsObservableを登録
-             var blockControllerParent = blockInfos.First().BlockController.GetMonoBehaviour.transform.parent;
-             blockControllerParent.gameObject.OnDestroyAsObservable().Subscribe(_ =>
-             {
-                 foreach (var gimmick in GetBlocks().OfType<IGimmick>())
-                 {
-                     gimmick.EndGimmick();
-                 }
-             });
              
 
          }

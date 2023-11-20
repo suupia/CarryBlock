@@ -1,3 +1,4 @@
+using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarryScene.Scripts;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.FloorTimer.Scripts;
@@ -88,6 +89,9 @@ namespace Carry.ScopeSystem.Scripts
             
             // Item
             builder.Register<TreasureCoinCounter>(Lifetime.Scoped);
+            
+            // Gimmick
+            builder.Register<GimmickLifeTime>(Lifetime.Scoped);
 
             // UI
             builder.RegisterComponentInHierarchy<FloorTimerNet>();
