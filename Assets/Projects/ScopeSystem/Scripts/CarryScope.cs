@@ -8,6 +8,7 @@ using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
+using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
 using Carry.UISystem.UI.CarryScene;
 using Fusion;
@@ -63,6 +64,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
+            builder.Register<NetworkEntityPresenterSpawner>(Lifetime.Scoped).As<IEntityPresenterSpawner>();
             builder.Register<CarryBlockBuilder>(Lifetime.Scoped);
             builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacerNet>(Lifetime.Scoped);
