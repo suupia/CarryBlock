@@ -4,6 +4,7 @@ using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Gimmick.Interfaces;
+using Carry.CarrySystem.Map.Interfaces;
 using Fusion;
 using Carry.Utility.Scripts;
 using Carry.Utility;
@@ -23,7 +24,9 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly IPrefabLoader<EntityPresenterNet> _blockPresenterPrefabSpawner;
 
         [Inject]
-        public CarryBlockBuilder(NetworkRunner runner)
+        public CarryBlockBuilder(
+            NetworkRunner runner
+        )
         {
             _runner = runner;
             _blockPresenterPrefabSpawner =
@@ -78,9 +81,6 @@ namespace Carry.CarrySystem.Map.Scripts
                     new BlockMonoDelegate(
                         map,
                         gridPos,
-                        blocks,
-                        items,
-                        gimmicks,
                         entityPresenter); // すべてのマスにBlockMonoDelegateを配置させる
                 blockMonoDelegates.Add(blockMonoDelegate);
 
@@ -92,7 +92,7 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 map.AddEntity(i, blockMonoDelegates[i]);
             }
-
+            
 
             return (blockControllers, blockPresenters);
         }
