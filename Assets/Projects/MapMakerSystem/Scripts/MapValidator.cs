@@ -15,7 +15,6 @@ namespace Projects.MapMakerSystem.Scripts
             _timerLocal = timerLocal;
         }
 
-        // 一旦仮でどんな場合でもSaveできるようにする
         public bool CanSave { get; private set; }
         
         // TODO ブロックが適切に配置されているかどうかをチェックする
@@ -45,6 +44,11 @@ namespace Projects.MapMakerSystem.Scripts
 
             _localPlayerSpawner.DespawnPlayer();
             _timerLocal.StopTimer();
+        }
+
+        public void OnSaved()
+        {
+            CanSave = false;
         }
     }
 }

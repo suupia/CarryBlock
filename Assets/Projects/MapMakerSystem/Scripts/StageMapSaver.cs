@@ -27,6 +27,8 @@ namespace Carry.CarrySystem.Map.Scripts
             }
 
             SaveInternal(map, _editingMapTransporter.StageId, _editingMapTransporter.Index);
+            //一度保存したらまたテストプレイをしないと保存できないようにする
+            _mapValidator.OnSaved();
             return true;
         }
 
