@@ -49,7 +49,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         public bool CanPutDown(IList<ICarriableBlock> placedBlocks)
         {
             var diffList = placedBlocks.Select(x => x.GetType() != this.GetType());
-            Debug.Log($"forward different block count: {diffList.Count()}, list : {string.Join(",", diffList)}");
+            Debug.Log($"forward different block count: {diffList.Count()}, list : {string.Join(",", placedBlocks)}");
             if (placedBlocks.Count(x => x.GetType() != this.GetType()) > 0)
             {
                 Debug.Log($"Basicと違う種類のBlockがあるため置けません");
