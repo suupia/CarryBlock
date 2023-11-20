@@ -1,7 +1,7 @@
 using Projects.MapMakerSystem.Scripts;
 using UnityEngine;
 using VContainer;
-
+#nullable enable
 //仮クラス。長谷川くんのスクリプトと統合するかも
 public class MapMakerUIManager : MonoBehaviour
 {

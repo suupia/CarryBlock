@@ -99,6 +99,10 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public static IReadOnlyList<Stage> GetStages()
         {
+            // todo : 
+            // ・Worldの内のステージがすべてそろっているかどうかを反してして、ない場合は
+            // LoadFixedWorld()を呼び出すようにする
+            
             var world = LoadWorld();
             var stageIds = world.stageIds;
             var needsRefreshWorld = false;
@@ -107,6 +111,7 @@ namespace Carry.CarrySystem.Map.Scripts
             for (var i = 0; i < stageIds.Count; i++)
             {
                 var stage = Load(stageIds[i]);
+                // todo : stageが削除されたときに対応する処理を書く
                 if (stage == null)
                 {
                     stage = new Stage($"Stage{i}");
