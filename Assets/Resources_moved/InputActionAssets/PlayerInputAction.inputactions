@@ -341,7 +341,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Click",
+                    "name": "LeftClick",
                     "type": "PassThrough",
                     "id": "c2c2b0d0-841d-44d7-80ab-9d98cdf504ee",
                     "expectedControlType": "Button",
@@ -350,7 +350,16 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MoveCursor",
+                    "name": "RightClick",
+                    "type": "Button",
+                    "id": "486a11ae-768b-47bc-8d9c-d3e877fbf1b2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveCursor_Virtual",
                     "type": "Value",
                     "id": "9ef51fc7-078f-4ef7-b10c-99f2a4b1b914",
                     "expectedControlType": "Vector2",
@@ -359,9 +368,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Select",
+                    "name": "LeftClick_Virtual",
                     "type": "Button",
                     "id": "880ef200-5197-4730-bc0f-8c8172aa5bc5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RIghtClick_Virtual",
+                    "type": "Button",
+                    "id": "f0dacc26-6278-452f-bc9e-56a6b9b24a71",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -398,7 +416,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse",
-                    "action": "Click",
+                    "action": "LeftClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -409,7 +427,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "GamePad;KeyBoard",
-                    "action": "Click",
+                    "action": "LeftClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -420,7 +438,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveCursor",
+                    "action": "MoveCursor_Virtual",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -431,7 +449,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveCursor",
+                    "action": "MoveCursor_Virtual",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -442,7 +460,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveCursor",
+                    "action": "MoveCursor_Virtual",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -453,7 +471,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveCursor",
+                    "action": "MoveCursor_Virtual",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -464,7 +482,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveCursor",
+                    "action": "MoveCursor_Virtual",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -475,7 +493,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveCursor",
+                    "action": "MoveCursor_Virtual",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -486,7 +504,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveCursor",
+                    "action": "MoveCursor_Virtual",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -497,7 +515,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveCursor",
+                    "action": "MoveCursor_Virtual",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -508,7 +526,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveCursor",
+                    "action": "MoveCursor_Virtual",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -519,7 +537,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveCursor",
+                    "action": "MoveCursor_Virtual",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -530,7 +548,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveCursor",
+                    "action": "MoveCursor_Virtual",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -541,18 +559,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "99e7b7d1-271e-4658-8dde-a67ef41bab3b",
-                    "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Select",
+                    "action": "LeftClick_Virtual",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -563,7 +570,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select",
+                    "action": "LeftClick_Virtual",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -574,7 +581,62 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select",
+                    "action": "LeftClick_Virtual",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3cbb3c54-f014-496b-a52a-cfb8745c6c8f",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse",
+                    "action": "RightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "91c206a4-869a-482a-9e0e-0d7c9a7f6d1e",
+                    "path": "<VirtualMouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyBoard;GamePad",
+                    "action": "RightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "48cdd3c9-6da9-4b5a-b8d2-8bdeddc375bd",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RIghtClick_Virtual",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f6859fdc-405a-4959-8b84-bc95b9c4ef8b",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RIghtClick_Virtual",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "68971f98-66d3-4e1a-bb9e-ea00598e437d",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RIghtClick_Virtual",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

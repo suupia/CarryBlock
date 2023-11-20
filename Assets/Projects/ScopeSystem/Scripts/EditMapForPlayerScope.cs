@@ -18,6 +18,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             // Map
             // JsonとEntityGridMapに関する処理
             builder.Register<EntityGridMapBuilderLeaf>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
+            builder.Register<EntityGridMapDataConverter>(Lifetime.Scoped);
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
             
@@ -30,7 +31,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             builder.Register<LocalEditMapPresenterPlacerComponent>(Lifetime.Scoped).As<IPresenterPlacer>();
 
             // EditMapSwitcher
-            builder.Register<EditMapSwitcher>(Lifetime.Scoped).As<IMapSwitcher>().As<IMapGetter>().AsSelf();
+            builder.Register<EditMapSwitcher>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
             
             // Input
             builder.Register<EditMapBlockAttacher>(Lifetime.Scoped).As<IEditMapBlockAttacher>();
@@ -40,6 +41,8 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             builder.RegisterComponentInHierarchy<EditMapForPlayerInput>();
             builder.RegisterComponentInHierarchy<EditMapCUISave>();
             builder.RegisterComponentInHierarchy<EditMapCUILoad>();
+            
+            // UI
             builder.RegisterComponentInHierarchy<EditMapToolCanvas>();
             
                         
@@ -53,7 +56,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             builder.RegisterComponentInHierarchy<MapKeyContainer>();
             
             // Initializer
-            builder.RegisterComponentInHierarchy<LocalEditMapInitializer>();
+            builder.RegisterComponentInHierarchy<EditMapForPlayerInitializer>();
         }
 
     }
