@@ -58,11 +58,16 @@ namespace Carry.CarrySystem.Block.Scripts
 
          }
         
+         // _entityPresenterに依存している
+         // BlockMonoDelegateそのものをIEntityとしてEntityGridMapに配置してしまうことで、
+         // 別のところから、positionを指定して、Addしたり、Highlightしたりできるようになる。
+         
+         // 本来はクライアントコードでAddEntityできないようにするために、PlaceableGridMapクラスを作るべきだが、
+         // 横着して、MonoDelegateをマップに入れる構造になっている
 
          public void AddBlock(IBlock block)
          {
              if(block is IGimmick gimmickBlock) gimmickBlock.StartGimmick();
-             // _blocks.Add(block);
              _map.AddEntity(_gridPosition, block);
             _entityPresenter.SetEntityActiveData(block, GetBlocks().Count);
 
@@ -71,7 +76,6 @@ namespace Carry.CarrySystem.Block.Scripts
          public void RemoveBlock(IBlock block)
          {
              if(block is IGimmick gimmickBlock) gimmickBlock.EndGimmick();
-             // _blocks.Remove(block);
              _map.RemoveEntity(_gridPosition, block);
              _entityPresenter.SetEntityActiveData(block, GetBlocks().Count);
 

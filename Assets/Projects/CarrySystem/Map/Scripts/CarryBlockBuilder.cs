@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Carry.CarrySystem.Block.Interfaces;
+﻿using System.Collections.Generic;
 using Carry.CarrySystem.Block.Scripts;
-using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
-using Fusion;
 using Carry.Utility.Scripts;
-using Carry.Utility;
 using Carry.Utility.Interfaces;
-using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Interfaces;
 using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 using VContainer;
+using Fusion;
 #nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
@@ -35,10 +29,10 @@ namespace Carry.CarrySystem.Map.Scripts
 
 
         // CarryBuilderと対応させてある。
-        public (IReadOnlyList<BlockControllerNet>, IReadOnlyList<EntityPresenterNet>) Build(EntityGridMap map)
+        public (IReadOnlyList<BlockControllerNet>, IReadOnlyList<IEntityPresenter>) Build(EntityGridMap map)
         {
             var blockControllers = new List<BlockControllerNet>();
-            var blockPresenters = new List<EntityPresenterNet>();
+            var blockPresenters = new List<IEntityPresenter>();
 
             List<BlockMonoDelegate> blockMonoDelegates = new List<BlockMonoDelegate>();
 
@@ -61,21 +55,6 @@ namespace Carry.CarrySystem.Map.Scripts
                             itemController.Init(items);
                         }
                     });
-
-                // BlockMonoDelegateの生成
-                var blocks = map.GetSingleEntityList<IBlock>(i);
-                var items = map.GetSingleEntityList<IItem>(i);
-                var gimmicks = map.GetSingleEntityList<IGimmick>(i);
-
-                // // get blockInfos from blockController
-                // var blockControllerComponents = entityPresenter.GetComponentsInChildren<IBlockController>();
-                // var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
-                // // get itemInfos from itemController
-                // var itemControllerComponents = entityPresenter.GetComponentsInChildren<ItemControllerNet>();
-                // var itemInfos = itemControllerComponents.Select(c => c.Info).ToList();
-                // // get gimmickInfos from gimmickController
-                // var gimmickControllerComponents = entityPresenter.GetComponentsInChildren<GimmickControllerNet>();
-                // var gimmickInfos = gimmickControllerComponents.Select(c => c.Info).ToList();
 
                 var blockMonoDelegate =
                     new BlockMonoDelegate(
