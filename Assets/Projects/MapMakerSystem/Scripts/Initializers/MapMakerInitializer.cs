@@ -10,15 +10,13 @@ using VContainer;
 public class MapMakerInitializer : MonoBehaviour
 {
     StageMapSwitcher _stageMapSwitcher = null!;
-    EditingMapTransporter _editingMapTransporter = null!;
         
     [Inject]
     public void Construct(
-        StageMapSwitcher stageMapSwitcher,
-        EditingMapTransporter editingMapTransporter)
+        StageMapSwitcher stageMapSwitcher
+        )
     {
         _stageMapSwitcher = stageMapSwitcher;
-        _editingMapTransporter = editingMapTransporter;
     }
 
     void Start()
@@ -28,16 +26,7 @@ public class MapMakerInitializer : MonoBehaviour
 
     void Load()
     {
-        var stage = StageFileUtility.Load(_editingMapTransporter.StageId);
-        if (stage != null)
-        {
-            _stageMapSwitcher.Index = _editingMapTransporter.Index;
-            _stageMapSwitcher.Stage = stage;
-        }
-        else
-        {
-            Debug.LogError("該当するStageがLoadできませんでした。TestStageを読み込みます");
-        }
+
         _stageMapSwitcher.InitSwitchMap(); // -1が初期マップ
     }
 }

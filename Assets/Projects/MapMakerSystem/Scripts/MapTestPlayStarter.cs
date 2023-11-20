@@ -11,7 +11,6 @@ namespace Projects.MapMakerSystem.Scripts
         readonly MapValidator _mapValidator;
         readonly StageMapSwitcher _stageMapSwitcher;
 
-
         public MapTestPlayStarter(
             StageMapSaver stageMapSaver,
             MapValidator mapValidator,
@@ -31,10 +30,7 @@ namespace Projects.MapMakerSystem.Scripts
 
             var canPlay = _mapValidator.StartTestPlay(() =>
             {
-                var preStage = _stageMapSwitcher.Stage;
-                _stageMapSwitcher.Stage = StageFileUtility.Load(StageFileUtility.TMPStageID)!;
-                _stageMapSwitcher.InitSwitchMap();
-                _stageMapSwitcher.Stage = preStage;
+                _stageMapSwitcher.InitTmpMap();
 
                 IsTestPlaying = false;
                 onStopped.Invoke();

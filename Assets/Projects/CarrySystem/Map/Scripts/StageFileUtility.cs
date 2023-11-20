@@ -75,7 +75,7 @@ namespace Carry.CarrySystem.Map.Scripts
             streamWriter.Flush();
         }
         
-        public static Stage? Load(string stageId)
+        public static Stage Load(string stageId)
         {
             var path = GetPath(stageId);
 
@@ -84,9 +84,17 @@ namespace Carry.CarrySystem.Map.Scripts
                 string jsonData = File.ReadAllText(path);
                 return JsonUtility.FromJson<Stage>(jsonData);
             }
-            Debug.LogError("File not found.");
-            return null;
+            else
+            {
+                return LoadDefaultStage();
+            }
         }
+
+         static Stage LoadDefaultStage()
+         {
+             Debug.LogError("File not found. So load default stage.");
+             return new Stage("default stage");
+         }
         
         
         public static IReadOnlyList<Stage> GetStages()
