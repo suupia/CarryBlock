@@ -34,7 +34,7 @@ namespace Projects.CarrySystem.Gimmick.Scripts
         // SpikeBody
         readonly float _appearInterval = 4.0f;
         readonly float _spawnHeight = 0.8f;
-        IDisposable? _gimmickDisposable = null;
+        IDisposable? _gimmickDisposable;
         
         public SpikeGimmick(Kind kind, Vector2Int gridPosition)
         {
@@ -51,19 +51,20 @@ namespace Projects.CarrySystem.Gimmick.Scripts
             
             // 10秒ごとに実行（Intervalの場合、Subscribe後に待機時間を待機してから1回目の処理が実行される）
             _gimmickDisposable =  Observable.Interval(System.TimeSpan.FromSeconds(_appearInterval))
-                .Subscribe(x =>
+                .Subscribe(_ =>
                     {
                         var worldPos = GridConverter.GridPositionToWorldPosition(GridPosition);
                         var spawnPos = new Vector3(worldPos.x, worldPos.y + _spawnHeight , worldPos.z);
                         // Spawn prefab
-                        var _ = spikeBodyBuilder.Build(KindValue, spawnPos, Quaternion.identity, PlayerRef.None);
+                        spikeBodyBuilder.Build(KindValue, spawnPos, Quaternion.identity, PlayerRef.None);
                     }
                 );
         }
         
         public void EndGimmick()
         {
-            Debug.Log("EndGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
+            Debug.Log("End SpikeGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
+            Debug.Log($"_giimmickDisposable is null? {_gimmickDisposable == null}");
             _gimmickDisposable?.Dispose();
 
         }

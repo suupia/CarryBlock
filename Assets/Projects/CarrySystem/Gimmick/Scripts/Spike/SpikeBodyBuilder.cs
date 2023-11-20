@@ -11,14 +11,14 @@ namespace Projects.CarrySystem.Gimmick.Scripts
 {
     public class SpikeBodyBuilder
     {
-        readonly IPrefabLoader<SpikeBodyControllerNet> _canonBallControllerLoader;
+        readonly IPrefabLoader<SpikeBodyControllerNet> _spikeBodyControllerLoader;
         NetworkRunner? _runner;
 
         [Inject]
         public SpikeBodyBuilder()
         {
             // I decided to not DI Loader
-            _canonBallControllerLoader = new PrefabLoaderFromAddressable<SpikeBodyControllerNet>("Prefabs/Gimmick/Spike/SpikeBodyNet");
+            _spikeBodyControllerLoader = new PrefabLoaderFromAddressable<SpikeBodyControllerNet>("Prefabs/Gimmick/Spike/SpikeBodyNet");
         }
         
         public SpikeBodyControllerNet Build(SpikeGimmick.Kind kind, Vector3 position, Quaternion rotation, PlayerRef playerRef)
@@ -27,15 +27,16 @@ namespace Projects.CarrySystem.Gimmick.Scripts
             if(_runner == null) Debug.LogError("NetworkRunner is not found");
             
             // Load prefab
-            var cannonBallController = _canonBallControllerLoader.Load();
+            var spikeBodyControllerNet = _spikeBodyControllerLoader.Load();
             
             // Spawn prefab
-            var cannonBallControllerObj = _runner.Spawn(cannonBallController, position, rotation, playerRef,
+            var cannonBallControllerObj = _runner.Spawn(spikeBodyControllerNet, position, rotation, playerRef,
                 (runner, networkObj) =>
                 {
                     networkObj.GetComponent<SpikeBodyControllerNet>().Init(kind);
                 });
             
+            Debug.Log($"GridPos {position}, Build Spike");
             // Setup Info
             // ...
             
