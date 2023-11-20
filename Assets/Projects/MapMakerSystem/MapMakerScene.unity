@@ -2428,6 +2428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playingCanvas: {fileID: 669277013}
+  editingCanvas: {fileID: 388949374}
   editingCameraTransform: {fileID: 305331571}
   testPlayingCameraTransform: {fileID: 1255618446}
 --- !u!1 &1006495977
