@@ -2,15 +2,14 @@
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners.Interfaces;
+using Projects.CarrySystem.Item.Interfaces;
+using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 using VContainer;
 #nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    /// <summary>
-    /// Spawn BlockPresenterPrefabs depending on the EntityGridMap data.
-    /// </summary>
     public class EditMapBlockBuilder
     {
         readonly IEntityPresenterSpawner _entityPresenterSpawner;
@@ -41,6 +40,14 @@ namespace Carry.CarrySystem.Map.Scripts
                 
                 // Presenterの生成
                 var entityPresenter = _entityPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+
+                // ItemControllerのInitを呼び出す
+                var itemControllers =  entityPresenter.GetMonoBehaviour.GetComponentsInChildren<ItemControllerNet>();
+                var items = map.GetSingleEntityList<IItem>(gridPos);
+                foreach (var itemController in itemControllers)
+                {
+                    itemController.Init(items);
+                }
 
 
                 var blockMonoDelegate =
