@@ -78,9 +78,6 @@ namespace Carry.CarrySystem.Map.Scripts
                     new BlockMonoDelegate(
                         map,
                         gridPos,
-                        blocks,
-                        items,
-                        gimmicks,
                         entityPresenter); // すべてのマスにBlockMonoDelegateを配置させる
                 blockMonoDelegates.Add(blockMonoDelegate);
 

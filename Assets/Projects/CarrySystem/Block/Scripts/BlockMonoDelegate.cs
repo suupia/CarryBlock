@@ -40,9 +40,6 @@ namespace Carry.CarrySystem.Block.Scripts
          public BlockMonoDelegate(
              EntityGridMap map,
              Vector2Int gridPos,
-             IList<IBlock> blocks,
-             IList<IItem> items,
-             IList<IGimmick> gimmicks,
              IEntityPresenter entityPresenter)
          {
              _map = map;
@@ -64,7 +61,7 @@ namespace Carry.CarrySystem.Block.Scripts
              _highLightExecutor = new HighlightExecutor(blockInfos);
         
              // 最初のStartGimmickの処理
-             foreach (var gimmick in gimmicks)
+             foreach (var gimmick in GetGimmicks())
              {
                  gimmick.StartGimmick();
              }
@@ -73,7 +70,7 @@ namespace Carry.CarrySystem.Block.Scripts
              var blockControllerParent = blockInfos.First().BlockController.GetMonoBehaviour.transform.parent;
              blockControllerParent.gameObject.OnDestroyAsObservable().Subscribe(_ =>
              {
-                 foreach (var gimmick in blocks.OfType<IGimmick>())
+                 foreach (var gimmick in GetBlocks().OfType<IGimmick>())
                  {
                      gimmick.EndGimmick();
                  }

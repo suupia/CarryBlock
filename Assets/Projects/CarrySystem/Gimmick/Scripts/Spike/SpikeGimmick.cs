@@ -63,7 +63,7 @@ namespace Projects.CarrySystem.Gimmick.Scripts
         
         public void EndGimmick()
         {
-            Debug.Log("EndGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
+            Debug.Log("End SpikeGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
             _gimmickDisposable?.Dispose();
 
         }
