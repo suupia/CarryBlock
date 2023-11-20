@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Projects.MapMakerSystem.Scripts;
 using UnityEngine;
 using VContainer;
@@ -6,11 +7,14 @@ using VContainer;
 public class MapMakerUIManager : MonoBehaviour
 {
     [SerializeField] GameObject playingCanvas;
-    [SerializeField] GameObject editingCamera;
-    [SerializeField] GameObject testPlayingCamera;
+    [SerializeField] Transform editingCameraTransform;
+    [SerializeField] Transform testPlayingCameraTransform;
 
+    readonly float _cameraMoveDuration = 0.5f;
+    readonly Ease _easing = Ease.InOutExpo;
 
     MapTestPlayStarter _mapTestPlayStarter = null!;
+    Camera _camera;
 
 
     [Inject]
@@ -24,6 +28,7 @@ public class MapMakerUIManager : MonoBehaviour
     void Start()
     {
         playingCanvas.SetActive(false);
+        _camera = Camera.main;
         SwitchCameraToEditing();
     }
 
@@ -48,13 +53,18 @@ public class MapMakerUIManager : MonoBehaviour
 
     void SwitchCameraToEditing()
     {
-        testPlayingCamera.SetActive(false);
-        editingCamera.SetActive(true);
+        MoveCamera(editingCameraTransform);
     }
 
     void SwitchCameraToTestPlaying()
     {
-        testPlayingCamera.SetActive(true);
-        editingCamera.SetActive(false);
+        MoveCamera(testPlayingCameraTransform);
+    }
+
+    void MoveCamera(Transform targetTransform)
+    {
+        _camera.transform.DOMove(targetTransform.position, _cameraMoveDuration).SetEase(_easing);
+        _camera.transform.DORotate(targetTransform.rotation.eulerAngles, _cameraMoveDuration)
+            .SetEase(_easing);
     }
 }
