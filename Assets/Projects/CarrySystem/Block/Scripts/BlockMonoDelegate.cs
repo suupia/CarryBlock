@@ -26,8 +26,7 @@ namespace Carry.CarrySystem.Block.Scripts
     /// </summary>
     public class BlockMonoDelegate : IBlockMonoDelegate , IHighlightExecutor
     {
-         public IBlock? Block =>  GetBlocks().FirstOrDefault(); 
-         public IList<IBlock> Blocks => GetBlocks();
+         public IBlock? Block =>  GetBlocks().FirstOrDefault();
 
          readonly EntityGridMap _map;
          readonly IEntityPresenter _entityPresenter;
@@ -61,12 +60,7 @@ namespace Carry.CarrySystem.Block.Scripts
 
          }
 
-         IList<IBlock> GetBlocks()
-         {
-             var blocks = _map.GetSingleEntityList<IBlock>(_gridPosition);
-             return blocks;
-         }
-         
+
 
          public void AddBlock(IBlock block)
          {
@@ -84,6 +78,13 @@ namespace Carry.CarrySystem.Block.Scripts
              _entityPresenter.SetEntityActiveData(block, GetBlocks().Count);
 
          }
+         
+         IList<IBlock> GetBlocks()
+         {
+             var blocks = _map.GetSingleEntityList<IBlock>(_gridPosition);
+             return blocks;
+         }
+
          
          public void Highlight(IBlock? block , PlayerRef playerRef)
          {

@@ -159,7 +159,7 @@ namespace Carry.CarrySystem.Player.Scripts
             // Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
 
             // _searchedBlockを更新
-            _searchedBlocks = blockMonoDelegate.Blocks.OfType<IBlock>().ToList();
+            _searchedBlocks = _map.GetSingleEntityList<IBlock>(forwardGridPos).ToList();
 
             // ハイライトの処理
             var block = blockMonoDelegate?.Block;

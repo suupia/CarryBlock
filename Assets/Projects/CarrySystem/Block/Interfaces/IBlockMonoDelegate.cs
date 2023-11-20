@@ -10,7 +10,6 @@ namespace Carry.CarrySystem.Block.Interfaces
     public interface IBlockMonoDelegate : IEntity
     {
         IBlock? Block { get; }
-        IList<IBlock> Blocks { get; }
         public void AddBlock(IBlock block);
 
         public void RemoveBlock(IBlock block);

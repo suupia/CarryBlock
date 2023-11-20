@@ -57,7 +57,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
                 // IBlockMonoDelegateが入っているので、そこからIBlockとIItemを取得して渡す
                 var monoDelegate = map.GetSingleEntity<IBlockMonoDelegate>(i);
-                var blocks = monoDelegate.Blocks.Cast<IEntity>();
+                var blocks = map.GetSingleEntityList<IBlock>(i).Cast<IEntity>();
                 var items = map.GetSingleEntityList<IItem>(i).Cast<IEntity>();
                 var gimmicks = map.GetSingleEntityList<IGimmick>(i).Cast<IEntity>();
                 var entityList = blocks.Concat(items).Concat(gimmicks).Distinct(); // Distinct()は重複を削除する
