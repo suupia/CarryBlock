@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
         PlayerInfo _info = null!;
         EntityGridMap _map = null!;
         AidKitRangeNet? _aidKitRangeNet;
-        IBlockMonoDelegate? _searchedBlockMonoDelegate;
+        IBlock? _preSearchedBlock;
         IList<IBlock > _searchedBlocks = new List<IBlock>();
         IDisposable? _searchBlockDisposable;
 
@@ -66,24 +66,22 @@ namespace Carry.CarrySystem.Player.Scripts
         { 
             var transform = _info.PlayerObj.transform;
             var forwardGridPos = GetForwardGridPos(transform);
-            var blockMonoDelegate = _searchedBlockMonoDelegate;  // フレームごとに判定しているためここでキャッシュする
-            if(blockMonoDelegate?.Block == null)
+            if(_preSearchedBlock == null)
             {
-                Debug.Log($"blockMonoDelegate.Block : null");
+                Debug.Log($"_preSearchedBlock : null");
                 return false;
             }
                 
             // Debug
             Debug.Log($"before currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
-
-            var block = blockMonoDelegate.Block;
-            if(!( block is ICarriableBlock carriableBlock)) return false;
+            
+            if(!( _preSearchedBlock is ICarriableBlock carriableBlock)) return false;
             if (carriableBlock.CanPickUp())
             {
                 Debug.Log($"remove currentBlockMonos");
                 carriableBlock.PickUp(_info.PlayerController.GetMoveExecutorSwitcher,_info.PlayerController.GetHoldActionExecutor);
                 // _map.RemoveEntity(forwardGridPos,blockMonoDelegate);
-                _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(block);
+                _map.GetSingleEntity<IBlockMonoDelegate>(forwardGridPos)?.RemoveBlock(_preSearchedBlock);
                 if (carriableBlock is IHoldable holdable)
                 {
                     _playerBlockPresenter?.EnableHoldableView(holdable);
@@ -92,7 +90,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     Debug.LogError($"carriableBlock is not IHoldable. carriableBlock : {carriableBlock}");
                 }
-                _playerAnimatorPresenter?.PickUpBlock(block);
+                _playerAnimatorPresenter?.PickUpBlock(_preSearchedBlock);
                 _holdingObjectContainer.SetBlock(carriableBlock);
             }
             Debug.Log($"after currentBlockMonos : {string.Join(",", _map.GetSingleEntityList<IBlockMonoDelegate>(forwardGridPos).Select(x => x.Block))}");
@@ -152,9 +150,9 @@ namespace Carry.CarrySystem.Player.Scripts
             // 前方のMonoBlockDelegateを取得
             var blockMonoDelegate = _map.GetSingleEntity<BlockMonoDelegate>(forwardGridPos);
 
-            _searchedBlockMonoDelegate = blockMonoDelegate;
+            _preSearchedBlock =  _map.GetSingleEntity<IBlock>(forwardGridPos);
             
-            if (blockMonoDelegate == null) return;
+            if (_preSearchedBlock == null) return;
 
             // Debug.Log($"forwardGridPos: {forwardGridPos}, Blocks: {string.Join(",", blockMonoDelegate.Blocks)}");
 
@@ -162,8 +160,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _searchedBlocks = _map.GetSingleEntityList<IBlock>(forwardGridPos).ToList();
 
             // ハイライトの処理
-            var block = blockMonoDelegate?.Block;
-            if( block is not ICarriableBlock carriableBlock) return;
+            if( _preSearchedBlock is not ICarriableBlock carriableBlock) return;
             if (_holdingObjectContainer.IsHoldingBlock)
             {
                 var carriableBlocks = _searchedBlocks.OfType<ICarriableBlock>().ToList();
