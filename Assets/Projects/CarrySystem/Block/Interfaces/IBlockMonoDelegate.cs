@@ -11,8 +11,6 @@ namespace Carry.CarrySystem.Block.Interfaces
     {
         IBlock? Block { get; }
         IList<IBlock> Blocks { get; }
-        IList<IItem> Items { get; }
-        IList<IGimmick> Gimmicks { get; }
         public void AddBlock(IBlock block);
 
         public void RemoveBlock(IBlock block);

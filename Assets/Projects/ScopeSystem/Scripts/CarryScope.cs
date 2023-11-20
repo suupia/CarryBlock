@@ -89,9 +89,6 @@ namespace Carry.ScopeSystem.Scripts
             
             // Item
             builder.Register<TreasureCoinCounter>(Lifetime.Scoped);
-            
-            // Gimmick
-            builder.Register<GimmickLifeTime>(Lifetime.Scoped);
 
             // UI
             builder.RegisterComponentInHierarchy<FloorTimerNet>();

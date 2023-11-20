@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Entity.Interfaces;
+using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Fusion;
 using Projects.CarrySystem.Item.Interfaces;
@@ -57,8 +58,8 @@ namespace Carry.CarrySystem.Map.Scripts
                 // IBlockMonoDelegateが入っているので、そこからIBlockとIItemを取得して渡す
                 var monoDelegate = map.GetSingleEntity<IBlockMonoDelegate>(i);
                 var blocks = monoDelegate.Blocks.Cast<IEntity>();
-                var items = monoDelegate.Items.Cast<IEntity>();
-                var gimmicks = monoDelegate.Gimmicks.Cast<IEntity>();
+                var items = map.GetSingleEntityList<IItem>(i).Cast<IEntity>();
+                var gimmicks = map.GetSingleEntityList<IGimmick>(i).Cast<IEntity>();
                 var entityList = blocks.Concat(items).Concat(gimmicks).Distinct(); // Distinct()は重複を削除する
                 blockPresenterNet.SetInitAllEntityActiveData(entityList);
 

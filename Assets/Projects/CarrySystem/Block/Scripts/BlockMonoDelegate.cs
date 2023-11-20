@@ -28,8 +28,6 @@ namespace Carry.CarrySystem.Block.Scripts
     {
          public IBlock? Block =>  GetBlocks().FirstOrDefault(); 
          public IList<IBlock> Blocks => GetBlocks();
-         public IList<IItem> Items => GetItems();
-         public IList<IGimmick> Gimmicks => GetGimmicks();
 
          readonly EntityGridMap _map;
          readonly IEntityPresenter _entityPresenter;
@@ -66,20 +64,9 @@ namespace Carry.CarrySystem.Block.Scripts
          IList<IBlock> GetBlocks()
          {
              var blocks = _map.GetSingleEntityList<IBlock>(_gridPosition);
-             CheckAllBlockTypesAreSame(blocks);
              return blocks;
          }
-
-         IList<IItem> GetItems()
-         {
-             return _map.GetSingleEntityList<IItem>(_gridPosition);
-         }
          
-         IList<IGimmick> GetGimmicks()
-         {
-             return _map.GetSingleEntityList<IGimmick>(_gridPosition);
-         }
-
 
          public void AddBlock(IBlock block)
          {
@@ -105,26 +92,7 @@ namespace Carry.CarrySystem.Block.Scripts
          
          // IBlock implementation
          public Vector2Int GridPosition { get => _gridPosition; set => _gridPosition = value; }
-
          
-         // Check if the blocks are the same type.
-         void CheckAllBlockTypesAreSame(List<IBlock> blocks)
-         {
-             if (!blocks.Any())
-             {
-                 // Debug.Log($"IBlockが存在しません。{string.Join(",", blocks)}");
-                 return;
-             }
-
-             var firstBlock = blocks.First();
-
-             if (blocks.Any(block => block.GetType() != firstBlock.GetType()))
-             {
-                 Debug.LogError(
-                     $"異なる種類のブロックが含まれています。　firstBlock.GetType() : {firstBlock.GetType()} {string.Join(",", blocks)}");
-             }
-             
-         }
          
     }
 }
