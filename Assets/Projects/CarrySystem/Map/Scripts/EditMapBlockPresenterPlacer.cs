@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Map.Interfaces;
+using UnityEngine;
 using VContainer;
 #nullable enable
 
@@ -23,16 +24,17 @@ namespace Carry.CarrySystem.Map.Scripts
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
             
-            var (blockControllers, blockPresenterNets) = _editMapBlockBuilder.Build(map);
+            var (blockControllers, entityPresenters) = _editMapBlockBuilder.Build(map);
             
             // BlockPresenterをドメインのEntityGridMapに紐づける
-            AttachTilePresenter(blockPresenterNets, map);
+            AttachTilePresenter(entityPresenters, map);
 
-            _entityPresenters = blockPresenterNets;
+            _entityPresenters = entityPresenters;
         }
         
         void DestroyTilePresenter()
         {
+            Debug.Log($"DestroyTitlePresenter , _entityPresenters.Length = {_entityPresenters.Count()}");
             foreach (var entityPresenter in _entityPresenters)
             {
                 entityPresenter.DestroyPresenter();
@@ -40,16 +42,17 @@ namespace Carry.CarrySystem.Map.Scripts
             _entityPresenters = new List<IEntityPresenter>();
         }
         
-         void AttachTilePresenter(IReadOnlyList<IEntityPresenter> blockPresenterNets , EntityGridMap map)
+         void AttachTilePresenter(IReadOnlyList<IEntityPresenter> entityPresenters , EntityGridMap map)
         {
-            for (int i = 0; i < blockPresenterNets.Count(); i++)
+            Debug.Log($"map.GetAllEntityList(0) joined = {string.Join("," ,map.GetAllEntityList(0))}");
+            for (int i = 0; i < entityPresenters.Count(); i++)
             {
-                var blockPresenterNet = blockPresenterNets.ElementAt(i);
+                var entityPresenter = entityPresenters.ElementAt(i);
 
-                blockPresenterNet.SetInitAllEntityActiveData(map.GetAllEntityList(i));  // ここだけ、CarryBlockPresenterPlacerと違う
+                entityPresenter.SetInitAllEntityActiveData(map.GetAllEntityList(i));  // ここだけ、CarryBlockPresenterPlacerと違う
 
                 // mapにTilePresenterを登録
-                map.RegisterTilePresenter(blockPresenterNet, i);
+                map.RegisterTilePresenter(entityPresenter, i);
                 
                 
             }

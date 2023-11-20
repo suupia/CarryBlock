@@ -1,18 +1,16 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
-using Carry.EditMapSystem.EditMap.Scripts;
 using Carry.EditMapSystem.EditMapForPlayer.Scripts;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
-using UniRx;
 using UnityEngine;
 using VContainer;
-
-#nullable enable
 
 namespace Projects.MapMakerSystem.Scripts
 {
@@ -21,11 +19,12 @@ namespace Projects.MapMakerSystem.Scripts
         public  string BlockTypeString => _blockType?.Name ?? "(None)";
         public string DirectionString => _direction.ToString();
         
-        Direction _direction = Direction.Up; 
+        Direction _direction = Direction.Up;
 
         MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
         StageMapSaver _stageMapSaver = null!;
         IMapGetter _mapGetter = null!;
+        MapTestPlayStarter _mapTestPlayStarter = null!;
 
         CUIState _cuiState = CUIState.Idle;
         Type _blockType = null!;
@@ -45,24 +44,27 @@ namespace Projects.MapMakerSystem.Scripts
         public void Construct(
             MemorableEditMapBlockAttacher editMapBlockAttacher,
             StageMapSaver stageMapSaver,
-            IMapGetter mapGetter)
+            IMapGetter mapGetter,
+            MapTestPlayStarter mapTestPlayStarter)
         {
             _editMapBlockAttacher = editMapBlockAttacher;
             _mapGetter = mapGetter;
             _stageMapSaver = stageMapSaver;
+            _mapTestPlayStarter = mapTestPlayStarter;
         }
 
         void Start()
         {
 
             _blockType = typeof(BasicBlock);
-            
         }
 
         // ToDo: Update関数が長くなっているので、分割する
         // 具体的には、Input.~~は使用せずにInputActionを使用するようにする
         void Update()
         {
+            if (_mapTestPlayStarter.IsTestPlaying) return;
+            
             var mouseXYPos = Input.mousePosition; // xy座標であることに注意
             var cameraHeight = Camera.main.transform.position.y;
             var mousePosOnGround =
@@ -221,10 +223,11 @@ namespace Projects.MapMakerSystem.Scripts
             {
                 _editMapBlockAttacher.Redo(_mapGetter.GetMap());
             }
-            if(Input.GetKeyDown(KeyCode.S))
+            if(Input.GetKeyDown(KeyCode.F2))
             {
                 _stageMapSaver.Save(_mapGetter.GetMap());
             }
+
         }
 
         enum Direction

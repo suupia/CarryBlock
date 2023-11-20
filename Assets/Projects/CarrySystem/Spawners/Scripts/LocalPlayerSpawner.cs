@@ -39,17 +39,13 @@ namespace Carry.CarrySystem.Spawners.Scripts
             _playerControllers.Add(playerController);
         }
 
-        public void DespawnPlayer(PlayerRef player)
+        public void DespawnPlayer()
         {
-            // todo : たぶんローカルだと必要ないので、使わなかったら削除
-            // if (_runner.TryGetPlayerObject(player, out var networkObject))
-            // {
-            //     var playerController = networkObject.GetComponent<AbstractNetworkPlayerController>();
-            //
-            //     _playerControllers.Remove(playerController);
-            //     _runner.Despawn(networkObject);
-            //     _runner.SetPlayerObject(player, null);
-            // }
+            foreach (var carryPlayerControllerLocal in _playerControllers)
+            {
+                Object.Destroy(carryPlayerControllerLocal.gameObject);
+            }
+            _playerControllers.Clear();
         }
     }
 }

@@ -47,7 +47,7 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public void DestroyPresenter()
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
 
         void Update()

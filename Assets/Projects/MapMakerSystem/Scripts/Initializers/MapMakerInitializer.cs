@@ -9,44 +9,24 @@ using VContainer;
 
 public class MapMakerInitializer : MonoBehaviour
 {
-    LocalPlayerSpawner _localPlayerSpawner;
-    StageMapSwitcher _stageMapSwitcher;
-    EditingMapTransporter _editingMapTransporter;
+    StageMapSwitcher _stageMapSwitcher = null!;
         
     [Inject]
     public void Construct(
-        LocalPlayerSpawner localPlayerSpawner,
-        StageMapSwitcher stageMapSwitcher,
-        EditingMapTransporter editingMapTransporter)
+        StageMapSwitcher stageMapSwitcher
+        )
     {
         _stageMapSwitcher = stageMapSwitcher;
-        _localPlayerSpawner = localPlayerSpawner;
-        _editingMapTransporter = editingMapTransporter;
     }
 
-    void Awake()
+    void Start()
     {
-        var stage = StageFileUtility.Load(_editingMapTransporter.StageId);
-        if (stage != null)
-        {
-            _stageMapSwitcher.Index = _editingMapTransporter.Index;
-            _stageMapSwitcher.SetStage(stage);
-        }
-        else
-        {
-            Debug.LogError("該当するStageがLoadできませんでした。ファイルの存在を確認してください");
-        }
+        Load();
+    }
+
+    void Load()
+    {
+
         _stageMapSwitcher.InitSwitchMap(); // -1が初期マップ
-        // Debug.Log($"stage id: {_editingMapTransporter.StageId}, map index: {_editingMapTransporter.Index}");
-        
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F1) )
-        {
-            Debug.Log($"CarryPlayerControllerLocalをスポーンします");
-            _localPlayerSpawner.SpawnPlayer();
-        }
     }
 }
