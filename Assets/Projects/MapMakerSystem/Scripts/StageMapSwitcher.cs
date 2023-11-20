@@ -1,6 +1,8 @@
 using System;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
+using UnityEngine;
 
 #nullable enable
 
@@ -8,7 +10,7 @@ namespace Projects.MapMakerSystem.Scripts
 {
     public class StageMapSwitcher: IMapGetter, IMapSwitcher
     {
-        public int Index { get; set;  }
+        public int Index { get;  set;  }
         
         public Stage Stage { get; set; }
         

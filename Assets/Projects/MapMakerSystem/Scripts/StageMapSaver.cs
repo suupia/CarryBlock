@@ -53,7 +53,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 };
                 StageFileUtility.Save(newStage);
                     
-                Debug.Log("マップを更新したステージを保存しました");
+                Debug.Log($"マップを更新したステージを保存しました stageId:{stageId}, index:{index}");
             }
             else
             {
