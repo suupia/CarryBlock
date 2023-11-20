@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Entity.Interfaces;
+using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Fusion;
 using Projects.CarrySystem.Item.Interfaces;
@@ -13,13 +14,13 @@ namespace Carry.CarrySystem.Map.Scripts
     public class CarryBlockPresenterPlacer : IPresenterPlacer
     {
         [Inject] readonly NetworkRunner _runner;
-        readonly CarryBlockBuilder _carryBlockBuilder;
-        IEnumerable<EntityPresenterNet> _blockPresenters =  new List<EntityPresenterNet>();
+        readonly EntityPresenterBuilder _entityPresenterBuilder;
+        IEnumerable<IEntityPresenter> _entityPresenters =  new List<IEntityPresenter>();
         
         [Inject]
-        public CarryBlockPresenterPlacer(CarryBlockBuilder carryBlockBuilder)
+        public CarryBlockPresenterPlacer(EntityPresenterBuilder entityPresenterBuilder)
         {
-            _carryBlockBuilder = carryBlockBuilder;
+            _entityPresenterBuilder = entityPresenterBuilder;
         }
 
         
@@ -28,12 +29,12 @@ namespace Carry.CarrySystem.Map.Scripts
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
             
-            var (blockControllers, blockPresenterNets) = _carryBlockBuilder.Build(map);
+            var (blockControllers, entityPresenters) = _entityPresenterBuilder.Build(map);
             
             // BlockPresenterをドメインのEntityGridMapに紐づける
-            AttachTilePresenter(blockPresenterNets, map);
+            AttachTilePresenter(entityPresenters, map);
 
-            _blockPresenters = blockPresenterNets;
+            _entityPresenters = entityPresenters;
         }
         
         void DestroyTilePresenter()
@@ -41,29 +42,28 @@ namespace Carry.CarrySystem.Map.Scripts
             // マップの大きさが変わっても対応できるようにDestroyが必要
             // ToDo: マップの大きさを変えてテストをする 
             
-            foreach (var blockPresenterNet in _blockPresenters)
+            foreach (var entityPresenter in _entityPresenters)
             {
-                _runner.Despawn(blockPresenterNet.Object);
+                entityPresenter.DestroyPresenter();
             }
-            _blockPresenters = new List<EntityPresenterNet>();
+            _entityPresenters = new List<IEntityPresenter>();
         }
         
-        void AttachTilePresenter(IReadOnlyList<EntityPresenterNet> blockPresenterNets , EntityGridMap map)
+        void AttachTilePresenter(IReadOnlyList<IEntityPresenter> entityPresenters , EntityGridMap map)
         {
-            for (int i = 0; i < blockPresenterNets.Count(); i++)
+            for (int i = 0; i < entityPresenters.Count(); i++)
             {
-                var blockPresenterNet = blockPresenterNets.ElementAt(i);
+                var entityPresenter = entityPresenters.ElementAt(i);
 
                 // IBlockMonoDelegateが入っているので、そこからIBlockとIItemを取得して渡す
-                var monoDelegate = map.GetSingleEntity<IBlockMonoDelegate>(i);
-                var blocks = monoDelegate.Blocks.Cast<IEntity>();
-                var items = monoDelegate.Items.Cast<IEntity>();
-                var gimmicks = monoDelegate.Gimmicks.Cast<IEntity>();
+                var blocks = map.GetSingleEntityList<IBlock>(i).Cast<IEntity>();
+                var items = map.GetSingleEntityList<IItem>(i).Cast<IEntity>();
+                var gimmicks = map.GetSingleEntityList<IGimmick>(i).Cast<IEntity>();
                 var entityList = blocks.Concat(items).Concat(gimmicks).Distinct(); // Distinct()は重複を削除する
-                blockPresenterNet.SetInitAllEntityActiveData(entityList);
+                entityPresenter.SetInitAllEntityActiveData(entityList);
 
                 // mapにTilePresenterを登録
-                map.RegisterTilePresenter(blockPresenterNet, i);
+                map.RegisterTilePresenter(entityPresenter, i);
                 
                 
             }

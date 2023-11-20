@@ -24,13 +24,8 @@ namespace Carry.CarrySystem.Block.Scripts
     /// IBlock(ドメインの情報)とBlockInfo(NetworkBehaviourの情報)を持つクラス
     /// ドメインの処理はこのクラスにアクセスして行う
     /// </summary>
-    public class BlockMonoDelegate : IBlockMonoDelegate , IHighlightExecutor
+    public class BlockMonoDelegate : IHighlightExecutor , IEntity
     {
-         public IBlock? Block =>  GetBlocks().FirstOrDefault(); 
-         public IList<IBlock> Blocks => GetBlocks();
-         public IList<IItem> Items => GetItems();
-         public IList<IGimmick> Gimmicks => GetGimmicks();
-
          readonly EntityGridMap _map;
          readonly IEntityPresenter _entityPresenter;
          readonly IHighlightExecutor _highLightExecutor;
@@ -62,41 +57,36 @@ namespace Carry.CarrySystem.Block.Scripts
              
 
          }
-
-         IList<IBlock> GetBlocks()
-         {
-             var blocks = _map.GetSingleEntityList<IBlock>(_gridPosition);
-             CheckAllBlockTypesAreSame(blocks);
-             return blocks;
-         }
-
-         IList<IItem> GetItems()
-         {
-             return _map.GetSingleEntityList<IItem>(_gridPosition);
-         }
+        
+         // _entityPresenterに依存している
+         // BlockMonoDelegateそのものをIEntityとしてEntityGridMapに配置してしまうことで、
+         // 別のところから、positionを指定して、Addしたり、Highlightしたりできるようになる。
          
-         IList<IGimmick> GetGimmicks()
-         {
-             return _map.GetSingleEntityList<IGimmick>(_gridPosition);
-         }
-
+         // 本来はクライアントコードでAddEntityできないようにするために、PlaceableGridMapクラスを作るべきだが、
+         // 横着して、MonoDelegateをマップに入れる構造になっている
 
          public void AddBlock(IBlock block)
          {
              if(block is IGimmick gimmickBlock) gimmickBlock.StartGimmick();
-             // _blocks.Add(block);
              _map.AddEntity(_gridPosition, block);
             _entityPresenter.SetEntityActiveData(block, GetBlocks().Count);
 
          }
+         
          public void RemoveBlock(IBlock block)
          {
              if(block is IGimmick gimmickBlock) gimmickBlock.EndGimmick();
-             // _blocks.Remove(block);
              _map.RemoveEntity(_gridPosition, block);
              _entityPresenter.SetEntityActiveData(block, GetBlocks().Count);
 
          }
+         
+         IList<IBlock> GetBlocks()
+         {
+             var blocks = _map.GetSingleEntityList<IBlock>(_gridPosition);
+             return blocks;
+         }
+
          
          public void Highlight(IBlock? block , PlayerRef playerRef)
          {
@@ -105,26 +95,7 @@ namespace Carry.CarrySystem.Block.Scripts
          
          // IBlock implementation
          public Vector2Int GridPosition { get => _gridPosition; set => _gridPosition = value; }
-
          
-         // Check if the blocks are the same type.
-         void CheckAllBlockTypesAreSame(List<IBlock> blocks)
-         {
-             if (!blocks.Any())
-             {
-                 // Debug.Log($"IBlockが存在しません。{string.Join(",", blocks)}");
-                 return;
-             }
-
-             var firstBlock = blocks.First();
-
-             if (blocks.Any(block => block.GetType() != firstBlock.GetType()))
-             {
-                 Debug.LogError(
-                     $"異なる種類のブロックが含まれています。　firstBlock.GetType() : {firstBlock.GetType()} {string.Join(",", blocks)}");
-             }
-             
-         }
          
     }
 }
