@@ -1,15 +1,13 @@
+#nullable enable
+
 using System;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
-using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using VContainer;
-
-#nullable enable
 
 namespace Projects.MapMakerSystem.Scripts
 {
@@ -38,28 +36,35 @@ namespace Projects.MapMakerSystem.Scripts
         {
             if (!_floorTimerLocal.IsActive) return;
 
+            var isClear = GetIsClear();
+
+            if (isClear)
+            {
+                _mapValidator.StopTestPlay(true);
+            }
+        }
+
+        bool GetIsClear()
+        {
             var map = _mapGetter.GetMap();
 
             if (_searchAccessibleAreaExecutor == null)
             {
                 var waveletSearchExecutor = new WaveletSearchExecutor(map);
                 var searchedMapExpander = new SearchedMapExpander(waveletSearchExecutor);
-                _searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor,searchedMapExpander);
+                _searchAccessibleAreaExecutor =
+                    new SearchAccessibleAreaExecutor(waveletSearchExecutor, searchedMapExpander);
             }
 
             var startPos = new Vector2Int(1, map.Height / 2);
             const SearcherSize searcherSize = SearcherSize.SizeThree;
-            
-            Func<int, int, bool> isWall = (x, y) => map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
-            
-            var accessibleArea = _searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
-            
-            var isClear = _reachRightEdgeChecker.CanCartReachRightEdge(accessibleArea, map, searcherSize);
 
-            if (isClear)
-            {
-                _mapValidator.StopTestPlay(true);
-            }
+            Func<int, int, bool> isWall = (x, y) =>
+                map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
+
+            var accessibleArea = _searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
+
+            return _reachRightEdgeChecker.CanCartReachRightEdge(accessibleArea, map, searcherSize);
         }
     }
 }
