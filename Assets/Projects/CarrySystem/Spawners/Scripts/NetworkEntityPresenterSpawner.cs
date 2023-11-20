@@ -9,12 +9,12 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Spawners.Scripts
 {
-    public class EntityPresenterSpawner : IEntityPresenterSpawner
+    public class NetworkEntityPresenterSpawner : IEntityPresenterSpawner
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<EntityPresenterNet> _tilePresenterPrefabSpawner;
 
-        public EntityPresenterSpawner(NetworkRunner runner)
+        public NetworkEntityPresenterSpawner(NetworkRunner runner)
         {
             _runner = runner;
             _tilePresenterPrefabSpawner =

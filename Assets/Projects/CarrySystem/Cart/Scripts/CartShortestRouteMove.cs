@@ -89,7 +89,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             }
 
             var startPos = new Vector2Int(1, _map.Height % 2 == 1 ? (_map.Height - 1) / 2 : _map.Height / 2);
-            Func<int, int, bool> isWall = (x, y) => _map.GetSingleEntity<IBlockMonoDelegate>(new Vector2Int(x, y))?.Blocks.Count > 0;
+            Func<int, int, bool> isWall = (x, y) => _map.GetSingleEntityList<IBlock>(new Vector2Int(x, y))?.Count > 0;
             var waveletSearchExecutor = new WaveletSearchExecutor(_map); // RoutePresenterをかませる必要がないから直接new
             var searchShortestRouteExecutor = new SearchShortestRouteExecutor(waveletSearchExecutor);
             var searchAccessibleAreaExecutor = new SearchAccessibleAreaExecutor(waveletSearchExecutor,new SearchedMapExpander(waveletSearchExecutor));
