@@ -84,6 +84,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
             builder.Register<StageMapSaver>(Lifetime.Scoped);
             builder.Register<MapValidator>(Lifetime.Scoped);
+            builder.Register<MapTestPlayStarter>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<LocalEntityPresenterSpawner>(Lifetime.Scoped).As<IEntityPresenterSpawner>();
@@ -111,10 +112,12 @@ namespace Carry.ScopeSystem.Scripts
             
             // MapKey
             builder.RegisterComponentInHierarchy<MapKeyContainer>();
-            
+
             // FloorTimer
             builder.RegisterComponentInHierarchy<PlayingCanvasUILocal>();
             builder.RegisterComponentInHierarchy<FloorTimerLocal>();
+            builder.RegisterComponentInHierarchy<MapClearChecker>();
+            builder.RegisterComponentInHierarchy<MapMakerUIManager>();
         }
     }
 }

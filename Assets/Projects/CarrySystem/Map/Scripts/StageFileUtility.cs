@@ -17,10 +17,14 @@ namespace Carry.CarrySystem.Map.Scripts
         public string id;
         public List<MapInfo> mapInfos;
         
-        public Stage(string name)
+        public Stage(string name): this(name, Guid.NewGuid().ToString())
+        {
+        } 
+        
+        public Stage(string name, string id)
         {
             this.name = name;
-            id = Guid.NewGuid().ToString();
+            this.id = id;
             mapInfos = new List<MapInfo>
             {
                 new("map1"),
@@ -58,7 +62,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
     public static class StageFileUtility
     {
-        
+        public const string TMPStageID = "tmp";
         public static void Save(Stage stage)
         {
             var path = GetPath(stage.id);
@@ -151,6 +155,7 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 Save(stage);
             }
+            Save(new Stage("Tmp", TMPStageID));
             
             Debug.Log("ステージが新規作成されました");
 

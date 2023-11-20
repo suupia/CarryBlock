@@ -36,7 +36,6 @@ namespace Carry.UISystem.UI.MapMaker
             //Timerが有効な間だけUIを更新する
             if (!_floorTimerLocal.IsActive) return;
 
-            Debug.Log("active");
             floorTimerText.text = $"Time : {Mathf.Floor(_floorTimerLocal.FloorRemainingSeconds)}";
             floorTimerImage.fillAmount = _floorTimerLocal.FloorRemainingTimeRatio;
         }

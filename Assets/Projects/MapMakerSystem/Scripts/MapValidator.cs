@@ -1,4 +1,6 @@
+using System;
 using Carry.CarrySystem.Spawners.Scripts;
+using UnityEngine;
 
 namespace Projects.MapMakerSystem.Scripts
 {
@@ -14,7 +16,7 @@ namespace Projects.MapMakerSystem.Scripts
         }
 
         // 一旦仮でどんな場合でもSaveできるようにする
-        public bool CanSave { get; set; } = true;
+        public bool CanSave { get; private set; }
         
         // TODO ブロックが適切に配置されているかどうかをチェックする
         public bool CanPlay()
@@ -22,7 +24,7 @@ namespace Projects.MapMakerSystem.Scripts
             return true;
         }
 
-        public bool StartTestPlay()
+        public bool StartTestPlay(Action onStopped)
         {
             var canPlay = CanPlay();
 
@@ -30,8 +32,19 @@ namespace Projects.MapMakerSystem.Scripts
             
             _localPlayerSpawner.SpawnPlayer();
             _timerLocal.StartTimer();
+            _timerLocal.OnStopped = onStopped;
 
             return true;
+        }
+
+        public void StopTestPlay(bool isClear)
+        {
+            CanSave = isClear;
+
+            Debug.Log(isClear ? "成功" : "失敗");
+
+            _localPlayerSpawner.DespawnPlayer();
+            _timerLocal.StopTimer();
         }
     }
 }

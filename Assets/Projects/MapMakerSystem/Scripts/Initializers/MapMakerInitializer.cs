@@ -32,7 +32,7 @@ public class MapMakerInitializer : MonoBehaviour
         if (stage != null)
         {
             _stageMapSwitcher.Index = _editingMapTransporter.Index;
-            _stageMapSwitcher.SetStage(stage);
+            _stageMapSwitcher.Stage = stage;
         }
         else
         {

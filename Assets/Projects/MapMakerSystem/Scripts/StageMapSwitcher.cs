@@ -10,22 +10,18 @@ namespace Projects.MapMakerSystem.Scripts
     {
         public int Index { get; set;  }
         
+        public Stage Stage { get; set; }
+        
         readonly IEntityGridMapBuilder _entityGridMapBuilder;
         readonly IPresenterPlacer _presenterPlacer;
         
         EntityGridMap _currentMap;
         Action _resetAction = () => { };
-        Stage _stage;
 
         public StageMapSwitcher(IEntityGridMapBuilder entityGridMapBuilder, IPresenterPlacer presenterPlacer)
         {
             _entityGridMapBuilder = entityGridMapBuilder;
             _presenterPlacer = presenterPlacer;
-        }
-        
-        public void SetStage(Stage stage)
-        {
-            _stage = stage;
         }
         
         public EntityGridMap GetMap()
@@ -35,7 +31,7 @@ namespace Projects.MapMakerSystem.Scripts
 
         public void InitSwitchMap()
         {
-            var info = _stage.mapInfos[Index];
+            var info = Stage.mapInfos[Index];
             _currentMap = _entityGridMapBuilder.BuildEntityGridMap(info.data);
             _presenterPlacer.Place(_currentMap);
             
@@ -44,7 +40,7 @@ namespace Projects.MapMakerSystem.Scripts
 
         public void SwitchMap()
         {
-            var info = _stage.mapInfos[Index];
+            var info = Stage.mapInfos[Index];
             _currentMap = _entityGridMapBuilder.BuildEntityGridMap(info.data);
             _presenterPlacer.Place(_currentMap);
             

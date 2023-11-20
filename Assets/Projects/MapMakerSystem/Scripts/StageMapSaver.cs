@@ -1,7 +1,7 @@
+#nullable enable
+
 using Projects.MapMakerSystem.Scripts;
 using UnityEngine;
-
-#nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
@@ -20,15 +20,30 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public bool Save(EntityGridMap map)
         {
-            if (!_mapValidator.CanSave) return false;
-            
-            var stage = StageFileUtility.Load(_editingMapTransporter.StageId);
+            if (!_mapValidator.CanSave)
+            {
+                Debug.LogWarning("テストプレイをクリアしないとセーブできません");
+                return false;
+            }
+
+            SaveInternal(map, _editingMapTransporter.StageId, _editingMapTransporter.Index);
+            return true;
+        }
+
+        public void SaveTmpMap(EntityGridMap map)
+        {
+            SaveInternal(map, StageFileUtility.TMPStageID, _editingMapTransporter.Index);
+        }
+
+        void SaveInternal(EntityGridMap map, string stageId, int index)
+        {
+            var stage = StageFileUtility.Load(stageId);
 
             if (stage != null)
             {
                 var data = _mapDataConverter.Convert(map);
-                var info = stage.mapInfos[_editingMapTransporter.Index];
-                stage.mapInfos[_editingMapTransporter.Index] = info with
+                var info = stage.mapInfos[index];
+                stage.mapInfos[index] = info with
                 {
                     data = data
                 };
@@ -44,8 +59,6 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 Debug.LogError("Stageが読み込めません");
             }
-
-            return true;
         }
     }
 }
