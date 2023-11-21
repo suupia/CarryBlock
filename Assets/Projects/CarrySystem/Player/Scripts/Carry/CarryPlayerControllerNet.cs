@@ -111,15 +111,17 @@ namespace Carry.CarrySystem.Player.Scripts
         }
 
 
-
         void ToSpawnPosition(EntityGridMap map)
         {
-            var spawnGridPos = new Vector2Int(1, map.Height / 2 + _playerCharacterTransporter.GetPlayerIndex(Info.PlayerRef) -1);
-            var spawnWorldPos = GridConverter.GridPositionToWorldPosition(spawnGridPos);
-            var height = 0.5f;  // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
-            Info.PlayerObj.transform.position = new Vector3(spawnWorldPos.x, height, spawnWorldPos.z);
+            var centerGridPos = new Vector2Int(1, map.Height / 2);
+            var centerWorldPos = GridConverter.GridPositionToWorldPosition(centerGridPos);
+            var spawnPos = PlayerPositionCalculator.CalcPlayerPosition(
+                centerWorldPos,
+                _playerCharacterTransporter.GetPlayerIndex(Info.PlayerRef),
+                _playerCharacterTransporter.PlayerCount);
+            var height = 0.5f; // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
+            Info.PlayerObj.transform.position = new Vector3(spawnPos.x, height, spawnPos.z);
             Info.PlayerRb.velocity = Vector3.zero;
-            
         }
 
 
