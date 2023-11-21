@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Map.Scripts
     public class RandomWallPresenterPlacerNet  : IPresenterPlacer
     {
         [Inject] NetworkRunner _runner;
-        IEnumerable<WallPresenterNet> _tilePresenters = new List<WallPresenterNet>();
+        IEnumerable<IWallPresenter> _tilePresenters = new List<IWallPresenter>();
 
         readonly int _wallHorizontalNum = 3;
         readonly int _wallVerticalNum = 2;
@@ -26,9 +26,9 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void Place(EntityGridMap map)
         {
-            var wallPresenterSpawners = new List<IWallPresenterNetSpawner>()
+            var wallPresenterSpawners = new List<IWallPresenterSpawner>()
                 { new WallPresenterNetSpawner(_runner), new WallPresenterNetSpawner1(_runner) };
-            var wallPresenters = new List<WallPresenterNet>();
+            var wallPresenters = new List<IWallPresenter>();
 
             // 以前のWallPresenterを削除
             DestroyWallPresenter();
@@ -52,7 +52,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _tilePresenters = wallPresenters;
         }
 
-        IWallPresenterNetSpawner DecideWallPresenterType(List<IWallPresenterNetSpawner> wallPresenterSpawners)
+        IWallPresenterSpawner DecideWallPresenterType(List<IWallPresenterSpawner> wallPresenterSpawners)
         {
             var random = new System.Random();
             return wallPresenterSpawners[random.Next(2)];
@@ -62,7 +62,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             foreach (var tilePresenter in _tilePresenters)
             {
-                _runner.Despawn(tilePresenter.Object);
+                tilePresenter.DestroyPresenter();;
             }
 
             _tilePresenters = new List<WallPresenterNet>();
