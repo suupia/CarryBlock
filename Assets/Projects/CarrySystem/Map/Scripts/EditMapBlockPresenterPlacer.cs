@@ -9,13 +9,13 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EditMapBlockPresenterPlacer : IPresenterPlacer
     {
-        readonly PlaceablePresenterBuilder _editMapBlockBuilder;
-        IEnumerable<IPlaceablePresenter> _entityPresenters =  new List<IPlaceablePresenter>();
+        readonly PlaceablePresenterBuilder _placeablePresenterBuilder;
+        IEnumerable<IPlaceablePresenter> _placeablePresenters =  new List<IPlaceablePresenter>();
         
         [Inject]
-        public EditMapBlockPresenterPlacer(PlaceablePresenterBuilder editMapBlockBuilder)
+        public EditMapBlockPresenterPlacer(PlaceablePresenterBuilder placeablePresenterBuilder)
         {
-            _editMapBlockBuilder = editMapBlockBuilder;
+            _placeablePresenterBuilder = placeablePresenterBuilder;
         }
 
          
@@ -24,32 +24,30 @@ namespace Carry.CarrySystem.Map.Scripts
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
             
-            var (blockControllers, entityPresenters) = _editMapBlockBuilder.Build(map);
+            var (blockControllers, entityPresenters) = _placeablePresenterBuilder.Build(map);
             
             // BlockPresenterをドメインのEntityGridMapに紐づける
             AttachTilePresenter(entityPresenters, map);
 
-            _entityPresenters = entityPresenters;
+            _placeablePresenters = entityPresenters;
         }
         
         void DestroyTilePresenter()
         {
-            Debug.Log($"DestroyTitlePresenter , _entityPresenters.Length = {_entityPresenters.Count()}");
-            foreach (var entityPresenter in _entityPresenters)
+            foreach (var entityPresenter in _placeablePresenters)
             {
                 entityPresenter.DestroyPresenter();
             }
-            _entityPresenters = new List<IPlaceablePresenter>();
+            _placeablePresenters = new List<IPlaceablePresenter>();
         }
         
          void AttachTilePresenter(IReadOnlyList<IPlaceablePresenter> entityPresenters , EntityGridMap map)
         {
-            Debug.Log($"map.GetAllEntityList(0) joined = {string.Join("," ,map.GetAllEntityList(0))}");
             for (int i = 0; i < entityPresenters.Count(); i++)
             {
                 var entityPresenter = entityPresenters.ElementAt(i);
 
-                entityPresenter.SetInitAllEntityActiveData(map.GetAllEntityList(i));  // ここだけ、CarryBlockPresenterPlacerと違う
+                entityPresenter.SetInitAllEntityActiveData(map.GetAllEntityList(i));
 
                 // mapにTilePresenterを登録
                 map.RegisterTilePresenter(entityPresenter, i);

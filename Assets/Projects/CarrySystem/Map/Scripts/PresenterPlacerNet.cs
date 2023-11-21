@@ -29,7 +29,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         [Inject]
         public void Construct(
-            CarryBlockPresenterPlacer blockPresenterPlacer,
+            EditMapBlockPresenterPlacer blockPresenterPlacer,
             LocalWallPresenterPlacer wallPresenterPlacer,
             LocalGroundPresenterPlacer groundPresenterPlacer
             )
