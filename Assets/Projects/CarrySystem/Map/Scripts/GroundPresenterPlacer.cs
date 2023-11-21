@@ -7,16 +7,16 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class RegularGroundPresenterPlacerLocal : IPresenterPlacer
+    public class GroundPresenterPlacer : IPresenterPlacer
     {
         readonly IGroundPresenterSpawner _groundPresenterSpawner;
         IEnumerable<IGroundPresenter> _tilePresenters = new List<IGroundPresenter>();
 
-        readonly int _groundHorizontalNum = 3;
-        readonly int _groundVerticalNum = 2;
+        int _groundHorizontalSurplus = 3;
+        int _groundVerticalSurplus = 2;
 
         [Inject]
-        public RegularGroundPresenterPlacerLocal(IGroundPresenterSpawner groundPresenterSpawner)
+        public GroundPresenterPlacer(IGroundPresenterSpawner groundPresenterSpawner)
         {
             _groundPresenterSpawner = groundPresenterSpawner;
         }
@@ -29,17 +29,23 @@ namespace Carry.CarrySystem.Map.Scripts
             DestroyWallPresenter();
 
             // GroundPresenterをスポーンさせる
-            var expandedMap = new SquareGridMap(map.Width + 2 * _groundHorizontalNum, map.Height + 2 * _groundVerticalNum);
+            var expandedMap = new SquareGridMap(map.Width + 2 * _groundHorizontalSurplus, map.Height + 2 * _groundVerticalSurplus);
             for (int i = 0; i < expandedMap.Length; i++)
             {
                 var gridPos = expandedMap.ToVector(i);
-                var convertedGridPos = new Vector2Int(gridPos.x - _groundHorizontalNum, gridPos.y - _groundVerticalNum);
+                var convertedGridPos = new Vector2Int(gridPos.x - _groundHorizontalSurplus, gridPos.y - _groundVerticalSurplus);
                 var worldPos = GridConverter.GridPositionToWorldPosition(convertedGridPos);
                 var wallPresenter = _groundPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 wallPresenters.Add(wallPresenter);
             }
 
             _tilePresenters = wallPresenters;
+        }
+        
+        public void SetSurPlus(int horizontalSurplus, int verticalSurplus)
+        {
+            _groundHorizontalSurplus = horizontalSurplus;
+            _groundVerticalSurplus = verticalSurplus;
         }
 
         void DestroyWallPresenter()

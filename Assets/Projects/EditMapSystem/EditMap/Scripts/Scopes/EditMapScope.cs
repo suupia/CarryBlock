@@ -50,7 +50,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<GroundPresenterLocalSpawner>(Lifetime.Scoped).As<IGroundPresenterSpawner>();
             builder.Register<GroundPresenterLocalSpawner>(Lifetime.Scoped).As<IGroundPresenterSpawner>();
-            builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
+            builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<EditMapPresenterPlacerComposite>(Lifetime.Scoped).As<IPresenterPlacer>();
 
             // EditMapSwitcher

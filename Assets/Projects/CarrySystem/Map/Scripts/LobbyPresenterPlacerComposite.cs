@@ -11,11 +11,13 @@ namespace Carry.CarrySystem.Map.Scripts
         [Inject]
         public  LobbyPresenterPlacerComposite(         
             LobbyWallPresenterPlacer regularWallPresenterPlacer,
-            LobbyGroundPresenterPlacer regularGroundPresenterPlacer
+            GroundPresenterPlacer groundPresenterPlacer
         )
         {
+            groundPresenterPlacer.SetSurPlus(10, 10);
+            
             // _presenterBuilders.Add(regularWallPresenterPlacer);
-            _presenterBuilders.Add(regularGroundPresenterPlacer);
+            _presenterBuilders.Add(groundPresenterPlacer);
         }
         
         public void Place(EntityGridMap map)
