@@ -27,6 +27,8 @@ namespace Carry.UISystem.UI.CarryScene
 
         IMapGetter _mapGetter = null!;
         FloorTimerNet _floorTimerNet = null!;
+        MapKeyDataSelectorNet _mapKeyDataSelectorNet = null!;
+        StageIndexTransporter _stageIndexTransporter = null!;
         TreasureCoinCounter _treasureCoinCounter = null!;
 
         int _maxFloorNumber;
@@ -43,8 +45,16 @@ namespace Carry.UISystem.UI.CarryScene
         {
             _mapGetter = mapGetter;
             _floorTimerNet = floorTimerNet;
+            _mapKeyDataSelectorNet = mapKeyDataSelectorNet;
+            _stageIndexTransporter = stageIndexTransporter;
             _treasureCoinCounter = treasureCoinCounter;
-            var mapKeyDataList = mapKeyDataSelectorNet.SelectMapKeyDataList(stageIndexTransporter.StageIndex);
+
+        }
+        
+        public override void Spawned()
+        {
+            if(!HasStateAuthority) return;
+            var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
             _maxFloorNumber = mapKeyDataList.Count;
         }
 
