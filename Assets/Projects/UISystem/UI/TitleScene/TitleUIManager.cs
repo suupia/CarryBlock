@@ -1,10 +1,10 @@
-using Fusion;
 using Carry.GameSystem.TitleScene.Scripts;
 using Carry.UISystem.UI;
+using Fusion;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Assert = UnityEngine.Assertions.Assert;
 
 /// <summary>
@@ -16,6 +16,7 @@ public class TitleUIManager : MonoBehaviour
     [Header("Title")] [SerializeField] CustomButton soloPlayButton;
 
     [SerializeField] CustomButton multiPlayButton;
+    [SerializeField] CustomButton mapMakerButton;
     [SerializeField] CustomButton optionButton;
     [SerializeField] CustomButton closeOptionButton;
     [SerializeField] CustomButton musicRoomButton;
@@ -55,6 +56,8 @@ public class TitleUIManager : MonoBehaviour
         soloPlayButton.Interactable = false;
 
         multiPlayButton.AddListener(() => joinPanel.SetActive(true));
+
+        mapMakerButton.AddListener(() => SceneManager.LoadScene("LocalEditStageScene"));
 
         optionButton.Interactable = true;
         optionButton.AddListener( () => optionCanvas.SetActive(true));

@@ -1,5 +1,3 @@
-using VContainer;
-using VContainer.Unity;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners.Interfaces;
@@ -7,7 +5,8 @@ using Carry.CarrySystem.Spawners.Scripts;
 using Carry.EditMapSystem.EditMap.Scripts;
 using Carry.UISystem.UI.EditMap;
 using Projects.CarrySystem.Item.Scripts;
-
+using VContainer;
+using VContainer.Unity;
 
 namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
 {
@@ -51,7 +50,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             builder.RegisterComponentInHierarchy<EditMapCUILoad>();
             
             // UI
-            builder.RegisterComponentInHierarchy<EditMapToolCanvas>();
+            builder.RegisterComponentInHierarchy<MapMakerToolCanvas>();
             
                         
             //Item

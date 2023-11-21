@@ -63,10 +63,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             _mapGetter = mapGetter;
         }
 
-        public void SetBlockType(Type blockType)
-        {
-            _blockType = blockType;
-        }
+
         
         void Start()
         {

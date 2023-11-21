@@ -4,6 +4,7 @@ using Carry.CarrySystem.Map.Scripts;
 using DG.Tweening;
 using Projects.MapMakerSystem.Scripts;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using VContainer;
 
@@ -12,6 +13,7 @@ public class MapMakerUIManager : MonoBehaviour
 {
     [SerializeField] GameObject playingCanvas;
     [SerializeField] GameObject editingCanvas;
+    [SerializeField] GameObject worldCanvas;
     [SerializeField] GameObject resultCanvas;
 
     [SerializeField] Button saveButton;
@@ -19,6 +21,11 @@ public class MapMakerUIManager : MonoBehaviour
     
     [SerializeField] Transform editingCameraTransform;
     [SerializeField] Transform testPlayingCameraTransform;
+
+    [SerializeField] GameObject cursorCanvas;
+
+    [SerializeField] Button backButton;
+    [SerializeField] Button testPlayButton;
 
     readonly float _cameraMoveDuration = 0.5f;
     readonly Ease _easing = Ease.InOutExpo;
@@ -50,27 +57,29 @@ public class MapMakerUIManager : MonoBehaviour
             SwitchToEditing();
         });
         SwitchToEditing();
-    }
 
+        backButton.onClick.AddListener(() => SceneManager.LoadScene("LocalEditStageScene"));
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F1))
+        testPlayButton.onClick.AddListener(() =>
         {
-            var canPlay = _mapTestPlayStarter.Start(() => { resultCanvas.SetActive(true); });
-            if (canPlay)
+            var canPlay = _mapTestPlayStarter.StartTest(isClear =>
             {
-                SwitchToTestPlaying();
-            }
-        }
+                if (isClear)
+                    resultCanvas.SetActive(true);
+                else
+                    SwitchToEditing();
+            });
+            if (canPlay) SwitchToTestPlaying();
+        });
     }
-
+    
     void SwitchToEditing()
     {
         resultCanvas.SetActive(false);
         editingCanvas.SetActive(true);
+        worldCanvas.SetActive(true);
         playingCanvas.SetActive(false);
+        cursorCanvas.SetActive(true);
         SwitchCameraToEditing();
     }
 
@@ -78,7 +87,9 @@ public class MapMakerUIManager : MonoBehaviour
     {
         resultCanvas.SetActive(false);
         editingCanvas.SetActive(false);
+        worldCanvas.SetActive(false);
         playingCanvas.SetActive(true);
+        cursorCanvas.SetActive(false);
         SwitchCameraToTestPlaying();
     }
 

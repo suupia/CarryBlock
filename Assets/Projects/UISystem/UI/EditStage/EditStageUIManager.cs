@@ -1,13 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
-using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
-using Carry.EditMapSystem.EditMapForPlayer.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using VContainer;
 
@@ -19,6 +15,8 @@ public class EditStageUIManager : MonoBehaviour
     [SerializeField] GameObject detailPanel;
 
     [SerializeField] Button detailPanelBackButton;
+
+    [SerializeField] Button backButton;
 
     EditingMapTransporter _editingMapTransporter;
     
@@ -36,7 +34,8 @@ public class EditStageUIManager : MonoBehaviour
         detailPanelBackButton.onClick.AddListener(() => detailPanel.SetActive(false));
         
         SetUpStageButtons();
-        
+
+        backButton.onClick.AddListener(() => SceneManager.LoadScene("TitleScene"));
     }
 
     void SetUpStageButtons()

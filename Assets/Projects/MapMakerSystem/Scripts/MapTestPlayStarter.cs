@@ -1,7 +1,7 @@
+#nullable enable
+
 using System;
 using Carry.CarrySystem.Map.Scripts;
-using UnityEngine;
-#nullable enable
 
 namespace Projects.MapMakerSystem.Scripts
 {
@@ -23,27 +23,24 @@ namespace Projects.MapMakerSystem.Scripts
 
         public bool IsTestPlaying { get; private set; }
 
-        public bool Start(Action onStopped)
+        public bool StartTest(Action<bool> onStopped)
         {
+            if (IsTestPlaying) return false;
+            
             var map = _stageMapSwitcher.GetMap();
             _stageMapSaver.SaveTmpMap(map);
 
-            var canPlay = _mapValidator.StartTestPlay(() =>
+            _mapValidator.OnTestPlayStopped = isClear =>
             {
-                _stageMapSwitcher.InitTmpMap();
-
                 IsTestPlaying = false;
-                onStopped.Invoke();
-            });
+                onStopped(isClear);
+                _stageMapSwitcher.InitTmpMap();
+            };
 
-            if (canPlay)
-            {
-                IsTestPlaying = true;
-                return true;
-            }
+            _mapValidator.StartTestPlay();
 
-            Debug.LogWarning("ブロックが適切に置かれていないためプレイできません");
-            return false;
+            IsTestPlaying = true;
+            return true;
         }
     }
 }
