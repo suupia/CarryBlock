@@ -97,6 +97,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         void SetToOrigin()
         {
+            if(!HasStateAuthority) return;
             // ToDo: 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
             Info.PlayerObj.transform.position = new Vector3(0, 5, 0);
             Info.PlayerRb.velocity = Vector3.zero;
