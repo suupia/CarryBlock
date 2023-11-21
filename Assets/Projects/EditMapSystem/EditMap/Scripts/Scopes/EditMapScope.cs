@@ -39,6 +39,13 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<NetworkPlaceablePresenterSpawner>(Lifetime.Scoped).As<IPlaceablePresenterSpawner>();
             builder.Register<PlaceablePresenterBuilder>(Lifetime.Scoped);
             builder.Register<PlaceablePresenterPlacer>(Lifetime.Scoped);
+            builder.Register<IWallPresenterSpawner>(container =>
+            {
+                var randomWallPresenterSpawner = new RandomWallPresenterSpawner();
+                randomWallPresenterSpawner.AddSpawner(new WallPresenterNetSpawner(runner));
+                randomWallPresenterSpawner.AddSpawner(new WallPresenterNetSpawner1(runner));
+                return randomWallPresenterSpawner;
+            }, Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacerNet>(Lifetime.Scoped);
             builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
             builder.Register<EditMapPresenterPlacerComposite>(Lifetime.Scoped).As<IPresenterPlacer>();

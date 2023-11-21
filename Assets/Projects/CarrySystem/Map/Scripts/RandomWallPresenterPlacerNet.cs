@@ -12,21 +12,20 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class RandomWallPresenterPlacerNet  : IPresenterPlacer
     {
-        [Inject] NetworkRunner _runner;
+        readonly IWallPresenterSpawner _wallPresenterSpawner;
         IEnumerable<IWallPresenter> _tilePresenters = new List<IWallPresenter>();
 
         readonly int _wallHorizontalNum = 3;
         readonly int _wallVerticalNum = 2;
 
         [Inject]
-        public RandomWallPresenterPlacerNet()
+        public RandomWallPresenterPlacerNet(IWallPresenterSpawner wallPresenterSpawner)
         {
+            _wallPresenterSpawner = wallPresenterSpawner;
         }
 
         public void Place(EntityGridMap map)
         {
-            var wallPresenterSpawners = new List<IWallPresenterSpawner>()
-                { new WallPresenterNetSpawner(_runner), new WallPresenterNetSpawner1(_runner) };
             var wallPresenters = new List<IWallPresenter>();
 
             // 以前のWallPresenterを削除
@@ -41,8 +40,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 if (map.IsInDataRangeArea(convertedGridPos)) continue;
                 if (IsNotPlacingBlock(map, convertedGridPos)) continue;
                 var worldPos = GridConverter.GridPositionToWorldPosition(convertedGridPos);
-                var wallPresenterSpawner = DecideWallPresenterType(wallPresenterSpawners);
-                var wallPresenter = wallPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                var wallPresenter = _wallPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 wallPresenters.Add(wallPresenter);
                 
 
@@ -50,13 +48,7 @@ namespace Carry.CarrySystem.Map.Scripts
             
             _tilePresenters = wallPresenters;
         }
-
-        IWallPresenterSpawner DecideWallPresenterType(List<IWallPresenterSpawner> wallPresenterSpawners)
-        {
-            var random = new System.Random();
-            return wallPresenterSpawners[random.Next(2)];
-        }
-
+        
         void DestroyWallPresenter()
         {
             foreach (var tilePresenter in _tilePresenters)
