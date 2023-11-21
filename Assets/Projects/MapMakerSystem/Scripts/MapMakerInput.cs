@@ -7,9 +7,11 @@ using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.EditMapSystem.EditMapForPlayer.Scripts;
+using Carry.Utility.Scripts;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using VContainer;
 
 namespace Projects.MapMakerSystem.Scripts
@@ -26,20 +28,15 @@ namespace Projects.MapMakerSystem.Scripts
         IMapGetter _mapGetter = null!;
         MapTestPlayStarter _mapTestPlayStarter = null!;
 
-        CUIState _cuiState = CUIState.Idle;
         Type _blockType = null!;
 
         Vector2Int _respawnAreaOrigin = new Vector2Int(0,4);
         int _respawnSize = 3;
 
-        enum CUIState
-        {
-            Idle,
-            OpenSaveCUI,
-            OpenLoadCUI,
-        }
-
-
+        InputAction _leftClickAction = null!;
+        InputAction _rightClickAction = null!;
+        InputAction _moveAction = null!;
+        
         [Inject]
         public void Construct(
             MemorableEditMapBlockAttacher editMapBlockAttacher,
@@ -53,10 +50,21 @@ namespace Projects.MapMakerSystem.Scripts
             _mapTestPlayStarter = mapTestPlayStarter;
         }
 
+        public void SetBlockType(Type blockType)
+        {
+            _blockType = blockType;
+        }
+
         void Start()
         {
-
             _blockType = typeof(BasicBlock);
+
+            var inputActionMap =
+                InputActionMapLoader.GetInputActionMap(InputActionMapLoader.ActionMapName.UI);
+
+            _leftClickAction = inputActionMap.FindAction("LeftClick");
+            _rightClickAction = inputActionMap.FindAction("RightClick");
+            _moveAction = inputActionMap.FindAction("Point");
         }
 
         // ToDo: Update関数が長くなっているので、分割する
@@ -64,26 +72,28 @@ namespace Projects.MapMakerSystem.Scripts
         void Update()
         {
             if (_mapTestPlayStarter.IsTestPlaying) return;
-            
-            var mouseXYPos = Input.mousePosition; // xy座標であることに注意
+
+            var mouseXYPos = _moveAction.ReadValue<Vector2>(); // xy座標であることに注意
             var cameraHeight = Camera.main.transform.position.y;
             var mousePosOnGround =
                 Camera.main.ScreenToWorldPoint(new Vector3(mouseXYPos.x, mouseXYPos.y, cameraHeight));
+            var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
 
-            if (Input.GetMouseButtonDown(0))
+            if (_leftClickAction.WasPressedThisFrame())
             {
-                var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
-                
+
                 TryToAddPlaceable(mouseGridPosOnGround);
             }
 
-            if (Input.GetMouseButtonDown(1))
+            if (_rightClickAction.WasPerformedThisFrame())
             {
-                var mouseGridPosOnGround = GridConverter.WorldPositionToGridPosition(mousePosOnGround);
+                //上とまとめる
                 Debug.Log($"mouseGridPosOnGround : {mouseGridPosOnGround},  mousePosOnGround: {mousePosOnGround}");
 
-                TryToRemovePlaceable(mouseGridPosOnGround);
+                var map = _mapGetter.GetMap();
+
+                _editMapBlockAttacher.RemovePlaceable(map, mouseGridPosOnGround);
             }
 
             GetInput();
@@ -155,46 +165,46 @@ namespace Projects.MapMakerSystem.Scripts
         void GetInput()
         {
             // 置くブロックを切り替える
-            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
-            {
-                _blockType = typeof(BasicBlock);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
-            {
-                _blockType = typeof(UnmovableBlock);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
-            {
-                _blockType = typeof(HeavyBlock);
-            }
-            
-            if(Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
-            {
-                _blockType = typeof(FragileBlock);
-            }
-            
-            if(Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
-            {
-                _blockType = typeof(ConfusionBlock);
-            }
-            
-            if(Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
-            {
-                _blockType =typeof(TreasureCoin);
-            }
-            
-            if(Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
-            {
-                _blockType =typeof(CannonBlock);
-            }
-
-            if(Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
-            {
-                _blockType =typeof(SpikeGimmick);
-            }
-            
+            // if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+            // {
+            //     _blockType = typeof(BasicBlock);
+            // }
+            //
+            // if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+            // {
+            //     _blockType = typeof(UnmovableBlock);
+            // }
+            //
+            // if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+            // {
+            //     _blockType = typeof(HeavyBlock);
+            // }
+            //
+            // if(Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
+            // {
+            //     _blockType = typeof(FragileBlock);
+            // }
+            //
+            // if(Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
+            // {
+            //     _blockType = typeof(ConfusionBlock);
+            // }
+            //
+            // if(Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
+            // {
+            //     _blockType =typeof(TreasureCoin);
+            // }
+            //
+            // if(Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
+            // {
+            //     _blockType =typeof(CannonBlock);
+            // }
+            //
+            // if(Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
+            // {
+            //     _blockType =typeof(SpikeGimmick);
+            // }
+            //
             // 方向を切り替える
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
@@ -213,20 +223,20 @@ namespace Projects.MapMakerSystem.Scripts
                 _direction = Direction.Right;
             }
 
-            
-            // デバッグ用
-            if (Input.GetKeyDown(KeyCode.N))
-            {
-                _editMapBlockAttacher.Undo(_mapGetter.GetMap());
-            }
-            if(Input.GetKeyDown(KeyCode.M))
-            {
-                _editMapBlockAttacher.Redo(_mapGetter.GetMap());
-            }
-            if(Input.GetKeyDown(KeyCode.F2))
-            {
-                _stageMapSaver.Save(_mapGetter.GetMap());
-            }
+
+            // // デバッグ用
+            // if (Input.GetKeyDown(KeyCode.N))
+            // {
+            //     _editMapBlockAttacher.Undo(_mapGetter.GetMap());
+            // }
+            // if(Input.GetKeyDown(KeyCode.M))
+            // {
+            //     _editMapBlockAttacher.Redo(_mapGetter.GetMap());
+            // }
+            // if(Input.GetKeyDown(KeyCode.F2))
+            // {
+            //     _stageMapSaver.Save(_mapGetter.GetMap());
+            // }
 
         }
 

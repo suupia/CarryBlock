@@ -1,5 +1,4 @@
 using Carry.CarrySystem.Cart.Scripts;
-using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
@@ -11,16 +10,14 @@ using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
 using Carry.EditMapSystem.EditMap.Scripts;
 using Carry.EditMapSystem.EditMapForPlayer.Scripts;
+using Carry.UISystem.UI.EditMap;
 using Carry.UISystem.UI.MapMaker;
-using Fusion;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
 using Projects.CarrySystem.Cart.Interfaces;
-using Projects.CarrySystem.Item.Scripts;
 using Projects.CarrySystem.Player.Scripts.Local;
 using Projects.CarrySystem.SearchRoute.Scripts;
 using Projects.MapMakerSystem.Scripts;
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -120,6 +117,8 @@ namespace Carry.ScopeSystem.Scripts
             
             // MapKey
             builder.RegisterComponentInHierarchy<MapKeyContainer>();
+
+            builder.RegisterComponentInHierarchy<MapMakerToolCanvas>();
 
             // FloorTimer
             builder.RegisterComponentInHierarchy<PlayingCanvasUILocal>();

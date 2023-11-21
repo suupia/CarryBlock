@@ -1,23 +1,21 @@
-using System;
-using System.Collections.Generic;
+#nullable enable
+
+using Carry.CarrySystem.Map.Interfaces;
+using Carry.EditMapSystem.EditMapForPlayer.Scripts;
 using UnityEngine;
 using UnityEngine.Assertions;
 using VContainer;
-using Carry.CarrySystem.Map.Interfaces;
-using Carry.EditMapSystem.EditMapForPlayer.Scripts;
-
-#nullable enable
 
 namespace Carry.UISystem.UI.EditMap
 {
-    public class EditMapToolCanvas : MonoBehaviour
+    public class MapMakerToolCanvas : MonoBehaviour
     {
         [SerializeField] Transform buttonParent = null!;
         [SerializeField] CustomButton buttonPrefab = null!;
 
         IMapGetter _mapGetter = null!;
         MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
-        
+
         CustomButton _redoButton = null!;
         CustomButton _undoButton = null!;
 
@@ -32,7 +30,7 @@ namespace Carry.UISystem.UI.EditMap
         {
             Assert.IsNotNull(buttonParent);
             Assert.IsNotNull(buttonPrefab);
-            
+
             var resetButton = Instantiate(buttonPrefab, buttonParent);
             resetButton.Init();
             resetButton.SetText("Reset Map");

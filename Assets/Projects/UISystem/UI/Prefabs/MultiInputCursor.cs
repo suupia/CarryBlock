@@ -1,10 +1,10 @@
+#nullable enable
+
+using Carry.Utility.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Users;
-using Carry.Utility.Scripts;
-
-#nullable enable
 
 namespace Carry.UISystem.UI.Prefabs
 {
