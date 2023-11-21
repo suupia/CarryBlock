@@ -17,12 +17,12 @@ namespace Carry.CarrySystem.Map.Scripts
     public class EntityGridMap : SquareGridMap
     {
         List<IEntity>[] _entityMaps;
-        readonly IEntityPresenter?[] _blockPresenter;
+        readonly IPlaceablePresenter?[] _blockPresenter;
         
         public EntityGridMap(int width, int height) : base (width, height)
         {
             _entityMaps = new List<IEntity>[Length];
-            _blockPresenter = new IEntityPresenter?[Length];
+            _blockPresenter = new IPlaceablePresenter?[Length];
             for (int i = 0; i < Length; i++)
             {
                 _entityMaps[i] = new List<IEntity>();
@@ -52,9 +52,9 @@ namespace Carry.CarrySystem.Map.Scripts
             // ToDo :　後で実装する
         }
         
-        public void RegisterTilePresenter(IEntityPresenter entityPresenter, int index)
+        public void RegisterTilePresenter(IPlaceablePresenter placeablePresenter, int index)
         {
-            _blockPresenter[index] = entityPresenter;
+            _blockPresenter[index] = placeablePresenter;
         }
 
         //Getter

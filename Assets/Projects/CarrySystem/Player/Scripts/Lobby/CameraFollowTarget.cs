@@ -17,6 +17,7 @@ namespace Carry.GameSystem.Player.Scripts
         {
             _target = target;
             _offset = transform.position - target.position;
+            
         }
     }
 }

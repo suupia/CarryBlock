@@ -33,15 +33,25 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             // JsonとEntityGridMapに関する処理
             builder.Register<EntityGridMapBuilderLeaf>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
+            builder.Register<EntityGridMapDataConverter>(Lifetime.Scoped);  
             builder.Register<EntityGridMapSaver>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
-            builder.Register<NetworkEntityPresenterSpawner>(Lifetime.Scoped).As<IEntityPresenterSpawner>();
-            builder.Register<EntityPresenterBuilder>(Lifetime.Scoped);
-            builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<RandomWallPresenterPlacerNet>(Lifetime.Scoped);
-            builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
-            builder.Register<EditMapPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            builder.Register<NetworkPlaceablePresenterSpawner>(Lifetime.Scoped).As<IPlaceablePresenterSpawner>();
+            builder.Register<PlaceablePresenterBuilder>(Lifetime.Scoped);
+            builder.Register<PlaceablePresenterPlacer>(Lifetime.Scoped);
+            builder.Register<IWallPresenterSpawner>(container =>
+            {
+                var randomWallPresenterSpawner = new RandomWallPresenterSpawner();
+                randomWallPresenterSpawner.AddSpawner(new WallPresenterNetSpawner(runner));
+                randomWallPresenterSpawner.AddSpawner(new WallPresenterNetSpawner1(runner));
+                return randomWallPresenterSpawner;
+            }, Lifetime.Scoped);
+            builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<GroundPresenterLocalSpawner>(Lifetime.Scoped).As<IGroundPresenterSpawner>();
+            builder.Register<GroundPresenterLocalSpawner>(Lifetime.Scoped).As<IGroundPresenterSpawner>();
+            builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<EditMapPresenterPlacerComposite>(Lifetime.Scoped).As<IPresenterPlacer>();
 
             // EditMapSwitcher
             builder.Register<EditMapSwitcher>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();

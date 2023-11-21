@@ -1,5 +1,7 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
 using Fusion;
 using UnityEngine;
@@ -9,7 +11,7 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class LocalGroundPresenterPlacer
     {
-        IEnumerable<GroundPresenterLocal> _tilePresenters = new List<GroundPresenterLocal>();
+        IEnumerable<IPresenterMono> _tilePresenters = new List<IPresenterMono>();
 
         readonly int _groundHorizontalNum = 3;
         readonly int _groundVerticalNum = 2;
@@ -21,8 +23,8 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void Place(NetworkArray<NetworkBool> booleanMap, Int32 width, Int32 height )
         {
-            var wallPresenterSpawner = new LocalGroundPresenterSpawner();
-            var wallPresenters = new List<GroundPresenterLocal>();
+            var wallPresenterSpawner = new GroundPresenterLocalSpawner();
+            var wallPresenters = new List<IPresenterMono>();
 
             // 以前のTilePresenterを削除
             DestroyWallPresenter();
@@ -43,13 +45,9 @@ namespace Carry.CarrySystem.Map.Scripts
 
         void DestroyWallPresenter()
         {
-            // マップの大きさが変わっても対応できるようにDestroyが必要
-            // ToDo: マップの大きさを変えてテストをする 
-
             foreach (var tilePresenter in _tilePresenters)
             {
-                // _runner.Despawn(tilePresenter.Object);
-                UnityEngine.Object.Destroy(tilePresenter);
+                tilePresenter.DestroyPresenter();;
             }
 
             _tilePresenters = new List<GroundPresenterLocal>();
