@@ -26,6 +26,8 @@ namespace Carry.CarrySystem.Spawners.Scripts
             var tilePresenter = _tilePresenterPrefabSpawner.Load();
             return _runner.Spawn(tilePresenter, position, rotation, PlayerRef.None);
         }
+        
+        // パスの時にコライダーのオン/オフを切り替える必要があるため、具象クラスを返す
         public EntityPresenterNet SpawnPrefabNet(Vector3 position, Quaternion rotation)
         {
             var tilePresenter = _tilePresenterPrefabSpawner.Load();
