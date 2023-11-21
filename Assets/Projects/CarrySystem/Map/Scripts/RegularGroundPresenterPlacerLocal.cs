@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 using Carry.CarrySystem.Map.Interfaces;
-using Carry.CarrySystem.Spawners.Scripts;
+using Carry.CarrySystem.Spawners.Interfaces;
 using UnityEngine;
 using VContainer;
 
@@ -9,19 +9,20 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class RegularGroundPresenterPlacerLocal : IPresenterPlacer
     {
+        readonly IGroundPresenterSpawner _groundPresenterSpawner;
         IEnumerable<IGroundPresenter> _tilePresenters = new List<IGroundPresenter>();
 
         readonly int _groundHorizontalNum = 3;
         readonly int _groundVerticalNum = 2;
 
         [Inject]
-        public RegularGroundPresenterPlacerLocal()
+        public RegularGroundPresenterPlacerLocal(IGroundPresenterSpawner groundPresenterSpawner)
         {
+            _groundPresenterSpawner = groundPresenterSpawner;
         }
-
+        
         public void Place(EntityGridMap map)
         {
-            var wallPresenterSpawner = new GroundPresenterLocalSpawner();
             var wallPresenters = new List<IGroundPresenter>();
 
             // 以前のTilePresenterを削除
@@ -34,7 +35,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 var gridPos = expandedMap.ToVector(i);
                 var convertedGridPos = new Vector2Int(gridPos.x - _groundHorizontalNum, gridPos.y - _groundVerticalNum);
                 var worldPos = GridConverter.GridPositionToWorldPosition(convertedGridPos);
-                var wallPresenter = wallPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                var wallPresenter = _groundPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 wallPresenters.Add(wallPresenter);
             }
 

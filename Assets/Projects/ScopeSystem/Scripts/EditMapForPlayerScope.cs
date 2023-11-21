@@ -33,6 +33,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
                 return randomWallPresenterSpawner;
             }, Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<GroundPresenterLocalSpawner>(Lifetime.Scoped).As<IGroundPresenterSpawner>();
             builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
             builder.Register<PlaceablePresenterPlacer>(Lifetime.Scoped);
             builder.Register<EditMapPresenterPlacerComposite>(Lifetime.Scoped).As<IPresenterPlacer>();
