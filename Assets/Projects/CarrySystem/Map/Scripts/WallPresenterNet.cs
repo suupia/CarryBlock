@@ -1,10 +1,4 @@
 ﻿#nullable enable
-using System.Collections.Generic;
-using System.Linq;
-using Carry.CarrySystem.Block.Interfaces;
-using Carry.CarrySystem.Block.Scripts;
-using Carry.CarrySystem.Entity.Interfaces;
-using Carry.CarrySystem.Entity.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Fusion;
 using UnityEngine;
@@ -34,16 +28,6 @@ namespace Carry.CarrySystem.Map.Scripts
             wall1View.SetActive(WallType == 0);
             wall2View.SetActive(WallType == 1);*/
         }
-
-
-        public void SetInitAllEntityActiveData(IEnumerable<IEntity> allEntities)
-        {
-
-        }
-
-        public void SetEntityActiveData(IEntity entity, int count)
-        {
-
-        }
+        
     }
 }

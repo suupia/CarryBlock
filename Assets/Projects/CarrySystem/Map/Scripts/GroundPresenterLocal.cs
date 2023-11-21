@@ -1,10 +1,16 @@
-﻿using UnityEngine;
-#nullable enable
+﻿#nullable enable
+using Carry.CarrySystem.Map.Interfaces;
+using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class GroundPresenterLocal : MonoBehaviour
+    public class GroundPresenterLocal : MonoBehaviour, IGroundPresenter
     {
-        
+        public MonoBehaviour GetMonoBehaviour => this;
+
+        public void DestroyPresenter()
+        {
+            Destroy(gameObject);
+        }
     }
 }
