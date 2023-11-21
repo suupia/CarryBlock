@@ -5,12 +5,12 @@ using VContainer;
 namespace Carry.CarrySystem.Map.Scripts
 {
     // Composite pattern ?
-    public class LocalEditMapPresenterPlacerComponent :IPresenterPlacer
+    public class LocalEditMapPresenterPlacerComposite :IPresenterPlacer
     {
         readonly List<IPresenterPlacer>_presenterBuilders = new ();
 
         [Inject]
-        public  LocalEditMapPresenterPlacerComponent(         
+        public  LocalEditMapPresenterPlacerComposite(         
             EditMapBlockPresenterPlacer blockPresenterPlacer,
             RandomWallPresenterPlacerLocal randomWallPresenterPlacerLocal,
             RegularGroundPresenterPlacerLocal regularGroundPresenterPlacerLocal

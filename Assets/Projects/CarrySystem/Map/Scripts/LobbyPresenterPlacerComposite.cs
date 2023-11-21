@@ -4,12 +4,12 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class LobbyPresenterPlacerContainer : IPresenterPlacer
+    public class LobbyPresenterPlacerComposite : IPresenterPlacer
     {
         readonly List<IPresenterPlacer>_presenterBuilders = new ();
 
         [Inject]
-        public  LobbyPresenterPlacerContainer(         
+        public  LobbyPresenterPlacerComposite(         
             LobbyWallPresenterPlacer regularWallPresenterPlacer,
             LobbyGroundPresenterPlacer regularGroundPresenterPlacer
         )
