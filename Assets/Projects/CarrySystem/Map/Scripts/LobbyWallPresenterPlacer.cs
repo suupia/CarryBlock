@@ -10,7 +10,7 @@ namespace Carry.CarrySystem.Map.Scripts
     public class LobbyWallPresenterPlacer : IPresenterPlacer
     {
         [Inject] NetworkRunner _runner;
-        IEnumerable<IWallPresenter> _tilePresenters = new List<IWallPresenter>();
+        IEnumerable<IPresenterMono> _tilePresenters = new List<IPresenterMono>();
 
         readonly int _wallHorizontalNum = 10;
         readonly int _wallVerticalNum = 10;
@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public void Place(EntityGridMap map)
         {
             var wallPresenterSpawner = new WallPresenterNetSpawner(_runner);
-            var wallPresenters = new List<IWallPresenter>();
+            var wallPresenters = new List<IPresenterMono>();
 
             // 以前のWallPresenterを削除
             DestroyWallPresenter();
@@ -50,7 +50,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 tilePresenter.DestroyPresenter();
             }
 
-            _tilePresenters = new List<WallPresenterNet>();
+            _tilePresenters = new List<IPresenterMono>();
         }
     }
 }

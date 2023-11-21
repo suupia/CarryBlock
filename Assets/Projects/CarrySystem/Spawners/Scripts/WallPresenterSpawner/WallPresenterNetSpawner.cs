@@ -21,7 +21,7 @@ namespace Carry.CarrySystem.Spawners.Scripts
                 new PrefabLoaderFromAddressable<WallPresenterNet>("Prefabs/Map/WallPresenterNet");
         }
         
-        public IWallPresenter SpawnPrefab(Vector3 position, Quaternion rotation)
+        public IPresenterMono SpawnPrefab(Vector3 position, Quaternion rotation)
         {
             var tilePresenter = _tilePresenterPrefabSpawner.Load();
             return _runner.Spawn(tilePresenter, position, rotation, PlayerRef.None);

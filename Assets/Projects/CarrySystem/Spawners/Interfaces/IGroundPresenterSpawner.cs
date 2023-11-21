@@ -6,6 +6,6 @@ namespace Carry.CarrySystem.Spawners.Interfaces
 {
     public interface IGroundPresenterSpawner
     {
-        public IGroundPresenter SpawnPrefab(Vector3 position, Quaternion rotation);
+        public IPresenterMono SpawnPrefab(Vector3 position, Quaternion rotation);
     }
 }

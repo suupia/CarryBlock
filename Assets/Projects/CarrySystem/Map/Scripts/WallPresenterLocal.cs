@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class WallPresenterLocal : MonoBehaviour , IWallPresenter
+    public class WallPresenterLocal : MonoBehaviour , IPresenterMono
     {
         public MonoBehaviour GetMonoBehaviour => this;
 

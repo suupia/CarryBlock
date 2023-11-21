@@ -10,7 +10,7 @@ namespace Carry.CarrySystem.Map.Scripts
     public class GroundPresenterPlacer : IPresenterPlacer
     {
         readonly IGroundPresenterSpawner _groundPresenterSpawner;
-        IEnumerable<IGroundPresenter> _tilePresenters = new List<IGroundPresenter>();
+        IEnumerable<IPresenterMono> _tilePresenters = new List<IPresenterMono>();
 
         int _groundHorizontalSurplus = 3;
         int _groundVerticalSurplus = 2;
@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public void Place(EntityGridMap map)
         {
-            var wallPresenters = new List<IGroundPresenter>();
+            var wallPresenters = new List<IPresenterMono>();
 
             // 以前のTilePresenterを削除
             DestroyWallPresenter();

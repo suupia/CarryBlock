@@ -15,7 +15,7 @@ namespace Carry.CarrySystem.Spawners.Scripts
             _wallPresenterSpawners.Add(wallPresenterSpawner);
         }
 
-        public IWallPresenter SpawnPrefab(Vector3 position, Quaternion rotation)
+        public IPresenterMono SpawnPrefab(Vector3 position, Quaternion rotation)
         {
             var random = Random.Range(0, _wallPresenterSpawners.Count);
             return _wallPresenterSpawners[random].SpawnPrefab(position, rotation);

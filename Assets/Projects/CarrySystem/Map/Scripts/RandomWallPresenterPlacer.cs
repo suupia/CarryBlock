@@ -11,7 +11,7 @@ namespace Carry.CarrySystem.Map.Scripts
     public class RandomWallPresenterPlacer  : IPresenterPlacer
     {
         readonly IWallPresenterSpawner _wallPresenterSpawner;
-        IEnumerable<IWallPresenter> _tilePresenters = new List<IWallPresenter>();
+        IEnumerable<IPresenterMono> _tilePresenters = new List<IPresenterMono>();
 
         readonly int _wallHorizontalNum = 3;
         readonly int _wallVerticalNum = 2;
@@ -24,7 +24,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void Place(EntityGridMap map)
         {
-            var wallPresenters = new List<IWallPresenter>();
+            var wallPresenters = new List<IPresenterMono>();
 
             // 以前のWallPresenterを削除
             DestroyWallPresenter();
@@ -54,7 +54,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 tilePresenter.DestroyPresenter();;
             }
 
-            _tilePresenters = new List<WallPresenterNet>();
+            _tilePresenters = new List<IPresenterMono>();
         }
         
         bool IsNotPlacingBlock(EntityGridMap map, Vector2Int gridPos)

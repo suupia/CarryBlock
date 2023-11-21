@@ -11,7 +11,7 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class LocalGroundPresenterPlacer
     {
-        IEnumerable<IGroundPresenter> _tilePresenters = new List<IGroundPresenter>();
+        IEnumerable<IPresenterMono> _tilePresenters = new List<IPresenterMono>();
 
         readonly int _groundHorizontalNum = 3;
         readonly int _groundVerticalNum = 2;
@@ -24,7 +24,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public void Place(NetworkArray<NetworkBool> booleanMap, Int32 width, Int32 height )
         {
             var wallPresenterSpawner = new GroundPresenterLocalSpawner();
-            var wallPresenters = new List<IGroundPresenter>();
+            var wallPresenters = new List<IPresenterMono>();
 
             // 以前のTilePresenterを削除
             DestroyWallPresenter();

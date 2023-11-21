@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Spawners.Scripts
                     $"Prefabs/Map/WallPresenterLocal{type.ToString()}_1");
         }
 
-        public IWallPresenter SpawnPrefab(Vector3 position, Quaternion rotation)
+        public IPresenterMono SpawnPrefab(Vector3 position, Quaternion rotation)
         {
             var tilePresenter = _tilePresenterPrefabSpawner.Load();
             return UnityEngine.Object.Instantiate(tilePresenter, position, rotation);

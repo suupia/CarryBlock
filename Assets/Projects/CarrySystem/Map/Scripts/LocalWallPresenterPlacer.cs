@@ -13,7 +13,7 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class LocalWallPresenterPlacer
     {
-        IEnumerable<IWallPresenter> _tilePresenters = new List<IWallPresenter>();
+        IEnumerable<IPresenterMono> _tilePresenters = new List<IPresenterMono>();
         
         [Inject]
         public LocalWallPresenterPlacer()
@@ -25,7 +25,7 @@ namespace Carry.CarrySystem.Map.Scripts
             //var wallPresenterSpawner = new WallPresenterSpawner(_runner);
             var wallPresenterSpawners = new List<IWallPresenterSpawner>()
                 { new WallPresenterLocalSpawner(), new WallPresenterLocalSpawner1() };
-            var wallPresenters = new List<IWallPresenter>();
+            var wallPresenters = new List<IPresenterMono>();
 
             // 以前のWallPresenterを削除
             DestroyWallPresenter();
@@ -69,7 +69,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 tilePresenter.DestroyPresenter();
             }
 
-            _tilePresenters = new List<WallPresenterLocal>();
+            _tilePresenters = new List<IPresenterMono>();
         }
     }
 }

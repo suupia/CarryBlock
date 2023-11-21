@@ -19,7 +19,7 @@ namespace Carry.CarrySystem.Spawners.Scripts
             new PrefabLoaderFromAddressable<GroundPresenterLocal>("Prefabs/Map/GroundPresenterLocal");
     }
 
-    public IGroundPresenter SpawnPrefab(Vector3 position, Quaternion rotation)
+    public IPresenterMono SpawnPrefab(Vector3 position, Quaternion rotation)
     {
         var groundPresenter = _groundPresenterPrefabSpawner.Load();
         return UnityEngine.Object.Instantiate(groundPresenter, position, rotation);

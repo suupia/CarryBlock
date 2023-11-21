@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class GroundPresenterLocal : MonoBehaviour, IGroundPresenter
+    public class GroundPresenterLocal : MonoBehaviour, IPresenterMono
     {
         public MonoBehaviour GetMonoBehaviour => this;
 

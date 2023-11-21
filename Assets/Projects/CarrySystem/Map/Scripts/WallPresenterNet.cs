@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class WallPresenterNet : NetworkBehaviour, IWallPresenter
+    public class WallPresenterNet : NetworkBehaviour, IPresenterMono
     {
         public MonoBehaviour GetMonoBehaviour => this;
         struct PresentData : INetworkStruct
