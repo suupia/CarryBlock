@@ -16,24 +16,12 @@ namespace Projects.MapMakerSystem.Scripts
         }
 
         public bool CanSave { get; private set; }
-        
-        // TODO ブロックが適切に配置されているかどうかをチェックする
-        public bool CanPlay()
-        {
-            return true;
-        }
 
-        public bool StartTestPlay(Action onStopped)
+        public void StartTestPlay(Action onStopped)
         {
-            var canPlay = CanPlay();
-
-            if (!canPlay) return false;
-            
             _localPlayerSpawner.SpawnPlayer();
             _timerLocal.StartTimer();
             _timerLocal.OnStopped = onStopped;
-
-            return true;
         }
 
         public void StopTestPlay(bool isClear)
