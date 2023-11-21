@@ -24,7 +24,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             //var wallPresenterSpawner = new WallPresenterSpawner(_runner);
             var wallPresenterSpawners = new List<IWallPresenterSpawner>()
-                { new LocalWallPresenterSpawner(), new LocalWallPresenterSpawner1() };
+                { new WallPresenterLocalSpawner(), new WallPresenterLocalSpawner1() };
             var wallPresenters = new List<IWallPresenter>();
 
             // 以前のWallPresenterを削除

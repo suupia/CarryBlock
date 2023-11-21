@@ -8,12 +8,12 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Spawners.Scripts
 {
-    public class LocalWallPresenterSpawner1 : IWallPresenterSpawner
+    public class WallPresenterLocalSpawner1 : IWallPresenterSpawner
 
     {
         readonly IPrefabLoader<WallPresenterLocal> _tilePresenterPrefabSpawner;
 
-        public LocalWallPresenterSpawner1(WallType type = WallType.A)
+        public WallPresenterLocalSpawner1(WallType type = WallType.A)
         {
             _tilePresenterPrefabSpawner =
                 new PrefabLoaderFromAddressable<WallPresenterLocal>(

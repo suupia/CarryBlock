@@ -92,8 +92,8 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<IWallPresenterSpawner>(container =>
             { 
                 var randomWallPresenterSpawner = new RandomWallPresenterSpawner();
-                randomWallPresenterSpawner.AddSpawner(new LocalWallPresenterSpawner());
-                randomWallPresenterSpawner.AddSpawner(new LocalWallPresenterSpawner1());
+                randomWallPresenterSpawner.AddSpawner(new WallPresenterLocalSpawner());
+                randomWallPresenterSpawner.AddSpawner(new WallPresenterLocalSpawner1());
                 return randomWallPresenterSpawner;
             }, Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);

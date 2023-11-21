@@ -1,10 +1,10 @@
-﻿using Carry.CarrySystem.Map.Interfaces;
+﻿#nullable enable
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
 using UnityEngine;
-#nullable enable
 
 namespace Carry.CarrySystem.Spawners.Scripts
 {
@@ -12,11 +12,11 @@ namespace Carry.CarrySystem.Spawners.Scripts
     {
         A,B,C
     }
-    public class LocalWallPresenterSpawner : IWallPresenterSpawner
+    public class WallPresenterLocalSpawner : IWallPresenterSpawner
     {
         readonly IPrefabLoader<WallPresenterLocal> _tilePresenterPrefabSpawner;
 
-        public LocalWallPresenterSpawner(WallType type = WallType.A)
+        public WallPresenterLocalSpawner(WallType type = WallType.A)
         {
             _tilePresenterPrefabSpawner =
                 new PrefabLoaderFromAddressable<WallPresenterLocal>($"Prefabs/Map/WallPresenterLocal{type.ToString()}_0");
