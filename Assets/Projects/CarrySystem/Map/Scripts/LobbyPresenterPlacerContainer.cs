@@ -14,8 +14,8 @@ namespace Carry.CarrySystem.Map.Scripts
             LobbyGroundPresenterPlacer regularGroundPresenterPlacer
         )
         {
-            //_presenterBuilders.Add(regularWallPresenterPlacer);
-            //_presenterBuilders.Add(regularGroundPresenterPlacer);
+            // _presenterBuilders.Add(regularWallPresenterPlacer);
+            _presenterBuilders.Add(regularGroundPresenterPlacer);
         }
         
         public void Place(EntityGridMap map)

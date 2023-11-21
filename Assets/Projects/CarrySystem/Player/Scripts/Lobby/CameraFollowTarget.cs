@@ -17,6 +17,10 @@ namespace Carry.GameSystem.Player.Scripts
         {
             _target = target;
             _offset = transform.position - target.position;
+            
+            Debug.Log($"transform.position = {transform.position}");
+            Debug.Log($"target.position = {target.position}");
+            Debug.Log($"_offset = {_offset}");
         }
     }
 }
