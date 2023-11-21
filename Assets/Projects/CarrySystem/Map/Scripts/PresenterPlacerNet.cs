@@ -13,7 +13,6 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class PresenterPlacerNet : NetworkBehaviour
     {
-        [Inject] NetworkRunner _runner;
         IPresenterPlacer _blockPresenterPlacer;
         LocalWallPresenterPlacer _wallPresenterPlacer;
         LocalGroundPresenterPlacer _groundPresenterPlacer;

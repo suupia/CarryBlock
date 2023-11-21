@@ -26,7 +26,6 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void Place(EntityGridMap map)
         {
-            //var wallPresenterSpawner = new WallPresenterSpawner(_runner);
             var wallPresenterSpawners = new List<IWallPresenterNetSpawner>()
                 { new WallPresenterNetSpawner(_runner), new WallPresenterNetSpawner1(_runner) };
             var wallPresenters = new List<WallPresenterNet>();
@@ -61,9 +60,6 @@ namespace Carry.CarrySystem.Map.Scripts
 
         void DestroyWallPresenter()
         {
-            // マップの大きさが変わっても対応できるようにDestroyが必要
-            // ToDo: マップの大きさを変えてテストをする 
-
             foreach (var tilePresenter in _tilePresenters)
             {
                 _runner.Despawn(tilePresenter.Object);
