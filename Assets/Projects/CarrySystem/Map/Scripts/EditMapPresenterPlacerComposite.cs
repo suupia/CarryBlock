@@ -5,12 +5,12 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class LocalEditMapPresenterPlacerComposite :IPresenterPlacer
+    public class EditMapPresenterPlacerComposite :IPresenterPlacer
     {
         readonly List<IPresenterPlacer>_presenterBuilders = new ();
 
         [Inject]
-        public  LocalEditMapPresenterPlacerComposite(         
+        public  EditMapPresenterPlacerComposite(         
             PlaceablePresenterPlacer blockPresenterPlacer,
             RandomWallPresenterPlacer randomWallPresenterPlacerLocal,
             RegularGroundPresenterPlacerLocal regularGroundPresenterPlacerLocal

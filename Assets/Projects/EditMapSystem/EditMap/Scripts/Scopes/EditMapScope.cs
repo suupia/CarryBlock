@@ -49,7 +49,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             }, Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
-            builder.Register<LocalEditMapPresenterPlacerComposite>(Lifetime.Scoped).As<IPresenterPlacer>();
+            builder.Register<EditMapPresenterPlacerComposite>(Lifetime.Scoped).As<IPresenterPlacer>();
 
             // EditMapSwitcher
             builder.Register<EditMapSwitcher>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
