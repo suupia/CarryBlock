@@ -56,7 +56,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 var items = map.GetSingleEntityList<IItem>(i).Cast<IEntity>();
                 var gimmicks = map.GetSingleEntityList<IGimmick>(i).Cast<IEntity>();
                 var entityList = blocks.Concat(items).Concat(gimmicks).Distinct(); // Distinct()は重複を削除する
-                entityPresenter.SetInitAllEntityActiveData(entityList);
+                entityPresenter.SetInitAllEntityActiveData(map.GetAllEntityList(i)); 
 
                 // mapにTilePresenterを登録
                 map.RegisterTilePresenter(entityPresenter, i);
