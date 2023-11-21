@@ -11,12 +11,12 @@ namespace Carry.CarrySystem.Map.Scripts
         [Inject]
         public  EditMapPresenterPlacerComposite(         
             PlaceablePresenterPlacer blockPresenterPlacer,
-            RandomWallPresenterPlacerNet randomWallPresenterPlacerNet,
+            RandomWallPresenterPlacer randomWallPresenterPlacer,
             RegularGroundPresenterPlacerLocal regularGroundPresenterPlacerLocal
         )
         {
             _presenterBuilders.Add(blockPresenterPlacer);
-            _presenterBuilders.Add(randomWallPresenterPlacerNet);
+            _presenterBuilders.Add(randomWallPresenterPlacer);
             _presenterBuilders.Add(regularGroundPresenterPlacerLocal);
         }
         

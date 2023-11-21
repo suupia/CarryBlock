@@ -46,7 +46,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                 randomWallPresenterSpawner.AddSpawner(new WallPresenterNetSpawner1(runner));
                 return randomWallPresenterSpawner;
             }, Lifetime.Scoped);
-            builder.Register<RandomWallPresenterPlacerNet>(Lifetime.Scoped);
+            builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);
             builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
             builder.Register<EditMapPresenterPlacerComposite>(Lifetime.Scoped).As<IPresenterPlacer>();
 

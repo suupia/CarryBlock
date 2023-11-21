@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners.Interfaces;
-using Carry.CarrySystem.Spawners.Scripts;
-using Fusion;
 using UnityEngine;
 using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class RandomWallPresenterPlacerNet  : IPresenterPlacer
+    public class RandomWallPresenterPlacer  : IPresenterPlacer
     {
         readonly IWallPresenterSpawner _wallPresenterSpawner;
         IEnumerable<IWallPresenter> _tilePresenters = new List<IWallPresenter>();
@@ -19,7 +17,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly int _wallVerticalNum = 2;
 
         [Inject]
-        public RandomWallPresenterPlacerNet(IWallPresenterSpawner wallPresenterSpawner)
+        public RandomWallPresenterPlacer(IWallPresenterSpawner wallPresenterSpawner)
         {
             _wallPresenterSpawner = wallPresenterSpawner;
         }
