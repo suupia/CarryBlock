@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void Place(NetworkArray<NetworkBool> booleanMap, Int32 width, Int32 height )
         {
-            var wallPresenterSpawner = new LocalGroundPresenterSpawner();
+            var wallPresenterSpawner = new GroundPresenterLocalSpawner();
             var wallPresenters = new List<IGroundPresenter>();
 
             // 以前のTilePresenterを削除

@@ -21,7 +21,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void Place(EntityGridMap map)
         {
-            var wallPresenterSpawner = new LocalGroundPresenterSpawner();
+            var wallPresenterSpawner = new GroundPresenterLocalSpawner();
             var wallPresenters = new List<IGroundPresenter>();
 
             // 以前のTilePresenterを削除
