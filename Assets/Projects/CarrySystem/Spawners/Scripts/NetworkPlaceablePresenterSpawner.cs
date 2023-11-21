@@ -5,6 +5,8 @@ using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
 using Fusion;
 using UnityEngine;
+using VContainer;
+
 #nullable enable
 
 namespace Carry.CarrySystem.Spawners.Scripts
@@ -14,6 +16,7 @@ namespace Carry.CarrySystem.Spawners.Scripts
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<PlaceablePresenterNet> _tilePresenterPrefabSpawner;
 
+        [Inject]
         public NetworkPlaceablePresenterSpawner(NetworkRunner runner)
         {
             _runner = runner;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners.Interfaces;
@@ -23,9 +24,9 @@ namespace Carry.CarrySystem.Map.Scripts
         }
 
 
-        public (IReadOnlyList<BlockControllerNet>, IReadOnlyList<IPlaceablePresenter>) Build(EntityGridMap map)
+        public (IReadOnlyList<IBlockController>, IReadOnlyList<IPlaceablePresenter>) Build(EntityGridMap map)
         {
-            var blockControllers = new List<BlockControllerNet>();
+            var blockControllers = new List<IBlockController>();
             var blockPresenters = new List<IPlaceablePresenter>();
 
             List<BlockMonoDelegate> blockMonoDelegates = new List<BlockMonoDelegate>();
