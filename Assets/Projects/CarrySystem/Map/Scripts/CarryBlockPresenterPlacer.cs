@@ -13,7 +13,6 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class CarryBlockPresenterPlacer : IPresenterPlacer
     {
-        [Inject] readonly NetworkRunner _runner;
         readonly EntityPresenterBuilder _entityPresenterBuilder;
         IEnumerable<IEntityPresenter> _entityPresenters =  new List<IEntityPresenter>();
         
@@ -39,9 +38,6 @@ namespace Carry.CarrySystem.Map.Scripts
         
         void DestroyTilePresenter()
         {
-            // マップの大きさが変わっても対応できるようにDestroyが必要
-            // ToDo: マップの大きさを変えてテストをする 
-            
             foreach (var entityPresenter in _entityPresenters)
             {
                 entityPresenter.DestroyPresenter();
