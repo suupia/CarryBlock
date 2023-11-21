@@ -13,6 +13,7 @@ public class MapMakerUIManager : MonoBehaviour
 {
     [SerializeField] GameObject playingCanvas;
     [SerializeField] GameObject editingCanvas;
+    [SerializeField] GameObject worldCanvas;
     [SerializeField] GameObject resultCanvas;
 
     [SerializeField] Button saveButton;
@@ -70,6 +71,7 @@ public class MapMakerUIManager : MonoBehaviour
     {
         resultCanvas.SetActive(false);
         editingCanvas.SetActive(true);
+        worldCanvas.SetActive(true);
         playingCanvas.SetActive(false);
         cursorCanvas.SetActive(true);
         SwitchCameraToEditing();
@@ -79,6 +81,7 @@ public class MapMakerUIManager : MonoBehaviour
     {
         resultCanvas.SetActive(false);
         editingCanvas.SetActive(false);
+        worldCanvas.SetActive(false);
         playingCanvas.SetActive(true);
         cursorCanvas.SetActive(false);
         SwitchCameraToTestPlaying();

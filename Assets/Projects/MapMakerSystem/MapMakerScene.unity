@@ -2595,7 +2595,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playingCanvas: {fileID: 669277013}
-  editingCanvas: {fileID: 388949374}
+  editingCanvas: {fileID: 1008131556}
+  worldCanvas: {fileID: 388949374}
   resultCanvas: {fileID: 1247382349}
   saveButton: {fileID: 835896775}
   returnToEditingButton: {fileID: 1354616800}
@@ -2674,6 +2675,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1008131556 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6657131094141030306, guid: 96e31da7570998c449cdb9ee44b31a15, type: 3}
+  m_PrefabInstance: {fileID: 725323671}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1034694186
 GameObject:
   m_ObjectHideFlags: 0
