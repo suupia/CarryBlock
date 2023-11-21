@@ -67,13 +67,8 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<NetworkPlaceablePresenterSpawner>(Lifetime.Scoped).As<IPlaceablePresenterSpawner>();
             builder.Register<PlaceablePresenterBuilder>(Lifetime.Scoped);
             builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<RandomWallPresenterPlacerNet>(Lifetime.Scoped);
-            builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
             builder.Register<LocalGroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LocalWallPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<CarryBlockPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<RandomWallPresenterPlacerNet>(Lifetime.Scoped);
-            builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<PresenterPlacerNet>();
             
             
