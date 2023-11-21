@@ -19,7 +19,7 @@ using UnityEngine.Serialization;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EntityPresenterLocal : MonoBehaviour, IEntityPresenter
+    public class PlaceablePresenterLocal : MonoBehaviour, IPlaceablePresenter
     {
         public MonoBehaviour GetMonoBehaviour => this; 
         [SerializeField] GameObject basicBlockView = null!;

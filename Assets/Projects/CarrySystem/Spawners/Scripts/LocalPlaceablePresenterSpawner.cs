@@ -9,17 +9,17 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Spawners.Scripts
 {
-    public class LocalEntityPresenterSpawner : IEntityPresenterSpawner
+    public class LocalPlaceablePresenterSpawner : IPlaceablePresenterSpawner
     {
-        readonly IPrefabLoader<EntityPresenterLocal> _tilePresenterPrefabSpawner;
+        readonly IPrefabLoader<PlaceablePresenterLocal> _tilePresenterPrefabSpawner;
 
-        public LocalEntityPresenterSpawner()
+        public LocalPlaceablePresenterSpawner()
         {
             _tilePresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<EntityPresenterLocal>("Prefabs/Map/LocalEntityPresenter");
+                new PrefabLoaderFromAddressable<PlaceablePresenterLocal>("Prefabs/Map/PlaceablePresenterLocal");
         }
 
-        public IEntityPresenter SpawnPrefab(Vector3 position, Quaternion rotation)
+        public IPlaceablePresenter SpawnPrefab(Vector3 position, Quaternion rotation)
         {
             var tilePresenter = _tilePresenterPrefabSpawner.Load();
             return UnityEngine.Object.Instantiate(tilePresenter, position, rotation);

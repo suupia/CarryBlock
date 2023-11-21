@@ -9,26 +9,26 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Spawners.Scripts
 {
-    public class NetworkEntityPresenterSpawner : IEntityPresenterSpawner
+    public class NetworkPlaceablePresenterSpawner : IPlaceablePresenterSpawner
     {
         readonly NetworkRunner _runner;
-        readonly IPrefabLoader<EntityPresenterNet> _tilePresenterPrefabSpawner;
+        readonly IPrefabLoader<PlaceablePresenterNet> _tilePresenterPrefabSpawner;
 
-        public NetworkEntityPresenterSpawner(NetworkRunner runner)
+        public NetworkPlaceablePresenterSpawner(NetworkRunner runner)
         {
             _runner = runner;
             _tilePresenterPrefabSpawner =
-                new PrefabLoaderFromAddressable<EntityPresenterNet>("Prefabs/Map/EntityPresenter");
+                new PrefabLoaderFromAddressable<PlaceablePresenterNet>("Prefabs/Map/PlaceablePresenterNet");
         }
 
-        public IEntityPresenter SpawnPrefab(Vector3 position, Quaternion rotation)
+        public IPlaceablePresenter SpawnPrefab(Vector3 position, Quaternion rotation)
         {
             var tilePresenter = _tilePresenterPrefabSpawner.Load();
             return _runner.Spawn(tilePresenter, position, rotation, PlayerRef.None);
         }
         
         // パスの時にコライダーのオン/オフを切り替える必要があるため、具象クラスを返す
-        public EntityPresenterNet SpawnPrefabNet(Vector3 position, Quaternion rotation)
+        public PlaceablePresenterNet SpawnPrefabNet(Vector3 position, Quaternion rotation)
         {
             var tilePresenter = _tilePresenterPrefabSpawner.Load();
             Debug.Log("SpawnPrefabNet");

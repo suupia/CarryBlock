@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Interfaces
 {
-    public interface  IEntityPresenter
+    public interface  IPlaceablePresenter
     {
         public MonoBehaviour GetMonoBehaviour { get; }
         public void SetInitAllEntityActiveData(IEnumerable<IEntity> allEntities);

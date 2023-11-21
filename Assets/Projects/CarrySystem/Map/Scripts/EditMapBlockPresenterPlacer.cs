@@ -10,7 +10,7 @@ namespace Carry.CarrySystem.Map.Scripts
     public class EditMapBlockPresenterPlacer : IPresenterPlacer
     {
         readonly EntityPresenterBuilder _editMapBlockBuilder;
-        IEnumerable<IEntityPresenter> _entityPresenters =  new List<IEntityPresenter>();
+        IEnumerable<IPlaceablePresenter> _entityPresenters =  new List<IPlaceablePresenter>();
         
         [Inject]
         public EditMapBlockPresenterPlacer(EntityPresenterBuilder editMapBlockBuilder)
@@ -39,10 +39,10 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 entityPresenter.DestroyPresenter();
             }
-            _entityPresenters = new List<IEntityPresenter>();
+            _entityPresenters = new List<IPlaceablePresenter>();
         }
         
-         void AttachTilePresenter(IReadOnlyList<IEntityPresenter> entityPresenters , EntityGridMap map)
+         void AttachTilePresenter(IReadOnlyList<IPlaceablePresenter> entityPresenters , EntityGridMap map)
         {
             Debug.Log($"map.GetAllEntityList(0) joined = {string.Join("," ,map.GetAllEntityList(0))}");
             for (int i = 0; i < entityPresenters.Count(); i++)

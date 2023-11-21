@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Spawners.Interfaces
 {
-    public interface IEntityPresenterSpawner
+    public interface IPlaceablePresenterSpawner
     {
-        public IEntityPresenter SpawnPrefab(Vector3 position, Quaternion rotation);
+        public IPlaceablePresenter SpawnPrefab(Vector3 position, Quaternion rotation);
     }
 }

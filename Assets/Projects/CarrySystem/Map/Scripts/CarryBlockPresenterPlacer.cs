@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Map.Scripts
     public class CarryBlockPresenterPlacer : IPresenterPlacer
     {
         readonly EntityPresenterBuilder _entityPresenterBuilder;
-        IEnumerable<IEntityPresenter> _entityPresenters =  new List<IEntityPresenter>();
+        IEnumerable<IPlaceablePresenter> _entityPresenters =  new List<IPlaceablePresenter>();
         
         [Inject]
         public CarryBlockPresenterPlacer(EntityPresenterBuilder entityPresenterBuilder)
@@ -42,10 +42,10 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 entityPresenter.DestroyPresenter();
             }
-            _entityPresenters = new List<IEntityPresenter>();
+            _entityPresenters = new List<IPlaceablePresenter>();
         }
         
-        void AttachTilePresenter(IReadOnlyList<IEntityPresenter> entityPresenters , EntityGridMap map)
+        void AttachTilePresenter(IReadOnlyList<IPlaceablePresenter> entityPresenters , EntityGridMap map)
         {
             for (int i = 0; i < entityPresenters.Count(); i++)
             {

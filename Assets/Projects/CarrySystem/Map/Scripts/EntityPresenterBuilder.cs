@@ -12,22 +12,22 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EntityPresenterBuilder
     {
-        readonly IEntityPresenterSpawner _entityPresenterSpawner;
+        readonly IPlaceablePresenterSpawner _placeablePresenterSpawner;
 
         [Inject]
         public EntityPresenterBuilder(
-            IEntityPresenterSpawner entityPresenterSpawner
+            IPlaceablePresenterSpawner placeablePresenterSpawner
         )
         {
-            _entityPresenterSpawner = entityPresenterSpawner;
+            _placeablePresenterSpawner = placeablePresenterSpawner;
         }
 
 
         // CarryBuilderと対応させてある。
-        public (IReadOnlyList<BlockControllerNet>, IReadOnlyList<IEntityPresenter>) Build(EntityGridMap map)
+        public (IReadOnlyList<BlockControllerNet>, IReadOnlyList<IPlaceablePresenter>) Build(EntityGridMap map)
         {
             var blockControllers = new List<BlockControllerNet>();
-            var blockPresenters = new List<IEntityPresenter>();
+            var blockPresenters = new List<IPlaceablePresenter>();
 
             List<BlockMonoDelegate> blockMonoDelegates = new List<BlockMonoDelegate>();
 
@@ -39,7 +39,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 var worldPos = GridConverter.GridPositionToWorldPosition(gridPos);
 
                 // Presenterの生成
-                var entityPresenter = _entityPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
+                var entityPresenter = _placeablePresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 
                 // ItemControllerのInitを呼び出す
                 var itemControllers =  entityPresenter.GetMonoBehaviour.GetComponentsInChildren<ItemControllerNet>();

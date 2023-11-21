@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7654787447870314557}
   - component: {fileID: 8109329317011024328}
   m_Layer: 0
-  m_Name: LocalEntityPresenter
+  m_Name: PlaceablePresenterLocal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

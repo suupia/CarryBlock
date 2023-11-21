@@ -19,7 +19,7 @@ using UnityEngine.Serialization;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EntityPresenterNet : NetworkBehaviour, IEntityPresenter
+    public class PlaceablePresenterNet : NetworkBehaviour, IPlaceablePresenter
     {
         public MonoBehaviour GetMonoBehaviour => this;
         struct PresentData : INetworkStruct

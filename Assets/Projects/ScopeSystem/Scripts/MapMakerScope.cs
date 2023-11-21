@@ -87,7 +87,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<MapTestPlayStarter>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
-            builder.Register<LocalEntityPresenterSpawner>(Lifetime.Scoped).As<IEntityPresenterSpawner>();
+            builder.Register<LocalPlaceablePresenterSpawner>(Lifetime.Scoped).As<IPlaceablePresenterSpawner>();
             builder.Register<EntityPresenterBuilder>(Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacerLocal>(Lifetime.Scoped);
             builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);

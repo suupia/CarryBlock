@@ -27,7 +27,7 @@ namespace Carry.CarrySystem.Block.Scripts
     public class BlockMonoDelegate : IHighlightExecutor , IEntity
     {
          readonly EntityGridMap _map;
-         readonly IEntityPresenter _entityPresenter;
+         readonly IPlaceablePresenter _placeablePresenter;
          readonly IHighlightExecutor _highLightExecutor;
 
          Vector2Int _gridPosition;
@@ -35,14 +35,14 @@ namespace Carry.CarrySystem.Block.Scripts
          public BlockMonoDelegate(
              EntityGridMap map,
              Vector2Int gridPos,
-             IEntityPresenter entityPresenter)
+             IPlaceablePresenter placeablePresenter)
          {
              _map = map;
              _gridPosition = gridPos;
-             _entityPresenter = entityPresenter;
+             _placeablePresenter = placeablePresenter;
              
              // get blockInfos from blockController
-             var blockControllerComponents = entityPresenter.GetMonoBehaviour.GetComponentsInChildren<IBlockController>();
+             var blockControllerComponents = placeablePresenter.GetMonoBehaviour.GetComponentsInChildren<IBlockController>();
              var blockInfos = blockControllerComponents.Select(c => c.Info).ToList();
              
              // // get itemInfos from itemController
@@ -69,7 +69,7 @@ namespace Carry.CarrySystem.Block.Scripts
          {
              if(block is IGimmick gimmickBlock) gimmickBlock.StartGimmick();
              _map.AddEntity(_gridPosition, block);
-            _entityPresenter.SetEntityActiveData(block, GetBlocks().Count);
+            _placeablePresenter.SetEntityActiveData(block, GetBlocks().Count);
 
          }
          
@@ -77,7 +77,7 @@ namespace Carry.CarrySystem.Block.Scripts
          {
              if(block is IGimmick gimmickBlock) gimmickBlock.EndGimmick();
              _map.RemoveEntity(_gridPosition, block);
-             _entityPresenter.SetEntityActiveData(block, GetBlocks().Count);
+             _placeablePresenter.SetEntityActiveData(block, GetBlocks().Count);
 
          }
          
