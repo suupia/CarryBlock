@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 using Carry.CarrySystem.Map.Interfaces;
 using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    // Composite pattern ?
     public class LocalEditMapPresenterPlacerComposite :IPresenterPlacer
     {
         readonly List<IPresenterPlacer>_presenterBuilders = new ();
