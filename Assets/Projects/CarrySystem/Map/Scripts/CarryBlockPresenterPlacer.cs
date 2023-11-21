@@ -13,13 +13,13 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class CarryBlockPresenterPlacer : IPresenterPlacer
     {
-        readonly EntityPresenterBuilder _entityPresenterBuilder;
+        readonly PlaceablePresenterBuilder _placeablePresenterBuilder;
         IEnumerable<IPlaceablePresenter> _entityPresenters =  new List<IPlaceablePresenter>();
         
         [Inject]
-        public CarryBlockPresenterPlacer(EntityPresenterBuilder entityPresenterBuilder)
+        public CarryBlockPresenterPlacer(PlaceablePresenterBuilder placeablePresenterBuilder)
         {
-            _entityPresenterBuilder = entityPresenterBuilder;
+            _placeablePresenterBuilder = placeablePresenterBuilder;
         }
 
         
@@ -28,7 +28,7 @@ namespace Carry.CarrySystem.Map.Scripts
             // 以前のTilePresenterを削除
             DestroyTilePresenter();
             
-            var (blockControllers, entityPresenters) = _entityPresenterBuilder.Build(map);
+            var (blockControllers, entityPresenters) = _placeablePresenterBuilder.Build(map);
             
             // BlockPresenterをドメインのEntityGridMapに紐づける
             AttachTilePresenter(entityPresenters, map);

@@ -10,12 +10,12 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EntityPresenterBuilder
+    public class PlaceablePresenterBuilder
     {
         readonly IPlaceablePresenterSpawner _placeablePresenterSpawner;
 
         [Inject]
-        public EntityPresenterBuilder(
+        public PlaceablePresenterBuilder(
             IPlaceablePresenterSpawner placeablePresenterSpawner
         )
         {
@@ -23,7 +23,6 @@ namespace Carry.CarrySystem.Map.Scripts
         }
 
 
-        // CarryBuilderと対応させてある。
         public (IReadOnlyList<BlockControllerNet>, IReadOnlyList<IPlaceablePresenter>) Build(EntityGridMap map)
         {
             var blockControllers = new List<BlockControllerNet>();

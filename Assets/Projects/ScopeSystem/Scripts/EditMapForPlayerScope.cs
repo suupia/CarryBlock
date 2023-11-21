@@ -24,7 +24,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             
             // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<LocalPlaceablePresenterSpawner>(Lifetime.Scoped).As<IPlaceablePresenterSpawner>();
-            builder.Register<EntityPresenterBuilder>(Lifetime.Scoped);
+            builder.Register<PlaceablePresenterBuilder>(Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacerLocal>(Lifetime.Scoped);
             builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
             builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped);
