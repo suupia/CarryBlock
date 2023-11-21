@@ -1,28 +1,30 @@
-﻿using System;
+﻿#nullable enable
 using System.Collections.Generic;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.Entity.Interfaces;
 using Carry.CarrySystem.Entity.Scripts;
+using Carry.CarrySystem.Map.Interfaces;
 using Fusion;
 using UnityEngine;
-using Random = System.Random;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class WallPresenterNet : NetworkBehaviour
+    public class WallPresenterNet : NetworkBehaviour, IWallPresenter
     {
-        public struct PresentData : INetworkStruct
+        public MonoBehaviour GetMonoBehaviour => this;
+        struct PresentData : INetworkStruct
         {
             // ランタイムで見た目が変化するようになったときに使用する
             // その時はTilePresenterNetを参考にする
         }
 
-        [Networked] public ref PresentData PresentDataRef => ref MakeRef<PresentData>();
+        [Networked] ref PresentData PresentDataRef => ref MakeRef<PresentData>();
 
         // このぐらいなら、PrefabLoadするまでもなく直接アタッチした方がよい
         [SerializeField] GameObject wallView = null!;
+        public void DestroyPresenter() => Runner.Despawn(Object);
 
         public override void Render()
         {

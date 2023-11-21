@@ -43,9 +43,6 @@ namespace Carry.CarrySystem.Map.Scripts
 
         void DestroyWallPresenter()
         {
-            // マップの大きさが変わっても対応できるようにDestroyが必要
-            // ToDo: マップの大きさを変えてテストをする 
-
             foreach (var tilePresenter in _tilePresenters)
             {
                 UnityEngine.Object.Destroy(tilePresenter);
