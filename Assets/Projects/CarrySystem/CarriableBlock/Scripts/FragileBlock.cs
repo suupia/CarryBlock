@@ -42,7 +42,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
 
         public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
         {
-            var _ = BreakBlock(holdActionExecutor);
+             BreakBlock(holdActionExecutor).Forget();
         }
 
         public bool CanPutDown(IList<ICarriableBlock> placedBlocks)

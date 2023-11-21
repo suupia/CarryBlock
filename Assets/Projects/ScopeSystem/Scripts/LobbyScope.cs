@@ -5,6 +5,7 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
+using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
 using Carry.UISystem.UI.LobbyScene;
 using Carry.Utility.Interfaces;
@@ -48,8 +49,9 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             
             // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<LobbyWallPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<LobbyGroundPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<LobbyPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            builder.Register<GroundPresenterNetSpawner>(Lifetime.Scoped).As<IGroundPresenterSpawner>();
+            builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<LobbyPresenterPlacerComposite>(Lifetime.Scoped).As<IPresenterPlacer>();
             builder.Register<PrefabLoaderFromAddressable<CartControllerNet>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CartControllerNet>>()
                 .WithParameter("path", "Prefabs/Carts/CartLobbyControllerNet");

@@ -1,19 +1,19 @@
 ﻿using System;
 using Carry.CarrySystem.Map.Interfaces;
 using VContainer;
+#nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
     public class LobbyMapSwitcher : IMapSwitcher , IMapGetter
     {
-        public MapKey MapKey => _mapKey;
         public int Index => _index;
 
         readonly EntityGridMapLoader _gridMapLoader;
         readonly IPresenterPlacer _allPresenterPlacer;
+        readonly MapKey _mapKey;
+        readonly int _index;
         EntityGridMap _map;
-        MapKey _mapKey;
-        int _index;
         
         Action _resetAction = () => { };
 
@@ -34,16 +34,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             return _map;
         }
-
-        public void SetMapKey(MapKey mapKey)
-        {
-            _mapKey = mapKey;
-        }
         
-        public void SetIndex(int index)
-        {
-            _index = index;
-        }
         public void InitSwitchMap()
         {
             var mapKey = MapKey.Default;

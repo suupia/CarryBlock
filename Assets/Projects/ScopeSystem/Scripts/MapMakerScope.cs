@@ -87,12 +87,20 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<MapTestPlayStarter>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
-            builder.Register<LocalEntityPresenterSpawner>(Lifetime.Scoped).As<IEntityPresenterSpawner>();
-            builder.Register<EditMapBlockBuilder>(Lifetime.Scoped);
-            builder.Register<RandomWallPresenterPlacerLocal>(Lifetime.Scoped);
-            builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
-            builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<LocalEditMapPresenterPlacerComponent>(Lifetime.Scoped).As<IPresenterPlacer>();
+            builder.Register<LocalPlaceablePresenterSpawner>(Lifetime.Scoped).As<IPlaceablePresenterSpawner>();
+            builder.Register<PlaceablePresenterBuilder>(Lifetime.Scoped);
+            builder.Register<IWallPresenterSpawner>(container =>
+            { 
+                var randomWallPresenterSpawner = new RandomWallPresenterSpawner();
+                randomWallPresenterSpawner.AddSpawner(new WallPresenterLocalSpawner());
+                randomWallPresenterSpawner.AddSpawner(new WallPresenterLocalSpawner1());
+                return randomWallPresenterSpawner;
+            }, Lifetime.Scoped);
+            builder.Register<RandomWallPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<GroundPresenterLocalSpawner>(Lifetime.Scoped).As<IGroundPresenterSpawner>();
+            builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<PlaceablePresenterPlacer>(Lifetime.Scoped);
+            builder.Register<EditMapPresenterPlacerComposite>(Lifetime.Scoped).As<IPresenterPlacer>();
 
             // IMapUpdater
             // builder.Register<LocalCarryMapSwitcher>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();

@@ -37,7 +37,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void PassBlockMove(ICarriableBlock block, Transform playerTransform, Transform targetTransform)
         {
             Debug.Log("PassBlockMove Start");
-            var spawner = new EntityPresenterSpawner(Runner);
+            var spawner = new NetworkPlaceablePresenterSpawner(Runner);
             var entityPresenter = spawner.SpawnPrefabNet(playerTransform.position, Quaternion.identity);
             entityPresenter.SetEntityActiveData(block,count:1);
             entityPresenter.SetColliderActive(false);
