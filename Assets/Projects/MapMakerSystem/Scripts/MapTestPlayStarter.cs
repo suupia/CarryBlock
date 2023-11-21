@@ -23,20 +23,21 @@ namespace Projects.MapMakerSystem.Scripts
 
         public bool IsTestPlaying { get; private set; }
 
-        public bool Start(Action onStopped)
+        public bool Start(Action<bool> onStopped)
         {
             if (IsTestPlaying) return false;
             
             var map = _stageMapSwitcher.GetMap();
             _stageMapSaver.SaveTmpMap(map);
 
-            _mapValidator.StartTestPlay(() =>
+            _mapValidator.OnTestPlayStopped = isClear =>
             {
-                _stageMapSwitcher.InitTmpMap();
-
                 IsTestPlaying = false;
-                onStopped.Invoke();
-            });
+                onStopped(isClear);
+                _stageMapSwitcher.InitTmpMap();
+            };
+
+            _mapValidator.StartTestPlay();
 
             IsTestPlaying = true;
             return true;

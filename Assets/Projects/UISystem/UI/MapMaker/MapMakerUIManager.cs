@@ -62,7 +62,13 @@ public class MapMakerUIManager : MonoBehaviour
 
         testPlayButton.onClick.AddListener(() =>
         {
-            var canPlay = _mapTestPlayStarter.Start(() => { resultCanvas.SetActive(true); });
+            var canPlay = _mapTestPlayStarter.Start(isClear =>
+            {
+                if (isClear)
+                    resultCanvas.SetActive(true);
+                else
+                    SwitchToEditing();
+            });
             if (canPlay) SwitchToTestPlaying();
         });
     }

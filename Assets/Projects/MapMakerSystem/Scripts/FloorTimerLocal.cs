@@ -1,7 +1,7 @@
+#nullable enable
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
-#nullable enable
+
 namespace Projects.MapMakerSystem.Scripts
 {
     public class FloorTimerLocal: MonoBehaviour
@@ -21,10 +21,9 @@ namespace Projects.MapMakerSystem.Scripts
             IsActive = true;
         }
 
-        public void StopTimer()
+        public void CancelTimer()
         {
             IsActive = false;
-            OnStopped();
         }
 
         void Update()
