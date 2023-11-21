@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿#nullable enable
+using System.Collections.Generic;
 using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Spawners.Interfaces;
 using Carry.CarrySystem.Spawners.Scripts;
 using UnityEngine;
 using VContainer;
-#nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
@@ -24,7 +23,6 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void Place(EntityGridMap map)
         {
-            //var wallPresenterSpawner = new WallPresenterSpawner(_runner);
             var wallPresenterSpawners = new List<IWallPresenterSpawner>()
                 { new LocalWallPresenterSpawner(), new LocalWallPresenterSpawner1() };
             var wallPresenters = new List<IWallPresenter>();
