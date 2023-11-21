@@ -41,7 +41,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             builder.Register<PlaceablePresenterPlacer>(Lifetime.Scoped);
             builder.Register<RandomWallPresenterPlacerNet>(Lifetime.Scoped);
             builder.Register<RegularGroundPresenterPlacerLocal>(Lifetime.Scoped);
-            builder.Register<EditMapPresenterPlacerContainer>(Lifetime.Scoped).As<IPresenterPlacer>();
+            builder.Register<EditMapPresenterPlacerComposite>(Lifetime.Scoped).As<IPresenterPlacer>();
 
             // EditMapSwitcher
             builder.Register<EditMapSwitcher>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();

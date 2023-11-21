@@ -4,13 +4,12 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    // CarryPresenterPlacerContainer とまったく一緒
-    public class EditMapPresenterPlacerContainer :IPresenterPlacer
+    public class EditMapPresenterPlacerComposite :IPresenterPlacer
     {
         readonly List<IPresenterPlacer>_presenterBuilders = new ();
 
         [Inject]
-        public  EditMapPresenterPlacerContainer(         
+        public  EditMapPresenterPlacerComposite(         
             PlaceablePresenterPlacer blockPresenterPlacer,
             RandomWallPresenterPlacerNet randomWallPresenterPlacerNet,
             RegularGroundPresenterPlacerLocal regularGroundPresenterPlacerLocal
