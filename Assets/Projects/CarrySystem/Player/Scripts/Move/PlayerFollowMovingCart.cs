@@ -42,6 +42,11 @@ namespace Carry.CarrySystem.Player.Scripts
                     
                     foreach (CarryPlayerControllerNet player in _carryPlayerContainer.PlayerControllers)
                     {
+                        if (player == null)  // タイトルに戻るときにplayerがおそらく先にDestroyされている
+                        {
+                            CancelFollowMovingCart();
+                            return;
+                        }
                         Transform playerTransform = player.transform;
                         Transform cartTransform = cart.transform;
 
@@ -67,6 +72,12 @@ namespace Carry.CarrySystem.Player.Scripts
             _cancellationDisposable?.Dispose();
         }
         
+        void OnDestroy()
+        {
+            // 一応書いてあるが、今は呼ばれないはず。　player == nullのときは直接CancelFollowMovingCart()を呼ぶようになっている
+            Debug.Log($"OnDestroy PlayerFollowMovingCart");
+            CancelFollowMovingCart();
+        }
        
     }
     
