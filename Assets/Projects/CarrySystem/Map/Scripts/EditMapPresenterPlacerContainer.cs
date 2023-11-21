@@ -11,7 +11,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         [Inject]
         public  EditMapPresenterPlacerContainer(         
-            EditMapBlockPresenterPlacer blockPresenterPlacer,
+            PlaceablePresenterPlacer blockPresenterPlacer,
             RandomWallPresenterPlacerNet randomWallPresenterPlacerNet,
             RegularGroundPresenterPlacerLocal regularGroundPresenterPlacerLocal
         )

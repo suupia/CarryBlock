@@ -66,7 +66,7 @@ namespace Carry.ScopeSystem.Scripts
             // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<NetworkPlaceablePresenterSpawner>(Lifetime.Scoped).As<IPlaceablePresenterSpawner>();
             builder.Register<PlaceablePresenterBuilder>(Lifetime.Scoped);
-            builder.Register<EditMapBlockPresenterPlacer>(Lifetime.Scoped);
+            builder.Register<PlaceablePresenterPlacer>(Lifetime.Scoped);
             builder.Register<LocalGroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LocalWallPresenterPlacer>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<PresenterPlacerNet>();

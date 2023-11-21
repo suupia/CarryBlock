@@ -7,13 +7,13 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EditMapBlockPresenterPlacer : IPresenterPlacer
+    public class PlaceablePresenterPlacer : IPresenterPlacer
     {
         readonly PlaceablePresenterBuilder _placeablePresenterBuilder;
         IEnumerable<IPlaceablePresenter> _placeablePresenters =  new List<IPlaceablePresenter>();
         
         [Inject]
-        public EditMapBlockPresenterPlacer(PlaceablePresenterBuilder placeablePresenterBuilder)
+        public PlaceablePresenterPlacer(PlaceablePresenterBuilder placeablePresenterBuilder)
         {
             _placeablePresenterBuilder = placeablePresenterBuilder;
         }
