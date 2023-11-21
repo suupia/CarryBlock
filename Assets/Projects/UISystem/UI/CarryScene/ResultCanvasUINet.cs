@@ -60,7 +60,7 @@ namespace Carry.UISystem.UI.CarryScene
                 {
                     ViewActive = true;
                     IsClear = false;
-                    ClearedFloorNumber = mapGetter.Index;
+                    ClearedFloorNumber = mapGetter.Index + 1;
                     MaxFloorNumber =  mapKeyDataList.Count;
                     ClearTime = floorTimerNet.FloorLimitSeconds * _maxFloorNumber -
                                 floorTimerNet.FloorRemainingSecondsSam;
