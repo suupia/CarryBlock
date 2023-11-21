@@ -23,7 +23,9 @@ namespace Projects.MapMakerSystem.Scripts
         {
             _localPlayerSpawner.SpawnPlayer();
             _timerLocal.StartTimer();
-            _timerLocal.OnStopped = () => { Dispose(false); };
+            _timerLocal.OnStopped = () => { OnTestPlayStopped(false); };
+            OnTestPlayStopped += _ =>  _localPlayerSpawner.DespawnPlayer();
+            
         }
 
         public void StopTestPlay(bool isClear)
@@ -33,18 +35,13 @@ namespace Projects.MapMakerSystem.Scripts
             Debug.Log(isClear ? "成功" : "失敗");
 
             _timerLocal.CancelTimer();
-            Dispose(isClear);
+            OnTestPlayStopped(isClear);
         }
 
         public void OnSaved()
         {
             CanSave = false;
         }
-
-        void Dispose(bool isClear)
-        {
-            _localPlayerSpawner.DespawnPlayer();
-            OnTestPlayStopped(isClear);
-        }
+        
     }
 }

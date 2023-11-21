@@ -62,7 +62,7 @@ public class MapMakerUIManager : MonoBehaviour
 
         testPlayButton.onClick.AddListener(() =>
         {
-            var canPlay = _mapTestPlayStarter.Start(isClear =>
+            var canPlay = _mapTestPlayStarter.StartTest(isClear =>
             {
                 if (isClear)
                     resultCanvas.SetActive(true);

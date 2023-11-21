@@ -23,7 +23,7 @@ namespace Projects.MapMakerSystem.Scripts
 
         public bool IsTestPlaying { get; private set; }
 
-        public bool Start(Action<bool> onStopped)
+        public bool StartTest(Action<bool> onStopped)
         {
             if (IsTestPlaying) return false;
             
