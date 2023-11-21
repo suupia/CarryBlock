@@ -8,11 +8,10 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Interfaces
 {
-    public interface  IPlaceablePresenter
+    public interface  IPlaceablePresenter : IPresenterMono
     {
-        public MonoBehaviour GetMonoBehaviour { get; }
         public void SetInitAllEntityActiveData(IEnumerable<IEntity> allEntities);
         public void SetEntityActiveData(IEntity entity, int count);
-        public void DestroyPresenter();
+
     }
 }
