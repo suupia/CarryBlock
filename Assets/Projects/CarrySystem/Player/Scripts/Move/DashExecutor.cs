@@ -75,7 +75,6 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"Finish dashing");
             if(_dashEffectPresenter != null) _dashEffectPresenter.StopDash();
-            if(_onDamageExecutor.IsFainted) return;
             _moveExecutorSwitcher.SwitchOffDashMove();
         }
         

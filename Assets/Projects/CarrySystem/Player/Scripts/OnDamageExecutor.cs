@@ -68,7 +68,7 @@ namespace Carry.CarrySystem.Player.Scripts
             }
             catch (OperationCanceledException)
             {
-                // Do Nothing
+                _moveExecutorSwitcher.SwitchOffFaintedMove();  // OnとOffは同じ回数呼ぶ必要がある
             }
         }
 
