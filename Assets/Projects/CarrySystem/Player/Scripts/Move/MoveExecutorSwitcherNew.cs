@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class MoveExecutorSwitcher : IMoveExecutorSwitcher
+    public class MoveExecutorSwitcherNew : IMoveExecutorSwitcher
     {
         public  IMoveExecutor CurrentMoveExecutor => _currentMoveExecutor;
         readonly IMoveExecutorLeaf _regularMoveLeaf;
@@ -19,8 +19,9 @@ namespace Carry.CarrySystem.Player.Scripts
         
         PlayerInfo _info = null!;
         IPlayerAnimatorPresenter _playerAnimatorPresenter = null!;
-        
-        public MoveExecutorSwitcher(
+        readonly IList<(IMoveParameter parameter, IMoveFunction function)> _moveFunctions = new List<(IMoveParameter, IMoveFunction)>();
+
+        public MoveExecutorSwitcherNew(
             )
         {
             var regularMoveExecutor = new RegularMoveExecutor(40, 5, 5);
@@ -38,11 +39,11 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void Move(Vector3 input)
         {
-            _currentMoveExecutor.Move(input);
+            IMoveParameter parameter = _moveFunctions.Aggregate((IMoveParameter)null, (integrated, next) => next.parameter.Chain(integrated));
+            IMoveFunction function = _moveFunctions.Aggregate((IMoveFunction)null, (integrated, next) => next.function.Chain(integrated));
+            MoveExecutorNew moveExecutorNew = new MoveExecutorNew();
+            moveExecutorNew.Move(input, parameter, function);
             
-            // Debug.Log($"Move _currentMoveExecutor.GetType() : {_currentMoveExecutor.GetType()}");
-            // if(_currentMoveExecutor is IMoveExecutorLeaf leaf) Debug.Log($"Move _currentMoveExecutor.MaxVelocity : {leaf.MaxVelocity}");
-            //
         }
         
         public void SwitchToBeforeMoveExecutor()
