@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class DashExecutor : IDashExecutor
     {
         PlayerInfo _info = null!;
-        readonly IMoveExecutorSwitcherNew _moveExecutorSwitcher;
+        readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         readonly IOnDamageExecutor _onDamageExecutor;
         IDashEffectPresenter? _dashEffectPresenter;
         readonly float _dashTime = 0.6f;
@@ -24,7 +24,7 @@ namespace Carry.CarrySystem.Player.Scripts
         CancellationTokenSource? _cancellationTokenSource;
         
         public DashExecutor(
-            IMoveExecutorSwitcherNew moveExecutorSwitcher,
+            IMoveExecutorSwitcher moveExecutorSwitcher,
             IOnDamageExecutor onDamageExecutor
             )
         {

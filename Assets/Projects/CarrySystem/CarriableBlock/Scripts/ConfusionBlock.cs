@@ -38,7 +38,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;  // basicが持ち上げられない状況はない
         }
 
-        public void  PickUp(IMoveExecutorSwitcherNew moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
+        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
         {
             // 上下左右を入れ替えた混乱の動きに切り替える
             moveExecutorSwitcher.AddMoveRecord<InverseInputMoveRecord>();
@@ -59,7 +59,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;
         }
         
-        public void PutDown(IMoveExecutorSwitcherNew moveExecutorSwitcher) 
+        public void PutDown(IMoveExecutorSwitcher moveExecutorSwitcher) 
         {
             // 混乱状態をもとに戻す
             moveExecutorSwitcher.RemoveRecord<InverseInputMoveRecord>();

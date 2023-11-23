@@ -9,7 +9,7 @@ using Debug = System.Diagnostics.Debug;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class MoveExecutorSwitcher : IMoveExecutorSwitcherNew
+    public class MoveExecutorSwitcher : IMoveExecutorSwitcher
     {
         readonly IList<IMoveRecord> _moveExecutors = new List<IMoveRecord>();
         PlayerInfo? _info;

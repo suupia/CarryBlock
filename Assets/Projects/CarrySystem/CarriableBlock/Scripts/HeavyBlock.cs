@@ -43,7 +43,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;  // basicが持ち上げられない状況はない
         }
 
-        public void  PickUp(IMoveExecutorSwitcherNew moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
+        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
         {
             // 移動速度を遅くする
             moveExecutorSwitcher.AddMoveRecord<SlowMoveRecord>();
@@ -64,7 +64,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;
         }
         
-        public void PutDown(IMoveExecutorSwitcherNew moveExecutorSwitcher) 
+        public void PutDown(IMoveExecutorSwitcher moveExecutorSwitcher) 
         {
             // 移動速度を元に戻す
             moveExecutorSwitcher.RemoveRecord<SlowMoveRecord>();
