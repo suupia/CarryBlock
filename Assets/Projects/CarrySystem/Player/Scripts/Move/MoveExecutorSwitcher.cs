@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Security.Cryptography;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
@@ -103,6 +104,58 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _regularMoveLeaf.SetPlayerAnimatorPresenter(presenter);
             _playerAnimatorPresenter = presenter;
+        }
+    }
+    
+    
+    ///////////////////////////////////////////////////
+
+    public interface IMoveFunction : IMoveExecutor
+    {
+        IMoveFunction Chain(IMoveFunction moveExecutor);
+    }
+    public class NewFastMoveExecutor : IMoveExecutor, IMoveFunction
+    {
+        public void Setup(PlayerInfo info)
+        {
+            throw new System.NotImplementedException();
+        }
+        
+        public IMoveFunction Chain(IMoveFunction moveExecutor)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Move(Vector3 input)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+        
+    public class NewMoveSwitcher
+    {
+        IList<IMoveFunction> _moveExecutors = new List<IMoveFunction>();
+
+        public void Move(Vector3 input)
+        {
+            IMoveFunction move = _moveExecutors.Aggregate((IMoveFunction)new NewFastMoveExecutor(), (integrated, next) =>  next.Chain(integrated));
+            move.Move(input);
+            
+        }
+        
+    }
+
+    public class Client
+    {
+        void Start()
+        {
+            var moveExecutorSwitcher = new MoveExecutorSwitcher();
+            moveExecutorSwitcher.Move(Vector3.up);
         }
     }
 }
