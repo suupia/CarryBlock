@@ -23,43 +23,64 @@ namespace Carry.UISystem.UI.Prefabs
         public UnityAction ClickAction { get; set; } = () => {};
         
         [SerializeField] AudioClip clickSound = null!;
-        [SerializeField] List<Image> buttonImage = null!;
+        [SerializeField] Image frameImage = null!;
+        [SerializeField] Image mainImage = null!;
 
         AudioSource? _audioSource;
         
         readonly float _clickInterval = 0.1f;
-
-        bool  _isClickable;
+        
+        bool _isClickable = true;
+        bool _isHovering;
         float _clickTime;
 
+        public bool Interactable
+        {
+            get => frameImage.raycastTarget;
+            set
+            {
+                frameImage.raycastTarget = value;
+
+                var alpha = value ? 1.0f : 0.5f; //直接DoFadeの引数に入れるとコンパイルが通らん，なぜ？
+                frameImage.DOFade(alpha, 0.1f);
+            }
+        }
+
+        public void SetImage(Texture2D tex)
+        {
+            mainImage.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
+        }
+        
         void Start()
         {
             Assert.IsNotNull(clickSound);
-            
+            Assert.IsNotNull(frameImage);
+            Assert.IsNotNull(mainImage);
+
             _audioSource = FindObjectOfType<AudioSource>();
+            Interactable = true;
         }
 
         void Update()
         {
-            if (!_isClickable)
+            if (!_isClickable && _clickTime + _clickInterval < Time.time)
             {
-                if (_clickTime + _clickInterval < Time.time)
-                {
-                    _isClickable = true;
-                }
+                _isClickable = true;
             }
         }
 
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
+            if (!Interactable) { return; }
+
             if (!_isClickable)
             {
                 Debug.Log("連打を防止するためにクリックを無視する");
                 return;
             }
-            
+
             _isClickable = false;
-            
+
             if (_audioSource != null)
             {
                 _audioSource.PlayOneShot(clickSound);
@@ -68,40 +89,37 @@ namespace Carry.UISystem.UI.Prefabs
             {
                 Debug.LogWarning("AudioSourceが見つかりませんでした");
             }
-            
-            ClickAction?.Invoke();
-            
+
+            ClickAction.Invoke();
+
             Debug.Log("ボタンがクリックされた(押され，ドラッグされずに離された)");
-            
-            foreach (var image in buttonImage)
-            {
-                image.transform.DOScale(1.2f, 0.1f).OnComplete(() =>
-                {
-                    image.transform.DOScale(1.1f, 0.1f);
-                });
-                
-                image.transform.DORotate(new Vector3(0, 0, 360), 0.2f, RotateMode.FastBeyond360);
-            }
+
+            frameImage.transform.DOScale(1.2f, 0.1f).OnComplete(() => { frameImage.transform.DOScale(_isHovering ? 1.1f : 1.0f, 0.1f); });
+
+            mainImage.transform.DOScale(1.3f, 0.1f).OnComplete(() => { mainImage.transform.DOScale(_isHovering ? 1.1f : 1.0f, 0.1f); });
+            mainImage.transform.DORotate(new Vector3(0, 0, 360), 0.1f, RotateMode.FastBeyond360);
         }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
-            Debug.Log("カーソルがボタンに重なった");
+            if (!Interactable) { return; }
             
-            foreach (var image in buttonImage)
-            {
-                image.transform.DOScale(1.1f, 0.1f);
-            }
+            _isHovering = true;
+            
+            Debug.Log("カーソルがボタンに重なった");
+
+            frameImage.transform.DOScale(1.1f, 0.1f);
+            mainImage.transform.DOScale(1.1f, 0.1f);
         }
-        
+
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
         {
             Debug.Log("カーソルがボタンから離れた");
             
-            foreach (var image in buttonImage)
-            {
-                image.transform.DOScale(1.0f, 0.1f);
-            }
+            _isHovering = false;
+
+            frameImage.transform.DOScale(1.0f, 0.1f);
+            mainImage.transform.DOScale(1.0f, 0.1f);
         }
     }
 }

@@ -1,5 +1,6 @@
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
+using Carry.UISystem.UI.Prefabs;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 using Projects.MapMakerSystem.Scripts;
@@ -12,37 +13,47 @@ namespace Carry.UISystem.UI.EditMap
     public class MapMakerBlockSelectCanvas : MonoBehaviour
     {
         [SerializeField] Transform buttonParent = null!;
-        [SerializeField] CustomButton buttonPrefab;
+        
+        //以下，Addressableから取得するべき
+        [SerializeField] CustomViewButton buttonPrefab = null!;
+        
+        [SerializeField] Texture2D basicBlockTexture = null!;
+        [SerializeField] Texture2D unmovableBlockTexture = null!;
+        [SerializeField] Texture2D heavyBlockTexture = null!;
+        [SerializeField] Texture2D fragileBlockTexture = null!;
+        [SerializeField] Texture2D spikeGimmickTexture = null!;
+        [SerializeField] Texture2D confusionBlockTexture = null!;
+        [SerializeField] Texture2D cannonBlockTexture = null!;
+        [SerializeField] Texture2D treasureCoinTexture = null!;
 
         void Start()
         {
             Assert.IsNotNull(buttonParent);
 
             //EditMapForPlayerInputを探す
-            var editMapForPlayerInput = FindObjectOfType<MapMakerInput>();
+            var mapMakerInput = FindObjectOfType<MapMakerInput>();
 
-            InstantiateBlockSelectButton("Basic", () => editMapForPlayerInput.SetBlockType(typeof(BasicBlock)));
-            InstantiateBlockSelectButton("UnmovableBlock",
-                () => editMapForPlayerInput.SetBlockType(typeof(UnmovableBlock)));
-            InstantiateBlockSelectButton("HeavyBlock", () => editMapForPlayerInput.SetBlockType(typeof(HeavyBlock)));
-            InstantiateBlockSelectButton("FragileBlock",
-                () => editMapForPlayerInput.SetBlockType(typeof(FragileBlock)));
-            InstantiateBlockSelectButton("SpikeGimmick",
-                () => editMapForPlayerInput.SetBlockType(typeof(SpikeGimmick)));
-            InstantiateBlockSelectButton("ConfusionBlock",
-                () => editMapForPlayerInput.SetBlockType(typeof(ConfusionBlock)));
-            InstantiateBlockSelectButton("CannonBlock", () => editMapForPlayerInput.SetBlockType(typeof(CannonBlock)));
-            InstantiateBlockSelectButton("TreasureCoin",
-                () => editMapForPlayerInput.SetBlockType(typeof(TreasureCoin)));
+            InstantiateBlockSelectButton(basicBlockTexture, () => mapMakerInput.SetBlockType(typeof(BasicBlock)));
+            InstantiateBlockSelectButton(unmovableBlockTexture,
+                () => mapMakerInput.SetBlockType(typeof(UnmovableBlock)));
+            InstantiateBlockSelectButton(heavyBlockTexture, () => mapMakerInput.SetBlockType(typeof(HeavyBlock)));
+            InstantiateBlockSelectButton(fragileBlockTexture,
+                () => mapMakerInput.SetBlockType(typeof(FragileBlock)));
+            InstantiateBlockSelectButton(spikeGimmickTexture,
+                () => mapMakerInput.SetBlockType(typeof(SpikeGimmick)));
+            InstantiateBlockSelectButton(confusionBlockTexture,
+                () => mapMakerInput.SetBlockType(typeof(ConfusionBlock)));
+            InstantiateBlockSelectButton(cannonBlockTexture, () => mapMakerInput.SetBlockType(typeof(CannonBlock)));
+            InstantiateBlockSelectButton(treasureCoinTexture,
+                () => mapMakerInput.SetBlockType(typeof(TreasureCoin)));
         }
 
 
-        void InstantiateBlockSelectButton(string blockName, UnityAction action)
+        void InstantiateBlockSelectButton(Texture2D blockTex, UnityAction action)
         {
             var customButton = Instantiate(buttonPrefab, buttonParent);
-            customButton.Init();
-            customButton.SetText(blockName);
-            customButton.AddListener(action);
+            customButton.SetImage(blockTex);
+            customButton.ClickAction = action;
         }
     }
 }
