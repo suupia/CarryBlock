@@ -18,19 +18,15 @@ namespace Projects.MapMakerSystem.Scripts
 {
     public class MapMakerInput : MonoBehaviour
     {
-        public  string BlockTypeString => _blockType?.Name ?? "(None)";
-        public string DirectionString => _direction.ToString();
-        
         Direction _direction = Direction.Up;
 
         MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
-        StageMapSaver _stageMapSaver = null!;
         IMapGetter _mapGetter = null!;
         MapTestPlayStarter _mapTestPlayStarter = null!;
 
         Type _blockType = null!;
 
-        Vector2Int _respawnAreaOrigin = new Vector2Int(0,4);
+        Vector2Int _respawnAreaOrigin = new(0, 4);
         int _respawnSize = 3;
 
         InputAction _leftClickAction = null!;
@@ -40,13 +36,11 @@ namespace Projects.MapMakerSystem.Scripts
         [Inject]
         public void Construct(
             MemorableEditMapBlockAttacher editMapBlockAttacher,
-            StageMapSaver stageMapSaver,
             IMapGetter mapGetter,
             MapTestPlayStarter mapTestPlayStarter)
         {
             _editMapBlockAttacher = editMapBlockAttacher;
             _mapGetter = mapGetter;
-            _stageMapSaver = stageMapSaver;
             _mapTestPlayStarter = mapTestPlayStarter;
         }
 
@@ -62,6 +56,8 @@ namespace Projects.MapMakerSystem.Scripts
             var inputActionMap =
                 InputActionMapLoader.GetInputActionMap(InputActionMapLoader.ActionMapName.UI);
 
+            inputActionMap.Enable();
+
             _leftClickAction = inputActionMap.FindAction("LeftClick");
             _rightClickAction = inputActionMap.FindAction("RightClick");
             _moveAction = inputActionMap.FindAction("Point");
@@ -73,6 +69,8 @@ namespace Projects.MapMakerSystem.Scripts
         {
             if (_mapTestPlayStarter.IsTestPlaying) return;
 
+            Debug.Log("Calling");
+            
             var mouseXYPos = _moveAction.ReadValue<Vector2>(); // xy座標であることに注意
             var cameraHeight = Camera.main.transform.position.y;
             var mousePosOnGround =
