@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Carry.CarrySystem.Cart.Scripts;
 using Carry.CarrySystem.Player.Info;
 using System.Threading;
 using Carry.CarrySystem.Map.Interfaces;
-using Cysharp.Threading.Tasks;
 using Fusion;
 using UnityEngine;
 using VContainer;
@@ -40,19 +40,22 @@ namespace Carry.CarrySystem.Player.Scripts
                 {
                     CartControllerNet cart = FindObjectOfType<CartControllerNet>();
                     
-                    foreach (CarryPlayerControllerNet player in _carryPlayerContainer.PlayerControllers)
+                    foreach (var player in _carryPlayerContainer.PlayerControllers.Select((value, index) => (value, index)))
                     {
-                        if (player == null)  // タイトルに戻るときにplayerがおそらく先にDestroyされている
+                        if (player.value == null)  // タイトルに戻るときにplayerがおそらく先にDestroyされている
                         {
                             CancelFollowMovingCart();
                             return;
                         }
-                        Transform playerTransform = player.transform;
-                        Transform cartTransform = cart.transform;
+                        Transform playerTransform = player.value.transform;
 
-                        Vector3 newPosition = cartTransform.position + Vector3.up; 
+                        Vector3 centerPosition =  cart.transform.position + Vector3.up; 
                         
-                        playerTransform.position = newPosition;
+                        playerTransform.position = PlayerPositionCalculator.CalcPlayerPosition(
+                            centerPosition,
+                            player.index,
+                            _carryPlayerContainer.PlayerControllers.Count,
+                            radius:2.0f);
 
                         //_mapNumberSaverはカートに乗った瞬間の_mapUpdater.Indexが代入される
                         //_mapUpdater.Indexはマップが切り替わったら1増える
