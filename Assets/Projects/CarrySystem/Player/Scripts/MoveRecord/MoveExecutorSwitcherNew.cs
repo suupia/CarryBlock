@@ -33,40 +33,39 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void SwitchToConfusionMove()
         {
-            _moveExecutors.Add(new InverseInputMoveRecord(_playerAnimatorPresenter));
+            AddMoveRecord<InverseInputMoveRecord>();
         }
-        
         public void SwitchOffConfusionMove()
         {
-            _moveExecutors.Remove(new InverseInputMoveRecord(_playerAnimatorPresenter));
+            RemoveRecord<InverseInputMoveRecord>();
         }
         
         public void SwitchToDashMove()
         {
-            var nextMoveExe = new DashMoveRecord(_playerAnimatorPresenter);
-            _moveExecutors.Add(nextMoveExe);
+            AddMoveRecord<DashMoveRecord>();
         }
         public void SwitchOffDashMove()
         {
-            _moveExecutors.Remove(new DashMoveRecord(_playerAnimatorPresenter));
+            RemoveRecord<DashMoveRecord>();
         }
         public void SwitchToSlowMove()
         {
-            var nextMoveExe = new SlowMoveRecord(_playerAnimatorPresenter);
-            _moveExecutors.Add(nextMoveExe);
+            AddMoveRecord<SlowMoveRecord>();
         }
+
         public void SwitchOffSlowMove()
         {
-            _moveExecutors.Remove(new SlowMoveRecord(_playerAnimatorPresenter));
+            RemoveRecord<SlowMoveRecord>();
         }
+
         public void SwitchToFaintedMove()
         {
-            var nextMoveExe = new FaintedMoveRecord(_playerAnimatorPresenter);
-            _moveExecutors.Add(nextMoveExe);
+            AddMoveRecord<FaintedMoveRecord>();
         }
+
         public void SwitchOffFaintedMove()
         {
-            _moveExecutors.Remove(new FaintedMoveRecord(_playerAnimatorPresenter));
+            RemoveRecord<FaintedMoveRecord>();
         }
 
         public void AddMoveRecord<T>() where T : IMoveRecord
