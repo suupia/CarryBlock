@@ -101,7 +101,7 @@ namespace Carry.CarrySystem.Player.Scripts
             
         }
 
-        public void Reset(EntityGridMap map)
+        void Reset(EntityGridMap map)
         {
             // フロア移動の際に呼ばれる
             // Character?.Reset();
@@ -117,8 +117,9 @@ namespace Carry.CarrySystem.Player.Scripts
             var centerWorldPos = GridConverter.GridPositionToWorldPosition(centerGridPos);
             var spawnPos = PlayerPositionCalculator.CalcPlayerPosition(
                 centerWorldPos,
-                _playerCharacterTransporter.GetPlayerIndex(Info.PlayerRef),
+                _playerCharacterTransporter.GetPlayerNumber(Info.PlayerRef),
                 _playerCharacterTransporter.PlayerCount);
+            Debug.Log($"spawnPos = {spawnPos}, Number = {_playerCharacterTransporter.GetPlayerNumber(Info.PlayerRef)}, MaxPlayerCount = {_playerCharacterTransporter.PlayerCount}");
             var height = 0.5f; // 地面をすり抜けないようにするために、少し上に移動させておく（Spawnとの調整は後回し）
             Info.PlayerObj.transform.position = new Vector3(spawnPos.x, height, spawnPos.z);
             Info.PlayerRb.velocity = Vector3.zero;
