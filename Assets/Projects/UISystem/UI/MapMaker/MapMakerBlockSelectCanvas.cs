@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Carry.CarrySystem.Block.Scripts;
 using Carry.CarrySystem.CarriableBlock.Scripts;
 using Carry.UISystem.UI.Prefabs;
@@ -7,6 +8,8 @@ using Projects.MapMakerSystem.Scripts;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
+
+#nullable enable
 
 namespace Carry.UISystem.UI.EditMap
 {
@@ -26,6 +29,8 @@ namespace Carry.UISystem.UI.EditMap
         [SerializeField] Texture2D cannonBlockTexture = null!;
         [SerializeField] Texture2D treasureCoinTexture = null!;
 
+        readonly Dictionary<string, CustomViewButton> _buttonDictionary = new();
+        
         void Start()
         {
             Assert.IsNotNull(buttonParent);
@@ -33,27 +38,68 @@ namespace Carry.UISystem.UI.EditMap
             //EditMapForPlayerInputを探す
             var mapMakerInput = FindObjectOfType<MapMakerInput>();
 
-            InstantiateBlockSelectButton(basicBlockTexture, () => mapMakerInput.SetBlockType(typeof(BasicBlock)));
-            InstantiateBlockSelectButton(unmovableBlockTexture,
-                () => mapMakerInput.SetBlockType(typeof(UnmovableBlock)));
-            InstantiateBlockSelectButton(heavyBlockTexture, () => mapMakerInput.SetBlockType(typeof(HeavyBlock)));
-            InstantiateBlockSelectButton(fragileBlockTexture,
-                () => mapMakerInput.SetBlockType(typeof(FragileBlock)));
-            InstantiateBlockSelectButton(spikeGimmickTexture,
-                () => mapMakerInput.SetBlockType(typeof(SpikeGimmick)));
-            InstantiateBlockSelectButton(confusionBlockTexture,
-                () => mapMakerInput.SetBlockType(typeof(ConfusionBlock)));
-            InstantiateBlockSelectButton(cannonBlockTexture, () => mapMakerInput.SetBlockType(typeof(CannonBlock)));
-            InstantiateBlockSelectButton(treasureCoinTexture,
-                () => mapMakerInput.SetBlockType(typeof(TreasureCoin)));
+            InstantiateBlockSelectButton(basicBlockTexture, "Basic", () =>
+            {
+                SelectButton("Basic");
+                mapMakerInput.SetBlockType(typeof(BasicBlock));
+            });
+            InstantiateBlockSelectButton(unmovableBlockTexture, "Unmovable", () =>
+            {
+                SelectButton("Unmovable");
+                mapMakerInput.SetBlockType(typeof(UnmovableBlock));
+            });
+            InstantiateBlockSelectButton(heavyBlockTexture, "Heavy", () =>
+            {
+                SelectButton("Heavy");
+                mapMakerInput.SetBlockType(typeof(HeavyBlock));
+            });
+            InstantiateBlockSelectButton(fragileBlockTexture, "Fragile", () =>
+            {
+                SelectButton("Fragile");
+                mapMakerInput.SetBlockType(typeof(FragileBlock));
+            });
+            InstantiateBlockSelectButton(spikeGimmickTexture, "Spike", () =>
+            {
+                SelectButton("Spike");
+                mapMakerInput.SetBlockType(typeof(SpikeGimmick));
+            });
+            InstantiateBlockSelectButton(confusionBlockTexture, "Confusion", () =>
+            {
+                SelectButton("Confusion");
+                mapMakerInput.SetBlockType(typeof(ConfusionBlock));
+            });
+            InstantiateBlockSelectButton(cannonBlockTexture, "Cannon", () =>
+            {
+                SelectButton("Cannon");
+                mapMakerInput.SetBlockType(typeof(CannonBlock));
+            });
+            InstantiateBlockSelectButton(treasureCoinTexture, "Coin", () =>
+            {
+                SelectButton("Coin");
+                mapMakerInput.SetBlockType(typeof(TreasureCoin));
+            });
+            
+            SelectButton("Basic");
         }
 
-
-        void InstantiateBlockSelectButton(Texture2D blockTex, UnityAction action)
+        void InstantiateBlockSelectButton(Texture2D blockTex, string text, UnityAction action)
         {
             var customButton = Instantiate(buttonPrefab, buttonParent);
             customButton.SetImage(blockTex);
+            customButton.SetText(text);
             customButton.ClickAction = action;
+            
+            _buttonDictionary.Add(text, customButton);
+        }
+        
+        void SelectButton(string text)
+        {
+            foreach (var button in _buttonDictionary.Values)
+            {
+                button.Interactable = true;
+            }
+
+            _buttonDictionary[text].Interactable = false;
         }
     }
 }

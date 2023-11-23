@@ -40,14 +40,17 @@ namespace Carry.UISystem.UI.EditMap
 
             var resetButton = Instantiate(buttonPrefab, buttonParent);
             resetButton.SetImage(resetTexture);
+            resetButton.SetText("Reset");
             resetButton.ClickAction = () => _editMapBlockAttacher.Clear(_mapGetter.GetMap());
 
             _redoButton = Instantiate(buttonPrefab, buttonParent);
             _redoButton.SetImage(redoTexture);
+            _redoButton.SetText("Redo");
             _redoButton.ClickAction = () => _editMapBlockAttacher.Redo(_mapGetter.GetMap());
 
             _undoButton = Instantiate(buttonPrefab, buttonParent);
             _undoButton.SetImage(undoTexture);
+            _undoButton.SetText("Undo");
             _undoButton.ClickAction = () => _editMapBlockAttacher.Undo(_mapGetter.GetMap());
         }
 

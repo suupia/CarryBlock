@@ -60,6 +60,12 @@ namespace Carry.UISystem.UI.Prefabs
 
             // InputActionを取得する
             InputActionMap inputActionMap = InputActionMapLoader.GetInputActionMap(InputActionMapLoader.ActionMapName.UI);
+            
+            if(! inputActionMap.enabled)
+            {
+                inputActionMap.Enable();
+            }
+            
             _cursorAction = inputActionMap.FindAction("MoveCursor_Virtual");
             _leftClickAction = inputActionMap.FindAction("LeftClick_Virtual");
             _rightClickAction = inputActionMap.FindAction("RightClick_Virtual");

@@ -25,6 +25,7 @@ namespace Carry.UISystem.UI.Prefabs
         [SerializeField] AudioClip clickSound = null!;
         [SerializeField] Image frameImage = null!;
         [SerializeField] Image mainImage = null!;
+        [SerializeField] TMP_Text textMeshPro = null!;
 
         AudioSource? _audioSource;
         
@@ -51,14 +52,22 @@ namespace Carry.UISystem.UI.Prefabs
             mainImage.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
         }
         
+        public void SetText(string text)
+        {
+            textMeshPro.text = text;
+        }
+        
         void Start()
         {
             Assert.IsNotNull(clickSound);
             Assert.IsNotNull(frameImage);
             Assert.IsNotNull(mainImage);
+            Assert.IsNotNull(textMeshPro);
 
             _audioSource = FindObjectOfType<AudioSource>();
             Interactable = true;
+            
+            textMeshPro.alpha = 0.0f;
         }
 
         void Update()
@@ -110,6 +119,7 @@ namespace Carry.UISystem.UI.Prefabs
 
             frameImage.transform.DOScale(1.1f, 0.1f);
             mainImage.transform.DOScale(1.1f, 0.1f);
+            textMeshPro.alpha = 1.0f;
         }
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
@@ -120,6 +130,7 @@ namespace Carry.UISystem.UI.Prefabs
 
             frameImage.transform.DOScale(1.0f, 0.1f);
             mainImage.transform.DOScale(1.0f, 0.1f);
+            textMeshPro.alpha = 0.0f;
         }
     }
 }
