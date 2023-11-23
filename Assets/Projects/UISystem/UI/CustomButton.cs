@@ -14,7 +14,7 @@ namespace Carry.UISystem.UI
     {
         [SerializeField] AudioClip clickSound = null!;
         [SerializeField] TextMeshProUGUI? textMeshProUGUI;
-        Button _button = null!;
+        Button? _button;
         Component[]? _childrenComponents;
         AudioSource? _audioSource;
 
@@ -47,9 +47,10 @@ namespace Carry.UISystem.UI
 
         public bool Interactable
         {
-            get => _button.interactable;
+            get => _button?.interactable ?? false;
             set
             {
+                if(_button == null) return;
                 if (_childrenComponents != null)
                 {
                     foreach (var child in _childrenComponents)
@@ -66,6 +67,7 @@ namespace Carry.UISystem.UI
 
         public void AddListener(UnityAction action)
         {
+            if(_button == null) return;
             _button.onClick.AddListener(() =>
             {
                 action();
