@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public RegularMoveExecutorNew(float acceleration, float maxVelocity, float stoppingForce)
         {
-            _moveParameter = new Parameter(acceleration, maxVelocity, stoppingForce);
+            _moveParameter = new MoveParameter(acceleration, maxVelocity, stoppingForce);
         }
 
         public void Setup(PlayerInfo info)
@@ -33,13 +33,13 @@ namespace Carry.CarrySystem.Player.Scripts
             return _moveParameter;
         }
 
-        class Parameter : IMoveParameter
+        class MoveParameter : IMoveParameter
         {
             public float Acceleration { get; set; }
             public float MaxVelocity { get; set; }
             public float StoppingForce { get; set; }
 
-            public Parameter(float acceleration, float maxVelocity, float stoppingForce)
+            public MoveParameter(float acceleration, float maxVelocity, float stoppingForce)
             {
                 Acceleration = acceleration;
                 MaxVelocity = maxVelocity;
@@ -49,16 +49,16 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public IMoveFunction Chain(IMoveFunction _)
         {
-            return new ReturnFunction(_playerAnimatorPresenter, _info,_moveParameter );
+            return new MoveFunction(_playerAnimatorPresenter, _info,_moveParameter );
         }
 
-        class ReturnFunction : IMoveFunction
+        class MoveFunction : IMoveFunction
         {
             readonly IPlayerAnimatorPresenter _presenter;
             readonly PlayerInfo _info;
             readonly IMoveParameter _parameter;
 
-            public ReturnFunction(IPlayerAnimatorPresenter presenter,PlayerInfo info, IMoveParameter parameter)
+            public MoveFunction(IPlayerAnimatorPresenter presenter,PlayerInfo info, IMoveParameter parameter)
             {
                 _presenter = presenter;
                 _info = info;

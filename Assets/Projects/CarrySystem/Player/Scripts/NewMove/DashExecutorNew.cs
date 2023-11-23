@@ -18,15 +18,15 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public IMoveFunction Chain(IMoveFunction function)
         {
-            return new ReturnFunction(function, _playerAnimatorPresenter);
+            return new MoveFunction(function, _playerAnimatorPresenter);
 
         }
         
-        class ReturnFunction : IMoveFunction
+        class MoveFunction : IMoveFunction
         {
             readonly IMoveFunction _func;
             readonly IPlayerAnimatorPresenter _presenter;
-            public ReturnFunction(IMoveFunction function, IPlayerAnimatorPresenter presenter)
+            public MoveFunction(IMoveFunction function, IPlayerAnimatorPresenter presenter)
             {
                 _func = function;
                 _presenter = presenter;

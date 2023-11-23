@@ -12,14 +12,14 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public IMoveParameter Chain(IMoveParameter parameter)
         {
-            return new ReturnParameter(parameter);
+            return new MoveParameter(parameter);
         }
-        class ReturnParameter : IMoveParameter
+        class MoveParameter : IMoveParameter
         {
             public float Acceleration { get; set; } = 0;
             public float MaxVelocity { get; set; } = 0;
             public float StoppingForce { get; set; }
-            public ReturnParameter(IMoveParameter parameter)
+            public MoveParameter(IMoveParameter parameter)
             {
                 StoppingForce = parameter.StoppingForce;
             }
@@ -27,15 +27,15 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public IMoveFunction Chain(IMoveFunction function)
         {
-            return new ReturnFunction(function, _playerAnimatorPresenter);
+            return new MoveFunction(function, _playerAnimatorPresenter);
 
         }
         
-        class ReturnFunction : IMoveFunction
+        class MoveFunction : IMoveFunction
         {
             readonly IMoveFunction _func;
             readonly IPlayerAnimatorPresenter _presenter;
-            public ReturnFunction(IMoveFunction function, IPlayerAnimatorPresenter presenter)
+            public MoveFunction(IMoveFunction function, IPlayerAnimatorPresenter presenter)
             {
                 _func = function;
                 _presenter = presenter;
