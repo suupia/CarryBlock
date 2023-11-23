@@ -259,8 +259,6 @@ MonoBehaviour:
   - {fileID: 3546432070225258417, guid: 260f793b46807d741bf8925d10fd2ce6, type: 3}
   - {fileID: 3546432070225258417, guid: 260f793b46807d741bf8925d10fd2ce6, type: 3}
   - {fileID: 3546432070225258417, guid: 260f793b46807d741bf8925d10fd2ce6, type: 3}
-  _IsReady:
-    _value: 0
 --- !u!114 &5677767128214668315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,7 +276,7 @@ MonoBehaviour:
   unmovableBlockView: {fileID: 6974213662614079595}
   heavyBlockView: {fileID: 2913778499092219122}
   fragileBlockView: {fileID: 2262121077034716302}
-  ConfusionBlockView: {fileID: 5287671346004568305}
+  confusionBlockView: {fileID: 5287671346004568305}
 --- !u!114 &4897488923873159300
 MonoBehaviour:
   m_ObjectHideFlags: 0
