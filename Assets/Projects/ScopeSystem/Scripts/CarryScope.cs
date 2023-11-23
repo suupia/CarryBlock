@@ -15,6 +15,7 @@ using Fusion;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
 using Projects.CarrySystem.Cart.Interfaces;
+using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 using UnityEngine;
 using VContainer;
@@ -86,6 +87,9 @@ namespace Carry.ScopeSystem.Scripts
             
             // Item
             builder.Register<TreasureCoinCounter>(Lifetime.Scoped);
+            
+            // Gimmick
+            builder.RegisterComponentInHierarchy<GimmickFinalizerMono>();
 
             // UI
             builder.RegisterComponentInHierarchy<FloorTimerNet>();
