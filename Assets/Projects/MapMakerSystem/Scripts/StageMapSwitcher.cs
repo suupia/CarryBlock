@@ -29,7 +29,6 @@ namespace Projects.MapMakerSystem.Scripts
             var stage = StageFileUtility.Load(editingMapTransporter.StageId)!;
             Index = editingMapTransporter.Index;
             _stage = stage;
-
         }
         
         public EntityGridMap GetMap()
