@@ -1,3 +1,4 @@
+using System;
 using Carry.CarrySystem.CarryScene.Scripts;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.GameSystem.Scripts;
@@ -14,13 +15,16 @@ namespace Carry.GameSystem.TitleScene.Scripts
         [SerializeField] NetworkPrefabRef carryInitializerPrefab;
         bool _isStarted; // StarGameWithRoomName() is called only once.
 
+        void Awake()
+        {
+            DestroyAllDontDestroyOnLoadObjects();
+        }
+
         // Called by UI Button
         public async void StartGame(string roomName, GameMode gameMode)
         {
             if (_isStarted) return;
-            
-            DestroyBeforeNetworkComponent();
-            
+
             var runnerManager = FindObjectOfType<NetworkRunnerManager>();
             Assert.IsNotNull(runnerManager, "NetworkRunnerManagerをシーンに配置してください");
 
@@ -34,25 +38,15 @@ namespace Carry.GameSystem.TitleScene.Scripts
             SceneTransition.TransitioningScene(runnerManager.Runner, SceneName.LobbyScene);
         }
         
-        void DestroyBeforeNetworkComponent()
-        {
-            var runnerGameObject = GameObject.Find("NetworkRunner(Clone)");
-            Debug.Log($"runnerGameObject: {runnerGameObject}");
-            var runner = runnerGameObject != null ? runnerGameObject.GetComponent<NetworkRunner>() : null;
-            if (runner != null)
-            {
-                // 前の状態が残っているので、それを消す
-                Debug.Log($"Destroying before NetworkComponents");
-                var networkSceneManager = FindObjectOfType<NetworkSceneManagerDefault>();
-                var mapKeyDataSelector = FindObjectOfType<MapKeyDataSelectorNet>();
-                var carryInitializerReady = FindObjectOfType<CarryInitializersReady>();
-                if(networkSceneManager != null) Destroy(networkSceneManager.gameObject);
-                if(mapKeyDataSelector != null) runner.Despawn(mapKeyDataSelector.Object);
-                if(carryInitializerReady != null) runner.Despawn(carryInitializerReady.Object);
+
+        // 前回のNetwork関連のオブジェクトを全て削除する
+        void DestroyAllDontDestroyOnLoadObjects() {
                 
-                // ここでRunnerをさくじょ..?
-                
-            }
+            var sacrifice = new GameObject("Sacrificial Object");
+            DontDestroyOnLoad(sacrifice);
+
+            foreach(var root in sacrifice.scene.GetRootGameObjects())
+                Destroy(root);
 
         }
     }
