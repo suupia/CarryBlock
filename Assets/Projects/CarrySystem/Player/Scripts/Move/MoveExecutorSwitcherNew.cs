@@ -10,7 +10,6 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class MoveExecutorSwitcherNew : IMoveExecutorSwitcher
     {
-        public  IMoveExecutor CurrentMoveExecutor => _currentMoveExecutor;
         readonly IMoveExecutorLeaf _regularMoveLeaf;
         readonly IMoveExecutorLeaf _confusionMoveLeaf;
         
@@ -19,7 +18,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
         PlayerInfo _info = null!;
         IPlayerAnimatorPresenter _playerAnimatorPresenter = null!;
-        readonly IList<(IMoveParameter parameter, IMoveFunction function)> _moveFunctions = new List<(IMoveParameter, IMoveFunction)>();
+        readonly IList<IMoveExecutorNew> _moveExecutors = new List<IMoveExecutorNew>();
 
         public MoveExecutorSwitcherNew(
             )
@@ -39,8 +38,8 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void Move(Vector3 input)
         {
-            IMoveParameter parameter = _moveFunctions.Aggregate((IMoveParameter)null, (integrated, next) => next.parameter.Chain(integrated));
-            IMoveFunction function = _moveFunctions.Aggregate((IMoveFunction)null, (integrated, next) => next.function.Chain(integrated));
+            IMoveParameter parameter = _moveExecutors.Aggregate((IMoveParameter)null, (integrated, next) => next.Chain(integrated));
+            IMoveFunction function = _moveExecutors.Aggregate((IMoveFunction)null, (integrated, next) => next.Chain(integrated));
             MoveExecutorNew moveExecutorNew = new MoveExecutorNew();
             moveExecutorNew.Move(input, parameter, function);
             
