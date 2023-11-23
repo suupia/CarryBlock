@@ -110,18 +110,23 @@ namespace Carry.CarrySystem.Player.Scripts
     
     ///////////////////////////////////////////////////
 
-    public interface IMoveFunction : IMoveExecutor
+    public interface IMoveFunction
     {
-        IMoveFunction Chain(IMoveFunction moveExecutor);
+        IMoveExecutorLeaf Chain(IMoveExecutorLeaf moveExecutor);
     }
     public class NewFastMoveExecutor : IMoveExecutor, IMoveFunction
     {
+        public IMoveExecutorLeaf CreateNewLeaf() => new RegularMoveExecutor(0,0,0);
+        public float Acceleration { get; set; }
+        public float MaxVelocity { get; set; }
+        public float StoppingForce { get; set; }
+
         public void Setup(PlayerInfo info)
         {
             throw new System.NotImplementedException();
         }
         
-        public IMoveFunction Chain(IMoveFunction moveExecutor)
+        public IMoveExecutorLeaf Chain(IMoveExecutorLeaf moveExecutor)
         {
             throw new System.NotImplementedException();
         }
@@ -143,7 +148,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Move(Vector3 input)
         {
-            IMoveFunction move = _moveExecutors.Aggregate((IMoveFunction)new NewFastMoveExecutor(), (integrated, next) =>  next.Chain(integrated));
+            IMoveExecutorLeaf move = _moveExecutors.Aggregate((IMoveExecutorLeaf)new NewFastMoveExecutor(), (integrated, next) =>  next.Chain(integrated));
             move.Move(input);
             
         }

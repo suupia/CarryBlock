@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class FaintedMoveExecutor : IMoveExecutor
+    public class FaintedMoveExecutor : IMoveExecutor , IMoveFunction
     {
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
@@ -18,6 +18,14 @@ namespace Carry.CarrySystem.Player.Scripts
             var maxVelocity = 0;
             var stoppingForce = moveExecutorLeaf.StoppingForce;
             _moveExecutor = new RegularMoveExecutor(acceleration, maxVelocity, stoppingForce);
+        }
+        
+        public IMoveExecutorLeaf Chain(IMoveExecutorLeaf moveExecutorLeaf)
+        {
+            var acceleration = 0;
+            var maxVelocity = 0;
+            var stoppingForce = moveExecutorLeaf.StoppingForce;
+            return new RegularMoveExecutor(acceleration, maxVelocity, stoppingForce);
         }
 
         public void Setup(PlayerInfo info)

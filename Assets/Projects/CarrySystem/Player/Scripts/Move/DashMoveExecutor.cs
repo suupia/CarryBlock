@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class DashMoveExecutor : IMoveExecutor
+    public class DashMoveExecutor : IMoveExecutor ,IMoveFunction
     {
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
@@ -18,6 +18,14 @@ namespace Carry.CarrySystem.Player.Scripts
             _moveExecutor.MaxVelocity *= 10.0f / 5.0f;
             Debug.Log($"Construct _moveExecutor.MaxVelocity : {_moveExecutor.MaxVelocity}");
 
+        }
+        
+        public IMoveExecutorLeaf Chain(IMoveExecutorLeaf moveExecutorLeaf)
+        {
+            var newMove = moveExecutorLeaf.CreateNewLeaf();
+            newMove.Acceleration *= 10.0f / 4.0f;
+            newMove.MaxVelocity *= 10.0f / 5.0f;
+            return newMove;
         }
 
         public void Setup(PlayerInfo info)

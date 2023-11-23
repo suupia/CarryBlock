@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class SlowMoveExecutor : IMoveExecutor
+    public class SlowMoveExecutor : IMoveExecutor ,IMoveFunction
     {
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
@@ -17,6 +17,14 @@ namespace Carry.CarrySystem.Player.Scripts
             var maxVelocity = moveExecutorLeaf.MaxVelocity * 2.0f / 5.0f;
             var stoppingForce = moveExecutorLeaf.StoppingForce;
             _moveExecutor = new RegularMoveExecutor(acceleration, maxVelocity, stoppingForce);
+        }
+        
+        public IMoveExecutorLeaf Chain(IMoveExecutorLeaf moveExecutorLeaf)
+        {
+            var acceleration = moveExecutorLeaf.Acceleration * 3.0f / 4.0f;
+            var maxVelocity = moveExecutorLeaf.MaxVelocity * 2.0f / 5.0f;
+            var stoppingForce = moveExecutorLeaf.StoppingForce;
+            return new RegularMoveExecutor(acceleration, maxVelocity, stoppingForce);
         }
 
         public void Setup(PlayerInfo info)
