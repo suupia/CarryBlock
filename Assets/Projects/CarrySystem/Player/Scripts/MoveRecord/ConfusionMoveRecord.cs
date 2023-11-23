@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public record InverseInputMoveRecord : IMoveRecord
+    public record ConfusionMoveRecord : IMoveRecord
     {
-        public InverseInputMoveRecord(IPlayerAnimatorPresenter _)
+        public ConfusionMoveRecord(IPlayerAnimatorPresenter _)
         {
         }
 

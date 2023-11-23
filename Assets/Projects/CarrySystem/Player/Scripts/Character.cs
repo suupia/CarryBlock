@@ -12,7 +12,7 @@ using Carry.CarrySystem.VFX.Scripts;
 namespace Carry.CarrySystem.Player.Scripts
 {
     public class Character :      
-        IMoveExecutorSwitcherNew, 
+        IMoveExecutorSwitcher, 
         IHoldActionExecutor, 
         IOnDamageExecutor,
         IDashExecutor,
@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         public PlayerHoldingObjectContainer PlayerHoldingObjectContainer { get; }
 
-        readonly IMoveExecutorSwitcherNew _moveExecutorSwitcher;
+        readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         readonly IHoldActionExecutor _holdActionExecutor;
         readonly IDashExecutor _dashExecutor;
         readonly IPassActionExecutor _passActionExecutor;
@@ -28,7 +28,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
 
         public Character(
-            IMoveExecutorSwitcherNew moveExecutorSwitcher,
+            IMoveExecutorSwitcher moveExecutorSwitcher,
             IHoldActionExecutor holdActionExecutor,
             IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,

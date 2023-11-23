@@ -3,7 +3,7 @@
     public interface IMoveRecord
     {
         public IMoveParameter Chain(IMoveParameter parameter);
-        public IMoveFunction Chain(IMoveFunction nextMoveFunction);
+        public IMoveFunction Chain(IMoveFunction function);
 
     }
 }

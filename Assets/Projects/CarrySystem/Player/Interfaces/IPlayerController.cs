@@ -9,7 +9,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         public GameObject GameObjectValue { get; }
         public Rigidbody RigidbodyValue { get; }
         public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer { get; }
-        public IMoveExecutorSwitcherNew GetMoveExecutorSwitcher { get; }
+        public IMoveExecutorSwitcher GetMoveExecutorSwitcher { get; }
         public IHoldActionExecutor GetHoldActionExecutor { get; }
     }
 }

@@ -8,8 +8,8 @@ namespace Carry.CarrySystem.CarriableBlock.Interfaces
     public interface ICarriableBlock : IBlock
     {
         bool CanPickUp();
-        void PickUp(IMoveExecutorSwitcherNew moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor);
+        void PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor);
         bool CanPutDown(IList<ICarriableBlock> placedBlocks);
-        void PutDown(IMoveExecutorSwitcherNew moveExecutorSwitcher);
+        void PutDown(IMoveExecutorSwitcher moveExecutorSwitcher);
     }
 }

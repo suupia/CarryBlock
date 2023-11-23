@@ -18,7 +18,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public bool IsFainted { get; private set; }
         public float FaintedSeconds => CalcFaintedTime();
         PlayerInfo _info = null!;
-        readonly IMoveExecutorSwitcherNew _moveExecutorSwitcher;
+        readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
         readonly PlayerCharacterTransporter _playerCharacterTransporter;
         
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
@@ -27,7 +27,7 @@ namespace Carry.CarrySystem.Player.Scripts
         CancellationTokenSource? _cancellationTokenSource;
 
         public OnDamageExecutor(
-            IMoveExecutorSwitcherNew moveExecutorSwitcher,
+            IMoveExecutorSwitcher moveExecutorSwitcher,
             PlayerCharacterTransporter playerCharacterTransporter
             )
         {

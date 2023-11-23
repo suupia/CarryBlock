@@ -43,7 +43,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return false;  // 常に持ち上げられない
         }
 
-        public void  PickUp(IMoveExecutorSwitcherNew moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
+        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
         {
             // 特になし
         }
@@ -53,7 +53,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return false; // 常に置けない
         }
         
-        public void PutDown(IMoveExecutorSwitcherNew moveExecutorSwitcher)
+        public void PutDown(IMoveExecutorSwitcher moveExecutorSwitcher)
         {
             // 特になし
         }
