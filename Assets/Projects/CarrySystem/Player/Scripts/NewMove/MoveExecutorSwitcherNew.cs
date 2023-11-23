@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class MoveExecutorSwitcherNew : IMoveExecutorSwitcher
+    public class MoveExecutorSwitcherNew : IMoveExecutorSwitcherNew
     {
         PlayerInfo _info = null!;
         IPlayerAnimatorPresenter _playerAnimatorPresenter = null!;
@@ -35,19 +35,14 @@ namespace Carry.CarrySystem.Player.Scripts
             
         }
         
-        public void SwitchToBeforeMoveExecutor()
-        {
-           // todo : メソッドを分割して、Remove処理を書く
-        }
-        
-        public void SwitchToRegularMove()
-        {
-            // todo : メソッドを分割して、Remove処理を書く
-        }
-        
         public void SwitchToConfusionMove()
         {
             _moveExecutors.Add(new InverseInputMoveExecutorNew());
+        }
+        
+        public void SwitchOffConfusionMove()
+        {
+            _moveExecutors.Remove(new InverseInputMoveExecutorNew());
         }
         
         public void SwitchToDashMove()
@@ -55,15 +50,26 @@ namespace Carry.CarrySystem.Player.Scripts
             var nextMoveExe = new DashMoveExecutorNew(_playerAnimatorPresenter);
             _moveExecutors.Add(nextMoveExe);
         }
+        public void SwitchOffDashMove()
+        {
+            _moveExecutors.Remove(new DashMoveExecutorNew(_playerAnimatorPresenter));
+        }
         public void SwitchToSlowMove()
         {
             var nextMoveExe = new SlowMoveExecutorNew(_playerAnimatorPresenter);
             _moveExecutors.Add(nextMoveExe);
         }
-
+        public void SwitchOffSlowMove()
+        {
+            _moveExecutors.Remove(new SlowMoveExecutorNew(_playerAnimatorPresenter));
+        }
         public void SwitchToFaintedMove()
         {
             var nextMoveExe = new FaintedMoveExecutorNew(_playerAnimatorPresenter);
+        }
+        public void SwitchOffFaintedMove()
+        {
+            _moveExecutors.Remove(new FaintedMoveExecutorNew(_playerAnimatorPresenter));
         }
                 
         // Animator
