@@ -1,10 +1,8 @@
+#nullable enable
+
 using System;
-using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
-using UnityEngine;
-
-#nullable enable
 
 namespace Projects.MapMakerSystem.Scripts
 {
@@ -12,7 +10,7 @@ namespace Projects.MapMakerSystem.Scripts
     {
         public int Index { get;}
 
-        public Stage Stage { get; private set; }
+        Stage _stage;
         
         readonly IEntityGridMapBuilder _entityGridMapBuilder;
         readonly IPresenterPlacer _presenterPlacer;
@@ -27,30 +25,30 @@ namespace Projects.MapMakerSystem.Scripts
         {
             _entityGridMapBuilder = entityGridMapBuilder;
             _presenterPlacer = presenterPlacer;
-            
-            var stage = StageFileUtility.Load(editingMapTransporter.StageId);
-            Index = editingMapTransporter.Index;
-            Stage = stage;
 
+            var stage = StageFileUtility.Load(editingMapTransporter.StageId)!;
+            Index = editingMapTransporter.Index;
+            _stage = stage;
         }
         
         public EntityGridMap GetMap()
         {
+            if (_currentMap == null) throw new Exception("Please call InitSwitchMap first");
             return _currentMap;
         }
 
         public void InitTmpMap()
         {
-            var preStage = Stage;
-            Stage = StageFileUtility.Load(StageFileUtility.TMPStageID)!;
+            var preStage = _stage;
+            _stage = StageFileUtility.Load(StageFileUtility.TMPStageID) ??
+                     new Stage("Tmp", StageFileUtility.TMPStageID);
             InitSwitchMap();
-            Stage = preStage;
+            _stage = preStage;
         }
 
         public void InitSwitchMap()
         {
-
-            var info = Stage.mapInfos[Index];
+            var info = _stage.mapInfos[Index];
             _currentMap = _entityGridMapBuilder.BuildEntityGridMap(info.data);
             _presenterPlacer.Place(_currentMap);
             
@@ -59,7 +57,7 @@ namespace Projects.MapMakerSystem.Scripts
 
         public void SwitchMap()
         {
-            var info = Stage.mapInfos[Index];
+            var info = _stage.mapInfos[Index];
             _currentMap = _entityGridMapBuilder.BuildEntityGridMap(info.data);
             _presenterPlacer.Place(_currentMap);
             

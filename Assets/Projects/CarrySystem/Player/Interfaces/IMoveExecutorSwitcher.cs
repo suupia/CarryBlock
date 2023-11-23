@@ -1,15 +1,10 @@
-﻿using Carry.CarrySystem.Player.Info;
-using UnityEngine;
+﻿#nullable enable
 
 namespace Carry.CarrySystem.Player.Interfaces
 {
     public interface IMoveExecutorSwitcher : IMoveExecutor
     {
-        public void SwitchToBeforeMoveExecutor();
-        public void SwitchToRegularMove();
-        public void SwitchToDashMove();
-        public void SwitchToSlowMove();
-        public void SwitchToConfusionMove();
-        public void SwitchToFaintedMove();
+        public void AddMoveRecord<T>() where T : IMoveRecord;
+        public void RemoveRecord<T>() where T : IMoveRecord;
     }
 }

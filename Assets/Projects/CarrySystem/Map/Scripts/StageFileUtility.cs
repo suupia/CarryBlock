@@ -1,10 +1,10 @@
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-
-#nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
@@ -73,36 +73,26 @@ namespace Carry.CarrySystem.Map.Scripts
             using var streamWriter = new StreamWriter(path);
             streamWriter.Write(jsonData);
             streamWriter.Flush();
+
+            Debug.Log("ステージ" + stage.id + " を保存しました");
         }
-        
-        public static Stage Load(string stageId)
+
+        public static Stage? Load(string stageId)
         {
             var path = GetPath(stageId);
 
-            if (File.Exists(path))
+            if (!File.Exists(path))
             {
-                string jsonData = File.ReadAllText(path);
-                return JsonUtility.FromJson<Stage>(jsonData);
+                Debug.LogWarning(path + " が存在しません");
+                return null;
             }
-            else
-            {
-                return LoadDefaultStage();
-            }
-        }
 
-         static Stage LoadDefaultStage()
-         {
-             Debug.LogError("File not found. So load default stage.");
-             return new Stage("default stage");
-         }
-        
+            var jsonData = File.ReadAllText(path);
+            return JsonUtility.FromJson<Stage>(jsonData);
+        }
         
         public static IReadOnlyList<Stage> GetStages()
         {
-            // todo : 
-            // ・Worldの内のステージがすべてそろっているかどうかを反してして、ない場合は
-            // LoadFixedWorld()を呼び出すようにする
-            
             var world = LoadWorld();
             var stageIds = world.stageIds;
             var needsRefreshWorld = false;
@@ -111,10 +101,10 @@ namespace Carry.CarrySystem.Map.Scripts
             for (var i = 0; i < stageIds.Count; i++)
             {
                 var stage = Load(stageIds[i]);
-                // todo : stageが削除されたときに対応する処理を書く
                 if (stage == null)
                 {
-                    stage = new Stage($"Stage{i}");
+                    stage = new Stage($"Stage{i + 1}");
+                    Save(stage);
                     world.stageIds[i] = stage.id;
                     needsRefreshWorld = true;
                 }
@@ -136,6 +126,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             PlayerPrefs.SetString("world",JsonUtility.ToJson(world));
             PlayerPrefs.Save();
+            Debug.Log("新しいWorldを作成しました " + JsonUtility.ToJson(world));
         }
 
         static World LoadWorld()
@@ -169,8 +160,8 @@ namespace Carry.CarrySystem.Map.Scripts
                 Save(stage);
             }
             Save(new Stage("Tmp", TMPStageID));
-            
-            Debug.Log("ステージが新規作成されました");
+
+            Debug.Log("初期ステージが新規作成されました");
 
             return stages;
         }

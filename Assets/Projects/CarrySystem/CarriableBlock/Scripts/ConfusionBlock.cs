@@ -18,7 +18,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
     public class ConfusionBlock : ICarriableBlock , IHoldable
     {
         public Vector2Int GridPosition { get; set; }
-        public int MaxPlacedBlockCount { get; } = 1;
+        public int MaxPlacedBlockCount { get; } = 2;
         public Kind KindValue { get; }
 
         public enum Kind
@@ -41,7 +41,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
         {
             // 上下左右を入れ替えた混乱の動きに切り替える
-            moveExecutorSwitcher.SwitchToConfusionMove();
+            moveExecutorSwitcher.AddMoveRecord<ConfusionMoveRecord>();
         }
 
         public bool CanPutDown(IList<ICarriableBlock> placedBlocks)
@@ -62,7 +62,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         public void PutDown(IMoveExecutorSwitcher moveExecutorSwitcher) 
         {
             // 混乱状態をもとに戻す
-            moveExecutorSwitcher.SwitchToRegularMove();
+            moveExecutorSwitcher.RemoveRecord<ConfusionMoveRecord>();
         }
     }
 }

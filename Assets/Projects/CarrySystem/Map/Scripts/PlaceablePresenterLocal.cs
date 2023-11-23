@@ -30,6 +30,7 @@ namespace Carry.CarrySystem.Map.Scripts
         [SerializeField] GameObject doubleHeavyBlockView = null!;
         [SerializeField] GameObject fragileBlockView = null!;
         [SerializeField] GameObject confusionBlockView = null!;
+        [SerializeField] GameObject doubleConfusionBlockView = null!;
         [SerializeField] GameObject treasureCoinView = null!;
         [SerializeField] GameObject cannonBlockView = null!;
         Direction _cannonDirectionLocal;
@@ -107,6 +108,12 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 0 or 2 => false,
                 1 => true,
+                _ => throw new InvalidOperationException($"ConfusionBlockCount : {_confusionBlockCount}")
+            });
+            doubleConfusionBlockView.SetActive(_confusionBlockCount switch
+            {
+                0 or 1 => false,
+                2 => true,
                 _ => throw new InvalidOperationException($"ConfusionBlockCount : {_confusionBlockCount}")
             });
 
