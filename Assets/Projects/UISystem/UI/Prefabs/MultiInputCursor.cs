@@ -2,6 +2,7 @@
 
 using Carry.Utility.Scripts;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Users;
@@ -20,15 +21,16 @@ namespace Carry.UISystem.UI.Prefabs
         readonly float _padding = 25.0f;
         
         Mouse? _virtualMouse;
-        Mouse _currentMouse = null!;
-        Camera _mainCamera = null!;
-        InputAction _cursorAction = null!;
-        InputAction _leftClickAction = null!;
-        InputAction _rightClickAction = null!;
-        bool _previousLeftButtonIsPressed = false; 
-        bool _previousRightButtonIsPressed = false;
-        string _previousControlScheme = "Mouse";
+        Mouse? _currentMouse;
+        Camera? _mainCamera;
         
+        InputAction? _cursorAction;
+        InputAction? _leftClickAction;
+        InputAction? _rightClickAction;
+        
+        bool _previousLeftButtonIsPressed; 
+        bool _previousRightButtonIsPressed;
+        string _previousControlScheme = "Mouse";
         
         void OnEnable()
         {
@@ -58,9 +60,19 @@ namespace Carry.UISystem.UI.Prefabs
 
             // InputActionを取得する
             InputActionMap inputActionMap = InputActionMapLoader.GetInputActionMap(InputActionMapLoader.ActionMapName.UI);
+            
+            if(! inputActionMap.enabled)
+            {
+                inputActionMap.Enable();
+            }
+            
             _cursorAction = inputActionMap.FindAction("MoveCursor_Virtual");
             _leftClickAction = inputActionMap.FindAction("LeftClick_Virtual");
             _rightClickAction = inputActionMap.FindAction("RightClick_Virtual");
+            
+            Assert.IsNotNull(_cursorAction);
+            Assert.IsNotNull(_leftClickAction);
+            Assert.IsNotNull(_rightClickAction);
 
             Debug.Log("OnEnable");
         }
@@ -68,7 +80,10 @@ namespace Carry.UISystem.UI.Prefabs
         void OnDisable()
         {
             // 必ず追加したデバイスを削除すること
-            if(_virtualMouse != null && _virtualMouse.added)InputSystem.RemoveDevice(_virtualMouse);
+            if (_virtualMouse != null && _virtualMouse.added)
+            {
+                InputSystem.RemoveDevice(_virtualMouse);
+            }
             
             InputSystem.onAfterUpdate -= UpdateMotion;
             playerInput.onControlsChanged -= OnControlsChanged;
@@ -85,7 +100,7 @@ namespace Carry.UISystem.UI.Prefabs
             }
 
             // 仮想マウスの位置を更新する
-            Vector2 deltaValue = _cursorAction.ReadValue<Vector2>();
+            Vector2 deltaValue = _cursorAction?.ReadValue<Vector2>() ?? Vector2.zero;
             deltaValue *= _cursorSpeed * Time.unscaledDeltaTime;
             
             Vector2 currentPos = _virtualMouse.position.ReadValue();
@@ -99,7 +114,7 @@ namespace Carry.UISystem.UI.Prefabs
             cursorTransform.transform.position = newPos;
 
             // 仮想マウスのボタン(クリック)の状態を更新する
-            bool isPressed = _leftClickAction.IsPressed();
+            bool isPressed = _leftClickAction?.IsPressed() ?? false;
             if (_previousLeftButtonIsPressed != isPressed)
             {
                 _virtualMouse.CopyState<MouseState>(out var mouseState);
@@ -109,7 +124,7 @@ namespace Carry.UISystem.UI.Prefabs
             }
             
             //べた書きだけど，右クリックも同様に更新する
-            isPressed = _rightClickAction.IsPressed();
+            isPressed = _rightClickAction?.IsPressed() ?? false;
             if (_previousRightButtonIsPressed != isPressed)
             {
                 _virtualMouse.CopyState<MouseState>(out var mouseState);
@@ -122,6 +137,7 @@ namespace Carry.UISystem.UI.Prefabs
         void OnControlsChanged(PlayerInput input)
         {
             if(_virtualMouse == null) { return; }
+            if(_currentMouse == null) { return; }
          
             // 入力方法が切り替わった時，カーソルの表示を切り替える．その際に，切り替わるカーソルの位置を現在のカーソルの位置に合わせる．
             if (playerInput.currentControlScheme == _mouseScheme && _previousControlScheme != _mouseScheme)

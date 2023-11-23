@@ -1,23 +1,30 @@
-#nullable enable
-
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.EditMapSystem.EditMapForPlayer.Scripts;
+using Carry.UISystem.UI.Prefabs;
 using UnityEngine;
 using UnityEngine.Assertions;
 using VContainer;
+
+#nullable enable
 
 namespace Carry.UISystem.UI.EditMap
 {
     public class MapMakerToolCanvas : MonoBehaviour
     {
         [SerializeField] Transform buttonParent = null!;
-        [SerializeField] CustomButton buttonPrefab = null!;
+        
+        //以下，Addressableから取得するべき
+        [SerializeField] CustomViewButton buttonPrefab = null!;
+        
+        [SerializeField] Texture2D resetTexture = null!;
+        [SerializeField] Texture2D redoTexture = null!;
+        [SerializeField] Texture2D undoTexture = null!;
 
         IMapGetter _mapGetter = null!;
         MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
 
-        CustomButton _redoButton = null!;
-        CustomButton _undoButton = null!;
+        CustomViewButton? _redoButton;
+        CustomViewButton? _undoButton;
 
         [Inject]
         public void Construct(IMapGetter mapGetter, MemorableEditMapBlockAttacher memorableEditMapBlockAttacher)
@@ -32,24 +39,27 @@ namespace Carry.UISystem.UI.EditMap
             Assert.IsNotNull(buttonPrefab);
 
             var resetButton = Instantiate(buttonPrefab, buttonParent);
-            resetButton.Init();
-            resetButton.SetText("Reset Map");
-            resetButton.AddListener(() => _editMapBlockAttacher.Clear(_mapGetter.GetMap()));
+            resetButton.SetImage(resetTexture);
+            resetButton.SetText("Reset");
+            resetButton.ClickAction = () => _editMapBlockAttacher.Clear(_mapGetter.GetMap());
 
             _redoButton = Instantiate(buttonPrefab, buttonParent);
-            _redoButton.Init();
+            _redoButton.SetImage(redoTexture);
             _redoButton.SetText("Redo");
-            _redoButton.AddListener(() => _editMapBlockAttacher.Redo(_mapGetter.GetMap()));
+            _redoButton.ClickAction = () => _editMapBlockAttacher.Redo(_mapGetter.GetMap());
 
             _undoButton = Instantiate(buttonPrefab, buttonParent);
-            _undoButton.Init();
+            _undoButton.SetImage(undoTexture);
             _undoButton.SetText("Undo");
-            _undoButton.AddListener(() => _editMapBlockAttacher.Undo(_mapGetter.GetMap()));
+            _undoButton.ClickAction = () => _editMapBlockAttacher.Undo(_mapGetter.GetMap());
         }
 
         void Update()
         {
-            _redoButton.Interactable = _editMapBlockAttacher.GetRedoStackCount() > 0;
+            System.Diagnostics.Debug.Assert(_redoButton != null);
+            System.Diagnostics.Debug.Assert(_undoButton != null);
+            
+            _redoButton.Interactable  = _editMapBlockAttacher.GetRedoStackCount() > 0;
             _undoButton.Interactable = _editMapBlockAttacher.GetUndoStackCount() > 0;
         }
     }

@@ -1,26 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
-using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using UnityEngine;
-using VContainer;
 
 #nullable enable
 
 public class SpawnAreaPositionSetter : MonoBehaviour
 {
-    IMapGetter _mapGetter = null!;
-    [SerializeField] RectTransform _spawnAreaRectTransform = null!;
+    [SerializeField] RectTransform spawnAreaRectTransform = null!;
     
-    readonly Vector2Int _respawnAreaOrigin = new Vector2Int(0,4);
-    readonly int _respawnSize = 3;
+    readonly Vector2Int _respawnAreaOrigin = new Vector2Int(1,5);   //中心の座標, ～Input.csとは違うとり方をしているので注意
     
-    //constructor
-    [Inject]
-    void Construct(IMapGetter mapGetter)
-    {   
-        _mapGetter = mapGetter;
+    readonly int _respawnAreaLength = 3;
 
-        // _spawnAreaRectTransform の原点を _respawnAreaOrigin に設定する
+    void Start()
+    {
+        var spawnAreaPosWorld = GridConverter.GridPositionToWorldPosition(_respawnAreaOrigin);
+
+        var spawnAreaPosScreen = Camera.main.WorldToScreenPoint(spawnAreaPosWorld);
+
+        Debug.Log($"SpawnAreaPositionWorld: {spawnAreaPosWorld}");
+        Debug.Log($"SpawnAreaPositionScreen: {spawnAreaPosScreen}");
+
+        spawnAreaRectTransform.position = spawnAreaPosScreen;
+        
+        //スクリーン座標でのサイズを計算
+        var respawnAreaScreen = Camera.main.WorldToScreenPoint(
+                                    GridConverter.GridPositionToWorldPosition(_respawnAreaOrigin + new Vector2Int(1, 1))
+                                ) - 
+                                spawnAreaPosScreen;
+        
+        spawnAreaRectTransform.sizeDelta = respawnAreaScreen * (_respawnAreaLength / 2.0f);
     }
 }

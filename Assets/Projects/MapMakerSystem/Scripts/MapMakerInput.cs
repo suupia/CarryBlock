@@ -69,8 +69,6 @@ namespace Projects.MapMakerSystem.Scripts
         {
             if (_mapTestPlayStarter.IsTestPlaying) return;
 
-            Debug.Log("Calling");
-            
             var mouseXYPos = _moveAction.ReadValue<Vector2>(); // xy座標であることに注意
             var cameraHeight = Camera.main.transform.position.y;
             var mousePosOnGround =

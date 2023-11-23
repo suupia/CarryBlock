@@ -1,8 +1,9 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
+using UnityEngine.Events;
 
 #nullable enable
 
@@ -17,87 +18,116 @@ namespace Carry.UISystem.UI.Prefabs
         IPointerEnterHandler, 
         IPointerExitHandler
     {
-        [SerializeField] Image frameImage = null!;
-        [SerializeField] Image iconImage = null!;
-        [SerializeField] Image pressedImage = null!;
-        [SerializeField] TextMeshPro? text;
-
-        float ClickInterval { get; set; } = 0.1f;
-
-        bool  _isClickable;
-        float _clickTime;
+        public UnityAction ClickAction { get; set; } = () => {};
         
-        Action<object>? _clickEvent;
-        object? _clickEventTag;
+        [SerializeField] AudioClip clickSound = null!;
+        [SerializeField] Image frameImage = null!;
+        [SerializeField] Image mainImage = null!;
+        [SerializeField] TMP_Text textMeshPro = null!;
 
-        void Update()
+        AudioSource? _audioSource;
+        
+        readonly float _clickInterval = 0.1f;
+        
+        bool _isClickable = true;
+        bool _isHovering;
+        float _clickTime;
+
+        public bool Interactable
         {
-            if (!_isClickable)
+            get => frameImage.raycastTarget;
+            set
             {
-                if (_clickTime + ClickInterval < Time.time)
-                {
-                    _isClickable = true;
-                }
+                frameImage.raycastTarget = value;
+                
+                frameImage.DOFade((value ? 1.0f : 0.5f), 0.1f);
             }
         }
 
-        enum ButtonState
+        public void SetImage(Texture2D tex)
         {
-            Normal,
-            Hover,
-            Pressed,
+            mainImage.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
         }
         
+        public void SetText(string text)
+        {
+            textMeshPro.text = text;
+        }
+        
+        void Start()
+        {
+            System.Diagnostics.Debug.Assert(clickSound != null);
+            System.Diagnostics.Debug.Assert(frameImage!= null);
+            System.Diagnostics.Debug.Assert(mainImage!= null);
+            System.Diagnostics.Debug.Assert(textMeshPro!= null);
+
+            _audioSource = FindObjectOfType<AudioSource>();
+            Interactable = true;
+            
+            textMeshPro.alpha = 0.0f;
+        }
+
+        void Update()
+        {
+            if (!_isClickable && _clickTime + _clickInterval < Time.time)
+            {
+                _isClickable = true;
+            }
+        }
+
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
+            if (!Interactable) { return; }
+
             if (!_isClickable)
             {
                 Debug.Log("連打を防止するためにクリックを無視する");
                 return;
             }
-            
+
             _isClickable = false;
-            _clickEvent?.Invoke(_clickEventTag);
+
+            if (_audioSource != null)
+            {
+                _audioSource.PlayOneShot(clickSound);
+            }
+            else
+            {
+                Debug.LogWarning("AudioSourceが見つかりませんでした");
+            }
+
+            ClickAction.Invoke();
+
             Debug.Log("ボタンがクリックされた(押され，ドラッグされずに離された)");
+
+            frameImage.transform.DOScale(1.2f, 0.1f).OnComplete(() => { frameImage.transform.DOScale(_isHovering ? 1.1f : 1.0f, 0.1f); });
+
+            mainImage.transform.DOScale(1.3f, 0.1f).OnComplete(() => { mainImage.transform.DOScale(_isHovering ? 1.1f : 1.0f, 0.1f); });
+            mainImage.transform.DORotate(new Vector3(0, 0, 360), 0.1f, RotateMode.FastBeyond360);
         }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
+            if (!Interactable) { return; }
+            
+            _isHovering = true;
+            
             Debug.Log("カーソルがボタンに重なった");
-            DisplayButton(ButtonState.Hover);
+
+            frameImage.transform.DOScale(1.1f, 0.1f);
+            mainImage.transform.DOScale(1.1f, 0.1f);
+            textMeshPro.alpha = 1.0f;
         }
-        
+
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
         {
             Debug.Log("カーソルがボタンから離れた");
-            DisplayButton(ButtonState.Normal);
-        }
-        
-        void DisplayButton(ButtonState state)
-        {
-            switch (state)
-            {
-                case ButtonState.Normal:
-                    frameImage.color = new Color(frameImage.color.r,frameImage.color.g,frameImage.color.b,1);
-                    iconImage.color = new Color(iconImage.color.r,iconImage.color.g,iconImage.color.b,1);
-                    pressedImage.color = new Color(pressedImage.color.r,pressedImage.color.g,pressedImage.color.b,0);
-                    if(text != null)text.color = new Color(text.color.r,text.color.g,text.color.b,1);
-                    break;
-                
-                case ButtonState.Hover:
-                    frameImage.color = new Color(frameImage.color.r,frameImage.color.g,frameImage.color.b,1);
-                    iconImage.color = new Color(iconImage.color.r,iconImage.color.g,iconImage.color.b,0);
-                    pressedImage.color = new Color(pressedImage.color.r,pressedImage.color.g,pressedImage.color.b,0.2f);
-                    if(text != null)text.color = new Color(text.color.r,text.color.g,text.color.b,1);
-                    break;
-                
-                case ButtonState.Pressed:
-                    frameImage.color = new Color(frameImage.color.r,frameImage.color.g,frameImage.color.b,1);
-                    iconImage.color = new Color(iconImage.color.r,iconImage.color.g,iconImage.color.b,0);
-                    pressedImage.color = new Color(pressedImage.color.r,pressedImage.color.g,pressedImage.color.b,1);
-                    if(text != null)text.color = new Color(text.color.r,text.color.g,text.color.b,1);
-                    break;
-            }   
+            
+            _isHovering = false;
+
+            frameImage.transform.DOScale(1.0f, 0.1f);
+            mainImage.transform.DOScale(1.0f, 0.1f);
+            textMeshPro.alpha = 0.0f;
         }
     }
 }
