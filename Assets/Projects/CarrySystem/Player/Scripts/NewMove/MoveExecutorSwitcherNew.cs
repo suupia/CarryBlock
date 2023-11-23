@@ -12,13 +12,8 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         IPlayerAnimatorPresenter _playerAnimatorPresenter = null!;
         readonly IList<IMoveExecutorNew> _moveExecutors = new List<IMoveExecutorNew>();
-        PlayerInfo _info;
-
-        public MoveExecutorSwitcherNew(
-            )
-        {
-
-        }
+        PlayerInfo? _info;
+        
 
         public void Setup(PlayerInfo info)
         {
@@ -32,7 +27,6 @@ namespace Carry.CarrySystem.Player.Scripts
             var regularMoveFunction = new RegularMoveFunction(_playerAnimatorPresenter, _info, parameter) as IMoveFunction;
             IMoveFunction function = _moveExecutors.Aggregate(regularMoveFunction, (integrated, next) => next.Chain(integrated));
             function.Move(input);
-            Debug.Log($"_moveExecutors.Count: {_moveExecutors.Count}");
         }
 
         
