@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class RegularMoveExecutorNew : IMoveExecutorNew
     {
-        PlayerInfo _info = null!;
+        PlayerInfo? _info;
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
         readonly IMoveParameter _moveParameter;
 
@@ -17,9 +18,14 @@ namespace Carry.CarrySystem.Player.Scripts
             _moveParameter = new MoveParameter(acceleration, maxVelocity, stoppingForce);
         }
 
-        public void Setup(PlayerInfo info)
+        public void SetUp(PlayerInfo info)
         {
             _info = info;
+        }
+        
+        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
+        {
+            _playerAnimatorPresenter = presenter;
         }
 
         public IMoveParameter Chain(IMoveParameter _)
@@ -43,6 +49,8 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public IMoveFunction Chain(IMoveFunction _)
         {
+            if (_info == null) throw new NullReferenceException($"PlayerInfo is null.");
+            if (_playerAnimatorPresenter == null) throw new NullReferenceException($"PlayerAnimatorPresenter is null.");
             return new MoveFunction(_playerAnimatorPresenter, _info,_moveParameter );
         }
 
@@ -109,10 +117,6 @@ namespace Carry.CarrySystem.Player.Scripts
         }
 
 
-        // Animator
-        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
-        {
-            _playerAnimatorPresenter = presenter;
-        }
+
     }
 }

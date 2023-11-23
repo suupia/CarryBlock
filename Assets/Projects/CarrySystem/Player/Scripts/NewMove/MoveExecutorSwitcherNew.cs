@@ -10,26 +10,26 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class MoveExecutorSwitcherNew : IMoveExecutorSwitcherNew
     {
-        PlayerInfo _info = null!;
         IPlayerAnimatorPresenter _playerAnimatorPresenter = null!;
         readonly IList<IMoveExecutorNew> _moveExecutors = new List<IMoveExecutorNew>();
+        readonly RegularMoveExecutorNew _regularMoveExecutorNew;
 
         public MoveExecutorSwitcherNew(
             )
         {
-            var regularMoveExecutor = new RegularMoveExecutorNew(40, 5, 5);
-            _moveExecutors.Add(regularMoveExecutor);
+            _regularMoveExecutorNew = new RegularMoveExecutorNew(40, 5, 5);
+            _moveExecutors.Add(_regularMoveExecutorNew);
         }
 
         public void Setup(PlayerInfo info)
         {
-            _info = info;
+            _regularMoveExecutorNew.SetUp(info);
         }
         
         public void Move(Vector3 input)
         {
-            IMoveParameter parameter = _moveExecutors.Aggregate((IMoveParameter)null, (integrated, next) => next.Chain(integrated));
-            IMoveFunction function = _moveExecutors.Aggregate((IMoveFunction)null, (integrated, next) => next.Chain(integrated));
+            IMoveParameter parameter = _moveExecutors.Aggregate(new EmptyMove() as IMoveParameter, (integrated, next) => next.Chain(integrated));
+            IMoveFunction function = _moveExecutors.Aggregate(new EmptyMove() as IMoveFunction, (integrated, next) => next.Chain(integrated));
             MoveExecutorNew moveExecutorNew = new MoveExecutorNew();
             moveExecutorNew.Move(input, parameter, function);
             
@@ -76,6 +76,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
             _playerAnimatorPresenter = presenter;
+            _regularMoveExecutorNew.SetPlayerAnimatorPresenter(presenter);
         }
     }
 
