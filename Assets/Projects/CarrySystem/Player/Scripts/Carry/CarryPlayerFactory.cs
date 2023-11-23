@@ -34,7 +34,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var blockContainer = new PlayerHoldingObjectContainer();
             
             // IMoveExecutorSwitcher
-            var moveExecutorSwitcher = new MoveExecutorSwitcherNew();
+            var moveExecutorSwitcher = new MoveExecutorSwitcher();
             
             // IHoldActionExecutor
             _holdingBlockObserver.RegisterHoldAction(blockContainer);

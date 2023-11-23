@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class MoveExecutorSwitcherNew : IMoveExecutorSwitcherNew
+    public class MoveExecutorSwitcher : IMoveExecutorSwitcherNew
     {
         readonly IList<IMoveRecord> _moveExecutors = new List<IMoveRecord>();
         PlayerInfo? _info;
