@@ -7,6 +7,7 @@ using Fusion;
 using Projects.CarrySystem.Item.Scripts;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using VContainer;
 
@@ -19,10 +20,12 @@ namespace Carry.UISystem.UI.CarryScene
         // NetworkObject must be attached to the parent of this script.
         [SerializeField] TextMeshProUGUI floorNumberText; // 現在のフロア数
         [SerializeField] TextMeshProUGUI floorTimerText;
-        [SerializeField] TextMeshProUGUI cointTotalText;
+        [FormerlySerializedAs("cointTotalText")] [SerializeField] TextMeshProUGUI coinTotalText;
         [SerializeField] Image floorTimerImage;
         [Networked] int FloorNumber { get; set; }
         [Networked] int MaxFloorNumber { get; set; }
+        [Networked] float FloorRemainingSeconds { get; set; }
+        [Networked] float FloorLimitSeconds { get; set; }
         [Networked] int CoinTotal { get; set; }
 
         IMapGetter _mapGetter = null!;
@@ -65,17 +68,19 @@ namespace Carry.UISystem.UI.CarryScene
             MaxFloorNumber =
                 _maxFloorNumber; // to avoid : InvalidOperationException: Error when accessing PlayingCanvasUINet.MaxFloorNumber. Networked properties can only be accessed when Spawned() has been called.
             CoinTotal = _treasureCoinCounter.Count;
+            FloorRemainingSeconds = _floorTimerNet.FloorRemainingSeconds;
+            FloorLimitSeconds = _floorTimerNet.FloorLimitSeconds;
         }
 
 
         public override void Render()
         {
-            var remainingTime = _floorTimerNet.FloorRemainingSeconds;
+            Debug.Log($"PlayingCanvasUINet.Render()");
             floorNumberText.text = $"{FloorNumber} F / {MaxFloorNumber} F";
-            floorTimerText.text = $"Time : {Mathf.Floor(remainingTime)}";
-            cointTotalText.text = $"Coin : {CoinTotal}";
+            floorTimerText.text = $"Time : {Mathf.Floor(FloorRemainingSeconds)}";
+            // coinTotalText.text = $"Coin : {CoinTotal}";   // 文化祭では使わない
 
-            floorTimerImage.fillAmount = remainingTime / _floorTimerNet.FloorLimitSeconds;
+            floorTimerImage.fillAmount = FloorRemainingSeconds / FloorLimitSeconds;
         }
     }
 }

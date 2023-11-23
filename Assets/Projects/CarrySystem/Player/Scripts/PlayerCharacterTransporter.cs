@@ -31,7 +31,7 @@ namespace Carry.CarrySystem.Player.Scripts
             _colorDictionary[playerRef] =  colorType;
         }
         
-        public int GetPlayerIndex(PlayerRef playerRef)
+        public int GetPlayerNumber(PlayerRef playerRef)
         {
             if (_playerNumberDictionary.TryGetValue(playerRef, out int number))
             {

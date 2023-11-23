@@ -50,7 +50,7 @@ namespace Carry.CarrySystem.Player.Scripts
         [SerializeField] GameObject unmovableBlockView= null!;
         [SerializeField] GameObject heavyBlockView= null!;
         [SerializeField] GameObject fragileBlockView = null!;
-        [SerializeField] GameObject ConfusionBlockView = null!;
+        [SerializeField] GameObject confusionBlockView = null!;
         public void Init(IHoldActionExecutor holdActionExecutor, IPassActionExecutor passActionExecutor)
         {
             Debug.Log($"PlayerBlockPresenterNet.Init()");
@@ -67,13 +67,14 @@ namespace Carry.CarrySystem.Player.Scripts
             blockTypeToGameObjectMap[BlockType.UnmovableBlock] = unmovableBlockView;
             blockTypeToGameObjectMap[BlockType.HeavyBlock] = heavyBlockView;
             blockTypeToGameObjectMap[BlockType.FragileBlock] = fragileBlockView;
-            blockTypeToGameObjectMap[BlockType.ConfusionBlock] = ConfusionBlockView;
+            blockTypeToGameObjectMap[BlockType.ConfusionBlock] = confusionBlockView;
 
-            basicBlockView.GetComponent<Collider>().enabled = false;
-            unmovableBlockView.GetComponent<Collider>().enabled = false;
-            heavyBlockView.GetComponent<Collider>().enabled = false;
-            fragileBlockView.GetComponent<Collider>().enabled = false;
-            ConfusionBlockView.GetComponent<Collider>().enabled = false;
+            foreach (var viewCollider in basicBlockView.GetComponents<Collider>()) viewCollider.enabled = false;
+            foreach (var viewCollider in unmovableBlockView.GetComponents<Collider>()) viewCollider.enabled = false;
+            foreach (var viewCollider in heavyBlockView.GetComponents<Collider>()) viewCollider.enabled = false;
+            foreach (var viewCollider in fragileBlockView.GetComponents<Collider>()) viewCollider.enabled = false;
+            foreach (var viewCollider in confusionBlockView.GetComponents<Collider>()) viewCollider.enabled = false;
+
         }
 
         public override void Render()

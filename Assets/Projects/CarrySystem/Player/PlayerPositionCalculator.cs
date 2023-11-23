@@ -9,7 +9,7 @@ namespace Carry.CarrySystem.Player
     {
         static readonly float Radius = 1f;  // プレイヤーはこの円周上に配置していく
         
-        public static Vector3 CalcPlayerPosition(Vector3 centerPosition, int playerNumber, int maxPlayerCount)
+        public static Vector3 CalcPlayerPosition(Vector3 centerPosition, int playerNumber, int maxPlayerCount, float radius = 1f)
         {
             var offset = maxPlayerCount switch
             {
