@@ -23,8 +23,8 @@ namespace Carry.UISystem.UI.EditMap
         IMapGetter _mapGetter = null!;
         MemorableEditMapBlockAttacher _editMapBlockAttacher = null!;
 
-        CustomViewButton _redoButton = null!;
-        CustomViewButton _undoButton = null!;
+        CustomViewButton? _redoButton;
+        CustomViewButton? _undoButton;
 
         [Inject]
         public void Construct(IMapGetter mapGetter, MemorableEditMapBlockAttacher memorableEditMapBlockAttacher)
@@ -56,7 +56,10 @@ namespace Carry.UISystem.UI.EditMap
 
         void Update()
         {
-            _redoButton.Interactable = _editMapBlockAttacher.GetRedoStackCount() > 0;
+            System.Diagnostics.Debug.Assert(_redoButton != null);
+            System.Diagnostics.Debug.Assert(_undoButton != null);
+            
+            _redoButton.Interactable  = _editMapBlockAttacher.GetRedoStackCount() > 0;
             _undoButton.Interactable = _editMapBlockAttacher.GetUndoStackCount() > 0;
         }
     }

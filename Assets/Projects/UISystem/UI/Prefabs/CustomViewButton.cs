@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.Assertions;
 using DG.Tweening;
 using UnityEngine.Events;
 
@@ -41,9 +39,8 @@ namespace Carry.UISystem.UI.Prefabs
             set
             {
                 frameImage.raycastTarget = value;
-
-                var alpha = value ? 1.0f : 0.5f; //直接DoFadeの引数に入れるとコンパイルが通らん，なぜ？
-                frameImage.DOFade(alpha, 0.1f);
+                
+                frameImage.DOFade((value ? 1.0f : 0.5f), 0.1f);
             }
         }
 
@@ -59,10 +56,10 @@ namespace Carry.UISystem.UI.Prefabs
         
         void Start()
         {
-            Assert.IsNotNull(clickSound);
-            Assert.IsNotNull(frameImage);
-            Assert.IsNotNull(mainImage);
-            Assert.IsNotNull(textMeshPro);
+            System.Diagnostics.Debug.Assert(clickSound != null);
+            System.Diagnostics.Debug.Assert(frameImage!= null);
+            System.Diagnostics.Debug.Assert(mainImage!= null);
+            System.Diagnostics.Debug.Assert(textMeshPro!= null);
 
             _audioSource = FindObjectOfType<AudioSource>();
             Interactable = true;

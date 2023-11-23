@@ -100,7 +100,7 @@ namespace Carry.UISystem.UI.Prefabs
             }
 
             // 仮想マウスの位置を更新する
-            Vector2 deltaValue = _cursorAction!.ReadValue<Vector2>();
+            Vector2 deltaValue = _cursorAction?.ReadValue<Vector2>() ?? Vector2.zero;
             deltaValue *= _cursorSpeed * Time.unscaledDeltaTime;
             
             Vector2 currentPos = _virtualMouse.position.ReadValue();
@@ -114,7 +114,7 @@ namespace Carry.UISystem.UI.Prefabs
             cursorTransform.transform.position = newPos;
 
             // 仮想マウスのボタン(クリック)の状態を更新する
-            bool isPressed = _leftClickAction!.IsPressed();
+            bool isPressed = _leftClickAction?.IsPressed() ?? false;
             if (_previousLeftButtonIsPressed != isPressed)
             {
                 _virtualMouse.CopyState<MouseState>(out var mouseState);
@@ -124,7 +124,7 @@ namespace Carry.UISystem.UI.Prefabs
             }
             
             //べた書きだけど，右クリックも同様に更新する
-            isPressed = _rightClickAction!.IsPressed();
+            isPressed = _rightClickAction?.IsPressed() ?? false;
             if (_previousRightButtonIsPressed != isPressed)
             {
                 _virtualMouse.CopyState<MouseState>(out var mouseState);
