@@ -12,28 +12,29 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         IPlayerAnimatorPresenter _playerAnimatorPresenter = null!;
         readonly IList<IMoveExecutorNew> _moveExecutors = new List<IMoveExecutorNew>();
-        readonly RegularMoveExecutorNew _regularMoveExecutorNew;
+        PlayerInfo _info;
 
         public MoveExecutorSwitcherNew(
             )
         {
-            _regularMoveExecutorNew = new RegularMoveExecutorNew(40, 5, 5);
-            _moveExecutors.Add(_regularMoveExecutorNew);
+
         }
 
         public void Setup(PlayerInfo info)
         {
-            _regularMoveExecutorNew.SetUp(info);
+            _info = info;
         }
         
         public void Move(Vector3 input)
         {
-            IMoveParameter parameter = _moveExecutors.Aggregate(new EmptyMove() as IMoveParameter, (integrated, next) => next.Chain(integrated));
-            IMoveFunction function = _moveExecutors.Aggregate(new EmptyMove() as IMoveFunction, (integrated, next) => next.Chain(integrated));
-            MoveExecutorNew moveExecutorNew = new MoveExecutorNew();
-            moveExecutorNew.Move(input, parameter, function);
-            
+            var regularMoveParameter = new RegularMoveParameter() as IMoveParameter;
+            IMoveParameter parameter = _moveExecutors.Aggregate(regularMoveParameter, (integrated, next) => next.Chain(integrated));
+            var regularMoveFunction = new RegularMoveFunction(_playerAnimatorPresenter, _info, parameter) as IMoveFunction;
+            IMoveFunction function = _moveExecutors.Aggregate(regularMoveFunction, (integrated, next) => next.Chain(integrated));
+            function.Move(input);
+            Debug.Log($"_moveExecutors.Count: {_moveExecutors.Count}");
         }
+
         
         public void SwitchToConfusionMove()
         {
@@ -66,6 +67,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SwitchToFaintedMove()
         {
             var nextMoveExe = new FaintedMoveExecutorNew(_playerAnimatorPresenter);
+            _moveExecutors.Add(nextMoveExe);
         }
         public void SwitchOffFaintedMove()
         {
@@ -76,7 +78,6 @@ namespace Carry.CarrySystem.Player.Scripts
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
             _playerAnimatorPresenter = presenter;
-            _regularMoveExecutorNew.SetPlayerAnimatorPresenter(presenter);
         }
     }
 

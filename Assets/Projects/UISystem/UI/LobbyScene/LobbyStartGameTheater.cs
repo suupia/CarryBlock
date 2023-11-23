@@ -89,7 +89,7 @@ namespace Carry.UISystem.UI.LobbyScene
                         CalcPlayerPositionInCart(playerIndex, _cart.transform.position), 2f))
                     .AppendCallback(() =>
                     {
-                        playerController.GetMoveExecutorSwitcher.SwitchToRegularMove();
+                        // playerController.GetMoveExecutorSwitcher.SwitchToRegularMove();
                         var changePosition = new Vector3(playerTransform.position.x, 1.0f, playerTransform.position.z);
                         playerTransform.position = changePosition;
                         playerTransform.SetParent(_cart.transform);

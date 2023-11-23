@@ -12,7 +12,7 @@ using Carry.CarrySystem.VFX.Scripts;
 namespace Carry.CarrySystem.Player.Scripts
 {
     public class Character :      
-        IMoveExecutorSwitcher, 
+        IMoveExecutorSwitcherNew, 
         IHoldActionExecutor, 
         IOnDamageExecutor,
         IDashExecutor,
@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         public PlayerHoldingObjectContainer PlayerHoldingObjectContainer { get; }
 
-        readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
+        readonly IMoveExecutorSwitcherNew _moveExecutorSwitcher;
         readonly IHoldActionExecutor _holdActionExecutor;
         readonly IDashExecutor _dashExecutor;
         readonly IPassActionExecutor _passActionExecutor;
@@ -28,7 +28,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
 
         public Character(
-            IMoveExecutorSwitcher moveExecutorSwitcher,
+            IMoveExecutorSwitcherNew moveExecutorSwitcher,
             IHoldActionExecutor holdActionExecutor,
             IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,
@@ -65,12 +65,14 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _moveExecutorSwitcher.Move(direction);
         }
-        public void SwitchToBeforeMoveExecutor() => _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
-        public void SwitchToRegularMove() => _moveExecutorSwitcher.SwitchToRegularMove();
         public void SwitchToDashMove() => _moveExecutorSwitcher.SwitchToDashMove();
+        public void SwitchOffDashMove() => _moveExecutorSwitcher.SwitchOffDashMove();
         public void SwitchToSlowMove() => _moveExecutorSwitcher.SwitchToSlowMove();
+        public void SwitchOffSlowMove() => _moveExecutorSwitcher.SwitchOffSlowMove();
         public void SwitchToConfusionMove() => _moveExecutorSwitcher.SwitchToConfusionMove();
+        public void SwitchOffConfusionMove() => _moveExecutorSwitcher.SwitchOffConfusionMove();
         public void SwitchToFaintedMove() => _moveExecutorSwitcher.SwitchToFaintedMove();
+        public void SwitchOffFaintedMove() => _moveExecutorSwitcher.SwitchOffFaintedMove();
         
         public void OnDamage() => _onDamageExecutor.OnDamage();
 

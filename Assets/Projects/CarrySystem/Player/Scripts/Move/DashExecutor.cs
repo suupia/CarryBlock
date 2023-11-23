@@ -14,7 +14,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class DashExecutor : IDashExecutor
     {
         PlayerInfo _info = null!;
-        readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
+        readonly IMoveExecutorSwitcherNew _moveExecutorSwitcher;
         readonly IOnDamageExecutor _onDamageExecutor;
         IDashEffectPresenter? _dashEffectPresenter;
         readonly float _dashTime = 0.6f;
@@ -24,7 +24,7 @@ namespace Carry.CarrySystem.Player.Scripts
         CancellationTokenSource? _cancellationTokenSource;
         
         public DashExecutor(
-            IMoveExecutorSwitcher moveExecutorSwitcher,
+            IMoveExecutorSwitcherNew moveExecutorSwitcher,
             IOnDamageExecutor onDamageExecutor
             )
         {
@@ -76,7 +76,7 @@ namespace Carry.CarrySystem.Player.Scripts
             Debug.Log($"Finish dashing");
             if(_dashEffectPresenter != null) _dashEffectPresenter.StopDash();
             if(_onDamageExecutor.IsFainted) return;
-            _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
+            _moveExecutorSwitcher.SwitchOffDashMove();
         }
         
         public void SetDashEffectPresenter(IDashEffectPresenter presenter)

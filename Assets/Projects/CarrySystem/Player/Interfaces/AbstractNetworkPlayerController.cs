@@ -30,7 +30,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         
         // class of Character 
         public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => BlockContainer;
-        public IMoveExecutorSwitcher GetMoveExecutorSwitcher => MoveExecutorSwitcher;
+        public IMoveExecutorSwitcherNew GetMoveExecutorSwitcher => MoveExecutorSwitcher;
         public IHoldActionExecutor GetHoldActionExecutor => HoldActionExecutor;
         public IOnDamageExecutor GetOnDamageExecutor => OnDamageExecutor;
         public IDashExecutor GetDashExecutor => DashExecutor;
@@ -47,7 +47,7 @@ namespace Carry.CarrySystem.Player.Interfaces
         protected PlayerInfo Info = null!;
 
         protected PlayerHoldingObjectContainer BlockContainer = null!;
-        protected IMoveExecutorSwitcher MoveExecutorSwitcher = null!;
+        protected IMoveExecutorSwitcherNew MoveExecutorSwitcher = null!;
         protected IHoldActionExecutor HoldActionExecutor = null!;
         protected IOnDamageExecutor OnDamageExecutor = null!;
         protected IDashExecutor DashExecutor = null!;

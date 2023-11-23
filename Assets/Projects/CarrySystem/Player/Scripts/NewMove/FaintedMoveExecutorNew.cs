@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class FaintedMoveExecutorNew : IMoveExecutorNew 
+    public record FaintedMoveExecutorNew : IMoveExecutorNew 
     {
         readonly IPlayerAnimatorPresenter _playerAnimatorPresenter;
         

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class SlowMoveExecutorNew : IMoveExecutorNew
+    public record SlowMoveExecutorNew : IMoveExecutorNew
     {
         readonly IPlayerAnimatorPresenter _playerAnimatorPresenter;
 

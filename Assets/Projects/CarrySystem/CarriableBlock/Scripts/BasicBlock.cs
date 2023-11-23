@@ -41,7 +41,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;  // basicが持ち上げられない状況はない
         }
 
-        public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
+        public void  PickUp(IMoveExecutorSwitcherNew moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
         {
             // 特になし
         }
@@ -61,7 +61,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             return true;
         }
         
-        public void PutDown(IMoveExecutorSwitcher moveExecutorSwitcher)
+        public void PutDown(IMoveExecutorSwitcherNew moveExecutorSwitcher)
         {
            // 特になし
         }
