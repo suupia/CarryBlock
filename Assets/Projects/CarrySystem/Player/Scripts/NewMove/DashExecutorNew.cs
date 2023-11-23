@@ -10,10 +10,20 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public IMoveParameter Chain(IMoveParameter parameter)
         {
-            var newMove = parameter;
-            newMove.Acceleration *= 10.0f / 4.0f;
-            newMove.MaxVelocity *= 10.0f / 5.0f;
-            return newMove;
+            return new MoveParameter(parameter);
+        }
+        
+        class MoveParameter : IMoveParameter
+        {
+            public float Acceleration { get; }
+            public float MaxVelocity { get;} 
+            public float StoppingForce { get; }
+            public MoveParameter(IMoveParameter parameter)
+            {
+                Acceleration = parameter.Acceleration * 10.0f / 4.0f;
+                MaxVelocity = parameter.MaxVelocity * 10.0f / 5.0f;
+                StoppingForce = parameter.StoppingForce;
+            }
         }
         
         public IMoveFunction Chain(IMoveFunction function)

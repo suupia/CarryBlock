@@ -3,28 +3,30 @@ using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 
-
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class FaintedMoveExecutorNew : IMoveExecutorNew 
+    public class SlowMoveExecutorNew : IMoveExecutorNew
     {
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
         
         public IMoveParameter Chain(IMoveParameter parameter)
         {
             return new MoveParameter(parameter);
-        }
+        } 
+        
         class MoveParameter : IMoveParameter
         {
-            public float Acceleration { get; } 
-            public float MaxVelocity { get; } 
+            public float Acceleration { get;  }
+            public float MaxVelocity { get;  }
             public float StoppingForce { get;  }
+
             public MoveParameter(IMoveParameter parameter)
             {
-                Acceleration = 0;
-                MaxVelocity = 0;
+                Acceleration = parameter.Acceleration * 3.0f / 4.0f;
+                MaxVelocity = parameter.MaxVelocity * 2.0f / 5.0f;
                 StoppingForce = parameter.StoppingForce;
             }
+           
         }
         
         public IMoveFunction Chain(IMoveFunction function)
@@ -32,7 +34,7 @@ namespace Carry.CarrySystem.Player.Scripts
             return new MoveFunction(function, _playerAnimatorPresenter);
 
         }
-        
+
         class MoveFunction : IMoveFunction
         {
             readonly IMoveFunction _func;
@@ -46,10 +48,17 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 _func.Move(input);
 
-                _presenter.Idle();
+                if (input != Vector3.zero)
+                {
+                    _presenter.Walk();   
+                }
+                else
+                {
+                    _presenter.Idle();
+                }
             }
         }
-        
+
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
