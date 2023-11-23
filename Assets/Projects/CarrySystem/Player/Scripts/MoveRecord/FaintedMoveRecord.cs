@@ -8,7 +8,6 @@ namespace Carry.CarrySystem.Player.Scripts
     public record FaintedMoveRecord : IMoveRecord 
     {
         readonly IPlayerAnimatorPresenter _playerAnimatorPresenter;
-        
         public FaintedMoveRecord(IPlayerAnimatorPresenter presenter)
         {
             _playerAnimatorPresenter = presenter;
@@ -22,8 +21,6 @@ namespace Carry.CarrySystem.Player.Scripts
             return new MoveFunction(function, _playerAnimatorPresenter);
 
         }
-
-
         class MoveParameter : IMoveParameter
         {
             public float Acceleration { get; } 

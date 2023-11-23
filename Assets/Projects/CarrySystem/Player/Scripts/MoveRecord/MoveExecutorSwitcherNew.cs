@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Carry.CarrySystem.Player.Info;
@@ -32,12 +33,12 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void SwitchToConfusionMove()
         {
-            _moveExecutors.Add(new InverseInputMoveRecord());
+            _moveExecutors.Add(new InverseInputMoveRecord(_playerAnimatorPresenter));
         }
         
         public void SwitchOffConfusionMove()
         {
-            _moveExecutors.Remove(new InverseInputMoveRecord());
+            _moveExecutors.Remove(new InverseInputMoveRecord(_playerAnimatorPresenter));
         }
         
         public void SwitchToDashMove()
@@ -67,6 +68,22 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _moveExecutors.Remove(new FaintedMoveRecord(_playerAnimatorPresenter));
         }
+
+        public void AddMoveRecord<T>() where T : IMoveRecord
+        {
+            var moveRecord = (T)Activator.CreateInstance(typeof(T), _playerAnimatorPresenter);
+            _moveExecutors.Add(moveRecord);
+        }
+        
+        public void RemoveRecord<T>() where T : IMoveRecord
+        {
+            var recordToRemove = _moveExecutors.OfType<T>().FirstOrDefault();
+            if (recordToRemove != null)
+            {
+                _moveExecutors.Remove(recordToRemove);
+            }
+        }
+
                 
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)

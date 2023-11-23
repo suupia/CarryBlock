@@ -7,6 +7,10 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public record InverseInputMoveRecord : IMoveRecord
     {
+        public InverseInputMoveRecord(IPlayerAnimatorPresenter _)
+        {
+        }
+
         public IMoveParameter Chain(IMoveParameter parameter)
         {
             return parameter;
