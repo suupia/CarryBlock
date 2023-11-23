@@ -15,6 +15,7 @@ using Carry.UISystem.UI.MapMaker;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
 using Projects.CarrySystem.Cart.Interfaces;
+using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Player.Scripts.Local;
 using Projects.CarrySystem.SearchRoute.Scripts;
 using Projects.MapMakerSystem.Scripts;
@@ -71,8 +72,6 @@ namespace Carry.ScopeSystem.Scripts
             builder.RegisterComponentInHierarchy<HoldingBlockNotifierLogger>().As<IHoldingBlockNotifier>();
 
 
-
-
             // Map
             // JsonとEntityGridMapに関する処理
             builder.Register<EntityGridMapBuilderLeaf>(Lifetime.Scoped).As<IEntityGridMapBuilder>();
@@ -125,6 +124,9 @@ namespace Carry.ScopeSystem.Scripts
             builder.RegisterComponentInHierarchy<FloorTimerLocal>();
             builder.RegisterComponentInHierarchy<MapClearChecker>();
             builder.RegisterComponentInHierarchy<MapMakerUIManager>();
+            
+            // Gimmick
+            builder.RegisterComponentInHierarchy<GimmickFinalizerMono>();
         }
     }
 }
