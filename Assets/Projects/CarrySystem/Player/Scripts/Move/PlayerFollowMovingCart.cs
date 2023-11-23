@@ -53,9 +53,9 @@ namespace Carry.CarrySystem.Player.Scripts
                         
                         playerTransform.position = PlayerPositionCalculator.CalcPlayerPosition(
                             centerPosition,
-                            player.index,
+                            player.index+1,
                             _carryPlayerContainer.PlayerControllers.Count,
-                            radius:2.0f);
+                            radius:1.8f);
 
                         //_mapNumberSaverはカートに乗った瞬間の_mapUpdater.Indexが代入される
                         //_mapUpdater.Indexはマップが切り替わったら1増える
