@@ -41,7 +41,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         public void  PickUp(IMoveExecutorSwitcherNew moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
         {
             // 上下左右を入れ替えた混乱の動きに切り替える
-            moveExecutorSwitcher.SwitchToConfusionMove();
+            moveExecutorSwitcher.AddMoveRecord<InverseInputMoveRecord>();
         }
 
         public bool CanPutDown(IList<ICarriableBlock> placedBlocks)
@@ -62,7 +62,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         public void PutDown(IMoveExecutorSwitcherNew moveExecutorSwitcher) 
         {
             // 混乱状態をもとに戻す
-            moveExecutorSwitcher.SwitchOffConfusionMove();
+            moveExecutorSwitcher.RemoveRecord<InverseInputMoveRecord>();
         }
     }
 }

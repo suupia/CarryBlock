@@ -29,45 +29,7 @@ namespace Carry.CarrySystem.Player.Scripts
             IMoveFunction function = _moveExecutors.Aggregate(regularMoveFunction, (integrated, next) => next.Chain(integrated));
             function.Move(input);
         }
-
         
-        public void SwitchToConfusionMove()
-        {
-            AddMoveRecord<InverseInputMoveRecord>();
-        }
-        public void SwitchOffConfusionMove()
-        {
-            RemoveRecord<InverseInputMoveRecord>();
-        }
-        
-        public void SwitchToDashMove()
-        {
-            AddMoveRecord<DashMoveRecord>();
-        }
-        public void SwitchOffDashMove()
-        {
-            RemoveRecord<DashMoveRecord>();
-        }
-        public void SwitchToSlowMove()
-        {
-            AddMoveRecord<SlowMoveRecord>();
-        }
-
-        public void SwitchOffSlowMove()
-        {
-            RemoveRecord<SlowMoveRecord>();
-        }
-
-        public void SwitchToFaintedMove()
-        {
-            AddMoveRecord<FaintedMoveRecord>();
-        }
-
-        public void SwitchOffFaintedMove()
-        {
-            RemoveRecord<FaintedMoveRecord>();
-        }
-
         public void AddMoveRecord<T>() where T : IMoveRecord
         {
             var moveRecord = (T)Activator.CreateInstance(typeof(T), _playerAnimatorPresenter);
