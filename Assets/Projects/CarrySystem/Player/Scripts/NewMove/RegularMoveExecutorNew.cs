@@ -8,14 +8,8 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class RegularMoveExecutorNew : IMoveExecutorNew
     {
-        public float Acceleration { get; set; }
-        public float MaxVelocity { get; set; }
-        public float StoppingForce { get; set; }
-
         PlayerInfo _info = null!;
-
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
-
         readonly IMoveParameter _moveParameter;
 
         public RegularMoveExecutorNew(float acceleration, float maxVelocity, float stoppingForce)
