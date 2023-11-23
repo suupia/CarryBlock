@@ -67,6 +67,7 @@ namespace Carry.UISystem.UI
 
         public void AddListener(UnityAction action)
         {
+            Setup();
             if(_button == null) return;
             _button.onClick.AddListener(() =>
             {
