@@ -73,8 +73,33 @@ namespace Carry.UISystem.UI.LobbyScene
             for(int i = 0; i< stageButtons.Count; i++)
             {
                 var stageButton = stageButtons[i];
-                stageButton.SetText($"Stage {i + 1}");
+                string buttonText;
+
+                switch (i)
+                {
+                    case 0:
+                        buttonText = "Easy";
+                        break;
+                    case 1:
+                        buttonText = "Normal";
+                        break;
+                    case 2:
+                        buttonText = "Hard";
+                        break;
+                    case 3:
+                        buttonText = "Expert";
+                        break;
+                    case 4:
+                        buttonText = "Endless";
+                        break;
+                    default:
+                        buttonText = "NotFound";
+                        break;
+                }
+
+                stageButton.SetText(buttonText);
                 var index = i;
+                
                 stageButton.AddListener(() =>
                 {
                     viewObject.SetActive(false);

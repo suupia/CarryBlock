@@ -91,6 +91,16 @@ MonoBehaviour:
     index: 9
   - mapKey: 5
     index: 1
+  - mapKey: 6
+    index: 11
+  - mapKey: 6
+    index: 12
+  - mapKey: 6
+    index: 13
+  - mapKey: 6
+    index: 14
+  - mapKey: 6
+    index: 15
 --- !u!114 &-1599650411451427176
 MonoBehaviour:
   m_ObjectHideFlags: 0
