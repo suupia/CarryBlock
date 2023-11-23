@@ -18,7 +18,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public bool IsFainted { get; private set; }
         public float FaintedSeconds => CalcFaintedTime();
         PlayerInfo _info = null!;
-        readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
+        readonly IMoveExecutorSwitcherNew _moveExecutorSwitcher;
         readonly PlayerCharacterTransporter _playerCharacterTransporter;
         
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
@@ -27,7 +27,7 @@ namespace Carry.CarrySystem.Player.Scripts
         CancellationTokenSource? _cancellationTokenSource;
 
         public OnDamageExecutor(
-            IMoveExecutorSwitcher moveExecutorSwitcher,
+            IMoveExecutorSwitcherNew moveExecutorSwitcher,
             PlayerCharacterTransporter playerCharacterTransporter
             )
         {
@@ -68,7 +68,7 @@ namespace Carry.CarrySystem.Player.Scripts
             }
             catch (OperationCanceledException)
             {
-                // Do Nothing
+                _moveExecutorSwitcher.RemoveRecord<FaintedMoveRecord>();  // OnとOffは同じ回数呼ぶ必要がある
             }
         }
 
@@ -76,7 +76,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"気絶する");
             IsFainted = true;
-            _moveExecutorSwitcher.SwitchToFaintedMove();
+            _moveExecutorSwitcher.AddMoveRecord<FaintedMoveRecord>();
             Debug.Log(
                 $"_info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>()) : {_info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>()}");
             _info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>().Blinking();
@@ -87,7 +87,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"気絶から復帰する");
             IsFainted = false;
-            _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
+            _moveExecutorSwitcher.RemoveRecord<FaintedMoveRecord>();
             _playerAnimatorPresenter?.Revive();
             if (_reviveEffectPresenter != null) _reviveEffectPresenter.StartRevive();
         }

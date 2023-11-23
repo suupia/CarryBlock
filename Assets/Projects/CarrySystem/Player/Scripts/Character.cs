@@ -12,7 +12,7 @@ using Carry.CarrySystem.VFX.Scripts;
 namespace Carry.CarrySystem.Player.Scripts
 {
     public class Character :      
-        IMoveExecutorSwitcher, 
+        IMoveExecutorSwitcherNew, 
         IHoldActionExecutor, 
         IOnDamageExecutor,
         IDashExecutor,
@@ -20,7 +20,7 @@ namespace Carry.CarrySystem.Player.Scripts
     {
         public PlayerHoldingObjectContainer PlayerHoldingObjectContainer { get; }
 
-        readonly IMoveExecutorSwitcher _moveExecutorSwitcher;
+        readonly IMoveExecutorSwitcherNew _moveExecutorSwitcher;
         readonly IHoldActionExecutor _holdActionExecutor;
         readonly IDashExecutor _dashExecutor;
         readonly IPassActionExecutor _passActionExecutor;
@@ -28,7 +28,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
 
         public Character(
-            IMoveExecutorSwitcher moveExecutorSwitcher,
+            IMoveExecutorSwitcherNew moveExecutorSwitcher,
             IHoldActionExecutor holdActionExecutor,
             IDashExecutor dashExecutor,
             IPassActionExecutor passActionExecutor,
@@ -65,12 +65,9 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _moveExecutorSwitcher.Move(direction);
         }
-        public void SwitchToBeforeMoveExecutor() => _moveExecutorSwitcher.SwitchToBeforeMoveExecutor();
-        public void SwitchToRegularMove() => _moveExecutorSwitcher.SwitchToRegularMove();
-        public void SwitchToDashMove() => _moveExecutorSwitcher.SwitchToDashMove();
-        public void SwitchToSlowMove() => _moveExecutorSwitcher.SwitchToSlowMove();
-        public void SwitchToConfusionMove() => _moveExecutorSwitcher.SwitchToConfusionMove();
-        public void SwitchToFaintedMove() => _moveExecutorSwitcher.SwitchToFaintedMove();
+        public void AddMoveRecord<T>() where T : IMoveRecord => _moveExecutorSwitcher.AddMoveRecord<T>();
+
+        public void RemoveRecord<T>() where T : IMoveRecord => _moveExecutorSwitcher.RemoveRecord<T>();
         
         public void OnDamage() => _onDamageExecutor.OnDamage();
 

@@ -27,7 +27,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Init(
             PlayerHoldingObjectContainer blockContainer,
-            IMoveExecutorSwitcher moveExecutorSwitcher,
+            IMoveExecutorSwitcherNew moveExecutorSwitcher,
             IHoldActionExecutor holdActionExecutor,
             IOnDamageExecutor onDamageExecutor,
             IDashExecutor dashExecutor,

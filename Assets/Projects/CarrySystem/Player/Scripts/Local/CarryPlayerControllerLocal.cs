@@ -31,7 +31,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         // class of Character 
         public PlayerHoldingObjectContainer GetPlayerHoldingObjectContainer => _blockContainer;
-        public IMoveExecutorSwitcher GetMoveExecutorSwitcher => _moveExecutorSwitcher;
+        public IMoveExecutorSwitcherNew GetMoveExecutorSwitcher => _moveExecutorSwitcher;
         public IHoldActionExecutor GetHoldActionExecutor => _holdActionExecutor;
         public IOnDamageExecutor GetOnDamageExecutor => _onDamageExecutor;
         public IDashExecutor GetDashExecutor => _dashExecutor;
@@ -51,7 +51,7 @@ namespace Carry.CarrySystem.Player.Scripts
         PlayerInfo _info = null!;
         
         PlayerHoldingObjectContainer _blockContainer = null!;
-        IMoveExecutorSwitcher _moveExecutorSwitcher = null!;
+        IMoveExecutorSwitcherNew _moveExecutorSwitcher = null!;
         IHoldActionExecutor _holdActionExecutor = null!;
         IOnDamageExecutor _onDamageExecutor = null!;
         IDashExecutor _dashExecutor = null!;
@@ -63,7 +63,7 @@ namespace Carry.CarrySystem.Player.Scripts
 
         public void Init(
             PlayerHoldingObjectContainer blockContainer,
-            IMoveExecutorSwitcher moveExecutorSwitcher,
+            IMoveExecutorSwitcherNew moveExecutorSwitcher,
             IHoldActionExecutor holdActionExecutor,
             IOnDamageExecutor onDamageExecutor,
             IDashExecutor dashExecutor,
