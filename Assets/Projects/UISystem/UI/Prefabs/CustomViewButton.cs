@@ -1,8 +1,11 @@
-using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.Assertions;
+using DG.Tweening;
+using UnityEngine.Events;
 
 #nullable enable
 
@@ -17,37 +20,36 @@ namespace Carry.UISystem.UI.Prefabs
         IPointerEnterHandler, 
         IPointerExitHandler
     {
-        [SerializeField] Image frameImage = null!;
-        [SerializeField] Image iconImage = null!;
-        [SerializeField] Image pressedImage = null!;
-        [SerializeField] TextMeshPro? text;
+        public UnityAction ClickAction { get; set; } = () => { };
+        
+        [SerializeField] AudioClip clickSound = null!;
+        [SerializeField] List<Image> buttonImage = null!;
 
-        float ClickInterval { get; set; } = 0.1f;
+        AudioSource? _audioSource;
+        
+        readonly float _clickInterval = 0.1f;
 
         bool  _isClickable;
         float _clickTime;
-        
-        Action<object>? _clickEvent;
-        object? _clickEventTag;
+
+        void Start()
+        {
+            Assert.IsNotNull(clickSound);
+            
+            _audioSource = FindObjectOfType<AudioSource>();
+        }
 
         void Update()
         {
             if (!_isClickable)
             {
-                if (_clickTime + ClickInterval < Time.time)
+                if (_clickTime + _clickInterval < Time.time)
                 {
                     _isClickable = true;
                 }
             }
         }
 
-        enum ButtonState
-        {
-            Normal,
-            Hover,
-            Pressed,
-        }
-        
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
             if (!_isClickable)
@@ -57,47 +59,47 @@ namespace Carry.UISystem.UI.Prefabs
             }
             
             _isClickable = false;
-            _clickEvent?.Invoke(_clickEventTag);
+            
+            if (_audioSource != null)
+            {
+                _audioSource.PlayOneShot(clickSound);
+            }
+            else
+            {
+                Debug.LogWarning("AudioSourceが見つかりませんでした");
+            }
+            
+            ClickAction?.Invoke();
+            
             Debug.Log("ボタンがクリックされた(押され，ドラッグされずに離された)");
+            
+            foreach (var image in buttonImage)
+            {
+                image.transform.DOScale(1.2f, 0.1f).OnComplete(() =>
+                {
+                    image.transform.DOScale(1.1f, 0.1f);
+                });
+            }
         }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
             Debug.Log("カーソルがボタンに重なった");
-            DisplayButton(ButtonState.Hover);
+            
+            foreach (var image in buttonImage)
+            {
+                image.transform.DOScale(1.1f, 0.1f);
+            }
         }
         
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
         {
             Debug.Log("カーソルがボタンから離れた");
-            DisplayButton(ButtonState.Normal);
-        }
-        
-        void DisplayButton(ButtonState state)
-        {
-            switch (state)
+            
+            foreach (var image in buttonImage)
             {
-                case ButtonState.Normal:
-                    frameImage.color = new Color(frameImage.color.r,frameImage.color.g,frameImage.color.b,1);
-                    iconImage.color = new Color(iconImage.color.r,iconImage.color.g,iconImage.color.b,1);
-                    pressedImage.color = new Color(pressedImage.color.r,pressedImage.color.g,pressedImage.color.b,0);
-                    if(text != null)text.color = new Color(text.color.r,text.color.g,text.color.b,1);
-                    break;
-                
-                case ButtonState.Hover:
-                    frameImage.color = new Color(frameImage.color.r,frameImage.color.g,frameImage.color.b,1);
-                    iconImage.color = new Color(iconImage.color.r,iconImage.color.g,iconImage.color.b,0);
-                    pressedImage.color = new Color(pressedImage.color.r,pressedImage.color.g,pressedImage.color.b,0.2f);
-                    if(text != null)text.color = new Color(text.color.r,text.color.g,text.color.b,1);
-                    break;
-                
-                case ButtonState.Pressed:
-                    frameImage.color = new Color(frameImage.color.r,frameImage.color.g,frameImage.color.b,1);
-                    iconImage.color = new Color(iconImage.color.r,iconImage.color.g,iconImage.color.b,0);
-                    pressedImage.color = new Color(pressedImage.color.r,pressedImage.color.g,pressedImage.color.b,1);
-                    if(text != null)text.color = new Color(text.color.r,text.color.g,text.color.b,1);
-                    break;
-            }   
+                image.transform.DOScale(1.0f, 0.1f);
+            }
         }
     }
 }

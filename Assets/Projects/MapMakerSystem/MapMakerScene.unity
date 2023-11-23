@@ -1238,7 +1238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d704cf54924d9b148971c09a74ecd811, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnAreaRectTransform: {fileID: 0}
+  spawnAreaRectTransform: {fileID: 2020827056}
 --- !u!1 &514575590
 GameObject:
   m_ObjectHideFlags: 0
