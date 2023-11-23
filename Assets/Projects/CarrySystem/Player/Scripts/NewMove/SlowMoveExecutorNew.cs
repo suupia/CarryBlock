@@ -7,7 +7,12 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class SlowMoveExecutorNew : IMoveExecutorNew
     {
-        IPlayerAnimatorPresenter? _playerAnimatorPresenter;
+        readonly IPlayerAnimatorPresenter _playerAnimatorPresenter;
+
+        public SlowMoveExecutorNew(IPlayerAnimatorPresenter presenter)
+        {
+            _playerAnimatorPresenter = presenter;
+        }
         
         public IMoveParameter Chain(IMoveParameter parameter)
         {
@@ -59,10 +64,5 @@ namespace Carry.CarrySystem.Player.Scripts
             }
         }
 
-        // Animator
-        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
-        {
-            _playerAnimatorPresenter = presenter;
-        }
     }
 }

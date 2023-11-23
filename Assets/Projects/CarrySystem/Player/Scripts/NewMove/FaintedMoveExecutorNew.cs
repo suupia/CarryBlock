@@ -8,7 +8,12 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class FaintedMoveExecutorNew : IMoveExecutorNew 
     {
-        IPlayerAnimatorPresenter? _playerAnimatorPresenter;
+        readonly IPlayerAnimatorPresenter _playerAnimatorPresenter;
+        
+        public FaintedMoveExecutorNew(IPlayerAnimatorPresenter presenter)
+        {
+            _playerAnimatorPresenter = presenter;
+        }
         
         public IMoveParameter Chain(IMoveParameter parameter)
         {
@@ -49,11 +54,6 @@ namespace Carry.CarrySystem.Player.Scripts
                 _presenter.Idle();
             }
         }
-        
-        // Animator
-        public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
-        {
-            _playerAnimatorPresenter = presenter;
-        }
+
     }
 }
