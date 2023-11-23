@@ -4,20 +4,24 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public record DashMoveExecutorNew : IMoveExecutorNew
+    public record DashMoveRecord : IMoveRecord
     {
         readonly IPlayerAnimatorPresenter _playerAnimatorPresenter;
         
-        public DashMoveExecutorNew(IPlayerAnimatorPresenter presenter)
+        public DashMoveRecord(IPlayerAnimatorPresenter presenter)
         {
             _playerAnimatorPresenter = presenter;
         }
-
         public IMoveParameter Chain(IMoveParameter parameter)
         {
             return new MoveParameter(parameter);
         }
         
+        public IMoveFunction Chain(IMoveFunction function)
+        {
+            return new MoveFunction(function, _playerAnimatorPresenter);
+
+        }
         class MoveParameter : IMoveParameter
         {
             public float Acceleration { get; }
@@ -30,13 +34,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 StoppingForce = parameter.StoppingForce;
             }
         }
-        
-        public IMoveFunction Chain(IMoveFunction function)
-        {
-            return new MoveFunction(function, _playerAnimatorPresenter);
-
-        }
-        
+                
         class MoveFunction : IMoveFunction
         {
             readonly IMoveFunction _func;
@@ -60,5 +58,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 }
             }
         }
+
+
     }
 }

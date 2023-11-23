@@ -11,7 +11,7 @@ namespace Carry.CarrySystem.Player.Scripts
     public class MoveExecutorSwitcherNew : IMoveExecutorSwitcherNew
     {
         IPlayerAnimatorPresenter _playerAnimatorPresenter = null!;
-        readonly IList<IMoveExecutorNew> _moveExecutors = new List<IMoveExecutorNew>();
+        readonly IList<IMoveRecord> _moveExecutors = new List<IMoveRecord>();
         PlayerInfo? _info;
         
 
@@ -32,40 +32,40 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void SwitchToConfusionMove()
         {
-            _moveExecutors.Add(new InverseInputMoveExecutorNew());
+            _moveExecutors.Add(new InverseInputMoveRecord());
         }
         
         public void SwitchOffConfusionMove()
         {
-            _moveExecutors.Remove(new InverseInputMoveExecutorNew());
+            _moveExecutors.Remove(new InverseInputMoveRecord());
         }
         
         public void SwitchToDashMove()
         {
-            var nextMoveExe = new DashMoveExecutorNew(_playerAnimatorPresenter);
+            var nextMoveExe = new DashMoveRecord(_playerAnimatorPresenter);
             _moveExecutors.Add(nextMoveExe);
         }
         public void SwitchOffDashMove()
         {
-            _moveExecutors.Remove(new DashMoveExecutorNew(_playerAnimatorPresenter));
+            _moveExecutors.Remove(new DashMoveRecord(_playerAnimatorPresenter));
         }
         public void SwitchToSlowMove()
         {
-            var nextMoveExe = new SlowMoveExecutorNew(_playerAnimatorPresenter);
+            var nextMoveExe = new SlowMoveRecord(_playerAnimatorPresenter);
             _moveExecutors.Add(nextMoveExe);
         }
         public void SwitchOffSlowMove()
         {
-            _moveExecutors.Remove(new SlowMoveExecutorNew(_playerAnimatorPresenter));
+            _moveExecutors.Remove(new SlowMoveRecord(_playerAnimatorPresenter));
         }
         public void SwitchToFaintedMove()
         {
-            var nextMoveExe = new FaintedMoveExecutorNew(_playerAnimatorPresenter);
+            var nextMoveExe = new FaintedMoveRecord(_playerAnimatorPresenter);
             _moveExecutors.Add(nextMoveExe);
         }
         public void SwitchOffFaintedMove()
         {
-            _moveExecutors.Remove(new FaintedMoveExecutorNew(_playerAnimatorPresenter));
+            _moveExecutors.Remove(new FaintedMoveRecord(_playerAnimatorPresenter));
         }
                 
         // Animator

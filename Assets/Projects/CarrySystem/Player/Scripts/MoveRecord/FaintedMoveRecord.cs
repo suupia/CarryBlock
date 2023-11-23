@@ -5,41 +5,37 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public record SlowMoveExecutorNew : IMoveExecutorNew
+    public record FaintedMoveRecord : IMoveRecord 
     {
         readonly IPlayerAnimatorPresenter _playerAnimatorPresenter;
-
-        public SlowMoveExecutorNew(IPlayerAnimatorPresenter presenter)
+        
+        public FaintedMoveRecord(IPlayerAnimatorPresenter presenter)
         {
             _playerAnimatorPresenter = presenter;
         }
-        
         public IMoveParameter Chain(IMoveParameter parameter)
         {
             return new MoveParameter(parameter);
-        } 
-        
-        class MoveParameter : IMoveParameter
-        {
-            public float Acceleration { get;  }
-            public float MaxVelocity { get;  }
-            public float StoppingForce { get;  }
-
-            public MoveParameter(IMoveParameter parameter)
-            {
-                Acceleration = parameter.Acceleration * 3.0f / 4.0f;
-                MaxVelocity = parameter.MaxVelocity * 2.0f / 5.0f;
-                StoppingForce = parameter.StoppingForce;
-            }
-           
         }
-        
         public IMoveFunction Chain(IMoveFunction function)
         {
             return new MoveFunction(function, _playerAnimatorPresenter);
 
         }
 
+
+        class MoveParameter : IMoveParameter
+        {
+            public float Acceleration { get; } 
+            public float MaxVelocity { get; } 
+            public float StoppingForce { get;  }
+            public MoveParameter(IMoveParameter parameter)
+            {
+                Acceleration = 0;
+                MaxVelocity = 0;
+                StoppingForce = parameter.StoppingForce;
+            }
+        }
         class MoveFunction : IMoveFunction
         {
             readonly IMoveFunction _func;
@@ -53,14 +49,7 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 _func.Move(input);
 
-                if (input != Vector3.zero)
-                {
-                    _presenter.Walk();   
-                }
-                else
-                {
-                    _presenter.Idle();
-                }
+                _presenter.Idle();
             }
         }
 

@@ -3,14 +3,13 @@ using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 
-
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public record FaintedMoveExecutorNew : IMoveExecutorNew 
+    public record SlowMoveRecord : IMoveRecord
     {
         readonly IPlayerAnimatorPresenter _playerAnimatorPresenter;
-        
-        public FaintedMoveExecutorNew(IPlayerAnimatorPresenter presenter)
+
+        public SlowMoveRecord(IPlayerAnimatorPresenter presenter)
         {
             _playerAnimatorPresenter = presenter;
         }
@@ -18,19 +17,7 @@ namespace Carry.CarrySystem.Player.Scripts
         public IMoveParameter Chain(IMoveParameter parameter)
         {
             return new MoveParameter(parameter);
-        }
-        class MoveParameter : IMoveParameter
-        {
-            public float Acceleration { get; } 
-            public float MaxVelocity { get; } 
-            public float StoppingForce { get;  }
-            public MoveParameter(IMoveParameter parameter)
-            {
-                Acceleration = 0;
-                MaxVelocity = 0;
-                StoppingForce = parameter.StoppingForce;
-            }
-        }
+        } 
         
         public IMoveFunction Chain(IMoveFunction function)
         {
@@ -38,6 +25,21 @@ namespace Carry.CarrySystem.Player.Scripts
 
         }
         
+        class MoveParameter : IMoveParameter
+        {
+            public float Acceleration { get;  }
+            public float MaxVelocity { get;  }
+            public float StoppingForce { get;  }
+
+            public MoveParameter(IMoveParameter parameter)
+            {
+                Acceleration = parameter.Acceleration * 3.0f / 4.0f;
+                MaxVelocity = parameter.MaxVelocity * 2.0f / 5.0f;
+                StoppingForce = parameter.StoppingForce;
+            }
+           
+        }
+
         class MoveFunction : IMoveFunction
         {
             readonly IMoveFunction _func;
@@ -51,7 +53,14 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 _func.Move(input);
 
-                _presenter.Idle();
+                if (input != Vector3.zero)
+                {
+                    _presenter.Walk();   
+                }
+                else
+                {
+                    _presenter.Idle();
+                }
             }
         }
 

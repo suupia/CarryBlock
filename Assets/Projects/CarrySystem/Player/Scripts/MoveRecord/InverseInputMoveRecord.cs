@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public record InverseInputMoveExecutorNew : IMoveExecutorNew
+    public record InverseInputMoveRecord : IMoveRecord
     {
         public IMoveParameter Chain(IMoveParameter parameter)
         {
