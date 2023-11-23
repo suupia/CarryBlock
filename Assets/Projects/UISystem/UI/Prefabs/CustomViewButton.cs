@@ -20,7 +20,7 @@ namespace Carry.UISystem.UI.Prefabs
         IPointerEnterHandler, 
         IPointerExitHandler
     {
-        public UnityAction ClickAction { get; set; } = () => { };
+        public UnityAction ClickAction { get; set; } = () => {};
         
         [SerializeField] AudioClip clickSound = null!;
         [SerializeField] List<Image> buttonImage = null!;
@@ -79,6 +79,8 @@ namespace Carry.UISystem.UI.Prefabs
                 {
                     image.transform.DOScale(1.1f, 0.1f);
                 });
+                
+                image.transform.DORotate(new Vector3(0, 0, 360), 0.2f, RotateMode.FastBeyond360);
             }
         }
 
