@@ -110,11 +110,11 @@ namespace Carry.CarrySystem.Player.Scripts
     
     ///////////////////////////////////////////////////
 
-    public interface IMoveFunction
+    public interface IMoveFunctionOld
     {
         IMoveExecutorLeaf Chain(IMoveExecutorLeaf moveExecutor);
     }
-    public class NewFastMoveExecutor : IMoveExecutor, IMoveFunction
+    public class NewFastMoveExecutor : IMoveExecutor, IMoveFunctionOld
     {
         public IMoveExecutorLeaf CreateNewLeaf() => new RegularMoveExecutor(0,0,0);
         public float Acceleration { get; set; }
@@ -144,7 +144,7 @@ namespace Carry.CarrySystem.Player.Scripts
         
     public class NewMoveSwitcher
     {
-        IList<IMoveFunction> _moveExecutors = new List<IMoveFunction>();
+        IList<IMoveFunctionOld> _moveExecutors = new List<IMoveFunctionOld>();
 
         public void Move(Vector3 input)
         {

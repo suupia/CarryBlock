@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class DashMoveExecutor : IMoveExecutor ,IMoveFunction
+    public class DashMoveExecutor : IMoveExecutor ,IMoveFunctionOld
     {
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
