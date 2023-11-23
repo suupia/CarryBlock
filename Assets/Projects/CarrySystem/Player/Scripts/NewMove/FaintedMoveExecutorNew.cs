@@ -1,19 +1,28 @@
 ﻿#nullable enable
+using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 
+
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public class DashMoveExecutorNew : IMoveExecutorNew
+    public class FaintedMoveExecutorNew : IMoveExecutorNew 
     {
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
-
+        
         public IMoveParameter Chain(IMoveParameter parameter)
         {
-            var newMove = parameter;
-            newMove.Acceleration *= 10.0f / 4.0f;
-            newMove.MaxVelocity *= 10.0f / 5.0f;
-            return newMove;
+            return new ReturnParameter(parameter);
+        }
+        class ReturnParameter : IMoveParameter
+        {
+            public float Acceleration { get; set; } = 0;
+            public float MaxVelocity { get; set; } = 0;
+            public float StoppingForce { get; set; }
+            public ReturnParameter(IMoveParameter parameter)
+            {
+                StoppingForce = parameter.StoppingForce;
+            }
         }
         
         public IMoveFunction Chain(IMoveFunction function)
@@ -35,17 +44,10 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 _func.Move(input);
 
-                if (input != Vector3.zero)
-                {
-                    _presenter.Dash();   
-                }
-                else
-                {
-                    _presenter.Idle();
-                }
+                _presenter.Idle();
             }
         }
-
+        
         // Animator
         public void SetPlayerAnimatorPresenter(IPlayerAnimatorPresenter presenter)
         {
