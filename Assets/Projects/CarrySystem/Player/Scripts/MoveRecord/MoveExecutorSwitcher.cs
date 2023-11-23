@@ -5,6 +5,7 @@ using System.Linq;
 using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
+using Debug = System.Diagnostics.Debug;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
@@ -21,12 +22,13 @@ namespace Carry.CarrySystem.Player.Scripts
         
         public void Move(Vector3 input)
         {
+            // Precondition
+            Debug.Assert(_info != null, nameof(_info) + " != null");
+            Debug.Assert(_playerAnimatorPresenter != null, nameof(_playerAnimatorPresenter) + " != null");
+            
             // Aggregate IMoveParameter
             var regularMoveParameter = new RegularMoveParameter() as IMoveParameter;
             IMoveParameter parameter = _moveExecutors.Aggregate(regularMoveParameter, (integrated, next) => next.Chain(integrated));
-            
-            if(_info == null) throw new NullReferenceException("PlayerInfo is null");
-            if(_playerAnimatorPresenter == null) throw new NullReferenceException("PlayerAnimatorPresenter is null" );
             
             // Aggregate IMoveFunction
             var regularMoveFunction = new RegularMoveFunction(_playerAnimatorPresenter, _info, parameter) as IMoveFunction;
