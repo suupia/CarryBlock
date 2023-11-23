@@ -51,9 +51,9 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
             {
                 0 => 1000, // シーン読み込み時は0なので、ここでエラーを投げたくないので適当な値を入れておく
                 1 => 120,
-                2 => 90,
-                3 => 70,
-                4 => 60,
+                2 => 100,
+                3 => 90,
+                4 => 80,
                 _ =>  InvalidPlayerCount(),
             };
             

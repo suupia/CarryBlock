@@ -1,0 +1,115 @@
+<linker>
+  <assembly fullname="Addler, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="Addler.Runtime.Core.LifetimeBinding.MonoBehaviourBasedReleaseEvent" preserve="all" />
+  </assembly>
+  <assembly fullname="CarrySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="Carry.CarrySystem.Block.BlockMaterialSetterNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Block.Scripts.BlockControllerLocal" preserve="all" />
+    <type fullname="Carry.CarrySystem.Block.Scripts.BlockControllerNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Cart.Scripts.CartControllerNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.CG.Tsukinowa.TsukinowaMaterialSetter" preserve="all" />
+    <type fullname="Carry.CarrySystem.Gimmick.Scripts.CannonBallControllerNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Map.Scripts.GroundPresenterLocal" preserve="all" />
+    <type fullname="Carry.CarrySystem.Map.Scripts.GroundPresenterNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Map.Scripts.MapKeyDataNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Map.Scripts.PlaceablePresenterLocal" preserve="all" />
+    <type fullname="Carry.CarrySystem.Map.Scripts.PlaceablePresenterNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Map.Scripts.WallPresenterLocal" preserve="all" />
+    <type fullname="Carry.CarrySystem.Map.Scripts.WallPresenterNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Player.Scripts.AidKitRangeNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Player.Scripts.CarryPlayerControllerLocal" preserve="all" />
+    <type fullname="Carry.CarrySystem.Player.Scripts.CarryPlayerControllerNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Player.Scripts.LobbyPlayerControllerNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Player.Scripts.PassBlockMoveExecutorNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Player.Scripts.PassRangeNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Player.Scripts.PlayerAidKitPresenterNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Player.Scripts.PlayerAnimatorPresenterLocal" preserve="all" />
+    <type fullname="Carry.CarrySystem.Player.Scripts.PlayerAnimatorPresenterNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.Player.Scripts.PlayerHoldablePresenterNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.SearchRoute.Scripts.RoutePresenterNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.VFX.Scripts.DashEffectPresenterLocal" preserve="all" />
+    <type fullname="Carry.CarrySystem.VFX.Scripts.DashEffectPresenterNet" preserve="all" />
+    <type fullname="Carry.CarrySystem.VFX.Scripts.ReviveEffectPresenter" preserve="all" />
+    <type fullname="Carry.GameSystem.Player.Scripts.CameraFollowTarget" preserve="all" />
+    <type fullname="Projects.CarrySystem.Block.Scripts.BlockMaterialSetterLocal" preserve="all" />
+    <type fullname="Projects.CarrySystem.Enemy.EnemyAnimatorPresenterNet" preserve="all" />
+    <type fullname="Projects.CarrySystem.Enemy.EnemyControllerNet" preserve="all" />
+    <type fullname="Projects.CarrySystem.Gimmick.Scripts.SpikeBodyControllerNet" preserve="all" />
+    <type fullname="Projects.CarrySystem.Item.Scripts.ItemControllerNet" preserve="all" />
+    <type fullname="Projects.CarrySystem.Player.Scripts.Local.PlayerHoldablePresenterLocal" preserve="all" />
+    <type fullname="Projects.CarrySystem.SearchRoute.Scripts.RoutePresenterLocal" preserve="all" />
+    <type fullname="Carry.CarrySystem.Block.Info.BlockInfo" preserve="nothing" serialized="true" />
+    <type fullname="Carry.CarrySystem.Map.Scripts.MapKeyData" preserve="nothing" serialized="true" />
+    <type fullname="Projects.CarrySystem.Item.Scripts.ItemInfo" preserve="nothing" serialized="true" />
+  </assembly>
+  <assembly fullname="Fusion.Runtime, Version=1.1.5.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="Fusion.NetworkObject" preserve="all" />
+    <type fullname="Fusion.NetworkRigidbody" preserve="all" />
+    <type fullname="Fusion.NetworkTransform" preserve="all" />
+    <type fullname="Fusion.InterpolatedErrorCorrectionSettings" preserve="nothing" serialized="true" />
+    <type fullname="Fusion.NetworkObjectGuid" preserve="nothing" serialized="true" />
+  </assembly>
+  <assembly fullname="Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
+    <type fullname="UnityEngine.AddressableAssets.Addressables" preserve="all" />
+  </assembly>
+  <assembly fullname="Unity.InputSystem, Version=1.4.4.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.InputSystem.InputActionAsset" preserve="all" />
+    <type fullname="UnityEngine.InputSystem.InputActionReference" preserve="all" />
+    <type fullname="UnityEngine.InputSystem.InputAction" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.InputSystem.InputActionMap" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.InputSystem.InputBinding" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.InputSystem.InputControlScheme" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.InputSystem.InputControlScheme/DeviceRequirement" preserve="nothing" serialized="true" />
+  </assembly>
+  <assembly fullname="Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.Rendering.Universal.UniversalAdditionalCameraData" preserve="all" />
+  </assembly>
+  <assembly fullname="Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.AssetBundleProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.BundledAssetProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.InstanceProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.LegacyResourcesProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.SceneProvider" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.AnimationClip" preserve="all" />
+    <type fullname="UnityEngine.Animator" preserve="all" />
+    <type fullname="UnityEngine.RuntimeAnimatorController" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.AudioListener" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.Camera" preserve="all" />
+    <type fullname="UnityEngine.ComputeShader" preserve="all" />
+    <type fullname="UnityEngine.GameObject" preserve="all" />
+    <type fullname="UnityEngine.Material" preserve="all" />
+    <type fullname="UnityEngine.Mesh" preserve="all" />
+    <type fullname="UnityEngine.MeshFilter" preserve="all" />
+    <type fullname="UnityEngine.MeshRenderer" preserve="all" />
+    <type fullname="UnityEngine.Object" preserve="all" />
+    <type fullname="UnityEngine.RectTransform" preserve="all" />
+    <type fullname="UnityEngine.Shader" preserve="all" />
+    <type fullname="UnityEngine.SkinnedMeshRenderer" preserve="all" />
+    <type fullname="UnityEngine.Texture2D" preserve="all" />
+    <type fullname="UnityEngine.Transform" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.BoxCollider" preserve="all" />
+    <type fullname="UnityEngine.CapsuleCollider" preserve="all" />
+    <type fullname="UnityEngine.Rigidbody" preserve="all" />
+    <type fullname="UnityEngine.SphereCollider" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.UI.CanvasScaler" preserve="all" />
+    <type fullname="UnityEngine.UI.GraphicRaycaster" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.Canvas" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.VFXModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.VFX.VFXRenderer" preserve="all" />
+    <type fullname="UnityEngine.VFX.VisualEffect" preserve="all" />
+    <type fullname="UnityEngine.VFX.VisualEffectAsset" preserve="all" />
+  </assembly>
+</linker>
