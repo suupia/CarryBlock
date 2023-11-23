@@ -96,10 +96,10 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             float faintedTime = _playerCharacterTransporter.PlayerCount switch
             {
-                1 => 2,
-                2 => 3,
-                3 => 3.5f,
-                4 => 4f,
+                1 => 1.5f,
+                2 => 2.0f,
+                3 => 2.5f,
+                4 => 3.0f,
                 _ =>  InvalidPlayerCount(),
             };
             
