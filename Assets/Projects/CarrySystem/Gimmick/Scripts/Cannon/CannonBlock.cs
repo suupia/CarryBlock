@@ -49,7 +49,11 @@ namespace Carry.CarrySystem.Block.Scripts
             KindValue = kind;
             GridPosition = gridPosition;
         }
-        
+
+        public void Dispose()
+        {
+            _gimmickDisposable?.Dispose();
+        }
         public void StartGimmick()
         {
             Debug.Log("StartGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
@@ -66,12 +70,6 @@ namespace Carry.CarrySystem.Block.Scripts
                         var _ = cannonBallBuilder.Build(KindValue, spawnPos, Quaternion.identity, PlayerRef.None);
                     }
                 );
-        }
-        
-        public void EndGimmick()
-        {
-            Debug.Log("EndGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
-            _gimmickDisposable?.Dispose();
         }
     }
 }

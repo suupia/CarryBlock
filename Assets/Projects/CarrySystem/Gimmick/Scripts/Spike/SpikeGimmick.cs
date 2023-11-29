@@ -42,6 +42,11 @@ namespace Projects.CarrySystem.Gimmick.Scripts
             GridPosition = gridPosition;
         }
         
+        public void Dispose()
+        {
+            _gimmickDisposable?.Dispose();
+        }
+        
         
         public void StartGimmick()
         {
@@ -59,14 +64,6 @@ namespace Projects.CarrySystem.Gimmick.Scripts
                         spikeBodyBuilder.Build(KindValue, spawnPos, Quaternion.identity, PlayerRef.None);
                     }
                 );
-        }
-        
-        public void EndGimmick()
-        {
-            Debug.Log("End SpikeGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
-            Debug.Log($"_giimmickDisposable is null? {_gimmickDisposable == null}");
-            _gimmickDisposable?.Dispose();
-
         }
     }
 }

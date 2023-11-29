@@ -151,7 +151,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
                 foreach (var gimmick in gimmicks)
                 {
-                    gimmick.EndGimmick();
+                    gimmick.Dispose();
                 }
                 
             }

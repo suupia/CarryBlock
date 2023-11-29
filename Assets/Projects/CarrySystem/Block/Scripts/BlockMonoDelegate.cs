@@ -75,7 +75,7 @@ namespace Carry.CarrySystem.Block.Scripts
          
          public void RemoveBlock(IBlock block)
          {
-             if(block is IGimmick gimmickBlock) gimmickBlock.EndGimmick();
+             if(block is IGimmick gimmickBlock) gimmickBlock.Dispose();
              _map.RemoveEntity(_gridPosition, block);
              _placeablePresenter.SetEntityActiveData(block, GetBlocks().Count);
 

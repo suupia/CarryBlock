@@ -126,7 +126,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.RegisterComponentInHierarchy<MapMakerUIManager>();
             
             // Gimmick
-            builder.RegisterComponentInHierarchy<GimmickFinalizerMono>();
+            builder.RegisterComponentInHierarchy<GimmickDisposerMono>();
         }
     }
 }
