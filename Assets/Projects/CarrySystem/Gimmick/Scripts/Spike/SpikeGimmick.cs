@@ -20,8 +20,6 @@ namespace Projects.CarrySystem.Gimmick.Scripts
     
     public class SpikeGimmick :  IGimmick
     {
-
-        public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 1;
         public SpikeGimmick.Kind KindValue { get; }
         
@@ -36,10 +34,9 @@ namespace Projects.CarrySystem.Gimmick.Scripts
         readonly float _spawnHeight = 0.8f;
         IDisposable? _gimmickDisposable;
         
-        public SpikeGimmick(Kind kind, Vector2Int gridPosition)
+        public SpikeGimmick(Kind kind)
         {
             KindValue = kind;
-            GridPosition = gridPosition;
         }
         
         public void Dispose()
@@ -48,9 +45,9 @@ namespace Projects.CarrySystem.Gimmick.Scripts
         }
         
         
-        public void StartGimmick()
+        public void StartGimmick(Vector2Int gridPosition)
         {
-            Debug.Log("StartGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
+            Debug.Log("StartGimmick GridPosition:" + gridPosition + " Kind:" + KindValue);
             
             var spikeBodyBuilder = new SpikeBodyBuilder();
             
@@ -58,7 +55,7 @@ namespace Projects.CarrySystem.Gimmick.Scripts
             _gimmickDisposable =  Observable.Interval(System.TimeSpan.FromSeconds(_appearInterval))
                 .Subscribe(_ =>
                     {
-                        var worldPos = GridConverter.GridPositionToWorldPosition(GridPosition);
+                        var worldPos = GridConverter.GridPositionToWorldPosition(gridPosition);
                         var spawnPos = new Vector3(worldPos.x, worldPos.y + _spawnHeight , worldPos.z);
                         // Spawn prefab
                         spikeBodyBuilder.Build(KindValue, spawnPos, Quaternion.identity, PlayerRef.None);

@@ -129,7 +129,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 }
                 block.PutDown(_info.PlayerController.GetMoveExecutorSwitcher);
                 // _map.AddEntity(forwardGridPos, block);
-                _mapGetter.GetMap().GetSingleEntity<BlockMonoDelegate>(forwardGridPos)?.AddBlock(block);
+                _mapGetter.GetMap().GetSingleEntity<BlockMonoDelegate>(forwardGridPos)?.AddBlock(block,forwardGridPos);
                 _playerBlockPresenter?.DisableHoldableView();
                 _playerAnimatorPresenter?.PutDownBlock();
             }

@@ -15,7 +15,6 @@ namespace Carry.CarrySystem.Entity.Scripts
     
     public class Ground : IEntity
     {
-        public Vector2Int GridPosition { get; set; }
         public Ground.Kind KindValue { get; }
         
         public enum Kind
@@ -24,10 +23,9 @@ namespace Carry.CarrySystem.Entity.Scripts
             Kind1,
         }
 
-        public Ground(Ground.Kind kind,Vector2Int gridPosition)
+        public Ground(Ground.Kind kind)
         {
             KindValue = kind;
-            GridPosition = gridPosition;
         }
 
     }

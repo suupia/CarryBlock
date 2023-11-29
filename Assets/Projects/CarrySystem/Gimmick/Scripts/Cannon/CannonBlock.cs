@@ -24,7 +24,6 @@ namespace Carry.CarrySystem.Block.Scripts
     }
     public class CannonBlock : IBlock, IGimmick, IHoldable
     {
-        public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 1;
         public CannonBlock.Kind KindValue { get; }
 
@@ -44,19 +43,18 @@ namespace Carry.CarrySystem.Block.Scripts
             Right,
         }
 
-        public CannonBlock(CannonBlock.Kind kind, Vector2Int gridPosition)
+        public CannonBlock(CannonBlock.Kind kind)
         {
             KindValue = kind;
-            GridPosition = gridPosition;
         }
 
         public void Dispose()
         {
             _gimmickDisposable?.Dispose();
         }
-        public void StartGimmick()
+        public void StartGimmick(Vector2Int gridPosition)
         {
-            Debug.Log("StartGimmick GridPosition:" + GridPosition + " Kind:" + KindValue);
+            Debug.Log("StartGimmick GridPosition:" + gridPosition + " Kind:" + KindValue);
 
             var cannonBallBuilder = new CannonBallBuilder();
             
@@ -64,7 +62,7 @@ namespace Carry.CarrySystem.Block.Scripts
             _gimmickDisposable =  Observable.Interval(System.TimeSpan.FromSeconds(_fireInterval))
                 .Subscribe(x =>
                     {
-                        var worldPos = GridConverter.GridPositionToWorldPosition(GridPosition);
+                        var worldPos = GridConverter.GridPositionToWorldPosition(gridPosition);
                         var spawnPos = new Vector3(worldPos.x, worldPos.y + _spawnHeight , worldPos.z);
                         // CannonBallを生成
                         var _ = cannonBallBuilder.Build(KindValue, spawnPos, Quaternion.identity, PlayerRef.None);

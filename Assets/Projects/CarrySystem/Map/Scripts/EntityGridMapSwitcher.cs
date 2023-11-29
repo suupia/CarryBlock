@@ -134,10 +134,11 @@ namespace Carry.CarrySystem.Map.Scripts
             for (int i = 0; i < GetMap().Length; i++)
             {
                 var gimmicks = GetMap().GetSingleEntityList<IGimmick>(i);
+                var pos = GetMap().ToVector(i);
 
                 foreach (var gimmick in gimmicks)
                 {
-                    gimmick.StartGimmick();
+                    gimmick.StartGimmick(pos);
                 }
                 
             }
