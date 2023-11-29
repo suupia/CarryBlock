@@ -34,7 +34,10 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             return _map;
         }
-        
+        public IGridCoordinate GetCoordinate()
+        {
+            return _map;
+        }
         public void InitSwitchMap()
         {
             var mapKey = MapKey.Default;

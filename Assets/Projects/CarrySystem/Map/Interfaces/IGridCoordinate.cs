@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Interfaces
 {
-    public interface IGridCoordinate
+    public interface IGridCoordinate : IGridMap
     {
         // DataArea is a area that has data. ex) (0,0)～(mapWidth-1,mapHeight-1)
         // EdgeArea is a area that has no data but has _initValue.

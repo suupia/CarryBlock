@@ -17,7 +17,7 @@ namespace Carry.CarrySystem.Cart.Scripts
         /// <param name="map"></param>
         /// <param name="searcherSize"></param>
         /// <returns></returns>
-        public int CalcCartReachRightEdge(bool[] accessibleArea, IGridMap map, SearcherSize searcherSize)
+        public int CalcCartReachRightEdge(bool[] accessibleArea, IGridCoordinate map, SearcherSize searcherSize)
         {
             bool[] rightEdgeArray = new bool[map.Height];
             for (int y = 0; y < map.Height; y++)
@@ -68,7 +68,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             return centerList[centerListMiddle];
         }
         
-        public bool CanCartReachRightEdge(bool[] accessibleArea, IGridMap map, SearcherSize searcherSize)
+        public bool CanCartReachRightEdge(bool[] accessibleArea, IGridCoordinate map, SearcherSize searcherSize)
         {
             var reachRightEdge = CalcCartReachRightEdge(accessibleArea, map, searcherSize);
 

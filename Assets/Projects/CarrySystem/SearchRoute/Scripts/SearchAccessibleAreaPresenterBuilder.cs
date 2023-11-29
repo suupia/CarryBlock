@@ -46,7 +46,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             
         }
 
-        void SetUpPresenter(IGridMap map)
+        void SetUpPresenter(IGridCoordinate map)
         {
             // foreachでの削除の処理が必要ないため、フィールドとして保持する必要がなく、さらに直接List<IRoutePresenter>に代入してよい
 

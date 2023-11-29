@@ -58,6 +58,17 @@ namespace Carry.CarrySystem.Map.Scripts
             }
             return _currentMap;
         }
+        
+        public IGridCoordinate GetCoordinate()
+        {
+            if (_currentMap == null)
+            {
+                Debug.LogError($"_currentMap is null");
+                return null!;
+            }
+            return _currentMap;
+        }
+
 
         public void InitSwitchMap()
         {

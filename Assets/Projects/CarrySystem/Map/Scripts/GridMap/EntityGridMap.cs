@@ -9,13 +9,17 @@ using Carry.CarrySystem.Map.Interfaces;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EntityGridMap : IGridMap
+    public class EntityGridMap : IGridCoordinate
     {
         public int Width { get; }
         public int Height { get; }
         public int Length => Width * Height; 
         public int ToSubscript(int x, int y) => _coordinate.ToSubscript(x, y);
         public Vector2Int ToVector(int subscript) => _coordinate.ToVector(subscript);
+        
+        public bool IsInDataArea(int x, int y) => _coordinate.IsInDataArea(x, y);
+        public bool IsInDataOrEdgeArea(int x, int y) => _coordinate.IsInDataOrEdgeArea(x, y);
+
         
         List<IEntity>[] _entityMaps;
         readonly IGridCoordinate _coordinate;
