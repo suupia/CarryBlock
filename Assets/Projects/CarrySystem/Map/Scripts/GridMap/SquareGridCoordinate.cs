@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using Carry.CarrySystem.Map.Interfaces;
 using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
@@ -40,14 +41,14 @@ namespace Carry.CarrySystem.Map.Scripts
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        public bool IsInDataRangeArea(int x, int y)
+        public bool IsInDataArea(int x, int y)
         {
-            return !IsOutOfDataRangeArea(x, y);
+            return !IsOutOfDataArea(x, y);
         }
 
-        public bool IsInDataRangeArea(Vector2Int vector)
+        public bool IsInDataArea(Vector2Int vector)
         {
-            return IsInDataRangeArea(vector.x, vector.y);
+            return IsInDataArea(vector.x, vector.y);
         }
 
         /// <summary>
@@ -56,14 +57,14 @@ namespace Carry.CarrySystem.Map.Scripts
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        public bool IsInIncludeEdgeArea(int x, int y)
+        public bool IsInDataOrEdgeArea(int x, int y)
         {
             return !IsOutOfIncludeEdgeArea(x, y);
         }
 
-        public bool IsInIncludeEdgeArea(Vector2Int vector)
+        public bool IsInDataOrEdgeArea(Vector2Int vector)
         {
-            return IsInIncludeEdgeArea(vector.x, vector.y);
+            return IsInDataOrEdgeArea(vector.x, vector.y);
         }
 
 
@@ -102,7 +103,7 @@ namespace Carry.CarrySystem.Map.Scripts
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        public bool IsOutOfDataRangeArea(int x, int y)
+        public bool IsOutOfDataArea(int x, int y)
         {
             return IsOutOfIncludeEdgeArea(x, y) || IsOnTheEdgeArea(x, y);
         }
