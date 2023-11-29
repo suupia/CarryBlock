@@ -6,9 +6,13 @@ using UnityEngine.Assertions;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
+    //数字だけを格納することができるマップ
     public class NumericGridMap : SquareGridMap
     {
-        //数字だけを格納することができるマップ
+        public int Width { get; }
+        public int Height { get; }
+        public int Length => Width * Height;
+        
         readonly int _edgeValue;
         readonly int _outOfRangeValue;
 
@@ -18,7 +22,8 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public NumericGridMap(int width, int height, int initValue, int edgeValue, int outOfRangeValue) : base(width, height)
         {
-            // Debug.Log($"width:{width}, height:{height}");
+            Width = width;
+            Height = height;
             Assert.IsTrue(width > 0 && height > 0, "Mapの幅または高さが0以下になっています");
             _values = new long[width * height];
             _edgeValue = edgeValue;
