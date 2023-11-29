@@ -19,7 +19,6 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
 
     public class FragileBlock : ICarriableBlock, IHoldable
     {
-        public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 1;
         public Kind KindValue { get; }
 
@@ -29,10 +28,9 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             Kind1,
         }
 
-        public FragileBlock(Kind kind, Vector2Int gridPosition)
+        public FragileBlock(Kind kind)
         {
             KindValue = kind;
-            GridPosition = gridPosition;
         }
 
         public bool CanPickUp()

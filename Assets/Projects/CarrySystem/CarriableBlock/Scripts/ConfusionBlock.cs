@@ -17,7 +17,6 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
     }
     public class ConfusionBlock : ICarriableBlock , IHoldable
     {
-        public Vector2Int GridPosition { get; set; }
         public int MaxPlacedBlockCount { get; } = 2;
         public Kind KindValue { get; }
 
@@ -27,10 +26,9 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             Kind1,
         }
 
-        public ConfusionBlock(Kind kind, Vector2Int gridPosition)
+        public ConfusionBlock(Kind kind)
         {
             KindValue = kind;
-            GridPosition = gridPosition;
         }
 
         public bool CanPickUp()

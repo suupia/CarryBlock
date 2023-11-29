@@ -121,12 +121,12 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             var map = _mapGetter.GetMap();
             IPlaceable placeable = _blockType.Name switch
             {
-                nameof(BasicBlock) => new BasicBlock(BasicBlock.Kind.Kind1, mouseGridPosOnGround),
-                nameof(UnmovableBlock) => new UnmovableBlock(UnmovableBlock.Kind.Kind1, mouseGridPosOnGround),
-                nameof(HeavyBlock) => new HeavyBlock(HeavyBlock.Kind.Kind1, mouseGridPosOnGround),
-                nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1, mouseGridPosOnGround),
-                nameof(SpikeGimmick) => new SpikeGimmick(SpikeGimmick.Kind.Kind1, mouseGridPosOnGround),
-                nameof(ConfusionBlock) => new ConfusionBlock(ConfusionBlock.Kind.Kind1, mouseGridPosOnGround),
+                nameof(BasicBlock) => new BasicBlock(BasicBlock.Kind.Kind1),
+                nameof(UnmovableBlock) => new UnmovableBlock(UnmovableBlock.Kind.Kind1),
+                nameof(HeavyBlock) => new HeavyBlock(HeavyBlock.Kind.Kind1),
+                nameof(FragileBlock) => new FragileBlock(FragileBlock.Kind.Kind1),
+                nameof(SpikeGimmick) => new SpikeGimmick(SpikeGimmick.Kind.Kind1),
+                nameof(ConfusionBlock) => new ConfusionBlock(ConfusionBlock.Kind.Kind1),
                 nameof(CannonBlock) =>CreateCannonBlock(),
                 nameof(TreasureCoin) => new TreasureCoin(TreasureCoin.Kind.Kind1, mouseGridPosOnGround, map , new TreasureCoinCounter()),
                 _ => CreateUnknownBlock(),
@@ -144,7 +144,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
                     Direction.Right => CannonBlock.Kind.Right,
                     _ => throw new ArgumentOutOfRangeException(),
                 };
-                return new CannonBlock(kind, mouseGridPosOnGround);
+                return new CannonBlock(kind);
             }
             IBlock CreateUnknownBlock()
             {

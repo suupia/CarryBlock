@@ -99,7 +99,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
             
             for (int i = 0; i < map.Length; i++)
             {
-                var entities = map.GetSingleEntityList<IPlaceable>(i);
+                var entities = map.GetSingleTypeList<IPlaceable>(i);
                 
                 int count = entities.Count;
                 

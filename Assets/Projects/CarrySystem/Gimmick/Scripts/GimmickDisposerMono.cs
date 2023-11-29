@@ -26,9 +26,9 @@ namespace Projects.CarrySystem.Gimmick.Scripts
         {
             for (int i = 0; i < _mapGetter.GetMap().Length; i++)
             {
-                var gimmicks = _mapGetter.GetMap().GetSingleEntityList<IGimmick>(i);
+                var disposables = _mapGetter.GetMap().GetSingleTypeList<IDisposable>(i);
 
-                foreach (var gimmick in gimmicks)
+                foreach (var gimmick in disposables)
                 {
                     gimmick.Dispose();
                 }

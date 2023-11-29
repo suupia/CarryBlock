@@ -55,7 +55,7 @@ namespace Carry.CarrySystem.Map.Scripts
                         if (!kind.Equals(noneValue))
                         {
                             // This will create a new entity
-                            var entity = Generic.Construct<TEntity, TKind, Vector2Int>(kind, map.ToVector(index));
+                            var entity = Generic.Construct<TEntity, TKind>(kind);
                             map.AddEntity(index, entity);
                         }
                     }

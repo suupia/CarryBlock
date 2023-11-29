@@ -65,9 +65,9 @@ namespace Carry.CarrySystem.Block.Scripts
          // 本来はクライアントコードでAddEntityできないようにするために、PlaceableGridMapクラスを作るべきだが、
          // 横着して、MonoDelegateをマップに入れる構造になっている
 
-         public void AddBlock(IBlock block)
+         public void AddBlock(IBlock block , Vector2Int gridPosition)
          {
-             if(block is IGimmick gimmickBlock) gimmickBlock.StartGimmick();
+             if(block is IGimmick gimmickBlock) gimmickBlock.StartGimmick(gridPosition);
              _map.AddEntity(_gridPosition, block);
             _placeablePresenter.SetEntityActiveData(block, GetBlocks().Count);
 
@@ -83,7 +83,7 @@ namespace Carry.CarrySystem.Block.Scripts
          
          IList<IBlock> GetBlocks()
          {
-             var blocks = _map.GetSingleEntityList<IBlock>(_gridPosition);
+             var blocks = _map.GetSingleTypeList<IBlock>(_gridPosition);
              return blocks;
          }
 
@@ -93,8 +93,6 @@ namespace Carry.CarrySystem.Block.Scripts
              _highLightExecutor.Highlight(block, playerRef);
          }
          
-         // IBlock implementation
-         public Vector2Int GridPosition { get => _gridPosition; set => _gridPosition = value; }
          
          
     }

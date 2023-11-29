@@ -58,30 +58,30 @@ namespace Carry.CarrySystem.Map.Scripts
         }
 
         //Getter
-        public TEntity? GetSingleEntity<TEntity>(Vector2Int vector) where TEntity : IEntity
+        public T? GetSingleEntity<T>(Vector2Int vector)
         {
             int x = vector.x;
             int y = vector.y;
 
-            if (IsOutOfDataRangeArea(x, y)) {return default(TEntity);}
+            if (IsOutOfDataRangeArea(x, y)) {return default(T);}
 
-            return GetSingleEntity<TEntity>(ToSubscript(x, y));
+            return GetSingleEntity<T>(ToSubscript(x, y));
         }
         
-        public TEntity? GetSingleEntity<TEntity>(int index) where TEntity : IEntity
+        public T? GetSingleEntity<T>(int index)
         {
             if (index < 0 || index > Length)
             {
                 Debug.LogError("領域外の値を習得しようとしました");
-                return default(TEntity);
+                return default(T);
             }
             
-            var entity = _entityMaps[index].OfType<TEntity>().FirstOrDefault();
+            var entity = _entityMaps[index].OfType<T>().FirstOrDefault();
 
             if (entity == null)
             {
                 // Debug.Log($"_entityMaps[{index}].OfType<TEntity>().FirstOrDefault()がnullです");
-                return default(TEntity);
+                return default(T);
             }
             else
             {
@@ -90,38 +90,38 @@ namespace Carry.CarrySystem.Map.Scripts
             }
         }
 
-        public List<TEntity> GetSingleEntityList<TEntity>(Vector2Int vector) where TEntity : IEntity
+        public List<T> GetSingleTypeList<T>(Vector2Int vector)
         {
             var x = vector.x;
             var y = vector.y;
 
-            if (IsOutOfDataRangeArea(x, y)) return new List<TEntity>();
+            if (IsOutOfDataRangeArea(x, y)) return new List<T>();
 
-            return GetSingleEntityList<TEntity>(ToSubscript(x, y));
+            return GetSingleTypeList<T>(ToSubscript(x, y));
         }
 
-        public List<TEntity> GetSingleEntityList<TEntity>(int index) where TEntity : IEntity
+        public List<T> GetSingleTypeList<T>(int index) 
         {
             
             if (index < 0 || index > Length)
             {
                 Debug.LogError("領域外の値を習得しようとしました");
-                return new List<TEntity>(); // 空のリストを返す
+                return new List<T>(); // 空のリストを返す
             }
 
-            var filteredEntities = _entityMaps[index].OfType<TEntity>().ToList();
+            var filteredEntities = _entityMaps[index].OfType<T>().ToList();
     
             if (!filteredEntities.Any())
             {
                 //Debug.Log($"_entityMaps[{index}]の{typeof(EntityType)}のCountが0です");
-                return  new List<TEntity>(); // 空のリストを返す
+                return  new List<T>(); // 空のリストを返す
             }
 
             return filteredEntities;
         }
 
 
-        public IEnumerable<IEntity> GetAllEntityList(Vector2Int vector)
+        public IEnumerable<IEntity> GetAllTypeList(Vector2Int vector)
         {
             int x, y;
             x = vector.x;
@@ -129,11 +129,11 @@ namespace Carry.CarrySystem.Map.Scripts
 
             if (IsOutOfDataRangeArea(x, y)) return  new List<IEntity>();
             
-            return GetSingleEntityList<IEntity>(ToSubscript(x, y));
+            return GetSingleTypeList<IEntity>(ToSubscript(x, y));
 
         }
         
-        public IEnumerable<IEntity> GetAllEntityList(int  index)
+        public IEnumerable<IEntity> GetAllTypeList(int  index)
         {
             if (index < 0 || index > Length)
             {

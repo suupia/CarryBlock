@@ -62,7 +62,7 @@ namespace Carry.CarrySystem.Map.Scripts
             // 右端においては、ブロックがない場所には置かない
             if (gridPos.x >= map.Width)
             {
-                if (map.GetSingleEntityList<IBlock>(new Vector2Int(gridPos.x, map.Width - 1)).Count == 0) return true;
+                if (map.GetSingleTypeList<IBlock>(new Vector2Int(gridPos.x, map.Width - 1)).Count == 0) return true;
             }
             
             // 左端においては、真ん中から3マス分の範囲には置かない

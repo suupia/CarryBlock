@@ -37,7 +37,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             {
                 var gridPosition = cleanMap.ToVector(i);
 
-                cleanMap.AddEntity(gridPosition, new Ground(Ground.Kind.Kind1, gridPosition));
+                cleanMap.AddEntity(gridPosition, new Ground(Ground.Kind.Kind1));
             }
 
             _entityGridMapSaver.SaveMap(cleanMap, MapKey.Default, -1);

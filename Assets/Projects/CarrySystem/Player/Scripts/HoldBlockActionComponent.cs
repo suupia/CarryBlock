@@ -69,7 +69,7 @@ namespace Carry.CarrySystem.Player.Scripts
             }
                 
             // Debug
-            Debug.Log($"before IBlockList : {string.Join(",", _mapGetter.GetMap().GetSingleEntityList<IBlock>(forwardGridPos))}");
+            Debug.Log($"before IBlockList : {string.Join(",", _mapGetter.GetMap().GetSingleTypeList<IBlock>(forwardGridPos))}");
             
             if(!( _searchedBlocks.FirstOrDefault() is ICarriableBlock carriableBlock)) return false;
             if (carriableBlock.CanPickUp())
@@ -89,7 +89,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 _playerAnimatorPresenter?.PickUpBlock(searchedBlock);
                 _holdingObjectContainer.SetBlock(carriableBlock);
             }
-            Debug.Log($"after IBlockList : {string.Join(",", _mapGetter.GetMap().GetSingleEntityList<IBlock>(forwardGridPos))}");
+            Debug.Log($"after IBlockList : {string.Join(",", _mapGetter.GetMap().GetSingleTypeList<IBlock>(forwardGridPos))}");
             
             // もしAidKitを持っていたらブロックで上書きする
             if (_holdingObjectContainer.IsHoldingAidKit)
@@ -129,7 +129,7 @@ namespace Carry.CarrySystem.Player.Scripts
                 }
                 block.PutDown(_info.PlayerController.GetMoveExecutorSwitcher);
                 // _map.AddEntity(forwardGridPos, block);
-                _mapGetter.GetMap().GetSingleEntity<BlockMonoDelegate>(forwardGridPos)?.AddBlock(block);
+                _mapGetter.GetMap().GetSingleEntity<BlockMonoDelegate>(forwardGridPos)?.AddBlock(block,forwardGridPos);
                 _playerBlockPresenter?.DisableHoldableView();
                 _playerAnimatorPresenter?.PutDownBlock();
             }
@@ -147,7 +147,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var blockMonoDelegate = _mapGetter.GetMap().GetSingleEntity<BlockMonoDelegate>(forwardGridPos);
             
             // _searchedBlockを更新
-            _searchedBlocks = _mapGetter.GetMap().GetSingleEntityList<IBlock>(forwardGridPos).ToList();
+            _searchedBlocks = _mapGetter.GetMap().GetSingleTypeList<IBlock>(forwardGridPos).ToList();
             var searchedBlock = _searchedBlocks.FirstOrDefault();
             
             if(searchedBlock == null) return;

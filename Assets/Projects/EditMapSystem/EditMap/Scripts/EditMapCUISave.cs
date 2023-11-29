@@ -235,7 +235,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
             {
                 var gridPosition = clearedMap.ToVector(i);
 
-                clearedMap.AddEntity(gridPosition, new Ground(Ground.Kind.Kind1, gridPosition));
+                clearedMap.AddEntity(gridPosition, new Ground(Ground.Kind.Kind1));
             }
             _entityGridMapSaver.SaveMap(clearedMap, MapKey.Default, -1);
         }

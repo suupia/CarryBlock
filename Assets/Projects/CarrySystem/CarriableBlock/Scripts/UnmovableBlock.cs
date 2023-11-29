@@ -21,7 +21,6 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
     
     public class UnmovableBlock : ICarriableBlock, IHoldable
     {
-        public Vector2Int GridPosition { get; set; }
         public　int MaxPlacedBlockCount { get; } = 1;
         public bool BeingCarried { get; set; } = false;
         public Kind KindValue { get; }
@@ -32,10 +31,9 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
             Kind1,
         }
 
-        public UnmovableBlock(Kind kind,Vector2Int gridPosition)
+        public UnmovableBlock(Kind kind)
         {
             KindValue = kind;
-            GridPosition = gridPosition;
         }
         
         public bool CanPickUp()
