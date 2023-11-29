@@ -45,11 +45,6 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             return _map;
         }
-        
-        public IGridCoordinate GetCoordinate()
-        {
-            return _map;
-        }
 
         public void SetMapKey(MapKey mapKey)
         {

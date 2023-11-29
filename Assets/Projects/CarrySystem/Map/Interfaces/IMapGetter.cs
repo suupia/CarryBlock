@@ -6,7 +6,6 @@ namespace Carry.CarrySystem.Map.Interfaces
     public interface IMapGetter
     {
         EntityGridMap GetMap();
-        IGridCoordinate GetCoordinate();
         int Index { get; }
     }
 }

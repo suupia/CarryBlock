@@ -36,12 +36,6 @@ namespace Projects.MapMakerSystem.Scripts
             if (_currentMap == null) throw new Exception("Please call InitSwitchMap first");
             return _currentMap;
         }
-        
-        public IGridCoordinate GetCoordinate()
-        {
-            if (_currentMap == null) throw new Exception("Please call InitSwitchMap first");
-            return _currentMap;
-        }
 
         public void InitTmpMap()
         {
