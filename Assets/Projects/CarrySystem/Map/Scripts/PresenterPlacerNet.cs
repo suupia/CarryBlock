@@ -64,7 +64,7 @@ namespace Carry.CarrySystem.Map.Scripts
             for(int i = 0; i< wallArray.Length; i++){
                 var gridPos = expandedMap.ToVector(i);
                 var convertedGridPos = new Vector2Int(gridPos.x - _wallHorizontalNum, gridPos.y - _wallVerticalNum);
-                if (map.IsInDataRangeArea(convertedGridPos))
+                if (map.IsInDataArea(convertedGridPos))
                 {
                     presenterPlacerData.WallArray.Set(i, false);
                     continue;

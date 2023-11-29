@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace Carry.CarrySystem.Cart.Scripts
         /// <param name="map"></param>
         /// <param name="searcherSize"></param>
         /// <returns></returns>
-        public int CalcCartReachRightEdge(bool[] accessibleArea, SquareGridMap map, SearcherSize searcherSize)
+        public int CalcCartReachRightEdge(bool[] accessibleArea, IGridMap map, SearcherSize searcherSize)
         {
             bool[] rightEdgeArray = new bool[map.Height];
             for (int y = 0; y < map.Height; y++)
@@ -67,7 +68,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             return centerList[centerListMiddle];
         }
         
-        public bool CanCartReachRightEdge(bool[] accessibleArea, SquareGridMap map, SearcherSize searcherSize)
+        public bool CanCartReachRightEdge(bool[] accessibleArea, IGridMap map, SearcherSize searcherSize)
         {
             var reachRightEdge = CalcCartReachRightEdge(accessibleArea, map, searcherSize);
 

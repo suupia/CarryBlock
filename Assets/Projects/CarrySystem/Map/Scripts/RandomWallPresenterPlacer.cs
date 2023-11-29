@@ -35,7 +35,7 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 var gridPos = expandedMap.ToVector(i);
                 var convertedGridPos = new Vector2Int(gridPos.x - _wallHorizontalNum, gridPos.y - _wallVerticalNum);
-                if (map.IsInDataRangeArea(convertedGridPos)) continue;
+                if (map.IsInDataArea(convertedGridPos)) continue;
                 if (IsNotPlacingBlock(map, convertedGridPos)) continue;
                 var worldPos = GridConverter.GridPositionToWorldPosition(convertedGridPos);
                 var wallPresenter = _wallPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
