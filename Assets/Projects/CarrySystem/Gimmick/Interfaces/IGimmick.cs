@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Block.Interfaces;
+﻿using System;
+using Carry.CarrySystem.Block.Interfaces;
 using Carry.CarrySystem.Entity.Interfaces;
 using Fusion;
 
@@ -6,9 +7,8 @@ using Fusion;
 
 namespace Carry.CarrySystem.Gimmick.Interfaces
 {
-    public interface IGimmick : IPlaceable
+    public interface IGimmick : IPlaceable , IDisposable
     {
         public void StartGimmick();
-        public void EndGimmick();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Carry.CarrySystem.Gimmick.Interfaces;
+﻿using System;
+using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using UnityEngine;
 using VContainer;
@@ -29,7 +30,7 @@ namespace Projects.CarrySystem.Gimmick.Scripts
 
                 foreach (var gimmick in gimmicks)
                 {
-                    gimmick.EndGimmick();
+                    gimmick.Dispose();
                 }
                 
             }
