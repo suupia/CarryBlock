@@ -6,7 +6,7 @@ using VContainer;
 
 namespace Projects.CarrySystem.Gimmick.Scripts
 {
-    public class GimmickFinalizerMono : MonoBehaviour
+    public class GimmickDisposerMono : MonoBehaviour
     {
         IMapGetter _mapGetter;
         
