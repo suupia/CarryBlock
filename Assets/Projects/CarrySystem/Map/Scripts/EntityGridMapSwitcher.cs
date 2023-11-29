@@ -133,7 +133,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             for (int i = 0; i < GetMap().Length; i++)
             {
-                var gimmicks = GetMap().GetSingleEntityList<IGimmick>(i);
+                var gimmicks = GetMap().GetSingleTypeList<IGimmick>(i);
                 var pos = GetMap().ToVector(i);
 
                 foreach (var gimmick in gimmicks)
@@ -148,7 +148,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             for (int i = 0; i < GetMap().Length; i++)
             {
-                var gimmicks = GetMap().GetSingleEntityList<IGimmick>(i);
+                var gimmicks = GetMap().GetSingleTypeList<IGimmick>(i);
 
                 foreach (var gimmick in gimmicks)
                 {

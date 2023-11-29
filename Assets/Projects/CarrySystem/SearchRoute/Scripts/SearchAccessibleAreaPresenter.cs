@@ -66,7 +66,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
             var map = _mapGetter.GetMap();
             var startPos = new Vector2Int(1, map.Height / 2);
             Func<int, int, bool> isWall = (x, y) =>
-                map.GetSingleEntityList<IBlock>(new Vector2Int(x, y))?.Count > 0;
+                map.GetSingleTypeList<IBlock>(new Vector2Int(x, y))?.Count > 0;
             var searcherSize = SearcherSize.SizeThree;
 
             var searchedMap = _waveletSearchExecutor.WaveletSearch(startPos, isWall, searcherSize);

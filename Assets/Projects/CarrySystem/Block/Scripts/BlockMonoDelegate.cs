@@ -83,7 +83,7 @@ namespace Carry.CarrySystem.Block.Scripts
          
          IList<IBlock> GetBlocks()
          {
-             var blocks = _map.GetSingleEntityList<IBlock>(_gridPosition);
+             var blocks = _map.GetSingleTypeList<IBlock>(_gridPosition);
              return blocks;
          }
 

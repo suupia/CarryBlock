@@ -58,7 +58,7 @@ namespace Projects.MapMakerSystem.Scripts
 
             var startPos = new Vector2Int(1, map.Height / 2);
             const SearcherSize searcherSize = SearcherSize.SizeThree;
-            Func<int, int, bool> isWall = (x, y) => map.GetSingleEntityList<IBlock>(new Vector2Int(x, y))?.Count > 0;
+            Func<int, int, bool> isWall = (x, y) => map.GetSingleTypeList<IBlock>(new Vector2Int(x, y))?.Count > 0;
             
             var accessibleArea = _searchAccessibleAreaExecutor.SearchAccessibleArea(startPos, isWall, searcherSize);
 

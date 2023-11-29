@@ -47,7 +47,7 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 var entityPresenter = entityPresenters.ElementAt(i);
 
-                entityPresenter.SetInitAllEntityActiveData(map.GetAllEntityList(i));
+                entityPresenter.SetInitAllEntityActiveData(map.GetAllTypeList(i));
 
                 // mapにTilePresenterを登録
                 map.RegisterTilePresenter(entityPresenter, i);

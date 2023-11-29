@@ -37,31 +37,31 @@ namespace Carry.CarrySystem.Map.Scripts
 
             for (int i = 0; i < mapLength; i++)
             {
-                var grounds = map.GetSingleEntityList<Ground>(i);
+                var grounds = map.GetSingleTypeList<Ground>(i);
                 groundRecords[i].kinds = grounds.Select(x => x.KindValue).ToArray();
                 
-                var rocks = map.GetSingleEntityList<UnmovableBlock>(i);
+                var rocks = map.GetSingleTypeList<UnmovableBlock>(i);
                 rockRecords[i].kinds = rocks.Select(x => x.KindValue).ToArray();
                 
-                var basicBlocks = map.GetSingleEntityList<BasicBlock>(i);
+                var basicBlocks = map.GetSingleTypeList<BasicBlock>(i);
                 basicBlockRecords[i].kinds = basicBlocks.Select(x => x.KindValue).ToArray();
                 
-                var heavyBlocks = map.GetSingleEntityList<HeavyBlock>(i);
+                var heavyBlocks = map.GetSingleTypeList<HeavyBlock>(i);
                 heavyBlockRecords[i].kinds = heavyBlocks.Select(x => x.KindValue).ToArray();
                 
-                var fragileBlocks = map.GetSingleEntityList<FragileBlock>(i);
+                var fragileBlocks = map.GetSingleTypeList<FragileBlock>(i);
                 fragileBlockRecords[i].kinds = fragileBlocks.Select(x => x.KindValue).ToArray();
                 
-                var confusionBlocks = map.GetSingleEntityList<ConfusionBlock>(i);
+                var confusionBlocks = map.GetSingleTypeList<ConfusionBlock>(i);
                 confusionBlockRecords[i].kinds = confusionBlocks.Select(x => x.KindValue).ToArray();
                 
-                var cannonBlocks = map.GetSingleEntityList<CannonBlock>(i);
+                var cannonBlocks = map.GetSingleTypeList<CannonBlock>(i);
                 cannonBlockRecords[i].kinds = cannonBlocks.Select(x => x.KindValue).ToArray();
                 
-                var treasureCoinBlocks = map.GetSingleEntityList<TreasureCoin>(i);
+                var treasureCoinBlocks = map.GetSingleTypeList<TreasureCoin>(i);
                 treasureCoinRecords[i].kinds = treasureCoinBlocks.Select(x => x.KindValue).ToArray();
                 
-                var spikes = map.GetSingleEntityList<SpikeGimmick>(i);
+                var spikes = map.GetSingleTypeList<SpikeGimmick>(i);
                 spikeGimmickRecords[i].kinds = spikes.Select(x => x.KindValue).ToArray();
             }
 

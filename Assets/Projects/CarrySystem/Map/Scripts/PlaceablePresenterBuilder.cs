@@ -43,7 +43,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 
                 // ItemControllerのInitを呼び出す
                 var itemControllers =  entityPresenter.GetMonoBehaviour.GetComponentsInChildren<ItemControllerNet>();
-                var items = map.GetSingleEntityList<IItem>(gridPos);
+                var items = map.GetSingleTypeList<IItem>(gridPos);
                 foreach (var itemController in itemControllers)
                 {
                     itemController.Init(items);

@@ -22,7 +22,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             if (!map.IsInDataRangeArea(gridPos)) return false;
 
-            var allEntityList = map.GetAllEntityList(gridPos).ToList();
+            var allEntityList = map.GetAllTypeList(gridPos).ToList();
             var allPlaceableList = allEntityList.OfType<IPlaceable>().ToList();
             var addPlaceableList = allEntityList.Where(e => e.GetType() == addBlock.GetType());
 
@@ -39,7 +39,7 @@ namespace Carry.EditMapSystem.EditMap.Scripts
 
         public bool RemovePlaceable(EntityGridMap map, Vector2Int gridPos)
         {
-            var entities = map.GetSingleEntityList<IPlaceable>(gridPos);
+            var entities = map.GetSingleTypeList<IPlaceable>(gridPos);
             if (!entities.Any()) return false;
             
             var entity = entities.First();
