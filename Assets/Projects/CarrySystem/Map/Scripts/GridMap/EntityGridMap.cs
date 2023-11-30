@@ -11,9 +11,9 @@ namespace Carry.CarrySystem.Map.Scripts
 {
     public class EntityGridMap : IGridCoordinate
     {
-        public int Width { get; }
-        public int Height { get; }
-        public int Length => Width * Height; 
+        public int Width  => _coordinate.Width;
+        public int Height => _coordinate.Height;
+        public int Length => _coordinate.Length; 
         public int ToSubscript(int x, int y) => _coordinate.ToSubscript(x, y);
         public Vector2Int ToVector(int subscript) => _coordinate.ToVector(subscript);
         
@@ -21,15 +21,13 @@ namespace Carry.CarrySystem.Map.Scripts
         public bool IsInDataOrEdgeArea(int x, int y) => _coordinate.IsInDataOrEdgeArea(x, y);
 
         
-        List<IEntity>[] _entityMaps;
+        readonly List<IEntity>[] _entityMaps;
         readonly IGridCoordinate _coordinate;
         readonly IPlaceablePresenter?[] _blockPresenter;
         
-        public EntityGridMap(int width, int height)
+        public EntityGridMap(IGridCoordinate coordinate)
         {
-            Width = width;
-            Height = height;
-            _coordinate = new SquareGridCoordinate(width, height);
+            _coordinate = coordinate;
             _entityMaps = new List<IEntity>[Length];
             _blockPresenter = new IPlaceablePresenter?[Length];
             for (int i = 0; i < Length; i++)

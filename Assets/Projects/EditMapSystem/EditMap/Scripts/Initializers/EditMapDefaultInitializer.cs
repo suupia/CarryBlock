@@ -29,8 +29,9 @@ namespace Carry.EditMapSystem.EditMap.Scripts
         {
             Debug.Log("SaveDefaultMap");
             // インデックスが-1であるデフォルトマップを更新する
-            
-            var cleanMap = new EntityGridMap(width, height);
+
+            var coordinate = new SquareGridCoordinate(width, height);
+            var cleanMap = new EntityGridMap(coordinate);
 
             // すべてのマスにGroundを1つ設置する
             for (int i = 0; i < cleanMap.Length; i++)
