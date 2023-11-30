@@ -39,7 +39,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                             var pos = map.ToVector(i);
                             var newX = pos.x + x;
                             var newY = pos.y + y;
-                            if (!map.IsInDataRangeArea(newX, newY)) continue;
+                            if (!map.IsInDataArea(newX, newY)) continue;
                             resultBoolArray[map.ToSubscript(newX, newY)] = true;
                         }
                     }
@@ -80,7 +80,7 @@ namespace Carry.CarrySystem.SearchRoute.Scripts
                                     var pos = map.ToVector(i);
                                     var newX = pos.x + x;
                                     var newY = pos.y + y;
-                                    if (!map.IsInDataRangeArea(newX, newY)) continue;
+                                    if (!map.IsInDataArea(newX, newY)) continue;
                                     extendedMap.SetValue(newX,newY, map.GetValue(i) + 1);
                                 }
                             }

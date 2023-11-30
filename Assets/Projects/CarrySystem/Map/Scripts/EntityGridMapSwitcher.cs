@@ -59,6 +59,7 @@ namespace Carry.CarrySystem.Map.Scripts
             return _currentMap;
         }
 
+
         public void InitSwitchMap()
         {
             var firstIndex = 0;

@@ -59,12 +59,12 @@ namespace Carry.CarrySystem.Map.Scripts
             
             // wall
             // todo: WallもEntityで管理するのもよさそう
-            var expandedMap = new SquareGridMap(map.Width + 2 * _wallHorizontalNum, map.Height + 2 * _wallVerticalNum);
-            var wallArray = new bool[expandedMap.Length];
+            var expandedCoordinate = new SquareGridCoordinate(map.Width + 2 * _wallHorizontalNum, map.Height + 2 * _wallVerticalNum);
+            var wallArray = new bool[expandedCoordinate.Length];
             for(int i = 0; i< wallArray.Length; i++){
-                var gridPos = expandedMap.ToVector(i);
+                var gridPos = expandedCoordinate.ToVector(i);
                 var convertedGridPos = new Vector2Int(gridPos.x - _wallHorizontalNum, gridPos.y - _wallVerticalNum);
-                if (map.IsInDataRangeArea(convertedGridPos))
+                if (map.IsInDataArea(convertedGridPos))
                 {
                     presenterPlacerData.WallArray.Set(i, false);
                     continue;
@@ -79,7 +79,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
 
             RPC_PlaceGroundPresenters(presenterPlacerData, map.Width, map.Height);
-            RPC_PlaceWallPresenters(presenterPlacerData, expandedMap.Width, expandedMap.Height,_wallHorizontalNum,_wallVerticalNum);
+            RPC_PlaceWallPresenters(presenterPlacerData, expandedCoordinate.Width, expandedCoordinate.Height,_wallHorizontalNum,_wallVerticalNum);
         }
         
         bool IsNotPlacingBlock(EntityGridMap map, Vector2Int gridPos)

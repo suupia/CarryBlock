@@ -108,7 +108,7 @@ namespace Carry.CarrySystem.Player.Scripts
             var forwardGridPos = GetForwardGridPos(transform);
             
             // マップの内部かどうかを判定
-            if(!_mapGetter.GetMap().IsInDataRangeArea(forwardGridPos))return false;
+            if(!_mapGetter.GetMap().IsInDataArea(forwardGridPos))return false;
                 
             // if there is a non carriable block in front of a player, do nothing
             if (_searchedBlocks.Any(x => !(x is ICarriableBlock)))

@@ -1,26 +1,33 @@
-﻿using System;
-using System.Collections;
+﻿#nullable enable
 using System.Collections.Generic;
 using Carry.CarrySystem.Entity.Interfaces;
 using System.Linq;
 using Carry.CarrySystem.Block.Interfaces;
-using Carry.CarrySystem.Gimmick.Interfaces;
 using UnityEngine;
-using  Carry.CarrySystem.Map.Interfaces;
-using Fusion.Collections;
-using Projects.CarrySystem.Item.Interfaces;
+using Carry.CarrySystem.Map.Interfaces;
 
-#nullable enable
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EntityGridMap : SquareGridMap
+    public class EntityGridMap : IGridCoordinate, IGridMap
     {
-        List<IEntity>[] _entityMaps;
+        public int Width  => _coordinate.Width;
+        public int Height => _coordinate.Height;
+        public int Length => _coordinate.Length; 
+        public int ToSubscript(int x, int y) => _coordinate.ToSubscript(x, y);
+        public Vector2Int ToVector(int subscript) => _coordinate.ToVector(subscript);
+        
+        public bool IsInDataArea(int x, int y) => _coordinate.IsInDataArea(x, y);
+        public bool IsInDataOrEdgeArea(int x, int y) => _coordinate.IsInDataOrEdgeArea(x, y);
+
+        
+        readonly List<IEntity>[] _entityMaps;
+        readonly IGridCoordinate _coordinate;
         readonly IPlaceablePresenter?[] _blockPresenter;
         
-        public EntityGridMap(int width, int height) : base (width, height)
+        public EntityGridMap(IGridCoordinate coordinate)
         {
+            _coordinate = coordinate;
             _entityMaps = new List<IEntity>[Length];
             _blockPresenter = new IPlaceablePresenter?[Length];
             for (int i = 0; i < Length; i++)
@@ -28,13 +35,10 @@ namespace Carry.CarrySystem.Map.Scripts
                 _entityMaps[i] = new List<IEntity>();
             }
         }
-
-        public EntityGridMap CloneMap()
+        
+        public bool IsInDataArea(Vector2Int vector)
         {
-            var clone = (EntityGridMap)MemberwiseClone();
-            clone._entityMaps = (List<IEntity>[])this._entityMaps.Clone();
-            // _blockPresenterは同じものを参照し続けるようにするために、コピーしないことに注意
-            return clone;
+            return _coordinate.IsInDataArea(vector);
         }
 
         public EntityGridMap ClearMap()
@@ -45,11 +49,6 @@ namespace Carry.CarrySystem.Map.Scripts
             }
             // _blockPresenterは初期化していなことに注意
             return this;
-        }
-
-        public  void DebugMapValues()
-        {
-            // ToDo :　後で実装する
         }
         
         public void RegisterTilePresenter(IPlaceablePresenter placeablePresenter, int index)
@@ -63,7 +62,7 @@ namespace Carry.CarrySystem.Map.Scripts
             int x = vector.x;
             int y = vector.y;
 
-            if (IsOutOfDataRangeArea(x, y)) {return default(T);}
+            if (_coordinate.IsOutOfDataArea(x, y)) {return default(T);}
 
             return GetSingleEntity<T>(ToSubscript(x, y));
         }
@@ -95,7 +94,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var x = vector.x;
             var y = vector.y;
 
-            if (IsOutOfDataRangeArea(x, y)) return new List<T>();
+            if (_coordinate.IsOutOfDataArea(x, y)) return new List<T>();
 
             return GetSingleTypeList<T>(ToSubscript(x, y));
         }
@@ -127,7 +126,7 @@ namespace Carry.CarrySystem.Map.Scripts
             x = vector.x;
             y = vector.y;
 
-            if (IsOutOfDataRangeArea(x, y)) return  new List<IEntity>();
+            if (_coordinate.IsOutOfDataArea(x, y)) return  new List<IEntity>();
             
             return GetSingleTypeList<IEntity>(ToSubscript(x, y));
 
@@ -149,7 +148,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var x = vector.x;
             var y = vector.y;
 
-            if (IsOutOfDataRangeArea(x, y))
+            if (_coordinate.IsOutOfDataArea(x, y))
             {
                 Debug.LogError($"IsOutOfDataRangeArea({x},{y})がtrueです");
                 return;
@@ -185,7 +184,7 @@ namespace Carry.CarrySystem.Map.Scripts
         
         public void RemoveEntity<TEntity>(int x, int y, TEntity entity) where TEntity : IEntity
         {
-            if (IsOutOfDataRangeArea(x, y))
+            if (_coordinate. IsOutOfDataArea(x, y))
             {
                 Debug.LogWarning($"IsOutOfDataRange({x},{y})がtrueです");
                 return;

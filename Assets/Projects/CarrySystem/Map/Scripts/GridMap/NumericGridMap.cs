@@ -6,25 +6,39 @@ using UnityEngine.Assertions;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class NumericGridMap : SquareGridMap
+    //数字だけを格納することができるマップ
+    public sealed class NumericGridMap : IGridMap 
     {
-        //数字だけを格納することができるマップ
+        public int Width { get; }
+        public int Height { get; }
+        public int Length => Width * Height;
+        
+        public int ToSubscript(int x, int y) => _coordinate.ToSubscript(x, y);
+        public Vector2Int ToVector(int subscript) => _coordinate.ToVector(subscript);
+
+        readonly IGridCoordinate _coordinate;
+        
         readonly int _edgeValue;
         readonly int _outOfRangeValue;
 
         readonly long[] _values;
 
-        // dataArea, edgeArea, outOfRangeArea の３つの領域に分けて考える
-
-        public NumericGridMap(int width, int height, int initValue, int edgeValue, int outOfRangeValue) : base(width, height)
+        public NumericGridMap(int width, int height, int initValue, int edgeValue, int outOfRangeValue)
         {
-            // Debug.Log($"width:{width}, height:{height}");
+            Width = width;
+            Height = height;
+            _coordinate = new SquareGridCoordinate(width, height);
             Assert.IsTrue(width > 0 && height > 0, "Mapの幅または高さが0以下になっています");
             _values = new long[width * height];
             _edgeValue = edgeValue;
             _outOfRangeValue = outOfRangeValue;
             
             FillAll(initValue);
+        }
+        
+        public bool IsInDataArea(int x, int y)
+        {
+            return _coordinate.IsInDataArea(x, y);
         }
 
         //初期化で利用
@@ -50,14 +64,14 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public long GetValue(int x, int y)
         {
-            if (IsOutOfIncludeEdgeArea(x, y))
+            if (_coordinate. IsOutOfIncludeEdgeArea(x, y))
             {
                 //edgeの外側
                 Debug.LogError($"IsOutOfEdgeArea({x},{y})がtrueです");
                 return _outOfRangeValue;
             }
 
-            if (IsOnTheEdgeArea(x, y))
+            if (_coordinate. IsOnTheEdgeArea(x, y))
             {
                 //edgeの上
                 //データは存在しないが、判定のために初期値を使いたい場合
@@ -65,7 +79,7 @@ namespace Carry.CarrySystem.Map.Scripts
             }
 
             //Debug.Log($"ToSubscript:{ToSubscript(x,y)}, x:{x}, y:{y}, IsOnTheEdge({x},{y}):{IsOnTheEdge(x,y)}, IsOutOfEdge({x},{y}):{IsOutOfEdge(x,y)}, Width:{Width}, Height:{Height}");
-            return _values[ToSubscript(x, y)];
+            return _values[_coordinate. ToSubscript(x, y)];
         }
 
         public long GetValue(Vector2Int vector)
@@ -88,12 +102,12 @@ namespace Carry.CarrySystem.Map.Scripts
 
         public void SetValue(int x, int y, long value)
         {
-            if (IsOutOfDataRangeArea(x, y))
+            if (_coordinate. IsOutOfDataArea(x, y))
             {
                 // Debug.Log($"IsOutOfDataRangeArea({x},{y})がtrueです");
                 return;
             }
-            _values[ToSubscript(x, y)] = value;
+            _values[_coordinate. ToSubscript(x, y)] = value;
         }
 
         public void SetValue(Vector2Int vector, long value)
@@ -113,13 +127,13 @@ namespace Carry.CarrySystem.Map.Scripts
             var x = vector.x;
             var y = vector.y;
 
-            if (IsOutOfIncludeEdgeArea(x, y))
+            if (_coordinate. IsOutOfIncludeEdgeArea(x, y))
             {
                 Debug.LogError($"IsOutOfEdgeArea({x},{y})がtrueです");
                 return;
             }
 
-            _values[ToSubscript(x, y)] *= value;
+            _values[_coordinate. ToSubscript(x, y)] *= value;
         }
 
         public void DivisionalSetValue(Vector2Int vector, int value)
@@ -127,7 +141,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var x = vector.x;
             var y = vector.y;
 
-            if (IsOutOfIncludeEdgeArea(x, y))
+            if (_coordinate. IsOutOfIncludeEdgeArea(x, y))
             {
                 Debug.LogError($"IsOutOfEdgeArea({x},{y})がtrueです");
                 return;
@@ -139,7 +153,7 @@ namespace Carry.CarrySystem.Map.Scripts
                 return;
             }
 
-            _values[ToSubscript(x, y)] /= value;
+            _values[_coordinate. ToSubscript(x, y)] /= value;
         }
 
 

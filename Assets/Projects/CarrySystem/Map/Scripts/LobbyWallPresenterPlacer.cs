@@ -29,12 +29,12 @@ namespace Carry.CarrySystem.Map.Scripts
             DestroyWallPresenter();
 
             // WallPresenterをスポーンさせる
-            var expandedMap = new SquareGridMap(map.Width + 2 * _wallHorizontalNum, map.Height + 2 * _wallVerticalNum);
-            for (int i = 0; i < expandedMap.Length; i++)
+            var expandedCoordinate = new SquareGridCoordinate(map.Width + 2 * _wallHorizontalNum, map.Height + 2 * _wallVerticalNum);
+            for (int i = 0; i < expandedCoordinate.Length; i++)
             {
-                var gridPos = expandedMap.ToVector(i);
+                var gridPos = expandedCoordinate.ToVector(i);
                 var convertedGridPos = new Vector2Int(gridPos.x - _wallHorizontalNum, gridPos.y - _wallVerticalNum);
-                if (map.IsInDataRangeArea(convertedGridPos)) continue;
+                if (map.IsInDataArea(convertedGridPos)) continue;
                 var worldPos = GridConverter.GridPositionToWorldPosition(convertedGridPos);
                 var wallPresenter = wallPresenterSpawner.SpawnPrefab(worldPos, Quaternion.identity);
                 wallPresenters.Add(wallPresenter);

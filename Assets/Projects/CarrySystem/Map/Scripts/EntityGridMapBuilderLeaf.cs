@@ -21,7 +21,8 @@ namespace Carry.CarrySystem.Map.Scripts
         }
         public EntityGridMap BuildEntityGridMap(EntityGridMapData gridMapData)
         {
-            var map = new EntityGridMap(gridMapData.width, gridMapData.height);
+            var coordinate = new SquareGridCoordinate(gridMapData.width, gridMapData.height);
+            var map = new EntityGridMap(coordinate);
             for (int i = 0; i < map.Length; i++)
             {
                 AddEntityFromRecord<Ground, GroundRecord, Ground.Kind>(gridMapData.groundRecords, () => gridMapData.groundRecords?.Length ??0 ,(record) => record.kinds, Ground.Kind.None, map, i );

@@ -61,7 +61,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
         public bool AddPlaceable(EntityGridMap map, Vector2Int gridPos, IPlaceable addBlock)
         {
             //空のオペレーションを追加しないため，範囲外ならば処理を行わない
-            if (!map.IsInDataRangeArea(gridPos)) { return false; }
+            if (!map.IsInDataArea(gridPos)) { return false; }
 
             var op = new OperationData(Operation.Add, gridPos, addBlock);
             
@@ -77,7 +77,7 @@ namespace Carry.EditMapSystem.EditMapForPlayer.Scripts
         public bool RemovePlaceable(EntityGridMap map, Vector2Int gridPos)
         {
             //空のオペレーションを追加しないため，範囲外ならば処理を行わない
-            if (!map.IsInDataRangeArea(gridPos)) { return false; }
+            if (!map.IsInDataArea(gridPos)) { return false; }
 
             var obj = map.GetSingleEntity<IPlaceable>(gridPos);
 
