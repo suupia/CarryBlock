@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 namespace Carry.CarrySystem.Map.Scripts
 {
     //数字だけを格納することができるマップ
-    public sealed class NumericGridMap : IGridMap
+    public sealed class NumericGridMap : IGridMap 
     {
         public int Width { get; }
         public int Height { get; }

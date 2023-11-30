@@ -9,7 +9,7 @@ using Carry.CarrySystem.Map.Interfaces;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class EntityGridMap : IGridCoordinate
+    public class EntityGridMap : IGridCoordinate, IGridMap
     {
         public int Width  => _coordinate.Width;
         public int Height => _coordinate.Height;

@@ -4,11 +4,15 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Interfaces
 {
-    public interface IGridCoordinate : IGridMap
+    public interface IGridCoordinate
     {
         // DataArea is a area that has data. ex) (0,0)～(mapWidth-1,mapHeight-1)
         // EdgeArea is a area that has no data but has _initValue.
         // OutOfIncludeEdgeArea is a area that has no data and has no _initValue.
+        
+        public int Width { get; }
+        public int Height { get; }
+        public int Length => Width * Height;
 
         // Convert subscript to vector.
         public int ToSubscript(int x, int y);

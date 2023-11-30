@@ -8,7 +8,6 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         public int Width { get; }
         public int Height { get; }
-        
         public int Length => Width * Height;
 
         public SquareGridCoordinate(int width, int height)
