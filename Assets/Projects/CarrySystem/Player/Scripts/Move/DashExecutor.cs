@@ -67,7 +67,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"Executing Dash");
             _isDashing = true;
-            _moveExecutorSwitcher.AddMoveRecord<DashMoveRecord>();
+            _moveExecutorSwitcher.AddMoveRecord<DashMoveChainable>();
             if(_dashEffectPresenter != null) _dashEffectPresenter.StartDash();
         }
 
@@ -75,7 +75,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"Finish dashing");
             if(_dashEffectPresenter != null) _dashEffectPresenter.StopDash();
-            _moveExecutorSwitcher.RemoveRecord<DashMoveRecord>();
+            _moveExecutorSwitcher.RemoveRecord<DashMoveChainable>();
         }
         
         public void SetDashEffectPresenter(IDashEffectPresenter presenter)

@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public record ConfusionMoveRecord : IMoveRecord
+    public class ConfusionMoveChainable : IMoveChainable
     {
-        public ConfusionMoveRecord(IPlayerAnimatorPresenter _)
+        public ConfusionMoveChainable(IPlayerAnimatorPresenter _)
         {
         }
 

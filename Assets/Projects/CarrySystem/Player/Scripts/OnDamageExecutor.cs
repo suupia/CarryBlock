@@ -68,7 +68,7 @@ namespace Carry.CarrySystem.Player.Scripts
             }
             catch (OperationCanceledException)
             {
-                _moveExecutorSwitcher.RemoveRecord<FaintedMoveRecord>();  // OnとOffは同じ回数呼ぶ必要がある
+                _moveExecutorSwitcher.RemoveRecord<FaintedMoveChainable>();  // OnとOffは同じ回数呼ぶ必要がある
             }
         }
 
@@ -76,7 +76,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"気絶する");
             IsFainted = true;
-            _moveExecutorSwitcher.AddMoveRecord<FaintedMoveRecord>();
+            _moveExecutorSwitcher.AddMoveRecord<FaintedMoveChainable>();
             Debug.Log(
                 $"_info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>()) : {_info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>()}");
             _info.PlayerObj.GetComponentInChildren<TsukinowaMaterialSetter>().Blinking();
@@ -87,7 +87,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             Debug.Log($"気絶から復帰する");
             IsFainted = false;
-            _moveExecutorSwitcher.RemoveRecord<FaintedMoveRecord>();
+            _moveExecutorSwitcher.RemoveRecord<FaintedMoveChainable>();
             _playerAnimatorPresenter?.Revive();
             if (_reviveEffectPresenter != null) _reviveEffectPresenter.StartRevive();
         }

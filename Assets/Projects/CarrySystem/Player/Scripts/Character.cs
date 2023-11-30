@@ -65,9 +65,9 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             _moveExecutorSwitcher.Move(direction);
         }
-        public void AddMoveRecord<T>() where T : IMoveRecord => _moveExecutorSwitcher.AddMoveRecord<T>();
+        public void AddMoveRecord<T>() where T : IMoveChainable => _moveExecutorSwitcher.AddMoveRecord<T>();
 
-        public void RemoveRecord<T>() where T : IMoveRecord => _moveExecutorSwitcher.RemoveRecord<T>();
+        public void RemoveRecord<T>() where T : IMoveChainable => _moveExecutorSwitcher.RemoveRecord<T>();
         
         public void OnDamage() => _onDamageExecutor.OnDamage();
 
