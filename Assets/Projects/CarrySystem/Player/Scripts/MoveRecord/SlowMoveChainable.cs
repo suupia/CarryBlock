@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public record SlowMoveRecord : IMoveRecord
+    public class SlowMoveChainable : IMoveChainable
     {
         readonly IPlayerAnimatorPresenter _playerAnimatorPresenter;
 
-        public SlowMoveRecord(IPlayerAnimatorPresenter presenter)
+        public SlowMoveChainable(IPlayerAnimatorPresenter presenter)
         {
             _playerAnimatorPresenter = presenter;
         }

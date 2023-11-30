@@ -11,7 +11,7 @@ namespace Carry.CarrySystem.Player.Scripts
 {
     public class MoveExecutorSwitcher : IMoveExecutorSwitcher
     {
-        readonly IList<IMoveRecord> _moveRecords = new List<IMoveRecord>();
+        readonly IList<IMoveChainable> _moveRecords = new List<IMoveChainable>();
         PlayerInfo? _info;
         IPlayerAnimatorPresenter? _playerAnimatorPresenter;
 
@@ -38,13 +38,13 @@ namespace Carry.CarrySystem.Player.Scripts
             function.Move(input);
         }
         
-        public void AddMoveRecord<T>() where T : IMoveRecord
+        public void AddMoveRecord<T>() where T : IMoveChainable
         {
             var moveRecord = (T)Activator.CreateInstance(typeof(T), _playerAnimatorPresenter);
             _moveRecords.Add(moveRecord);
         }
         
-        public void RemoveRecord<T>() where T : IMoveRecord
+        public void RemoveRecord<T>() where T : IMoveChainable
         {
             var recordToRemove = _moveRecords.OfType<T>().FirstOrDefault();
             if (recordToRemove != null)

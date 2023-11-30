@@ -44,7 +44,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         public void  PickUp(IMoveExecutorSwitcher moveExecutorSwitcher, IHoldActionExecutor holdActionExecutor)
         {
             // 移動速度を遅くする
-            moveExecutorSwitcher.AddMoveRecord<SlowMoveRecord>();
+            moveExecutorSwitcher.AddMoveRecord<SlowMoveChainable>();
         }
 
         public bool CanPutDown(IList<ICarriableBlock> placedBlocks)
@@ -65,7 +65,7 @@ namespace Carry.CarrySystem.CarriableBlock.Scripts
         public void PutDown(IMoveExecutorSwitcher moveExecutorSwitcher) 
         {
             // 移動速度を元に戻す
-            moveExecutorSwitcher.RemoveRecord<SlowMoveRecord>();
+            moveExecutorSwitcher.RemoveRecord<SlowMoveChainable>();
         }
     }
 }

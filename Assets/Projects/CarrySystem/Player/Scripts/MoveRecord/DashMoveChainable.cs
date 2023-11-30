@@ -1,14 +1,14 @@
 ﻿#nullable enable
-using Carry.CarrySystem.Player.Info;
 using Carry.CarrySystem.Player.Interfaces;
 using UnityEngine;
 
 namespace Carry.CarrySystem.Player.Scripts
 {
-    public record FaintedMoveRecord : IMoveRecord 
+    public class DashMoveChainable : IMoveChainable
     {
         readonly IPlayerAnimatorPresenter _playerAnimatorPresenter;
-        public FaintedMoveRecord(IPlayerAnimatorPresenter presenter)
+        
+        public DashMoveChainable(IPlayerAnimatorPresenter presenter)
         {
             _playerAnimatorPresenter = presenter;
         }
@@ -16,6 +16,7 @@ namespace Carry.CarrySystem.Player.Scripts
         {
             return new MoveParameter(parameter);
         }
+        
         public IMoveFunction Chain(IMoveFunction function)
         {
             return new MoveFunction(function, _playerAnimatorPresenter);
@@ -23,16 +24,17 @@ namespace Carry.CarrySystem.Player.Scripts
         }
         class MoveParameter : IMoveParameter
         {
-            public float Acceleration { get; } 
-            public float MaxVelocity { get; } 
-            public float StoppingForce { get;  }
+            public float Acceleration { get; }
+            public float MaxVelocity { get;} 
+            public float StoppingForce { get; }
             public MoveParameter(IMoveParameter parameter)
             {
-                Acceleration = 0;
-                MaxVelocity = 0;
+                Acceleration = parameter.Acceleration * 10.0f / 4.0f;
+                MaxVelocity = parameter.MaxVelocity * 10.0f / 5.0f;
                 StoppingForce = parameter.StoppingForce;
             }
         }
+                
         class MoveFunction : IMoveFunction
         {
             readonly IMoveFunction _func;
@@ -46,9 +48,17 @@ namespace Carry.CarrySystem.Player.Scripts
             {
                 _func.Move(input);
 
-                _presenter.Idle();
+                if (input != Vector3.zero)
+                {
+                    _presenter.Dash();   
+                }
+                else
+                {
+                    _presenter.Idle();
+                }
             }
         }
+
 
     }
 }
