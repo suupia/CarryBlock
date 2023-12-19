@@ -33,18 +33,18 @@ namespace Carry.ScopeSystem.Scripts
             builder.RegisterComponent(runner);
             
             // MapKeyDataSelectorNet is DontDestroyOnLoad Object
-            var mapKeyDataSelectorNet = FindObjectOfType<MapKeyDataSelectorNet>();
-            Debug.Log($"MapKeyDataSelectorNet : {mapKeyDataSelectorNet}");
-            builder.RegisterComponent(mapKeyDataSelectorNet);
+            var mapKeyDataSelectorLocal = FindObjectOfType<MapKeyDataSelectorLocal>();
+            Debug.Log($"MapKeyDataSelectorNet : {mapKeyDataSelectorLocal}");
+            builder.RegisterComponent(mapKeyDataSelectorLocal);
 
             // PrefabLoader 
-            builder.Register<PrefabLoaderFromAddressable<CarryPlayerControllerNet>>(Lifetime.Scoped)
-                .As<IPrefabLoader<CarryPlayerControllerNet>>()
-                .WithParameter("path", "Prefabs/Players/CarryPlayerControllerNet");
+            builder.Register<PrefabLoaderFromAddressable<CarryPlayerControllerLocal>>(Lifetime.Scoped)
+                .As<IPrefabLoader<CarryPlayerControllerLocal>>()
+                .WithParameter("path", "Prefabs/Players/CarryPlayerControllerLocal");
 
-            builder.Register<PrefabLoaderFromAddressable<CartControllerNet>>(Lifetime.Scoped)
-                .As<IPrefabLoader<CartControllerNet>>()
-                .WithParameter("path", "Prefabs/Carts/CartControllerNet");
+            builder.Register<PrefabLoaderFromAddressable<CartControllerLocal>>(Lifetime.Scoped)
+                .As<IPrefabLoader<CartControllerLocal>>()
+                .WithParameter("path", "Prefabs/Carts/CartControllerLocal");
 
             // NetworkRunnerに依存するスクリプト
 
