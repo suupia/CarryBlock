@@ -57,7 +57,7 @@ namespace Carry.CarrySystem.Map.Scripts
         }
 
         //Getter
-        public T? GetSingleEntity<T>(Vector2Int vector)
+        public T? GetSingleEntity<T>(Vector2Int vector) where T : IEntity
         {
             int x = vector.x;
             int y = vector.y;
@@ -67,7 +67,7 @@ namespace Carry.CarrySystem.Map.Scripts
             return GetSingleEntity<T>(ToSubscript(x, y));
         }
         
-        public T? GetSingleEntity<T>(int index)
+        public T? GetSingleEntity<T>(int index) where T : IEntity
         {
             if (index < 0 || index > Length)
             {
@@ -89,7 +89,7 @@ namespace Carry.CarrySystem.Map.Scripts
             }
         }
 
-        public List<T> GetSingleTypeList<T>(Vector2Int vector)
+        public List<T> GetSingleTypeList<T>(Vector2Int vector) where T : IEntity
         {
             var x = vector.x;
             var y = vector.y;
@@ -99,7 +99,7 @@ namespace Carry.CarrySystem.Map.Scripts
             return GetSingleTypeList<T>(ToSubscript(x, y));
         }
 
-        public List<T> GetSingleTypeList<T>(int index) 
+        public List<T> GetSingleTypeList<T>(int index)  // IDisposableを受け取る場合があるので、制約は設けない。　たぶんよくない設計
         {
             
             if (index < 0 || index > Length)
@@ -143,7 +143,7 @@ namespace Carry.CarrySystem.Map.Scripts
             return _entityMaps[index];
         }
         
-        public void AddEntity<TEntity>(Vector2Int vector, TEntity entity) where TEntity : IEntity
+        public void AddEntity(Vector2Int vector, IEntity entity)
         {
             var x = vector.x;
             var y = vector.y;
@@ -158,7 +158,7 @@ namespace Carry.CarrySystem.Map.Scripts
         }
         
         
-        public void AddEntity<TEntity>(int index, TEntity entity) where TEntity : IEntity
+        public void AddEntity(int index, IEntity entity)
         {
             if (index < 0 || index > Length)
             {
@@ -166,12 +166,12 @@ namespace Carry.CarrySystem.Map.Scripts
                 return;
             }
 
-            var entities = _entityMaps[index].OfType<TEntity>().ToList();
+            var entities = _entityMaps[index];
 
             if (entities.Any())
             {
                 Debug.LogWarning(
-                    $"[注意!!] 既に{typeof(TEntity)}が入っています。現在の数: {entities.Count}");
+                    $"[注意!!] 既に{typeof(IEntity)}が入っています。現在の数: {entities.Count}");
             }
 
             // domain
@@ -182,7 +182,7 @@ namespace Carry.CarrySystem.Map.Scripts
         }
 
         
-        public void RemoveEntity<TEntity>(int x, int y, TEntity entity) where TEntity : IEntity
+        public void RemoveEntity<T>(int x, int y, T entity) where T : IEntity
         {
             if (_coordinate. IsOutOfDataArea(x, y))
             {
@@ -200,7 +200,7 @@ namespace Carry.CarrySystem.Map.Scripts
 
         }
 
-        public void RemoveEntity<TEntity>(Vector2Int vector, TEntity entity) where TEntity : IEntity
+        public void RemoveEntity<T>(Vector2Int vector, T entity) where T : IEntity
         {
             RemoveEntity(vector.x, vector.y, entity);
         }
