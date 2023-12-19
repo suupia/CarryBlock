@@ -143,7 +143,7 @@ namespace Carry.CarrySystem.Map.Scripts
             return _entityMaps[index];
         }
         
-        public void AddEntity<T>(Vector2Int vector, T entity) where T : IEntity
+        public void AddEntity(Vector2Int vector, IEntity entity)
         {
             var x = vector.x;
             var y = vector.y;
@@ -158,7 +158,7 @@ namespace Carry.CarrySystem.Map.Scripts
         }
         
         
-        public void AddEntity<T>(int index, T entity) where T : IEntity
+        public void AddEntity(int index, IEntity entity)
         {
             if (index < 0 || index > Length)
             {
@@ -166,12 +166,12 @@ namespace Carry.CarrySystem.Map.Scripts
                 return;
             }
 
-            var entities = _entityMaps[index].OfType<T>().ToList();
+            var entities = _entityMaps[index];
 
             if (entities.Any())
             {
                 Debug.LogWarning(
-                    $"[注意!!] 既に{typeof(T)}が入っています。現在の数: {entities.Count}");
+                    $"[注意!!] 既に{typeof(IEntity)}が入っています。現在の数: {entities.Count}");
             }
 
             // domain
