@@ -34,7 +34,7 @@ namespace Carry.GameSystem.TitleScene.Scripts
             runnerManager.Runner.Spawn(carryInitializerPrefab);
 
             Debug.Log("Transitioning to LobbySceneTestRoom");
-            SceneTransition.TransitioningScene(runnerManager.Runner, SceneName.LobbyScene);
+            SceneTransition.TransitionSceneWithNetworkRunner(runnerManager.Runner, SceneName.LobbyScene);
         }
 
 

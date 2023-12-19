@@ -33,7 +33,7 @@ public class EditMapPrepareInitializer : MonoBehaviour
         var runnerManager = FindObjectOfType<NetworkRunnerManager>();
         await runnerManager.AttemptStartScene();
         Debug.Log("Transitioning to EditMapScene");
-        SceneTransition.TransitioningScene(runnerManager.Runner, SceneName.EditMapScene);
+        SceneTransition.TransitionSceneWithNetworkRunner(runnerManager.Runner, SceneName.EditMapScene);
     }
     
      IEnumerator LoadingAnimation()
