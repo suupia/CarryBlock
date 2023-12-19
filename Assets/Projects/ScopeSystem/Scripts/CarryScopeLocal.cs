@@ -44,7 +44,7 @@ namespace Carry.ScopeSystem.Scripts
 
             builder.Register<PrefabLoaderFromAddressable<CartControllerLocal>>(Lifetime.Scoped)
                 .As<IPrefabLoader<CartControllerLocal>>()
-                .WithParameter("path", "Prefabs/Carts/CartControllerNet");
+                .WithParameter("path", "Prefabs/Carts/CartControllerLocal");
 
             // NetworkRunnerに依存するスクリプト
 
