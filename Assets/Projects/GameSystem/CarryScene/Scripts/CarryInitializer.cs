@@ -90,13 +90,7 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         {
             if (Runner.IsServer) _networkPlayerSpawner.DespawnPlayer(player);
         }
-
-        // Return to LobbyScene
-        public void SetActiveLobbyScene()
-        {
-            if (Runner.IsServer) SceneTransition.TransitioningScene(Runner, SceneName.LobbyScene);
-        }
-
+        
 
     }
 

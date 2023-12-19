@@ -21,7 +21,7 @@ namespace Carry.GameSystem.DebugScene.Scripts
             await runnerManager.AttemptStartScene(roomName, gameMode);
 
             Debug.Log($"Transitioning to {TransitionToSceneName.ToString()}");
-            SceneTransition.TransitioningScene(runnerManager.Runner, TransitionToSceneName);
+            SceneTransition.TransitionSceneWithNetworkRunner(runnerManager.Runner, TransitionToSceneName);
             _isStarted = true;
         }
     }

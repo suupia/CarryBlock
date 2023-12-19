@@ -90,7 +90,7 @@ namespace Carry.GameSystem.LobbyScene.Scripts
             if (Runner.IsClient) return;
 
             Debug.Log("全員が準備完了かどうかを無視し、ゲームを開始します");
-            SceneTransition.TransitioningScene(Runner, SceneName.CarryScene);
+            SceneTransition.TransitionSceneWithNetworkRunner(Runner, SceneName.CarryScene);
 
             // if (_lobbyNetworkPlayerContainer.IsAllReady)
             // {

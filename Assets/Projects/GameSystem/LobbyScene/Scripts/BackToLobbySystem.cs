@@ -13,7 +13,7 @@ public class BackToLobbySystem : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             // SceneManager.LoadScene("LobbyScene");
-            SceneTransition.TransitioningScene(Runner, SceneName.LobbyScene);
+            SceneTransition.TransitionSceneWithNetworkRunner(Runner, SceneName.LobbyScene);
         }
     }
 #endif

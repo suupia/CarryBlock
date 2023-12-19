@@ -61,13 +61,13 @@ namespace Carry.UISystem.UI.CarryScene
                reStartButton.AddListener(() =>
                {
                    Debug.Log("TransitioningScene to LobbyScene Clicked");
-                   SceneTransition.TransitioningScene(Runner, SceneName.LobbyScene);
+                   SceneTransition.TransitionSceneWithNetworkRunner(Runner, SceneName.LobbyScene);
                });
             
                titleButton.AddListener(() =>
                {
                    Debug.Log("TransitioningScene to TitleScene Clicked");
-                   SceneTransition.TransitioningScene(Runner, SceneName.TitleScene);
+                   SceneTransition.TransitionSceneWithNetworkRunner(Runner, SceneName.TitleScene);
 
                });
         }
