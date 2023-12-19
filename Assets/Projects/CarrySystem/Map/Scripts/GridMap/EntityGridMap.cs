@@ -99,7 +99,7 @@ namespace Carry.CarrySystem.Map.Scripts
             return GetSingleTypeList<T>(ToSubscript(x, y));
         }
 
-        public List<T> GetSingleTypeList<T>(int index) 
+        public List<T> GetSingleTypeList<T>(int index)  // IDisposableを受け取る場合があるので、制約は設けない。　たぶんよくない設計
         {
             
             if (index < 0 || index > Length)
