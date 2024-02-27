@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5798826274826622539}
   - component: {fileID: 8423385723093209936}
-  - component: {fileID: 4285757605311665343}
   m_Layer: 0
   m_Name: MapKeyDataBySakai
   m_TagString: Untagged
@@ -45,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19f774c0f4204dbcb5d04917b7b6299b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
   mapKeyDataList:
   - mapKey: 10
     index: 10
@@ -57,27 +55,3 @@ MonoBehaviour:
     index: 10
   - mapKey: 10
     index: 10
---- !u!114 &4285757605311665343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 373235939137569385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectInterest: 1
-  DefaultInterestGroups: []
-  DestroyWhenStateAuthorityLeaves: 0
-  AllowStateAuthorityOverride: 1
-  AoiPositionSource: {fileID: 0}
-  Flags: 2305
-  NetworkGuid:
-    RawGuidValue: 3f7a0693a1c8b424dac39b45e5aed07f
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 8423385723093209936}
-  SimulationBehaviours: []

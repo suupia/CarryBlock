@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4432399926505263698}
   - component: {fileID: 4083379182302277477}
-  - component: {fileID: -1599650411451427176}
   m_Layer: 0
   m_Name: ExpertStage
   m_TagString: Untagged
@@ -45,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19f774c0f4204dbcb5d04917b7b6299b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
   mapKeyDataList:
   - mapKey: 6
     index: 11
@@ -57,27 +55,3 @@ MonoBehaviour:
     index: 14
   - mapKey: 6
     index: 15
---- !u!114 &-1599650411451427176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2152326560314689253}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectInterest: 1
-  DefaultInterestGroups: []
-  DestroyWhenStateAuthorityLeaves: 0
-  AllowStateAuthorityOverride: 1
-  AoiPositionSource: {fileID: 0}
-  Flags: 2305
-  NetworkGuid:
-    RawGuidValue: 846de170e5ef03844a4856536a5f5343
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 4083379182302277477}
-  SimulationBehaviours: []

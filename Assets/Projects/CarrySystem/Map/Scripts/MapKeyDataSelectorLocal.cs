@@ -11,7 +11,7 @@ namespace Carry.CarrySystem.Map.Scripts
     /// </summary>
     public class MapKeyDataSelectorLocal : MonoBehaviour
     {
-        [SerializeField] List<MapKeyDataLocal> mapKeyDataNetList = null!;
+        [SerializeField] List<MapKeyDataNet> mapKeyDataNetList = null!;
 
         public int MapKeyDataNetListCount => mapKeyDataNetList.Count;
 

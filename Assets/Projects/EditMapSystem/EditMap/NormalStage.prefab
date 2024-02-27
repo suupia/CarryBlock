@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19f774c0f4204dbcb5d04917b7b6299b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
   mapKeyDataList:
   - mapKey: 8
     index: 2
@@ -78,6 +77,5 @@ MonoBehaviour:
   NetworkGuid:
     RawGuidValue: aa69f357dc357e24d94504904d98f137
   NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 4083379182302277477}
+  NetworkedBehaviours: []
   SimulationBehaviours: []

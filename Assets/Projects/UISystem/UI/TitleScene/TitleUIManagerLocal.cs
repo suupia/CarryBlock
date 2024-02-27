@@ -28,7 +28,6 @@ public class TitleUIManagerLocal : MonoBehaviour
     void Start()
     {
         var titleInitializer = FindObjectOfType<TitleInitializer>();
-        Assert.IsNotNull(titleInitializer, "TitleInitializerをシーンに配置してください");
 
         playButton.AddListener(() => SceneManager.LoadScene("CarrySceneLocal"));
 

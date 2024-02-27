@@ -1228,7 +1228,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1110987109
 Transform:
   m_ObjectHideFlags: 0
@@ -2942,3 +2942,53 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2263146684349667414, guid: c69faaae96cba85459a099a1f9baa20a, type: 3}
   m_PrefabInstance: {fileID: 3080522758526209627}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &3671654522843090602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5209574455367705327}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5209574455367705327
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3671654522843090602}
+  - component: {fileID: 8942008033353325697}
+  m_Layer: 0
+  m_Name: MapKeyDataSelectorLocal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &8942008033353325697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5209574455367705327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d5b11d665154cc78e82b791452b1ae9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapKeyDataNetList:
+  - {fileID: 4083379182302277477, guid: 36796b37f79aabd42a54e45664835a86, type: 3}
+  - {fileID: 4083379182302277477, guid: aa69f357dc357e24d94504904d98f137, type: 3}
+  - {fileID: 4083379182302277477, guid: 3c3a5134ead040047aee33847c393113, type: 3}
+  - {fileID: 4083379182302277477, guid: 846de170e5ef03844a4856536a5f5343, type: 3}
+  - {fileID: 4083379182302277477, guid: 78c3723f5972f594790bf8d9817f7cd4, type: 3}
