@@ -13,7 +13,7 @@ using VContainer;
 
 namespace Carry.UISystem.UI.CarryScene
 {
-    public class f : MonoBehaviour
+    public class ResultCanvasUILocal : MonoBehaviour
     {
         [SerializeField] TextMeshProUGUI resultText = null!;
         [SerializeField] TextMeshProUGUI clearedFloorText = null!;
