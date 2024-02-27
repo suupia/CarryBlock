@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using DG.Tweening;
+using Projects.CarrySystem.FloorTimer.Interfaces;
 using UniRx;
 using VContainer;
 
@@ -30,12 +31,12 @@ namespace Carry.UISystem.UI.CarryScene
         readonly float _playThreshold = 0.20f;  // 残り時間が2割の時に点滅を開始する
         
         [Inject]
-        public void Construct(FloorTimerNet floorTimerNet)
+        public void Construct(IFloorTimer floorTimer)
         {
-            this.ObserveEveryValueChanged(_ => floorTimerNet.FloorRemainingTimeRatio)
+            this.ObserveEveryValueChanged(_ => floorTimer.FloorRemainingTimeRatio)
                 .Subscribe(_ =>
                 {
-                    if (floorTimerNet.FloorRemainingTimeRatio <= _playThreshold)
+                    if (floorTimer.FloorRemainingTimeRatio <= _playThreshold)
                     {
                         if (_stopFlag)Play();
                     }

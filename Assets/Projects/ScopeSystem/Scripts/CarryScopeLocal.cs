@@ -6,6 +6,7 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.CarrySystem.Player.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
+using Carry.CarrySystem.Player.Scripts.Local;
 using Carry.CarrySystem.RoutingAlgorithm.Interfaces;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.CarrySystem.Spawners.Interfaces;
@@ -49,8 +50,9 @@ namespace Carry.ScopeSystem.Scripts
 
             // Player
             builder.Register<CarryPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
-            builder.Register<CarryPlayerControllerNetBuilder>(Lifetime.Scoped).As<IPlayerControllerNetBuilder>();
-            builder.Register<NetworkPlayerSpawner>(Lifetime.Scoped);
+            // builder.Register<CarryPlayerControllerNetBuilder>(Lifetime.Scoped).As<IPlayerControllerNetBuilder>();
+            builder.Register<CarryPlayerControllerLocalBuilder>(Lifetime.Scoped);
+            builder.Register<LocalPlayerSpawner>(Lifetime.Scoped);
             builder.Register<CarryPlayerContainer>(Lifetime.Scoped);
 
 
@@ -102,7 +104,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.RegisterComponentInHierarchy<PlayerNearCartHandlerNet>();
 
             // Initializer
-            // builder.RegisterComponentInHierarchy<CarryInitializer>();
+            builder.RegisterComponentInHierarchy<CarryInitializerLocal>();
 
             // View
             builder.RegisterComponentInHierarchy<PlayingCanvasUILocal>();
