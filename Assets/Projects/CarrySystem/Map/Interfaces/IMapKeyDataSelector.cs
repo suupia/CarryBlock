@@ -6,6 +6,7 @@ namespace Carry.CarrySystem.Map.Interfaces
 {
     public interface IMapKeyDataSelector
     {
+        public int MapKeyDataNetListCount { get; }
         public IReadOnlyList<MapKeyData> SelectMapKeyDataList(int index);
     }
 }

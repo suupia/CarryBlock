@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class MapKeyDataNet : MonoBehaviour
+    public class MapKeyDataMono : MonoBehaviour
     {
         public IReadOnlyList<MapKeyData> MapKeyDataList => mapKeyDataList;
         [SerializeField] List<MapKeyData> mapKeyDataList = null!;

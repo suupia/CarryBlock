@@ -12,7 +12,7 @@ namespace Carry.CarrySystem.Map.Scripts
     /// </summary>
     public class MapKeyDataSelectorNet : NetworkBehaviour, IMapKeyDataSelector
     {
-        [SerializeField] List<MapKeyDataNet> mapKeyDataNetList = null!;
+        [SerializeField] List<MapKeyDataMono> mapKeyDataNetList = null!;
 
         public int MapKeyDataNetListCount => mapKeyDataNetList.Count;
 

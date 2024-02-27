@@ -157,6 +157,10 @@ MonoBehaviour:
     m_Address: Prefabs/Players/CarryPlayerControllerLocal
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: e53527cf418b9034e9237fa064eb2fe4
+    m_Address: Prefabs/Players/LobbyPlayerControllerLocal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 405937dcad4604950956d0fac118dce9, type: 2}
   m_SchemaSet:

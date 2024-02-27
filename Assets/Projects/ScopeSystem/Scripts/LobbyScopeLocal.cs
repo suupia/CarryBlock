@@ -12,6 +12,7 @@ using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
 using Fusion;
 using Projects.CarrySystem.Item.Scripts;
+using Projects.CarrySystem.Player.Scripts.Local;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -23,15 +24,15 @@ namespace Projects.ScopeSystem.Scripts
         protected override void Configure(IContainerBuilder builder)
         {
             // PrefabLoader 
-            builder.Register<PrefabLoaderFromAddressable<LobbyPlayerControllerNet>>(Lifetime.Scoped)
-                .As<IPrefabLoader<LobbyPlayerControllerNet>>()
-                .WithParameter("path", "Prefabs/Players/LobbyPlayerControllerNet");
+            builder.Register<PrefabLoaderFromAddressable<LobbyPlayerControllerLocal>>(Lifetime.Scoped)
+                .As<IPrefabLoader<LobbyPlayerControllerLocal>>()
+                .WithParameter("path", "Prefabs/Players/LobbyPlayerControllerLocal");
             
 
             // Player
             builder.Register<LobbyPlayerFactory>(Lifetime.Scoped).As<ICarryPlayerFactory>();
-            builder.Register<LobbyPlayerControllerNetBuilder>(Lifetime.Scoped).As<IPlayerControllerNetBuilder>();
-            builder.Register<NetworkPlayerSpawner>(Lifetime.Scoped);
+            builder.Register<LobbyPlayerControllerLocalBuilder>(Lifetime.Scoped);
+            builder.Register<LocalPlayerSpawner>(Lifetime.Scoped);
             builder.Register<LobbyPlayerContainer>(Lifetime.Scoped);
 
             // Map
@@ -41,14 +42,14 @@ namespace Projects.ScopeSystem.Scripts
             
             // 対応するプレハブをEntityGridMapを元に生成する
             builder.Register<LobbyWallPresenterPlacer>(Lifetime.Scoped);
-            builder.Register<GroundPresenterNetSpawner>(Lifetime.Scoped).As<IGroundPresenterSpawner>();
+            builder.Register<GroundPresenterLocalSpawner>(Lifetime.Scoped).As<IGroundPresenterSpawner>();
             builder.Register<GroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LobbyPresenterPlacerComposite>(Lifetime.Scoped).As<IPresenterPlacer>();
-            builder.Register<PrefabLoaderFromAddressable<CartControllerNet>>(Lifetime.Scoped)
-                .As<IPrefabLoader<CartControllerNet>>()
+            builder.Register<PrefabLoaderFromAddressable<CartControllerLocal>>(Lifetime.Scoped)
+                .As<IPrefabLoader<CartControllerLocal>>()
                 .WithParameter("path", "Prefabs/Carts/CartLobbyControllerNet");
             
-            builder.RegisterComponentInHierarchy<MapKeyDataSelectorNet>();
+            builder.RegisterComponentInHierarchy<MapKeyDataSelectorLocal>().As<IMapKeyDataSelector>();
             
             //Item
             builder.Register<TreasureCoinCounter>(Lifetime.Scoped);
@@ -57,7 +58,7 @@ namespace Projects.ScopeSystem.Scripts
             builder.Register<LobbyMapSwitcher>(Lifetime.Scoped).As<IMapSwitcher>();
             
             // UI
-            builder.RegisterComponentInHierarchy<SelectStageCanvasUINet>();
+            builder.RegisterComponentInHierarchy<SelectStageCanvasUILocal>();
 
             builder.Register<LobbyStartGameTheater>(Lifetime.Scoped);
             
