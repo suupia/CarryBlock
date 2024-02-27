@@ -39,10 +39,13 @@ EditorBuildSettings:
     path: Assets/Projects/MapMakerSystem/MapMakerScene.unity
     guid: 9086556fe97f53f4cb5462f169e78b83
   - enabled: 0
-    path: Assets/Projects/EditStageSystem/LocalEditStageScene.unity
+    path: 
     guid: 404a281a157554a77879374211c6f657
   - enabled: 1
     path: Assets/Projects/EditMapSystem/LocalEditStageScene.unity
     guid: b066bfd032640421ea32dd614497b98d
+  - enabled: 1
+    path: Assets/Projects/GameSystem/CarryScene/CarrySceneLocal.unity
+    guid: 13e50998d7d32b24d9c4ceec4b644468
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 4afda750428cb4e1b90d22637877caae, type: 2}
