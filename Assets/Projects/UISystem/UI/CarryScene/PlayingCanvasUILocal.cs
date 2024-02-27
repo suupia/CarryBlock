@@ -9,9 +9,11 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using VContainer;
+using FloorTimerLocal = Carry.CarrySystem.FloorTimer.Scripts.FloorTimerLocal;
+
 #nullable enable
 
-namespace Carry.UISystem.UI.MapMaker
+namespace Carry.UISystem.UI.CarryScene
 {
     public class PlayingCanvasUILocal: MonoBehaviour
     {
@@ -35,7 +37,7 @@ namespace Carry.UISystem.UI.MapMaker
         void Update()
         {
             //Timerが有効な間だけUIを更新する
-            if (!_floorTimerLocal.IsActive) return;
+            if (!_floorTimerLocal.IsExpired) return;
 
             floorTimerText.text = $"Time : {Mathf.Floor(_floorTimerLocal.FloorRemainingSeconds)}";
             floorTimerImage.fillAmount = _floorTimerLocal.FloorRemainingTimeRatio;

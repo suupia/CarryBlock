@@ -15,12 +15,15 @@ using Fusion;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
 using Projects.CarrySystem.Cart.Interfaces;
+using Projects.CarrySystem.FloorTimer.Interfaces;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
 using Projects.CarrySystem.SearchRoute.Scripts;
+using Projects.MapMakerSystem.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using FloorTimerLocal = Carry.CarrySystem.FloorTimer.Scripts.FloorTimerLocal;
 
 namespace Carry.ScopeSystem.Scripts
 {
@@ -88,7 +91,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.RegisterComponentInHierarchy<GimmickDisposerMono>();
 
             // UI
-            builder.RegisterComponentInHierarchy<FloorTimerNet>();
+            builder.RegisterComponentInHierarchy<FloorTimerLocal>().As<IFloorTimer>().AsSelf();
             builder.RegisterComponentInHierarchy<ResultCanvasUILocal>();
 
             // Notifier
@@ -99,10 +102,10 @@ namespace Carry.ScopeSystem.Scripts
             builder.RegisterComponentInHierarchy<PlayerNearCartHandlerNet>();
 
             // Initializer
-            builder.RegisterComponentInHierarchy<CarryInitializer>();
+            // builder.RegisterComponentInHierarchy<CarryInitializer>();
 
             // View
-            builder.RegisterComponentInHierarchy<PlayingCanvasUINet>();
+            builder.RegisterComponentInHierarchy<PlayingCanvasUILocal>();
             
             // PostEffect
             builder.RegisterComponentInHierarchy<VignetteBlinker>();

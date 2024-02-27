@@ -1,15 +1,14 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using Carry.CarrySystem.Player.Scripts;
 using Fusion;
 using Projects.CarrySystem.FloorTimer.Interfaces;
 using UnityEngine;
 using VContainer;
 
-#nullable enable
-
 namespace Carry.CarrySystem.FloorTimer.Scripts
 {
-    public class FloorTimerNet : NetworkBehaviour, IFloorTimer
+    public class FloorTimerLocal : MonoBehaviour, IFloorTimer
     {
         public float FloorLimitSeconds =>  CalcFloorLimitTime();
         public float FloorRemainingSeconds { get; set; }
@@ -30,7 +29,8 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
 
         public void StartTimer()
         {
-            TickTimer = TickTimer.CreateFromSeconds(Runner, FloorLimitSeconds);
+            // TickTimer = TickTimer.CreateFromSeconds(Runner, FloorLimitSeconds);
+            FloorRemainingSeconds = FloorLimitSeconds;
             Debug.Log($"PlayerCount:{_playerCharacterTransporter.PlayerCount}"); 
         }
 
@@ -39,10 +39,15 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
             FloorRemainingSecondsSam += Mathf.Floor(FloorRemainingSeconds);
         }
 
-        public override void FixedUpdateNetwork()
+        void FixedUpdate()
         {
-            FloorRemainingSeconds = TickTimer.RemainingTime(Runner).GetValueOrDefault();
-            IsExpired = TickTimer.Expired(Runner);
+            // FloorRemainingSeconds = TickTimer.RemainingTime(Runner).GetValueOrDefault();
+            // IsExpired = TickTimer.Expired(Runner);
+            FloorRemainingSeconds -= Time.fixedDeltaTime;
+            if (FloorRemainingSeconds <= 0)
+            {
+                IsExpired = true;
+            }
         }
 
         float CalcFloorLimitTime()
@@ -67,4 +72,4 @@ namespace Carry.CarrySystem.FloorTimer.Scripts
             }
         }
     }
-} 
+}

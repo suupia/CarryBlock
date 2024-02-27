@@ -7,6 +7,7 @@ using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
 using Projects.CarrySystem.Cart.Interfaces;
+using Projects.CarrySystem.FloorTimer.Interfaces;
 using UnityEngine;
 using VContainer;
 using Object = UnityEngine.Object;
@@ -21,7 +22,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public int Index => _currentIndex; 
         
         readonly ICartBuilder _cartBuilder;
-        readonly FloorTimerNet _floorTimerNet;
+        readonly IFloorTimer _floorTimer;
         readonly EntityGridMapLoader _gridMapLoader;
         readonly IMapKeyDataSelector _mapKeyDataSelector;
         readonly StageIndexTransporter _stageIndexTransporter;
@@ -35,7 +36,7 @@ namespace Carry.CarrySystem.Map.Scripts
         public EntityGridMapSwitcher(
             EntityGridMapLoader gridMapGridMapLoader,
             ICartBuilder cartBuilder,
-            FloorTimerNet floorTimerNet,
+            IFloorTimer floorTimer,
             IMapKeyDataSelector mapKeyDataSelector,
             StageIndexTransporter stageIndexTransporter,
             IPresenterPlacer presenterPlacer
@@ -43,7 +44,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             _gridMapLoader = gridMapGridMapLoader;
             _cartBuilder = cartBuilder;
-            _floorTimerNet = floorTimerNet;
+            _floorTimer = floorTimer;
             _mapKeyDataSelector = mapKeyDataSelector;
             _stageIndexTransporter = stageIndexTransporter;
             _presenterPlacer = presenterPlacer;   
@@ -97,7 +98,7 @@ namespace Carry.CarrySystem.Map.Scripts
             Debug.Log($"次のフロアに変更します nextIndex: {index}");
             
             //この呼び出しが_floorTimerNet.IsCleared = trueより後になるとクリアした最後のフロアの時間が加算されない
-            _floorTimerNet.SumRemainingTime();
+            _floorTimer.SumRemainingTime();
             
             if (index < 0)
             {
@@ -108,7 +109,7 @@ namespace Carry.CarrySystem.Map.Scripts
             {
                 Debug.LogWarning($"index is over the max value");
                 index = mapKeyDataList.Count - 1; // 最大値を超えないようにする
-                _floorTimerNet.IsCleared = true;//次のフロアがないためクリアフラグをtrueにする
+                _floorTimer.IsCleared = true;//次のフロアがないためクリアフラグをtrueにする
             }
             _currentIndex = index;
             var key = mapKeyDataList[_currentIndex].mapKey;
@@ -120,7 +121,7 @@ namespace Carry.CarrySystem.Map.Scripts
             StartGimmicks();
             _cartBuilder.Build(_currentMap, this);
 
-            _floorTimerNet.StartTimer();
+            _floorTimer.StartTimer();
             
             
             _resetAction();

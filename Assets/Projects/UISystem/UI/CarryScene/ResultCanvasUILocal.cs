@@ -5,6 +5,7 @@ using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Map.Scripts;
 using Carry.GameSystem.Scripts;
 using Fusion;
+using Projects.CarrySystem.FloorTimer.Interfaces;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -28,7 +29,7 @@ namespace Carry.UISystem.UI.CarryScene
         [Networked] float ClearTime { get; set; } = 0;
 
         IMapGetter _mapGetter = null!;
-        FloorTimerNet _floorTimerNet = null!;
+        IFloorTimer _floorTimerLocal = null!;
         MapKeyDataSelectorLocal _mapKeyDataSelectorNet = null!;
         StageIndexTransporter _stageIndexTransporter = null!;
         int _maxFloorNumber;
@@ -38,12 +39,12 @@ namespace Carry.UISystem.UI.CarryScene
         [Inject]
         public void Construct(
             IMapGetter mapGetter,
-            FloorTimerNet floorTimerNet,
+            IFloorTimer floorTimerNet,
             MapKeyDataSelectorLocal mapKeyDataSelectorNet,
             StageIndexTransporter stageIndexTransporter
         )
         {
-            _floorTimerNet = floorTimerNet;
+            _floorTimerLocal = floorTimerNet;
             _mapGetter = mapGetter;
             _mapKeyDataSelectorNet = mapKeyDataSelectorNet;
             _stageIndexTransporter = stageIndexTransporter;
@@ -77,7 +78,7 @@ namespace Carry.UISystem.UI.CarryScene
             var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
             _maxFloorNumber = mapKeyDataList.Count;
             //ゲームオーバーの時のリザルト
-            this.ObserveEveryValueChanged(_ => _floorTimerNet.IsExpired)
+            this.ObserveEveryValueChanged(_ => _floorTimerLocal.IsExpired)
                 .Where(isExpired => isExpired)
                 .Subscribe(_ =>
                 {
@@ -85,12 +86,12 @@ namespace Carry.UISystem.UI.CarryScene
                     IsClear = false;
                     ClearedFloorNumber = _mapGetter.Index + 1;
                     MaxFloorNumber = mapKeyDataList.Count;
-                    ClearTime = _floorTimerNet.FloorLimitSeconds * _maxFloorNumber -
-                                _floorTimerNet.FloorRemainingSecondsSam;
+                    ClearTime = _floorTimerLocal.FloorLimitSeconds * _maxFloorNumber -
+                                _floorTimerLocal.FloorRemainingSecondsSam;
                 });
 
             //ゲームクリアの時のリザルト
-            this.ObserveEveryValueChanged(_ => _floorTimerNet.IsCleared)
+            this.ObserveEveryValueChanged(_ => _floorTimerLocal.IsCleared)
                 .Where(isClear => isClear)
                 .Subscribe(_ =>
                 {
@@ -98,8 +99,8 @@ namespace Carry.UISystem.UI.CarryScene
                     IsClear = true;
                     ClearedFloorNumber = _mapGetter.Index + 1;
                     MaxFloorNumber = mapKeyDataList.Count;
-                    ClearTime = _floorTimerNet.FloorLimitSeconds * _maxFloorNumber -
-                                _floorTimerNet.FloorRemainingSecondsSam;
+                    ClearTime = _floorTimerLocal.FloorLimitSeconds * _maxFloorNumber -
+                                _floorTimerLocal.FloorRemainingSecondsSam;
                 });
         }
         
