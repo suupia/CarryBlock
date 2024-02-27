@@ -33,11 +33,11 @@ namespace Carry.GameSystem.Scripts
             { SceneName.SearchRouteScene, "SearchRouteScene" },
             
             // 完全ローカル用
-            { SceneName.TitleScene, "TitleSceneLocal" },
-            { SceneName.CarryScene, "CarrySceneLocal" },
-            { SceneName.LobbyScene, "LobbySceneLocal" },
-            { SceneName.EditMapScene, "EditMapSceneLocal" },
-            { SceneName.SearchRouteScene, "SearchRouteSceneLocal" },
+            { SceneName.TitleSceneLocal, "TitleSceneLocal" },
+            { SceneName.CarrySceneLocal, "CarrySceneLocal" },
+            { SceneName.LobbySceneLocal, "LobbySceneLocal" },
+            { SceneName.EditMapSceneLocal, "EditMapSceneLocal" },
+            { SceneName.SearchRouteSceneLocal, "SearchRouteSceneLocal" },
         };
 
         public static void TransitionSceneWithNetworkRunner(NetworkRunner runner, SceneName nextScene)
