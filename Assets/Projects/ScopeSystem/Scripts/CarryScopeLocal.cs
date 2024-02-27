@@ -66,7 +66,7 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<PlaceablePresenterPlacer>(Lifetime.Scoped);
             builder.Register<LocalGroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LocalWallPresenterPlacer>(Lifetime.Scoped);
-            builder.RegisterComponentInHierarchy<PresenterPlacerLocal>();
+            builder.RegisterComponentInHierarchy<PresenterPlacerLocal>().As<IPresenterPlacer>();
             
             
             // IMapUpdater

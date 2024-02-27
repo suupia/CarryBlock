@@ -10,7 +10,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class PresenterPlacerLocal : MonoBehaviour
+    public class PresenterPlacerLocal : MonoBehaviour,IPresenterPlacer
     {
         IPresenterPlacer _blockPresenterPlacer = null!;
         LocalWallPresenterPlacer _wallPresenterPlacer = null!;

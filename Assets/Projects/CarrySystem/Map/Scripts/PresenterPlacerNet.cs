@@ -11,7 +11,7 @@ using VContainer;
 
 namespace Carry.CarrySystem.Map.Scripts
 {
-    public class PresenterPlacerNet : NetworkBehaviour
+    public class PresenterPlacerNet : NetworkBehaviour, IPresenterPlacer
     {
         IPresenterPlacer _blockPresenterPlacer;
         LocalWallPresenterPlacer _wallPresenterPlacer;

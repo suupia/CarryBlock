@@ -25,7 +25,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly EntityGridMapLoader _gridMapLoader;
         readonly IMapKeyDataSelector _mapKeyDataSelector;
         readonly StageIndexTransporter _stageIndexTransporter;
-        readonly PresenterPlacerNet _presenterPlacerNet;
+        readonly IPresenterPlacer _presenterPlacer;
         int _currentIndex;
         EntityGridMap? _currentMap;
         
@@ -38,7 +38,7 @@ namespace Carry.CarrySystem.Map.Scripts
             FloorTimerNet floorTimerNet,
             IMapKeyDataSelector mapKeyDataSelector,
             StageIndexTransporter stageIndexTransporter,
-            PresenterPlacerNet presenterPlacerNet
+            IPresenterPlacer presenterPlacer
             )
         {
             _gridMapLoader = gridMapGridMapLoader;
@@ -46,7 +46,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _floorTimerNet = floorTimerNet;
             _mapKeyDataSelector = mapKeyDataSelector;
             _stageIndexTransporter = stageIndexTransporter;
-            _presenterPlacerNet = presenterPlacerNet;   
+            _presenterPlacer = presenterPlacer;   
 
         }
 
@@ -69,7 +69,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var key =mapKeyDataList[firstIndex].mapKey;
             var mapIndex =  mapKeyDataList[firstIndex].index;
             _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
-            _presenterPlacerNet.Place(_currentMap);
+            _presenterPlacer.Place(_currentMap);
             StartGimmicks();
             _cartBuilder.Build(_currentMap, this);
 
@@ -116,7 +116,7 @@ namespace Carry.CarrySystem.Map.Scripts
             var nextMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
             EndGimmicks();  // EntityGridMapを更新する前にGimmickを終了させることに注意
             _currentMap = nextMap;
-            _presenterPlacerNet.Place(_currentMap);
+            _presenterPlacer.Place(_currentMap);
             StartGimmicks();
             _cartBuilder.Build(_currentMap, this);
 
