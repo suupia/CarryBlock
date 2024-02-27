@@ -1,3 +1,4 @@
+using Carry.GameSystem.Scripts;
 using Carry.GameSystem.TitleScene.Scripts;
 using Carry.UISystem.UI;
 using Fusion;
@@ -29,7 +30,7 @@ public class TitleUIManagerLocal : MonoBehaviour
     {
         var titleInitializer = FindObjectOfType<TitleInitializer>();
 
-        playButton.AddListener(() => SceneManager.LoadScene("CarrySceneLocal"));
+        playButton.AddListener(() => SceneTransition.TransitioningScene(SceneName.LobbySceneLocal));
 
         mapMakerButton.AddListener(() => SceneManager.LoadScene("LocalEditStageScene"));
 

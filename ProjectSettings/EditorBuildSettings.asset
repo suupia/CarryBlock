@@ -47,5 +47,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Projects/GameSystem/CarryScene/CarrySceneLocal.unity
     guid: 13e50998d7d32b24d9c4ceec4b644468
+  - enabled: 1
+    path: Assets/Projects/GameSystem/LobbyScene/LobbySceneLocal.unity
+    guid: 87ef5e54abd4873448b390b764a205b7
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 4afda750428cb4e1b90d22637877caae, type: 2}
