@@ -9,7 +9,7 @@ namespace Carry.CarrySystem.Map.Scripts
     /// This class is used to select which MapKeyData prefab to use.
     /// This should be placed in the LobbyScene.
     /// </summary>
-    public class MapKeyDataSelectorLocal : NetworkBehaviour
+    public class MapKeyDataSelectorLocal : MonoBehaviour
     {
         [SerializeField] List<MapKeyDataLocal> mapKeyDataNetList = null!;
 

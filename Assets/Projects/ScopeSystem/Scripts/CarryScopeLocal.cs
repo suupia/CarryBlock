@@ -27,11 +27,6 @@ namespace Carry.ScopeSystem.Scripts
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            // このシーンに遷移した時点でNetworkRunnerは存在していると仮定している
-            var runner = FindObjectOfType<NetworkRunner>();
-            Debug.Log($"NetworkRunner : {runner}");
-            builder.RegisterComponent(runner);
-            
             // MapKeyDataSelectorNet is DontDestroyOnLoad Object
             var mapKeyDataSelectorLocal = FindObjectOfType<MapKeyDataSelectorLocal>();
             Debug.Log($"MapKeyDataSelectorNet : {mapKeyDataSelectorLocal}");
