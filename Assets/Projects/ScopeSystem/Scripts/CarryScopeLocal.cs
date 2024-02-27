@@ -17,6 +17,7 @@ using Carry.Utility.Scripts;
 using Projects.CarrySystem.Cart.Interfaces;
 using Projects.CarrySystem.Gimmick.Scripts;
 using Projects.CarrySystem.Item.Scripts;
+using Projects.CarrySystem.SearchRoute.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -60,12 +61,12 @@ namespace Carry.ScopeSystem.Scripts
             builder.Register<EntityGridMapLoader>(Lifetime.Scoped);
             
             // 対応するプレハブをEntityGridMapを元に生成する
-            builder.Register<NetworkPlaceablePresenterSpawner>(Lifetime.Scoped).As<IPlaceablePresenterSpawner>();
+            builder.Register<LocalPlaceablePresenterSpawner>(Lifetime.Scoped).As<IPlaceablePresenterSpawner>();
             builder.Register<PlaceablePresenterBuilder>(Lifetime.Scoped);
             builder.Register<PlaceablePresenterPlacer>(Lifetime.Scoped);
             builder.Register<LocalGroundPresenterPlacer>(Lifetime.Scoped);
             builder.Register<LocalWallPresenterPlacer>(Lifetime.Scoped);
-            builder.RegisterComponentInHierarchy<PresenterPlacerNet>();
+            builder.RegisterComponentInHierarchy<PresenterPlacerLocal>();
             
             
             // IMapUpdater
@@ -75,7 +76,7 @@ namespace Carry.ScopeSystem.Scripts
             // Cart
             builder.Register<CartBuilder>(Lifetime.Scoped);
             builder.Register<CartShortestRouteMove>(Lifetime.Scoped);
-            builder.Register<RoutePresenterNetSpawner>(Lifetime.Scoped).As<IRoutePresenterSpawner>();
+            builder.Register<RoutePresenterLocalSpawner>(Lifetime.Scoped).As<IRoutePresenterSpawner>();
             builder.Register<SearchAccessibleAreaPresenterBuilder>(Lifetime.Scoped);
             builder.Register<HoldingBlockObserver>(Lifetime.Scoped);
             builder.Register<ReachRightEdgeChecker>(Lifetime.Scoped);
