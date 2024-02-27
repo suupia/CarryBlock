@@ -6,6 +6,7 @@ using Carry.CarrySystem.FloorTimer.Scripts;
 using Carry.CarrySystem.Gimmick.Interfaces;
 using Carry.CarrySystem.Map.Interfaces;
 using Carry.CarrySystem.Player.Scripts;
+using Projects.CarrySystem.Cart.Interfaces;
 using UnityEngine;
 using VContainer;
 using Object = UnityEngine.Object;
@@ -19,7 +20,7 @@ namespace Carry.CarrySystem.Map.Scripts
     {
         public int Index => _currentIndex; 
         
-        readonly CartBuilder _cartBuilder;
+        readonly ICartBuilder _cartBuilder;
         readonly FloorTimerNet _floorTimerNet;
         readonly EntityGridMapLoader _gridMapLoader;
         readonly MapKeyDataSelectorNet _mapKeyDataSelectorNet;
@@ -33,7 +34,7 @@ namespace Carry.CarrySystem.Map.Scripts
         [Inject]
         public EntityGridMapSwitcher(
             EntityGridMapLoader gridMapGridMapLoader,
-            CartBuilder cartBuilder,
+            ICartBuilder cartBuilder,
             FloorTimerNet floorTimerNet,
             MapKeyDataSelectorNet mapKeyDataSelectorNet,
             StageIndexTransporter stageIndexTransporter,

@@ -7,20 +7,21 @@ using Carry.CarrySystem.Cart.Info;
 using Carry.CarrySystem.SearchRoute.Scripts;
 using Carry.Utility.Interfaces;
 using Carry.Utility.Scripts;
+using Projects.CarrySystem.Cart.Interfaces;
 using UnityEngine;
 using VContainer;
 #nullable enable
 
 namespace Carry.CarrySystem.Cart.Scripts
 {
-    public class CartBuilder
+    public class CartBuilderNet : ICartBuilder
     {
         readonly NetworkRunner _runner;
         readonly IPrefabLoader<CartControllerNet> _cartControllerLoader;
         readonly CartShortestRouteMove _cartShortestRouteMove;
 
         [Inject]
-        public CartBuilder(
+        public CartBuilderNet(
             NetworkRunner runner ,
             IPrefabLoader<CartControllerNet> cartControllerLoader,
             CartShortestRouteMove cartShortestRouteShortestRouteMove
@@ -31,7 +32,7 @@ namespace Carry.CarrySystem.Cart.Scripts
             _cartShortestRouteMove = cartShortestRouteShortestRouteMove;
         }
 
-        public CartControllerNet Build(EntityGridMap map, IMapSwitcher mapSwitcher)
+        public void Build(EntityGridMap map, IMapSwitcher mapSwitcher)
         {
             Debug.Log($"CartBuilder.Build");
             
@@ -74,7 +75,6 @@ namespace Carry.CarrySystem.Cart.Scripts
             // Factoryの差し替えが簡単にできるので、_resolver.InjectGameObjectを使う必要はない
             // BuilderとPlayerControllerが蜜結合なのは問題ないはず
 
-            return cartControllerObj;
         }
     }
 }
