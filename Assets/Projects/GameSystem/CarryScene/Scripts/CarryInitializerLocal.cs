@@ -15,7 +15,6 @@ namespace Carry.CarrySystem.CarryScene.Scripts
         [SerializeField] FloorTimerNet floorTimerNet;
         NetworkPlayerSpawner _networkPlayerSpawner;
         IMapSwitcher _entityGridMapSwitcher;
-        CarryInitializersReady? _carryInitializersReady;
         public bool IsInitialized { get; private set; }
         
         [Inject]
@@ -28,16 +27,9 @@ namespace Carry.CarrySystem.CarryScene.Scripts
             _entityGridMapSwitcher = entityGridMapSwitcher;
         }
         
-        async void Start()
+        void Start()
         {
-            _carryInitializersReady = FindObjectOfType<CarryInitializersReady>();
-            if (_carryInitializersReady == null)
-            {
-                Debug.LogError($"_carryInitializersReady is null");
-                return;
-            }
-            await UniTask.WaitUntil(() => _carryInitializersReady.IsAllInitializersReady());
-            
+
             floorTimerNet.StartTimer();
 
             _entityGridMapSwitcher.InitSwitchMap();

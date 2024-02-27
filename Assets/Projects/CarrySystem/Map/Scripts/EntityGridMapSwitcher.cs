@@ -23,7 +23,7 @@ namespace Carry.CarrySystem.Map.Scripts
         readonly ICartBuilder _cartBuilder;
         readonly FloorTimerNet _floorTimerNet;
         readonly EntityGridMapLoader _gridMapLoader;
-        readonly MapKeyDataSelectorNet _mapKeyDataSelectorNet;
+        readonly IMapKeyDataSelector _mapKeyDataSelector;
         readonly StageIndexTransporter _stageIndexTransporter;
         readonly PresenterPlacerNet _presenterPlacerNet;
         int _currentIndex;
@@ -36,7 +36,7 @@ namespace Carry.CarrySystem.Map.Scripts
             EntityGridMapLoader gridMapGridMapLoader,
             ICartBuilder cartBuilder,
             FloorTimerNet floorTimerNet,
-            MapKeyDataSelectorNet mapKeyDataSelectorNet,
+            IMapKeyDataSelector mapKeyDataSelector,
             StageIndexTransporter stageIndexTransporter,
             PresenterPlacerNet presenterPlacerNet
             )
@@ -44,7 +44,7 @@ namespace Carry.CarrySystem.Map.Scripts
             _gridMapLoader = gridMapGridMapLoader;
             _cartBuilder = cartBuilder;
             _floorTimerNet = floorTimerNet;
-            _mapKeyDataSelectorNet = mapKeyDataSelectorNet;
+            _mapKeyDataSelector = mapKeyDataSelector;
             _stageIndexTransporter = stageIndexTransporter;
             _presenterPlacerNet = presenterPlacerNet;   
 
@@ -65,7 +65,7 @@ namespace Carry.CarrySystem.Map.Scripts
         {
             var firstIndex = 0;
             Debug.Log($"StageIndex : {_stageIndexTransporter.StageIndex}");
-            var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
+            var mapKeyDataList = _mapKeyDataSelector.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
             var key =mapKeyDataList[firstIndex].mapKey;
             var mapIndex =  mapKeyDataList[firstIndex].index;
             _currentMap = _gridMapLoader.LoadEntityGridMap(key, mapIndex);
@@ -93,7 +93,7 @@ namespace Carry.CarrySystem.Map.Scripts
         
         void PrivateUpdateMap(int index)
         {
-            var mapKeyDataList = _mapKeyDataSelectorNet.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
+            var mapKeyDataList = _mapKeyDataSelector.SelectMapKeyDataList(_stageIndexTransporter.StageIndex);
             Debug.Log($"次のフロアに変更します nextIndex: {index}");
             
             //この呼び出しが_floorTimerNet.IsCleared = trueより後になるとクリアした最後のフロアの時間が加算されない

@@ -31,7 +31,7 @@ namespace Carry.ScopeSystem.Scripts
             // MapKeyDataSelectorNet is DontDestroyOnLoad Object
             var mapKeyDataSelectorLocal = FindObjectOfType<MapKeyDataSelectorLocal>();
             Debug.Log($"MapKeyDataSelectorNet : {mapKeyDataSelectorLocal}");
-            builder.RegisterComponent(mapKeyDataSelectorLocal);
+            builder.RegisterComponent(mapKeyDataSelectorLocal).As<IMapKeyDataSelector>();
 
             // PrefabLoader 
             builder.Register<PrefabLoaderFromAddressable<CarryPlayerControllerLocal>>(Lifetime.Scoped)
@@ -74,7 +74,7 @@ namespace Carry.ScopeSystem.Scripts
 
 
             // Cart
-            builder.Register<CartBuilderNet>(Lifetime.Scoped).As<ICartBuilder>();
+            builder.Register<CartBuilderLocal>(Lifetime.Scoped).As<ICartBuilder>();
             builder.Register<CartShortestRouteMove>(Lifetime.Scoped);
             builder.Register<RoutePresenterLocalSpawner>(Lifetime.Scoped).As<IRoutePresenterSpawner>();
             builder.Register<SearchAccessibleAreaPresenterBuilder>(Lifetime.Scoped);

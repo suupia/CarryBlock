@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System.Collections.Generic;
+using Carry.CarrySystem.Map.Interfaces;
 using Fusion;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace Carry.CarrySystem.Map.Scripts
     /// This class is used to select which MapKeyData prefab to use.
     /// This should be placed in the LobbyScene.
     /// </summary>
-    public class MapKeyDataSelectorLocal : MonoBehaviour
+    public class MapKeyDataSelectorLocal : MonoBehaviour, IMapKeyDataSelector
     {
         [SerializeField] List<MapKeyDataNet> mapKeyDataNetList = null!;
 

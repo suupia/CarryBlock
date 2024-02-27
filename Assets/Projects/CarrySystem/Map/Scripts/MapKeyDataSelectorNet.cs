@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Carry.CarrySystem.Map.Interfaces;
 using Fusion;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace Carry.CarrySystem.Map.Scripts
     /// This class is used to select which MapKeyData prefab to use.
     /// This should be placed in the LobbyScene.
     /// </summary>
-    public class MapKeyDataSelectorNet : NetworkBehaviour
+    public class MapKeyDataSelectorNet : NetworkBehaviour, IMapKeyDataSelector
     {
         [SerializeField] List<MapKeyDataNet> mapKeyDataNetList = null!;
 
@@ -22,7 +23,7 @@ namespace Carry.CarrySystem.Map.Scripts
         }
 
         public IReadOnlyList<MapKeyData> SelectMapKeyDataList(int index)
-        {
+        {   
             if (index < 0 || index >= mapKeyDataNetList.Count)
             {
                 Debug.LogError($"index:{index} is out of range");
