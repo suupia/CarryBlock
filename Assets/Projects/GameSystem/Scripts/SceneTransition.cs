@@ -23,7 +23,7 @@ namespace Carry.GameSystem.Scripts
 
     public static class SceneTransition
     {
-        static readonly Dictionary<SceneName, string> sceneNameTable = new()
+        static readonly Dictionary<SceneName, string> SeneNameTable = new()
         {
             // PhotonFusionを使用する用
             { SceneName.TitleScene, "TitleScene" },
@@ -33,16 +33,16 @@ namespace Carry.GameSystem.Scripts
             { SceneName.SearchRouteScene, "SearchRouteScene" },
             
             // 完全ローカル用
-            { SceneName.TitleScene, "TitleSceneLocal" },
-            { SceneName.CarryScene, "CarrySceneLocal" },
-            { SceneName.LobbyScene, "LobbySceneLocal" },
-            { SceneName.EditMapScene, "EditMapSceneLocal" },
-            { SceneName.SearchRouteScene, "SearchRouteSceneLocal" },
+            { SceneName.TitleSceneLocal, "TitleSceneLocal" },
+            { SceneName.CarrySceneLocal, "CarrySceneLocal" },
+            { SceneName.LobbySceneLocal, "LobbySceneLocal" },
+            { SceneName.EditMapSceneLocal, "EditMapSceneLocal" },
+            { SceneName.SearchRouteSceneLocal, "SearchRouteSceneLocal" },
         };
 
         public static void TransitionSceneWithNetworkRunner(NetworkRunner runner, SceneName nextScene)
         {
-            if (sceneNameTable.TryGetValue(nextScene, out var sceneName))
+            if (SeneNameTable.TryGetValue(nextScene, out var sceneName))
             {
                 Debug.Log($"Transitioning to {sceneName}");
                 runner.SetActiveScene(sceneName);
@@ -55,7 +55,7 @@ namespace Carry.GameSystem.Scripts
         
         public static void TransitioningScene(SceneName nextScene)
         {
-            if (sceneNameTable.TryGetValue(nextScene, out var sceneName))
+            if (SeneNameTable.TryGetValue(nextScene, out var sceneName))
             {
                 Debug.Log($"Transitioning to {sceneName}");
                 UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);

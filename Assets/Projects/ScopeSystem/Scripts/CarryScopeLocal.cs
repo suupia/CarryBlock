@@ -89,7 +89,7 @@ namespace Carry.ScopeSystem.Scripts
 
             // UI
             builder.RegisterComponentInHierarchy<FloorTimerNet>();
-            builder.RegisterComponentInHierarchy<ResultCanvasUINet>();
+            builder.RegisterComponentInHierarchy<ResultCanvasUILocal>();
 
             // Notifier
             builder.RegisterComponentInHierarchy<HoldingBlockNotifierNet>().As<IHoldingBlockNotifier>();
